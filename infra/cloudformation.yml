@@ -5,6 +5,14 @@ Resources:
     Properties:
       Name: MoodTrackerApi
       ProtocolType: HTTP
+  ApiGatewayStage:
+    Type: AWS::ApiGatewayV2::Stage
+    DependsOn:
+      - ApiMoodsResource
+    Properties:
+      ApiId: !Ref ApiGateway
+      AutoDeploy: true
+      StageName: prod
   ApiMoodsResource:
     Type: AWS::ApiGatewayV2::Route
     Properties:
