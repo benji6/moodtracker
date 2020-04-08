@@ -53,7 +53,22 @@ Resources:
         - AttributeName: created_at
           KeyType: RANGE
       TableName: mood_tracker_moods
-  MoodsPutLambda:
+  LambdaMoodsGet:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import boto3
+          from boto3.dynamodb.conditions import Key
+          dynamodb = boto3.resource('dynamodb')
+          table = dynamodb.Table('mood_tracker_moods')
+          def handler(event, context):
+            response = table.query(KeyConditionExpression=Key('userId').eq(event['userId']))
+            return sorted(response['Items'], key=lambda x: x['dateUpdated'], reverse=True)
+      Handler: index.handler
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.7
+  LambdaMoodsPut:
     Type: AWS::Lambda::Function
     Properties:
       Code:
