@@ -4,6 +4,12 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Name: MoodTrackerApi
+  ApiGatewayMoodResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: moods
+      RestApiId: !Ref ApiGateway
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
