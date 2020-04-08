@@ -1,23 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
   ApiGateway:
-    Type: AWS::ApiGatewayV2::Api
+    Type: AWS::ApiGateway::RestApi
     Properties:
       Name: MoodTrackerApi
-      ProtocolType: HTTP
-  ApiGatewayStage:
-    Type: AWS::ApiGatewayV2::Stage
-    DependsOn:
-      - ApiMoodsResource
-    Properties:
-      ApiId: !Ref ApiGateway
-      AutoDeploy: true
-      StageName: prod
-  ApiMoodsResource:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref ApiGateway
-      RouteKey: GET /moods
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
