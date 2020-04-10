@@ -74,6 +74,13 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
+  LambdaMoodsGetPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaMoodsGet.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
   LambdaMoodsPut:
     Type: AWS::Lambda::Function
     Properties:
@@ -88,3 +95,10 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
+  LambdaMoodsPutPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaMoodsPut.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
