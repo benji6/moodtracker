@@ -10,6 +10,20 @@ Resources:
       ParentId: !GetAtt ApiGateway.RootResourceId
       PathPart: moods
       RestApiId: !Ref ApiGateway
+  ApiGatewayMoodGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        PassthroughBehavior: NEVER
+        RequestTemplates:
+          application/json: '{"userId": "$context.authorizer.claims.sub"}'
+        Type: AWS
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayMoodResource
+      RestApiId: !Ref ApiGateway
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
