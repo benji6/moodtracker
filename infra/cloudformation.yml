@@ -4,24 +4,35 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Name: MoodTrackerApi
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApiGatewayMoodsGet
+    Properties:
+      RestApiId: !Ref ApiGateway
+      StageName: prod
   ApiGatewayMoodResource:
     Type: AWS::ApiGateway::Resource
     Properties:
       ParentId: !GetAtt ApiGateway.RootResourceId
       PathPart: moods
       RestApiId: !Ref ApiGateway
-  ApiGatewayMoodGet:
+  ApiGatewayMoodsGet:
     Type: AWS::ApiGateway::Method
     Properties:
       AuthorizationType: NONE
       HttpMethod: GET
       Integration:
         IntegrationHttpMethod: POST
-        PassthroughBehavior: NEVER
-        RequestTemplates:
-          application/json: '{"userId": "$context.authorizer.claims.sub"}'
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
+            StatusCode: 200
         Type: AWS
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations"
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
+      MethodResponses:
+        - ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          StatusCode: 200
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
   LambdaRole:
@@ -65,12 +76,11 @@ Resources:
       Code:
         ZipFile: |
           import boto3
-          from boto3.dynamodb.conditions import Key
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('mood_tracker_moods')
           def handler(event, context):
-            response = table.query(KeyConditionExpression=Key('userId').eq(event['userId']))
-            return sorted(response['Items'], key=lambda x: x['dateUpdated'], reverse=True)
+            response = table.scan()
+            return response['Items']
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
