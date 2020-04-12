@@ -23,16 +23,8 @@ Resources:
       HttpMethod: GET
       Integration:
         IntegrationHttpMethod: POST
-        IntegrationResponses:
-          - ResponseParameters:
-              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
-            StatusCode: 200
-        Type: AWS
+        Type: AWS_PROXY
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
-      MethodResponses:
-        - ResponseParameters:
-            method.response.header.Access-Control-Allow-Origin: true
-          StatusCode: 200
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
   LambdaRole:
@@ -76,11 +68,23 @@ Resources:
       Code:
         ZipFile: |
           import boto3
+          import json
+          headers = {'Access-Control-Allow-Origin': 'http://localhost:1234'}
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('mood_tracker_moods')
           def handler(event, context):
-            response = table.scan()
-            return response['Items']
+            try:
+              return {
+                'body': json.dumps(table.scan()['Items']),
+                'headers': headers,
+                'statusCode': 200,
+              }
+            except Exception as e:
+              return {
+                'body': str(e),
+                'headers': headers,
+                'statusCode': 500,
+              }
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
