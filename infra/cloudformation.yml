@@ -6,7 +6,9 @@ Resources:
       Name: MoodTrackerApi
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
-    DependsOn: ApiGatewayMoodsGet
+    DependsOn:
+      - ApiGatewayMoodsGet
+      - ApiGatewayMoodsPut
     Properties:
       RestApiId: !Ref ApiGateway
       StageName: prod
@@ -25,6 +27,17 @@ Resources:
         IntegrationHttpMethod: POST
         Type: AWS_PROXY
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
+      ResourceId: !Ref ApiGatewayMoodResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayMoodsPut:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: PUT
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPut.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
   LambdaRole:
@@ -74,14 +87,18 @@ Resources:
           table = dynamodb.Table('mood_tracker_moods')
           def handler(event, context):
             try:
+              items = table.scan()['Items']
+              for item in items:
+                item['mood'] = int(item['mood'])
               return {
-                'body': json.dumps(table.scan()['Items']),
+                'body': json.dumps(items),
                 'headers': headers,
                 'statusCode': 200,
               }
             except Exception as e:
+              print(e)
               return {
-                'body': str(e),
+                'body': 'Internal server error',
                 'headers': headers,
                 'statusCode': 500,
               }
@@ -101,11 +118,25 @@ Resources:
       Code:
         ZipFile: |
           import boto3
+          import json
+          headers = {'Access-Control-Allow-Origin': 'http://localhost:1234'}
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('mood_tracker_moods')
           def handler(event, context):
-            table.put_item(Item=event)
-            return event
+            try:
+              table.put_item(Item=json.loads(event['body']))
+              return {
+                'body': event['body'],
+                'headers': headers,
+                'statusCode': 200,
+              }
+            except Exception as e:
+              print(e)
+              return {
+                'body': 'Internal server error',
+                'headers': headers,
+                'statusCode': 500,
+              }
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
