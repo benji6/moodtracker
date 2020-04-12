@@ -64,15 +64,15 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: created_at
+        - AttributeName: createdAt
           AttributeType: S
-        - AttributeName: user_id
+        - AttributeName: userId
           AttributeType: S
       BillingMode: PAY_PER_REQUEST
       KeySchema:
-        - AttributeName: user_id
+        - AttributeName: userId
           KeyType: HASH
-        - AttributeName: created_at
+        - AttributeName: createdAt
           KeyType: RANGE
       TableName: mood_tracker_moods
   LambdaMoodsGet:
