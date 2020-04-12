@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheList",
+    "build:js": "CACHE_LIST=CACHE_LIST parcel build --no-source-maps src/index.html",
+    "build:robots": "touch dist/robots.txt",
+    "format": "prettier --write 'src/**/*'",
+    "icons": "node scripts/icons",
+    "start": "parcel src/index.html",
+    "test": "run-p test:*",
+    "test:audit": "yarn audit --level high || [ $? -lt 8 ]",
+    "test:format": "prettier --check 'src/**/*'",
+    "test:types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@reach/router": "^1.3.3",
+    "eri": "^17.2.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/reach__router": "^1.3.4",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^2.0.4",
+    "typescript": "^3.8.3"
+  }
+}

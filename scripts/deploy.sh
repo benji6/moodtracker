@@ -1,1 +1,1 @@
-aws cloudformation deploy --capabilities CAPABILITY_IAM --stack-name mood-tracker --template-file infra/cloudformation.yml
+aws cloudformation deploy --capabilities CAPABILITY_IAM --stack-name moodtracker --template-file infra/cloudformation.yml

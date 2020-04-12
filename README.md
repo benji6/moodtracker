@@ -1,4 +1,4 @@
-# Mood tracker
+# MoodTracker
 
 ## Testing
 
