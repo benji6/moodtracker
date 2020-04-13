@@ -126,7 +126,7 @@ Resources:
         ZipFile: |
           import boto3
           import json
-          headers = {'Access-Control-Allow-Origin': 'http://localhost:1234'}
+          headers = { 'Access-Control-Allow-Origin': 'http://localhost:1234' }
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
@@ -163,17 +163,13 @@ Resources:
         ZipFile: |
           import boto3
           import json
-          headers = {'Access-Control-Allow-Origin': 'http://localhost:1234'}
+          headers = { 'Access-Control-Allow-Origin': 'http://localhost:1234' }
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
             try:
               table.put_item(Item=json.loads(event['body']))
-              return {
-                'body': event['body'],
-                'headers': headers,
-                'statusCode': 200,
-              }
+              return { 'headers': headers, 'statusCode': 204 }
             except Exception as e:
               print(e)
               return {
