@@ -13,6 +13,15 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Name: MoodTrackerApi
+  ApiGatewayAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      IdentitySource: method.request.header.Authorization
+      Name: CognitoUserPoolAuthorizer
+      ProviderARNs:
+        - !GetAtt CognitoUserPool.Arn
+      RestApiId: !Ref ApiGateway
+      Type: COGNITO_USER_POOLS
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
