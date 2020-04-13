@@ -1,4 +1,13 @@
 AWSTemplateFormatVersion: 2010-09-09
+Outputs:
+  ApiGatewayDeployCommand:
+    Value: !Sub 'aws apigateway create-deployment --rest-api-id ${ApiGateway} --stage-name prod | cat'
+  ApiGatewayUrl:
+    Value: !Sub 'https://${ApiGateway}.execute-api.us-east-1.amazonaws.com/prod/moods'
+  CognitoClientId:
+    Value: !Ref CognitoUserPoolClient
+  CognitoUserPoolId:
+    Value: !Ref CognitoUserPool
 Resources:
   ApiGateway:
     Type: AWS::ApiGateway::RestApi
