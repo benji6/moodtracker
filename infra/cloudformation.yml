@@ -40,6 +40,31 @@ Resources:
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPut.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: verified_email
+            Priority: 1
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: false
+          RequireUppercase: true
+      UsernameAttributes:
+        - email
+      UsernameConfiguration:
+        CaseSensitive: false
+      UserPoolName: moodtracker
+      VerificationMessageTemplate:
+        DefaultEmailOption: CONFIRM_WITH_LINK
+        EmailMessageByLink: '{##Follow this link##} to complete your signup with Webnotes'
+        EmailSubjectByLink: MoodTracker email verification
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
