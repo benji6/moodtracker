@@ -65,6 +65,21 @@ Resources:
         DefaultEmailOption: CONFIRM_WITH_LINK
         EmailMessageByLink: '{##Follow this link##} to complete your signup with Webnotes'
         EmailSubjectByLink: MoodTracker email verification
+  DynamoMoodsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: createdAt
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: createdAt
+          KeyType: RANGE
+      TableName: moodtracker_moods
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -84,22 +99,7 @@ Resources:
             Statement:
               - Action: dynamodb:*
                 Effect: Allow
-                Resource: !GetAtt MoodsDynamoTable.Arn
-  MoodsDynamoTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: createdAt
-          AttributeType: S
-        - AttributeName: userId
-          AttributeType: S
-      BillingMode: PAY_PER_REQUEST
-      KeySchema:
-        - AttributeName: userId
-          KeyType: HASH
-        - AttributeName: createdAt
-          KeyType: RANGE
-      TableName: moodtracker_moods
+                Resource: !GetAtt DynamoMoodsTable.Arn
   LambdaMoodsGet:
     Type: AWS::Lambda::Function
     Properties:
