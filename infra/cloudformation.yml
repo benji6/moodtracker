@@ -168,7 +168,10 @@ Resources:
           table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
             try:
-              table.put_item(Item=json.loads(event['body']))
+              moods = json.loads(event['body'])
+              with table.batch_writer() as batch:
+                for mood in moods:
+                  batch.put_item(Item=mood)
               return { 'headers': headers, 'statusCode': 204 }
             except Exception as e:
               print(e)
