@@ -78,7 +78,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
-        - PolicyName: mood_tracker_lambda_policy
+        - PolicyName: moodtracker_lambda_policy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -99,7 +99,7 @@ Resources:
           KeyType: HASH
         - AttributeName: createdAt
           KeyType: RANGE
-      TableName: mood_tracker_moods
+      TableName: moodtracker_moods
   LambdaMoodsGet:
     Type: AWS::Lambda::Function
     Properties:
@@ -109,7 +109,7 @@ Resources:
           import json
           headers = {'Access-Control-Allow-Origin': 'http://localhost:1234'}
           dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table('mood_tracker_moods')
+          table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
             try:
               items = table.scan()['Items']
@@ -146,7 +146,7 @@ Resources:
           import json
           headers = {'Access-Control-Allow-Origin': 'http://localhost:1234'}
           dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table('mood_tracker_moods')
+          table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
             try:
               table.put_item(Item=json.loads(event['body']))
