@@ -79,6 +79,11 @@ Resources:
     Properties:
       PreventUserExistenceErrors: ENABLED
       UserPoolId: !Ref CognitoUserPool
+  CognitoUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: moodtracker
+      UserPoolId: !Ref CognitoUserPool
   DynamoMoodsTable:
     Type: AWS::DynamoDB::Table
     Properties:
