@@ -39,10 +39,14 @@ Resources:
   ApiGatewayMoodsGet:
     Type: AWS::ApiGateway::Method
     Properties:
-      AuthorizationType: NONE
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
       HttpMethod: GET
       Integration:
         IntegrationHttpMethod: POST
+        PassthroughBehavior: NEVER
+        RequestTemplates:
+          application/json: '{ "userId": "$context.authorizer.claims.sub" }'
         Type: AWS_PROXY
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
@@ -50,10 +54,14 @@ Resources:
   ApiGatewayMoodsPut:
     Type: AWS::ApiGateway::Method
     Properties:
-      AuthorizationType: NONE
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
       HttpMethod: PUT
       Integration:
         IntegrationHttpMethod: POST
+        PassthroughBehavior: NEVER
+        RequestTemplates:
+          application/json: '{ "userId": "$context.authorizer.claims.sub" }'
         Type: AWS_PROXY
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPut.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
@@ -135,12 +143,14 @@ Resources:
         ZipFile: |
           import boto3
           import json
+          from boto3.dynamodb.conditions import Key
           headers = { 'Access-Control-Allow-Origin': 'http://localhost:1234' }
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
             try:
-              items = table.scan()['Items']
+              response = table.query(KeyConditionExpression=Key('userId').eq(event['userId']))
+              items = response['Items']
               for item in items:
                 item['mood'] = int(item['mood'])
               return {
@@ -155,6 +165,7 @@ Resources:
                 'headers': headers,
                 'statusCode': 500,
               }
+      FunctionName: LambdaMoodsGet
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
@@ -178,6 +189,9 @@ Resources:
           def handler(event, context):
             try:
               moods = json.loads(event['body'])
+              if any(mood['userId'] != event['userId'] for mood in moods):
+                print(f'403: userId={userId}, moods={moods}')
+                return { 'headers': headers, 'statusCode': 403 }
               with table.batch_writer() as batch:
                 for mood in moods:
                   batch.put_item(Item=mood)
@@ -189,6 +203,7 @@ Resources:
                 'headers': headers,
                 'statusCode': 500,
               }
+      FunctionName: LambdaMoodsPut
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
