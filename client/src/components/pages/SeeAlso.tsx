@@ -1,5 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
-import { Paper, ShareButton } from "eri";
+import { Paper } from "eri";
 import * as React from "react";
 
 export default function SeeAlso(_: RouteComponentProps) {
@@ -30,7 +30,6 @@ export default function SeeAlso(_: RouteComponentProps) {
             browser you can use it across all your devices!
           </li>
         </ul>
-        <ShareButton />
       </Paper>
     </Paper.Group>
   );
