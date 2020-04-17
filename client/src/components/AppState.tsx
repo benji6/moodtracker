@@ -8,7 +8,9 @@ type FluxStandardAction<
   ? { type: Type }
   : { payload: Payload; type: Type };
 
-type Action = FluxStandardAction<"moods/add", Mood>;
+type Action =
+  | FluxStandardAction<"moods/add", Mood>
+  | FluxStandardAction<"moods/set", Mood[]>;
 
 interface State {
   moods: Mood[];
@@ -25,6 +27,8 @@ const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "moods/add":
       return { ...state, moods: [...state.moods, action.payload] };
+    case "moods/set":
+      return { ...state, moods: action.payload };
   }
 };
 

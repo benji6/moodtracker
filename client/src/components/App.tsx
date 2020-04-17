@@ -3,8 +3,10 @@ import { Header, Menu as EriMenu, Main } from "eri";
 import * as React from "react";
 import Menu from "./Menu";
 import Router from "./Router";
+import useMoods from "./hooks/useMoods";
 
 export default function App() {
+  useMoods();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
