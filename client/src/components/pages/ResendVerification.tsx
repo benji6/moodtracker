@@ -4,6 +4,7 @@ import { RouteComponentProps, navigate } from "@reach/router";
 import * as React from "react";
 import { userPool } from "../../cognito";
 import { networkErrorMessage } from "../../constants";
+import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 const resendConfirmation = ({ email }: { email: string }) =>
   new Promise((resolve, reject) => {
@@ -17,6 +18,7 @@ const resendConfirmation = ({ email }: { email: string }) =>
   });
 
 export default function ResendVerification(_: RouteComponentProps) {
+  useRedirectAuthed();
   return (
     <ResendVerificationPage
       onSubmit={async ({ email, setSubmitError }) => {

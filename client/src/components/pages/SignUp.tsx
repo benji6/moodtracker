@@ -4,6 +4,7 @@ import { RouteComponentProps, navigate } from "@reach/router";
 import * as React from "react";
 import { userPool } from "../../cognito";
 import { networkErrorMessage } from "../../constants";
+import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 const signUp = ({
   attributeList,
@@ -25,6 +26,7 @@ const signUp = ({
   });
 
 export default function SignUp(_: RouteComponentProps) {
+  useRedirectAuthed();
   return (
     <SignUpPage
       onSubmit={async ({ email, password, setSubmitError }) => {

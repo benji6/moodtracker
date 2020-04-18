@@ -9,6 +9,7 @@ import * as React from "react";
 import { userPool } from "../../cognito";
 import { networkErrorMessage } from "../../constants";
 import { DispatchContext } from "../AppState";
+import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 const authenticate = ({
   email,
@@ -36,8 +37,8 @@ const authenticate = ({
 };
 
 export default function SignIn({ navigate }: RouteComponentProps) {
+  useRedirectAuthed();
   const dispatch = React.useContext(DispatchContext);
-
   return (
     <SignInPage
       onSubmit={async ({ email, password, setSubmitError }) => {
