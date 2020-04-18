@@ -11,6 +11,7 @@ type FluxStandardAction<
 type Action =
   | FluxStandardAction<"moods/add", Mood>
   | FluxStandardAction<"moods/set", Mood[]>
+  | FluxStandardAction<"user/clearEmail">
   | FluxStandardAction<"user/setEmail", string>;
 
 interface State {
@@ -31,6 +32,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, moods: [...state.moods, action.payload] };
     case "moods/set":
       return { ...state, moods: action.payload };
+    case "user/clearEmail":
+      return { ...state, userEmail: undefined };
     case "user/setEmail":
       return { ...state, userEmail: action.payload };
   }
