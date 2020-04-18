@@ -89,7 +89,7 @@ Resources:
       UserPoolName: moodtracker
       VerificationMessageTemplate:
         DefaultEmailOption: CONFIRM_WITH_LINK
-        EmailMessageByLink: '{##Follow this link##} to complete your signup with Webnotes'
+        EmailMessageByLink: '{##Follow this link##} to complete your signup with MoodTracker'
         EmailSubjectByLink: MoodTracker email verification
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
