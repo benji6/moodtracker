@@ -6,6 +6,7 @@ import AddMood from "./pages/AddMood";
 import Home from "./pages/Home";
 import ResendVerification from "./pages/ResendVerification";
 import SeeAlso from "./pages/SeeAlso";
+import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Verify from "./pages/Verify";
 
@@ -18,6 +19,7 @@ export default function Router() {
       <AddMood path="add" />
       <ResendVerification path="resend-verification" />
       <SeeAlso path="see-also" />
+      <SignIn path="sign-in" />
       <SignUp path="sign-up" />
       <Verify path="verify" />
     </ReachRouter>

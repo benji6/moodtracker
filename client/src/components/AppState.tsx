@@ -10,13 +10,15 @@ type FluxStandardAction<
 
 type Action =
   | FluxStandardAction<"moods/add", Mood>
-  | FluxStandardAction<"moods/set", Mood[]>;
+  | FluxStandardAction<"moods/set", Mood[]>
+  | FluxStandardAction<"user/setEmail", string>;
 
 interface State {
   moods: Mood[];
+  userEmail: string | undefined;
 }
 
-const initialState: State = { moods: [] };
+const initialState: State = { moods: [], userEmail: undefined };
 
 export const DispatchContext = React.createContext<React.Dispatch<Action>>(
   () => {}
@@ -29,6 +31,8 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, moods: [...state.moods, action.payload] };
     case "moods/set":
       return { ...state, moods: action.payload };
+    case "user/setEmail":
+      return { ...state, userEmail: action.payload };
   }
 };
 
