@@ -3,7 +3,7 @@ Outputs:
   ApiGatewayDeployCommand:
     Value: !Sub 'aws apigateway create-deployment --rest-api-id ${ApiGateway} --stage-name prod | cat'
   ApiGatewayUrl:
-    Value: !Sub 'https://${ApiGateway}.execute-api.us-east-1.amazonaws.com/prod/moods'
+    Value: !Sub 'https://${ApiGateway}.execute-api.us-east-1.amazonaws.com/prod'
   CognitoClientId:
     Value: !Ref CognitoUserPoolClient
   CognitoUserPoolId:
