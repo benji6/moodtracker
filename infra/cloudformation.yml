@@ -44,9 +44,6 @@ Resources:
       HttpMethod: GET
       Integration:
         IntegrationHttpMethod: POST
-        PassthroughBehavior: NEVER
-        RequestTemplates:
-          application/json: '{ "userId": "$context.authorizer.claims.sub" }'
         Type: AWS_PROXY
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
@@ -59,9 +56,6 @@ Resources:
       HttpMethod: PUT
       Integration:
         IntegrationHttpMethod: POST
-        PassthroughBehavior: NEVER
-        RequestTemplates:
-          application/json: '{ "userId": "$context.authorizer.claims.sub" }'
         Type: AWS_PROXY
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPut.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
@@ -148,13 +142,15 @@ Resources:
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
+            user_id = event['requestContext']['authorizer']['claims']['sub']
             try:
-              response = table.query(KeyConditionExpression=Key('userId').eq(event['userId']))
-              items = response['Items']
-              for item in items:
-                item['mood'] = int(item['mood'])
+              response = table.query(KeyConditionExpression=Key('userId').eq(user_id))
+              moods = response['Items']
+              for mood in moods:
+                del mood['userId']
+                mood['mood'] = int(mood['mood'])
               return {
-                'body': json.dumps(items),
+                'body': json.dumps(moods),
                 'headers': headers,
                 'statusCode': 200,
               }
@@ -187,13 +183,12 @@ Resources:
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('moodtracker_moods')
           def handler(event, context):
+            user_id = event['requestContext']['authorizer']['claims']['sub']
             try:
               moods = json.loads(event['body'])
-              if any(mood['userId'] != event['userId'] for mood in moods):
-                print(f'403: userId={userId}, moods={moods}')
-                return { 'headers': headers, 'statusCode': 403 }
               with table.batch_writer() as batch:
                 for mood in moods:
+                  mood['userId'] = user_id
                   batch.put_item(Item=mood)
               return { 'headers': headers, 'statusCode': 204 }
             except Exception as e:
