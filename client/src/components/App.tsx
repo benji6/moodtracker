@@ -4,8 +4,10 @@ import * as React from "react";
 import Menu from "./Menu";
 import Router from "./Router";
 import useMoods from "./hooks/useMoods";
+import useUser from "./hooks/useUser";
 
 export default function App() {
+  useUser();
   useMoods();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
