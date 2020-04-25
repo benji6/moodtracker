@@ -1,6 +1,16 @@
 set -euo pipefail
 
-aws cloudformation validate-template --template-body file://infra/cloudformation.yml | cat &
-pushd client && yarn test && popd
+handle_error() {
+  echo "💣 Error on line $1, exit code $2 💣"
+  exit $2
+}
 
-wait
+trap 'handle_error $LINENO $?' ERR
+
+aws cloudformation validate-template --template-body file://infra/cloudformation.yml | cat
+
+pushd client > /dev/null
+yarn test
+popd > /dev/null
+
+echo "🍄 All tests pass! 🍄"
