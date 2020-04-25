@@ -11,15 +11,29 @@ export default function useMoods() {
     () =>
       void (async () => {
         try {
-          const storedMoods = await storage.getMoods(undefined);
-          if (!storedMoods) return;
-          dispatch({ type: "moods/set", payload: storedMoods });
+          await Promise.all([
+            storage.getMoods(undefined).then((moods) => {
+              if (moods) dispatch({ type: "moods/set", payload: moods });
+            }),
+            storage.getCreatedMoodIds(undefined).then((createdMoodIds) => {
+              if (createdMoodIds)
+                dispatch({
+                  type: "createdMoodIds/set",
+                  payload: createdMoodIds,
+                });
+            }),
+          ]);
         } finally {
           setIsLoadedFromStorage(true);
         }
       })(),
     []
   );
+
+  React.useEffect(() => {
+    if (!isLoadedFromStorage) return;
+    storage.setCreatedMoodIds(undefined, state.createdMoodsIds);
+  }, [isLoadedFromStorage, state.createdMoodsIds]);
 
   React.useEffect(() => {
     if (!isLoadedFromStorage) return;
