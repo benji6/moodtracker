@@ -25,6 +25,7 @@ Resources:
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
+      - ApiGatewayMoodsDelete
       - ApiGatewayMoodsGet
       - ApiGatewayMoodsOptions
       - ApiGatewayMoodsPut
@@ -49,6 +50,18 @@ Resources:
         Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
+  ApiGatewayMoodsDelete:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: DELETE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsDelete.Arn}/invocations'
+      ResourceId: !Ref ApiGatewayMoodResource
+      RestApiId: !Ref ApiGateway
   ApiGatewayMoodsOptions:
     Type: AWS::ApiGateway::Method
     Properties:
@@ -59,7 +72,7 @@ Resources:
           - StatusCode: 200
             ResponseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,PUT,OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,PUT,OPTIONS'"
               method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
         RequestTemplates:
           application/json: '{"statusCode": 200}'
@@ -154,6 +167,42 @@ Resources:
               - Action: dynamodb:*
                 Effect: Allow
                 Resource: !GetAtt DynamoMoodsTable.Arn
+  LambdaMoodsDelete:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          headers = { 'Access-Control-Allow-Origin': 'http://localhost:1234' }
+          dynamodb = boto3.resource('dynamodb')
+          table = dynamodb.Table('moodtracker_moods')
+          def handler(event, context):
+            user_id = event['requestContext']['authorizer']['claims']['sub']
+            try:
+              created_ats = json.loads(event['body'])
+              with table.batch_writer() as batch:
+                for created_at in created_ats:
+                  batch.delete_item(Key={'createdAt': created_at, 'userId': user_id})
+              return { 'headers': headers, 'statusCode': 204 }
+            except Exception as e:
+              print(e)
+              return {
+                'body': 'Internal server error',
+                'headers': headers,
+                'statusCode': 500,
+              }
+      FunctionName: MoodTrackerMoodsDelete
+      Handler: index.handler
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.7
+  LambdaMoodsDeletePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaMoodsDelete.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
   LambdaMoodsGet:
     Type: AWS::Lambda::Function
     Properties:
@@ -185,7 +234,7 @@ Resources:
                 'headers': headers,
                 'statusCode': 500,
               }
-      FunctionName: LambdaMoodsGet
+      FunctionName: MoodTrackerMoodsGet
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
@@ -222,7 +271,7 @@ Resources:
                 'headers': headers,
                 'statusCode': 500,
               }
-      FunctionName: LambdaMoodsPut
+      FunctionName: MoodTrackerMoodsPut
       Handler: index.handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.7
