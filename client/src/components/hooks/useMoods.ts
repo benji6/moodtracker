@@ -1,6 +1,10 @@
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 import storage from "../../storage";
+import useInterval from "./useInterval";
+import { putMoods } from "../../api";
+
+const SYNC_INTERVAL = 6e4;
 
 export default function useMoods() {
   const dispatch = React.useContext(DispatchContext);
@@ -39,4 +43,32 @@ export default function useMoods() {
     if (!isLoadedFromStorage) return;
     storage.setMoods(undefined, state.moods);
   }, [isLoadedFromStorage, state.moods]);
+
+  const syncToServer = () =>
+    void (async () => {
+      if (
+        !isLoadedFromStorage ||
+        !state.userEmail ||
+        !state.createdMoodsIds.length
+      )
+        return;
+      const moods = state.moods.filter((mood) =>
+        state.createdMoodsIds.includes(mood.createdAt)
+      );
+      dispatch({ type: "syncToServer/start" });
+      try {
+        await putMoods(moods);
+        dispatch({ type: "syncToServer/success" });
+      } catch {
+        dispatch({ type: "syncToServer/error" });
+      }
+    })();
+
+  React.useEffect(syncToServer, [
+    isLoadedFromStorage,
+    state.createdMoodsIds,
+    state.moods,
+    state.userEmail,
+  ]);
+  useInterval(syncToServer, SYNC_INTERVAL);
 }

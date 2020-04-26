@@ -2,7 +2,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["dom", "es2015"],
+    "lib": ["dom", "es2016"],
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "rootDir": "src",
