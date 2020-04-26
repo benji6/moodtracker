@@ -2,6 +2,7 @@ import { Menu as EriMenu, Button } from "eri";
 import * as React from "react";
 import { StateContext } from "../AppState";
 import SignOutDialog from "./SignOutDialog";
+import SyncState from "./SyncState";
 
 interface Props {
   open: boolean;
@@ -61,6 +62,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
             See also
           </EriMenu.Link>
         </EriMenu.List>
+        {userEmail && <SyncState />}
       </EriMenu>
       <SignOutDialog onClose={handleDialogClose} open={isDialogOpen} />
     </>
