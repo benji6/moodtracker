@@ -9,10 +9,10 @@ const getAuthorizationHeader = async () => {
   return `Bearer ${idToken.getJwtToken()}`;
 };
 
-export const deleteMoods = async (createdAts: string[]): Promise<void> => {
+export const deleteMoods = async (ids: string[]): Promise<void> => {
   const Authorization = await getAuthorizationHeader();
   const response = await fetch(moodsUrl, {
-    body: JSON.stringify(createdAts),
+    body: JSON.stringify(ids),
     headers: { Authorization, "Content-Type": "application/json" },
     method: "DELETE",
   });

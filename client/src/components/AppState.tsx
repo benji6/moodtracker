@@ -72,6 +72,9 @@ const reducer = (state: State, action: Action): State => {
     case "moods/delete":
       return {
         ...state,
+        createdMoodsIds: state.createdMoodsIds.filter(
+          (id) => id !== action.payload
+        ),
         deletedMoodsIds: [...state.deletedMoodsIds, action.payload],
         moods: state.moods.filter((mood) => mood.createdAt !== action.payload),
       };
