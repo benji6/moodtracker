@@ -1,5 +1,5 @@
 import { getIdToken } from "./cognito";
-import { Mood } from "./types";
+import { Mood, Patch } from "./types";
 
 const moodsUrl =
   "https://0q11376u8l.execute-api.us-east-1.amazonaws.com/prod/moods";
@@ -17,18 +17,6 @@ export const getMoods = async (): Promise<Mood[]> => {
   if (!response.ok) throw Error(String(response.status));
   return response.json();
 };
-
-type Patch =
-  | {
-      delete: string[];
-    }
-  | {
-      put: Mood[];
-    }
-  | {
-      put: Mood[];
-      delete: string[];
-    };
 
 export const patchMoods = async (patch: Patch): Promise<void> => {
   const Authorization = await getAuthorizationHeader();

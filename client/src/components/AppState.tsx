@@ -17,12 +17,9 @@ type Action =
   | FluxStandardAction<"syncFromServer/error">
   | FluxStandardAction<"syncFromServer/start">
   | FluxStandardAction<"syncFromServer/success">
-  | FluxStandardAction<"syncCreatedToServer/error">
-  | FluxStandardAction<"syncCreatedToServer/start">
-  | FluxStandardAction<"syncCreatedToServer/success">
-  | FluxStandardAction<"syncDeletedToServer/error">
-  | FluxStandardAction<"syncDeletedToServer/start">
-  | FluxStandardAction<"syncDeletedToServer/success">
+  | FluxStandardAction<"syncToServer/error">
+  | FluxStandardAction<"syncToServer/start">
+  | FluxStandardAction<"syncToServer/success">
   | FluxStandardAction<"user/clearEmail">
   | FluxStandardAction<"user/setEmail", string>;
 
@@ -30,12 +27,10 @@ interface State {
   createdMoodsIds: string[];
   deletedMoodsIds: string[];
   isSyncingFromServer: boolean;
-  isSyncingCreatedToServer: boolean;
-  isSyncingDeletedToServer: boolean;
+  isSyncingToServer: boolean;
   moods: Mood[];
   syncFromServerError: boolean;
-  syncCreatedToServerError: boolean;
-  syncDeletedToServerError: boolean;
+  syncToServerError: boolean;
   userEmail: string | undefined;
 }
 
@@ -43,12 +38,10 @@ const initialState: State = {
   createdMoodsIds: [],
   deletedMoodsIds: [],
   isSyncingFromServer: false,
-  isSyncingCreatedToServer: false,
-  isSyncingDeletedToServer: false,
+  isSyncingToServer: false,
   moods: [],
   syncFromServerError: false,
-  syncCreatedToServerError: false,
-  syncDeletedToServerError: false,
+  syncToServerError: false,
   userEmail: undefined,
 };
 
@@ -80,43 +73,25 @@ const reducer = (state: State, action: Action): State => {
       };
     case "moods/set":
       return { ...state, moods: action.payload };
-    case "syncCreatedToServer/error":
+    case "syncToServer/error":
       return {
         ...state,
-        isSyncingCreatedToServer: false,
-        syncCreatedToServerError: true,
+        isSyncingToServer: false,
+        syncToServerError: true,
       };
-    case "syncCreatedToServer/start":
+    case "syncToServer/start":
       return {
         ...state,
-        isSyncingCreatedToServer: true,
-        syncCreatedToServerError: false,
+        isSyncingToServer: true,
+        syncToServerError: false,
       };
-    case "syncCreatedToServer/success":
+    case "syncToServer/success":
       return {
         ...state,
         createdMoodsIds: [],
-        isSyncingCreatedToServer: false,
-        syncCreatedToServerError: false,
-      };
-    case "syncDeletedToServer/error":
-      return {
-        ...state,
-        isSyncingDeletedToServer: false,
-        syncDeletedToServerError: true,
-      };
-    case "syncDeletedToServer/start":
-      return {
-        ...state,
-        isSyncingDeletedToServer: true,
-        syncDeletedToServerError: false,
-      };
-    case "syncDeletedToServer/success":
-      return {
-        ...state,
         deletedMoodsIds: [],
-        isSyncingDeletedToServer: false,
-        syncDeletedToServerError: false,
+        isSyncingToServer: false,
+        syncToServerError: false,
       };
     case "syncFromServer/error":
       return {

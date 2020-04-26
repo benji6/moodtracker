@@ -3,6 +3,7 @@ import { DispatchContext, StateContext } from "../AppState";
 import storage from "../../storage";
 import useInterval from "./useInterval";
 import { getMoods, patchMoods } from "../../api";
+import { Patch } from "../../types";
 
 const SYNC_INTERVAL = 6e4;
 
@@ -69,33 +70,29 @@ export default function useMoods() {
     })();
 
   const syncToServer = async (): Promise<void> => {
-    if (!isLoadedFromStorage || !state.userEmail) return;
-    const syncCreatedToServer = async () => {
-      if (!state.createdMoodsIds.length || state.isSyncingCreatedToServer)
-        return;
-      const newMoods = state.moods.filter((mood) =>
+    if (
+      !isLoadedFromStorage ||
+      !state.userEmail ||
+      state.isSyncingToServer ||
+      !(state.deletedMoodsIds.length || state.createdMoodsIds.length)
+    )
+      return;
+    let patch: Patch = {};
+    if (state.createdMoodsIds.length) {
+      patch.put = state.moods.filter((mood) =>
         state.createdMoodsIds.includes(mood.createdAt)
       );
-      dispatch({ type: "syncCreatedToServer/start" });
-      try {
-        await patchMoods({ put: newMoods });
-        dispatch({ type: "syncCreatedToServer/success" });
-      } catch {
-        dispatch({ type: "syncCreatedToServer/error" });
-      }
-    };
-    const syncDeletedToServer = async () => {
-      if (!state.deletedMoodsIds.length || state.isSyncingDeletedToServer)
-        return;
-      dispatch({ type: "syncDeletedToServer/start" });
-      try {
-        await patchMoods({ delete: state.deletedMoodsIds });
-        dispatch({ type: "syncDeletedToServer/success" });
-      } catch {
-        dispatch({ type: "syncDeletedToServer/error" });
-      }
-    };
-    await Promise.all([syncCreatedToServer(), syncDeletedToServer()]);
+    }
+    if (state.deletedMoodsIds.length) {
+      patch.delete = state.deletedMoodsIds;
+    }
+    dispatch({ type: "syncToServer/start" });
+    try {
+      await patchMoods(patch);
+      dispatch({ type: "syncToServer/success" });
+    } catch {
+      dispatch({ type: "syncToServer/error" });
+    }
   };
 
   const syncBidirectionally = () =>

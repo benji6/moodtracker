@@ -5,17 +5,10 @@ import { StateContext } from "../AppState";
 export default function SyncState() {
   const {
     isSyncingFromServer,
-    isSyncingCreatedToServer,
-    isSyncingDeletedToServer,
+    isSyncingToServer,
     syncFromServerError,
-    syncCreatedToServerError,
-    syncDeletedToServerError,
+    syncToServerError,
   } = React.useContext(StateContext);
-
-  const isSyncingToServer =
-    isSyncingCreatedToServer || isSyncingDeletedToServer;
-  const syncToServerError =
-    syncCreatedToServerError || syncDeletedToServerError;
 
   return (
     <>
