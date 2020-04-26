@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Outputs:
   ApiGatewayDeployCommand:
-    Value: !Sub 'aws apigateway create-deployment --rest-api-id ${ApiGateway} --stage-name prod | cat'
+    Value: !Sub "aws apigateway create-deployment --rest-api-id ${ApiGateway} --stage-name prod | cat"
   ApiGatewayUrl:
-    Value: !Sub 'https://${ApiGateway}.execute-api.us-east-1.amazonaws.com/prod'
+    Value: !Sub "https://${ApiGateway}.execute-api.us-east-1.amazonaws.com/prod"
   CognitoClientId:
     Value: !Ref CognitoUserPoolClient
   CognitoUserPoolId:
@@ -47,7 +47,7 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: AWS_PROXY
-        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations'
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations"
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
   ApiGatewayMoodsDelete:
@@ -59,7 +59,7 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: AWS_PROXY
-        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsDelete.Arn}/invocations'
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsDelete.Arn}/invocations"
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
   ApiGatewayMoodsOptions:
@@ -94,7 +94,7 @@ Resources:
       Integration:
         IntegrationHttpMethod: POST
         Type: AWS_PROXY
-        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPut.Arn}/invocations'
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPut.Arn}/invocations"
       ResourceId: !Ref ApiGatewayMoodResource
       RestApiId: !Ref ApiGateway
   CognitoUserPool:
@@ -120,7 +120,7 @@ Resources:
       UserPoolName: moodtracker
       VerificationMessageTemplate:
         DefaultEmailOption: CONFIRM_WITH_LINK
-        EmailMessageByLink: '{##Follow this link##} to complete your signup with MoodTracker'
+        EmailMessageByLink: "{##Follow this link##} to complete your signup with MoodTracker"
         EmailSubjectByLink: MoodTracker email verification
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
@@ -202,7 +202,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt LambdaMoodsDelete.Arn
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
   LambdaMoodsGet:
     Type: AWS::Lambda::Function
     Properties:
@@ -244,7 +244,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt LambdaMoodsGet.Arn
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
   LambdaMoodsPut:
     Type: AWS::Lambda::Function
     Properties:
@@ -281,4 +281,4 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt LambdaMoodsPut.Arn
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*'
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
