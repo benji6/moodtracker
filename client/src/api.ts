@@ -9,16 +9,6 @@ const getAuthorizationHeader = async () => {
   return `Bearer ${idToken.getJwtToken()}`;
 };
 
-export const deleteMoods = async (ids: string[]): Promise<void> => {
-  const Authorization = await getAuthorizationHeader();
-  const response = await fetch(moodsUrl, {
-    body: JSON.stringify(ids),
-    headers: { Authorization, "Content-Type": "application/json" },
-    method: "DELETE",
-  });
-  if (!response.ok) throw Error(String(response.status));
-};
-
 export const getMoods = async (): Promise<Mood[]> => {
   const Authorization = await getAuthorizationHeader();
   const response = await fetch(moodsUrl, {
@@ -28,12 +18,24 @@ export const getMoods = async (): Promise<Mood[]> => {
   return response.json();
 };
 
-export const putMoods = async (moods: Mood[]): Promise<void> => {
+type Patch =
+  | {
+      delete: string[];
+    }
+  | {
+      put: Mood[];
+    }
+  | {
+      put: Mood[];
+      delete: string[];
+    };
+
+export const patchMoods = async (patch: Patch): Promise<void> => {
   const Authorization = await getAuthorizationHeader();
   const response = await fetch(moodsUrl, {
-    body: JSON.stringify(moods),
+    body: JSON.stringify(patch),
     headers: { Authorization, "Content-Type": "application/json" },
-    method: "PUT",
+    method: "PATCH",
   });
   if (!response.ok) throw Error(String(response.status));
 };

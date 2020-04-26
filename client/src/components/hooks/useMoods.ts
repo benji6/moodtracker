@@ -2,7 +2,7 @@ import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 import storage from "../../storage";
 import useInterval from "./useInterval";
-import { deleteMoods, getMoods, putMoods } from "../../api";
+import { getMoods, patchMoods } from "../../api";
 
 const SYNC_INTERVAL = 6e4;
 
@@ -78,7 +78,7 @@ export default function useMoods() {
       );
       dispatch({ type: "syncCreatedToServer/start" });
       try {
-        await putMoods(newMoods);
+        await patchMoods({ put: newMoods });
         dispatch({ type: "syncCreatedToServer/success" });
       } catch {
         dispatch({ type: "syncCreatedToServer/error" });
@@ -89,7 +89,7 @@ export default function useMoods() {
         return;
       dispatch({ type: "syncDeletedToServer/start" });
       try {
-        await deleteMoods(state.deletedMoodsIds);
+        await patchMoods({ delete: state.deletedMoodsIds });
         dispatch({ type: "syncDeletedToServer/success" });
       } catch {
         dispatch({ type: "syncDeletedToServer/error" });
