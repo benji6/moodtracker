@@ -3,7 +3,7 @@ import { DispatchContext, StateContext } from "../AppState";
 import storage from "../../storage";
 import useInterval from "./useInterval";
 import { getMoods, patchMoods } from "../../api";
-import { Patch } from "../../types";
+import { NormalizedMoods, Patch } from "../../types";
 
 const SYNC_INTERVAL = 6e4;
 
@@ -62,7 +62,12 @@ export default function useMoods() {
       dispatch({ type: "syncFromServer/start" });
       try {
         const serverMoods = await getMoods();
-        dispatch({ type: "moods/set", payload: serverMoods });
+        const byId: NormalizedMoods["byId"] = {};
+        for (const mood of serverMoods) byId[mood.createdAt] = mood;
+        dispatch({
+          type: "moods/set",
+          payload: { allIds: serverMoods.map((mood) => mood.createdAt), byId },
+        });
         dispatch({ type: "syncFromServer/success" });
       } catch {
         dispatch({ type: "syncFromServer/error" });
@@ -78,14 +83,9 @@ export default function useMoods() {
     )
       return;
     let patch: Patch = {};
-    if (state.createdMoodsIds.length) {
-      patch.put = state.moods.filter((mood) =>
-        state.createdMoodsIds.includes(mood.createdAt)
-      );
-    }
-    if (state.deletedMoodsIds.length) {
-      patch.delete = state.deletedMoodsIds;
-    }
+    if (state.createdMoodsIds.length)
+      patch.put = state.createdMoodsIds.map((id) => state.moods.byId[id]);
+    if (state.deletedMoodsIds.length) patch.delete = state.deletedMoodsIds;
     dispatch({ type: "syncToServer/start" });
     try {
       await patchMoods(patch);

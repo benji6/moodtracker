@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Mood } from "../types";
+import { Mood, NormalizedMoods } from "../types";
 
 type FluxStandardAction<
   Type extends string,
@@ -13,7 +13,7 @@ type Action =
   | FluxStandardAction<"deletedMoodIds/set", string[]>
   | FluxStandardAction<"moods/create", Mood>
   | FluxStandardAction<"moods/delete", string>
-  | FluxStandardAction<"moods/set", Mood[]>
+  | FluxStandardAction<"moods/set", NormalizedMoods>
   | FluxStandardAction<"syncFromServer/error">
   | FluxStandardAction<"syncFromServer/start">
   | FluxStandardAction<"syncFromServer/success">
@@ -28,7 +28,7 @@ interface State {
   deletedMoodsIds: string[];
   isSyncingFromServer: boolean;
   isSyncingToServer: boolean;
-  moods: Mood[];
+  moods: NormalizedMoods;
   syncFromServerError: boolean;
   syncToServerError: boolean;
   userEmail: string | undefined;
@@ -39,7 +39,7 @@ const initialState: State = {
   deletedMoodsIds: [],
   isSyncingFromServer: false,
   isSyncingToServer: false,
-  moods: [],
+  moods: { allIds: [], byId: {} },
   syncFromServerError: false,
   syncToServerError: false,
   userEmail: undefined,
@@ -60,17 +60,28 @@ const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         createdMoodsIds: [...state.createdMoodsIds, action.payload.createdAt],
-        moods: [...state.moods, action.payload],
+        moods: {
+          allIds: [...state.moods.allIds, action.payload.createdAt],
+          byId: {
+            ...state.moods.byId,
+            [action.payload.createdAt]: action.payload,
+          },
+        },
       };
-    case "moods/delete":
+    case "moods/delete": {
+      const { [action.payload]: _, ...newById } = state.moods.byId;
       return {
         ...state,
         createdMoodsIds: state.createdMoodsIds.filter(
           (id) => id !== action.payload
         ),
         deletedMoodsIds: [...state.deletedMoodsIds, action.payload],
-        moods: state.moods.filter((mood) => mood.createdAt !== action.payload),
+        moods: {
+          allIds: state.moods.allIds.filter((id) => id !== action.payload),
+          byId: newById,
+        },
       };
+    }
     case "moods/set":
       return { ...state, moods: action.payload };
     case "syncToServer/error":

@@ -10,22 +10,28 @@ export default function Home({ navigate }: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>Moods</h2>
-        {state.moods.length ? (
+        {state.moods.allIds.length ? (
           <ul>
-            {state.moods.map((mood) => (
-              <li key={mood.createdAt}>
-                {new Date(mood.createdAt).toLocaleString()}: {mood.mood}{" "}
-                <Button
-                  danger
-                  onClick={() =>
-                    dispatch({ type: "moods/delete", payload: mood.createdAt })
-                  }
-                  variant="secondary"
-                >
-                  Delete
-                </Button>
-              </li>
-            ))}
+            {state.moods.allIds.map((id) => {
+              const mood = state.moods.byId[id];
+              return (
+                <li key={id}>
+                  {new Date(id).toLocaleString()}: {mood.mood}{" "}
+                  <Button
+                    danger
+                    onClick={() =>
+                      dispatch({
+                        type: "moods/delete",
+                        payload: id,
+                      })
+                    }
+                    variant="secondary"
+                  >
+                    Delete
+                  </Button>
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <>
