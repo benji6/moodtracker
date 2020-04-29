@@ -55,54 +55,76 @@ export default function useMoods() {
     storage.setMoods(undefined, state.moods);
   }, [isLoadedFromStorage, state.moods]);
 
-  const syncFromServer = () =>
-    void (async () => {
-      if (!isLoadedFromStorage || !state.userEmail || state.isSyncingFromServer)
-        return;
-      dispatch({ type: "syncFromServer/start" });
-      try {
-        const serverMoods = await getMoods();
-        const byId: NormalizedMoods["byId"] = {};
-        for (const mood of serverMoods) byId[mood.createdAt] = mood;
-        dispatch({
-          type: "moods/set",
-          payload: { allIds: serverMoods.map((mood) => mood.createdAt), byId },
-        });
-        dispatch({ type: "syncFromServer/success" });
-      } catch {
-        dispatch({ type: "syncFromServer/error" });
-      }
-    })();
-
-  const syncToServer = async (): Promise<void> => {
-    if (
-      !isLoadedFromStorage ||
-      !state.userEmail ||
-      state.isSyncingToServer ||
-      !(state.deletedMoodsIds.length || state.createdMoodsIds.length)
-    )
+  const syncFromServer = async (): Promise<void> => {
+    if (!isLoadedFromStorage || !state.userEmail || state.isSyncingFromServer)
       return;
-    let patch: Patch = {};
-    if (state.createdMoodsIds.length)
-      patch.put = state.createdMoodsIds.map((id) => state.moods.byId[id]);
-    if (state.deletedMoodsIds.length) patch.delete = state.deletedMoodsIds;
-    dispatch({ type: "syncToServer/start" });
+    dispatch({ type: "syncFromServer/start" });
     try {
-      await patchMoods(patch);
-      dispatch({ type: "syncToServer/success" });
+      const serverMoods = await getMoods();
+      const serverMoodIds = new Set(serverMoods.map((mood) => mood.createdAt));
+      const newMoods = state.moods.allIds
+        .filter(
+          (id) => serverMoodIds.has(id) || state.createdMoodsIds.includes(id)
+        )
+        .map((id) => state.moods.byId[id])
+        .concat(
+          serverMoods.filter(
+            (mood) =>
+              !state.moods.byId.hasOwnProperty(mood.createdAt) &&
+              !state.deletedMoodsIds.includes(mood.createdAt)
+          )
+        )
+        .sort((a, b) =>
+          a.createdAt > b.createdAt ? 1 : a.createdAt < b.createdAt ? -1 : 0
+        );
+      const byId: NormalizedMoods["byId"] = {};
+      for (const mood of newMoods) byId[mood.createdAt] = mood;
+      dispatch({
+        type: "moods/set",
+        payload: { allIds: newMoods.map((mood) => mood.createdAt), byId },
+      });
+      dispatch({ type: "syncFromServer/success" });
     } catch {
-      dispatch({ type: "syncToServer/error" });
+      dispatch({ type: "syncFromServer/error" });
     }
   };
+
+  const syncToServer = (): void =>
+    void (async () => {
+      if (
+        !isLoadedFromStorage ||
+        !state.userEmail ||
+        state.isSyncingToServer ||
+        !(state.deletedMoodsIds.length || state.createdMoodsIds.length)
+      )
+        return;
+      let patch: Patch = {};
+      if (state.createdMoodsIds.length)
+        patch.put = state.createdMoodsIds.map((id) => state.moods.byId[id]);
+      if (state.deletedMoodsIds.length) patch.delete = state.deletedMoodsIds;
+      dispatch({ type: "syncToServer/start" });
+      try {
+        await patchMoods(patch);
+        dispatch({
+          payload: {
+            createdIds: state.createdMoodsIds,
+            deletedIds: state.deletedMoodsIds,
+          },
+          type: "syncToServer/success",
+        });
+      } catch {
+        dispatch({ type: "syncToServer/error" });
+      }
+    })();
 
   const syncBidirectionally = () =>
     void (async () => {
       if (!isLoadedFromStorage || !state.userEmail) return;
-      await syncToServer();
-      syncFromServer();
+      await syncFromServer();
+      syncToServer();
     })();
 
-  React.useEffect(() => void syncToServer(), [
+  React.useEffect(syncToServer, [
     isLoadedFromStorage,
     state.createdMoodsIds,
     state.deletedMoodsIds,

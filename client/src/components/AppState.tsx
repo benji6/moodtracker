@@ -19,7 +19,10 @@ type Action =
   | FluxStandardAction<"syncFromServer/success">
   | FluxStandardAction<"syncToServer/error">
   | FluxStandardAction<"syncToServer/start">
-  | FluxStandardAction<"syncToServer/success">
+  | FluxStandardAction<
+      "syncToServer/success",
+      { createdIds: string[]; deletedIds: string[] }
+    >
   | FluxStandardAction<"user/clearEmail">
   | FluxStandardAction<"user/setEmail", string>;
 
@@ -99,8 +102,16 @@ const reducer = (state: State, action: Action): State => {
     case "syncToServer/success":
       return {
         ...state,
-        createdMoodsIds: [],
-        deletedMoodsIds: [],
+        createdMoodsIds: action.payload.createdIds.length
+          ? state.createdMoodsIds.filter(
+              (id) => !action.payload.createdIds.includes(id)
+            )
+          : state.createdMoodsIds,
+        deletedMoodsIds: action.payload.deletedIds.length
+          ? state.deletedMoodsIds.filter(
+              (id) => !action.payload.deletedIds.includes(id)
+            )
+          : state.deletedMoodsIds,
         isSyncingToServer: false,
         syncToServerError: false,
       };
