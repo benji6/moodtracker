@@ -4,11 +4,13 @@ import * as React from "react";
 import Menu from "./Menu";
 import Router from "./Router";
 import useMoods from "./hooks/useMoods";
+import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 
 export default function App() {
   useUser();
   useMoods();
+  useStorage();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (

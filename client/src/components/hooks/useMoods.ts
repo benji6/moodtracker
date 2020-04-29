@@ -1,6 +1,5 @@
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
-import storage from "../../storage";
 import useInterval from "./useInterval";
 import { getMoods, patchMoods } from "../../api";
 import { NormalizedMoods, Patch } from "../../types";
@@ -10,49 +9,6 @@ const SYNC_INTERVAL = 6e4;
 export default function useMoods() {
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
-
-  React.useEffect(
-    () =>
-      void (async () => {
-        const loadCreatedMoodIds = async (): Promise<void> => {
-          const ids = await storage.getCreatedMoodIds(undefined);
-          if (ids) dispatch({ type: "createdMoodIds/set", payload: ids });
-        };
-        const loadDeletedMoodIds = async (): Promise<void> => {
-          const ids = await storage.getDeletedMoodIds(undefined);
-          if (ids) dispatch({ type: "deletedMoodIds/set", payload: ids });
-        };
-        const loadMoods = async (): Promise<void> => {
-          const moods = await storage.getMoods(undefined);
-          if (moods) dispatch({ type: "moods/set", payload: moods });
-        };
-        try {
-          await Promise.all([
-            loadCreatedMoodIds(),
-            loadDeletedMoodIds(),
-            loadMoods(),
-          ]);
-        } finally {
-          dispatch({ type: "storage/loaded" });
-        }
-      })(),
-    []
-  );
-
-  React.useEffect(() => {
-    if (state.isStorageLoading) return;
-    storage.setCreatedMoodIds(undefined, state.createdMoodsIds);
-  }, [state.isStorageLoading, state.createdMoodsIds]);
-
-  React.useEffect(() => {
-    if (state.isStorageLoading) return;
-    storage.setDeletedMoodIds(undefined, state.deletedMoodsIds);
-  }, [state.isStorageLoading, state.deletedMoodsIds]);
-
-  React.useEffect(() => {
-    if (state.isStorageLoading) return;
-    storage.setMoods(undefined, state.moods);
-  }, [state.isStorageLoading, state.moods]);
 
   const syncFromServer = async (): Promise<void> => {
     if (state.isStorageLoading || !state.userEmail || state.isSyncingFromServer)
@@ -83,6 +39,10 @@ export default function useMoods() {
         payload: { allIds: newMoods.map((mood) => mood.createdAt), byId },
       });
       dispatch({ type: "syncFromServer/success" });
+      dispatch({
+        type: "lastSyncedFromServer/set",
+        payload: new Date().toISOString(),
+      });
     } catch {
       dispatch({ type: "syncFromServer/error" });
     }
