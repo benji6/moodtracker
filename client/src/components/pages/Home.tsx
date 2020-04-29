@@ -1,5 +1,5 @@
 import { RouteComponentProps, Link, NavigateFn } from "@reach/router";
-import { Paper, Fab, Icon, Button } from "eri";
+import { Paper, Fab, Icon, Button, Spinner } from "eri";
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 
@@ -10,7 +10,9 @@ export default function Home({ navigate }: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>Moods</h2>
-        {state.moods.allIds.length ? (
+        {state.isStorageLoading ? (
+          <Spinner />
+        ) : state.moods.allIds.length ? (
           <ul>
             {state.moods.allIds.map((id) => {
               const mood = state.moods.byId[id];

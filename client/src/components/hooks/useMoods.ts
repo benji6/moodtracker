@@ -10,7 +10,6 @@ const SYNC_INTERVAL = 6e4;
 export default function useMoods() {
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
-  const [isLoadedFromStorage, setIsLoadedFromStorage] = React.useState(false);
 
   React.useEffect(
     () =>
@@ -34,29 +33,29 @@ export default function useMoods() {
             loadMoods(),
           ]);
         } finally {
-          setIsLoadedFromStorage(true);
+          dispatch({ type: "storage/loaded" });
         }
       })(),
     []
   );
 
   React.useEffect(() => {
-    if (!isLoadedFromStorage) return;
+    if (state.isStorageLoading) return;
     storage.setCreatedMoodIds(undefined, state.createdMoodsIds);
-  }, [isLoadedFromStorage, state.createdMoodsIds]);
+  }, [state.isStorageLoading, state.createdMoodsIds]);
 
   React.useEffect(() => {
-    if (!isLoadedFromStorage) return;
+    if (state.isStorageLoading) return;
     storage.setDeletedMoodIds(undefined, state.deletedMoodsIds);
-  }, [isLoadedFromStorage, state.deletedMoodsIds]);
+  }, [state.isStorageLoading, state.deletedMoodsIds]);
 
   React.useEffect(() => {
-    if (!isLoadedFromStorage) return;
+    if (state.isStorageLoading) return;
     storage.setMoods(undefined, state.moods);
-  }, [isLoadedFromStorage, state.moods]);
+  }, [state.isStorageLoading, state.moods]);
 
   const syncFromServer = async (): Promise<void> => {
-    if (!isLoadedFromStorage || !state.userEmail || state.isSyncingFromServer)
+    if (state.isStorageLoading || !state.userEmail || state.isSyncingFromServer)
       return;
     dispatch({ type: "syncFromServer/start" });
     try {
@@ -92,7 +91,7 @@ export default function useMoods() {
   const syncToServer = (): void =>
     void (async () => {
       if (
-        !isLoadedFromStorage ||
+        state.isStorageLoading ||
         !state.userEmail ||
         state.isSyncingToServer ||
         !(state.deletedMoodsIds.length || state.createdMoodsIds.length)
@@ -119,18 +118,21 @@ export default function useMoods() {
 
   const syncBidirectionally = () =>
     void (async () => {
-      if (!isLoadedFromStorage || !state.userEmail) return;
+      if (state.isStorageLoading || !state.userEmail) return;
       await syncFromServer();
       syncToServer();
     })();
 
   React.useEffect(syncToServer, [
-    isLoadedFromStorage,
+    state.isStorageLoading,
     state.createdMoodsIds,
     state.deletedMoodsIds,
     state.moods,
     state.userEmail,
   ]);
-  React.useEffect(syncBidirectionally, [isLoadedFromStorage, state.userEmail]);
+  React.useEffect(syncBidirectionally, [
+    state.isStorageLoading,
+    state.userEmail,
+  ]);
   useInterval(syncBidirectionally, SYNC_INTERVAL);
 }
