@@ -17,16 +17,6 @@ export default function useStorage() {
           const ids = await storage.getDeletedMoodIds(undefined);
           if (ids) dispatch({ type: "deletedMoodIds/set", payload: ids });
         };
-        const loadLastSyncedFromServer = async (): Promise<void> => {
-          const lastSyncedFromServer = await storage.getLastSyncedFromServer(
-            "TEST_USER"
-          );
-          if (lastSyncedFromServer)
-            dispatch({
-              type: "lastSyncedFromServer/set",
-              payload: lastSyncedFromServer,
-            });
-        };
         const loadMoods = async (): Promise<void> => {
           const moods = await storage.getMoods(undefined);
           if (moods) dispatch({ type: "moods/set", payload: moods });
@@ -35,7 +25,6 @@ export default function useStorage() {
           await Promise.all([
             loadCreatedMoodIds(),
             loadDeletedMoodIds(),
-            loadLastSyncedFromServer(),
             loadMoods(),
           ]);
         } finally {
@@ -54,11 +43,6 @@ export default function useStorage() {
     if (state.isStorageLoading) return;
     storage.setDeletedMoodIds(undefined, state.deletedMoodsIds);
   }, [state.isStorageLoading, state.deletedMoodsIds]);
-
-  React.useEffect(() => {
-    if (state.isStorageLoading || !state.lastSyncedFromServer) return;
-    storage.setLastSyncedFromServer("TEST_USER", state.lastSyncedFromServer);
-  }, [state.isStorageLoading, state.lastSyncedFromServer]);
 
   React.useEffect(() => {
     if (state.isStorageLoading) return;

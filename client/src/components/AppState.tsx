@@ -11,7 +11,6 @@ type FluxStandardAction<
 type Action =
   | FluxStandardAction<"createdMoodIds/set", string[]>
   | FluxStandardAction<"deletedMoodIds/set", string[]>
-  | FluxStandardAction<"lastSyncedFromServer/set", string>
   | FluxStandardAction<"moods/create", Mood>
   | FluxStandardAction<"moods/delete", string>
   | FluxStandardAction<"moods/set", NormalizedMoods>
@@ -34,7 +33,6 @@ interface State {
   isStorageLoading: boolean;
   isSyncingFromServer: boolean;
   isSyncingToServer: boolean;
-  lastSyncedFromServer: string | undefined;
   moods: NormalizedMoods;
   syncFromServerError: boolean;
   syncToServerError: boolean;
@@ -47,7 +45,6 @@ const initialState: State = {
   isStorageLoading: true,
   isSyncingFromServer: false,
   isSyncingToServer: false,
-  lastSyncedFromServer: undefined,
   moods: { allIds: [], byId: {} },
   syncFromServerError: false,
   syncToServerError: false,
@@ -65,8 +62,6 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, createdMoodsIds: action.payload };
     case "deletedMoodIds/set":
       return { ...state, deletedMoodsIds: action.payload };
-    case "lastSyncedFromServer/set":
-      return { ...state, lastSyncedFromServer: action.payload };
     case "moods/create":
       return {
         ...state,

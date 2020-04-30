@@ -39,10 +39,6 @@ export default function useMoods() {
         payload: { allIds: newMoods.map((mood) => mood.createdAt), byId },
       });
       dispatch({ type: "syncFromServer/success" });
-      dispatch({
-        type: "lastSyncedFromServer/set",
-        payload: new Date().toISOString(),
-      });
     } catch {
       dispatch({ type: "syncFromServer/error" });
     }
