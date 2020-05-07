@@ -9,24 +9,10 @@ export default function useStorage() {
   React.useEffect(
     () =>
       void (async () => {
-        const loadCreatedMoodIds = async (): Promise<void> => {
-          const ids = await storage.getCreatedMoodIds(undefined);
-          if (ids) dispatch({ type: "createdMoodIds/set", payload: ids });
-        };
-        const loadDeletedMoodIds = async (): Promise<void> => {
-          const ids = await storage.getDeletedMoodIds(undefined);
-          if (ids) dispatch({ type: "deletedMoodIds/set", payload: ids });
-        };
-        const loadMoods = async (): Promise<void> => {
-          const moods = await storage.getMoods(undefined);
-          if (moods) dispatch({ type: "moods/set", payload: moods });
-        };
         try {
-          await Promise.all([
-            loadCreatedMoodIds(),
-            loadDeletedMoodIds(),
-            loadMoods(),
-          ]);
+          const events = await storage.getEvents(undefined);
+          if (events)
+            dispatch({ type: "events/loadFromStorage", payload: events });
         } finally {
           dispatch({ type: "storage/loaded" });
         }
@@ -36,16 +22,6 @@ export default function useStorage() {
 
   React.useEffect(() => {
     if (state.isStorageLoading) return;
-    storage.setCreatedMoodIds(undefined, state.createdMoodsIds);
-  }, [state.isStorageLoading, state.createdMoodsIds]);
-
-  React.useEffect(() => {
-    if (state.isStorageLoading) return;
-    storage.setDeletedMoodIds(undefined, state.deletedMoodsIds);
-  }, [state.isStorageLoading, state.deletedMoodsIds]);
-
-  React.useEffect(() => {
-    if (state.isStorageLoading) return;
-    storage.setMoods(undefined, state.moods);
-  }, [state.isStorageLoading, state.moods]);
+    storage.setEvents(undefined, state.events);
+  }, [state.isStorageLoading, state.events]);
 }

@@ -1,35 +1,27 @@
 import * as React from "react";
-import { Mood, NormalizedMoods } from "../types";
-
-type FluxStandardAction<
-  Type extends string,
-  Payload = undefined
-> = Payload extends undefined
-  ? { type: Type }
-  : { payload: Payload; type: Type };
+import { FluxStandardAction, NormalizedEvents, Mood, AppEvent } from "../types";
 
 type Action =
-  | FluxStandardAction<"createdMoodIds/set", string[]>
-  | FluxStandardAction<"deletedMoodIds/set", string[]>
-  | FluxStandardAction<"moods/create", Mood>
-  | FluxStandardAction<"moods/delete", string>
-  | FluxStandardAction<"moods/set", NormalizedMoods>
+  | FluxStandardAction<"events/add", AppEvent>
+  | FluxStandardAction<"events/loadFromStorage", NormalizedEvents>
+  | FluxStandardAction<"events/syncFromServer", AppEvent[]>
   | FluxStandardAction<"storage/loaded">
   | FluxStandardAction<"syncFromServer/error">
   | FluxStandardAction<"syncFromServer/start">
   | FluxStandardAction<"syncFromServer/success">
   | FluxStandardAction<"syncToServer/error">
   | FluxStandardAction<"syncToServer/start">
-  | FluxStandardAction<
-      "syncToServer/success",
-      { createdIds: string[]; deletedIds: string[] }
-    >
+  | FluxStandardAction<"syncToServer/success">
   | FluxStandardAction<"user/clearEmail">
   | FluxStandardAction<"user/setEmail", string>;
 
-interface State {
-  createdMoodsIds: string[];
-  deletedMoodsIds: string[];
+interface NormalizedMoods {
+  allIds: string[];
+  byId: { [id: string]: Mood };
+}
+
+export interface State {
+  events: NormalizedEvents;
   isStorageLoading: boolean;
   isSyncingFromServer: boolean;
   isSyncingToServer: boolean;
@@ -39,9 +31,8 @@ interface State {
   userEmail: string | undefined;
 }
 
-const initialState: State = {
-  createdMoodsIds: [],
-  deletedMoodsIds: [],
+export const createInitialState = (): State => ({
+  events: { allIds: [], byId: {}, idsToSync: [] },
   isStorageLoading: true,
   isSyncingFromServer: false,
   isSyncingToServer: false,
@@ -49,47 +40,126 @@ const initialState: State = {
   syncFromServerError: false,
   syncToServerError: false,
   userEmail: undefined,
-};
+});
+
+const initialState: State = createInitialState();
 
 export const DispatchContext = React.createContext<React.Dispatch<Action>>(
   () => {}
 );
 export const StateContext = React.createContext<State>(initialState);
 
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "createdMoodIds/set":
-      return { ...state, createdMoodsIds: action.payload };
-    case "deletedMoodIds/set":
-      return { ...state, deletedMoodsIds: action.payload };
+const omit = <O, K extends keyof O>(object: O, key: K): Omit<O, K> => {
+  const { [key]: _, ...rest } = object;
+  return rest;
+};
+
+const getLastEvent = (normalizedState: NormalizedEvents): AppEvent => {
+  if (!normalizedState.allIds.length)
+    throw Error("Error: `allIds` must have length > 0");
+  const lastId = normalizedState.allIds[normalizedState.allIds.length - 1];
+  return normalizedState.byId[lastId];
+};
+
+const moodReducer = (
+  moods: NormalizedMoods,
+  event: AppEvent
+): NormalizedMoods => {
+  switch (event.type) {
     case "moods/create":
       return {
-        ...state,
-        createdMoodsIds: [...state.createdMoodsIds, action.payload.createdAt],
-        moods: {
-          allIds: [...state.moods.allIds, action.payload.createdAt],
-          byId: {
-            ...state.moods.byId,
-            [action.payload.createdAt]: action.payload,
-          },
+        allIds: [...moods.allIds, event.payload.createdAt],
+        byId: {
+          ...moods.byId,
+          [event.payload.createdAt]: event.payload,
         },
       };
-    case "moods/delete": {
-      const { [action.payload]: _, ...newById } = state.moods.byId;
+    case "moods/delete":
+      return {
+        allIds: moods.allIds.filter((id) => id !== event.payload),
+        byId: omit(moods.byId, event.payload),
+      };
+  }
+};
+
+const deriveMoodsFromEvents = (
+  normalizedEvents: NormalizedEvents,
+  moods: NormalizedMoods
+): NormalizedMoods =>
+  normalizedEvents.allIds
+    .map((id) => normalizedEvents.byId[id])
+    .reduce(moodReducer, moods);
+
+export const appStateReducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "events/add": {
+      let lastEvent = state.events.allIds.length
+        ? getLastEvent(state.events)
+        : undefined;
+      if (lastEvent && lastEvent.createdAt > action.payload.createdAt) {
+        const date = new Date(lastEvent.createdAt);
+        date.setUTCMilliseconds(date.getUTCMilliseconds() + 1);
+        const newCreatedAt = date.toISOString();
+        action.payload.createdAt = newCreatedAt;
+        if (typeof action.payload.payload !== "string")
+          action.payload.payload.createdAt = newCreatedAt;
+      }
+      const allIds = [...state.events.allIds, action.payload.createdAt];
+      const byId = {
+        ...state.events.byId,
+        [action.payload.createdAt]: action.payload,
+      };
+      const idsToSync = [...state.events.idsToSync, action.payload.createdAt];
+      const events = { allIds, byId, idsToSync };
+      if (!lastEvent || action.payload.createdAt > lastEvent.createdAt)
+        return {
+          ...state,
+          events,
+          moods: moodReducer(state.moods, action.payload),
+        };
+      events.allIds.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
       return {
         ...state,
-        createdMoodsIds: state.createdMoodsIds.filter(
-          (id) => id !== action.payload
-        ),
-        deletedMoodsIds: [...state.deletedMoodsIds, action.payload],
-        moods: {
-          allIds: state.moods.allIds.filter((id) => id !== action.payload),
-          byId: newById,
-        },
+        events,
+        moods: deriveMoodsFromEvents(events, state.moods),
       };
     }
-    case "moods/set":
-      return { ...state, moods: action.payload };
+    case "events/loadFromStorage":
+      return {
+        ...state,
+        events: action.payload,
+        moods: deriveMoodsFromEvents(action.payload, state.moods),
+      };
+    case "events/syncFromServer": {
+      if (!action.payload.length) return state;
+      const byId = { ...state.events.byId };
+      for (const event of action.payload) byId[event.createdAt] = event;
+      const serverEventIds = action.payload.map((event) => event.createdAt);
+      if (!state.events.allIds.length) {
+        return {
+          ...state,
+          events: { ...state.events, allIds: serverEventIds, byId },
+          moods: action.payload.reduce(moodReducer, state.moods),
+        };
+      }
+      const lastClientEvent = getLastEvent(state.events);
+      const lastServerEvent = action.payload[action.payload.length - 1];
+      const allIds = [...new Set([...state.events.allIds, ...serverEventIds])];
+      const events = { ...state.events, allIds, byId };
+      if (lastServerEvent.createdAt > lastClientEvent.createdAt) {
+        return {
+          ...state,
+          events,
+          moods: action.payload.reduce(moodReducer, state.moods),
+        };
+      }
+      events.allIds.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
+      return {
+        ...state,
+        events,
+        moods: deriveMoodsFromEvents(events, { allIds: [], byId: {} }),
+      };
+    }
     case "storage/loaded":
       return { ...state, isStorageLoading: false };
     case "syncToServer/error":
@@ -107,16 +177,7 @@ const reducer = (state: State, action: Action): State => {
     case "syncToServer/success":
       return {
         ...state,
-        createdMoodsIds: action.payload.createdIds.length
-          ? state.createdMoodsIds.filter(
-              (id) => !action.payload.createdIds.includes(id)
-            )
-          : state.createdMoodsIds,
-        deletedMoodsIds: action.payload.deletedIds.length
-          ? state.deletedMoodsIds.filter(
-              (id) => !action.payload.deletedIds.includes(id)
-            )
-          : state.deletedMoodsIds,
+        events: { ...state.events, idsToSync: [] },
         isSyncingToServer: false,
         syncToServerError: false,
       };
@@ -146,7 +207,7 @@ const reducer = (state: State, action: Action): State => {
 };
 
 export default function AppState({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [state, dispatch] = React.useReducer(appStateReducer, initialState);
   return (
     <DispatchContext.Provider value={dispatch}>
       <StateContext.Provider value={state}>{children}</StateContext.Provider>

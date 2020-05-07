@@ -25,31 +25,19 @@ Resources:
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
-      - ApiGatewayMoodsGet
-      - ApiGatewayMoodsOptions
-      - ApiGatewayMoodsPatch
+      - ApiGatewayEventsGet
+      - ApiGatewayEventsOptions
+      - ApiGatewayEventsPost
     Properties:
       RestApiId: !Ref ApiGateway
       StageName: prod
-  ApiGatewayMoodResource:
+  ApiGatewayEventsResource:
     Type: AWS::ApiGateway::Resource
     Properties:
       ParentId: !GetAtt ApiGateway.RootResourceId
-      PathPart: moods
+      PathPart: events
       RestApiId: !Ref ApiGateway
-  ApiGatewayMoodsGet:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: COGNITO_USER_POOLS
-      AuthorizerId: !Ref ApiGatewayAuthorizer
-      HttpMethod: GET
-      Integration:
-        IntegrationHttpMethod: POST
-        Type: AWS_PROXY
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsGet.Arn}/invocations"
-      ResourceId: !Ref ApiGatewayMoodResource
-      RestApiId: !Ref ApiGateway
-  ApiGatewayMoodsOptions:
+  ApiGatewayEventsOptions:
     Type: AWS::ApiGateway::Method
     Properties:
       AuthorizationType: NONE
@@ -59,7 +47,7 @@ Resources:
           - StatusCode: 200
             ResponseParameters:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,PATCH,OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
               method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
         RequestTemplates:
           application/json: '{"statusCode": 200}'
@@ -70,19 +58,31 @@ Resources:
             method.response.header.Access-Control-Allow-Headers: true
             method.response.header.Access-Control-Allow-Methods: true
             method.response.header.Access-Control-Allow-Origin: true
-      ResourceId: !Ref ApiGatewayMoodResource
+      ResourceId: !Ref ApiGatewayEventsResource
       RestApiId: !Ref ApiGateway
-  ApiGatewayMoodsPatch:
+  ApiGatewayEventsGet:
     Type: AWS::ApiGateway::Method
     Properties:
       AuthorizationType: COGNITO_USER_POOLS
       AuthorizerId: !Ref ApiGatewayAuthorizer
-      HttpMethod: PATCH
+      HttpMethod: GET
       Integration:
         IntegrationHttpMethod: POST
         Type: AWS_PROXY
-        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaMoodsPatch.Arn}/invocations"
-      ResourceId: !Ref ApiGatewayMoodResource
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaEventsGet.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayEventsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayEventsPost:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaEventsPost.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayEventsResource
       RestApiId: !Ref ApiGateway
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
@@ -119,7 +119,7 @@ Resources:
     Properties:
       Domain: moodtracker
       UserPoolId: !Ref CognitoUserPool
-  DynamoMoodsTable:
+  DynamoEventsTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -133,7 +133,104 @@ Resources:
           KeyType: HASH
         - AttributeName: createdAt
           KeyType: RANGE
-      TableName: moodtracker_moods
+      TableName: moodtracker_events
+  LambdaEventsGet:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          from boto3.dynamodb.conditions import Key
+          headers = {
+            'Access-Control-Allow-Origin': 'http://localhost:1234',
+            'Content-Type': 'application/json',
+          }
+          dynamodb = boto3.resource('dynamodb')
+          table = dynamodb.Table('moodtracker_events')
+          def handler(event, context):
+            user_id = event['requestContext']['authorizer']['claims']['sub']
+            try:
+              response = table.query(KeyConditionExpression=Key('userId').eq(user_id))
+              events = response['Items']
+              for event in events:
+                del event['userId']
+                payload = event['payload']
+                if 'mood' in payload:
+                  payload['mood'] = int(payload['mood'])
+              return {
+                'body': json.dumps(events),
+                'headers': headers,
+                'statusCode': 200,
+              }
+            except Exception as e:
+              print(e)
+              return {
+                'body': 'Internal server error',
+                'headers': headers,
+                'statusCode': 500,
+              }
+      FunctionName: MoodTrackerEventsGet
+      Handler: index.handler
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.7
+  LambdaEventsGetPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaEventsGet.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaEventsPost:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          from datetime import datetime
+          dynamodb = boto3.resource('dynamodb')
+          table = dynamodb.Table('moodtracker_events')
+          def handler(event, context):
+            user_id = event['requestContext']['authorizer']['claims']['sub']
+            headers = {
+              'Access-Control-Allow-Origin': 'http://localhost:1234',
+              'Content-Type': 'application/json',
+            }
+            try:
+              events = json.loads(event['body'])
+            except json.JSONDecodeError as e:
+              print(e)
+              return {
+                'body': json.dumps({'error': 'Malformed request body'}),
+                'headers': headers,
+                'statusCode': 400,
+              }
+            try:
+              with table.batch_writer() as batch:
+                for event in events:
+                  event['userId'] = user_id
+                  batch.put_item(Item=event)
+              del headers['Content-Type']
+              return {'headers': headers, 'statusCode': 204}
+            except Exception as e:
+              print(e)
+              return {
+                'body': json.dumps({'error': 'Internal server error'}),
+                'headers': headers,
+                'statusCode': 500,
+              }
+      FunctionName: MoodTrackerEventsPost
+      Handler: index.handler
+      Role: !GetAtt LambdaRole.Arn
+      Runtime: python3.7
+  LambdaEventsPostPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaEventsPost.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
   LambdaRole:
     Type: AWS::IAM::Role
     Properties:
@@ -153,87 +250,4 @@ Resources:
             Statement:
               - Action: dynamodb:*
                 Effect: Allow
-                Resource: !GetAtt DynamoMoodsTable.Arn
-  LambdaMoodsGet:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        ZipFile: |
-          import boto3
-          import json
-          from boto3.dynamodb.conditions import Key
-          headers = { 'Access-Control-Allow-Origin': 'http://localhost:1234' }
-          dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table('moodtracker_moods')
-          def handler(event, context):
-            user_id = event['requestContext']['authorizer']['claims']['sub']
-            try:
-              response = table.query(KeyConditionExpression=Key('userId').eq(user_id))
-              moods = response['Items']
-              for mood in moods:
-                del mood['userId']
-                mood['mood'] = int(mood['mood'])
-              return {
-                'body': json.dumps(moods),
-                'headers': headers,
-                'statusCode': 200,
-              }
-            except Exception as e:
-              print(e)
-              return {
-                'body': 'Internal server error',
-                'headers': headers,
-                'statusCode': 500,
-              }
-      FunctionName: MoodTrackerMoodsGet
-      Handler: index.handler
-      Role: !GetAtt LambdaRole.Arn
-      Runtime: python3.7
-  LambdaMoodsGetPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt LambdaMoodsGet.Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
-  LambdaMoodsPatch:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        ZipFile: |
-          import boto3
-          import json
-          headers = { 'Access-Control-Allow-Origin': 'http://localhost:1234' }
-          dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table('moodtracker_moods')
-          def handler(event, context):
-            user_id = event['requestContext']['authorizer']['claims']['sub']
-            try:
-              patch = json.loads(event['body'])
-              with table.batch_writer() as batch:
-                if 'delete' in patch:
-                  for id in patch['delete']:
-                    batch.delete_item(Key={'createdAt': id, 'userId': user_id})
-                if 'put' in patch:
-                  for mood in patch['put']:
-                    mood['userId'] = user_id
-                    batch.put_item(Item=mood)
-              return { 'headers': headers, 'statusCode': 204 }
-            except Exception as e:
-              print(e)
-              return {
-                'body': 'Internal server error',
-                'headers': headers,
-                'statusCode': 500,
-              }
-      FunctionName: MoodTrackerMoodsPatch
-      Handler: index.handler
-      Role: !GetAtt LambdaRole.Arn
-      Runtime: python3.7
-  LambdaMoodsPatchPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !GetAtt LambdaMoodsPatch.Arn
-      Principal: apigateway.amazonaws.com
-      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+                Resource: !GetAtt DynamoEventsTable.Arn

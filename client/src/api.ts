@@ -1,29 +1,29 @@
 import { getIdToken } from "./cognito";
-import { Mood, Patch } from "./types";
+import { AppEvent } from "./types";
 
-const moodsUrl =
-  "https://0q11376u8l.execute-api.us-east-1.amazonaws.com/prod/moods";
+const eventsUrl =
+  "https://0q11376u8l.execute-api.us-east-1.amazonaws.com/prod/events";
 
 const getAuthorizationHeader = async () => {
   const idToken = await getIdToken();
   return `Bearer ${idToken.getJwtToken()}`;
 };
 
-export const getMoods = async (): Promise<Mood[]> => {
+export const getEvents = async (): Promise<AppEvent[]> => {
   const Authorization = await getAuthorizationHeader();
-  const response = await fetch(moodsUrl, {
+  const response = await fetch(eventsUrl, {
     headers: { Authorization },
   });
   if (!response.ok) throw Error(String(response.status));
   return response.json();
 };
 
-export const patchMoods = async (patch: Patch): Promise<void> => {
+export const postEvents = async (events: AppEvent[]): Promise<void> => {
   const Authorization = await getAuthorizationHeader();
-  const response = await fetch(moodsUrl, {
-    body: JSON.stringify(patch),
+  const response = await fetch(eventsUrl, {
+    body: JSON.stringify(events),
     headers: { Authorization, "Content-Type": "application/json" },
-    method: "PATCH",
+    method: "POST",
   });
   if (!response.ok) throw Error(String(response.status));
 };

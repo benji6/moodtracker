@@ -23,8 +23,12 @@ export default function Home({ navigate }: RouteComponentProps) {
                     danger
                     onClick={() =>
                       dispatch({
-                        type: "moods/delete",
-                        payload: id,
+                        type: "events/add",
+                        payload: {
+                          type: "moods/delete",
+                          createdAt: new Date().toISOString(),
+                          payload: id,
+                        },
                       })
                     }
                     variant="secondary"

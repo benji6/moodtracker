@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "downlevelIteration": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": ["dom", "es2016"],
