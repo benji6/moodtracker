@@ -69,15 +69,17 @@ const moodReducer = (
     case "moods/create":
       return {
         allIds: [...moods.allIds, event.payload.createdAt],
-        byId: {
-          ...moods.byId,
-          [event.payload.createdAt]: event.payload,
-        },
+        byId: { ...moods.byId, [event.payload.createdAt]: event.payload },
       };
     case "moods/delete":
       return {
         allIds: moods.allIds.filter((id) => id !== event.payload),
         byId: omit(moods.byId, event.payload),
+      };
+    case "moods/update":
+      return {
+        ...moods,
+        byId: { ...moods.byId, [event.payload.createdAt]: event.payload },
       };
   }
 };
@@ -101,7 +103,7 @@ export const appStateReducer = (state: State, action: Action): State => {
         date.setUTCMilliseconds(date.getUTCMilliseconds() + 1);
         const newCreatedAt = date.toISOString();
         action.payload.createdAt = newCreatedAt;
-        if (typeof action.payload.payload !== "string")
+        if (action.payload.type === "moods/create")
           action.payload.payload.createdAt = newCreatedAt;
       }
       const allIds = [...state.events.allIds, action.payload.createdAt];

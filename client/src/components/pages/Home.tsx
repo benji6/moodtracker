@@ -1,5 +1,5 @@
-import { RouteComponentProps, Link, NavigateFn } from "@reach/router";
-import { Paper, Fab, Icon, Button, Spinner } from "eri";
+import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
+import { Paper, Fab, Icon, Button } from "eri";
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 
@@ -10,31 +10,37 @@ export default function Home({ navigate }: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>Moods</h2>
-        {state.isStorageLoading ? (
-          <Spinner />
-        ) : state.moods.allIds.length ? (
+        {state.moods.allIds.length ? (
           <ul>
             {state.moods.allIds.map((id) => {
               const mood = state.moods.byId[id];
               return (
                 <li key={id}>
                   {new Date(id).toLocaleString()}: {mood.mood}{" "}
-                  <Button
-                    danger
-                    onClick={() =>
-                      dispatch({
-                        type: "events/add",
-                        payload: {
-                          type: "moods/delete",
-                          createdAt: new Date().toISOString(),
-                          payload: id,
-                        },
-                      })
-                    }
-                    variant="secondary"
-                  >
-                    Delete
-                  </Button>
+                  <Button.Group>
+                    <Button
+                      onClick={() => (navigate as NavigateFn)(`edit/${id}`)}
+                      variant="secondary"
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      danger
+                      onClick={() =>
+                        dispatch({
+                          type: "events/add",
+                          payload: {
+                            type: "moods/delete",
+                            createdAt: new Date().toISOString(),
+                            payload: id,
+                          },
+                        })
+                      }
+                      variant="secondary"
+                    >
+                      Delete
+                    </Button>
+                  </Button.Group>
                 </li>
               );
             })}

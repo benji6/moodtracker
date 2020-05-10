@@ -3,6 +3,7 @@ import * as React from "react";
 import _404 from "./pages/_404";
 import About from "./pages/About";
 import AddMood from "./pages/AddMood";
+import EditMood from "./pages/EditMood";
 import Home from "./pages/Home";
 import ResendVerification from "./pages/ResendVerification";
 import SeeAlso from "./pages/SeeAlso";
@@ -17,6 +18,7 @@ export default function Router() {
       <Home path="/" />
       <About path="about" />
       <AddMood path="add" />
+      <EditMood path="edit/:id" />
       <ResendVerification path="resend-verification" />
       <SeeAlso path="see-also" />
       <SignIn path="sign-in" />

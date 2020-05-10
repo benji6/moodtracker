@@ -49,7 +49,9 @@ export default function AddMood({ navigate }: RouteComponentProps) {
               </RadioButton>
             ))}
           </RadioButton.Group>
-          <Button>Submit</Button>
+          <Button.Group>
+            <Button>Submit</Button>
+          </Button.Group>
         </form>
       </Paper>
     </Paper.Group>

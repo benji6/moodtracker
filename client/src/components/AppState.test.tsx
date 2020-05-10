@@ -8,6 +8,7 @@ const createStateWithEvents = (): State => ({
       "2020-05-07T19:39:00.000Z",
       "2020-05-07T20:31:00.000Z",
       "2020-05-07T20:32:00.000Z",
+      "2020-05-07T20:33:00.000Z",
     ],
     byId: {
       "2020-05-07T19:36:00.000Z": {
@@ -30,8 +31,17 @@ const createStateWithEvents = (): State => ({
         type: "moods/create",
         payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 10 },
       },
+      "2020-05-07T20:33:00.000Z": {
+        createdAt: "2020-05-07T20:33:00.000Z",
+        type: "moods/update",
+        payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 7 },
+      },
     },
-    idsToSync: ["2020-05-07T20:31:00.000Z", "2020-05-07T20:32:00.000Z"],
+    idsToSync: [
+      "2020-05-07T20:31:00.000Z",
+      "2020-05-07T20:32:00.000Z",
+      "2020-05-07T20:33:00.000Z",
+    ],
     nextCursor: "test-cursor-123",
   },
   moods: {
@@ -43,7 +53,7 @@ const createStateWithEvents = (): State => ({
       },
       "2020-05-07T20:32:00.000Z": {
         createdAt: "2020-05-07T20:32:00.000Z",
-        mood: 10,
+        mood: 7,
       },
     },
   },
@@ -92,51 +102,109 @@ describe("appStateReducer", () => {
       });
     });
 
-    test("when there are events in state", () => {
-      const stateWithEvents = createStateWithEvents();
-      expect(
-        appStateReducer(stateWithEvents, {
-          type: "events/add",
-          payload: {
-            createdAt: "2020-05-07T20:33:00.000Z",
-            type: "moods/delete",
-            payload: "2020-05-07T19:39:00.000Z",
-          },
-        })
-      ).toEqual({
-        ...createInitialState(),
-        events: {
-          allIds: [
-            "2020-05-07T19:36:00.000Z",
-            "2020-05-07T19:39:00.000Z",
-            "2020-05-07T20:31:00.000Z",
-            "2020-05-07T20:32:00.000Z",
-            "2020-05-07T20:33:00.000Z",
-          ],
-          byId: {
-            ...stateWithEvents.events.byId,
-            "2020-05-07T20:33:00.000Z": {
-              createdAt: "2020-05-07T20:33:00.000Z",
+    describe("when there are events in state", () => {
+      test("moods/create", () => {
+        const stateWithEvents = createStateWithEvents();
+        expect(
+          appStateReducer(stateWithEvents, {
+            type: "events/add",
+            payload: {
+              createdAt: "2020-05-07T20:34:00.000Z",
               type: "moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
             },
+          })
+        ).toEqual({
+          ...createInitialState(),
+          events: {
+            allIds: [
+              "2020-05-07T19:36:00.000Z",
+              "2020-05-07T19:39:00.000Z",
+              "2020-05-07T20:31:00.000Z",
+              "2020-05-07T20:32:00.000Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:34:00.000Z",
+            ],
+            byId: {
+              ...stateWithEvents.events.byId,
+              "2020-05-07T20:34:00.000Z": {
+                createdAt: "2020-05-07T20:34:00.000Z",
+                type: "moods/delete",
+                payload: "2020-05-07T19:39:00.000Z",
+              },
+            },
+            idsToSync: [
+              "2020-05-07T20:31:00.000Z",
+              "2020-05-07T20:32:00.000Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:34:00.000Z",
+            ],
+            nextCursor: "test-cursor-123",
           },
-          idsToSync: [
-            "2020-05-07T20:31:00.000Z",
-            "2020-05-07T20:32:00.000Z",
-            "2020-05-07T20:33:00.000Z",
-          ],
-          nextCursor: "test-cursor-123",
-        },
-        moods: {
-          allIds: ["2020-05-07T20:32:00.000Z"],
-          byId: {
-            "2020-05-07T20:32:00.000Z": {
-              createdAt: "2020-05-07T20:32:00.000Z",
-              mood: 10,
+          moods: {
+            allIds: ["2020-05-07T20:32:00.000Z"],
+            byId: {
+              "2020-05-07T20:32:00.000Z": {
+                createdAt: "2020-05-07T20:32:00.000Z",
+                mood: 7,
+              },
             },
           },
-        },
+        });
+      });
+
+      test("moods/update", () => {
+        const stateWithEvents = createStateWithEvents();
+        expect(
+          appStateReducer(stateWithEvents, {
+            type: "events/add",
+            payload: {
+              createdAt: "2020-05-07T20:34:00.000Z",
+              type: "moods/update",
+              payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 5 },
+            },
+          })
+        ).toEqual({
+          ...createInitialState(),
+          events: {
+            allIds: [
+              "2020-05-07T19:36:00.000Z",
+              "2020-05-07T19:39:00.000Z",
+              "2020-05-07T20:31:00.000Z",
+              "2020-05-07T20:32:00.000Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:34:00.000Z",
+            ],
+            byId: {
+              ...stateWithEvents.events.byId,
+              "2020-05-07T20:34:00.000Z": {
+                createdAt: "2020-05-07T20:34:00.000Z",
+                type: "moods/update",
+                payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 5 },
+              },
+            },
+            idsToSync: [
+              "2020-05-07T20:31:00.000Z",
+              "2020-05-07T20:32:00.000Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:34:00.000Z",
+            ],
+            nextCursor: "test-cursor-123",
+          },
+          moods: {
+            allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
+            byId: {
+              "2020-05-07T19:39:00.000Z": {
+                createdAt: "2020-05-07T19:39:00.000Z",
+                mood: 9,
+              },
+              "2020-05-07T20:32:00.000Z": {
+                createdAt: "2020-05-07T20:32:00.000Z",
+                mood: 5,
+              },
+            },
+          },
+        });
       });
     });
 
@@ -164,15 +232,16 @@ describe("appStateReducer", () => {
               "2020-05-07T19:39:00.000Z",
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
-              "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:33:00.001Z",
             ],
             byId: {
               ...stateWithEvents.events.byId,
-              "2020-05-07T20:32:00.001Z": {
-                createdAt: "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.001Z": {
+                createdAt: "2020-05-07T20:33:00.001Z",
                 type: "moods/create",
                 payload: {
-                  createdAt: "2020-05-07T20:32:00.001Z",
+                  createdAt: "2020-05-07T20:33:00.001Z",
                   mood: 4,
                 },
               },
@@ -180,7 +249,8 @@ describe("appStateReducer", () => {
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
-              "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:33:00.001Z",
             ],
             nextCursor: "test-cursor-123",
           },
@@ -188,7 +258,7 @@ describe("appStateReducer", () => {
             allIds: [
               "2020-05-07T19:39:00.000Z",
               "2020-05-07T20:32:00.000Z",
-              "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.001Z",
             ],
             byId: {
               "2020-05-07T19:39:00.000Z": {
@@ -197,10 +267,10 @@ describe("appStateReducer", () => {
               },
               "2020-05-07T20:32:00.000Z": {
                 createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 10,
+                mood: 7,
               },
-              "2020-05-07T20:32:00.001Z": {
-                createdAt: "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.001Z": {
+                createdAt: "2020-05-07T20:33:00.001Z",
                 mood: 4,
               },
             },
@@ -227,12 +297,13 @@ describe("appStateReducer", () => {
               "2020-05-07T19:39:00.000Z",
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
-              "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:33:00.001Z",
             ],
             byId: {
               ...stateWithEvents.events.byId,
-              "2020-05-07T20:32:00.001Z": {
-                createdAt: "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.001Z": {
+                createdAt: "2020-05-07T20:33:00.001Z",
                 type: "moods/delete",
                 payload: "2020-05-07T19:39:00.000Z",
               },
@@ -240,7 +311,8 @@ describe("appStateReducer", () => {
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
-              "2020-05-07T20:32:00.001Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:33:00.001Z",
             ],
             nextCursor: "test-cursor-123",
           },
@@ -249,7 +321,67 @@ describe("appStateReducer", () => {
             byId: {
               "2020-05-07T20:32:00.000Z": {
                 createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 10,
+                mood: 7,
+              },
+            },
+          },
+        });
+      });
+
+      test("moods/update", () => {
+        const stateWithEvents = createStateWithEvents();
+        expect(
+          appStateReducer(stateWithEvents, {
+            type: "events/add",
+            payload: {
+              createdAt: "2020-05-07T20:30:00.000Z",
+              type: "moods/update",
+              payload: {
+                createdAt: "2020-05-07T20:32:00.000Z",
+                mood: 2,
+              },
+            },
+          })
+        ).toEqual({
+          ...createInitialState(),
+          events: {
+            allIds: [
+              "2020-05-07T19:36:00.000Z",
+              "2020-05-07T19:39:00.000Z",
+              "2020-05-07T20:31:00.000Z",
+              "2020-05-07T20:32:00.000Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:33:00.001Z",
+            ],
+            byId: {
+              ...stateWithEvents.events.byId,
+              "2020-05-07T20:33:00.001Z": {
+                createdAt: "2020-05-07T20:33:00.001Z",
+                type: "moods/update",
+                payload: {
+                  createdAt: "2020-05-07T20:32:00.000Z",
+                  mood: 2,
+                },
+              },
+            },
+            idsToSync: [
+              "2020-05-07T20:31:00.000Z",
+              "2020-05-07T20:32:00.000Z",
+              "2020-05-07T20:33:00.000Z",
+              "2020-05-07T20:33:00.001Z",
+            ],
+            nextCursor: "test-cursor-123",
+          },
+          moods: {
+            allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
+            byId: {
+              "2020-05-07T19:39:00.000Z": {
+                createdAt: "2020-05-07T19:39:00.000Z",
+                mood: 9,
+              },
+              "2020-05-07T20:32:00.000Z": {
+                createdAt: "2020-05-07T20:32:00.000Z",
+                mood: 2,
               },
             },
           },
@@ -259,73 +391,28 @@ describe("appStateReducer", () => {
   });
 
   test("events/loadFromStorage", () => {
+    const events = createStateWithEvents()["events"];
     expect(
       appStateReducer(
         { ...createInitialState(), isStorageLoading: true },
         {
           type: "events/loadFromStorage",
-          payload: {
-            allIds: [
-              "2020-05-07T19:53:00.000Z",
-              "2020-05-07T19:55:00.000Z",
-              "2020-05-07T19:56:00.000Z",
-            ],
-            byId: {
-              "2020-05-07T19:53:00.000Z": {
-                createdAt: "2020-05-07T19:53:00.000Z",
-                type: "moods/create",
-                payload: { createdAt: "2020-05-07T19:53:00.000Z", mood: 7 },
-              },
-              "2020-05-07T19:55:00.000Z": {
-                createdAt: "2020-05-07T19:55:00.000Z",
-                type: "moods/delete",
-                payload: "2020-05-07T19:53:00.000Z",
-              },
-              "2020-05-07T19:56:00.000Z": {
-                createdAt: "2020-05-07T19:56:00.000Z",
-                type: "moods/create",
-                payload: { createdAt: "2020-05-07T19:56:00.000Z", mood: 8 },
-              },
-            },
-            idsToSync: ["2020-05-07T19:56:00.000Z"],
-            nextCursor: "test-cursor-456",
-          },
+          payload: events,
         }
       )
     ).toEqual({
       ...createInitialState(),
-      events: {
-        allIds: [
-          "2020-05-07T19:53:00.000Z",
-          "2020-05-07T19:55:00.000Z",
-          "2020-05-07T19:56:00.000Z",
-        ],
-        byId: {
-          "2020-05-07T19:53:00.000Z": {
-            createdAt: "2020-05-07T19:53:00.000Z",
-            type: "moods/create",
-            payload: { createdAt: "2020-05-07T19:53:00.000Z", mood: 7 },
-          },
-          "2020-05-07T19:55:00.000Z": {
-            createdAt: "2020-05-07T19:55:00.000Z",
-            type: "moods/delete",
-            payload: "2020-05-07T19:53:00.000Z",
-          },
-          "2020-05-07T19:56:00.000Z": {
-            createdAt: "2020-05-07T19:56:00.000Z",
-            type: "moods/create",
-            payload: { createdAt: "2020-05-07T19:56:00.000Z", mood: 8 },
-          },
-        },
-        idsToSync: ["2020-05-07T19:56:00.000Z"],
-        nextCursor: "test-cursor-456",
-      },
+      events: events,
       moods: {
-        allIds: ["2020-05-07T19:56:00.000Z"],
+        allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
         byId: {
-          "2020-05-07T19:56:00.000Z": {
-            createdAt: "2020-05-07T19:56:00.000Z",
-            mood: 8,
+          "2020-05-07T19:39:00.000Z": {
+            createdAt: "2020-05-07T19:39:00.000Z",
+            mood: 9,
+          },
+          "2020-05-07T20:32:00.000Z": {
+            createdAt: "2020-05-07T20:32:00.000Z",
+            mood: 7,
           },
         },
       },
@@ -443,6 +530,11 @@ describe("appStateReducer", () => {
               type: "moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
             },
+            {
+              createdAt: "2020-05-07T20:33:00.000Z",
+              type: "moods/update",
+              payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 3 },
+            },
           ],
         })
       ).toEqual({
@@ -457,6 +549,7 @@ describe("appStateReducer", () => {
             "2020-05-07T20:30:00.000Z",
             "2020-05-07T20:31:00.000Z",
             "2020-05-07T20:32:00.000Z",
+            "2020-05-07T20:33:00.000Z",
           ],
           byId: {
             ...stateWithEvents.events.byId,
@@ -480,8 +573,17 @@ describe("appStateReducer", () => {
               type: "moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
             },
+            "2020-05-07T20:33:00.000Z": {
+              createdAt: "2020-05-07T20:33:00.000Z",
+              type: "moods/update",
+              payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 3 },
+            },
           },
-          idsToSync: ["2020-05-07T20:31:00.000Z", "2020-05-07T20:32:00.000Z"],
+          idsToSync: [
+            "2020-05-07T20:31:00.000Z",
+            "2020-05-07T20:32:00.000Z",
+            "2020-05-07T20:33:00.000Z",
+          ],
           nextCursor: "test-cursor-123",
         },
         moods: {
@@ -493,7 +595,7 @@ describe("appStateReducer", () => {
             },
             "2020-05-07T20:32:00.000Z": {
               createdAt: "2020-05-07T20:32:00.000Z",
-              mood: 10,
+              mood: 3,
             },
           },
         },
