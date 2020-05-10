@@ -58,6 +58,21 @@ export default function AddMood({ navigate }: RouteComponentProps) {
             <RadioButton name="mood" value="5">
               5
             </RadioButton>
+            <RadioButton name="mood" value="6">
+              6
+            </RadioButton>
+            <RadioButton name="mood" value="7">
+              7
+            </RadioButton>
+            <RadioButton name="mood" value="8">
+              8
+            </RadioButton>
+            <RadioButton name="mood" value="9">
+              9
+            </RadioButton>
+            <RadioButton name="mood" value="10">
+              10
+            </RadioButton>
           </RadioButton.Group>
           <Button>Submit</Button>
         </form>
