@@ -125,6 +125,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: createdAt
           AttributeType: S
+        - AttributeName: serverCreatedAt
+          AttributeType: S
         - AttributeName: userId
           AttributeType: S
       BillingMode: PAY_PER_REQUEST
@@ -133,6 +135,15 @@ Resources:
           KeyType: HASH
         - AttributeName: createdAt
           KeyType: RANGE
+      LocalSecondaryIndexes:
+        - IndexName: serverCreatedAt
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: serverCreatedAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: "ALL"
       TableName: moodtracker_events
   LambdaEventsGet:
     Type: AWS::Lambda::Function
@@ -141,6 +152,7 @@ Resources:
         ZipFile: |
           import boto3
           import json
+          import operator
           from boto3.dynamodb.conditions import Attr, Key
           from datetime import datetime, timedelta
           headers = {
@@ -153,11 +165,10 @@ Resources:
           projection_expression='createdAt,payload,serverCreatedAt,#t'
           def handler(event, context):
             user_id = event['requestContext']['authorizer']['claims']['sub']
-            key_condition_expression = Key('userId').eq(user_id)
             try:
-              if event["queryStringParameters"] and event["queryStringParameters"]["cursor"]:
+              if event['queryStringParameters'] and event['queryStringParameters']['cursor']:
                 try:
-                  cursor_date = datetime.fromisoformat(event["queryStringParameters"]["cursor"])
+                  cursor_date = datetime.fromisoformat(event['queryStringParameters']['cursor'])
                 except ValueError as e:
                   print(e)
                   return {
@@ -169,14 +180,15 @@ Resources:
                 cursor_date_str = (cursor_date - timedelta(minutes=30)).isoformat()
                 response = table.query(
                   ExpressionAttributeNames=expression_attribute_names,
-                  FilterExpression=Attr('serverCreatedAt').gt(cursor_date_str),
-                  KeyConditionExpression=key_condition_expression,
+                  IndexName='serverCreatedAt',
+                  KeyConditionExpression=Key('userId').eq(user_id) & Key('serverCreatedAt').gt(cursor_date_str),
                   ProjectionExpression=projection_expression,
                 )
+                response['Items'].sort(key=operator.itemgetter('serverCreatedAt'))
               else:
                 response = table.query(
                   ExpressionAttributeNames=expression_attribute_names,
-                  KeyConditionExpression=key_condition_expression,
+                  KeyConditionExpression=Key('userId').eq(user_id),
                   ProjectionExpression=projection_expression,
                 )
               events = response['Items']
@@ -204,7 +216,7 @@ Resources:
               }
       FunctionName: MoodTrackerEventsGet
       Handler: index.handler
-      Role: !GetAtt LambdaRole.Arn
+      Role: !GetAtt LambdaEventsGetRole.Arn
       Runtime: python3.7
   LambdaEventsGetPermission:
     Type: AWS::Lambda::Permission
@@ -213,6 +225,28 @@ Resources:
       FunctionName: !GetAtt LambdaEventsGet.Arn
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaEventsGetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_events_get_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:Query
+                Effect: Allow
+                Resource:
+                  - !GetAtt DynamoEventsTable.Arn
+                  - !Sub "${DynamoEventsTable.Arn}/index/serverCreatedAt"
   LambdaEventsPost:
     Type: AWS::Lambda::Function
     Properties:
@@ -255,7 +289,7 @@ Resources:
               }
       FunctionName: MoodTrackerEventsPost
       Handler: index.handler
-      Role: !GetAtt LambdaRole.Arn
+      Role: !GetAtt LambdaEventsPostRole.Arn
       Runtime: python3.7
   LambdaEventsPostPermission:
     Type: AWS::Lambda::Permission
@@ -264,7 +298,7 @@ Resources:
       FunctionName: !GetAtt LambdaEventsPost.Arn
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
-  LambdaRole:
+  LambdaEventsPostRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -277,10 +311,10 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
       Policies:
-        - PolicyName: moodtracker_lambda_policy
+        - PolicyName: moodtracker_lambda_events_post_policy
           PolicyDocument:
             Version: 2012-10-17
             Statement:
-              - Action: dynamodb:*
+              - Action: dynamodb:BatchWriteItem
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn

@@ -2,7 +2,7 @@ import { getIdToken } from "./cognito";
 import { AppEvent } from "./types";
 
 const eventsUrl =
-  "https://0q11376u8l.execute-api.us-east-1.amazonaws.com/prod/events";
+  "https://x2gb6pfo69.execute-api.us-east-1.amazonaws.com/prod/events";
 
 const getAuthorizationHeader = async () => {
   const idToken = await getIdToken();

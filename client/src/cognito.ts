@@ -5,8 +5,8 @@ import {
 } from "amazon-cognito-identity-js";
 
 export const userPool = new CognitoUserPool({
-  ClientId: "6lh3pq1iid7krpnro0n1400cg2",
-  UserPoolId: "us-east-1_jCuXRokFK",
+  ClientId: "7diijvfn18clrn0gc891hqgb9e",
+  UserPoolId: "us-east-1_EcfYRm2PE",
 });
 
 export const getIdToken = (): Promise<CognitoIdToken> =>
