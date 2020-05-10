@@ -149,8 +149,11 @@ Resources:
           }
           dynamodb = boto3.resource('dynamodb')
           table = dynamodb.Table('moodtracker_events')
+          expression_attribute_names = {'#t': 'type'}
+          projection_expression='createdAt,payload,serverCreatedAt,#t'
           def handler(event, context):
             user_id = event['requestContext']['authorizer']['claims']['sub']
+            key_condition_expression = Key('userId').eq(user_id)
             try:
               if event["queryStringParameters"] and event["queryStringParameters"]["cursor"]:
                 try:
@@ -165,11 +168,17 @@ Resources:
                 # protect against pathological clock skew
                 cursor_date_str = (cursor_date - timedelta(minutes=30)).isoformat()
                 response = table.query(
+                  ExpressionAttributeNames=expression_attribute_names,
                   FilterExpression=Attr('serverCreatedAt').gt(cursor_date_str),
-                  KeyConditionExpression=Key('userId').eq(user_id),
+                  KeyConditionExpression=key_condition_expression,
+                  ProjectionExpression=projection_expression,
                 )
               else:
-                response = table.query(KeyConditionExpression=Key('userId').eq(user_id))
+                response = table.query(
+                  ExpressionAttributeNames=expression_attribute_names,
+                  KeyConditionExpression=key_condition_expression,
+                  ProjectionExpression=projection_expression,
+                )
               events = response['Items']
               last_server_created_at = None
               for event in events:
@@ -178,7 +187,6 @@ Resources:
                 elif last_server_created_at < event['serverCreatedAt']:
                   last_server_created_at = event['serverCreatedAt']
                 del event['serverCreatedAt']
-                del event['userId']
                 payload = event['payload']
                 if 'mood' in payload:
                   payload['mood'] = int(payload['mood'])
