@@ -8,7 +8,7 @@ type Action =
   | FluxStandardAction<"storage/loaded">
   | FluxStandardAction<"syncFromServer/error">
   | FluxStandardAction<"syncFromServer/start">
-  | FluxStandardAction<"syncFromServer/success">
+  | FluxStandardAction<"syncFromServer/success", string>
   | FluxStandardAction<"syncToServer/error">
   | FluxStandardAction<"syncToServer/start">
   | FluxStandardAction<"syncToServer/success">
@@ -32,7 +32,7 @@ export interface State {
 }
 
 export const createInitialState = (): State => ({
-  events: { allIds: [], byId: {}, idsToSync: [] },
+  events: { allIds: [], byId: {}, idsToSync: [], nextCursor: undefined },
   isStorageLoading: true,
   isSyncingFromServer: false,
   isSyncingToServer: false,
@@ -110,7 +110,7 @@ export const appStateReducer = (state: State, action: Action): State => {
         [action.payload.createdAt]: action.payload,
       };
       const idsToSync = [...state.events.idsToSync, action.payload.createdAt];
-      const events = { allIds, byId, idsToSync };
+      const events = { ...state.events, allIds, byId, idsToSync };
       if (!lastEvent || action.payload.createdAt > lastEvent.createdAt)
         return {
           ...state,
@@ -196,6 +196,7 @@ export const appStateReducer = (state: State, action: Action): State => {
     case "syncFromServer/success":
       return {
         ...state,
+        events: { ...state.events, nextCursor: action.payload },
         isSyncingFromServer: false,
         syncFromServerError: false,
       };

@@ -9,11 +9,17 @@ const getAuthorizationHeader = async () => {
   return `Bearer ${idToken.getJwtToken()}`;
 };
 
-export const getEvents = async (): Promise<AppEvent[]> => {
+export const getEvents = async (
+  cursor?: string
+): Promise<{
+  events: AppEvent[];
+  nextCursor: string;
+}> => {
   const Authorization = await getAuthorizationHeader();
-  const response = await fetch(eventsUrl, {
-    headers: { Authorization },
-  });
+  const response = await fetch(
+    cursor ? `${eventsUrl}/?cursor=${encodeURIComponent(cursor)}` : eventsUrl,
+    { headers: { Authorization } }
+  );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
 };

@@ -9,6 +9,7 @@ export interface NormalizedEvents {
   allIds: string[];
   byId: { [id: string]: AppEvent };
   idsToSync: string[];
+  nextCursor: string | undefined;
 }
 
 export interface Mood {

@@ -17,9 +17,9 @@ export default function useEvents() {
         return;
       dispatch({ type: "syncFromServer/start" });
       try {
-        const payload = await getEvents();
-        dispatch({ type: "events/syncFromServer", payload });
-        dispatch({ type: "syncFromServer/success" });
+        const { events, nextCursor } = await getEvents(state.events.nextCursor);
+        dispatch({ type: "events/syncFromServer", payload: events });
+        dispatch({ type: "syncFromServer/success", payload: nextCursor });
       } catch {
         dispatch({ type: "syncFromServer/error" });
       }

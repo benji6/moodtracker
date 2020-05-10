@@ -32,6 +32,7 @@ const createStateWithEvents = (): State => ({
       },
     },
     idsToSync: ["2020-05-07T20:31:00.000Z", "2020-05-07T20:32:00.000Z"],
+    nextCursor: "test-cursor-123",
   },
   moods: {
     allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
@@ -125,6 +126,7 @@ describe("appStateReducer", () => {
             "2020-05-07T20:32:00.000Z",
             "2020-05-07T20:33:00.000Z",
           ],
+          nextCursor: "test-cursor-123",
         },
         moods: {
           allIds: ["2020-05-07T20:32:00.000Z"],
@@ -180,6 +182,7 @@ describe("appStateReducer", () => {
               "2020-05-07T20:32:00.000Z",
               "2020-05-07T20:32:00.001Z",
             ],
+            nextCursor: "test-cursor-123",
           },
           moods: {
             allIds: [
@@ -239,6 +242,7 @@ describe("appStateReducer", () => {
               "2020-05-07T20:32:00.000Z",
               "2020-05-07T20:32:00.001Z",
             ],
+            nextCursor: "test-cursor-123",
           },
           moods: {
             allIds: ["2020-05-07T20:32:00.000Z"],
@@ -284,6 +288,7 @@ describe("appStateReducer", () => {
               },
             },
             idsToSync: ["2020-05-07T19:56:00.000Z"],
+            nextCursor: "test-cursor-456",
           },
         }
       )
@@ -313,6 +318,7 @@ describe("appStateReducer", () => {
           },
         },
         idsToSync: ["2020-05-07T19:56:00.000Z"],
+        nextCursor: "test-cursor-456",
       },
       moods: {
         allIds: ["2020-05-07T19:56:00.000Z"],
@@ -476,6 +482,7 @@ describe("appStateReducer", () => {
             },
           },
           idsToSync: ["2020-05-07T20:31:00.000Z", "2020-05-07T20:32:00.000Z"],
+          nextCursor: "test-cursor-123",
         },
         moods: {
           allIds: ["2020-05-07T19:56:00.000Z", "2020-05-07T20:32:00.000Z"],
@@ -593,6 +600,7 @@ describe("appStateReducer", () => {
   });
 
   test("syncFromServer/success", () => {
+    const initialState = createInitialState();
     expect(
       appStateReducer(
         {
@@ -600,10 +608,11 @@ describe("appStateReducer", () => {
           isSyncingFromServer: true,
           syncFromServerError: true,
         },
-        { type: "syncFromServer/success" }
+        { type: "syncFromServer/success", payload: "test-cursor-456" }
       )
     ).toEqual({
-      ...createInitialState(),
+      ...initialState,
+      events: { ...initialState.events, nextCursor: "test-cursor-456" },
       isSyncingFromServer: false,
       syncFromServerError: false,
     });
