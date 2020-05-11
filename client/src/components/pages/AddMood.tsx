@@ -43,36 +43,11 @@ export default function AddMood({ navigate }: RouteComponentProps) {
               if (moodError) setMoodError(undefined);
             }}
           >
-            <RadioButton name="mood" value="1">
-              1
-            </RadioButton>
-            <RadioButton name="mood" value="2">
-              2
-            </RadioButton>
-            <RadioButton name="mood" value="3">
-              3
-            </RadioButton>
-            <RadioButton name="mood" value="4">
-              4
-            </RadioButton>
-            <RadioButton name="mood" value="5">
-              5
-            </RadioButton>
-            <RadioButton name="mood" value="6">
-              6
-            </RadioButton>
-            <RadioButton name="mood" value="7">
-              7
-            </RadioButton>
-            <RadioButton name="mood" value="8">
-              8
-            </RadioButton>
-            <RadioButton name="mood" value="9">
-              9
-            </RadioButton>
-            <RadioButton name="mood" value="10">
-              10
-            </RadioButton>
+            {[...Array(10)].map((_, i) => (
+              <RadioButton key={i} name="mood" value={i + 1}>
+                {i + 1}
+              </RadioButton>
+            ))}
           </RadioButton.Group>
           <Button>Submit</Button>
         </form>
