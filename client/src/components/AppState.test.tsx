@@ -13,27 +13,27 @@ const createStateWithEvents = (): State => ({
     byId: {
       "2020-05-07T19:36:00.000Z": {
         createdAt: "2020-05-07T19:36:00.000Z",
-        type: "moods/create",
+        type: "v1/moods/create",
         payload: { mood: 4 },
       },
       "2020-05-07T19:39:00.000Z": {
         createdAt: "2020-05-07T19:39:00.000Z",
-        type: "moods/create",
+        type: "v1/moods/create",
         payload: { mood: 9 },
       },
       "2020-05-07T20:31:00.000Z": {
         createdAt: "2020-05-07T20:31:00.000Z",
-        type: "moods/delete",
+        type: "v1/moods/delete",
         payload: "2020-05-07T19:36:00.000Z",
       },
       "2020-05-07T20:32:00.000Z": {
         createdAt: "2020-05-07T20:32:00.000Z",
-        type: "moods/create",
+        type: "v1/moods/create",
         payload: { mood: 10 },
       },
       "2020-05-07T20:33:00.000Z": {
         createdAt: "2020-05-07T20:33:00.000Z",
-        type: "moods/update",
+        type: "v1/moods/update",
         payload: { id: "2020-05-07T20:32:00.000Z", mood: 7 },
       },
     },
@@ -61,7 +61,7 @@ describe("appStateReducer", () => {
           type: "events/add",
           payload: {
             createdAt: "2020-05-07T19:53:00.000Z",
-            type: "moods/create",
+            type: "v1/moods/create",
             payload: { mood: 7 },
           },
         })
@@ -72,7 +72,7 @@ describe("appStateReducer", () => {
           byId: {
             "2020-05-07T19:53:00.000Z": {
               createdAt: "2020-05-07T19:53:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 7 },
             },
           },
@@ -88,14 +88,14 @@ describe("appStateReducer", () => {
     });
 
     describe("when there are events in state", () => {
-      test("moods/create", () => {
+      test("v1/moods/create", () => {
         const stateWithEvents = createStateWithEvents();
         expect(
           appStateReducer(stateWithEvents, {
             type: "events/add",
             payload: {
               createdAt: "2020-05-07T20:34:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
             },
           })
@@ -114,7 +114,7 @@ describe("appStateReducer", () => {
               ...stateWithEvents.events.byId,
               "2020-05-07T20:34:00.000Z": {
                 createdAt: "2020-05-07T20:34:00.000Z",
-                type: "moods/delete",
+                type: "v1/moods/delete",
                 payload: "2020-05-07T19:39:00.000Z",
               },
             },
@@ -135,14 +135,14 @@ describe("appStateReducer", () => {
         });
       });
 
-      test("moods/update", () => {
+      test("v1/moods/update", () => {
         const stateWithEvents = createStateWithEvents();
         expect(
           appStateReducer(stateWithEvents, {
             type: "events/add",
             payload: {
               createdAt: "2020-05-07T20:34:00.000Z",
-              type: "moods/update",
+              type: "v1/moods/update",
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
             },
           })
@@ -161,7 +161,7 @@ describe("appStateReducer", () => {
               ...stateWithEvents.events.byId,
               "2020-05-07T20:34:00.000Z": {
                 createdAt: "2020-05-07T20:34:00.000Z",
-                type: "moods/update",
+                type: "v1/moods/update",
                 payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
               },
             },
@@ -186,14 +186,14 @@ describe("appStateReducer", () => {
 
     // This could happen due to clock skew on an event that has come from the server
     describe("when there is an event in state that is newer than the created event", () => {
-      test("moods/create", () => {
+      test("v1/moods/create", () => {
         const stateWithEvents = createStateWithEvents();
         expect(
           appStateReducer(stateWithEvents, {
             type: "events/add",
             payload: {
               createdAt: "2020-05-07T20:30:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 4 },
             },
           })
@@ -212,7 +212,7 @@ describe("appStateReducer", () => {
               ...stateWithEvents.events.byId,
               "2020-05-07T20:33:00.001Z": {
                 createdAt: "2020-05-07T20:33:00.001Z",
-                type: "moods/create",
+                type: "v1/moods/create",
                 payload: { mood: 4 },
               },
             },
@@ -239,14 +239,14 @@ describe("appStateReducer", () => {
         });
       });
 
-      test("moods/delete", () => {
+      test("v1/moods/delete", () => {
         const stateWithEvents = createStateWithEvents();
         expect(
           appStateReducer(stateWithEvents, {
             type: "events/add",
             payload: {
               createdAt: "2020-05-07T20:30:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
             },
           })
@@ -265,7 +265,7 @@ describe("appStateReducer", () => {
               ...stateWithEvents.events.byId,
               "2020-05-07T20:33:00.001Z": {
                 createdAt: "2020-05-07T20:33:00.001Z",
-                type: "moods/delete",
+                type: "v1/moods/delete",
                 payload: "2020-05-07T19:39:00.000Z",
               },
             },
@@ -284,14 +284,14 @@ describe("appStateReducer", () => {
         });
       });
 
-      test("moods/update", () => {
+      test("v1/moods/update", () => {
         const stateWithEvents = createStateWithEvents();
         expect(
           appStateReducer(stateWithEvents, {
             type: "events/add",
             payload: {
               createdAt: "2020-05-07T20:30:00.000Z",
-              type: "moods/update",
+              type: "v1/moods/update",
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 2 },
             },
           })
@@ -310,7 +310,7 @@ describe("appStateReducer", () => {
               ...stateWithEvents.events.byId,
               "2020-05-07T20:33:00.001Z": {
                 createdAt: "2020-05-07T20:33:00.001Z",
-                type: "moods/update",
+                type: "v1/moods/update",
                 payload: { id: "2020-05-07T20:32:00.000Z", mood: 2 },
               },
             },
@@ -383,17 +383,17 @@ describe("appStateReducer", () => {
           payload: [
             {
               createdAt: "2020-05-07T19:53:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 7 },
             },
             {
               createdAt: "2020-05-07T19:55:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
               payload: "2020-05-07T19:53:00.000Z",
             },
             {
               createdAt: "2020-05-07T19:56:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 8 },
             },
           ],
@@ -409,17 +409,17 @@ describe("appStateReducer", () => {
           byId: {
             "2020-05-07T19:53:00.000Z": {
               createdAt: "2020-05-07T19:53:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 7 },
             },
             "2020-05-07T19:55:00.000Z": {
               createdAt: "2020-05-07T19:55:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
               payload: "2020-05-07T19:53:00.000Z",
             },
             "2020-05-07T19:56:00.000Z": {
               createdAt: "2020-05-07T19:56:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 8 },
             },
           },
@@ -443,32 +443,32 @@ describe("appStateReducer", () => {
             {
               createdAt: "2020-05-07T20:31:00.000Z",
               payload: "2020-05-07T19:36:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
             },
             {
               createdAt: "2020-05-07T19:53:00.000Z",
               payload: { mood: 7 },
-              type: "moods/create",
+              type: "v1/moods/create",
             },
             {
               createdAt: "2020-05-07T19:55:00.000Z",
               payload: "2020-05-07T19:53:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
             },
             {
               createdAt: "2020-05-07T19:56:00.000Z",
               payload: { mood: 8 },
-              type: "moods/create",
+              type: "v1/moods/create",
             },
             {
               createdAt: "2020-05-07T20:30:00.000Z",
               payload: "2020-05-07T19:39:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
             },
             {
               createdAt: "2020-05-07T20:33:00.000Z",
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 3 },
-              type: "moods/update",
+              type: "v1/moods/update",
             },
           ],
         })
@@ -490,27 +490,27 @@ describe("appStateReducer", () => {
             ...stateWithEvents.events.byId,
             "2020-05-07T19:53:00.000Z": {
               createdAt: "2020-05-07T19:53:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 7 },
             },
             "2020-05-07T19:55:00.000Z": {
               createdAt: "2020-05-07T19:55:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
               payload: "2020-05-07T19:53:00.000Z",
             },
             "2020-05-07T19:56:00.000Z": {
               createdAt: "2020-05-07T19:56:00.000Z",
-              type: "moods/create",
+              type: "v1/moods/create",
               payload: { mood: 8 },
             },
             "2020-05-07T20:30:00.000Z": {
               createdAt: "2020-05-07T20:30:00.000Z",
-              type: "moods/delete",
+              type: "v1/moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
             },
             "2020-05-07T20:33:00.000Z": {
               createdAt: "2020-05-07T20:33:00.000Z",
-              type: "moods/update",
+              type: "v1/moods/update",
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 3 },
             },
           },

@@ -23,7 +23,7 @@ export default function EditMood({
             dispatch({
               type: "events/add",
               payload: {
-                type: "moods/update",
+                type: "v1/moods/update",
                 createdAt: new Date().toISOString(),
                 payload: {
                   id,

@@ -66,17 +66,17 @@ const moodReducer = (
   event: AppEvent
 ): NormalizedMoods => {
   switch (event.type) {
-    case "moods/create":
+    case "v1/moods/create":
       return {
         allIds: [...moods.allIds, event.createdAt],
         byId: { ...moods.byId, [event.createdAt]: event.payload },
       };
-    case "moods/delete":
+    case "v1/moods/delete":
       return {
         allIds: moods.allIds.filter((id) => id !== event.payload),
         byId: omit(moods.byId, event.payload),
       };
-    case "moods/update":
+    case "v1/moods/update":
       return {
         ...moods,
         byId: { ...moods.byId, [event.payload.id]: omit(event.payload, "id") },

@@ -30,7 +30,7 @@ export default function Home({ navigate }: RouteComponentProps) {
                         dispatch({
                           type: "events/add",
                           payload: {
-                            type: "moods/delete",
+                            type: "v1/moods/delete",
                             createdAt: new Date().toISOString(),
                             payload: id,
                           },

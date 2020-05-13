@@ -24,7 +24,7 @@ export default function AddMood({ navigate }: RouteComponentProps) {
             dispatch({
               type: "events/add",
               payload: {
-                type: "moods/create",
+                type: "v1/moods/create",
                 createdAt: new Date().toISOString(),
                 payload: { mood: Number(moodValue) },
               },
