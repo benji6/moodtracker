@@ -26,8 +26,8 @@ export default function EditMood({
                 type: "moods/update",
                 createdAt: new Date().toISOString(),
                 payload: {
+                  id,
                   mood: Number((e.target as HTMLFormElement).mood.value),
-                  createdAt: id,
                 },
               },
             });

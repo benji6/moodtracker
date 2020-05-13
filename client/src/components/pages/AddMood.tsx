@@ -21,16 +21,12 @@ export default function AddMood({ navigate }: RouteComponentProps) {
               setMoodError(fieldError);
               return;
             }
-            const createdAt = new Date().toISOString();
             dispatch({
               type: "events/add",
               payload: {
                 type: "moods/create",
-                createdAt,
-                payload: {
-                  mood: Number(moodValue),
-                  createdAt,
-                },
+                createdAt: new Date().toISOString(),
+                payload: { mood: Number(moodValue) },
               },
             });
             (navigate as NavigateFn)("/");

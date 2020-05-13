@@ -14,12 +14,12 @@ const createStateWithEvents = (): State => ({
       "2020-05-07T19:36:00.000Z": {
         createdAt: "2020-05-07T19:36:00.000Z",
         type: "moods/create",
-        payload: { createdAt: "2020-05-07T19:36:00.000Z", mood: 4 },
+        payload: { mood: 4 },
       },
       "2020-05-07T19:39:00.000Z": {
         createdAt: "2020-05-07T19:39:00.000Z",
         type: "moods/create",
-        payload: { createdAt: "2020-05-07T19:39:00.000Z", mood: 9 },
+        payload: { mood: 9 },
       },
       "2020-05-07T20:31:00.000Z": {
         createdAt: "2020-05-07T20:31:00.000Z",
@@ -29,12 +29,12 @@ const createStateWithEvents = (): State => ({
       "2020-05-07T20:32:00.000Z": {
         createdAt: "2020-05-07T20:32:00.000Z",
         type: "moods/create",
-        payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 10 },
+        payload: { mood: 10 },
       },
       "2020-05-07T20:33:00.000Z": {
         createdAt: "2020-05-07T20:33:00.000Z",
         type: "moods/update",
-        payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 7 },
+        payload: { id: "2020-05-07T20:32:00.000Z", mood: 7 },
       },
     },
     idsToSync: [
@@ -47,14 +47,8 @@ const createStateWithEvents = (): State => ({
   moods: {
     allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
     byId: {
-      "2020-05-07T19:39:00.000Z": {
-        createdAt: "2020-05-07T19:39:00.000Z",
-        mood: 9,
-      },
-      "2020-05-07T20:32:00.000Z": {
-        createdAt: "2020-05-07T20:32:00.000Z",
-        mood: 7,
-      },
+      "2020-05-07T19:39:00.000Z": { mood: 9 },
+      "2020-05-07T20:32:00.000Z": { mood: 7 },
     },
   },
 });
@@ -68,10 +62,7 @@ describe("appStateReducer", () => {
           payload: {
             createdAt: "2020-05-07T19:53:00.000Z",
             type: "moods/create",
-            payload: {
-              createdAt: "2020-05-07T19:53:00.000Z",
-              mood: 7,
-            },
+            payload: { mood: 7 },
           },
         })
       ).toEqual({
@@ -82,10 +73,7 @@ describe("appStateReducer", () => {
             "2020-05-07T19:53:00.000Z": {
               createdAt: "2020-05-07T19:53:00.000Z",
               type: "moods/create",
-              payload: {
-                createdAt: "2020-05-07T19:53:00.000Z",
-                mood: 7,
-              },
+              payload: { mood: 7 },
             },
           },
           idsToSync: ["2020-05-07T19:53:00.000Z"],
@@ -93,10 +81,7 @@ describe("appStateReducer", () => {
         moods: {
           allIds: ["2020-05-07T19:53:00.000Z"],
           byId: {
-            "2020-05-07T19:53:00.000Z": {
-              createdAt: "2020-05-07T19:53:00.000Z",
-              mood: 7,
-            },
+            "2020-05-07T19:53:00.000Z": { mood: 7 },
           },
         },
       });
@@ -144,10 +129,7 @@ describe("appStateReducer", () => {
           moods: {
             allIds: ["2020-05-07T20:32:00.000Z"],
             byId: {
-              "2020-05-07T20:32:00.000Z": {
-                createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 7,
-              },
+              "2020-05-07T20:32:00.000Z": { mood: 7 },
             },
           },
         });
@@ -161,7 +143,7 @@ describe("appStateReducer", () => {
             payload: {
               createdAt: "2020-05-07T20:34:00.000Z",
               type: "moods/update",
-              payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 5 },
+              payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
             },
           })
         ).toEqual({
@@ -180,7 +162,7 @@ describe("appStateReducer", () => {
               "2020-05-07T20:34:00.000Z": {
                 createdAt: "2020-05-07T20:34:00.000Z",
                 type: "moods/update",
-                payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 5 },
+                payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
               },
             },
             idsToSync: [
@@ -194,14 +176,8 @@ describe("appStateReducer", () => {
           moods: {
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
             byId: {
-              "2020-05-07T19:39:00.000Z": {
-                createdAt: "2020-05-07T19:39:00.000Z",
-                mood: 9,
-              },
-              "2020-05-07T20:32:00.000Z": {
-                createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 5,
-              },
+              "2020-05-07T19:39:00.000Z": { mood: 9 },
+              "2020-05-07T20:32:00.000Z": { mood: 5 },
             },
           },
         });
@@ -218,10 +194,7 @@ describe("appStateReducer", () => {
             payload: {
               createdAt: "2020-05-07T20:30:00.000Z",
               type: "moods/create",
-              payload: {
-                createdAt: "2020-05-07T20:30:00.000Z",
-                mood: 4,
-              },
+              payload: { mood: 4 },
             },
           })
         ).toEqual({
@@ -240,10 +213,7 @@ describe("appStateReducer", () => {
               "2020-05-07T20:33:00.001Z": {
                 createdAt: "2020-05-07T20:33:00.001Z",
                 type: "moods/create",
-                payload: {
-                  createdAt: "2020-05-07T20:33:00.001Z",
-                  mood: 4,
-                },
+                payload: { mood: 4 },
               },
             },
             idsToSync: [
@@ -261,18 +231,9 @@ describe("appStateReducer", () => {
               "2020-05-07T20:33:00.001Z",
             ],
             byId: {
-              "2020-05-07T19:39:00.000Z": {
-                createdAt: "2020-05-07T19:39:00.000Z",
-                mood: 9,
-              },
-              "2020-05-07T20:32:00.000Z": {
-                createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 7,
-              },
-              "2020-05-07T20:33:00.001Z": {
-                createdAt: "2020-05-07T20:33:00.001Z",
-                mood: 4,
-              },
+              "2020-05-07T19:39:00.000Z": { mood: 9 },
+              "2020-05-07T20:32:00.000Z": { mood: 7 },
+              "2020-05-07T20:33:00.001Z": { mood: 4 },
             },
           },
         });
@@ -318,12 +279,7 @@ describe("appStateReducer", () => {
           },
           moods: {
             allIds: ["2020-05-07T20:32:00.000Z"],
-            byId: {
-              "2020-05-07T20:32:00.000Z": {
-                createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 7,
-              },
-            },
+            byId: { "2020-05-07T20:32:00.000Z": { mood: 7 } },
           },
         });
       });
@@ -336,10 +292,7 @@ describe("appStateReducer", () => {
             payload: {
               createdAt: "2020-05-07T20:30:00.000Z",
               type: "moods/update",
-              payload: {
-                createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 2,
-              },
+              payload: { id: "2020-05-07T20:32:00.000Z", mood: 2 },
             },
           })
         ).toEqual({
@@ -358,10 +311,7 @@ describe("appStateReducer", () => {
               "2020-05-07T20:33:00.001Z": {
                 createdAt: "2020-05-07T20:33:00.001Z",
                 type: "moods/update",
-                payload: {
-                  createdAt: "2020-05-07T20:32:00.000Z",
-                  mood: 2,
-                },
+                payload: { id: "2020-05-07T20:32:00.000Z", mood: 2 },
               },
             },
             idsToSync: [
@@ -375,14 +325,8 @@ describe("appStateReducer", () => {
           moods: {
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
             byId: {
-              "2020-05-07T19:39:00.000Z": {
-                createdAt: "2020-05-07T19:39:00.000Z",
-                mood: 9,
-              },
-              "2020-05-07T20:32:00.000Z": {
-                createdAt: "2020-05-07T20:32:00.000Z",
-                mood: 2,
-              },
+              "2020-05-07T19:39:00.000Z": { mood: 9 },
+              "2020-05-07T20:32:00.000Z": { mood: 2 },
             },
           },
         });
@@ -406,14 +350,8 @@ describe("appStateReducer", () => {
       moods: {
         allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
         byId: {
-          "2020-05-07T19:39:00.000Z": {
-            createdAt: "2020-05-07T19:39:00.000Z",
-            mood: 9,
-          },
-          "2020-05-07T20:32:00.000Z": {
-            createdAt: "2020-05-07T20:32:00.000Z",
-            mood: 7,
-          },
+          "2020-05-07T19:39:00.000Z": { mood: 9 },
+          "2020-05-07T20:32:00.000Z": { mood: 7 },
         },
       },
     });
@@ -446,7 +384,7 @@ describe("appStateReducer", () => {
             {
               createdAt: "2020-05-07T19:53:00.000Z",
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:53:00.000Z", mood: 7 },
+              payload: { mood: 7 },
             },
             {
               createdAt: "2020-05-07T19:55:00.000Z",
@@ -456,7 +394,7 @@ describe("appStateReducer", () => {
             {
               createdAt: "2020-05-07T19:56:00.000Z",
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:56:00.000Z", mood: 8 },
+              payload: { mood: 8 },
             },
           ],
         })
@@ -472,7 +410,7 @@ describe("appStateReducer", () => {
             "2020-05-07T19:53:00.000Z": {
               createdAt: "2020-05-07T19:53:00.000Z",
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:53:00.000Z", mood: 7 },
+              payload: { mood: 7 },
             },
             "2020-05-07T19:55:00.000Z": {
               createdAt: "2020-05-07T19:55:00.000Z",
@@ -482,7 +420,7 @@ describe("appStateReducer", () => {
             "2020-05-07T19:56:00.000Z": {
               createdAt: "2020-05-07T19:56:00.000Z",
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:56:00.000Z", mood: 8 },
+              payload: { mood: 8 },
             },
           },
           idsToSync: [],
@@ -490,10 +428,7 @@ describe("appStateReducer", () => {
         moods: {
           allIds: ["2020-05-07T19:56:00.000Z"],
           byId: {
-            "2020-05-07T19:56:00.000Z": {
-              createdAt: "2020-05-07T19:56:00.000Z",
-              mood: 8,
-            },
+            "2020-05-07T19:56:00.000Z": { mood: 8 },
           },
         },
       });
@@ -507,33 +442,33 @@ describe("appStateReducer", () => {
           payload: [
             {
               createdAt: "2020-05-07T20:31:00.000Z",
-              type: "moods/delete",
               payload: "2020-05-07T19:36:00.000Z",
+              type: "moods/delete",
             },
             {
               createdAt: "2020-05-07T19:53:00.000Z",
+              payload: { mood: 7 },
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:53:00.000Z", mood: 7 },
             },
             {
               createdAt: "2020-05-07T19:55:00.000Z",
-              type: "moods/delete",
               payload: "2020-05-07T19:53:00.000Z",
+              type: "moods/delete",
             },
             {
               createdAt: "2020-05-07T19:56:00.000Z",
+              payload: { mood: 8 },
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:56:00.000Z", mood: 8 },
             },
             {
               createdAt: "2020-05-07T20:30:00.000Z",
-              type: "moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
+              type: "moods/delete",
             },
             {
               createdAt: "2020-05-07T20:33:00.000Z",
+              payload: { id: "2020-05-07T20:32:00.000Z", mood: 3 },
               type: "moods/update",
-              payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 3 },
             },
           ],
         })
@@ -556,7 +491,7 @@ describe("appStateReducer", () => {
             "2020-05-07T19:53:00.000Z": {
               createdAt: "2020-05-07T19:53:00.000Z",
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:53:00.000Z", mood: 7 },
+              payload: { mood: 7 },
             },
             "2020-05-07T19:55:00.000Z": {
               createdAt: "2020-05-07T19:55:00.000Z",
@@ -566,7 +501,7 @@ describe("appStateReducer", () => {
             "2020-05-07T19:56:00.000Z": {
               createdAt: "2020-05-07T19:56:00.000Z",
               type: "moods/create",
-              payload: { createdAt: "2020-05-07T19:56:00.000Z", mood: 8 },
+              payload: { mood: 8 },
             },
             "2020-05-07T20:30:00.000Z": {
               createdAt: "2020-05-07T20:30:00.000Z",
@@ -576,7 +511,7 @@ describe("appStateReducer", () => {
             "2020-05-07T20:33:00.000Z": {
               createdAt: "2020-05-07T20:33:00.000Z",
               type: "moods/update",
-              payload: { createdAt: "2020-05-07T20:32:00.000Z", mood: 3 },
+              payload: { id: "2020-05-07T20:32:00.000Z", mood: 3 },
             },
           },
           idsToSync: [
@@ -589,14 +524,8 @@ describe("appStateReducer", () => {
         moods: {
           allIds: ["2020-05-07T19:56:00.000Z", "2020-05-07T20:32:00.000Z"],
           byId: {
-            "2020-05-07T19:56:00.000Z": {
-              createdAt: "2020-05-07T19:56:00.000Z",
-              mood: 8,
-            },
-            "2020-05-07T20:32:00.000Z": {
-              createdAt: "2020-05-07T20:32:00.000Z",
-              mood: 3,
-            },
+            "2020-05-07T19:56:00.000Z": { mood: 8 },
+            "2020-05-07T20:32:00.000Z": { mood: 3 },
           },
         },
       });
