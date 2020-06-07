@@ -11,7 +11,7 @@ export default function SeeAlso(_: RouteComponentProps) {
         <ul>
           <li>
             <a
-              href="https://meditation-timer.org"
+              href="https://meditation-timer.link"
               rel="noopener"
               target="_blank"
             >
