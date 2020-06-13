@@ -2,8 +2,10 @@ import { RouteComponentProps, NavigateFn } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton, requiredValidator } from "eri";
 import { DispatchContext } from "../AppState";
+import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
 
 export default function AddMood({ navigate }: RouteComponentProps) {
+  useRedirectUnauthed();
   const dispatch = React.useContext(DispatchContext);
   const [moodError, setMoodError] = React.useState<string | undefined>();
 

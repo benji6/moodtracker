@@ -2,11 +2,13 @@ import { RouteComponentProps, NavigateFn, Redirect } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton } from "eri";
 import { DispatchContext, StateContext } from "../AppState";
+import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
 
 export default function EditMood({
   id,
   navigate,
 }: RouteComponentProps<{ id: string }>) {
+  useRedirectUnauthed();
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
   if (!id) return <Redirect to="/404" />;
