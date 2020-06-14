@@ -334,6 +334,14 @@ describe("appStateReducer", () => {
     });
   });
 
+  test("events/deleteAll", () => {
+    expect(
+      appStateReducer(createStateWithEvents(), {
+        type: "events/deleteAll",
+      })
+    ).toEqual(createInitialState());
+  });
+
   test("events/loadFromStorage", () => {
     const events = createStateWithEvents()["events"];
     expect(

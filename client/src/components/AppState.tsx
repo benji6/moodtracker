@@ -3,6 +3,7 @@ import { FluxStandardAction, NormalizedEvents, Mood, AppEvent } from "../types";
 
 type Action =
   | FluxStandardAction<"events/add", AppEvent>
+  | FluxStandardAction<"events/deleteAll">
   | FluxStandardAction<"events/loadFromStorage", NormalizedEvents>
   | FluxStandardAction<"events/syncFromServer", AppEvent[]>
   | FluxStandardAction<"storage/loaded">
@@ -122,6 +123,14 @@ export const appStateReducer = (state: State, action: Action): State => {
         ...state,
         events,
         moods: deriveMoodsFromEvents(events, state.moods),
+      };
+    }
+    case "events/deleteAll": {
+      const initialState = createInitialState();
+      return {
+        ...state,
+        events: initialState.events,
+        moods: initialState.moods,
       };
     }
     case "events/loadFromStorage":

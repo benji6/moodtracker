@@ -10,7 +10,7 @@ export default function useStorage() {
     () =>
       void (async () => {
         try {
-          const events = await storage.getEvents(undefined);
+          const events = await storage.getEvents();
           if (events)
             dispatch({ type: "events/loadFromStorage", payload: events });
         } finally {
@@ -22,6 +22,6 @@ export default function useStorage() {
 
   React.useEffect(() => {
     if (state.isStorageLoading) return;
-    storage.setEvents(undefined, state.events);
+    storage.setEvents(state.events);
   }, [state.isStorageLoading, state.events]);
 }

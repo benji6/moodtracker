@@ -1,16 +1,12 @@
-import { get, set } from "idb-keyval";
+import { del, get, set } from "idb-keyval";
 import { NormalizedEvents } from "./types";
 
-const makeEventsStorageKey = (userId: string | undefined) =>
-  `user-id:${userId || "UNAUTHENTICATED-USER"}:events`;
+const EVENTS_KEY = "moodtracker:events";
 
 export default {
-  getEvents: (
-    userId: string | undefined
-  ): Promise<NormalizedEvents | undefined> =>
-    get<NormalizedEvents | undefined>(makeEventsStorageKey(userId)),
-  setEvents: (
-    userId: string | undefined,
-    events: NormalizedEvents
-  ): Promise<void> => set(makeEventsStorageKey(userId), events),
+  deleteEvents: (): Promise<void> => del(EVENTS_KEY),
+  getEvents: (): Promise<NormalizedEvents | undefined> =>
+    get<NormalizedEvents | undefined>(EVENTS_KEY),
+  setEvents: (events: NormalizedEvents): Promise<void> =>
+    set(EVENTS_KEY, events),
 };
