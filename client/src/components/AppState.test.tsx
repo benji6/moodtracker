@@ -37,6 +37,7 @@ const createStateWithEvents = (): State => ({
         payload: { id: "2020-05-07T20:32:00.000Z", mood: 7 },
       },
     },
+    hasLoadedFromServer: true,
     idsToSync: [
       "2020-05-07T20:31:00.000Z",
       "2020-05-07T20:32:00.000Z",
@@ -76,6 +77,7 @@ describe("appStateReducer", () => {
               payload: { mood: 7 },
             },
           },
+          hasLoadedFromServer: false,
           idsToSync: ["2020-05-07T19:53:00.000Z"],
         },
         moods: {
@@ -118,6 +120,7 @@ describe("appStateReducer", () => {
                 payload: "2020-05-07T19:39:00.000Z",
               },
             },
+            hasLoadedFromServer: true,
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
@@ -165,6 +168,7 @@ describe("appStateReducer", () => {
                 payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
               },
             },
+            hasLoadedFromServer: true,
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
@@ -216,6 +220,7 @@ describe("appStateReducer", () => {
                 payload: { mood: 4 },
               },
             },
+            hasLoadedFromServer: true,
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
@@ -269,6 +274,7 @@ describe("appStateReducer", () => {
                 payload: "2020-05-07T19:39:00.000Z",
               },
             },
+            hasLoadedFromServer: true,
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
@@ -314,6 +320,7 @@ describe("appStateReducer", () => {
                 payload: { id: "2020-05-07T20:32:00.000Z", mood: 2 },
               },
             },
+            hasLoadedFromServer: true,
             idsToSync: [
               "2020-05-07T20:31:00.000Z",
               "2020-05-07T20:32:00.000Z",
@@ -431,6 +438,7 @@ describe("appStateReducer", () => {
               payload: { mood: 8 },
             },
           },
+          hasLoadedFromServer: false,
           idsToSync: [],
         },
         moods: {
@@ -522,6 +530,7 @@ describe("appStateReducer", () => {
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 3 },
             },
           },
+          hasLoadedFromServer: true,
           idsToSync: [
             "2020-05-07T20:31:00.000Z",
             "2020-05-07T20:32:00.000Z",
@@ -605,6 +614,7 @@ describe("appStateReducer", () => {
   });
 
   test("syncFromServer/error", () => {
+    const initialState = createInitialState();
     expect(
       appStateReducer(
         {
@@ -615,7 +625,8 @@ describe("appStateReducer", () => {
         { type: "syncFromServer/error" }
       )
     ).toEqual({
-      ...createInitialState(),
+      ...initialState,
+      events: { ...initialState.events, hasLoadedFromServer: true },
       isSyncingFromServer: false,
       syncFromServerError: true,
     });
@@ -651,7 +662,11 @@ describe("appStateReducer", () => {
       )
     ).toEqual({
       ...initialState,
-      events: { ...initialState.events, nextCursor: "test-cursor-456" },
+      events: {
+        ...initialState.events,
+        hasLoadedFromServer: true,
+        nextCursor: "test-cursor-456",
+      },
       isSyncingFromServer: false,
       syncFromServerError: false,
     });

@@ -8,6 +8,10 @@ export type FluxStandardAction<
 export interface NormalizedEvents {
   allIds: string[];
   byId: { [id: string]: AppEvent };
+
+  // Is false until initial load from server succeeds or errors.
+  // This allows us to display a loading spinner when switching users.
+  hasLoadedFromServer: boolean;
   idsToSync: string[];
   nextCursor: string | undefined;
 }

@@ -1,5 +1,5 @@
 import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Button } from "eri";
+import { Paper, Fab, Icon, Button, Spinner } from "eri";
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 
@@ -11,48 +11,52 @@ export default function Home({ navigate }: RouteComponentProps) {
       {state.userEmail ? (
         <Paper>
           <h2>Moods</h2>
-          {state.moods.allIds.length ? (
-            <ul>
-              {state.moods.allIds.map((id) => {
-                const mood = state.moods.byId[id];
-                return (
-                  <li key={id}>
-                    {new Date(id).toLocaleString()}: {mood.mood}{" "}
-                    <Button.Group>
-                      <Button
-                        onClick={() => (navigate as NavigateFn)(`edit/${id}`)}
-                        variant="secondary"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        danger
-                        onClick={() =>
-                          dispatch({
-                            type: "events/add",
-                            payload: {
-                              type: "v1/moods/delete",
-                              createdAt: new Date().toISOString(),
-                              payload: id,
-                            },
-                          })
-                        }
-                        variant="secondary"
-                      >
-                        Delete
-                      </Button>
-                    </Button.Group>
-                  </li>
-                );
-              })}
-            </ul>
+          {state.events.hasLoadedFromServer ? (
+            state.moods.allIds.length ? (
+              <ul>
+                {state.moods.allIds.map((id) => {
+                  const mood = state.moods.byId[id];
+                  return (
+                    <li key={id}>
+                      {new Date(id).toLocaleString()}: {mood.mood}{" "}
+                      <Button.Group>
+                        <Button
+                          onClick={() => (navigate as NavigateFn)(`edit/${id}`)}
+                          variant="secondary"
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          danger
+                          onClick={() =>
+                            dispatch({
+                              type: "events/add",
+                              payload: {
+                                type: "v1/moods/delete",
+                                createdAt: new Date().toISOString(),
+                                payload: id,
+                              },
+                            })
+                          }
+                          variant="secondary"
+                        >
+                          Delete
+                        </Button>
+                      </Button.Group>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <>
+                <p>Welcome to MoodTracker!</p>
+                <p>
+                  <Link to="add">Click here to add your first mood</Link>
+                </p>
+              </>
+            )
           ) : (
-            <>
-              <p>Welcome to MoodTracker!</p>
-              <p>
-                <Link to="add">Click here to add your first mood</Link>
-              </p>
-            </>
+            <Spinner />
           )}
           <Fab
             aria-label="add new mood"

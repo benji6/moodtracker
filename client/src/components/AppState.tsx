@@ -33,7 +33,13 @@ export interface State {
 }
 
 export const createInitialState = (): State => ({
-  events: { allIds: [], byId: {}, idsToSync: [], nextCursor: undefined },
+  events: {
+    allIds: [],
+    byId: {},
+    hasLoadedFromServer: false,
+    idsToSync: [],
+    nextCursor: undefined,
+  },
   isStorageLoading: true,
   isSyncingFromServer: false,
   isSyncingToServer: false,
@@ -193,6 +199,7 @@ export const appStateReducer = (state: State, action: Action): State => {
     case "syncFromServer/error":
       return {
         ...state,
+        events: { ...state.events, hasLoadedFromServer: true },
         isSyncingFromServer: false,
         syncFromServerError: true,
       };
@@ -205,7 +212,11 @@ export const appStateReducer = (state: State, action: Action): State => {
     case "syncFromServer/success":
       return {
         ...state,
-        events: { ...state.events, nextCursor: action.payload },
+        events: {
+          ...state.events,
+          hasLoadedFromServer: true,
+          nextCursor: action.payload,
+        },
         isSyncingFromServer: false,
         syncFromServerError: false,
       };
