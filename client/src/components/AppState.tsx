@@ -18,7 +18,7 @@ type Action =
 
 interface NormalizedMoods {
   allIds: string[];
-  byId: { [id: string]: Mood };
+  byId: { [id: string]: Mood & { updatedAt?: string } };
 }
 
 export interface State {
@@ -86,7 +86,13 @@ const moodReducer = (
     case "v1/moods/update":
       return {
         ...moods,
-        byId: { ...moods.byId, [event.payload.id]: omit(event.payload, "id") },
+        byId: {
+          ...moods.byId,
+          [event.payload.id]: omit(
+            { ...event.payload, updatedAt: event.createdAt },
+            "id"
+          ),
+        },
       };
   }
 };

@@ -18,6 +18,17 @@ export default function EditMood({
     <Paper.Group>
       <Paper>
         <h2>Edit mood</h2>
+        <p>
+          <small>Created: {new Date(id).toLocaleString()}</small>
+          {mood.updatedAt && (
+            <>
+              <br />
+              <small>
+                Last updated: {new Date(mood.updatedAt).toLocaleString()}
+              </small>
+            </>
+          )}
+        </p>
         <form
           noValidate
           onSubmit={(e) => {

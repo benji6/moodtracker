@@ -1,11 +1,13 @@
 import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Button, Spinner } from "eri";
+import { Paper, Fab, Icon, Button, Spinner, Card } from "eri";
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
+import CardGroup from "eri/dist/components/Card/CardGroup";
 
 export default function Home({ navigate }: RouteComponentProps) {
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
+
   return (
     <Paper.Group>
       {state.userEmail ? (
@@ -13,12 +15,20 @@ export default function Home({ navigate }: RouteComponentProps) {
           <h2>Moods</h2>
           {state.events.hasLoadedFromServer ? (
             state.moods.allIds.length ? (
-              <ul>
+              <CardGroup>
                 {state.moods.allIds.map((id) => {
                   const mood = state.moods.byId[id];
                   return (
-                    <li key={id}>
-                      {new Date(id).toLocaleString()}: {mood.mood}{" "}
+                    <Card key={id}>
+                      <ul>
+                        <li>Mood: {mood.mood}</li>
+                        <li>Created: {new Date(id).toLocaleString()}</li>
+                        {mood.updatedAt && (
+                          <li>
+                            Updated: {new Date(mood.updatedAt).toLocaleString()}
+                          </li>
+                        )}
+                      </ul>
                       <Button.Group>
                         <Button
                           onClick={() => (navigate as NavigateFn)(`edit/${id}`)}
@@ -43,10 +53,10 @@ export default function Home({ navigate }: RouteComponentProps) {
                           Delete
                         </Button>
                       </Button.Group>
-                    </li>
+                    </Card>
                   );
                 })}
-              </ul>
+              </CardGroup>
             ) : (
               <>
                 <p>Welcome to MoodTracker!</p>
