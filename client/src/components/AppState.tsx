@@ -1,5 +1,10 @@
 import * as React from "react";
-import { FluxStandardAction, NormalizedEvents, Mood, AppEvent } from "../types";
+import {
+  FluxStandardAction,
+  NormalizedEvents,
+  AppEvent,
+  NormalizedMoods,
+} from "../types";
 
 type Action =
   | FluxStandardAction<"events/add", AppEvent>
@@ -15,11 +20,6 @@ type Action =
   | FluxStandardAction<"syncToServer/success">
   | FluxStandardAction<"user/clearEmail">
   | FluxStandardAction<"user/setEmail", string>;
-
-interface NormalizedMoods {
-  allIds: string[];
-  byId: { [id: string]: Mood & { updatedAt?: string } };
-}
 
 export interface State {
   events: NormalizedEvents;

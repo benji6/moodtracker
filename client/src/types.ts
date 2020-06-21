@@ -16,6 +16,11 @@ export interface NormalizedEvents {
   nextCursor: string | undefined;
 }
 
+export interface NormalizedMoods {
+  allIds: string[];
+  byId: { [id: string]: Mood & { updatedAt?: string } };
+}
+
 export interface Mood {
   mood: number;
 }
