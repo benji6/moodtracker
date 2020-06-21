@@ -48,14 +48,14 @@ export default function EditMood({
           }}
         >
           <RadioButton.Group label="Mood">
-            {[...Array(10)].map((_, i) => (
+            {[...Array(11)].map((_, i) => (
               <RadioButton
-                defaultChecked={mood.mood === i + 1}
+                defaultChecked={mood.mood === i}
                 key={i}
                 name="mood"
-                value={i + 1}
+                value={i}
               >
-                {i + 1}
+                {i}
               </RadioButton>
             ))}
           </RadioButton.Group>

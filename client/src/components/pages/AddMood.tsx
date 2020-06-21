@@ -41,9 +41,9 @@ export default function AddMood({ navigate }: RouteComponentProps) {
               if (moodError) setMoodError(undefined);
             }}
           >
-            {[...Array(10)].map((_, i) => (
-              <RadioButton key={i} name="mood" value={i + 1}>
-                {i + 1}
+            {[...Array(11)].map((_, i) => (
+              <RadioButton key={i} name="mood" value={i}>
+                {i}
               </RadioButton>
             ))}
           </RadioButton.Group>
