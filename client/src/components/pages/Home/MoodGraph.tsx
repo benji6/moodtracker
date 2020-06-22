@@ -7,10 +7,7 @@ interface IProps {
 }
 
 export default function MoodGraph({ moods }: IProps) {
-  const domain = [
-    new Date(moods.allIds[0]).getTime(),
-    new Date(moods.allIds[moods.allIds.length - 1]).getTime(),
-  ];
+  const domain = [new Date(moods.allIds[0]).getTime(), Date.now()];
   const [width, setWidth] = React.useState(0);
   const domainSpread = domain[1] - domain[0];
   const range = [0, 10];

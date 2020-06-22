@@ -1,5 +1,5 @@
 import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Spinner } from "eri";
+import { Paper, Fab, Icon, Spinner, RadioButton } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
 import MoodGraph from "./MoodGraph";
@@ -7,6 +7,16 @@ import MoodList from "./MoodList";
 
 export default function Home({ navigate }: RouteComponentProps) {
   const state = React.useContext(StateContext);
+  const [dayCount, setDayCount] = React.useState(7);
+
+  const now = Date.now();
+
+  const visibleMoods = {
+    ...state.moods,
+    allIds: state.moods.allIds.filter(
+      (id) => now - new Date(id).getTime() < dayCount * 86400000
+    ),
+  };
 
   return (
     <Paper.Group>
@@ -15,9 +25,38 @@ export default function Home({ navigate }: RouteComponentProps) {
           {state.events.hasLoadedFromServer ? (
             state.moods.allIds.length ? (
               <>
-                <MoodGraph moods={state.moods} />
+                <Paper>
+                  <h2>Filter</h2>
+                  <RadioButton.Group label="Number of days to show">
+                    {[
+                      ...[...Array(4).keys()]
+                        .map((n) => (n + 1) * 7)
+                        .map((n) => (
+                          <RadioButton
+                            key={n}
+                            name="day-count"
+                            onChange={() => setDayCount(n)}
+                            checked={dayCount === n}
+                            value={n}
+                          >
+                            {n}
+                          </RadioButton>
+                        )),
+                      <RadioButton
+                        key="all"
+                        name="day-count"
+                        onChange={() => setDayCount(Infinity)}
+                        checked={dayCount === Infinity}
+                        value={Infinity}
+                      >
+                        All
+                      </RadioButton>,
+                    ]}
+                  </RadioButton.Group>
+                </Paper>
+                <MoodGraph moods={visibleMoods} />
                 <MoodList
-                  moods={state.moods}
+                  moods={visibleMoods}
                   navigate={navigate as NavigateFn}
                 />
               </>
