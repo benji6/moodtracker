@@ -3,11 +3,11 @@ import { NormalizedMoods } from "../../../types";
 import { Paper } from "eri";
 
 interface IProps {
+  domain: [number, number];
   moods: NormalizedMoods;
 }
 
-export default function MoodGraph({ moods }: IProps) {
-  const domain = [new Date(moods.allIds[0]).getTime(), Date.now()];
+export default function MoodGraph({ domain, moods }: IProps) {
   const [width, setWidth] = React.useState(0);
   const domainSpread = domain[1] - domain[0];
   const range = [0, 10];

@@ -1,22 +1,76 @@
 import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Spinner, RadioButton } from "eri";
+import { Paper, Fab, Icon, Spinner, RadioButton, Pagination } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
 import MoodGraph from "./MoodGraph";
 import MoodList from "./MoodList";
+import { FluxStandardAction } from "../../../types";
+
+type HomeAction =
+  | FluxStandardAction<"moods/setDaysToShow", number | undefined>
+  | FluxStandardAction<"moods/setPage", number>;
+
+export interface HomeState {
+  dayCount: number | undefined;
+  page: number;
+}
+
+export const homeReducer = (
+  state: HomeState,
+  action: HomeAction
+): HomeState => {
+  switch (action.type) {
+    case "moods/setDaysToShow": {
+      const payload = "payload" in action ? action.payload : undefined;
+      return { dayCount: payload, page: 0 };
+    }
+    case "moods/setPage":
+      return { ...state, page: action.payload };
+  }
+};
 
 export default function Home({ navigate }: RouteComponentProps) {
   const state = React.useContext(StateContext);
-  const [dayCount, setDayCount] = React.useState(7);
+  const [homeState, homeDispatch] = React.useReducer(homeReducer, {
+    dayCount: 7,
+    page: 0,
+  });
 
   const now = Date.now();
 
-  const visibleMoods = {
-    ...state.moods,
-    allIds: state.moods.allIds.filter(
-      (id) => now - new Date(id).getTime() < dayCount * 86400000
-    ),
-  };
+  let visibleMoods = state.moods;
+
+  let pageCount = 1;
+
+  let domain: [number, number] = [
+    new Date(visibleMoods.allIds[0]).getTime(),
+    now,
+  ];
+
+  if (homeState.dayCount !== undefined) {
+    const pageSize = homeState.dayCount * 86400000;
+    const domainEnd = now - pageSize * homeState.page;
+
+    visibleMoods = {
+      ...state.moods,
+      allIds: state.moods.allIds.filter((id) => {
+        const moodTime = new Date(id).getTime();
+        return (
+          moodTime > now - pageSize * (homeState.page + 1) &&
+          moodTime < domainEnd
+        );
+      }),
+    };
+
+    const oldestMoodId = state.moods.allIds[0];
+
+    if (oldestMoodId) {
+      const dt = now - new Date(oldestMoodId).getTime();
+      pageCount = Math.ceil(dt / pageSize);
+    }
+
+    domain = [new Date(visibleMoods.allIds[0]).getTime(), domainEnd];
+  }
 
   return (
     <Paper.Group>
@@ -35,8 +89,13 @@ export default function Home({ navigate }: RouteComponentProps) {
                           <RadioButton
                             key={n}
                             name="day-count"
-                            onChange={() => setDayCount(n)}
-                            checked={dayCount === n}
+                            onChange={() =>
+                              homeDispatch({
+                                payload: n,
+                                type: "moods/setDaysToShow",
+                              })
+                            }
+                            checked={homeState.dayCount === n}
                             value={n}
                           >
                             {n}
@@ -45,16 +104,33 @@ export default function Home({ navigate }: RouteComponentProps) {
                       <RadioButton
                         key="all"
                         name="day-count"
-                        onChange={() => setDayCount(Infinity)}
-                        checked={dayCount === Infinity}
-                        value={Infinity}
+                        onChange={() =>
+                          homeDispatch({
+                            payload: undefined,
+                            type: "moods/setDaysToShow",
+                          })
+                        }
+                        checked={homeState.dayCount === undefined}
+                        value={undefined}
                       >
                         All
                       </RadioButton>,
                     ]}
                   </RadioButton.Group>
+                  {pageCount > 1 && (
+                    <>
+                      <h3>Page</h3>
+                      <Pagination
+                        onChange={(n) =>
+                          homeDispatch({ payload: n, type: "moods/setPage" })
+                        }
+                        page={homeState.page}
+                        pageCount={pageCount}
+                      />
+                    </>
+                  )}
                 </Paper>
-                <MoodGraph moods={visibleMoods} />
+                <MoodGraph domain={domain} moods={visibleMoods} />
                 <MoodList
                   moods={visibleMoods}
                   navigate={navigate as NavigateFn}
