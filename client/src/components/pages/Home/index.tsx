@@ -51,16 +51,16 @@ export default function Home({ navigate }: RouteComponentProps) {
     const pageSize = homeState.dayCount * 86400000;
     const domainEnd = now - pageSize * homeState.page;
 
-    visibleMoods = {
-      ...state.moods,
-      allIds: state.moods.allIds.filter((id) => {
-        const moodTime = new Date(id).getTime();
-        return (
-          moodTime > now - pageSize * (homeState.page + 1) &&
-          moodTime < domainEnd
-        );
-      }),
-    };
+    let allIds: string[] = [];
+
+    for (const id of state.moods.allIds) {
+      const moodTime = new Date(id).getTime();
+      if (moodTime < now - pageSize * (homeState.page + 1)) continue;
+      if (moodTime > domainEnd) break;
+      allIds.push(id);
+    }
+
+    visibleMoods = { ...state.moods, allIds };
 
     const oldestMoodId = state.moods.allIds[0];
 
