@@ -1,0 +1,28 @@
+{
+  "background_color": "#ffffff",
+  "categories": ["lifestyle", "tool", "utilities"],
+  "description": "MoodTracker is a free and open source web app that lets you track your mood. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icons/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "lang": "en",
+  "name": "MoodTracker",
+  "short_name": "MoodTracker",
+  "start_url": "./",
+  "theme_color": "#001429"
+}
