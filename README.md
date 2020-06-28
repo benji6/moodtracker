@@ -35,3 +35,11 @@ Infrastructure is managed with AWS CloudFormation.
 ```sh
 make deploy
 ```
+
+**N.B. making changes to the API doesn't trigger a new deployment, but you can trigger a manual deployment by copying the value of the `ApiGatewayDeployCommand` output and running that.**
+
+#### UI
+
+Master is automatically deployed with [Netlify](http://netlify.com).
+
+**N.B. because icons take a long time to generate and do not change often they are created from the master svg file by running `yarn icons` in the `/client` dir and committed to version control.**
