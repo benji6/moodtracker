@@ -22,6 +22,8 @@ export default function MoodGraph({ domain, moods }: IProps) {
     setWidth(ref.current.clientWidth);
   }, [ref.current]);
 
+  if (!moods.allIds.length) return null;
+
   return (
     <Paper>
       <h2>Mood graph</h2>
