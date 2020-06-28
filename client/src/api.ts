@@ -1,8 +1,7 @@
 import { getIdToken } from "./cognito";
 import { AppEvent } from "./types";
 
-const eventsUrl =
-  "https://x2gb6pfo69.execute-api.us-east-1.amazonaws.com/prod/events";
+const eventsUrl = "https://moodtracker.link/api/events";
 
 const getAuthorizationHeader = async () => {
   const idToken = await getIdToken();
