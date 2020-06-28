@@ -1,3 +1,7 @@
+.*ignore
+.cache
 *.ico
+*.lock
 *.png
 *.svg
+dist
