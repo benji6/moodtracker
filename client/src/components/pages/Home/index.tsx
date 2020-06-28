@@ -31,31 +31,26 @@ export const homeReducer = (
 
 export default function Home({ navigate }: RouteComponentProps) {
   const state = React.useContext(StateContext);
-  const [homeState, homeDispatch] = React.useReducer(homeReducer, {
+  const [localState, localDispatch] = React.useReducer(homeReducer, {
     dayCount: 7,
     page: 0,
   });
 
   const now = Date.now();
 
+  let domainEnd = now;
+  let pageCount = 1;
   let visibleMoods = state.moods;
 
-  let pageCount = 1;
-
-  let domain: [number, number] = [
-    new Date(visibleMoods.allIds[0]).getTime(),
-    now,
-  ];
-
-  if (homeState.dayCount !== undefined) {
-    const pageSize = homeState.dayCount * 86400000;
-    const domainEnd = now - pageSize * homeState.page;
+  if (localState.dayCount !== undefined) {
+    const pageSize = localState.dayCount * 86400000;
+    domainEnd = now - pageSize * localState.page;
 
     let allIds: string[] = [];
 
     for (const id of state.moods.allIds) {
       const moodTime = new Date(id).getTime();
-      if (moodTime < now - pageSize * (homeState.page + 1)) continue;
+      if (moodTime < now - pageSize * (localState.page + 1)) continue;
       if (moodTime > domainEnd) break;
       allIds.push(id);
     }
@@ -68,9 +63,12 @@ export default function Home({ navigate }: RouteComponentProps) {
       const dt = now - new Date(oldestMoodId).getTime();
       pageCount = Math.ceil(dt / pageSize);
     }
-
-    domain = [new Date(visibleMoods.allIds[0]).getTime(), domainEnd];
   }
+
+  const domain: [number, number] = [
+    new Date(visibleMoods.allIds[0]).getTime(),
+    domainEnd,
+  ];
 
   return (
     <Paper.Group>
@@ -90,12 +88,12 @@ export default function Home({ navigate }: RouteComponentProps) {
                             key={n}
                             name="day-count"
                             onChange={() =>
-                              homeDispatch({
+                              localDispatch({
                                 payload: n,
                                 type: "moods/setDaysToShow",
                               })
                             }
-                            checked={homeState.dayCount === n}
+                            checked={localState.dayCount === n}
                             value={n}
                           >
                             {n}
@@ -105,12 +103,12 @@ export default function Home({ navigate }: RouteComponentProps) {
                         key="all"
                         name="day-count"
                         onChange={() =>
-                          homeDispatch({
+                          localDispatch({
                             payload: undefined,
                             type: "moods/setDaysToShow",
                           })
                         }
-                        checked={homeState.dayCount === undefined}
+                        checked={localState.dayCount === undefined}
                         value={undefined}
                       >
                         All
@@ -122,9 +120,9 @@ export default function Home({ navigate }: RouteComponentProps) {
                       <h3>Page</h3>
                       <Pagination
                         onChange={(n) =>
-                          homeDispatch({ payload: n, type: "moods/setPage" })
+                          localDispatch({ payload: n, type: "moods/setPage" })
                         }
-                        page={homeState.page}
+                        page={localState.page}
                         pageCount={pageCount}
                       />
                     </>
