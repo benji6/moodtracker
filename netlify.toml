@@ -1,7 +1,7 @@
 [build]
   base = "client"
   command = "yarn build"
-  publish = "client/dist"
+  publish = "dist"
 [[headers]]
   for = "*"
   [headers.values]
