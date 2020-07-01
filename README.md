@@ -6,6 +6,8 @@
 
 MoodTracker is a free and open source web app that lets you track your mood. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!
 
+[Check it out here](https://moodtracker.link)
+
 The MoodTracker UI was built using a component library I made called [Eri](https://github.com/benji6/eri).
 
 ## Getting started
