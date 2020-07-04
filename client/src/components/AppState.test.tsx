@@ -687,10 +687,16 @@ describe("appStateReducer", () => {
   test("user/clearEmail", () => {
     expect(
       appStateReducer(
-        { ...createInitialState(), userEmail: "foo@bar.com" },
+        {
+          ...createInitialState(),
+          user: { email: "foo@bar.com", loading: true },
+        },
         { type: "user/clearEmail" }
       )
-    ).toEqual(createInitialState());
+    ).toEqual({
+      ...createInitialState(),
+      user: { email: undefined, loading: false },
+    });
   });
 
   test("user/setEmail", () => {
@@ -699,6 +705,9 @@ describe("appStateReducer", () => {
         type: "user/setEmail",
         payload: "foo@bar.com",
       })
-    ).toEqual({ ...createInitialState(), userEmail: "foo@bar.com" });
+    ).toEqual({
+      ...createInitialState(),
+      user: { email: "foo@bar.com", loading: false },
+    });
   });
 });

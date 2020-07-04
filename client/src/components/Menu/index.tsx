@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function Menu({ handleMenuClose, open }: Props) {
-  const { userEmail } = React.useContext(StateContext);
+  const { user } = React.useContext(StateContext);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -20,11 +20,11 @@ export default function Menu({ handleMenuClose, open }: Props) {
   return (
     <>
       <EriMenu onClose={handleMenuClose} open={open}>
-        {userEmail && (
+        {user.email && (
           <>
             <strong>Signed in</strong>
             <p>
-              <em>{userEmail}</em>
+              <em>{user.email}</em>
             </p>
             <Button.Group>
               <Button
@@ -42,7 +42,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
           <EriMenu.Link onClick={handleMenuClose} to="/">
             Home
           </EriMenu.Link>
-          {userEmail && (
+          {user.email && (
             <EriMenu.Link onClick={handleMenuClose} to="/add">
               Add mood
             </EriMenu.Link>
@@ -54,7 +54,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
             See also
           </EriMenu.Link>
         </EriMenu.List>
-        {userEmail && <SyncState />}
+        {user.email && <SyncState />}
       </EriMenu>
       <SignOutDialog onClose={handleDialogClose} open={isDialogOpen} />
     </>

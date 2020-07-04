@@ -72,7 +72,7 @@ export default function Home({ navigate }: RouteComponentProps) {
 
   return (
     <Paper.Group>
-      {state.userEmail ? (
+      {state.user.email ? (
         <>
           {state.events.hasLoadedFromServer ? (
             state.moods.allIds.length ? (

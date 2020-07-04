@@ -10,7 +10,7 @@ export default function useEvents() {
   const syncFromServer = (): void =>
     void (async (): Promise<void> => {
       if (
-        !state.userEmail ||
+        !state.user.email ||
         state.isSyncingFromServer ||
         state.isStorageLoading
       )
@@ -24,13 +24,13 @@ export default function useEvents() {
         dispatch({ type: "syncFromServer/error" });
       }
     })();
-  React.useEffect(syncFromServer, [state.isStorageLoading, state.userEmail]);
+  React.useEffect(syncFromServer, [state.isStorageLoading, state.user.email]);
   useInterval(syncFromServer, 6e4);
 
   const syncToServer = (): void =>
     void (async () => {
       if (
-        !state.userEmail ||
+        !state.user.email ||
         state.isSyncingToServer ||
         state.isStorageLoading ||
         !state.events.idsToSync.length
@@ -49,7 +49,7 @@ export default function useEvents() {
   React.useEffect(syncToServer, [
     state.events.idsToSync,
     state.isStorageLoading,
-    state.userEmail,
+    state.user.email,
   ]);
   useInterval(syncToServer, 1e4);
 }

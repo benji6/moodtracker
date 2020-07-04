@@ -29,7 +29,10 @@ export interface State {
   moods: NormalizedMoods;
   syncFromServerError: boolean;
   syncToServerError: boolean;
-  userEmail: string | undefined;
+  user: {
+    email: string | undefined;
+    loading: boolean;
+  };
 }
 
 export const createInitialState = (): State => ({
@@ -46,7 +49,10 @@ export const createInitialState = (): State => ({
   moods: { allIds: [], byId: {} },
   syncFromServerError: false,
   syncToServerError: false,
-  userEmail: undefined,
+  user: {
+    email: undefined,
+    loading: true,
+  },
 });
 
 const initialState: State = createInitialState();
@@ -227,9 +233,9 @@ export const appStateReducer = (state: State, action: Action): State => {
         syncFromServerError: false,
       };
     case "user/clearEmail":
-      return { ...state, userEmail: undefined };
+      return { ...state, user: { email: undefined, loading: false } };
     case "user/setEmail":
-      return { ...state, userEmail: action.payload };
+      return { ...state, user: { email: action.payload, loading: false } };
   }
 };
 

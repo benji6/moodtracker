@@ -7,7 +7,7 @@ export default function useStorage() {
   const state = React.useContext(StateContext);
 
   React.useEffect(() => {
-    if (!state.userEmail) return;
+    if (!state.user.email) return;
     void (async () => {
       try {
         const events = await storage.getEvents();
@@ -17,7 +17,7 @@ export default function useStorage() {
         dispatch({ type: "storage/loaded" });
       }
     })();
-  }, [state.userEmail]);
+  }, [state.user.email]);
 
   React.useEffect(() => {
     if (state.isStorageLoading) return;
