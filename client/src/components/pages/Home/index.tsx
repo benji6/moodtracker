@@ -2,7 +2,7 @@ import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
 import { Paper, Fab, Icon, Spinner, RadioButton, Pagination } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
-import MoodGraph from "./MoodGraph";
+import MoodChart from "./MoodChart";
 import MoodList from "./MoodList";
 import { FluxStandardAction } from "../../../types";
 
@@ -128,7 +128,7 @@ export default function Home({ navigate }: RouteComponentProps) {
                     </>
                   )}
                 </Paper>
-                <MoodGraph
+                <MoodChart
                   domain={domain}
                   moods={visibleMoods}
                   range={[0, 10]}
