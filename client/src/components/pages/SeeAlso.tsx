@@ -7,7 +7,7 @@ export default function SeeAlso(_: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>See also</h2>
-        <p>These are some other web apps that I've built:</p>
+        <p>Here are some other things I've made that you might like:</p>
         <ul>
           <li>
             <a
