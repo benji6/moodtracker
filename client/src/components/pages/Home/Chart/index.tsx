@@ -1,7 +1,6 @@
 import * as React from "react";
-
-const GRAPH_HEIGHT = 200;
-const POINT_SIZE = 4;
+import { GRAPH_HEIGHT, POINT_SIZE } from "./constants";
+import Point from "./Point";
 
 export default function Chart(props: React.HtmlHTMLAttributes<HTMLDivElement>) {
   return (
@@ -24,3 +23,5 @@ export default function Chart(props: React.HtmlHTMLAttributes<HTMLDivElement>) {
     </div>
   );
 }
+
+Chart.Point = Point;

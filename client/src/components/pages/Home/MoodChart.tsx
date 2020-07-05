@@ -2,8 +2,7 @@ import * as React from "react";
 import { NormalizedMoods } from "../../../types";
 import { Paper } from "eri";
 import Graph from "./Chart";
-
-const POINT_SIZE = 4;
+import Chart from "./Chart";
 
 interface Props {
   domain: [number, number];
@@ -27,19 +26,7 @@ export default function MoodChart({ domain, moods, range }: Props) {
           const y = mood.mood / rangeSpread;
 
           return (
-            <div
-              key={id}
-              style={{
-                background: "var(--e-color-theme)",
-                borderRadius: "50%",
-                height: POINT_SIZE,
-                position: "absolute",
-                width: POINT_SIZE,
-                left: `${x * 100}%`,
-                bottom: `${y * 100}%`,
-              }}
-              title={`Mood: ${mood.mood}`}
-            />
+            <Chart.Point key={id} x={x} y={y} title={`Mood: ${mood.mood}`} />
           );
         })}
       </Graph>
