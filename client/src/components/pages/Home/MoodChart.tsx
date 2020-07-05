@@ -11,22 +11,21 @@ interface Props {
 }
 
 export default function MoodChart({ domain, moods, range }: Props) {
-  const domainSpread = domain[1] - domain[0];
-  const rangeSpread = range[1] - range[0];
-
   if (!moods.allIds.length) return null;
 
   return (
     <Paper>
       <h2>Mood graph</h2>
-      <Graph>
+      <Graph domain={domain} range={range}>
         {moods.allIds.map((id) => {
           const mood = moods.byId[id];
-          const x = (new Date(id).getTime() - domain[0]) / domainSpread;
-          const y = mood.mood / rangeSpread;
-
           return (
-            <Chart.Point key={id} x={x} y={y} title={`Mood: ${mood.mood}`} />
+            <Chart.Point
+              key={id}
+              x={new Date(id).getTime()}
+              y={mood.mood}
+              title={`Mood: ${mood.mood}`}
+            />
           );
         })}
       </Graph>
