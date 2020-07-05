@@ -6,6 +6,8 @@ import MoodChart from "./MoodChart";
 import MoodList from "./MoodList";
 import { FluxStandardAction } from "../../../types";
 
+const SECONDS_IN_A_DAY = 86400000;
+
 type HomeAction =
   | FluxStandardAction<"moods/setDaysToShow", number | undefined>
   | FluxStandardAction<"moods/setPage", number>;
@@ -38,20 +40,27 @@ export default function Home({ navigate }: RouteComponentProps) {
 
   const now = Date.now();
 
-  let domainEnd = now;
   let pageCount = 1;
   let visibleMoods = state.moods;
 
+  const domain: [number, number] = [
+    visibleMoods.allIds.length
+      ? new Date(visibleMoods.allIds[0]).getTime()
+      : now - SECONDS_IN_A_DAY,
+    now,
+  ];
+
   if (localState.dayCount !== undefined) {
-    const pageSize = localState.dayCount * 86400000;
-    domainEnd = now - pageSize * localState.page;
+    const domainSpread = localState.dayCount * SECONDS_IN_A_DAY;
+    domain[1] = now - domainSpread * localState.page;
+    domain[0] = domain[1] - domainSpread;
 
     let allIds: string[] = [];
 
     for (const id of state.moods.allIds) {
       const moodTime = new Date(id).getTime();
-      if (moodTime < now - pageSize * (localState.page + 1)) continue;
-      if (moodTime > domainEnd) break;
+      if (moodTime < now - domainSpread * (localState.page + 1)) continue;
+      if (moodTime > domain[1]) break;
       allIds.push(id);
     }
 
@@ -61,14 +70,9 @@ export default function Home({ navigate }: RouteComponentProps) {
 
     if (oldestMoodId) {
       const dt = now - new Date(oldestMoodId).getTime();
-      pageCount = Math.ceil(dt / pageSize);
+      pageCount = Math.ceil(dt / domainSpread);
     }
   }
-
-  const domain: [number, number] = [
-    new Date(visibleMoods.allIds[0]).getTime(),
-    domainEnd,
-  ];
 
   return (
     <Paper.Group>
