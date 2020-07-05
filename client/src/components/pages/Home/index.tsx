@@ -143,12 +143,12 @@ export default function Home({ navigate }: RouteComponentProps) {
                 />
               </>
             ) : (
-              <>
+              <Paper>
                 <p>Welcome to MoodTracker!</p>
                 <p>
                   <Link to="add">Click here to add your first mood</Link>
                 </p>
-              </>
+              </Paper>
             )
           ) : (
             <Spinner />
