@@ -81,6 +81,11 @@ export default function Home({ navigate }: RouteComponentProps) {
           {state.events.hasLoadedFromServer ? (
             state.moods.allIds.length ? (
               <>
+                <MoodChart
+                  domain={domain}
+                  moods={visibleMoods}
+                  range={[0, 10]}
+                />
                 <Paper>
                   <h2>Filter</h2>
                   <RadioButton.Group label="Number of days to show">
@@ -132,11 +137,6 @@ export default function Home({ navigate }: RouteComponentProps) {
                     </>
                   )}
                 </Paper>
-                <MoodChart
-                  domain={domain}
-                  moods={visibleMoods}
-                  range={[0, 10]}
-                />
                 <MoodList
                   moods={visibleMoods}
                   navigate={navigate as NavigateFn}
