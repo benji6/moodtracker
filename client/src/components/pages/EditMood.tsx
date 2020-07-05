@@ -50,7 +50,9 @@ export default function EditMood({
           <RadioButton.Group label="Mood">
             {[...Array(11)].map((_, i) => (
               <RadioButton
-                defaultChecked={mood.mood === i}
+                // There is old data where mood is a float between 0 and 10
+                // We handle that by rounding for this input control
+                defaultChecked={Math.round(mood.mood) === i}
                 key={i}
                 name="mood"
                 value={i}

@@ -201,7 +201,7 @@ Resources:
                 del event['serverCreatedAt']
                 payload = event['payload']
                 if 'mood' in payload:
-                  payload['mood'] = int(payload['mood'])
+                  payload['mood'] = float(payload['mood'])
               return {
                 'body': json.dumps({'events': events, 'nextCursor': last_server_created_at}),
                 'headers': headers,
