@@ -128,7 +128,11 @@ export default function Home({ navigate }: RouteComponentProps) {
                     </>
                   )}
                 </Paper>
-                <MoodGraph domain={domain} moods={visibleMoods} />
+                <MoodGraph
+                  domain={domain}
+                  moods={visibleMoods}
+                  range={[0, 10]}
+                />
                 <MoodList
                   moods={visibleMoods}
                   navigate={navigate as NavigateFn}

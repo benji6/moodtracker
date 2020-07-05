@@ -5,12 +5,12 @@ import { DispatchContext } from "../../AppState";
 import CardGroup from "eri/dist/components/Card/CardGroup";
 import { NormalizedMoods } from "../../../types";
 
-interface IProps {
+interface Props {
   moods: NormalizedMoods;
   navigate: NavigateFn;
 }
 
-export default function MoodList({ moods, navigate }: IProps) {
+export default function MoodList({ moods, navigate }: Props) {
   const dispatch = React.useContext(DispatchContext);
 
   return (

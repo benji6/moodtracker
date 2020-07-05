@@ -2,16 +2,17 @@ import * as React from "react";
 import { NormalizedMoods } from "../../../types";
 import { Paper } from "eri";
 
-interface IProps {
+const POINT_SIZE = 4;
+
+interface Props {
   domain: [number, number];
   moods: NormalizedMoods;
+  range: [number, number];
 }
 
-export default function MoodGraph({ domain, moods }: IProps) {
+export default function MoodGraph({ domain, moods, range }: Props) {
   const domainSpread = domain[1] - domain[0];
-  const range = [0, 10];
   const rangeSpread = range[1] - range[0];
-  const pointSideLength = 4;
   const height = 200;
 
   if (!moods.allIds.length) return null;
@@ -28,9 +29,9 @@ export default function MoodGraph({ domain, moods }: IProps) {
       >
         <div
           style={{
-            height: `calc(100% - ${pointSideLength}px)`,
-            marginRight: pointSideLength,
-            marginTop: pointSideLength,
+            height: `calc(100% - ${POINT_SIZE}px)`,
+            marginRight: POINT_SIZE,
+            marginTop: POINT_SIZE,
             position: "relative",
           }}
         >
@@ -45,9 +46,9 @@ export default function MoodGraph({ domain, moods }: IProps) {
                 style={{
                   background: "var(--e-color-theme)",
                   borderRadius: "50%",
-                  height: pointSideLength,
+                  height: POINT_SIZE,
                   position: "absolute",
-                  width: pointSideLength,
+                  width: POINT_SIZE,
                   left: `${x * 100}%`,
                   bottom: `${y * 100}%`,
                 }}
