@@ -684,30 +684,30 @@ describe("appStateReducer", () => {
     });
   });
 
-  test("user/clearEmail", () => {
+  test("user/clear", () => {
     expect(
       appStateReducer(
         {
           ...createInitialState(),
-          user: { email: "foo@bar.com", loading: true },
+          user: { email: "foo@bar.com", id: "fake-id", loading: true },
         },
-        { type: "user/clearEmail" }
+        { type: "user/clear" }
       )
     ).toEqual({
       ...createInitialState(),
-      user: { email: undefined, loading: false },
+      user: { email: undefined, id: undefined, loading: false },
     });
   });
 
-  test("user/setEmail", () => {
+  test("user/set", () => {
     expect(
       appStateReducer(createInitialState(), {
-        type: "user/setEmail",
-        payload: "foo@bar.com",
+        type: "user/set",
+        payload: { email: "foo@bar.com", id: "fake-id" },
       })
     ).toEqual({
       ...createInitialState(),
-      user: { email: "foo@bar.com", loading: false },
+      user: { email: "foo@bar.com", id: "fake-id", loading: false },
     });
   });
 });

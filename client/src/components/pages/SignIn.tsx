@@ -45,7 +45,7 @@ export default function SignIn({ navigate }: RouteComponentProps) {
         try {
           const result = await authenticate({ email, password });
           dispatch({
-            type: "user/setEmail",
+            type: "user/set",
             payload: result.getIdToken().payload.email,
           });
           (navigate as NavigateFn)("/");

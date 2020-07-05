@@ -19,7 +19,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
     if (currentUser) currentUser.signOut();
     onClose();
     dispatch({ type: "events/deleteAll" });
-    dispatch({ type: "user/clearEmail" });
+    dispatch({ type: "user/clear" });
     navigate("/");
     setIsLoading(false);
   };

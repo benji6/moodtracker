@@ -8,20 +8,20 @@ export default function useStorage() {
 
   React.useEffect(() => {
     if (state.user.loading || !state.isStorageLoading) return;
-    if (!state.user.email) return dispatch({ type: "storage/loaded" });
     void (async () => {
       try {
-        const events = await storage.getEvents();
+        if (!state.user.id) return dispatch({ type: "storage/loaded" });
+        const events = await storage.getEvents(state.user.id);
         if (events)
           dispatch({ type: "events/loadFromStorage", payload: events });
       } finally {
         dispatch({ type: "storage/loaded" });
       }
     })();
-  }, [state.isStorageLoading, state.user.email, state.user.loading]);
+  }, [state.isStorageLoading, state.user.id, state.user.loading]);
 
   React.useEffect(() => {
-    if (state.isStorageLoading) return;
-    storage.setEvents(state.events);
-  }, [state.isStorageLoading, state.events]);
+    if (state.isStorageLoading || !state.user.id) return;
+    storage.setEvents(state.user.id, state.events);
+  }, [state.isStorageLoading, state.user.id, state.events]);
 }

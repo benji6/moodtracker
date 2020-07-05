@@ -18,8 +18,8 @@ type Action =
   | FluxStandardAction<"syncToServer/error">
   | FluxStandardAction<"syncToServer/start">
   | FluxStandardAction<"syncToServer/success">
-  | FluxStandardAction<"user/clearEmail">
-  | FluxStandardAction<"user/setEmail", string>;
+  | FluxStandardAction<"user/clear">
+  | FluxStandardAction<"user/set", { email: string; id: string }>;
 
 export interface State {
   events: NormalizedEvents;
@@ -31,6 +31,7 @@ export interface State {
   syncToServerError: boolean;
   user: {
     email: string | undefined;
+    id: string | undefined;
     loading: boolean;
   };
 }
@@ -51,6 +52,7 @@ export const createInitialState = (): State => ({
   syncToServerError: false,
   user: {
     email: undefined,
+    id: undefined,
     loading: true,
   },
 });
@@ -232,10 +234,13 @@ export const appStateReducer = (state: State, action: Action): State => {
         isSyncingFromServer: false,
         syncFromServerError: false,
       };
-    case "user/clearEmail":
-      return { ...state, user: { email: undefined, loading: false } };
-    case "user/setEmail":
-      return { ...state, user: { email: action.payload, loading: false } };
+    case "user/clear":
+      return {
+        ...state,
+        user: { email: undefined, id: undefined, loading: false },
+      };
+    case "user/set":
+      return { ...state, user: { ...action.payload, loading: false } };
   }
 };
 

@@ -10,10 +10,12 @@ export default function useUser(): void {
       void (async () => {
         try {
           const idToken = await getIdToken();
-          dispatch({ type: "user/setEmail", payload: idToken.payload.email });
+          dispatch({
+            type: "user/set",
+            payload: { email: idToken.payload.email, id: idToken.payload.sub },
+          });
         } catch (e) {
-          if (e.message === "No current user")
-            dispatch({ type: "user/clearEmail" });
+          if (e.message === "No current user") dispatch({ type: "user/clear" });
         }
       })(),
     []
