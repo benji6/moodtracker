@@ -1,7 +1,6 @@
 import { interpolatePlasma } from "d3-scale-chromatic";
 import * as React from "react";
 import { POINT_SIZE } from "./constants";
-import { ChartContext } from ".";
 
 let colorCache = new Map();
 
@@ -19,20 +18,16 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Point({ x, y, ...rest }: Props) {
-  const { domain, domainSpread, range, rangeSpread } = React.useContext(
-    ChartContext
-  );
-  const normalizedY = (y - range[0]) / rangeSpread;
   return (
     <div
       style={{
-        background: getColor(normalizedY),
+        background: getColor(y),
         borderRadius: "50%",
+        bottom: `${y * 100}%`,
         height: POINT_SIZE,
+        left: `${x * 100}%`,
         position: "absolute",
         width: POINT_SIZE,
-        left: `${((x - domain[0]) / domainSpread) * 100}%`,
-        bottom: `${normalizedY * 100}%`,
       }}
       {...rest}
     />

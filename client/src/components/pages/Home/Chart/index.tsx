@@ -2,27 +2,19 @@ import * as React from "react";
 import { GRAPH_HEIGHT, POINT_SIZE } from "./constants";
 import Point from "./Point";
 
+interface Point {
+  x: number;
+  y: number;
+  title: string;
+}
+
 interface Props {
+  data: Point[];
   domain: [number, number];
   range: [number, number];
-  children: React.ReactNode;
 }
 
-interface Context {
-  domain: Props["domain"];
-  domainSpread: number;
-  range: Props["range"];
-  rangeSpread: number;
-}
-
-export const ChartContext = React.createContext<Context>({
-  domain: [0, 0],
-  domainSpread: 0,
-  range: [0, 0],
-  rangeSpread: 0,
-});
-
-export default function Chart({ domain, range, children }: Props) {
+export default function Chart({ data, domain, range }: Props) {
   return (
     <div
       style={{
@@ -39,19 +31,14 @@ export default function Chart({ domain, range, children }: Props) {
           position: "relative",
         }}
       >
-        <ChartContext.Provider
-          value={{
-            domain,
-            domainSpread: domain[1] - domain[0],
-            range,
-            rangeSpread: range[1] - range[0],
-          }}
-        >
-          {children}
-        </ChartContext.Provider>
+        {data.map((datum) => (
+          <Point
+            {...datum}
+            x={(datum.x - domain[0]) / (domain[1] - domain[0])}
+            y={(datum.y - range[0]) / (range[1] - range[0])}
+          />
+        ))}
       </div>
     </div>
   );
 }
-
-Chart.Point = Point;
