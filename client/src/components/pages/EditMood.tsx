@@ -64,11 +64,26 @@ export default function EditMood({
           <Button.Group>
             <Button>Update</Button>
             <Button
-              onClick={() => (navigate as NavigateFn)("/")}
+              danger
+              onClick={() =>
+                dispatch({
+                  type: "events/add",
+                  payload: {
+                    type: "v1/moods/delete",
+                    createdAt: new Date().toISOString(),
+                    payload: id,
+                  },
+                })
+              }
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => window.history.back()}
               type="button"
               variant="secondary"
             >
-              Cancel
+              Back
             </Button>
           </Button.Group>
         </form>
