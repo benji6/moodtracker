@@ -17,7 +17,6 @@ export default function MoodChart({ domain, moods, range }: Props) {
     return {
       x: new Date(id).getTime(),
       y: mood.mood,
-      title: `Mood: ${mood.mood}`,
     };
   });
 

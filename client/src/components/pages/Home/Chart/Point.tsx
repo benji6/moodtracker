@@ -1,6 +1,6 @@
 import { interpolatePlasma } from "d3-scale-chromatic";
 import * as React from "react";
-import { POINT_SIZE } from "./constants";
+import { POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
 
 let colorCache = new Map();
 
@@ -12,24 +12,18 @@ const getColor = (n: number): string => {
   return color;
 };
 
-interface Props extends React.HTMLAttributes<HTMLDivElement> {
+interface Props {
   x: number;
   y: number;
 }
 
-export default function Point({ x, y, ...rest }: Props) {
+export default function Point({ x, y }: Props) {
   return (
-    <div
-      style={{
-        background: getColor(y),
-        borderRadius: "50%",
-        bottom: `${y * 100}%`,
-        height: POINT_SIZE,
-        left: `${x * 100}%`,
-        position: "absolute",
-        width: POINT_SIZE,
-      }}
-      {...rest}
+    <circle
+      cx={x * CHART_ASPECT_RATIO * (1 - POINT_RADIUS) + POINT_RADIUS}
+      cy={(1 - y) * (1 - POINT_RADIUS) + POINT_RADIUS}
+      fill={getColor(y)}
+      r={POINT_RADIUS}
     />
   );
 }
