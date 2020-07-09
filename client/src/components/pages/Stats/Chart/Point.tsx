@@ -1,6 +1,6 @@
 import * as React from "react";
 import { POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
-import { moodToColor } from "../utils";
+import { moodToColor } from "../../../../utils";
 
 interface Props {
   x: number;

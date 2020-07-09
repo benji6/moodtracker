@@ -3,7 +3,7 @@ import { Card, Paper, SubHeading } from "eri";
 import * as React from "react";
 import CardGroup from "eri/dist/components/Card/CardGroup";
 import { NormalizedMoods } from "../../../types";
-import { moodToColor } from "./utils";
+import { moodToColor } from "../../../utils";
 
 interface Props {
   moods: NormalizedMoods;

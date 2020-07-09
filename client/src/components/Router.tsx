@@ -10,6 +10,7 @@ import SeeAlso from "./pages/SeeAlso";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Verify from "./pages/Verify";
+import Stats from "./pages/Stats";
 
 export default function Router() {
   return (
@@ -23,6 +24,7 @@ export default function Router() {
       <SeeAlso path="see-also" />
       <SignIn path="sign-in" />
       <SignUp path="sign-up" />
+      <Stats path="stats" />
       <Verify path="verify" />
     </ReachRouter>
   );
