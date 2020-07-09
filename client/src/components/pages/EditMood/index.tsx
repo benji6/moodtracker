@@ -1,8 +1,9 @@
 import { RouteComponentProps, NavigateFn, Redirect } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton } from "eri";
-import { DispatchContext, StateContext } from "../AppState";
-import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
+import { DispatchContext, StateContext } from "../../AppState";
+import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
+import DeleteDialog from "./DeleteDialog";
 
 export default function EditMood({
   id,
@@ -11,9 +12,11 @@ export default function EditMood({
   useRedirectUnauthed();
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   if (!id) return <Redirect to="/404" />;
   const mood = state.moods.byId[id];
   if (!mood) return <Redirect to="/404" />;
+
   return (
     <Paper.Group>
       <Paper>
@@ -63,19 +66,7 @@ export default function EditMood({
           </RadioButton.Group>
           <Button.Group>
             <Button>Update</Button>
-            <Button
-              danger
-              onClick={() =>
-                dispatch({
-                  type: "events/add",
-                  payload: {
-                    type: "v1/moods/delete",
-                    createdAt: new Date().toISOString(),
-                    payload: id,
-                  },
-                })
-              }
-            >
+            <Button danger onClick={() => setIsDialogOpen(true)} type="button">
               Delete
             </Button>
             <Button
@@ -87,6 +78,12 @@ export default function EditMood({
             </Button>
           </Button.Group>
         </form>
+        <DeleteDialog
+          id={id}
+          navigate={navigate as NavigateFn}
+          onClose={() => setIsDialogOpen(false)}
+          open={isDialogOpen}
+        />
       </Paper>
     </Paper.Group>
   );
