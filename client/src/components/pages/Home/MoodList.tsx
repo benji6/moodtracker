@@ -1,46 +1,54 @@
 import { NavigateFn } from "@reach/router";
-import { Card, Paper, SubHeading } from "eri";
+import { Card, Paper, SubHeading, Pagination } from "eri";
 import * as React from "react";
 import CardGroup from "eri/dist/components/Card/CardGroup";
-import { NormalizedMoods } from "../../../types";
 import { moodToColor } from "../../../utils";
+import { StateContext } from "../../AppState";
+
+const PAGE_SIZE = 12;
 
 interface Props {
-  moods: NormalizedMoods;
   navigate: NavigateFn;
 }
 
-export default function MoodList({ moods, navigate }: Props) {
+export default function MoodList({ navigate }: Props) {
+  const state = React.useContext(StateContext);
+  const [page, setPage] = React.useState(0);
+  const pageCount = Math.ceil(state.moods.allIds.length / PAGE_SIZE);
+
+  const endIndex = state.moods.allIds.length - page * PAGE_SIZE;
+
+  const visibleMoodIds = state.moods.allIds
+    .slice(Math.max(endIndex - PAGE_SIZE, 0), endIndex)
+    .reverse();
+
   return (
     <Paper>
       <h2>Mood list</h2>
-      {moods.allIds.length ? (
-        <CardGroup>
-          {[...moods.allIds].reverse().map((id) => {
-            const mood = moods.byId[id];
-            return (
-              <Card
-                key={id}
-                onClick={() => navigate(`edit/${id}`)}
-                style={
-                  {
-                    "--color": moodToColor(mood.mood / 10),
-                  } as React.CSSProperties
-                }
-              >
-                <h2 e-util="center">
-                  {mood.mood}
-                  <SubHeading>
-                    {new Date(new Date(id).toLocaleString()).toLocaleString()}
-                  </SubHeading>
-                </h2>
-              </Card>
-            );
-          })}
-        </CardGroup>
-      ) : (
-        <p>No moods to display for this range</p>
-      )}
+      <CardGroup>
+        {visibleMoodIds.map((id) => {
+          const mood = state.moods.byId[id];
+          return (
+            <Card
+              key={id}
+              onClick={() => navigate(`edit/${id}`)}
+              style={
+                {
+                  "--color": moodToColor(mood.mood / 10),
+                } as React.CSSProperties
+              }
+            >
+              <h2 e-util="center">
+                {mood.mood}
+                <SubHeading>
+                  {new Date(new Date(id).toLocaleString()).toLocaleString()}
+                </SubHeading>
+              </h2>
+            </Card>
+          );
+        })}
+      </CardGroup>
+      <Pagination onChange={setPage} page={page} pageCount={pageCount} />
     </Paper>
   );
 }

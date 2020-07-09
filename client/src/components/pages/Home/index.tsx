@@ -1,78 +1,17 @@
 import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Spinner, RadioButton, Pagination } from "eri";
+import { Paper, Fab, Icon, Spinner } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
 import MoodList from "./MoodList";
-import { FluxStandardAction } from "../../../types";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
-
-const SECONDS_IN_A_DAY = 86400000;
-
-type HomeAction =
-  | FluxStandardAction<"moods/setDaysToShow", number | undefined>
-  | FluxStandardAction<"moods/setPage", number>;
 
 export interface HomeState {
   dayCount: number | undefined;
   page: number;
 }
 
-export const homeReducer = (
-  state: HomeState,
-  action: HomeAction
-): HomeState => {
-  switch (action.type) {
-    case "moods/setDaysToShow": {
-      const payload = "payload" in action ? action.payload : undefined;
-      return { dayCount: payload, page: 0 };
-    }
-    case "moods/setPage":
-      return { ...state, page: action.payload };
-  }
-};
-
 export default function Home({ navigate }: RouteComponentProps) {
   const state = React.useContext(StateContext);
-  const [localState, localDispatch] = React.useReducer(homeReducer, {
-    dayCount: 7,
-    page: 0,
-  });
-
-  const now = Date.now();
-
-  let pageCount = 1;
-  let visibleMoods = state.moods;
-
-  const domain: [number, number] = [
-    visibleMoods.allIds.length
-      ? new Date(visibleMoods.allIds[0]).getTime()
-      : now - SECONDS_IN_A_DAY,
-    now,
-  ];
-
-  if (localState.dayCount !== undefined) {
-    const domainSpread = localState.dayCount * SECONDS_IN_A_DAY;
-    domain[1] = now - domainSpread * localState.page;
-    domain[0] = domain[1] - domainSpread;
-
-    let allIds: string[] = [];
-
-    for (const id of state.moods.allIds) {
-      const moodTime = new Date(id).getTime();
-      if (moodTime < now - domainSpread * (localState.page + 1)) continue;
-      if (moodTime > domain[1]) break;
-      allIds.push(id);
-    }
-
-    visibleMoods = { ...state.moods, allIds };
-
-    const oldestMoodId = state.moods.allIds[0];
-
-    if (oldestMoodId) {
-      const dt = now - new Date(oldestMoodId).getTime();
-      pageCount = Math.ceil(dt / domainSpread);
-    }
-  }
 
   return (
     <Paper.Group>
@@ -80,63 +19,7 @@ export default function Home({ navigate }: RouteComponentProps) {
         <>
           {state.events.hasLoadedFromServer ? (
             state.moods.allIds.length ? (
-              <>
-                <Paper>
-                  <h2>Filter</h2>
-                  <RadioButton.Group label="Number of days to show">
-                    {[
-                      ...[...Array(4).keys()]
-                        .map((n) => (n + 1) * 7)
-                        .map((n) => (
-                          <RadioButton
-                            key={n}
-                            name="day-count"
-                            onChange={() =>
-                              localDispatch({
-                                payload: n,
-                                type: "moods/setDaysToShow",
-                              })
-                            }
-                            checked={localState.dayCount === n}
-                            value={n}
-                          >
-                            {n}
-                          </RadioButton>
-                        )),
-                      <RadioButton
-                        key="all"
-                        name="day-count"
-                        onChange={() =>
-                          localDispatch({
-                            payload: undefined,
-                            type: "moods/setDaysToShow",
-                          })
-                        }
-                        checked={localState.dayCount === undefined}
-                        value={undefined}
-                      >
-                        All
-                      </RadioButton>,
-                    ]}
-                  </RadioButton.Group>
-                  {pageCount > 1 && (
-                    <>
-                      <h3>Page</h3>
-                      <Pagination
-                        onChange={(n) =>
-                          localDispatch({ payload: n, type: "moods/setPage" })
-                        }
-                        page={localState.page}
-                        pageCount={pageCount}
-                      />
-                    </>
-                  )}
-                </Paper>
-                <MoodList
-                  moods={visibleMoods}
-                  navigate={navigate as NavigateFn}
-                />
-              </>
+              <MoodList navigate={navigate as NavigateFn} />
             ) : (
               <AddFirstMoodCta />
             )
