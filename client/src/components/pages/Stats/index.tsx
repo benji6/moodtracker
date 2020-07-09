@@ -1,5 +1,5 @@
-import { NavigateFn, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Spinner, RadioButton, Pagination } from "eri";
+import { RouteComponentProps } from "@reach/router";
+import { Paper, Spinner, RadioButton, Pagination } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
 import MoodChart from "./MoodChart";
@@ -78,76 +78,68 @@ export default function Stats({ navigate }: RouteComponentProps) {
 
   return (
     <Paper.Group>
-      <>
-        {state.events.hasLoadedFromServer ? (
-          state.moods.allIds.length ? (
-            <>
-              <MoodChart domain={domain} moods={visibleMoods} range={[0, 10]} />
-              <Paper>
-                <h2>Filter</h2>
-                <RadioButton.Group label="Number of days to show">
-                  {[
-                    ...[...Array(4).keys()]
-                      .map((n) => (n + 1) * 7)
-                      .map((n) => (
-                        <RadioButton
-                          key={n}
-                          name="day-count"
-                          onChange={() =>
-                            localDispatch({
-                              payload: n,
-                              type: "moods/setDaysToShow",
-                            })
-                          }
-                          checked={localState.dayCount === n}
-                          value={n}
-                        >
-                          {n}
-                        </RadioButton>
-                      )),
-                    <RadioButton
-                      key="all"
-                      name="day-count"
-                      onChange={() =>
-                        localDispatch({
-                          payload: undefined,
-                          type: "moods/setDaysToShow",
-                        })
-                      }
-                      checked={localState.dayCount === undefined}
-                      value={undefined}
-                    >
-                      All
-                    </RadioButton>,
-                  ]}
-                </RadioButton.Group>
-                {pageCount > 1 && (
-                  <>
-                    <h3>Page</h3>
-                    <Pagination
-                      onChange={(n) =>
-                        localDispatch({ payload: n, type: "moods/setPage" })
-                      }
-                      page={localState.page}
-                      pageCount={pageCount}
-                    />
-                  </>
-                )}
-              </Paper>
-            </>
-          ) : (
-            <AddFirstMoodCta />
-          )
+      {state.events.hasLoadedFromServer ? (
+        state.moods.allIds.length ? (
+          <>
+            <MoodChart domain={domain} moods={visibleMoods} range={[0, 10]} />
+            <Paper>
+              <h2>Filter</h2>
+              <RadioButton.Group label="Number of days to show">
+                {[
+                  ...[...Array(4).keys()]
+                    .map((n) => (n + 1) * 7)
+                    .map((n) => (
+                      <RadioButton
+                        key={n}
+                        name="day-count"
+                        onChange={() =>
+                          localDispatch({
+                            payload: n,
+                            type: "moods/setDaysToShow",
+                          })
+                        }
+                        checked={localState.dayCount === n}
+                        value={n}
+                      >
+                        {n}
+                      </RadioButton>
+                    )),
+                  <RadioButton
+                    key="all"
+                    name="day-count"
+                    onChange={() =>
+                      localDispatch({
+                        payload: undefined,
+                        type: "moods/setDaysToShow",
+                      })
+                    }
+                    checked={localState.dayCount === undefined}
+                    value={undefined}
+                  >
+                    All
+                  </RadioButton>,
+                ]}
+              </RadioButton.Group>
+              {pageCount > 1 && (
+                <>
+                  <h3>Page</h3>
+                  <Pagination
+                    onChange={(n) =>
+                      localDispatch({ payload: n, type: "moods/setPage" })
+                    }
+                    page={localState.page}
+                    pageCount={pageCount}
+                  />
+                </>
+              )}
+            </Paper>
+          </>
         ) : (
-          <Spinner />
-        )}
-        <Fab
-          aria-label="add new mood"
-          onClick={() => (navigate as NavigateFn)("add")}
-        >
-          <Icon name="plus" size="4" />
-        </Fab>
-      </>
+          <AddFirstMoodCta />
+        )
+      ) : (
+        <Spinner />
+      )}
     </Paper.Group>
   );
 }
