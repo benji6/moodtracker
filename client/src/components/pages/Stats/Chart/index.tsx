@@ -1,6 +1,6 @@
 import * as React from "react";
 import Point from "./Point";
-import { ILine, IPoint } from "./types";
+import { IPoint } from "./types";
 import Line from "./Line";
 import { CHART_ASPECT_RATIO } from "./constants";
 
@@ -17,18 +17,6 @@ export default function Chart({ data, domain, range }: Props) {
     y: (datum.y - range[0]) / (range[1] - range[0]),
   }));
 
-  const lines: ILine[] = [];
-  let lastPoint: IPoint | undefined;
-
-  for (const point of points) {
-    if (!lastPoint) {
-      lastPoint = point;
-      continue;
-    }
-    lines.push([lastPoint, point]);
-    lastPoint = point;
-  }
-
   return (
     <svg
       viewBox={`0 0 ${CHART_ASPECT_RATIO} 1`}
@@ -38,9 +26,7 @@ export default function Chart({ data, domain, range }: Props) {
       }}
       width="100%"
     >
-      {lines.map((line) => (
-        <Line key={line[0].x} {...line} />
-      ))}
+      <Line points={points} />
       {points.map((point) => (
         <Point key={point.x} {...point} />
       ))}
