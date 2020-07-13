@@ -32,7 +32,12 @@ export default function SignOutDialog({ onClose, open }: Props) {
       title="Sign out?"
     >
       <Button.Group>
-        <Button danger disabled={isLoading} onClick={handleSignOut}>
+        <Button
+          danger
+          data-test-id="sign-out-confirm-button"
+          disabled={isLoading}
+          onClick={handleSignOut}
+        >
           Sign out
         </Button>
         <Button disabled={isLoading} onClick={onClose} variant="secondary">

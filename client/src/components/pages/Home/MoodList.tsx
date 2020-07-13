@@ -23,7 +23,7 @@ export default function MoodList({ navigate }: Props) {
     .reverse();
 
   return (
-    <Paper>
+    <Paper data-test-id="mood-list">
       <h2>Mood list</h2>
       <CardGroup>
         {visibleMoodIds.map((id) => {

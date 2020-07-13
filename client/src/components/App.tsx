@@ -21,7 +21,10 @@ export default function App() {
         <h1>
           <Link to="/">MoodTracker</Link>
         </h1>
-        <EriMenu.Button onClick={() => setIsMenuOpen(true)} />
+        <EriMenu.Button
+          data-test-id="menu-button"
+          onClick={() => setIsMenuOpen(true)}
+        />
       </Header>
       <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
       <Main>{state.isStorageLoading ? <Spinner /> : <Router />}</Main>

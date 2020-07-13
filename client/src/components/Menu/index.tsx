@@ -29,7 +29,9 @@ export default function Menu({ handleMenuClose, open }: Props) {
             <Button.Group>
               <Button
                 danger
+                data-test-id="sign-out-button"
                 onClick={() => setIsDialogOpen(true)}
+                type="button"
                 variant="secondary"
               >
                 Sign out
