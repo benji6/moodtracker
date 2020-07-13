@@ -11,6 +11,12 @@ import { networkErrorMessage } from "../../constants";
 import { DispatchContext } from "../AppState";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
+// The properties declared here are by no means exhaustive
+interface TokenPayload {
+  email: string;
+  sub: string;
+}
+
 const authenticate = ({
   email,
   password,
@@ -44,9 +50,11 @@ export default function SignIn({ navigate }: RouteComponentProps) {
       onSubmit={async ({ email, password, setSubmitError }) => {
         try {
           const result = await authenticate({ email, password });
+          const { email: tokenEmail, sub: id } = result.getIdToken()
+            .payload as TokenPayload;
           dispatch({
             type: "user/set",
-            payload: result.getIdToken().payload.email,
+            payload: { email: tokenEmail, id },
           });
           (navigate as NavigateFn)("/");
         } catch (e) {
