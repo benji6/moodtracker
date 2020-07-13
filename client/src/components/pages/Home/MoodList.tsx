@@ -40,9 +40,7 @@ export default function MoodList({ navigate }: Props) {
             >
               <h2 e-util="center">
                 {mood.mood}
-                <SubHeading>
-                  {new Date(new Date(id).toLocaleString()).toLocaleString()}
-                </SubHeading>
+                <SubHeading>{new Date(id).toLocaleString()}</SubHeading>
               </h2>
             </Card>
           );
