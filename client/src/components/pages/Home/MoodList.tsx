@@ -38,7 +38,7 @@ export default function MoodList({ navigate }: Props) {
                 } as React.CSSProperties
               }
             >
-              <h2 e-util="center">
+              <h2 className="center">
                 {mood.mood}
                 <SubHeading>{new Date(id).toLocaleString()}</SubHeading>
               </h2>

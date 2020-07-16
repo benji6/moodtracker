@@ -13,7 +13,7 @@ export default function SyncState() {
   return (
     <>
       <hr />
-      <p e-util="center">
+      <p className="center">
         {syncFromServerError || syncToServerError ? (
           <>
             Data saved locally <Icon draw name="save" />

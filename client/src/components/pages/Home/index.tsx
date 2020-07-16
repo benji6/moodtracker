@@ -42,7 +42,7 @@ export default function Home({ navigate }: RouteComponentProps) {
             your browser you can use it across all your devices!
           </p>
           <br />
-          <p e-util="center">
+          <p className="center">
             <strong>
               <Link to="sign-up">Sign up now to get started!</Link>
             </strong>
