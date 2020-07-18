@@ -57,16 +57,29 @@ export default function Stats({ navigate }: RouteComponentProps) {
     domain[1] = now - domainSpread * localState.page;
     domain[0] = domain[1] - domainSpread;
 
-    let allIds: string[] = [];
+    let startIndex = 0;
+    let endIndex = visibleMoods.allIds.length;
 
-    for (const id of state.moods.allIds) {
-      const moodTime = new Date(id).getTime();
-      if (moodTime < now - domainSpread * (localState.page + 1)) continue;
-      if (moodTime > domain[1]) break;
-      allIds.push(id);
+    // We are rendering moods off the left and right edge of the chart
+    // so the fit line extends to the edge
+    for (let i = 0; i < state.moods.allIds.length; i++) {
+      const moodTime = new Date(state.moods.allIds[i]).getTime();
+      if (
+        moodTime < now - domainSpread * (localState.page + 1) ||
+        startIndex > 0
+      )
+        continue;
+      if (moodTime > domain[1]) {
+        endIndex = i;
+        break;
+      }
+      startIndex = Math.min(i - 1, 0);
     }
 
-    visibleMoods = { ...state.moods, allIds };
+    visibleMoods = {
+      ...state.moods,
+      allIds: state.moods.allIds.slice(startIndex, endIndex),
+    };
 
     const oldestMoodId = state.moods.allIds[0];
 
