@@ -1,11 +1,12 @@
-import { RouteComponentProps, NavigateFn } from "@reach/router";
+import { useNavigate, RouteComponentProps } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton, requiredValidator } from "eri";
 import { DispatchContext } from "../AppState";
 import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
 
-export default function AddMood({ navigate }: RouteComponentProps) {
+export default function AddMood(_: RouteComponentProps) {
   useRedirectUnauthed();
+  const navigate = useNavigate();
   const dispatch = React.useContext(DispatchContext);
   const [moodError, setMoodError] = React.useState<string | undefined>();
 
@@ -31,7 +32,7 @@ export default function AddMood({ navigate }: RouteComponentProps) {
                 payload: { mood: Number(moodValue) },
               },
             });
-            (navigate as NavigateFn)("/");
+            navigate("/");
           }}
         >
           <RadioButton.Group

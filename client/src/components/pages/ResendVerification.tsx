@@ -1,6 +1,6 @@
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { ResendVerificationPage } from "eri";
-import { RouteComponentProps, navigate } from "@reach/router";
+import { RouteComponentProps, useNavigate } from "@reach/router";
 import * as React from "react";
 import { userPool } from "../../cognito";
 import { networkErrorMessage } from "../../constants";
@@ -19,6 +19,8 @@ const resendConfirmation = ({ email }: { email: string }) =>
 
 export default function ResendVerification(_: RouteComponentProps) {
   useRedirectAuthed();
+  const navigate = useNavigate();
+
   return (
     <ResendVerificationPage
       onSubmit={async ({ email, setSubmitError }) => {

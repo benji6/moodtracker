@@ -1,15 +1,13 @@
-import { RouteComponentProps, NavigateFn, Redirect } from "@reach/router";
+import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton } from "eri";
 import { DispatchContext, StateContext } from "../../AppState";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
 
-export default function EditMood({
-  id,
-  navigate,
-}: RouteComponentProps<{ id: string }>) {
+export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
+  const navigate = useNavigate();
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -47,7 +45,7 @@ export default function EditMood({
                 },
               },
             });
-            (navigate as NavigateFn)("/");
+            navigate("/");
           }}
         >
           <RadioButton.Group label="Mood">
@@ -80,7 +78,6 @@ export default function EditMood({
         </form>
         <DeleteDialog
           id={id}
-          navigate={navigate as NavigateFn}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}
         />

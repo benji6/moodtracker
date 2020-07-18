@@ -1,4 +1,4 @@
-import { Link, NavigateFn, RouteComponentProps } from "@reach/router";
+import { Link, useNavigate, RouteComponentProps } from "@reach/router";
 import { Paper, Fab, Icon, Spinner } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
@@ -10,7 +10,8 @@ export interface HomeState {
   page: number;
 }
 
-export default function Home({ navigate }: RouteComponentProps) {
+export default function Home(_: RouteComponentProps) {
+  const navigate = useNavigate();
   const state = React.useContext(StateContext);
 
   return (
@@ -19,17 +20,14 @@ export default function Home({ navigate }: RouteComponentProps) {
         <>
           {state.events.hasLoadedFromServer ? (
             state.moods.allIds.length ? (
-              <MoodList navigate={navigate as NavigateFn} />
+              <MoodList />
             ) : (
               <AddFirstMoodCta />
             )
           ) : (
             <Spinner />
           )}
-          <Fab
-            aria-label="add new mood"
-            onClick={() => (navigate as NavigateFn)("add")}
-          >
+          <Fab aria-label="add new mood" onClick={() => navigate("add")}>
             <Icon name="plus" size="4" />
           </Fab>
         </>

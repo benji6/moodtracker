@@ -1,8 +1,8 @@
-import { navigate } from "@reach/router";
 import { Dialog, Button } from "eri";
 import * as React from "react";
 import { userPool } from "../../cognito";
 import { DispatchContext } from "../AppState";
+import { navigate } from "@reach/router";
 
 interface Props {
   onClose(): void;

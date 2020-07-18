@@ -1,16 +1,16 @@
-import { NavigateFn } from "@reach/router";
 import { Dialog, Button } from "eri";
 import * as React from "react";
 import { DispatchContext } from "../../AppState";
+import { useNavigate } from "@reach/router";
 
 interface Props {
   id: string;
-  navigate: NavigateFn;
   onClose(): void;
   open: boolean;
 }
 
-export default function DeleteDialog({ id, navigate, onClose, open }: Props) {
+export default function DeleteDialog({ id, onClose, open }: Props) {
+  const navigate = useNavigate();
   const dispatch = React.useContext(DispatchContext);
 
   return (

@@ -1,4 +1,4 @@
-import { RouteComponentProps, Link, NavigateFn } from "@reach/router";
+import { Link, useNavigate, RouteComponentProps } from "@reach/router";
 import {
   AuthenticationDetails,
   CognitoUser,
@@ -42,9 +42,11 @@ const authenticate = ({
   });
 };
 
-export default function SignIn({ navigate }: RouteComponentProps) {
+export default function SignIn(_: RouteComponentProps) {
   useRedirectAuthed();
+  const navigate = useNavigate();
   const dispatch = React.useContext(DispatchContext);
+
   return (
     <SignInPage
       onSubmit={async ({ email, password, setSubmitError }) => {
@@ -56,7 +58,7 @@ export default function SignIn({ navigate }: RouteComponentProps) {
             type: "user/set",
             payload: { email: tokenEmail, id },
           });
-          (navigate as NavigateFn)("/");
+          navigate("/");
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
