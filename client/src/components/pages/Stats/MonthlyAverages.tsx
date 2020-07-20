@@ -1,9 +1,7 @@
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-
-const average = (xs: number[]): number =>
-  xs.reduce((a, b) => a + b) / xs.length;
+import { mean } from "../../../utils";
 
 export default function MonthlyAverages() {
   const state = React.useContext(StateContext);
@@ -18,10 +16,10 @@ export default function MonthlyAverages() {
 
   const averageByMonth: [string, number][] = Object.entries(
     idsGroupedByMonth
-  ).map(([month, ids]) => {
-    const moods = ids.map((id) => state.moods.byId[id].mood);
-    return [month, average(moods)];
-  });
+  ).map(([month, ids]) => [
+    month,
+    mean(ids.map((id) => state.moods.byId[id].mood)),
+  ]);
 
   return (
     <Paper>
