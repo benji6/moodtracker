@@ -6,6 +6,7 @@ import MoodChart from "./MoodChart";
 import { FluxStandardAction } from "../../../types";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import MonthlyAverages from "./MonthlyAverages";
 
 const SECONDS_IN_A_DAY = 86400000;
 
@@ -146,6 +147,7 @@ export default function Stats({ navigate }: RouteComponentProps) {
                 </>
               )}
             </Paper>
+            <MonthlyAverages />
           </>
         ) : (
           <AddFirstMoodCta />
