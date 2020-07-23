@@ -3,12 +3,14 @@ import getISOWeek from "date-fns/getISOWeek";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
 import { mean } from "../../../utils";
+import { NormalizedMoods } from "../../../types";
 
-export default function WeeklyAverages() {
-  const state = React.useContext(StateContext);
+const computeNaiveAverageByWeek = (
+  moods: NormalizedMoods
+): [string, number][] => {
   const idsGroupedByWeek: { [week: string]: string[] } = {};
 
-  for (const id of state.moods.allIds) {
+  for (const id of moods.allIds) {
     const dateObj = new Date(id);
     const week = getISOWeek(dateObj);
     const key = `${dateObj.getFullYear()}-W${String(week).padStart(2, "0")}`;
@@ -16,12 +18,15 @@ export default function WeeklyAverages() {
     else idsGroupedByWeek[key] = [id];
   }
 
-  const averageByWeek: [string, number][] = Object.entries(
-    idsGroupedByWeek
-  ).map(([week, ids]) => [
+  return Object.entries(idsGroupedByWeek).map(([week, ids]) => [
     week,
-    mean(ids.map((id) => state.moods.byId[id].mood)),
+    mean(ids.map((id) => moods.byId[id].mood)),
   ]);
+};
+
+export default function WeeklyAverages() {
+  const state = React.useContext(StateContext);
+  const averageByWeek = computeNaiveAverageByWeek(state.moods);
 
   return (
     <Paper>
@@ -30,7 +35,7 @@ export default function WeeklyAverages() {
         <thead>
           <tr>
             <th>Year-Week</th>
-            <th>Average mood</th>
+            <th>Naive average mood</th>
           </tr>
         </thead>
         <tbody>
