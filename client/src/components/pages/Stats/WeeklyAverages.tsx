@@ -35,7 +35,7 @@ export default function WeeklyAverages() {
         <thead>
           <tr>
             <th>Year-Week</th>
-            <th>Naive average mood</th>
+            <th>Naïve average mood</th>
           </tr>
         </thead>
         <tbody>

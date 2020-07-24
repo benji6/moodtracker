@@ -66,11 +66,11 @@ export default function MoodChart() {
         startIndex > 0
       )
         continue;
+      if (!startIndex) startIndex = Math.max(i - 1, 0);
       if (moodTime > domain[1]) {
         endIndex = i;
         break;
       }
-      startIndex = Math.min(i - 1, 0);
     }
 
     visibleIds = state.moods.allIds.slice(startIndex, endIndex);
