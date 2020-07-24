@@ -3,7 +3,7 @@ import { SignUpPage } from "eri";
 import { RouteComponentProps, navigate } from "@reach/router";
 import * as React from "react";
 import { userPool } from "../../cognito";
-import { networkErrorMessage } from "../../constants";
+import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 const signUp = ({
@@ -39,7 +39,7 @@ export default function SignUp(_: RouteComponentProps) {
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
-              setSubmitError(networkErrorMessage);
+              setSubmitError(NETWORK_ERROR_MESSAGE);
               break;
             case "UsernameExistsException":
               setSubmitError("Username already exists, try signing in instead");

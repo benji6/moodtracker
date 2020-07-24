@@ -3,6 +3,7 @@ import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination } from "eri";
 import Chart from "./Chart";
 import { StateContext } from "../../AppState";
+import { MOOD_RANGE } from "../../../constants";
 
 const SECONDS_IN_A_DAY = 86400000;
 
@@ -93,7 +94,7 @@ export default function MoodChart() {
   return (
     <Paper>
       <h2>Mood chart</h2>
-      <Chart data={data} domain={domain} range={[0, 10]} />
+      <Chart data={data} domain={domain} range={MOOD_RANGE} />
       <RadioButton.Group label="Number of days to show">
         {[
           ...[...Array(4).keys()]

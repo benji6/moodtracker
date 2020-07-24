@@ -7,7 +7,7 @@ import {
 import { SignInPage } from "eri";
 import * as React from "react";
 import { userPool } from "../../cognito";
-import { networkErrorMessage } from "../../constants";
+import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import { DispatchContext } from "../AppState";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
@@ -62,7 +62,7 @@ export default function SignIn(_: RouteComponentProps) {
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
-              return setSubmitError(networkErrorMessage);
+              return setSubmitError(NETWORK_ERROR_MESSAGE);
             case "UserNotConfirmedException":
               return setSubmitError(
                 <>

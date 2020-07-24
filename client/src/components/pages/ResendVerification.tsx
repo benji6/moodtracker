@@ -3,7 +3,7 @@ import { ResendVerificationPage } from "eri";
 import { RouteComponentProps, useNavigate } from "@reach/router";
 import * as React from "react";
 import { userPool } from "../../cognito";
-import { networkErrorMessage } from "../../constants";
+import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 const resendConfirmation = ({ email }: { email: string }) =>
@@ -30,7 +30,7 @@ export default function ResendVerification(_: RouteComponentProps) {
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
-              setSubmitError(networkErrorMessage);
+              setSubmitError(NETWORK_ERROR_MESSAGE);
               break;
             default:
               setSubmitError(
