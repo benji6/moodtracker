@@ -11,10 +11,9 @@ interface Props {
 }
 
 export default function Chart({ data, domain, range }: Props) {
-  const points = data.map((datum) => ({
-    ...datum,
-    x: (datum.x - domain[0]) / (domain[1] - domain[0]),
-    y: (datum.y - range[0]) / (range[1] - range[0]),
+  const points = data.map(({ x, y }) => ({
+    x: (x - domain[0]) / (domain[1] - domain[0]),
+    y: (y - range[0]) / (range[1] - range[0]),
   }));
 
   return (
