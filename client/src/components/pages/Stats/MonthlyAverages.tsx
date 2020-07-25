@@ -3,13 +3,18 @@ import { Paper } from "eri";
 import { StateContext } from "../../AppState";
 import { mean } from "../../../utils";
 
+const monthFormatter = Intl.DateTimeFormat(undefined, {
+  month: "long",
+  year: "numeric",
+});
+
 export default function MonthlyAverages() {
   const state = React.useContext(StateContext);
   const idsGroupedByMonth: { [month: string]: string[] } = {};
 
   for (const id of state.moods.allIds) {
     const dateObj = new Date(id);
-    const key = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}`;
+    const key = monthFormatter.format(dateObj);
     if (idsGroupedByMonth[key]) idsGroupedByMonth[key].push(id);
     else idsGroupedByMonth[key] = [id];
   }
@@ -27,7 +32,7 @@ export default function MonthlyAverages() {
       <table>
         <thead>
           <tr>
-            <th>Year-Month</th>
+            <th>Month</th>
             <th>Average mood</th>
           </tr>
         </thead>
