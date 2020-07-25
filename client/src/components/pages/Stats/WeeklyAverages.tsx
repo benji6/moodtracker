@@ -1,9 +1,20 @@
 import * as React from "react";
-import getISOWeek from "date-fns/getISOWeek";
+import endOfWeek from "date-fns/endOfWeek";
+import startOfWeek from "date-fns/startOfWeek";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
 import { mean } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
+
+const WEEK_OPTIONS = {
+  weekStartsOn: 1,
+} as const;
+
+const weekFormatter = Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
 
 const computeNaiveAverageByWeek = (
   moods: NormalizedMoods
@@ -12,8 +23,13 @@ const computeNaiveAverageByWeek = (
 
   for (const id of moods.allIds) {
     const dateObj = new Date(id);
-    const week = getISOWeek(dateObj);
-    const key = `${dateObj.getFullYear()}-W${String(week).padStart(2, "0")}`;
+
+    // HACK: At some point the types will catch up and we can
+    // remove the `any` type assertion below
+    const key = (weekFormatter as any).formatRange(
+      startOfWeek(dateObj, WEEK_OPTIONS),
+      endOfWeek(dateObj, WEEK_OPTIONS)
+    );
     if (idsGroupedByWeek[key]) idsGroupedByWeek[key].push(id);
     else idsGroupedByWeek[key] = [id];
   }
@@ -34,7 +50,7 @@ export default function WeeklyAverages() {
       <table>
         <thead>
           <tr>
-            <th>Year-Week</th>
+            <th>Week</th>
             <th>Naïve average mood</th>
           </tr>
         </thead>
