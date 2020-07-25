@@ -32,7 +32,7 @@ export default function MonthlyAverages() {
           </tr>
         </thead>
         <tbody>
-          {averageByMonth.map(([month, averageMood]) => (
+          {averageByMonth.reverse().map(([month, averageMood]) => (
             <tr key={month}>
               <td>{month}</td>
               <td>{averageMood.toFixed(2)}</td>

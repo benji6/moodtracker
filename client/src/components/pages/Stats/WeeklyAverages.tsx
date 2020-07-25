@@ -39,7 +39,7 @@ export default function WeeklyAverages() {
           </tr>
         </thead>
         <tbody>
-          {averageByWeek.map(([week, averageMood]) => (
+          {averageByWeek.reverse().map(([week, averageMood]) => (
             <tr key={week}>
               <td>{week}</td>
               <td>{averageMood.toFixed(2)}</td>
