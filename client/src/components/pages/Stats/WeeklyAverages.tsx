@@ -16,6 +16,15 @@ const weekFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
+const formatRangeFallback = (dateA: Date, dateB: Date): string =>
+  `${weekFormatter.format(dateA)} – ${weekFormatter.format(dateB)}`;
+
+// TODO: At some point we won't need the fallback anymore
+const formatRange =
+  "formatRange" in weekFormatter
+    ? (weekFormatter as any).formatRange.bind(weekFormatter)
+    : formatRangeFallback;
+
 const computeNaiveAverageByWeek = (
   moods: NormalizedMoods
 ): [string, number][] => {
@@ -23,10 +32,7 @@ const computeNaiveAverageByWeek = (
 
   for (const id of moods.allIds) {
     const dateObj = new Date(id);
-
-    // HACK: At some point the types will catch up and we can
-    // remove the `any` type assertion below
-    const key = (weekFormatter as any).formatRange(
+    const key = formatRange(
       startOfWeek(dateObj, WEEK_OPTIONS),
       endOfWeek(dateObj, WEEK_OPTIONS)
     );
