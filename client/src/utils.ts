@@ -11,3 +11,6 @@ export const moodToColor = (n: number): string => {
   colorCache.set(n, color);
   return color;
 };
+
+export const trapeziumArea = (a: number, b: number, h: number): number =>
+  ((a + b) / 2) * h;

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "downlevelIteration": true,
+    "esModuleInterop": true, // for tests
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "lib": ["dom", "es2016"],
