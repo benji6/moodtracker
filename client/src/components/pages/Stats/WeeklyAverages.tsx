@@ -25,6 +25,9 @@ const formatRange = (dateA: Date, dateB: Date) =>
     ? (weekFormatter as any).formatRange(dateA, dateB)
     : `${weekFormatter.format(dateA)} – ${weekFormatter.format(dateB)}`;
 
+const createKey = (week: Date): string =>
+  formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
+
 const computeNaiveAverageByWeek = (
   moods: NormalizedMoods
 ): [string, number][] => {
@@ -32,10 +35,7 @@ const computeNaiveAverageByWeek = (
 
   for (const id of moods.allIds) {
     const dateObj = new Date(id);
-    const key = formatRange(
-      startOfWeek(dateObj, WEEK_OPTIONS),
-      endOfWeek(dateObj, WEEK_OPTIONS)
-    );
+    const key = createKey(dateObj);
     if (idsGroupedByWeek[key]) idsGroupedByWeek[key].push(id);
     else idsGroupedByWeek[key] = [id];
   }
@@ -46,12 +46,9 @@ const computeNaiveAverageByWeek = (
   ]);
 };
 
-const createKey = (week: Date): string =>
-  formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
-
 export const computeAverageByWeek = (
   moods: NormalizedMoods
-): { [isoWeek: string]: number } => {
+): { [week: string]: number } => {
   const averageByWeek: { [week: string]: number } = {};
 
   const weeks = eachWeekOfInterval({
