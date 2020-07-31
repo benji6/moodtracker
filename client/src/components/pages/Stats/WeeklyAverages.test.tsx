@@ -8,7 +8,7 @@ describe("WeeklyAverages", () => {
           allIds: ["2020-07-28T00:00:00.000Z"],
           byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
         })
-      ).toEqual({ "27 July – 2 August 2020": 5 });
+      ).toEqual([["27 July – 2 August 2020", 5]]);
     });
 
     it("works with 2 moods in the same week", () => {
@@ -20,7 +20,7 @@ describe("WeeklyAverages", () => {
             "2020-07-29T00:00:00.000Z": { mood: 7 },
           },
         })
-      ).toEqual({ "27 July – 2 August 2020": 6 });
+      ).toEqual([["27 July – 2 August 2020", 6]]);
     });
 
     it("works with 2 moods in adjacent weeks", () => {
@@ -32,10 +32,10 @@ describe("WeeklyAverages", () => {
             "2020-07-28T00:00:00.000Z": { mood: 5 },
           },
         })
-      ).toEqual({
-        "20–26 July 2020": 5,
-        "27 July – 2 August 2020": 5,
-      });
+      ).toEqual([
+        ["20–26 July 2020", 5],
+        ["27 July – 2 August 2020", 5],
+      ]);
 
       expect(
         computeAverageByWeek({
@@ -45,10 +45,10 @@ describe("WeeklyAverages", () => {
             "2020-07-28T00:00:00.000Z": { mood: 6 },
           },
         })
-      ).toEqual({
-        "20–26 July 2020": 3.4375,
-        "27 July – 2 August 2020": 4.9375,
-      });
+      ).toEqual([
+        ["20–26 July 2020", 3.4375],
+        ["27 July – 2 August 2020", 4.9375],
+      ]);
     });
 
     it("works with 2 moods in separate non-adjacent weeks", () => {
@@ -60,12 +60,12 @@ describe("WeeklyAverages", () => {
             "2020-07-31T00:00:00.000Z": { mood: 5 },
           },
         })
-      ).toEqual({
-        "6–12 July 2020": 5,
-        "13–19 July 2020": 5,
-        "20–26 July 2020": 5,
-        "27 July – 2 August 2020": 5,
-      });
+      ).toEqual([
+        ["6–12 July 2020", 5],
+        ["13–19 July 2020", 5],
+        ["20–26 July 2020", 5],
+        ["27 July – 2 August 2020", 5],
+      ]);
 
       expect(
         computeAverageByWeek({
@@ -76,11 +76,20 @@ describe("WeeklyAverages", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "13–19 July 2020": 5.0375000000000005,
-          "20–26 July 2020": 5.69375,
-          "6–12 July 2020": 4.34375,
-        }
+        Array [
+          Array [
+            "6–12 July 2020",
+            4.34375,
+          ],
+          Array [
+            "13–19 July 2020",
+            5.0375000000000005,
+          ],
+          Array [
+            "20–26 July 2020",
+            5.69375,
+          ],
+        ]
       `);
     });
   });

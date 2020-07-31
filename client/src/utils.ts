@@ -1,6 +1,3 @@
-export const mean = (xs: number[]): number =>
-  xs.reduce((a, b) => a + b) / xs.length;
-
 let colorCache = new Map();
 
 // n must be between 0 and 1 inclusive

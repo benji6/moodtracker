@@ -5,7 +5,7 @@ import endOfWeek from "date-fns/endOfWeek";
 import startOfWeek from "date-fns/startOfWeek";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { mean, trapeziumArea } from "../../../utils";
+import { trapeziumArea } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import { MOOD_RANGE } from "../../../constants";
 
@@ -28,28 +28,10 @@ const formatRange = (dateA: Date, dateB: Date) =>
 const createKey = (week: Date): string =>
   formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
 
-const computeNaiveAverageByWeek = (
-  moods: NormalizedMoods
-): [string, number][] => {
-  const idsGroupedByWeek: { [week: string]: string[] } = {};
-
-  for (const id of moods.allIds) {
-    const dateObj = new Date(id);
-    const key = createKey(dateObj);
-    if (idsGroupedByWeek[key]) idsGroupedByWeek[key].push(id);
-    else idsGroupedByWeek[key] = [id];
-  }
-
-  return Object.entries(idsGroupedByWeek).map(([week, ids]) => [
-    week,
-    mean(ids.map((id) => moods.byId[id].mood)),
-  ]);
-};
-
 export const computeAverageByWeek = (
   moods: NormalizedMoods
-): { [week: string]: number } => {
-  const averageByWeek: { [week: string]: number } = {};
+): [string, number][] => {
+  const averageByWeek: [string, number][] = [];
 
   const weeks = eachWeekOfInterval({
     start: new Date(moods.allIds[0]),
@@ -59,9 +41,7 @@ export const computeAverageByWeek = (
   const finalWeek = addWeeks(weeks[weeks.length - 1], 1);
 
   if (moods.allIds.length === 1) {
-    return {
-      [createKey(finalWeek)]: moods.byId[moods.allIds[0]].mood,
-    };
+    return [[createKey(finalWeek), moods.byId[moods.allIds[0]].mood]];
   }
 
   weeks.push(finalWeek);
@@ -149,7 +129,7 @@ export const computeAverageByWeek = (
       area += trapeziumArea(mood0, mood1, t1 - t0);
     }
 
-    averageByWeek[createKey(week1)] = (area / maxArea) * MOOD_RANGE[1];
+    averageByWeek.push([createKey(week1), (area / maxArea) * MOOD_RANGE[1]]);
   }
 
   return averageByWeek;
@@ -157,7 +137,6 @@ export const computeAverageByWeek = (
 
 export default function WeeklyAverages() {
   const state = React.useContext(StateContext);
-  const naiveAverageByWeek = computeNaiveAverageByWeek(state.moods);
   const averageByWeek = computeAverageByWeek(state.moods);
 
   return (
@@ -168,14 +147,12 @@ export default function WeeklyAverages() {
           <tr>
             <th>Week</th>
             <th>Average mood</th>
-            <th>Naïve average mood</th>
           </tr>
         </thead>
         <tbody>
-          {naiveAverageByWeek.reverse().map(([week, averageMood]) => (
+          {averageByWeek.reverse().map(([week, averageMood]) => (
             <tr key={week}>
               <td>{week}</td>
-              <td>{averageByWeek[week].toFixed(2)}</td>
               <td>{averageMood.toFixed(2)}</td>
             </tr>
           ))}

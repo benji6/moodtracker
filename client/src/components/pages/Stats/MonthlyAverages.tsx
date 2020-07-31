@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { mean, trapeziumArea } from "../../../utils";
+import { trapeziumArea } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import { addMonths } from "date-fns";
@@ -12,28 +12,10 @@ const monthFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
-const computeNaiveAverageByMonth = (
-  moods: NormalizedMoods
-): [string, number][] => {
-  const idsGroupedByMonth: { [month: string]: string[] } = {};
-
-  for (const id of moods.allIds) {
-    const dateObj = new Date(id);
-    const key = monthFormatter.format(dateObj);
-    if (idsGroupedByMonth[key]) idsGroupedByMonth[key].push(id);
-    else idsGroupedByMonth[key] = [id];
-  }
-
-  return Object.entries(idsGroupedByMonth).map(([month, ids]) => [
-    month,
-    mean(ids.map((id) => moods.byId[id].mood)),
-  ]);
-};
-
 export const computeAverageByMonth = (
   moods: NormalizedMoods
-): { [month: string]: number } => {
-  const averageByMonth: { [month: string]: number } = {};
+): [string, number][] => {
+  const averageByMonth: [string, number][] = [];
 
   const months = eachMonthOfInterval({
     start: new Date(moods.allIds[0]),
@@ -43,9 +25,9 @@ export const computeAverageByMonth = (
   const finalMonth = addMonths(months[months.length - 1], 1);
 
   if (moods.allIds.length === 1) {
-    return {
-      [monthFormatter.format(months[0])]: moods.byId[moods.allIds[0]].mood,
-    };
+    return [
+      [monthFormatter.format(months[0]), moods.byId[moods.allIds[0]].mood],
+    ];
   }
 
   months.push(finalMonth);
@@ -133,8 +115,10 @@ export const computeAverageByMonth = (
       area += trapeziumArea(mood0, mood1, t1 - t0);
     }
 
-    averageByMonth[monthFormatter.format(month0)] =
-      (area / maxArea) * MOOD_RANGE[1];
+    averageByMonth.push([
+      monthFormatter.format(month0),
+      (area / maxArea) * MOOD_RANGE[1],
+    ]);
   }
 
   return averageByMonth;
@@ -142,7 +126,6 @@ export const computeAverageByMonth = (
 
 export default function MonthlyAverages() {
   const state = React.useContext(StateContext);
-  const naiveAverageByMonth = computeNaiveAverageByMonth(state.moods);
   const averageByMonth = computeAverageByMonth(state.moods);
 
   return (
@@ -153,14 +136,12 @@ export default function MonthlyAverages() {
           <tr>
             <th>Month</th>
             <th>Average mood</th>
-            <th>Naïve average mood</th>
           </tr>
         </thead>
         <tbody>
-          {naiveAverageByMonth.reverse().map(([month, averageMood]) => (
+          {averageByMonth.reverse().map(([month, averageMood]) => (
             <tr key={month}>
               <td>{month}</td>
-              <td>{averageByMonth[month].toFixed(2)}</td>
               <td>{averageMood.toFixed(2)}</td>
             </tr>
           ))}
