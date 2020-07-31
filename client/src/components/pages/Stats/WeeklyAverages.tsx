@@ -121,8 +121,8 @@ export const computeAverageByWeek = (
 
       if (t0 < w0 && t1 > w1) {
         area += trapeziumArea(
-          mood1 + ((mood0 - mood1) * (w1 - w0)) / (t1 - t0),
-          mood0 + ((mood1 - mood0) * (w1 - w0)) / (t1 - t0),
+          mood0 + ((mood1 - mood0) * (w0 - t0)) / (t1 - t0),
+          mood0 + ((mood1 - mood0) * (w1 - t0)) / (t1 - t0),
           w1 - w0
         );
         continue;
