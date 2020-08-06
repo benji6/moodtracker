@@ -83,12 +83,9 @@ export default function MoodChart() {
     }
   }
 
-  const data = visibleIds.map((id) => {
+  const data: [number, number][] = visibleIds.map((id) => {
     const mood = state.moods.byId[id];
-    return {
-      x: new Date(id).getTime(),
-      y: mood.mood,
-    };
+    return [new Date(id).getTime(), mood.mood];
   });
 
   return (

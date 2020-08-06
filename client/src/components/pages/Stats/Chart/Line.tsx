@@ -1,19 +1,25 @@
 import * as React from "react";
-import { IPoint } from "./types";
+import { TPoint } from "./types";
 import { LINE_WIDTH, POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
 
 interface Props {
-  points: IPoint[];
+  color?: string;
+  points: readonly TPoint[];
+  thicknessMultiplier?: number;
 }
 
-export default function Line({ points }: Props) {
+export default function Line({
+  color = "var(--e-color-theme)",
+  points,
+  thicknessMultiplier = 1,
+}: Props) {
   if (points.length < 2) return null;
 
   let polylinePoints = "";
 
   for (const point of points) {
-    const x = point.x * CHART_ASPECT_RATIO * (1 - POINT_RADIUS) + POINT_RADIUS;
-    const y = (1 - point.y) * (1 - POINT_RADIUS) + POINT_RADIUS;
+    const x = point[0] * CHART_ASPECT_RATIO * (1 - POINT_RADIUS) + POINT_RADIUS;
+    const y = (1 - point[1]) * (1 - POINT_RADIUS) + POINT_RADIUS;
     polylinePoints += `${x},${y} `;
   }
 
@@ -23,8 +29,8 @@ export default function Line({ points }: Props) {
     <polyline
       fill="none"
       points={polylinePoints}
-      stroke="var(--e-color-theme)"
-      strokeWidth={LINE_WIDTH}
+      stroke={color}
+      strokeWidth={LINE_WIDTH * thicknessMultiplier}
     />
   );
 }

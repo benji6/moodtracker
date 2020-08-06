@@ -1,4 +1,1 @@
-export interface IPoint {
-  x: number;
-  y: number;
-}
+export type TPoint = [number, number]; // [x, y]

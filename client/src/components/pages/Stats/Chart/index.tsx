@@ -1,20 +1,26 @@
 import * as React from "react";
+import * as regression from "regression";
 import Point from "./Point";
-import { IPoint } from "./types";
+import { TPoint } from "./types";
 import Line from "./Line";
 import { CHART_ASPECT_RATIO } from "./constants";
 
 interface Props {
-  data: IPoint[];
+  data: TPoint[];
   domain: [number, number];
   range: [number, number];
 }
 
 export default function Chart({ data, domain, range }: Props) {
-  const points = data.map(({ x, y }) => ({
-    x: (x - domain[0]) / (domain[1] - domain[0]),
-    y: (y - range[0]) / (range[1] - range[0]),
-  }));
+  const points = data.map(([x, y]): [number, number] => [
+    (x - domain[0]) / (domain[1] - domain[0]),
+    (y - range[0]) / (range[1] - range[0]),
+  ]);
+
+  const regressionResult = regression.polynomial(points, {
+    order: 6,
+    precision: 3,
+  });
 
   return (
     <svg
@@ -25,9 +31,14 @@ export default function Chart({ data, domain, range }: Props) {
       }}
       width="100%"
     >
+      <Line
+        color="var(--e-color-balance-less)"
+        points={regressionResult.points}
+        thicknessMultiplier={3}
+      />
       <Line points={points} />
       {points.map((point) => (
-        <Point key={point.x} {...point} />
+        <Point key={point[0]} x={point[0]} y={point[1]} />
       ))}
     </svg>
   );
