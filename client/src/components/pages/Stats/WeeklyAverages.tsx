@@ -132,12 +132,14 @@ export const computeAverageByWeek = (
     averageByWeek.push([createKey(week1), (area / maxArea) * MOOD_RANGE[1]]);
   }
 
-  return averageByWeek;
+  return averageByWeek.reverse();
 };
 
 export default function WeeklyAverages() {
   const state = React.useContext(StateContext);
-  const averageByWeek = computeAverageByWeek(state.moods);
+  const averageByWeek = React.useMemo(() => computeAverageByWeek(state.moods), [
+    state.moods,
+  ]);
 
   return (
     <Paper>
@@ -150,7 +152,7 @@ export default function WeeklyAverages() {
           </tr>
         </thead>
         <tbody>
-          {averageByWeek.reverse().map(([week, averageMood]) => (
+          {averageByWeek.map(([week, averageMood]) => (
             <tr key={week}>
               <td>{week}</td>
               <td>{averageMood.toFixed(2)}</td>

@@ -121,12 +121,15 @@ export const computeAverageByMonth = (
     ]);
   }
 
-  return averageByMonth;
+  return averageByMonth.reverse();
 };
 
 export default function MonthlyAverages() {
   const state = React.useContext(StateContext);
-  const averageByMonth = computeAverageByMonth(state.moods);
+  const averageByMonth = React.useMemo(
+    () => computeAverageByMonth(state.moods),
+    [state.moods]
+  );
 
   return (
     <Paper>
@@ -139,7 +142,7 @@ export default function MonthlyAverages() {
           </tr>
         </thead>
         <tbody>
-          {averageByMonth.reverse().map(([month, averageMood]) => (
+          {averageByMonth.map(([month, averageMood]) => (
             <tr key={month}>
               <td>{month}</td>
               <td>{averageMood.toFixed(2)}</td>
