@@ -4,6 +4,7 @@ import CardGroup from "eri/dist/components/Card/CardGroup";
 import { moodToColor } from "../../../utils";
 import { StateContext } from "../../AppState";
 import { useNavigate, useLocation } from "@reach/router";
+import { MOOD_RANGE } from "../../../constants";
 
 const PAGE_SIZE = 12;
 
@@ -44,7 +45,7 @@ export default function MoodList() {
               onClick={() => navigate(`edit/${id}`)}
               style={
                 {
-                  "--color": moodToColor(mood.mood / 10),
+                  "--color": moodToColor(mood.mood / MOOD_RANGE[1]),
                 } as React.CSSProperties
               }
             >

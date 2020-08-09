@@ -8,6 +8,7 @@ import { StateContext } from "../../AppState";
 import { trapeziumArea } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import { MOOD_RANGE } from "../../../constants";
+import MoodCell from "./MoodCell";
 
 const WEEK_OPTIONS = {
   weekStartsOn: 1,
@@ -155,7 +156,7 @@ export default function WeeklyAverages() {
           {averageByWeek.map(([week, averageMood]) => (
             <tr key={week}>
               <td>{week}</td>
-              <td>{averageMood.toFixed(2)}</td>
+              <MoodCell mood={averageMood} />
             </tr>
           ))}
         </tbody>

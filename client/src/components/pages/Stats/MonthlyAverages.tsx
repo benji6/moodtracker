@@ -6,6 +6,7 @@ import { NormalizedMoods } from "../../../types";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import { addMonths } from "date-fns";
 import { MOOD_RANGE } from "../../../constants";
+import MoodCell from "./MoodCell";
 
 const monthFormatter = Intl.DateTimeFormat(undefined, {
   month: "long",
@@ -145,7 +146,7 @@ export default function MonthlyAverages() {
           {averageByMonth.map(([month, averageMood]) => (
             <tr key={month}>
               <td>{month}</td>
-              <td>{averageMood.toFixed(2)}</td>
+              <MoodCell mood={averageMood} />
             </tr>
           ))}
         </tbody>
