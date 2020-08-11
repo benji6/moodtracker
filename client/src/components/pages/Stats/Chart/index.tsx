@@ -25,10 +25,7 @@ export default function Chart({ data, domain, range }: Props) {
   return (
     <svg
       viewBox={`0 0 ${CHART_ASPECT_RATIO} 1`}
-      style={{
-        border: "var(--e-border-default)",
-        filter: "var(--e-drop-shadow-0)",
-      }}
+      style={{ border: "var(--e-border-default)" }}
       width="100%"
     >
       <Line
