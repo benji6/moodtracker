@@ -15,8 +15,7 @@ export default function useUser(): void {
             payload: { email: idToken.payload.email, id: idToken.payload.sub },
           });
         } catch (e) {
-          console.error("useUser Error: ", e); // TODO - remove at some point
-          if (e.message === "No current user") dispatch({ type: "user/clear" });
+          dispatch({ type: "user/clear" });
         }
       })(),
     []
