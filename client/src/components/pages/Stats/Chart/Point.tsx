@@ -10,7 +10,7 @@ interface Props {
 export default function Point({ x, y }: Props) {
   return (
     <circle
-      cx={x * CHART_ASPECT_RATIO * (1 - POINT_RADIUS) + POINT_RADIUS}
+      cx={x * CHART_ASPECT_RATIO * (1 - POINT_RADIUS * 2) + POINT_RADIUS}
       cy={(1 - y) * (1 - POINT_RADIUS) + POINT_RADIUS}
       fill={moodToColor(y)}
       r={POINT_RADIUS}
