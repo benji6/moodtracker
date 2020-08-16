@@ -2,6 +2,11 @@ import * as React from "react";
 import { MOOD_RANGE } from "../../../constants";
 import { moodToColor } from "../../../utils";
 
+const moodFormatter = Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+});
+
 interface Props {
   mood: number;
 }
@@ -9,7 +14,7 @@ interface Props {
 export default function MoodCell({ mood }: Props) {
   return (
     <td style={{ textAlign: "center" }}>
-      <span>{mood.toFixed(1)}</span>
+      <span>{moodFormatter.format(mood)}</span>
       <div
         style={{
           background: "var(--e-color-ground-less)",
