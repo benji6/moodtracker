@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TPoint } from "./types";
-import { LINE_WIDTH_0, POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
+import { LINE_WIDTH_1, POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
 
 interface Props {
   color?: string;
@@ -11,7 +11,7 @@ interface Props {
 export default function Line({
   color = "var(--e-color-theme)",
   points,
-  thickness = LINE_WIDTH_0,
+  thickness = LINE_WIDTH_1,
 }: Props) {
   if (points.length < 2) return null;
 
