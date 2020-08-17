@@ -91,7 +91,15 @@ export default function MoodChart() {
   return (
     <Paper>
       <h2>Mood chart</h2>
-      <Chart data={data} domain={domain} range={MOOD_RANGE} />
+      <Chart
+        data={data}
+        domain={domain}
+        range={MOOD_RANGE}
+        yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
+          y,
+          String(y),
+        ])}
+      />
       <RadioButton.Group label="Number of days to show">
         {[
           ...[...Array(4).keys()]

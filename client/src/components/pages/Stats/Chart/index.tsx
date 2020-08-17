@@ -7,22 +7,23 @@ import {
   CHART_ASPECT_RATIO,
   LINE_WIDTH_2,
   POINT_RADIUS,
-  LINE_WIDTH_1,
   LINE_WIDTH_0,
 } from "./constants";
-import { MOOD_RANGE } from "../../../../constants";
 
 const Y_MARGIN = 0.1;
 const X_AXIS_LABEL_MARGIN = Y_MARGIN * CHART_ASPECT_RATIO;
 const AXIS_MARKER_LENGTH = 0.02;
 
+type TLabel = [number, string]; // [x/y position, label text]
+
 interface Props {
   data: TPoint[];
   domain: [number, number];
   range: [number, number];
+  yLabels: TLabel[];
 }
 
-export default function Chart({ data, domain, range }: Props) {
+export default function Chart({ data, domain, range, yLabels }: Props) {
   const points = data.map(([x, y]): [number, number] => [
     (x - domain[0]) / (domain[1] - domain[0]),
     (y - range[0]) / (range[1] - range[0]),
@@ -39,18 +40,19 @@ export default function Chart({ data, domain, range }: Props) {
       style={{ background: "var(--e-color-ground-more)" }}
       width="100%"
     >
-      {[...Array(MOOD_RANGE[1] + 1).keys()].map((n) => {
+      {yLabels.map(([labelY, labelText]) => {
         const y =
-          (1 - Y_MARGIN - POINT_RADIUS) * (1 - n / MOOD_RANGE[1]) +
+          (1 - Y_MARGIN - POINT_RADIUS) *
+            (1 - (labelY - range[0]) / (range[1] - range[0])) +
           Y_MARGIN / 2 +
           POINT_RADIUS;
 
         return (
-          <React.Fragment key={n}>
+          <React.Fragment key={labelY}>
             {/* y-grid-line */}
             <line
               stroke="var(--e-color-balance)"
-              stroke-dasharray={LINE_WIDTH_2}
+              strokeDasharray={LINE_WIDTH_2}
               strokeWidth={LINE_WIDTH_0}
               x1={X_AXIS_LABEL_MARGIN}
               x2={CHART_ASPECT_RATIO}
@@ -77,7 +79,7 @@ export default function Chart({ data, domain, range }: Props) {
               x={(X_AXIS_LABEL_MARGIN - AXIS_MARKER_LENGTH) / 2}
               y={y}
             >
-              {n}
+              {labelText}
             </text>
           </React.Fragment>
         );
