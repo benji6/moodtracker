@@ -7,6 +7,11 @@ import { MOOD_RANGE } from "../../../constants";
 
 const SECONDS_IN_A_DAY = 86400000;
 
+const dateFormatter = Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "short",
+});
+
 type StatsAction =
   | FluxStandardAction<"moods/setDaysToShow", number | undefined>
   | FluxStandardAction<"moods/setPage", number>;
@@ -95,6 +100,14 @@ export default function MoodChart() {
         data={data}
         domain={domain}
         range={MOOD_RANGE}
+        xLabels={[
+          [domain[0], dateFormatter.format(new Date(domain[0]))],
+          [
+            (domain[0] + domain[1]) / 2,
+            dateFormatter.format(new Date((domain[0] + domain[1]) / 2)),
+          ],
+          [domain[1], dateFormatter.format(new Date(domain[1]))],
+        ]}
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
           String(y),
