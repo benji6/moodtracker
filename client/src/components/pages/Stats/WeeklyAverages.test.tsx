@@ -45,10 +45,18 @@ describe("WeeklyAverages", () => {
             "2020-07-28T00:00:00.000Z": { mood: 6 },
           },
         })
-      ).toEqual([
-        ["27 July – 2 August 2020", 4.9375],
-        ["20–26 July 2020", 3.4375],
-      ]);
+      ).toMatchInlineSnapshot(`
+        Array [
+          Array [
+            "27 July – 2 August 2020",
+            4.979166666666667,
+          ],
+          Array [
+            "20–26 July 2020",
+            3.4791666666666665,
+          ],
+        ]
+      `);
     });
 
     it("works with 2 moods in separate non-adjacent weeks", () => {
@@ -79,15 +87,15 @@ describe("WeeklyAverages", () => {
         Array [
           Array [
             "20–26 July 2020",
-            5.69375,
+            5.697916666666666,
           ],
           Array [
             "13–19 July 2020",
-            5.0375000000000005,
+            5.0458333333333325,
           ],
           Array [
             "6–12 July 2020",
-            4.34375,
+            4.347916666666666,
           ],
         ]
       `);

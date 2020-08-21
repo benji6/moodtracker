@@ -45,10 +45,18 @@ describe("MonthlyAverages", () => {
             "2020-07-10T00:00:00.000Z": { mood: 7 },
           },
         })
-      ).toEqual([
-        ["July 2020", 6.54375],
-        ["June 2020", 5.04375],
-      ]);
+      ).toMatchInlineSnapshot(`
+        Array [
+          Array [
+            "July 2020",
+            6.547916666666667,
+          ],
+          Array [
+            "June 2020",
+            5.047916666666667,
+          ],
+        ]
+      `);
     });
 
     it("works with 2 moods in separate non-adjacent months", () => {
@@ -79,19 +87,19 @@ describe("MonthlyAverages", () => {
         Array [
           Array [
             "July 2020",
-            8.864010989010989,
+            8.866758241758241,
           ],
           Array [
             "June 2020",
-            7.739010989010989,
+            7.7445054945054945,
           ],
           Array [
             "May 2020",
-            5.728021978021979,
+            5.7335164835164845,
           ],
           Array [
             "April 2020",
-            3.853021978021979,
+            3.8557692307692317,
           ],
         ]
       `);
