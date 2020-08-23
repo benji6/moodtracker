@@ -1,8 +1,5 @@
+import { startOfWeek, endOfWeek, eachWeekOfInterval, addWeeks } from "date-fns";
 import * as React from "react";
-import addWeeks from "date-fns/addWeeks";
-import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
-import endOfWeek from "date-fns/endOfWeek";
-import startOfWeek from "date-fns/startOfWeek";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
 import { trapeziumArea } from "../../../utils";

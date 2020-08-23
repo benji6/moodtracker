@@ -1,10 +1,9 @@
+import { addMonths, eachMonthOfInterval } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
 import { trapeziumArea } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
-import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
-import { addMonths } from "date-fns";
 import { MOOD_RANGE } from "../../../constants";
 import MoodCell from "./MoodCell";
 
