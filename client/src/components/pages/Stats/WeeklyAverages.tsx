@@ -31,18 +31,19 @@ export const computeAverageByWeek = (
 ): [string, number][] => {
   const averageByWeek: [string, number][] = [];
 
-  const weeks = eachWeekOfInterval({
-    start: new Date(moods.allIds[0]),
-    end: new Date(moods.allIds[moods.allIds.length - 1]),
-  });
-
-  const finalWeek = addWeeks(weeks[weeks.length - 1], 1);
+  const weeks = eachWeekOfInterval(
+    {
+      start: new Date(moods.allIds[0]),
+      end: new Date(moods.allIds[moods.allIds.length - 1]),
+    },
+    WEEK_OPTIONS
+  );
 
   if (moods.allIds.length === 1) {
-    return [[createKey(finalWeek), moods.byId[moods.allIds[0]].mood]];
+    return [[createKey(weeks[0]), moods.byId[moods.allIds[0]].mood]];
   }
 
-  weeks.push(finalWeek);
+  weeks.push(addWeeks(weeks[weeks.length - 1], 1));
 
   const earliestMoodTime = new Date(moods.allIds[0]).getTime();
   const latestMoodTime = new Date(
@@ -127,7 +128,7 @@ export const computeAverageByWeek = (
       area += trapeziumArea(mood0, mood1, t1 - t0);
     }
 
-    averageByWeek.push([createKey(week1), (area / maxArea) * MOOD_RANGE[1]]);
+    averageByWeek.push([createKey(week0), (area / maxArea) * MOOD_RANGE[1]]);
   }
 
   return averageByWeek.reverse();
