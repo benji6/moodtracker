@@ -10,8 +10,8 @@ interface Props {
 export default function Point({ x, y }: Props) {
   return (
     <circle
-      cx={(x * (1 - POINT_RADIUS * 2) + POINT_RADIUS) * PLOT_ASPECT_RATIO}
-      cy={(1 - y) * (1 - POINT_RADIUS) + POINT_RADIUS}
+      cx={x * PLOT_ASPECT_RATIO}
+      cy={1 - y}
       fill={moodToColor(y)}
       r={POINT_RADIUS}
     />

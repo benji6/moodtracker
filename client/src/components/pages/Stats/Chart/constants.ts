@@ -1,9 +1,12 @@
 export const AXIS_MARKER_LENGTH = 0.02;
 export const CHART_ASPECT_RATIO = 1.5;
-export const POINT_RADIUS = 0.0075;
+export const POINT_RADIUS = 0.01;
+
+const LINE_WIDTH_RATIO = 2.25;
+
 export const LINE_WIDTH_0 = POINT_RADIUS / 6;
-export const LINE_WIDTH_1 = LINE_WIDTH_0 * 3;
-export const LINE_WIDTH_2 = LINE_WIDTH_1 * 3;
+export const LINE_WIDTH_1 = LINE_WIDTH_0 * LINE_WIDTH_RATIO;
+export const LINE_WIDTH_2 = LINE_WIDTH_1 * LINE_WIDTH_RATIO;
 export const MARGIN_BOTTOM = 0.125;
 export const MARGIN_LEFT = 0.125;
 export const MARGIN_RIGHT = 0.1;

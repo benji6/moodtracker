@@ -15,7 +15,6 @@ import {
   PLOT_ASPECT_RATIO,
   PLOT_HEIGHT,
   PLOT_WIDTH,
-  POINT_RADIUS,
 } from "./constants";
 
 type TLabel = [number, string]; // [x/y position, label text]
@@ -97,10 +96,8 @@ export default function Chart({
       })}
       {yLabels.map(([labelY, labelText]) => {
         const y =
-          (PLOT_HEIGHT - POINT_RADIUS) *
-            (1 - (labelY - range[0]) / (range[1] - range[0])) +
-          MARGIN_TOP +
-          POINT_RADIUS;
+          PLOT_HEIGHT * (1 - (labelY - range[0]) / (range[1] - range[0])) +
+          MARGIN_TOP;
 
         return (
           <React.Fragment key={labelY}>
@@ -177,7 +174,7 @@ export default function Chart({
       <line
         x1={MARGIN_LEFT}
         x2={MARGIN_LEFT}
-        y1={MARGIN_TOP + POINT_RADIUS}
+        y1={MARGIN_TOP}
         y2={1 - MARGIN_BOTTOM}
         stroke="currentColor"
         strokeWidth={LINE_WIDTH_2}
