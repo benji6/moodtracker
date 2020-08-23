@@ -1,8 +1,5 @@
 import * as React from "react";
 import * as regression from "regression";
-import Point from "./Point";
-import { TPoint } from "./types";
-import Line from "./Line";
 import {
   AXIS_MARKER_LENGTH,
   CHART_ASPECT_RATIO,
@@ -16,6 +13,10 @@ import {
   PLOT_HEIGHT,
   PLOT_WIDTH,
 } from "./constants";
+import Line from "./Line";
+import Point from "./Point";
+import { TPoint } from "./types";
+import { moodToColor } from "../../../../utils";
 
 type TLabel = [number, string]; // [x/y position, label text]
 
@@ -156,7 +157,12 @@ export default function Chart({
 
         {/* chart points */}
         {points.map((point) => (
-          <Point key={point[0]} x={point[0]} y={point[1]} />
+          <Point
+            key={point[0]}
+            color={moodToColor(point[1])}
+            x={point[0]}
+            y={point[1]}
+          />
         ))}
       </svg>
 

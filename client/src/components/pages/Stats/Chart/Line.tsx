@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TPoint } from "./types";
 import { LINE_WIDTH_1, PLOT_ASPECT_RATIO } from "./constants";
+import { TPoint } from "./types";
 
 interface Props {
   color?: string;

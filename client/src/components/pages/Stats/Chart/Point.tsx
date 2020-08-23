@@ -1,18 +1,18 @@
 import * as React from "react";
-import { POINT_RADIUS, PLOT_ASPECT_RATIO } from "./constants";
-import { moodToColor } from "../../../../utils";
+import { PLOT_ASPECT_RATIO, POINT_RADIUS } from "./constants";
 
 interface Props {
+  color?: string;
   x: number;
   y: number;
 }
 
-export default function Point({ x, y }: Props) {
+export default function Point({ color = "var(--e-color-theme)", x, y }: Props) {
   return (
     <circle
       cx={x * PLOT_ASPECT_RATIO}
       cy={1 - y}
-      fill={moodToColor(y)}
+      fill={color}
       r={POINT_RADIUS}
     />
   );
