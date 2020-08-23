@@ -4,17 +4,19 @@ import Point from "./Point";
 import { TPoint } from "./types";
 import Line from "./Line";
 import {
+  AXIS_MARKER_LENGTH,
   CHART_ASPECT_RATIO,
-  LINE_WIDTH_2,
-  POINT_RADIUS,
   LINE_WIDTH_0,
+  LINE_WIDTH_2,
+  MARGIN_BOTTOM,
+  MARGIN_LEFT,
+  MARGIN_RIGHT,
+  MARGIN_TOP,
+  PLOT_ASPECT_RATIO,
+  PLOT_HEIGHT,
+  PLOT_WIDTH,
+  POINT_RADIUS,
 } from "./constants";
-
-const MARGIN_BOTTOM = 0.125;
-const MARGIN_LEFT = 0.125;
-const MARGIN_RIGHT = 0.1;
-const MARGIN_TOP = 0.05;
-const AXIS_MARKER_LENGTH = 0.02;
 
 type TLabel = [number, string]; // [x/y position, label text]
 
@@ -95,7 +97,7 @@ export default function Chart({
       })}
       {yLabels.map(([labelY, labelText]) => {
         const y =
-          (1 - MARGIN_BOTTOM - MARGIN_TOP - POINT_RADIUS) *
+          (PLOT_HEIGHT - POINT_RADIUS) *
             (1 - (labelY - range[0]) / (range[1] - range[0])) +
           MARGIN_TOP +
           POINT_RADIUS;
@@ -139,12 +141,11 @@ export default function Chart({
       })}
 
       <svg
-        height={1 - MARGIN_BOTTOM - MARGIN_TOP}
-        viewBox={`0 0 ${CHART_ASPECT_RATIO} 1`}
-        width={CHART_ASPECT_RATIO - MARGIN_LEFT - MARGIN_RIGHT}
+        height={PLOT_HEIGHT}
+        viewBox={`0 0 ${PLOT_ASPECT_RATIO} 1`}
+        width={PLOT_WIDTH}
         x={MARGIN_LEFT}
         y={MARGIN_TOP}
-        preserveAspectRatio="none"
       >
         {/* chart regression line */}
         <Line

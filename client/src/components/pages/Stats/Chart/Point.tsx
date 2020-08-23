@@ -1,5 +1,5 @@
 import * as React from "react";
-import { POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
+import { POINT_RADIUS, PLOT_ASPECT_RATIO } from "./constants";
 import { moodToColor } from "../../../../utils";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export default function Point({ x, y }: Props) {
   return (
     <circle
-      cx={x * CHART_ASPECT_RATIO * (1 - POINT_RADIUS * 2) + POINT_RADIUS}
+      cx={(x * (1 - POINT_RADIUS * 2) + POINT_RADIUS) * PLOT_ASPECT_RATIO}
       cy={(1 - y) * (1 - POINT_RADIUS) + POINT_RADIUS}
       fill={moodToColor(y)}
       r={POINT_RADIUS}

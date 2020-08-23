@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TPoint } from "./types";
-import { LINE_WIDTH_1, POINT_RADIUS, CHART_ASPECT_RATIO } from "./constants";
+import { LINE_WIDTH_1, POINT_RADIUS, PLOT_ASPECT_RATIO } from "./constants";
 
 interface Props {
   color?: string;
@@ -19,7 +19,7 @@ export default function Line({
 
   for (const point of points) {
     const x =
-      point[0] * CHART_ASPECT_RATIO * (1 - POINT_RADIUS * 2) + POINT_RADIUS;
+      (point[0] * (1 - POINT_RADIUS * 2) + POINT_RADIUS) * PLOT_ASPECT_RATIO;
     const y = (1 - point[1]) * (1 - POINT_RADIUS) + POINT_RADIUS;
     polylinePoints += `${x},${y} `;
   }
