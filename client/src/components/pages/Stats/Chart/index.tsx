@@ -16,11 +16,11 @@ import {
 import Line from "./Line";
 import Point from "./Point";
 import { TPoint } from "./types";
-import { moodToColor } from "../../../../utils";
 
 type TLabel = [number, string]; // [x/y position, label text]
 
 interface Props {
+  colorFromY(y: number): string;
   data: TPoint[];
   domain: [number, number];
   range: [number, number];
@@ -29,6 +29,7 @@ interface Props {
 }
 
 export default function Chart({
+  colorFromY,
   data,
   domain,
   range,
@@ -156,10 +157,10 @@ export default function Chart({
         <Line points={points} />
 
         {/* chart points */}
-        {points.map((point) => (
+        {points.map((point, i) => (
           <Point
+            color={colorFromY(data[i][1])}
             key={point[0]}
-            color={moodToColor(point[1])}
             x={point[0]}
             y={point[1]}
           />

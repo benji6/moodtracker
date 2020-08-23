@@ -24,7 +24,7 @@ export default function MoodCell({ mood }: Props) {
       >
         <div
           style={{
-            background: moodToColor(mood / MOOD_RANGE[1]),
+            background: moodToColor(mood),
             borderRadius: "var(--e-border-radius-0)",
             height: "100%",
             width: `${mood * MOOD_RANGE[1]}%`,

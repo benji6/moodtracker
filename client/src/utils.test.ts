@@ -1,12 +1,17 @@
 import { moodToColor, trapeziumArea } from "./utils";
+import { MOOD_RANGE } from "./constants";
 
 describe("utils", () => {
   test("moodToColor", () => {
-    expect(moodToColor(0)).toMatchInlineSnapshot(`"hsl(0.75turn, 100%, 65%)"`);
-    expect(moodToColor(0.5)).toMatchInlineSnapshot(
-      `"hsl(0.55turn, 100%, 52.5%)"`
+    expect(moodToColor(MOOD_RANGE[0])).toMatchInlineSnapshot(
+      `"hsl(0.75turn, 100%, 65%)"`
     );
-    expect(moodToColor(1)).toMatchInlineSnapshot(`"hsl(0.35turn, 100%, 40%)"`);
+    expect(
+      moodToColor((MOOD_RANGE[1] + MOOD_RANGE[0]) / 2)
+    ).toMatchInlineSnapshot(`"hsl(0.55turn, 100%, 52.5%)"`);
+    expect(moodToColor(MOOD_RANGE[1])).toMatchInlineSnapshot(
+      `"hsl(0.35turn, 100%, 40%)"`
+    );
   });
 
   test("trapeziumArea", () => {

@@ -5,6 +5,7 @@ import { Paper, RadioButton, Pagination } from "eri";
 import Chart from "./Chart";
 import { StateContext } from "../../AppState";
 import { MOOD_RANGE } from "../../../constants";
+import { moodToColor } from "../../../utils";
 
 const SECONDS_IN_A_DAY = 86400000;
 
@@ -150,6 +151,7 @@ export default function MoodChart() {
     <Paper>
       <h2>Mood chart</h2>
       <Chart
+        colorFromY={moodToColor}
         data={data}
         domain={domain}
         range={MOOD_RANGE}
