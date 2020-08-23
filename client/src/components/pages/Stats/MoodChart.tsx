@@ -1,3 +1,4 @@
+import { add, set } from "date-fns";
 import * as React from "react";
 import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination } from "eri";
@@ -6,6 +7,58 @@ import { StateContext } from "../../AppState";
 import { MOOD_RANGE } from "../../../constants";
 
 const SECONDS_IN_A_DAY = 86400000;
+
+const roundDateDown = (date: Date): Date =>
+  set(date, {
+    hours: 0,
+    milliseconds: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+const roundDateUp = (date: Date): Date => {
+  const roundedDownDate = roundDateDown(date);
+  return Number(roundedDownDate) === Number(date)
+    ? date
+    : add(roundedDownDate, { days: 1 });
+};
+
+const roundDate = (date: Date): Date => {
+  const d0 = roundDateDown(date);
+  const d1 = roundDateUp(date);
+  const dateTimestamp = Number(date);
+
+  return dateTimestamp - Number(d0) < Number(d1) - dateTimestamp ? d0 : d1;
+};
+
+const convertDateToLabel = (date: Date): [number, string] => [
+  Number(date),
+  dateFormatter.format(date),
+];
+
+const X_LABELS_COUNT = 4; // must be at least 2
+
+const createXLabels = (domain: [number, number]): [number, string][] => {
+  const labels: [number, string][] = [];
+
+  labels.push(convertDateToLabel(roundDateUp(new Date(domain[0]))));
+
+  for (let i = 1; i < X_LABELS_COUNT - 1; i++) {
+    labels.push(
+      convertDateToLabel(
+        roundDate(
+          new Date(
+            domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1)
+          )
+        )
+      )
+    );
+  }
+
+  labels.push(convertDateToLabel(roundDateDown(new Date(domain[1]))));
+
+  return labels;
+};
 
 const dateFormatter = Intl.DateTimeFormat(undefined, {
   day: "numeric",
@@ -100,14 +153,7 @@ export default function MoodChart() {
         data={data}
         domain={domain}
         range={MOOD_RANGE}
-        xLabels={[
-          [domain[0], dateFormatter.format(new Date(domain[0]))],
-          [
-            (domain[0] + domain[1]) / 2,
-            dateFormatter.format(new Date((domain[0] + domain[1]) / 2)),
-          ],
-          [domain[1], dateFormatter.format(new Date(domain[1]))],
-        ]}
+        xLabels={createXLabels(domain)}
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
           String(y),
