@@ -40,13 +40,9 @@ export default function MoodList() {
           const mood = state.moods.byId[id];
           return (
             <Card
+              color={moodToColor(mood.mood)}
               key={id}
               onClick={() => navigate(`edit/${id}`)}
-              style={
-                {
-                  "--color": moodToColor(mood.mood),
-                } as React.CSSProperties
-              }
             >
               <h2 className="center">
                 {mood.mood}
