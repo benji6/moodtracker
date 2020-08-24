@@ -4,7 +4,7 @@ import { TPoint } from "./types";
 
 interface Props {
   color?: string;
-  points: readonly TPoint[];
+  points: TPoint[];
   thickness?: number;
 }
 

@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as regression from "regression";
 import {
   AXIS_MARKER_LENGTH,
   CHART_ASPECT_RATIO,
@@ -24,6 +23,7 @@ interface Props {
   data: TPoint[];
   domain: [number, number];
   range: [number, number];
+  trendlinePoints: TPoint[];
   xLabels: TLabel[];
   yLabels: TLabel[];
 }
@@ -33,18 +33,15 @@ export default function Chart({
   data,
   domain,
   range,
+  trendlinePoints,
   xLabels,
   yLabels,
 }: Props) {
-  const points = data.map(([x, y]): [number, number] => [
+  const tranformPoint = ([x, y]: TPoint): TPoint => [
     (x - domain[0]) / (domain[1] - domain[0]),
     (y - range[0]) / (range[1] - range[0]),
-  ]);
-
-  const regressionResult = regression.polynomial(points, {
-    order: 6,
-    precision: 3,
-  });
+  ];
+  const points = data.map(tranformPoint);
 
   return (
     <svg
@@ -146,10 +143,10 @@ export default function Chart({
         x={MARGIN_LEFT}
         y={MARGIN_TOP}
       >
-        {/* chart regression line */}
+        {/* tendline */}
         <Line
           color="var(--e-color-balance-less)"
-          points={regressionResult.points}
+          points={trendlinePoints.map(tranformPoint)}
           thickness={LINE_WIDTH_2}
         />
 

@@ -1,5 +1,6 @@
 import { add, set } from "date-fns";
 import * as React from "react";
+import * as regression from "regression";
 import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination } from "eri";
 import Chart from "./Chart";
@@ -147,6 +148,14 @@ export default function MoodChart() {
     return [new Date(id).getTime(), mood.mood];
   });
 
+  const regressionResult = regression.polynomial(
+    data.map(([x, y]) => [
+      (x - domain[0]) / (domain[1] - domain[0]),
+      (y - MOOD_RANGE[0]) / (MOOD_RANGE[1] - MOOD_RANGE[0]),
+    ]),
+    { order: 6, precision: 3 }
+  );
+
   return (
     <Paper>
       <h2>Mood chart</h2>
@@ -155,6 +164,10 @@ export default function MoodChart() {
         data={data}
         domain={domain}
         range={MOOD_RANGE}
+        trendlinePoints={regressionResult.points.map(([x, y]) => [
+          x * (domain[1] - domain[0]) + domain[0],
+          y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
+        ])}
         xLabels={createXLabels(domain)}
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
