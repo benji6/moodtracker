@@ -86,7 +86,7 @@ export default function Chart({
             <text
               dominantBaseline="central"
               fill="currentColor"
-              style={{ fontSize: 0.06 }}
+              style={{ fontSize: 0.05 }}
               textAnchor="middle"
               x={x}
               y={1 - (MARGIN_BOTTOM - AXIS_MARKER_LENGTH) / 2}
@@ -128,7 +128,7 @@ export default function Chart({
             <text
               dominantBaseline="central"
               fill="currentColor"
-              style={{ fontSize: 0.06 }}
+              style={{ fontSize: 0.05 }}
               textAnchor="middle"
               x={(MARGIN_LEFT - AXIS_MARKER_LENGTH) / 2}
               y={y}
