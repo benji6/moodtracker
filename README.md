@@ -26,7 +26,7 @@ make start
 
 ### Test
 
-You will need to be running the client locally on the default port for the end-to-end tests to pass and you will need credentials for a registered user on the platform that you can use to set the `TEST_USER_EMAIL` and `TEST_USER_PASSWORD` environment variables.
+You will need to be running the client locally on the default port for the end-to-end tests to pass and you will need credentials for a registered user on the platform that you can use to set the `MOODTRACKER_TEST_USER_EMAIL` and `MOODTRACKER_TEST_USER_PASSWORD` environment variables.
 
 ```sh
 make test
