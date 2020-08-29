@@ -55,6 +55,24 @@ const createStateWithEvents = (): State => ({
 });
 
 describe("appStateReducer", () => {
+  test("app/signOut", () => {
+    const initialState = createInitialState();
+    expect(
+      appStateReducer(
+        {
+          ...createStateWithEvents(),
+          user: { email: "foo@bar.com", id: "fake-id", loading: true },
+        },
+        {
+          type: "app/signOut",
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      user: { ...initialState.user, loading: false },
+    });
+  });
+
   test("app/storageLoaded", () => {
     expect(
       appStateReducer(
@@ -354,14 +372,6 @@ describe("appStateReducer", () => {
         });
       });
     });
-  });
-
-  test("events/deleteAll", () => {
-    expect(
-      appStateReducer(createStateWithEvents(), {
-        type: "events/deleteAll",
-      })
-    ).toEqual(createInitialState());
   });
 
   test("events/loadFromStorage", () => {

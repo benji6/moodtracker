@@ -18,8 +18,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
     const currentUser = userPool.getCurrentUser();
     if (currentUser) currentUser.signOut();
     onClose();
-    dispatch({ type: "events/deleteAll" });
-    dispatch({ type: "user/clear" });
+    dispatch({ type: "app/signOut" });
     navigate("/");
     setIsLoading(false);
   };

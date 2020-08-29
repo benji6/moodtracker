@@ -7,9 +7,9 @@ import {
 } from "../types";
 
 type Action =
+  | FluxStandardAction<"app/signOut">
   | FluxStandardAction<"app/storageLoaded">
   | FluxStandardAction<"events/add", AppEvent>
-  | FluxStandardAction<"events/deleteAll">
   | FluxStandardAction<"events/loadFromStorage", NormalizedEvents>
   | FluxStandardAction<"events/syncFromServer", AppEvent[]>
   | FluxStandardAction<"syncFromServer/error">
@@ -115,6 +115,15 @@ const deriveMoodsFromEvents = (
 
 export const appStateReducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "app/signOut": {
+      const initialState = createInitialState();
+      return {
+        ...state,
+        events: initialState.events,
+        moods: initialState.moods,
+        user: { email: undefined, id: undefined, loading: false },
+      };
+    }
     case "app/storageLoaded":
       return { ...state, isStorageLoading: false };
     case "events/add": {
@@ -145,14 +154,6 @@ export const appStateReducer = (state: State, action: Action): State => {
         ...state,
         events,
         moods: deriveMoodsFromEvents(events, state.moods),
-      };
-    }
-    case "events/deleteAll": {
-      const initialState = createInitialState();
-      return {
-        ...state,
-        events: initialState.events,
-        moods: initialState.moods,
       };
     }
     case "events/loadFromStorage":
