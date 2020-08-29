@@ -35,3 +35,8 @@ export type AppEvent =
   | MoodEvent<"v1/moods/create", Mood>
   | MoodEvent<"v1/moods/delete", string>
   | MoodEvent<"v1/moods/update", Mood & { id: string }>;
+
+export interface UserDetails {
+  email: string;
+  id: string;
+}

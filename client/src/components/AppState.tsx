@@ -4,6 +4,7 @@ import {
   NormalizedEvents,
   AppEvent,
   NormalizedMoods,
+  UserDetails,
 } from "../types";
 
 type Action =
@@ -19,7 +20,7 @@ type Action =
   | FluxStandardAction<"syncToServer/start">
   | FluxStandardAction<"syncToServer/success">
   | FluxStandardAction<"user/clear">
-  | FluxStandardAction<"user/set", { email: string; id: string }>;
+  | FluxStandardAction<"user/set", UserDetails>;
 
 export interface State {
   events: NormalizedEvents;
