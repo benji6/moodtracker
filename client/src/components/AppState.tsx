@@ -7,11 +7,11 @@ import {
 } from "../types";
 
 type Action =
+  | FluxStandardAction<"app/storageLoaded">
   | FluxStandardAction<"events/add", AppEvent>
   | FluxStandardAction<"events/deleteAll">
   | FluxStandardAction<"events/loadFromStorage", NormalizedEvents>
   | FluxStandardAction<"events/syncFromServer", AppEvent[]>
-  | FluxStandardAction<"storage/loaded">
   | FluxStandardAction<"syncFromServer/error">
   | FluxStandardAction<"syncFromServer/start">
   | FluxStandardAction<"syncFromServer/success", string>
@@ -115,6 +115,8 @@ const deriveMoodsFromEvents = (
 
 export const appStateReducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "app/storageLoaded":
+      return { ...state, isStorageLoading: false };
     case "events/add": {
       let lastEvent = state.events.allIds.length
         ? getLastEvent(state.events)
@@ -189,8 +191,6 @@ export const appStateReducer = (state: State, action: Action): State => {
         moods: deriveMoodsFromEvents(events, { allIds: [], byId: {} }),
       };
     }
-    case "storage/loaded":
-      return { ...state, isStorageLoading: false };
     case "syncToServer/error":
       return {
         ...state,

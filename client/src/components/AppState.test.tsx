@@ -55,6 +55,15 @@ const createStateWithEvents = (): State => ({
 });
 
 describe("appStateReducer", () => {
+  test("app/storageLoaded", () => {
+    expect(
+      appStateReducer(
+        { ...createInitialState(), isStorageLoading: true },
+        { type: "app/storageLoaded" }
+      )
+    ).toEqual({ ...createInitialState(), isStorageLoading: false });
+  });
+
   describe("events/add", () => {
     test("when there are no events in state", () => {
       expect(
@@ -559,15 +568,6 @@ describe("appStateReducer", () => {
         },
       });
     });
-  });
-
-  test("storage/loaded", () => {
-    expect(
-      appStateReducer(
-        { ...createInitialState(), isStorageLoading: true },
-        { type: "storage/loaded" }
-      )
-    ).toEqual({ ...createInitialState(), isStorageLoading: false });
   });
 
   test("syncToServer/error", () => {

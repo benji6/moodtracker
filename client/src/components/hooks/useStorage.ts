@@ -10,12 +10,12 @@ export default function useStorage() {
     if (state.user.loading || !state.isStorageLoading) return;
     void (async () => {
       try {
-        if (!state.user.id) return dispatch({ type: "storage/loaded" });
+        if (!state.user.id) return dispatch({ type: "app/storageLoaded" });
         const events = await storage.getEvents(state.user.id);
         if (events)
           dispatch({ type: "events/loadFromStorage", payload: events });
       } finally {
-        dispatch({ type: "storage/loaded" });
+        dispatch({ type: "app/storageLoaded" });
       }
     })();
   }, [state.isStorageLoading, state.user.id, state.user.loading]);
