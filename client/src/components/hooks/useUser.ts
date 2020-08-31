@@ -1,4 +1,3 @@
-import { navigate } from "@reach/router";
 import * as React from "react";
 import { getIdToken } from "../../cognito";
 import { DispatchContext } from "../AppState";
@@ -27,10 +26,8 @@ export default function useUser(): void {
               },
             });
         } catch (e) {
-          if (e.message === "No current user") {
+          if (e.message === "No current user")
             dispatch({ type: "app/signOut" });
-            navigate("/");
-          }
         }
       })(),
     []

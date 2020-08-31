@@ -1,3 +1,4 @@
+import { navigate } from "@reach/router";
 import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 import storage from "../../storage";
@@ -5,6 +6,16 @@ import storage from "../../storage";
 export default function useStorage() {
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
+
+  const lastUserId = React.useRef<string | undefined>();
+
+  // handle user sign out
+  if (lastUserId.current && !state.user.id) {
+    storage.deleteEvents(lastUserId.current);
+    navigate("/");
+  }
+
+  lastUserId.current = state.user.id;
 
   // save user
   React.useEffect(() => {

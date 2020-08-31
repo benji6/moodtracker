@@ -2,7 +2,6 @@ import { Dialog, Button } from "eri";
 import * as React from "react";
 import { userPool } from "../../cognito";
 import { DispatchContext } from "../AppState";
-import { navigate } from "@reach/router";
 
 interface Props {
   onClose(): void;
@@ -19,7 +18,6 @@ export default function SignOutDialog({ onClose, open }: Props) {
     if (currentUser) currentUser.signOut();
     onClose();
     dispatch({ type: "app/signOut" });
-    navigate("/");
     setIsLoading(false);
   };
 
