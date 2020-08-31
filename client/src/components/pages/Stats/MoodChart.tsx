@@ -7,7 +7,8 @@ import { StateContext } from "../../AppState";
 import { MOOD_RANGE } from "../../../constants";
 import { moodToColor } from "../../../utils";
 
-const SECONDS_IN_A_DAY = 86400000;
+const MILLISECONDS_IN_A_DAY = 86400000;
+const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
 
 const roundDateDown = (date: Date): Date =>
   set(date, {
@@ -24,14 +25,6 @@ const roundDateUp = (date: Date): Date => {
     : add(roundedDownDate, { days: 1 });
 };
 
-const roundDate = (date: Date): Date => {
-  const d0 = roundDateDown(date);
-  const d1 = roundDateUp(date);
-  const dateTimestamp = Number(date);
-
-  return dateTimestamp - Number(d0) < Number(d1) - dateTimestamp ? d0 : d1;
-};
-
 const convertDateToLabel = (date: Date): [number, string] => [
   Number(date),
   dateFormatter.format(date),
@@ -39,15 +32,23 @@ const convertDateToLabel = (date: Date): [number, string] => [
 
 const X_LABELS_COUNT = 4; // must be at least 2
 
-const createXLabels = (domain: [number, number]): [number, string][] => {
+const createXLabels = (
+  domain: [number, number],
+  now: number
+): [number, string][] => {
   const labels: [number, string][] = [];
 
   labels.push(convertDateToLabel(roundDateUp(new Date(domain[0]))));
 
+  const roundFn =
+    now - roundDateDown(new Date(now)).getTime() < MILLISECONDS_IN_HALF_A_DAY
+      ? roundDateUp
+      : roundDateDown;
+
   for (let i = 1; i < X_LABELS_COUNT - 1; i++) {
     labels.push(
       convertDateToLabel(
-        roundDate(
+        roundFn(
           new Date(
             domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1)
           )
@@ -104,12 +105,12 @@ export default function MoodChart() {
   const domain: [number, number] = [
     visibleIds.length
       ? new Date(visibleIds[0]).getTime()
-      : now - SECONDS_IN_A_DAY,
+      : now - MILLISECONDS_IN_A_DAY,
     now,
   ];
 
   if (localState.dayCount !== undefined) {
-    const domainSpread = localState.dayCount * SECONDS_IN_A_DAY;
+    const domainSpread = localState.dayCount * MILLISECONDS_IN_A_DAY;
     domain[1] = now - domainSpread * localState.page;
     domain[0] = domain[1] - domainSpread;
 
@@ -167,7 +168,7 @@ export default function MoodChart() {
           x * (domain[1] - domain[0]) + domain[0],
           y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
         ])}
-        xLabels={createXLabels(domain)}
+        xLabels={createXLabels(domain, now)}
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
           String(y),
