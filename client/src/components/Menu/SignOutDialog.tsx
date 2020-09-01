@@ -29,7 +29,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
       open={open}
       title="Sign out?"
     >
-      {!state.events.idsToSync.length ? (
+      {state.events.idsToSync.length ? (
         <p>
           <strong>
             WARNING: some of your data has not yet been synced to the server and
