@@ -3,11 +3,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import App from "./components/App";
 import AppState from "./components/AppState";
+import { EriProvider } from "eri";
 
 ReactDOM.render(
-  <AppState>
-    <App />
-  </AppState>,
+  <EriProvider>
+    <AppState>
+      <App />
+    </AppState>
+  </EriProvider>,
   document.getElementById("root")
 );
 

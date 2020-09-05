@@ -1,5 +1,5 @@
 import { Link } from "@reach/router";
-import { Header, Menu as EriMenu, Main, Spinner } from "eri";
+import { Header, Menu as EriMenu, Main, Spinner, QuickNav, Icon } from "eri";
 import * as React from "react";
 import Menu from "./Menu";
 import Router from "./Router";
@@ -28,6 +28,19 @@ export default function App() {
       </Header>
       <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
       <Main>{state.isStorageLoading ? <Spinner /> : <Router />}</Main>
+      {state.user.email && (
+        <QuickNav>
+          <QuickNav.Link aria-label="home" to="/">
+            <Icon name="home" size="4" />
+          </QuickNav.Link>
+          <QuickNav.Link aria-label="statistics" to="/stats">
+            <Icon name="chart" size="4" />
+          </QuickNav.Link>
+          <QuickNav.Link aria-label="add new mood" to="/add">
+            <Icon name="plus" size="4" />
+          </QuickNav.Link>
+        </QuickNav>
+      )}
     </>
   );
 }

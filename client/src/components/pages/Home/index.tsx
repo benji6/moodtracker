@@ -1,5 +1,5 @@
-import { Link, useNavigate, RouteComponentProps } from "@reach/router";
-import { Paper, Fab, Icon, Spinner } from "eri";
+import { Link, RouteComponentProps } from "@reach/router";
+import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
 import MoodList from "./MoodList";
@@ -11,26 +11,20 @@ export interface HomeState {
 }
 
 export default function Home(_: RouteComponentProps) {
-  const navigate = useNavigate();
   const state = React.useContext(StateContext);
 
   return (
     <Paper.Group>
       {state.user.email ? (
-        <>
-          {state.events.hasLoadedFromServer ? (
-            state.moods.allIds.length ? (
-              <MoodList />
-            ) : (
-              <AddFirstMoodCta />
-            )
+        state.events.hasLoadedFromServer ? (
+          state.moods.allIds.length ? (
+            <MoodList />
           ) : (
-            <Spinner />
-          )}
-          <Fab aria-label="add new mood" onClick={() => navigate("add")}>
-            <Icon name="plus" size="4" />
-          </Fab>
-        </>
+            <AddFirstMoodCta />
+          )
+        ) : (
+          <Spinner />
+        )
       ) : (
         <Paper>
           <h2>Welcome to MoodTracker!</h2>
