@@ -36,14 +36,14 @@ export default function Home(_: RouteComponentProps) {
           <br />
           <p className="center">
             <strong>
-              <Link to="sign-up">Sign up now to get started!</Link>
+              <Link to="/sign-up">Sign up now to get started!</Link>
             </strong>
           </p>
           <br />
           <p>
             <small>
               If you already have an account you can{" "}
-              <Link to="sign-in">sign in here</Link>.
+              <Link to="/sign-in">sign in here</Link>.
             </small>
           </p>
         </Paper>

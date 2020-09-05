@@ -54,10 +54,10 @@ export default function Menu({ handleMenuClose, open }: Props) {
               </EriMenu.Link>
             </>
           )}
-          <EriMenu.Link onClick={handleMenuClose} to="about">
+          <EriMenu.Link onClick={handleMenuClose} to="/about">
             About
           </EriMenu.Link>
-          <EriMenu.Link onClick={handleMenuClose} to="see-also">
+          <EriMenu.Link onClick={handleMenuClose} to="/see-also">
             See also
           </EriMenu.Link>
         </EriMenu.List>
