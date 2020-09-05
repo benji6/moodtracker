@@ -3328,9 +3328,9 @@ envinfo@^7.3.1:
   integrity sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
 
 eri@^20.0.0:
-  version "20.1.0"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-20.1.0.tgz#7c3722dc60a144c51f196d73cff0a73c23ac9fd5"
-  integrity sha512-bc3KfSFrh6hT39LLQQdqsWm1HnXDpLls4AQ8+C9TDIcYCQVaBwIvxtmmREisn0iQMHtng6CIaYiCy5407xLzzA==
+  version "20.1.2"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-20.1.2.tgz#0557c9113af59899d2ab1f7ffb0ab5b7289e90bb"
+  integrity sha512-kAHwkiuNGzDbtISG5Og43tYia80UCBFhyEbGyEBmHWquLLGPLpaT5C15255J+AfNM059TAA2uHBmR0BWfPmqiw==
   dependencies:
     react-transition-group "^4.4.1"
 
