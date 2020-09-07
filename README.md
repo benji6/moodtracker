@@ -1,6 +1,5 @@
 # MoodTracker
 
-[![Build Status](https://travis-ci.com/benji6/moodtracker.svg?branch=master)](https://travis-ci.com/benji6/moodtracker)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/0d744c93-11e8-4072-85e2-4a168c1ae8ae/deploy-status)](https://app.netlify.com/sites/benji6-moodtracker/deploys)
 
 ## About

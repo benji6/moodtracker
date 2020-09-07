@@ -1,4 +1,0 @@
-language: node_js
-before_install: cd client
-script:
-  - yarn start & yarn test
