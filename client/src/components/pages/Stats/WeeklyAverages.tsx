@@ -2,7 +2,7 @@ import { startOfWeek, endOfWeek, eachWeekOfInterval, addWeeks } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { trapeziumArea } from "../../../utils";
+import { trapeziumArea, mapRight } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import { MOOD_RANGE } from "../../../constants";
 import MoodCell from "./MoodCell";
@@ -131,7 +131,7 @@ export const computeAverageByWeek = (
     averageByWeek.push([createKey(week0), (area / maxArea) * MOOD_RANGE[1]]);
   }
 
-  return averageByWeek.reverse();
+  return averageByWeek;
 };
 
 export default function WeeklyAverages() {
@@ -151,7 +151,7 @@ export default function WeeklyAverages() {
           </tr>
         </thead>
         <tbody>
-          {averageByWeek.map(([week, averageMood]) => (
+          {mapRight(averageByWeek, ([week, averageMood]) => (
             <tr key={week}>
               <td>{week}</td>
               <MoodCell mood={averageMood} />

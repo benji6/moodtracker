@@ -2,7 +2,7 @@ import { addMonths, eachMonthOfInterval } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { trapeziumArea } from "../../../utils";
+import { trapeziumArea, mapRight } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import { MOOD_RANGE } from "../../../constants";
 import MoodCell from "./MoodCell";
@@ -121,7 +121,7 @@ export const computeAverageByMonth = (
     ]);
   }
 
-  return averageByMonth.reverse();
+  return averageByMonth;
 };
 
 export default function MonthlyAverages() {
@@ -142,7 +142,7 @@ export default function MonthlyAverages() {
           </tr>
         </thead>
         <tbody>
-          {averageByMonth.map(([month, averageMood]) => (
+          {mapRight(averageByMonth, ([month, averageMood]) => (
             <tr key={month}>
               <td>{month}</td>
               <MoodCell mood={averageMood} />

@@ -33,8 +33,8 @@ describe("MonthlyAverages", () => {
           },
         })
       ).toEqual([
-        ["July 2020", 5],
         ["June 2020", 5],
+        ["July 2020", 5],
       ]);
 
       expect(
@@ -48,12 +48,12 @@ describe("MonthlyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "July 2020",
-            6.547916666666667,
-          ],
-          Array [
             "June 2020",
             5.047916666666667,
+          ],
+          Array [
+            "July 2020",
+            6.547916666666667,
           ],
         ]
       `);
@@ -69,10 +69,10 @@ describe("MonthlyAverages", () => {
           },
         })
       ).toEqual([
-        ["July 2020", 5],
-        ["June 2020", 5],
-        ["May 2020", 5],
         ["April 2020", 5],
+        ["May 2020", 5],
+        ["June 2020", 5],
+        ["July 2020", 5],
       ]);
 
       expect(
@@ -86,20 +86,20 @@ describe("MonthlyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "July 2020",
-            8.866758241758241,
-          ],
-          Array [
-            "June 2020",
-            7.7445054945054945,
+            "April 2020",
+            3.8557692307692317,
           ],
           Array [
             "May 2020",
             5.7335164835164845,
           ],
           Array [
-            "April 2020",
-            3.8557692307692317,
+            "June 2020",
+            7.7445054945054945,
+          ],
+          Array [
+            "July 2020",
+            8.866758241758241,
           ],
         ]
       `);

@@ -1,7 +1,7 @@
 import { Card, Paper, SubHeading, Pagination } from "eri";
 import * as React from "react";
 import CardGroup from "eri/dist/components/Card/CardGroup";
-import { moodToColor } from "../../../utils";
+import { moodToColor, mapRight } from "../../../utils";
 import { StateContext } from "../../AppState";
 import { useNavigate, useLocation } from "@reach/router";
 import { NormalizedMoods } from "../../../types";
@@ -63,14 +63,16 @@ export default function MoodList() {
       <Paper data-test-id="mood-list">
         <h2>Mood list</h2>
       </Paper>
-      {moodsGroupedByDay
-        .slice(Math.max(endIndex - DAYS_PER_PAGE, 0), endIndex)
-        .reverse()
-        .map(([date, ids]) => (
+      {mapRight(
+        moodsGroupedByDay.slice(
+          Math.max(endIndex - DAYS_PER_PAGE, 0),
+          endIndex
+        ),
+        ([date, ids]) => (
           <Paper key={date}>
             <h3>{dateFormatter.format(new Date(date))}</h3>
             <CardGroup>
-              {ids.map((id) => {
+              {mapRight(ids, (id) => {
                 const mood = state.moods.byId[id];
                 return (
                   <Card
@@ -89,7 +91,8 @@ export default function MoodList() {
               })}
             </CardGroup>
           </Paper>
-        ))}
+        )
+      )}
       <Paper>
         <Pagination
           onChange={(page) => navigate(page ? `?page=${page + 1}` : "/")}

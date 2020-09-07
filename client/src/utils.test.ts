@@ -1,7 +1,13 @@
-import { moodToColor, trapeziumArea } from "./utils";
+import { moodToColor, trapeziumArea, mapRight } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
 describe("utils", () => {
+  test("mapRight", () => {
+    expect(mapRight([], (x) => x + 1)).toEqual([]);
+    expect(mapRight([1], (x) => x + 1)).toEqual([2]);
+    expect(mapRight([1, 2, 3], (x) => x + 1)).toEqual([4, 3, 2]);
+  });
+
   test("moodToColor", () => {
     expect(moodToColor(MOOD_RANGE[0])).toMatchInlineSnapshot(
       `"hsl(0.75turn, 100%, 65%)"`

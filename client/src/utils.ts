@@ -2,6 +2,12 @@ import { MOOD_RANGE } from "./constants";
 
 let colorCache = new Map();
 
+export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
+  let ys = [];
+  for (let i = xs.length - 1; i >= 0; i--) ys.push(f(xs[i]));
+  return ys;
+};
+
 export const moodToColor = (mood: number): string => {
   const cachedColor = colorCache.get(mood);
   if (cachedColor) return cachedColor;

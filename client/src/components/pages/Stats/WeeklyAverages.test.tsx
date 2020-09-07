@@ -42,8 +42,8 @@ describe("WeeklyAverages", () => {
           },
         })
       ).toEqual([
-        ["27 July – 2 August 2020", 5],
         ["20–26 July 2020", 5],
+        ["27 July – 2 August 2020", 5],
       ]);
 
       expect(
@@ -57,12 +57,12 @@ describe("WeeklyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "27 July – 2 August 2020",
-            5.479166666666666,
-          ],
-          Array [
             "20–26 July 2020",
             3.9791666666666665,
+          ],
+          Array [
+            "27 July – 2 August 2020",
+            5.479166666666666,
           ],
         ]
       `);
@@ -78,11 +78,11 @@ describe("WeeklyAverages", () => {
           },
         })
       ).toEqual([
-        ["27 July – 2 August 2020", 5],
-        ["20–26 July 2020", 5],
-        ["13–19 July 2020", 5],
-        ["6–12 July 2020", 5],
         ["29 June – 5 July 2020", 5],
+        ["6–12 July 2020", 5],
+        ["13–19 July 2020", 5],
+        ["20–26 July 2020", 5],
+        ["27 July – 2 August 2020", 5],
       ]);
 
       expect(
@@ -96,20 +96,20 @@ describe("WeeklyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "20–26 July 2020",
-            5.747916666666667,
-          ],
-          Array [
-            "13–19 July 2020",
-            5.145833333333334,
+            "29 June – 5 July 2020",
+            4.047916666666667,
           ],
           Array [
             "6–12 July 2020",
             4.445833333333333,
           ],
           Array [
-            "29 June – 5 July 2020",
-            4.047916666666667,
+            "13–19 July 2020",
+            5.145833333333334,
+          ],
+          Array [
+            "20–26 July 2020",
+            5.747916666666667,
           ],
         ]
       `);
