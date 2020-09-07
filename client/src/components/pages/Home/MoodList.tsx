@@ -25,7 +25,7 @@ const groupByDay = (moods: NormalizedMoods): [string, string[]][] => {
   const moodsGroupedByDate: { [date: string]: string[] } = {};
 
   for (const id of moods.allIds) {
-    const key = id.split("T", 1)[0];
+    const key = dateFormatter.format(new Date(id));
     if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
     else moodsGroupedByDate[key] = [id];
   }
@@ -70,7 +70,7 @@ export default function MoodList() {
         ),
         ([date, ids]) => (
           <Paper key={date}>
-            <h3>{dateFormatter.format(new Date(date))}</h3>
+            <h3>{date}</h3>
             <CardGroup>
               {mapRight(ids, (id) => {
                 const mood = state.moods.byId[id];
