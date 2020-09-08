@@ -2,9 +2,8 @@ import { startOfWeek, endOfWeek, eachWeekOfInterval, addWeeks } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { trapeziumArea, mapRight } from "../../../utils";
+import { mapRight, computeAverageMoodInInterval } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
-import { MOOD_RANGE } from "../../../constants";
 import MoodCell from "./MoodCell";
 
 const WEEK_OPTIONS = {
@@ -45,90 +44,14 @@ export const computeAverageByWeek = (
 
   weeks.push(addWeeks(weeks[weeks.length - 1], 1));
 
-  const earliestMoodTime = new Date(moods.allIds[0]).getTime();
-  const latestMoodTime = new Date(
-    moods.allIds[moods.allIds.length - 1]
-  ).getTime();
-
   for (let i = 1; i < weeks.length; i++) {
     const week0 = weeks[i - 1];
     const week1 = weeks[i];
 
-    const w0 = week0.getTime();
-    const w1 = week1.getTime();
-
-    const maxArea =
-      (Math.min(w1, latestMoodTime) - Math.max(w0, earliestMoodTime)) *
-      (MOOD_RANGE[1] - MOOD_RANGE[0]);
-
-    // `startIndex` is the last mood before the current week
-    // or the first mood if it's the first week
-    let startIndex = 0;
-    if (i > 1) {
-      for (let j = 1; j < moods.allIds.length; j++) {
-        const moodTime = new Date(moods.allIds[j]).getTime();
-        if (moodTime > w0) {
-          startIndex = j - 1;
-          break;
-        }
-      }
-    }
-
-    // `endIndex` is the first mood after the current week
-    // or the last mood if it's the last week
-    let endIndex = moods.allIds.length - 1;
-    if (i < weeks.length - 1) {
-      for (let j = startIndex; j < moods.allIds.length; j++) {
-        const moodTime = new Date(moods.allIds[j]).getTime();
-        if (moodTime > w1) {
-          endIndex = j;
-          break;
-        }
-      }
-    }
-
-    let area = 0;
-
-    for (let j = startIndex + 1; j <= endIndex; j++) {
-      const id0 = moods.allIds[j - 1];
-      const t0 = new Date(id0).getTime();
-      const mood0 = moods.byId[id0].mood;
-
-      const id1 = moods.allIds[j];
-      const t1 = new Date(id1).getTime();
-      const mood1 = moods.byId[id1].mood;
-
-      if (t0 < w0 && t1 > w1) {
-        area += trapeziumArea(
-          mood0 + ((mood1 - mood0) * (w0 - t0)) / (t1 - t0),
-          mood0 + ((mood1 - mood0) * (w1 - t0)) / (t1 - t0),
-          w1 - w0
-        );
-        continue;
-      }
-
-      if (t0 < w0) {
-        area += trapeziumArea(
-          mood1 + ((mood0 - mood1) * (t1 - w0)) / (t1 - t0),
-          mood1,
-          t1 - w0
-        );
-        continue;
-      }
-
-      if (t1 > w1) {
-        area += trapeziumArea(
-          mood0,
-          mood0 + ((mood1 - mood0) * (w1 - t0)) / (t1 - t0),
-          w1 - t0
-        );
-        break;
-      }
-
-      area += trapeziumArea(mood0, mood1, t1 - t0);
-    }
-
-    averageByWeek.push([createKey(week0), (area / maxArea) * MOOD_RANGE[1]]);
+    averageByWeek.push([
+      createKey(week0),
+      computeAverageMoodInInterval(moods, week0, week1),
+    ]);
   }
 
   return averageByWeek;
