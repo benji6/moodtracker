@@ -8,6 +8,7 @@ import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MonthlyAverages from "./MonthlyAverages";
 import WeeklyAverages from "./WeeklyAverages";
 import AverageMoodByDay from "./AverageMoodByDay";
+import AverageMoodByHour from "./AverageMoodByHour";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -22,6 +23,7 @@ export default function Stats(_: RouteComponentProps) {
             <WeeklyAverages />
             <MonthlyAverages />
             <AverageMoodByDay />
+            <AverageMoodByHour />
           </>
         ) : (
           <AddFirstMoodCta />

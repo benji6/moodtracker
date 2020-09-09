@@ -8,7 +8,7 @@ import { NormalizedMoods } from "../../../types";
 
 const DAYS_PER_WEEK = 7;
 const NUMBER_OF_WEEKS_TO_AVERAGE_OVER = 4;
-const weekdayFormatter = Intl.DateTimeFormat(undefined, { weekday: "long" });
+const formatter = Intl.DateTimeFormat(undefined, { weekday: "long" });
 
 type Averages = [
   [string, number | undefined],
@@ -24,7 +24,7 @@ const computeAverages = (
   moods: NormalizedMoods
 ): { averages: Averages; weeksUsed: number } => {
   let weeksUsed = 0;
-  const today = roundDateDown(new Date());
+  const startDate = roundDateDown(new Date());
   const averages = Array(DAYS_PER_WEEK);
 
   for (let n = 0; n < DAYS_PER_WEEK; n++) {
@@ -32,7 +32,7 @@ const computeAverages = (
     let i = 0;
 
     for (; i < NUMBER_OF_WEEKS_TO_AVERAGE_OVER; i++) {
-      const fromDate = subDays(today, n + DAYS_PER_WEEK * i);
+      const fromDate = subDays(startDate, n + DAYS_PER_WEEK * i);
       try {
         sumOfAverageMoods += computeAverageMoodInInterval(
           moods,
@@ -46,12 +46,12 @@ const computeAverages = (
 
     weeksUsed = Math.max(weeksUsed, i);
 
-    const dateForDayOfWeek = subDays(today, n);
+    const dateForDayOfWeek = subDays(startDate, n);
     const dateFnsDay = getDay(dateForDayOfWeek);
     const averagesIndex = (dateFnsDay ? dateFnsDay : DAYS_PER_WEEK) - 1;
 
     averages[averagesIndex] = [
-      weekdayFormatter.format(dateForDayOfWeek),
+      formatter.format(dateForDayOfWeek),
       i ? sumOfAverageMoods / i : undefined,
     ];
   }
