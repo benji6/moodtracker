@@ -1,29 +1,13 @@
-import { add, set } from "date-fns";
 import * as React from "react";
 import * as regression from "regression";
 import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination, Chart } from "eri";
 import { StateContext } from "../../AppState";
 import { MOOD_RANGE } from "../../../constants";
-import { moodToColor } from "../../../utils";
+import { moodToColor, roundDateUp, roundDateDown } from "../../../utils";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
-
-const roundDateDown = (date: Date): Date =>
-  set(date, {
-    hours: 0,
-    milliseconds: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-const roundDateUp = (date: Date): Date => {
-  const roundedDownDate = roundDateDown(date);
-  return Number(roundedDownDate) === Number(date)
-    ? date
-    : add(roundedDownDate, { days: 1 });
-};
 
 const convertDateToLabel = (date: Date): [number, string] => [
   Number(date),

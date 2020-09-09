@@ -3,6 +3,8 @@ import {
   trapeziumArea,
   mapRight,
   computeAverageMoodInInterval,
+  roundDateDown,
+  roundDateUp,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -270,6 +272,30 @@ describe("utils", () => {
     ).toMatchInlineSnapshot(`"hsl(0.55turn, 100%, 52.5%)"`);
     expect(moodToColor(MOOD_RANGE[1])).toMatchInlineSnapshot(
       `"hsl(0.35turn, 100%, 40%)"`
+    );
+  });
+
+  test("roundDateDown", () => {
+    expect(roundDateDown(new Date("2020-09-09T00:00:00.000"))).toEqual(
+      new Date("2020-09-09T00:00:00.000")
+    );
+    expect(roundDateDown(new Date("2020-09-09T00:00:00.001"))).toEqual(
+      new Date("2020-09-09T00:00:00.000")
+    );
+    expect(roundDateDown(new Date("2020-09-09T23:59:59.999"))).toEqual(
+      new Date("2020-09-09T00:00:00.000")
+    );
+  });
+
+  test("roundDateUp", () => {
+    expect(roundDateUp(new Date("2020-09-08T00:00:00.000"))).toEqual(
+      new Date("2020-09-08T00:00:00.000")
+    );
+    expect(roundDateUp(new Date("2020-09-08T00:00:00.001"))).toEqual(
+      new Date("2020-09-09T00:00:00.000")
+    );
+    expect(roundDateUp(new Date("2020-09-07T23:59:59.999"))).toEqual(
+      new Date("2020-09-08T00:00:00.000")
     );
   });
 

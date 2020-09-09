@@ -1,5 +1,6 @@
 import { MOOD_RANGE } from "./constants";
 import { NormalizedMoods } from "./types";
+import { set, add } from "date-fns";
 
 let colorCache = new Map();
 
@@ -103,6 +104,21 @@ export const moodToColor = (mood: number): string => {
   const color = `hsl(${0.75 - n * 0.4}turn, 100%, ${65 - 25 * n}%)`;
   colorCache.set(mood, color);
   return color;
+};
+
+export const roundDateDown = (date: Date): Date =>
+  set(date, {
+    hours: 0,
+    milliseconds: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+export const roundDateUp = (date: Date): Date => {
+  const roundedDownDate = roundDateDown(date);
+  return Number(roundedDownDate) === Number(date)
+    ? date
+    : add(roundedDownDate, { days: 1 });
 };
 
 export const trapeziumArea = (a: number, b: number, h: number): number =>
