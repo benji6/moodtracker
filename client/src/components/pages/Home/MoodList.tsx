@@ -93,13 +93,15 @@ export default function MoodList() {
           </Paper>
         )
       )}
-      <Paper>
-        <Pagination
-          onChange={(page) => navigate(page ? `?page=${page + 1}` : "/")}
-          page={page}
-          pageCount={pageCount}
-        />
-      </Paper>
+      {pageCount > 1 && (
+        <Paper>
+          <Pagination
+            onChange={(page) => navigate(page ? `?page=${page + 1}` : "/")}
+            page={page}
+            pageCount={pageCount}
+          />
+        </Paper>
+      )}
     </>
   );
 }
