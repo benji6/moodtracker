@@ -7,6 +7,7 @@ import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MonthlyAverages from "./MonthlyAverages";
 import WeeklyAverages from "./WeeklyAverages";
+import AverageMoodByDay from "./AverageMoodByDay";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -18,8 +19,9 @@ export default function Stats(_: RouteComponentProps) {
         state.moods.allIds.length ? (
           <>
             <MoodChart />
-            <MonthlyAverages />
             <WeeklyAverages />
+            <MonthlyAverages />
+            <AverageMoodByDay />
           </>
         ) : (
           <AddFirstMoodCta />
