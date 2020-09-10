@@ -1,41 +1,18 @@
 import * as React from "react";
-import { Paper } from "eri";
-import MoodCell from "./MoodCell";
-import { subHours, addHours, getHours, set } from "date-fns";
-import { computeAverageMoodInInterval } from "../../../utils";
+import { Paper, Chart } from "eri";
+import { subHours, addHours, getHours, set, setHours } from "date-fns";
+import { computeAverageMoodInInterval, moodToColor } from "../../../utils";
 import { StateContext } from "../../AppState";
 import { NormalizedMoods } from "../../../types";
+import { MOOD_RANGE } from "../../../constants";
 
 const HOURS_PER_DAY = 24;
 const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
+
+const arbitraryDate = new Date();
 const formatter = Intl.DateTimeFormat(undefined, { hour: "numeric" });
 
-type Averages = [
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined]
-];
+type Averages = [number, number][];
 
 const computeAverages = (
   moods: NormalizedMoods
@@ -44,12 +21,12 @@ const computeAverages = (
   const startDate = subHours(
     set(new Date(), {
       milliseconds: 0,
-      minutes: 0,
+      minutes: 30,
       seconds: 0,
     }),
     1
   );
-  const averages = Array(HOURS_PER_DAY);
+  const averages: Averages = Array(HOURS_PER_DAY);
 
   for (let n = 0; n < HOURS_PER_DAY; n++) {
     let sumOfAverageMoods = 0;
@@ -70,15 +47,13 @@ const computeAverages = (
 
     daysUsed = Math.max(daysUsed, i);
 
-    const dateForHours = subHours(startDate, n);
-
-    averages[getHours(dateForHours)] = [
-      formatter.format(dateForHours),
-      i ? sumOfAverageMoods / i : undefined,
-    ];
+    if (i) {
+      const hours = getHours(subHours(startDate, n));
+      averages[hours] = [hours, sumOfAverageMoods / i];
+    }
   }
 
-  return { averages: averages as Averages, daysUsed: daysUsed };
+  return { averages: averages.filter((x) => x !== undefined), daysUsed };
 };
 
 export default function AverageMoodByHour() {
@@ -89,29 +64,24 @@ export default function AverageMoodByHour() {
     [state.moods]
   );
 
+  const xLabels: [number, string][] = [];
+  for (let i = 0; i < HOURS_PER_DAY; i += 4)
+    xLabels.push([i, formatter.format(setHours(arbitraryDate, i))]);
+
   return (
     <Paper>
       <h2>Average mood by hour</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Hour</th>
-            <th>Average mood</th>
-          </tr>
-        </thead>
-        <tbody>
-          {averages.map(([day, averageMood]) => (
-            <tr key={day}>
-              <td>{day}</td>
-              {averageMood === undefined ? (
-                <td className="center">N/A</td>
-              ) : (
-                <MoodCell mood={averageMood} />
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Chart
+        colorFromY={moodToColor}
+        data={averages}
+        domain={[0, HOURS_PER_DAY - 1]}
+        range={MOOD_RANGE}
+        xLabels={xLabels}
+        yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
+          y,
+          String(y),
+        ])}
+      />
       <p className="center">
         <small>
           (Calculated based on the last {daysUsed} day
