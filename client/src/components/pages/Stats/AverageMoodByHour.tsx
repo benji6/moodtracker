@@ -72,10 +72,12 @@ export default function AverageMoodByHour() {
     <Paper>
       <h2>Average mood by hour</h2>
       <Chart
+        aria-label="Chart displaying average mood against hour of the day"
         colorFromY={moodToColor}
         data={averages}
         domain={[0, HOURS_PER_DAY - 1]}
         range={MOOD_RANGE}
+        xAxisLabel="Hour of day"
         xLabels={xLabels}
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,

@@ -144,6 +144,7 @@ export default function MoodChart() {
     <Paper>
       <h2>Mood chart</h2>
       <Chart
+        aria-label="Chart displaying mood entries against time"
         colorFromY={moodToColor}
         data={data}
         domain={domain}
@@ -152,6 +153,7 @@ export default function MoodChart() {
           x * (domain[1] - domain[0]) + domain[0],
           y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
         ])}
+        xAxisLabel="Date"
         xLabels={createXLabels(domain, now)}
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
