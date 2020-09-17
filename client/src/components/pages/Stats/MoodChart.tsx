@@ -155,6 +155,7 @@ export default function MoodChart() {
         ])}
         xAxisLabel="Date"
         xLabels={createXLabels(domain, now)}
+        yAxisLabel="Mood"
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
           String(y),

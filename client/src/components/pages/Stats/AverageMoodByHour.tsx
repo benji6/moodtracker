@@ -79,6 +79,7 @@ export default function AverageMoodByHour() {
         range={MOOD_RANGE}
         xAxisLabel="Hour of day"
         xLabels={xLabels}
+        yAxisLabel="Mood"
         yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
           y,
           String(y),
