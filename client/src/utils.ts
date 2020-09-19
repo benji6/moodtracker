@@ -1,8 +1,7 @@
+import chroma from "chroma-js";
+import { set, add } from "date-fns";
 import { MOOD_RANGE } from "./constants";
 import { NormalizedMoods } from "./types";
-import { set, add } from "date-fns";
-
-let colorCache = new Map();
 
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
@@ -97,14 +96,15 @@ export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
   return ys;
 };
 
-export const moodToColor = (mood: number): string => {
-  const cachedColor = colorCache.get(mood);
-  if (cachedColor) return cachedColor;
-  const n = (mood - MOOD_RANGE[0]) / (MOOD_RANGE[1] - MOOD_RANGE[0]);
-  const color = `hsl(${0.75 - n * 0.4}turn, 100%, ${65 - 25 * n}%)`;
-  colorCache.set(mood, color);
-  return color;
-};
+const getColor = chroma
+  .scale(["1747f0", "00e0e0", "30ff20"])
+  .domain([MOOD_RANGE[0], MOOD_RANGE[1]])
+  .mode("lch");
+
+// chroma-js has a cache which is very useful
+// to limit memory overhead we round the mood
+export const moodToColor = (mood: number): string =>
+  getColor(Number(mood.toFixed(1))).hex();
 
 export const roundDateDown = (date: Date): Date =>
   set(date, {
