@@ -8,10 +8,12 @@ import { computeAverageMoodInInterval, formatIsoMonth } from "../../../utils";
 import { StateContext } from "../../AppState";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 
+const isoMonthRegex = /^(\d){4}-(\d){2}$/;
+
 export default function Month({
   month: monthStr,
 }: RouteComponentProps<{ month: string }>) {
-  if (!monthStr) return <Redirect to="/404" />;
+  if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
 
   const state = React.useContext(StateContext);
 
@@ -56,7 +58,7 @@ export default function Month({
   return (
     <Paper.Group>
       <Paper>
-        <h2>{monthFormatter.format(new Date(month))}</h2>
+        <h2>{monthFormatter.format(month)}</h2>
       </Paper>
       {moodIdsInMonth.length ? (
         <>
