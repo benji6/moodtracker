@@ -41,10 +41,17 @@ export default function Month({
   const moodValues = moodIdsInMonth.map((id) => state.moods.byId[id].mood);
 
   const moodCounter = new Map(
-    [...Array(MOOD_RANGE[1] - MOOD_RANGE[0] + 1).keys()].map((n) => [n, 0])
+    [...Array(MOOD_RANGE[1] - MOOD_RANGE[0] + 1).keys()].map((n) => [
+      MOOD_RANGE[0] + n,
+      0,
+    ])
   );
-  for (const moodValue of moodValues)
-    moodCounter.set(moodValue, moodCounter.get(moodValue)! + 1);
+
+  for (const moodValue of moodValues) {
+    // handle old data stored in decimal format
+    const rounded = Math.round(moodValue);
+    moodCounter.set(rounded, moodCounter.get(rounded)! + 1);
+  }
 
   return (
     <Paper.Group>
