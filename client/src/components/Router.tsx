@@ -5,12 +5,13 @@ import About from "./pages/About";
 import AddMood from "./pages/AddMood";
 import EditMood from "./pages/EditMood";
 import Home from "./pages/Home";
+import Month from "./pages/Month";
 import ResendVerification from "./pages/ResendVerification";
 import SeeAlso from "./pages/SeeAlso";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Verify from "./pages/Verify";
 import Stats from "./pages/Stats";
+import Verify from "./pages/Verify";
 
 export default function Router() {
   return (
@@ -20,6 +21,7 @@ export default function Router() {
       <About path="about" />
       <AddMood path="add" />
       <EditMood path="edit/:id" />
+      <Month path="stats/months/:month" />
       <ResendVerification path="resend-verification" />
       <SeeAlso path="see-also" />
       <SignIn path="sign-in" />

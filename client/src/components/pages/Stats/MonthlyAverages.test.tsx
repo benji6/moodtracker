@@ -8,7 +8,7 @@ describe("MonthlyAverages", () => {
           allIds: ["2020-07-28T00:00:00.000Z"],
           byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
         })
-      ).toEqual([["July 2020", 5]]);
+      ).toEqual([[new Date("2020-07-01"), 5]]);
     });
 
     it("works with 2 moods in the same month", () => {
@@ -20,7 +20,7 @@ describe("MonthlyAverages", () => {
             "2020-07-29T00:00:00.000Z": { mood: 7 },
           },
         })
-      ).toEqual([["July 2020", 6]]);
+      ).toEqual([[new Date("2020-07-01"), 6]]);
     });
 
     it("works with 2 moods in adjacent months", () => {
@@ -33,8 +33,8 @@ describe("MonthlyAverages", () => {
           },
         })
       ).toEqual([
-        ["June 2020", 5],
-        ["July 2020", 5],
+        [new Date("2020-06-01"), 5],
+        [new Date("2020-07-01"), 5],
       ]);
 
       expect(
@@ -48,12 +48,12 @@ describe("MonthlyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "June 2020",
-            5.047916666666667,
+            2020-06-01T00:00:00.000Z,
+            5.05,
           ],
           Array [
-            "July 2020",
-            6.547916666666667,
+            2020-07-01T00:00:00.000Z,
+            6.550000000000001,
           ],
         ]
       `);
@@ -69,10 +69,10 @@ describe("MonthlyAverages", () => {
           },
         })
       ).toEqual([
-        ["April 2020", 5],
-        ["May 2020", 5],
-        ["June 2020", 5],
-        ["July 2020", 5],
+        [new Date("2020-04-01"), 5],
+        [new Date("2020-05-01"), 5],
+        [new Date("2020-06-01"), 5],
+        [new Date("2020-07-01"), 5],
       ]);
 
       expect(
@@ -86,20 +86,20 @@ describe("MonthlyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "April 2020",
-            3.8557692307692317,
+            2020-04-01T00:00:00.000Z,
+            3.857142857142857,
           ],
           Array [
-            "May 2020",
-            5.7335164835164845,
+            2020-05-01T00:00:00.000Z,
+            5.736263736263737,
           ],
           Array [
-            "June 2020",
-            7.7445054945054945,
+            2020-06-01T00:00:00.000Z,
+            7.747252747252748,
           ],
           Array [
-            "July 2020",
-            8.866758241758241,
+            2020-07-01T00:00:00.000Z,
+            8.868131868131869,
           ],
         ]
       `);

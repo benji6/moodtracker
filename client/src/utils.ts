@@ -90,6 +90,9 @@ export const computeAverageMoodInInterval = (
   return (area / maxArea) * (MOOD_RANGE[1] - MOOD_RANGE[0]);
 };
 
+export const formatIsoMonth = (date: Date): string =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
 export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
   let ys = [];
   for (let i = xs.length - 1; i >= 0; i--) ys.push(f(xs[i]));

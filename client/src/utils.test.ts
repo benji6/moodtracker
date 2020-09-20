@@ -5,6 +5,7 @@ import {
   computeAverageMoodInInterval,
   roundDateDown,
   roundDateUp,
+  formatIsoMonth,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -255,6 +256,12 @@ describe("utils", () => {
         ).toEqual(4.5);
       });
     });
+  });
+
+  test("formatIsoMonth", () => {
+    expect(formatIsoMonth(new Date("2020-09-01T00:00:00"))).toBe("2020-09");
+    expect(formatIsoMonth(new Date("2020-09-30T23:59:59"))).toBe("2020-09");
+    expect(formatIsoMonth(new Date("2020-10-01T00:00:00"))).toBe("2020-10");
   });
 
   test("mapRight", () => {

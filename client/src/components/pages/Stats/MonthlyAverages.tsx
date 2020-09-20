@@ -2,19 +2,20 @@ import { addMonths, eachMonthOfInterval } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { mapRight, computeAverageMoodInInterval } from "../../../utils";
+import {
+  mapRight,
+  computeAverageMoodInInterval,
+  formatIsoMonth,
+} from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import MoodCell from "./MoodCell";
-
-const monthFormatter = Intl.DateTimeFormat(undefined, {
-  month: "long",
-  year: "numeric",
-});
+import { monthFormatter } from "../../../formatters";
+import { Link } from "@reach/router";
 
 export const computeAverageByMonth = (
   moods: NormalizedMoods
-): [string, number][] => {
-  const averageByMonth: [string, number][] = [];
+): [Date, number][] => {
+  const averageByMonth: [Date, number][] = [];
 
   const months = eachMonthOfInterval({
     start: new Date(moods.allIds[0]),
@@ -24,9 +25,7 @@ export const computeAverageByMonth = (
   const finalMonth = addMonths(months[months.length - 1], 1);
 
   if (moods.allIds.length === 1) {
-    return [
-      [monthFormatter.format(months[0]), moods.byId[moods.allIds[0]].mood],
-    ];
+    return [[months[0], moods.byId[moods.allIds[0]].mood]];
   }
 
   months.push(finalMonth);
@@ -36,7 +35,7 @@ export const computeAverageByMonth = (
     const month1 = months[i];
 
     averageByMonth.push([
-      monthFormatter.format(month0),
+      month0,
       computeAverageMoodInInterval(moods, month0, month1),
     ]);
   }
@@ -62,12 +61,17 @@ export default function MonthlyAverages() {
           </tr>
         </thead>
         <tbody>
-          {mapRight(averageByMonth, ([month, averageMood]) => (
-            <tr key={month}>
-              <td>{month}</td>
-              <MoodCell mood={averageMood} />
-            </tr>
-          ))}
+          {mapRight(averageByMonth, ([month, averageMood]) => {
+            const monthStr = monthFormatter.format(month);
+            return (
+              <tr key={monthStr}>
+                <td>
+                  <Link to={`months/${formatIsoMonth(month)}`}>{monthStr}</Link>
+                </td>
+                <MoodCell mood={averageMood} />
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </Paper>
