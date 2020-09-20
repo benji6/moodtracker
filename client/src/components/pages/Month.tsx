@@ -1,12 +1,21 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import { addMonths, subMonths } from "date-fns";
-import { Paper } from "eri";
+import { Chart, Paper } from "eri";
 import * as React from "react";
-import { MOOD_RANGE } from "../../../constants";
-import { monthFormatter, moodFormatter } from "../../../formatters";
-import { computeAverageMoodInInterval, formatIsoMonth } from "../../../utils";
-import { StateContext } from "../../AppState";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import * as regression from "regression";
+import { MOOD_RANGE } from "../../constants";
+import { monthFormatter, moodFormatter } from "../../formatters";
+import {
+  computeAverageMoodInInterval,
+  formatIsoMonth,
+  moodToColor,
+} from "../../utils";
+import { StateContext } from "../AppState";
+import AddFirstMoodCta from "../shared/AddFirstMoodCta";
+
+const formatter = Intl.DateTimeFormat(undefined, {
+  month: "short",
+});
 
 const isoMonthRegex = /^(\d){4}-(\d){2}$/;
 
@@ -55,13 +64,66 @@ export default function Month({
     moodCounter.set(rounded, moodCounter.get(rounded)! + 1);
   }
 
+  const data: [number, number][] = moodIdsInMonth.map((id) => {
+    const mood = state.moods.byId[id];
+    return [new Date(id).getTime(), mood.mood];
+  });
+
+  const monthTime = month.getTime();
+  const nextMonthTime = nextMonth.getTime();
+
+  const domain: [number, number] = [monthTime, nextMonthTime];
+
+  const regressionResult = regression.polynomial(
+    data.map(([x, y]) => [
+      (x - domain[0]) / (domain[1] - domain[0]),
+      (y - MOOD_RANGE[0]) / (MOOD_RANGE[1] - MOOD_RANGE[0]),
+    ]),
+    { order: 6, precision: 3 }
+  );
+
   return (
     <Paper.Group>
       <Paper>
         <h2>{monthFormatter.format(month)}</h2>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {month > firstMoodDate ? (
+            <Link to={`../${formatIsoMonth(subMonths(month, 1))}`}>
+              Previous month
+            </Link>
+          ) : (
+            <span />
+          )}
+          {nextMonth <= finalMoodDate && (
+            <Link to={`../${formatIsoMonth(nextMonth)}`}>Next month</Link>
+          )}
+        </div>
       </Paper>
       {moodIdsInMonth.length ? (
         <>
+          <Paper>
+            <Chart
+              aria-label="Chart displaying mood entries against time"
+              colorFromY={moodToColor}
+              data={data}
+              domain={domain}
+              range={MOOD_RANGE}
+              trendlinePoints={regressionResult.points.map(([x, y]) => [
+                x * (domain[1] - domain[0]) + domain[0],
+                y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
+              ])}
+              xAxisLabel="Date"
+              xLabels={[
+                [monthTime, formatter.format(month)],
+                [nextMonthTime, formatter.format(nextMonth)],
+              ]}
+              yAxisLabel="Mood"
+              yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
+                y,
+                String(y),
+              ])}
+            />
+          </Paper>
           <Paper>
             <h3>Overview</h3>
             <table>
@@ -124,20 +186,6 @@ export default function Month({
           <p>No data for this month.</p>
         </Paper>
       )}
-      <Paper>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {month > firstMoodDate ? (
-            <Link to={`../${formatIsoMonth(subMonths(month, 1))}`}>
-              Previous month
-            </Link>
-          ) : (
-            <span />
-          )}
-          {nextMonth <= finalMoodDate && (
-            <Link to={`../${formatIsoMonth(nextMonth)}`}>Next month</Link>
-          )}
-        </div>
-      </Paper>
     </Paper.Group>
   );
 }
