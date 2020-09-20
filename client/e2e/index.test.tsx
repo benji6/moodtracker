@@ -23,24 +23,24 @@ describe("e2e", () => {
     const signInLink = (await page.$('[href="/sign-in"]'))!;
     await signInLink.tap();
 
-    const emailInput = (await page.waitFor('[type="email"]'))!;
+    const emailInput = (await page.waitForSelector('[type="email"]'))!;
     await emailInput.type(TEST_USER_EMAIL);
 
     const passwordInput = (await page.$('[type="password"]'))!;
     await passwordInput.type(TEST_USER_PASSWORD);
     await passwordInput.press("Enter");
 
-    await page.waitFor('[data-test-id="mood-list"]');
+    await page.waitForSelector('[data-test-id="mood-list"]');
 
     const menuButton = (await page.$('[data-test-id="menu-button"]'))!;
     await menuButton.tap();
 
     // seems like a very high timeout but it starts to flake if we reduce it
-    await page.waitFor(4000);
+    await page.waitFor(4000); // TODO migrate to waitForTimeout https://github.com/puppeteer/puppeteer/issues/6214
 
     const signOutButton = (await page.$('[data-test-id="sign-out-button"]'))!;
     await signOutButton.click();
-    const signOutConfirmButton = (await page.waitFor(
+    const signOutConfirmButton = (await page.waitForSelector(
       '[data-test-id="sign-out-confirm-button"]'
     ))!;
     await signOutConfirmButton.tap();
