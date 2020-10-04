@@ -1,19 +1,27 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import { addMonths, subMonths } from "date-fns";
+import {
+  addDays,
+  addMonths,
+  differenceInCalendarDays,
+  subMonths,
+} from "date-fns";
 import { Chart, Paper } from "eri";
 import * as React from "react";
 import * as regression from "regression";
-import { MOOD_RANGE } from "../../constants";
-import { monthFormatter, moodFormatter } from "../../formatters";
+import { MOOD_RANGE } from "../../../constants";
+import { monthFormatter, moodFormatter } from "../../../formatters";
 import {
   computeAverageMoodInInterval,
   formatIsoMonth,
   moodToColor,
-} from "../../utils";
-import { StateContext } from "../AppState";
-import AddFirstMoodCta from "../shared/AddFirstMoodCta";
+} from "../../../utils";
+import { StateContext } from "../../AppState";
+import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+
+const X_LABELS_COUNT = 5;
 
 const formatter = Intl.DateTimeFormat(undefined, {
+  day: "numeric",
   month: "short",
 });
 
@@ -82,6 +90,18 @@ export default function Month({
     { order: 6, precision: 3 }
   );
 
+  const monthLength = differenceInCalendarDays(nextMonth, month);
+
+  const xLabels: [number, string][] = [];
+
+  for (let i = 0; i < X_LABELS_COUNT; i++) {
+    const date = addDays(
+      month,
+      Math.round((i * monthLength) / (X_LABELS_COUNT - 1))
+    );
+    xLabels.push([date.getTime(), formatter.format(date)]);
+  }
+
   return (
     <Paper.Group>
       <Paper>
@@ -113,10 +133,7 @@ export default function Month({
                 y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
               ])}
               xAxisLabel="Date"
-              xLabels={[
-                [monthTime, formatter.format(month)],
-                [nextMonthTime, formatter.format(nextMonth)],
-              ]}
+              xLabels={xLabels}
               yAxisLabel="Mood"
               yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
                 y,

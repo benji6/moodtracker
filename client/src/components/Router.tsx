@@ -5,7 +5,7 @@ import About from "./pages/About";
 import AddMood from "./pages/AddMood";
 import EditMood from "./pages/EditMood";
 import Home from "./pages/Home";
-import Month from "./pages/Month";
+import Month from "./pages/Stats/Month";
 import ResendVerification from "./pages/ResendVerification";
 import SeeAlso from "./pages/SeeAlso";
 import SignIn from "./pages/SignIn";
