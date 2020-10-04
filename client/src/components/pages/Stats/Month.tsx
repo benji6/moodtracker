@@ -13,6 +13,7 @@ import { monthFormatter, moodFormatter } from "../../../formatters";
 import {
   computeAverageMoodInInterval,
   formatIsoMonth,
+  getEnvelopingMoodIds,
   moodToColor,
 } from "../../../utils";
 import { StateContext } from "../../AppState";
@@ -49,8 +50,14 @@ export default function Month({
   const month = new Date(monthStr);
   const nextMonth = addMonths(month, 1);
 
+  const envelopingMoodIds = getEnvelopingMoodIds(
+    state.moods.allIds,
+    month,
+    nextMonth
+  );
+
   const moodIdsInMonth: typeof state.moods.allIds = [];
-  for (const id of state.moods.allIds) {
+  for (const id of envelopingMoodIds) {
     const date = new Date(id);
     if (date < month) continue;
     if (date > nextMonth) break;
@@ -72,7 +79,7 @@ export default function Month({
     moodCounter.set(rounded, moodCounter.get(rounded)! + 1);
   }
 
-  const data: [number, number][] = moodIdsInMonth.map((id) => {
+  const data: [number, number][] = envelopingMoodIds.map((id) => {
     const mood = state.moods.byId[id];
     return [new Date(id).getTime(), mood.mood];
   });
