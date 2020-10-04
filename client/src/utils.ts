@@ -1,5 +1,6 @@
 import chroma from "chroma-js";
 import { set, add } from "date-fns";
+import { State } from "./components/AppState";
 import { MOOD_RANGE } from "./constants";
 import { NormalizedMoods } from "./types";
 
@@ -30,30 +31,16 @@ export const computeAverageMoodInInterval = (
     (Math.min(d1, latestMoodTime) - Math.max(d0, earliestMoodTime)) *
     (MOOD_RANGE[1] - MOOD_RANGE[0]);
 
-  let startIndex = 0;
-  for (let j = 1; j < moods.allIds.length; j++) {
-    if (new Date(moods.allIds[j]).getTime() > d0) {
-      startIndex = j - 1;
-      break;
-    }
-  }
-
-  let endIndex = moods.allIds.length - 1;
-  for (let j = startIndex; j < moods.allIds.length - 1; j++) {
-    if (new Date(moods.allIds[j]).getTime() >= d1) {
-      endIndex = j;
-      break;
-    }
-  }
-
   let area = 0;
 
-  for (let j = startIndex + 1; j <= endIndex; j++) {
-    const id0 = moods.allIds[j - 1];
+  const relevantMoodIds = getEnvelopingMoodIds(moods.allIds, fromDate, toDate);
+
+  for (let j = 1; j < relevantMoodIds.length; j++) {
+    const id0 = relevantMoodIds[j - 1];
     const t0 = new Date(id0).getTime();
     const mood0 = moods.byId[id0].mood;
 
-    const id1 = moods.allIds[j];
+    const id1 = relevantMoodIds[j];
     const t1 = new Date(id1).getTime();
     const mood1 = moods.byId[id1].mood;
 
@@ -88,6 +75,36 @@ export const computeAverageMoodInInterval = (
   }
 
   return (area / maxArea) * (MOOD_RANGE[1] - MOOD_RANGE[0]);
+};
+
+// hard to name, but will return all moods within
+// date range and if they exist will also include
+// first mood before range and first mood after range
+export const getEnvelopingMoodIds = (
+  allIds: State["moods"]["allIds"],
+  fromDate: Date,
+  toDate: Date
+): State["moods"]["allIds"] => {
+  const t0 = fromDate.getTime();
+  const t1 = toDate.getTime();
+  const envelopingMoodIds: State["moods"]["allIds"] = [];
+
+  let i = 0;
+
+  for (; i < allIds.length; i++) {
+    const moodTime = new Date(allIds[i]).getTime();
+    if (moodTime >= t0) break;
+  }
+
+  if (i > 0) envelopingMoodIds.push(allIds[i - 1]);
+
+  for (; i < allIds.length; i++) {
+    const id = allIds[i];
+    envelopingMoodIds.push(id);
+    if (new Date(id).getTime() > t1) break;
+  }
+
+  return envelopingMoodIds;
 };
 
 export const formatIsoMonth = (date: Date): string =>

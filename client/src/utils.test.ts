@@ -1,4 +1,5 @@
 import {
+  getEnvelopingMoodIds,
   moodToColor,
   trapeziumArea,
   mapRight,
@@ -255,6 +256,135 @@ describe("utils", () => {
           )
         ).toEqual(4.5);
       });
+    });
+  });
+
+  describe("getEnvelopingMoodIds", () => {
+    it("returns the first ID when the range is before the mood ID range", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-02T00:00:00")
+        )
+      ).toEqual(["2020-10-04T00:00:00"]);
+    });
+
+    it("returns the last ID when the range is after the mood ID range", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-11-01T00:00:00"),
+          new Date("2020-11-02T00:00:00")
+        )
+      ).toEqual(["2020-10-06T00:00:00"]);
+    });
+
+    it("returns all IDs when the date range encompasses all IDs", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-10-01T00:00:00"),
+          new Date("2020-10-31T00:00:00")
+        )
+      ).toEqual(allIds);
+    });
+
+    it("returns all IDs when the date range is equal to the mood IDs range", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-10-04T00:00:00"),
+          new Date("2020-10-06T00:00:00")
+        )
+      ).toEqual(allIds);
+    });
+
+    it("returns first ID before range", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-04T00:00:01",
+        "2020-10-04T00:00:02",
+        "2020-10-05T00:00:00",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-10-04T00:00:02"),
+          new Date("2020-10-06T00:00:00")
+        )
+      ).toEqual([
+        "2020-10-04T00:00:01",
+        "2020-10-04T00:00:02",
+        "2020-10-05T00:00:00",
+      ]);
+    });
+
+    it("returns first ID after range", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+        "2020-10-06T00:00:01",
+        "2020-10-06T00:00:02",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-10-04T00:00:00"),
+          new Date("2020-10-06T00:00:00")
+        )
+      ).toEqual([
+        "2020-10-04T00:00:00",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+        "2020-10-06T00:00:01",
+      ]);
+    });
+
+    it("returns first ID before range and first ID after range", () => {
+      const allIds = [
+        "2020-10-04T00:00:00",
+        "2020-10-04T00:00:01",
+        "2020-10-04T00:00:02",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+        "2020-10-06T00:00:01",
+        "2020-10-06T00:00:02",
+      ];
+      expect(
+        getEnvelopingMoodIds(
+          allIds,
+          new Date("2020-10-04T00:00:02"),
+          new Date("2020-10-06T00:00:00")
+        )
+      ).toEqual([
+        "2020-10-04T00:00:01",
+        "2020-10-04T00:00:02",
+        "2020-10-05T00:00:00",
+        "2020-10-06T00:00:00",
+        "2020-10-06T00:00:01",
+      ]);
     });
   });
 

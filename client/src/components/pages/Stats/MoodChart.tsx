@@ -4,7 +4,12 @@ import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination, Chart } from "eri";
 import { StateContext } from "../../AppState";
 import { MOOD_RANGE } from "../../../constants";
-import { moodToColor, roundDateUp, roundDateDown } from "../../../utils";
+import {
+  moodToColor,
+  roundDateUp,
+  roundDateDown,
+  getEnvelopingMoodIds,
+} from "../../../utils";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -98,26 +103,11 @@ export default function MoodChart() {
     domain[1] = now - domainSpread * localState.page;
     domain[0] = domain[1] - domainSpread;
 
-    let startIndex = 0;
-    let endIndex = visibleIds.length;
-
-    // We are rendering moods off the left and right edge of the chart
-    // so the fit line extends to the edge
-    for (let i = 0; i < state.moods.allIds.length; i++) {
-      const moodTime = new Date(state.moods.allIds[i]).getTime();
-      if (
-        moodTime < now - domainSpread * (localState.page + 1) ||
-        startIndex > 0
-      )
-        continue;
-      if (!startIndex) startIndex = Math.max(i - 1, 0);
-      if (moodTime > domain[1]) {
-        endIndex = i;
-        break;
-      }
-    }
-
-    visibleIds = state.moods.allIds.slice(startIndex, endIndex);
+    visibleIds = getEnvelopingMoodIds(
+      state.moods.allIds,
+      new Date(domain[0]),
+      new Date(domain[1])
+    );
 
     const oldestMoodId = state.moods.allIds[0];
 
