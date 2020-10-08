@@ -5,7 +5,7 @@ import {
   differenceInCalendarDays,
   subMonths,
 } from "date-fns";
-import { Chart, Paper } from "eri";
+import { LineChart, Paper } from "eri";
 import * as React from "react";
 import * as regression from "regression";
 import { MOOD_RANGE } from "../../../constants";
@@ -129,7 +129,7 @@ export default function Month({
       {moodIdsInMonth.length ? (
         <>
           <Paper>
-            <Chart
+            <LineChart
               aria-label="Chart displaying mood entries against time"
               colorFromY={moodToColor}
               data={data}

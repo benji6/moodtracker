@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as regression from "regression";
 import { FluxStandardAction } from "../../../types";
-import { Paper, RadioButton, Pagination, Chart } from "eri";
+import { Paper, RadioButton, Pagination, LineChart } from "eri";
 import { StateContext } from "../../AppState";
 import { MOOD_RANGE } from "../../../constants";
 import {
@@ -133,7 +133,7 @@ export default function MoodChart() {
   return (
     <Paper>
       <h2>Mood chart</h2>
-      <Chart
+      <LineChart
         aria-label="Chart displaying mood entries against time"
         colorFromY={moodToColor}
         data={data}

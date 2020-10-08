@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Paper, Chart } from "eri";
+import { Paper, LineChart } from "eri";
 import { subHours, addHours, getHours, set, setHours } from "date-fns";
 import { computeAverageMoodInInterval, moodToColor } from "../../../utils";
 import { StateContext } from "../../AppState";
@@ -71,7 +71,7 @@ export default function AverageMoodByHour() {
   return (
     <Paper>
       <h2>Average mood by hour</h2>
-      <Chart
+      <LineChart
         aria-label="Chart displaying average mood against hour of the day"
         colorFromY={moodToColor}
         data={averages}
