@@ -5,7 +5,7 @@ import {
   differenceInCalendarDays,
   subMonths,
 } from "date-fns";
-import { LineChart, Paper } from "eri";
+import { BarChart, LineChart, Paper } from "eri";
 import * as React from "react";
 import * as regression from "regression";
 import { MOOD_RANGE } from "../../../constants";
@@ -20,6 +20,8 @@ import { StateContext } from "../../AppState";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 
 const X_LABELS_COUNT = 5;
+
+const MOOD_FREQUENCY_CHART_MAX_Y_LABELS = 10;
 
 const formatter = Intl.DateTimeFormat(undefined, {
   day: "numeric",
@@ -72,11 +74,17 @@ export default function Month({
       0,
     ])
   );
-
   for (const moodValue of moodValues) {
     // handle old data stored in decimal format
     const rounded = Math.round(moodValue);
     moodCounter.set(rounded, moodCounter.get(rounded)! + 1);
+  }
+  const moodFrequencyData: [number, number][] = [];
+  let maxFrequency = 0;
+
+  for (const [mood, frequency] of moodCounter.entries()) {
+    if (frequency > maxFrequency) maxFrequency = frequency;
+    moodFrequencyData.push([mood, frequency]);
   }
 
   const data: [number, number][] = envelopingMoodIds.map((id) => {
@@ -108,6 +116,16 @@ export default function Month({
     );
     xLabels.push([date.getTime(), formatter.format(date)]);
   }
+
+  const moodFrequencyYLabels: [number, string][] =
+    maxFrequency < MOOD_FREQUENCY_CHART_MAX_Y_LABELS
+      ? [...Array(maxFrequency + 1).keys()].map((y) => [y, String(y)])
+      : [...Array(MOOD_FREQUENCY_CHART_MAX_Y_LABELS).keys()].map((n) => {
+          const y = Math.round(
+            (n / (MOOD_FREQUENCY_CHART_MAX_Y_LABELS - 1)) * maxFrequency
+          );
+          return [y, String(y)];
+        });
 
   return (
     <Paper.Group>
@@ -187,22 +205,17 @@ export default function Month({
           </Paper>
           <Paper>
             <h3>Mood frequency</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Mood</th>
-                  <th>Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...moodCounter.entries()].map(([mood, count]) => (
-                  <tr key={mood}>
-                    <td>{mood}</td>
-                    <td>{count}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <BarChart
+              aria-label="Chart displaying the frequency at which different moods were recorded"
+              colorFromX={(x) => moodToColor(x * 10)}
+              data={moodFrequencyData.map(([_, frequency]) => frequency)}
+              domain={MOOD_RANGE}
+              range={[0, maxFrequency]}
+              xAxisLabel="Mood"
+              xLabels={moodFrequencyData.map(([mood]) => mood).map(String)}
+              yAxisLabel="Count"
+              yLabels={moodFrequencyYLabels}
+            />
           </Paper>
         </>
       ) : (
