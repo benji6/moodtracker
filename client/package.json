@@ -6,7 +6,7 @@
     "build:robots": "touch dist/robots.txt",
     "fmt": "prettier --write '**/*'",
     "icons": "node scripts/icons",
-    "start": "parcel src/index.html",
+    "start": "parcel src/index.html --open",
     "test": "run-p test:*",
     "test:audit": "yarn audit --level critical || [ $? -lt 16 ]",
     "test:e2e": "jest e2e",
