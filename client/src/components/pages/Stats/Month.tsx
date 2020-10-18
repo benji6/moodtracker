@@ -9,15 +9,17 @@ import { BarChart, LineChart, Paper } from "eri";
 import * as React from "react";
 import * as regression from "regression";
 import { MOOD_RANGE } from "../../../constants";
-import { monthFormatter, moodFormatter } from "../../../formatters";
+import { monthFormatter } from "../../../formatters";
 import {
   computeAverageMoodInInterval,
   formatIsoMonth,
   getEnvelopingMoodIds,
+  getMoodIdsInInterval,
   moodToColor,
 } from "../../../utils";
 import { StateContext } from "../../AppState";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import MoodCell from "./MoodCell";
 
 const X_LABELS_COUNT = 5;
 
@@ -50,7 +52,12 @@ export default function Month({
   );
 
   const month = new Date(monthStr);
+  const prevMonth = subMonths(month, 1);
   const nextMonth = addMonths(month, 1);
+  const monthAfterNextMonth = addMonths(nextMonth, 1);
+
+  const showPreviousMonth = month > firstMoodDate;
+  const showNextMonth = nextMonth <= finalMoodDate;
 
   const envelopingMoodIds = getEnvelopingMoodIds(
     state.moods.allIds,
@@ -58,15 +65,23 @@ export default function Month({
     nextMonth
   );
 
-  const moodIdsInMonth: typeof state.moods.allIds = [];
-  for (const id of envelopingMoodIds) {
-    const date = new Date(id);
-    if (date < month) continue;
-    if (date > nextMonth) break;
-    moodIdsInMonth.push(id);
-  }
+  const moodIdsInMonth = getMoodIdsInInterval(
+    envelopingMoodIds,
+    month,
+    nextMonth
+  );
 
   const moodValues = moodIdsInMonth.map((id) => state.moods.byId[id].mood);
+  const prevMoodValues = getMoodIdsInInterval(
+    state.moods.allIds,
+    prevMonth,
+    month
+  ).map((id) => state.moods.byId[id].mood);
+  const nextMoodValues = getMoodIdsInInterval(
+    state.moods.allIds,
+    nextMonth,
+    monthAfterNextMonth
+  ).map((id) => state.moods.byId[id].mood);
 
   const moodCounter = new Map(
     [...Array(MOOD_RANGE[1] - MOOD_RANGE[0] + 1).keys()].map((n) => [
@@ -132,20 +147,87 @@ export default function Month({
       <Paper>
         <h2>{monthFormatter.format(month)}</h2>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          {month > firstMoodDate ? (
-            <Link to={`../${formatIsoMonth(subMonths(month, 1))}`}>
-              Previous month
-            </Link>
+          {showPreviousMonth ? (
+            <Link to={`../${formatIsoMonth(prevMonth)}`}>Previous month</Link>
           ) : (
             <span />
           )}
-          {nextMonth <= finalMoodDate && (
+          {showNextMonth && (
             <Link to={`../${formatIsoMonth(nextMonth)}`}>Next month</Link>
           )}
         </div>
       </Paper>
       {moodIdsInMonth.length ? (
         <>
+          <Paper>
+            <h3>Overview</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Stat</th>
+                  {showPreviousMonth && <th>Last month</th>}
+                  <th>This month</th>
+                  {showNextMonth && <th>Next month</th>}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Average mood</td>
+                  {showPreviousMonth && (
+                    <MoodCell
+                      mood={computeAverageMoodInInterval(
+                        state.moods,
+                        prevMonth,
+                        month
+                      )}
+                    />
+                  )}
+                  <MoodCell
+                    mood={computeAverageMoodInInterval(
+                      state.moods,
+                      month,
+                      nextMonth
+                    )}
+                  />
+                  {showNextMonth && (
+                    <MoodCell
+                      mood={computeAverageMoodInInterval(
+                        state.moods,
+                        nextMonth,
+                        monthAfterNextMonth
+                      )}
+                    />
+                  )}
+                </tr>
+                <tr>
+                  <td>Best mood</td>
+                  {showPreviousMonth && (
+                    <MoodCell mood={Math.max(...prevMoodValues)} />
+                  )}
+                  <MoodCell mood={Math.max(...moodValues)} />
+                  {showNextMonth && (
+                    <MoodCell mood={Math.max(...nextMoodValues)} />
+                  )}
+                </tr>
+                <tr>
+                  <td>Worst mood</td>
+                  {showPreviousMonth && (
+                    <MoodCell mood={Math.min(...prevMoodValues)} />
+                  )}
+                  <MoodCell mood={Math.min(...moodValues)} />
+                  {showNextMonth && (
+                    <MoodCell mood={Math.min(...nextMoodValues)} />
+                  )}
+                </tr>
+                <tr>
+                  <td>Total moods recorded</td>
+                  {showPreviousMonth && <td>{prevMoodValues.length}</td>}
+                  <td>{moodValues.length}</td>
+                  {showNextMonth && <td>{nextMoodValues.length}</td>}
+                </tr>
+              </tbody>
+            </table>
+          </Paper>
           <Paper>
             <LineChart
               aria-label="Chart displaying mood entries against time"
@@ -165,43 +247,6 @@ export default function Month({
                 String(y),
               ])}
             />
-          </Paper>
-          <Paper>
-            <h3>Overview</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Stat</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Average mood</td>
-                  <td>
-                    {moodFormatter.format(
-                      computeAverageMoodInInterval(
-                        state.moods,
-                        month,
-                        nextMonth
-                      )
-                    )}
-                  </td>
-                </tr>
-                <tr>
-                  <td>Best mood</td>
-                  <td>{Math.max(...moodValues)}</td>
-                </tr>
-                <tr>
-                  <td>Worst mood</td>
-                  <td>{Math.min(...moodValues)}</td>
-                </tr>
-                <tr>
-                  <td>Total moods recorded</td>
-                  <td>{moodValues.length}</td>
-                </tr>
-              </tbody>
-            </table>
           </Paper>
           <Paper>
             <h3>Mood frequency</h3>

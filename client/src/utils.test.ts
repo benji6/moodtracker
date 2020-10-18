@@ -7,6 +7,7 @@ import {
   roundDateDown,
   roundDateUp,
   formatIsoMonth,
+  getMoodIdsInInterval,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -260,6 +261,23 @@ describe("utils", () => {
   });
 
   describe("getEnvelopingMoodIds", () => {
+    it("throws an error when the fromDate is after the toDate", () => {
+      expect(() =>
+        getEnvelopingMoodIds(
+          [],
+          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00")
+        )
+      ).not.toThrow();
+      expect(() =>
+        getEnvelopingMoodIds(
+          [],
+          new Date("2020-09-01T00:00:01"),
+          new Date("2020-09-01T00:00:00")
+        )
+      ).toThrow(Error("`fromDate` should not be after `toDate`"));
+    });
+
     it("returns the first ID when the range is before the mood ID range", () => {
       const allIds = [
         "2020-10-04T00:00:00",
@@ -385,6 +403,70 @@ describe("utils", () => {
         "2020-10-06T00:00:00",
         "2020-10-06T00:00:01",
       ]);
+    });
+  });
+
+  describe("getMoodIdsInInterval", () => {
+    it("throws an error when the fromDate is after the toDate", () => {
+      expect(() =>
+        getMoodIdsInInterval(
+          [],
+          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00")
+        )
+      ).not.toThrow();
+      expect(() =>
+        getMoodIdsInInterval(
+          [],
+          new Date("2020-09-01T00:00:01"),
+          new Date("2020-09-01T00:00:00")
+        )
+      ).toThrow(Error("`fromDate` should not be after `toDate`"));
+    });
+
+    it("returns an empty array when there are no mood IDs provided", () => {
+      expect(
+        getMoodIdsInInterval(
+          [],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual([]);
+    });
+
+    it("returns an empty array when there are no moods within the interval", () => {
+      expect(
+        getMoodIdsInInterval(
+          ["2020-09-01T23:59:59", "2020-09-03T00:00:01"],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual([]);
+    });
+
+    it("returns all moods when all moods are within the interval", () => {
+      expect(
+        getMoodIdsInInterval(
+          ["2020-09-02T00:00:00", "2020-09-03T00:00:00"],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual(["2020-09-02T00:00:00", "2020-09-03T00:00:00"]);
+    });
+
+    it("only returns moods that are within the interval", () => {
+      expect(
+        getMoodIdsInInterval(
+          [
+            "2020-09-01T23:59:59",
+            "2020-09-02T00:00:00",
+            "2020-09-03T00:00:00",
+            "2020-09-03T00:00:01",
+          ],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual(["2020-09-02T00:00:00", "2020-09-03T00:00:00"]);
     });
   });
 

@@ -81,30 +81,51 @@ export const computeAverageMoodInInterval = (
 // date range and if they exist will also include
 // first mood before range and first mood after range
 export const getEnvelopingMoodIds = (
-  allIds: State["moods"]["allIds"],
+  ids: State["moods"]["allIds"],
   fromDate: Date,
   toDate: Date
 ): State["moods"]["allIds"] => {
+  if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
+
   const t0 = fromDate.getTime();
   const t1 = toDate.getTime();
   const envelopingMoodIds: State["moods"]["allIds"] = [];
 
   let i = 0;
 
-  for (; i < allIds.length; i++) {
-    const moodTime = new Date(allIds[i]).getTime();
+  for (; i < ids.length; i++) {
+    const moodTime = new Date(ids[i]).getTime();
     if (moodTime >= t0) break;
   }
 
-  if (i > 0) envelopingMoodIds.push(allIds[i - 1]);
+  if (i > 0) envelopingMoodIds.push(ids[i - 1]);
 
-  for (; i < allIds.length; i++) {
-    const id = allIds[i];
+  for (; i < ids.length; i++) {
+    const id = ids[i];
     envelopingMoodIds.push(id);
     if (new Date(id).getTime() > t1) break;
   }
 
   return envelopingMoodIds;
+};
+
+export const getMoodIdsInInterval = (
+  ids: State["moods"]["allIds"],
+  fromDate: Date,
+  toDate: Date
+): State["moods"]["allIds"] => {
+  if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
+
+  const idsInInterval: typeof ids = [];
+
+  for (const id of ids) {
+    const date = new Date(id);
+    if (date < fromDate) continue;
+    if (date > toDate) break;
+    idsInInterval.push(id);
+  }
+
+  return idsInInterval;
 };
 
 export const formatIsoMonth = (date: Date): string =>
