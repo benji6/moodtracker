@@ -7,11 +7,11 @@ import {
 } from "date-fns";
 import { BarChart, LineChart, Paper } from "eri";
 import * as React from "react";
-import * as regression from "regression";
 import { MOOD_RANGE } from "../../../constants";
 import { monthFormatter } from "../../../formatters";
 import {
   computeAverageMoodInInterval,
+  computeTrendlinePoints,
   formatIsoMonth,
   getEnvelopingMoodIds,
   getMoodIdsInInterval,
@@ -111,14 +111,6 @@ export default function Month({
   const nextMonthTime = nextMonth.getTime();
 
   const domain: [number, number] = [monthTime, nextMonthTime];
-
-  const regressionResult = regression.polynomial(
-    data.map(([x, y]) => [
-      (x - domain[0]) / (domain[1] - domain[0]),
-      (y - MOOD_RANGE[0]) / (MOOD_RANGE[1] - MOOD_RANGE[0]),
-    ]),
-    { order: 6, precision: 3 }
-  );
 
   const monthLength = differenceInCalendarDays(nextMonth, month);
 
@@ -235,10 +227,13 @@ export default function Month({
               data={data}
               domain={domain}
               range={MOOD_RANGE}
-              trendlinePoints={regressionResult.points.map(([x, y]) => [
-                x * (domain[1] - domain[0]) + domain[0],
-                y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
-              ])}
+              trendlinePoints={computeTrendlinePoints(
+                {
+                  ...state.moods,
+                  allIds: envelopingMoodIds,
+                },
+                domain
+              )}
               xAxisLabel="Date"
               xLabels={xLabels}
               yAxisLabel="Mood"

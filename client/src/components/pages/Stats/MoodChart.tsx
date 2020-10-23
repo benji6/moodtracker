@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as regression from "regression";
 import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination, LineChart } from "eri";
 import { StateContext } from "../../AppState";
@@ -9,17 +8,17 @@ import {
   roundDateUp,
   roundDateDown,
   getEnvelopingMoodIds,
+  computeTrendlinePoints,
 } from "../../../utils";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
+const X_LABELS_COUNT = 4; // must be at least 2
 
 const convertDateToLabel = (date: Date): [number, string] => [
   Number(date),
   dateFormatter.format(date),
 ];
-
-const X_LABELS_COUNT = 4; // must be at least 2
 
 const createXLabels = (
   domain: [number, number],
@@ -122,14 +121,6 @@ export default function MoodChart() {
     return [new Date(id).getTime(), mood.mood];
   });
 
-  const regressionResult = regression.polynomial(
-    data.map(([x, y]) => [
-      (x - domain[0]) / (domain[1] - domain[0]),
-      (y - MOOD_RANGE[0]) / (MOOD_RANGE[1] - MOOD_RANGE[0]),
-    ]),
-    { order: 6, precision: 3 }
-  );
-
   return (
     <Paper>
       <h2>Mood chart</h2>
@@ -139,10 +130,13 @@ export default function MoodChart() {
         data={data}
         domain={domain}
         range={MOOD_RANGE}
-        trendlinePoints={regressionResult.points.map(([x, y]) => [
-          x * (domain[1] - domain[0]) + domain[0],
-          y * (MOOD_RANGE[1] - MOOD_RANGE[0]) + MOOD_RANGE[0],
-        ])}
+        trendlinePoints={computeTrendlinePoints(
+          {
+            ...state.moods,
+            allIds: visibleIds,
+          },
+          domain
+        )}
         xAxisLabel="Date"
         xLabels={createXLabels(domain, now)}
         yAxisLabel="Mood"
