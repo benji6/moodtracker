@@ -1,15 +1,13 @@
 import * as React from "react";
 import { FluxStandardAction } from "../../../types";
-import { Paper, RadioButton, Pagination, LineChart } from "eri";
+import { Paper, RadioButton, Pagination } from "eri";
 import { StateContext } from "../../AppState";
-import { MOOD_RANGE } from "../../../constants";
 import {
-  moodToColor,
   roundDateUp,
   roundDateDown,
   getEnvelopingMoodIds,
-  computeTrendlinePoints,
 } from "../../../utils";
+import MoodChart from "./MoodChart";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -116,34 +114,13 @@ export default function MoodStats() {
     }
   }
 
-  const data: [number, number][] = visibleIds.map((id) => {
-    const mood = state.moods.byId[id];
-    return [new Date(id).getTime(), mood.mood];
-  });
-
   return (
     <Paper>
       <h2>Mood chart</h2>
-      <LineChart
-        aria-label="Chart displaying mood entries against time"
-        colorFromY={moodToColor}
-        data={data}
-        domain={domain}
-        range={MOOD_RANGE}
-        trendlinePoints={computeTrendlinePoints(
-          {
-            ...state.moods,
-            allIds: visibleIds,
-          },
-          domain
-        )}
-        xAxisLabel="Date"
+      <MoodChart
+        fromDate={new Date(domain[0])}
+        toDate={new Date(domain[1])}
         xLabels={createXLabels(domain, now)}
-        yAxisLabel="Mood"
-        yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [
-          y,
-          String(y),
-        ])}
       />
       <RadioButton.Group label="Number of days to show">
         {[

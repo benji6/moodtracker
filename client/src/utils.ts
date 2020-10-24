@@ -77,39 +77,6 @@ export const computeAverageMoodInInterval = (
   return (area / maxArea) * (MOOD_RANGE[1] - MOOD_RANGE[0]);
 };
 
-const TRENDLINE_POINTS_COUNT = 32;
-const TRENDLINE_MOVING_AVERAGE_PERIOD_COUNT = 3;
-
-export const computeTrendlinePoints = (
-  moods: NormalizedMoods,
-  domain: [number, number]
-): [number, number][] => {
-  const period = (domain[1] - domain[0]) / TRENDLINE_POINTS_COUNT;
-  const earliestMoodTime = new Date(moods.allIds[0]).getTime();
-  const latestMoodTime = new Date(
-    moods.allIds[moods.allIds.length - 1]
-  ).getTime();
-
-  const trendlinePoints: [number, number][] = [];
-
-  for (let i = 0; i < TRENDLINE_POINTS_COUNT + 1; i++) {
-    const t0 =
-      domain[0] + (i - TRENDLINE_MOVING_AVERAGE_PERIOD_COUNT / 2) * period;
-    const t1 = t0 + period * TRENDLINE_MOVING_AVERAGE_PERIOD_COUNT;
-    const trendlineX = (t0 + t1) / 2;
-    if (trendlineX < earliestMoodTime) continue;
-    if (trendlineX > latestMoodTime) break;
-    const mood = computeAverageMoodInInterval(
-      moods,
-      new Date(t0),
-      new Date(t1)
-    );
-    trendlinePoints.push([trendlineX, mood]);
-  }
-
-  return trendlinePoints;
-};
-
 // hard to name, but will return all moods within
 // date range and if they exist will also include
 // first mood before range and first mood after range
@@ -160,6 +127,12 @@ export const getMoodIdsInInterval = (
 
   return idsInInterval;
 };
+
+export const formatIsoDateInLocalTimezone = (date: Date): string =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(date.getDate()).padStart(2, "0")}`;
 
 export const formatIsoMonthInLocalTimezone = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;

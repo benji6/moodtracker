@@ -12,6 +12,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Stats from "./pages/Stats";
 import Verify from "./pages/Verify";
+import Week from "./pages/Stats/Week";
 
 export default function Router() {
   return (
@@ -28,6 +29,7 @@ export default function Router() {
       <SignUp path="sign-up" />
       <Stats path="stats" />
       <Verify path="verify" />
+      <Week path="stats/weeks/:week" />
     </ReachRouter>
   );
 }

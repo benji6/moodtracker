@@ -8,16 +8,16 @@ describe("WeeklyAverages", () => {
           allIds: ["2020-07-28T00:00:00.000Z"],
           byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
         })
-      ).toEqual([["27 July – 2 August 2020", 5]]);
+      ).toEqual([[new Date("2020-07-27"), 5]]);
     });
 
-    it("gets date range correct", () => {
+    it("gets date correct", () => {
       expect(
         computeAverageByWeek({
           allIds: ["2020-08-16T22:00:00.000Z"],
           byId: { "2020-08-16T22:00:00.000Z": { mood: 5 } },
         })
-      ).toEqual([["10–16 August 2020", 5]]);
+      ).toEqual([[new Date("2020-08-10"), 5]]);
     });
 
     it("works with 2 moods in the same week", () => {
@@ -29,7 +29,7 @@ describe("WeeklyAverages", () => {
             "2020-07-29T00:00:00.000Z": { mood: 7 },
           },
         })
-      ).toEqual([["27 July – 2 August 2020", 6]]);
+      ).toEqual([[new Date("2020-07-27"), 6]]);
     });
 
     it("works with 2 moods in adjacent weeks", () => {
@@ -42,8 +42,8 @@ describe("WeeklyAverages", () => {
           },
         })
       ).toEqual([
-        ["20–26 July 2020", 5],
-        ["27 July – 2 August 2020", 5],
+        [new Date("2020-07-20"), 5],
+        [new Date("2020-07-27"), 5],
       ]);
 
       expect(
@@ -57,11 +57,11 @@ describe("WeeklyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "20–26 July 2020",
+            2020-07-20T00:00:00.000Z,
             4,
           ],
           Array [
-            "27 July – 2 August 2020",
+            2020-07-27T00:00:00.000Z,
             5.5,
           ],
         ]
@@ -78,11 +78,11 @@ describe("WeeklyAverages", () => {
           },
         })
       ).toEqual([
-        ["29 June – 5 July 2020", 5],
-        ["6–12 July 2020", 5],
-        ["13–19 July 2020", 5],
-        ["20–26 July 2020", 5],
-        ["27 July – 2 August 2020", 5],
+        [new Date("2020-06-29"), 5],
+        [new Date("2020-07-06"), 5],
+        [new Date("2020-07-13"), 5],
+        [new Date("2020-07-20"), 5],
+        [new Date("2020-07-27"), 5],
       ]);
 
       expect(
@@ -96,19 +96,19 @@ describe("WeeklyAverages", () => {
       ).toMatchInlineSnapshot(`
         Array [
           Array [
-            "29 June – 5 July 2020",
+            2020-06-29T00:00:00.000Z,
             4.050000000000001,
           ],
           Array [
-            "6–12 July 2020",
+            2020-07-06T00:00:00.000Z,
             4.449999999999999,
           ],
           Array [
-            "13–19 July 2020",
+            2020-07-13T00:00:00.000Z,
             5.15,
           ],
           Array [
-            "20–26 July 2020",
+            2020-07-20T00:00:00.000Z,
             5.75,
           ],
         ]

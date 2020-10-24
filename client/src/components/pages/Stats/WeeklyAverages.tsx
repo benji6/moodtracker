@@ -1,34 +1,21 @@
-import { startOfWeek, endOfWeek, eachWeekOfInterval, addWeeks } from "date-fns";
+import { startOfWeek, eachWeekOfInterval, addWeeks } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
 import { StateContext } from "../../AppState";
-import { mapRight, computeAverageMoodInInterval } from "../../../utils";
+import {
+  mapRight,
+  computeAverageMoodInInterval,
+  formatIsoDateInLocalTimezone,
+} from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import MoodCell from "./MoodCell";
-
-const WEEK_OPTIONS = {
-  weekStartsOn: 1,
-} as const;
-
-const weekFormatter = Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
-// TODO: One day we should be able to remove this
-const formatRange = (dateA: Date, dateB: Date) =>
-  "formatRange" in weekFormatter
-    ? (weekFormatter as any).formatRange(dateA, dateB)
-    : `${weekFormatter.format(dateA)} – ${weekFormatter.format(dateB)}`;
-
-const createKey = (week: Date): string =>
-  formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
+import { Link } from "@reach/router";
+import { formatWeek, WEEK_OPTIONS } from "../../../formatters";
 
 export const computeAverageByWeek = (
   moods: NormalizedMoods
-): [string, number][] => {
-  const averageByWeek: [string, number][] = [];
+): [Date, number][] => {
+  const averageByWeek: [Date, number][] = [];
 
   const weeks = eachWeekOfInterval(
     {
@@ -39,7 +26,7 @@ export const computeAverageByWeek = (
   );
 
   if (moods.allIds.length === 1) {
-    return [[createKey(weeks[0]), moods.byId[moods.allIds[0]].mood]];
+    return [[weeks[0], moods.byId[moods.allIds[0]].mood]];
   }
 
   weeks.push(addWeeks(weeks[weeks.length - 1], 1));
@@ -49,7 +36,7 @@ export const computeAverageByWeek = (
     const week1 = weeks[i];
 
     averageByWeek.push([
-      createKey(week0),
+      week0,
       computeAverageMoodInInterval(moods, week0, week1),
     ]);
   }
@@ -74,12 +61,23 @@ export default function WeeklyAverages() {
           </tr>
         </thead>
         <tbody>
-          {mapRight(averageByWeek, ([week, averageMood]) => (
-            <tr key={week}>
-              <td>{week}</td>
-              <MoodCell mood={averageMood} />
-            </tr>
-          ))}
+          {mapRight(averageByWeek, ([week, averageMood]) => {
+            const weekStr = formatWeek(week);
+            return (
+              <tr key={weekStr}>
+                <td>
+                  <Link
+                    to={`weeks/${formatIsoDateInLocalTimezone(
+                      startOfWeek(week, WEEK_OPTIONS)
+                    )}`}
+                  >
+                    {weekStr}
+                  </Link>
+                </td>
+                <MoodCell mood={averageMood} />
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </Paper>
