@@ -6,7 +6,7 @@ import {
   computeAverageMoodInInterval,
   roundDateDown,
   roundDateUp,
-  formatIsoMonth,
+  formatIsoMonthInLocalTimezone,
   getMoodIdsInInterval,
   computeTrendlinePoints,
 } from "./utils";
@@ -626,10 +626,16 @@ describe("utils", () => {
     });
   });
 
-  test("formatIsoMonth", () => {
-    expect(formatIsoMonth(new Date("2020-09-01T00:00:00"))).toBe("2020-09");
-    expect(formatIsoMonth(new Date("2020-09-30T23:59:59"))).toBe("2020-09");
-    expect(formatIsoMonth(new Date("2020-10-01T00:00:00"))).toBe("2020-10");
+  test("formatIsoMonthInLocalTimezone", () => {
+    expect(formatIsoMonthInLocalTimezone(new Date("2020-09-01T00:00:00"))).toBe(
+      "2020-09"
+    );
+    expect(formatIsoMonthInLocalTimezone(new Date("2020-09-30T23:59:59"))).toBe(
+      "2020-09"
+    );
+    expect(formatIsoMonthInLocalTimezone(new Date("2020-10-01T00:00:00"))).toBe(
+      "2020-10"
+    );
   });
 
   test("mapRight", () => {

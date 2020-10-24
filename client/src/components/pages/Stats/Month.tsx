@@ -12,7 +12,7 @@ import { monthFormatter } from "../../../formatters";
 import {
   computeAverageMoodInInterval,
   computeTrendlinePoints,
-  formatIsoMonth,
+  formatIsoMonthInLocalTimezone,
   getEnvelopingMoodIds,
   getMoodIdsInInterval,
   moodToColor,
@@ -30,7 +30,7 @@ const formatter = Intl.DateTimeFormat(undefined, {
   month: "short",
 });
 
-const isoMonthRegex = /^(\d){4}-(\d){2}$/;
+const isoMonthRegex = /^\d{4}-\d{2}$/;
 
 export default function Month({
   month: monthStr,
@@ -140,12 +140,16 @@ export default function Month({
         <h2>{monthFormatter.format(month)}</h2>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPreviousMonth ? (
-            <Link to={`../${formatIsoMonth(prevMonth)}`}>Previous month</Link>
+            <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
+              Previous month
+            </Link>
           ) : (
             <span />
           )}
           {showNextMonth && (
-            <Link to={`../${formatIsoMonth(nextMonth)}`}>Next month</Link>
+            <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
+              Next month
+            </Link>
           )}
         </div>
       </Paper>

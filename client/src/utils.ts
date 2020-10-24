@@ -161,7 +161,7 @@ export const getMoodIdsInInterval = (
   return idsInInterval;
 };
 
-export const formatIsoMonth = (date: Date): string =>
+export const formatIsoMonthInLocalTimezone = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 
 export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {

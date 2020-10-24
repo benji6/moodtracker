@@ -5,7 +5,7 @@ import { StateContext } from "../../AppState";
 import {
   mapRight,
   computeAverageMoodInInterval,
-  formatIsoMonth,
+  formatIsoMonthInLocalTimezone,
 } from "../../../utils";
 import { NormalizedMoods } from "../../../types";
 import MoodCell from "./MoodCell";
@@ -66,7 +66,9 @@ export default function MonthlyAverages() {
             return (
               <tr key={monthStr}>
                 <td>
-                  <Link to={`months/${formatIsoMonth(month)}`}>{monthStr}</Link>
+                  <Link to={`months/${formatIsoMonthInLocalTimezone(month)}`}>
+                    {monthStr}
+                  </Link>
                 </td>
                 <MoodCell mood={averageMood} />
               </tr>
