@@ -2,7 +2,7 @@ import { RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { StateContext } from "../../AppState";
-import MoodChart from "./MoodChart";
+import MoodStats from "./MoodStats";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MonthlyAverages from "./MonthlyAverages";
@@ -19,7 +19,7 @@ export default function Stats(_: RouteComponentProps) {
       {state.events.hasLoadedFromServer ? (
         state.moods.allIds.length ? (
           <>
-            <MoodChart />
+            <MoodStats />
             <WeeklyAverages />
             <MonthlyAverages />
             <AverageMoodByDay />

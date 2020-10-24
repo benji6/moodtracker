@@ -78,7 +78,7 @@ export const statsReducer = (
   }
 };
 
-export default function MoodChart() {
+export default function MoodStats() {
   const state = React.useContext(StateContext);
   const [localState, localDispatch] = React.useReducer(statsReducer, {
     dayCount: 7,

@@ -1,4 +1,4 @@
-import { statsReducer, StatsState } from "./MoodChart";
+import { statsReducer, StatsState } from "./MoodStats";
 
 describe("statsReducer", () => {
   let state: StatsState;
