@@ -1,12 +1,13 @@
 import { useNavigate } from "@reach/router";
 import * as React from "react";
-import { StateContext } from "../AppState";
+import { useSelector } from "react-redux";
+import { userIsSignedInSelector } from "../../selectors";
 
 export default function useRedirectAuthed() {
   const navigate = useNavigate();
-  const { user } = React.useContext(StateContext);
+  const userIsSignedIn = useSelector(userIsSignedInSelector);
 
   React.useEffect(() => {
-    if (user.email) navigate("/");
+    if (userIsSignedIn) navigate("/");
   }, []);
 }

@@ -1,6 +1,7 @@
 import { Menu as EriMenu, Button } from "eri";
 import * as React from "react";
-import { StateContext } from "../AppState";
+import { useSelector } from "react-redux";
+import { userEmailSelector, userIsSignedInSelector } from "../../selectors";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
 
@@ -10,7 +11,8 @@ interface Props {
 }
 
 export default function Menu({ handleMenuClose, open }: Props) {
-  const { user } = React.useContext(StateContext);
+  const userEmail = useSelector(userEmailSelector);
+  const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -20,11 +22,11 @@ export default function Menu({ handleMenuClose, open }: Props) {
   return (
     <>
       <EriMenu onClose={handleMenuClose} open={open}>
-        {user.email && (
+        {userIsSignedIn && (
           <>
             <strong>Signed in</strong>
             <p>
-              <em>{user.email}</em>
+              <em>{userEmail}</em>
             </p>
             <Button.Group>
               <Button
@@ -44,7 +46,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
           <EriMenu.Link onClick={handleMenuClose} to="/">
             Home
           </EriMenu.Link>
-          {user.email && (
+          {userIsSignedIn && (
             <>
               <EriMenu.Link onClick={handleMenuClose} to="/add">
                 Add mood
@@ -61,7 +63,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
             See also
           </EriMenu.Link>
         </EriMenu.List>
-        {user.email && <SyncState />}
+        {userIsSignedIn && <SyncState />}
       </EriMenu>
       <SignOutDialog onClose={handleDialogClose} open={isDialogOpen} />
     </>

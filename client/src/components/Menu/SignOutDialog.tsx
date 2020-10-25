@@ -1,6 +1,8 @@
 import { Dialog, Button } from "eri";
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { userPool } from "../../cognito";
+import userSlice from "../../store/userSlice";
 import { DispatchContext, StateContext } from "../AppState";
 
 interface Props {
@@ -10,7 +12,8 @@ interface Props {
 
 export default function SignOutDialog({ onClose, open }: Props) {
   const state = React.useContext(StateContext);
-  const dispatch = React.useContext(DispatchContext);
+  const dispatch = useDispatch();
+  const appDispatch = React.useContext(DispatchContext);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSignOut = () => {
@@ -18,7 +21,8 @@ export default function SignOutDialog({ onClose, open }: Props) {
     const currentUser = userPool.getCurrentUser();
     if (currentUser) currentUser.signOut();
     onClose();
-    dispatch({ type: "app/signOut" });
+    dispatch(userSlice.actions.clear());
+    appDispatch({ type: "app/signOut" });
     setIsLoading(false);
   };
 

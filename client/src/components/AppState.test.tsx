@@ -58,19 +58,8 @@ describe("appStateReducer", () => {
   test("app/signOut", () => {
     const initialState = createInitialState();
     expect(
-      appStateReducer(
-        {
-          ...createStateWithEvents(),
-          user: { email: "foo@bar.com", id: "fake-id", loading: true },
-        },
-        {
-          type: "app/signOut",
-        }
-      )
-    ).toEqual({
-      ...initialState,
-      user: { ...initialState.user, loading: false },
-    });
+      appStateReducer(createStateWithEvents(), { type: "app/signOut" })
+    ).toEqual(initialState);
   });
 
   test("app/storageLoaded", () => {
@@ -691,33 +680,6 @@ describe("appStateReducer", () => {
       },
       isSyncingFromServer: false,
       syncFromServerError: false,
-    });
-  });
-
-  test("user/clear", () => {
-    expect(
-      appStateReducer(
-        {
-          ...createInitialState(),
-          user: { email: "foo@bar.com", id: "fake-id", loading: true },
-        },
-        { type: "user/clear" }
-      )
-    ).toEqual({
-      ...createInitialState(),
-      user: { email: undefined, id: undefined, loading: false },
-    });
-  });
-
-  test("user/set", () => {
-    expect(
-      appStateReducer(createInitialState(), {
-        type: "user/set",
-        payload: { email: "foo@bar.com", id: "fake-id" },
-      })
-    ).toEqual({
-      ...createInitialState(),
-      user: { email: "foo@bar.com", id: "fake-id", loading: false },
     });
   });
 });

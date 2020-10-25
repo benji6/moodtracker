@@ -7,11 +7,14 @@ import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import { StateContext } from "./AppState";
+import { useSelector } from "react-redux";
+import { userIsSignedInSelector } from "../selectors";
 
 export default function App() {
   useUser();
   useEvents();
   useStorage();
+  const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const state = React.useContext(StateContext);
 
@@ -28,7 +31,7 @@ export default function App() {
       </Header>
       <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
       <Main>{state.isStorageLoading ? <Spinner /> : <Router />}</Main>
-      {state.user.email && (
+      {userIsSignedIn && (
         <QuickNav>
           <QuickNav.Link aria-label="home" to="/">
             <Icon name="home" size="4" />

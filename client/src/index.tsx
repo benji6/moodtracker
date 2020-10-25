@@ -1,15 +1,19 @@
 import "eri/dist/index.css";
+import { EriProvider } from "eri";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
 import App from "./components/App";
 import AppState from "./components/AppState";
-import { EriProvider } from "eri";
+import store from "./store";
 
 ReactDOM.render(
   <EriProvider>
-    <AppState>
-      <App />
-    </AppState>
+    <Provider store={store}>
+      <AppState>
+        <App />
+      </AppState>
+    </Provider>
   </EriProvider>,
   document.getElementById("root")
 );

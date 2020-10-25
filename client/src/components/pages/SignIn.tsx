@@ -6,9 +6,10 @@ import {
 } from "amazon-cognito-identity-js";
 import { SignInPage } from "eri";
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { userPool } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
-import { DispatchContext } from "../AppState";
+import userSlice from "../../store/userSlice";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 // The properties declared here are by no means exhaustive
@@ -45,7 +46,7 @@ const authenticate = ({
 export default function SignIn(_: RouteComponentProps) {
   useRedirectAuthed();
   const navigate = useNavigate();
-  const dispatch = React.useContext(DispatchContext);
+  const dispatch = useDispatch();
 
   return (
     <SignInPage
@@ -54,10 +55,7 @@ export default function SignIn(_: RouteComponentProps) {
           const result = await authenticate({ email, password });
           const { email: tokenEmail, sub: id } = result.getIdToken()
             .payload as TokenPayload;
-          dispatch({
-            type: "user/set",
-            payload: { email: tokenEmail, id },
-          });
+          dispatch(userSlice.actions.set({ email: tokenEmail, id }));
           navigate("/");
         } catch (e) {
           switch (e.code) {

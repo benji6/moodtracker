@@ -4,7 +4,6 @@ import {
   NormalizedEvents,
   AppEvent,
   NormalizedMoods,
-  UserDetails,
 } from "../types";
 
 type Action =
@@ -18,9 +17,7 @@ type Action =
   | FluxStandardAction<"syncFromServer/success", string>
   | FluxStandardAction<"syncToServer/error">
   | FluxStandardAction<"syncToServer/start">
-  | FluxStandardAction<"syncToServer/success">
-  | FluxStandardAction<"user/clear">
-  | FluxStandardAction<"user/set", UserDetails>;
+  | FluxStandardAction<"syncToServer/success">;
 
 export interface State {
   events: NormalizedEvents;
@@ -30,11 +27,6 @@ export interface State {
   moods: NormalizedMoods;
   syncFromServerError: boolean;
   syncToServerError: boolean;
-  user: {
-    email: string | undefined;
-    id: string | undefined;
-    loading: boolean;
-  };
 }
 
 export const createInitialState = (): State => ({
@@ -51,11 +43,6 @@ export const createInitialState = (): State => ({
   moods: { allIds: [], byId: {} },
   syncFromServerError: false,
   syncToServerError: false,
-  user: {
-    email: undefined,
-    id: undefined,
-    loading: true,
-  },
 });
 
 const initialState: State = createInitialState();
@@ -122,7 +109,6 @@ export const appStateReducer = (state: State, action: Action): State => {
         ...state,
         events: initialState.events,
         moods: initialState.moods,
-        user: { email: undefined, id: undefined, loading: false },
       };
     }
     case "app/storageLoaded":
@@ -236,13 +222,6 @@ export const appStateReducer = (state: State, action: Action): State => {
         isSyncingFromServer: false,
         syncFromServerError: false,
       };
-    case "user/clear":
-      return {
-        ...state,
-        user: { email: undefined, id: undefined, loading: false },
-      };
-    case "user/set":
-      return { ...state, user: { ...action.payload, loading: false } };
   }
 };
 

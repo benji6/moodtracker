@@ -2,15 +2,19 @@ import * as React from "react";
 import { DispatchContext, StateContext } from "../AppState";
 import useInterval from "./useInterval";
 import { getEvents, postEvents } from "../../api";
+import { useSelector } from "react-redux";
+import { userEmailSelector, userIsSignedInSelector } from "../../selectors";
 
 export default function useEvents() {
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
+  const userEmail = useSelector(userEmailSelector);
+  const userIsSignedIn = useSelector(userIsSignedInSelector);
 
   const syncFromServer = (): void =>
     void (async (): Promise<void> => {
       if (
-        !state.user.email ||
+        !userIsSignedIn ||
         state.isSyncingFromServer ||
         state.isStorageLoading
       )
@@ -24,13 +28,13 @@ export default function useEvents() {
         dispatch({ type: "syncFromServer/error" });
       }
     })();
-  React.useEffect(syncFromServer, [state.isStorageLoading, state.user.email]);
+  React.useEffect(syncFromServer, [state.isStorageLoading, userEmail]);
   useInterval(syncFromServer, 6e4);
 
   const syncToServer = (): void =>
     void (async () => {
       if (
-        !state.user.email ||
+        !userIsSignedIn ||
         state.isSyncingToServer ||
         state.isStorageLoading ||
         !state.events.idsToSync.length
@@ -49,7 +53,7 @@ export default function useEvents() {
   React.useEffect(syncToServer, [
     state.events.idsToSync,
     state.isStorageLoading,
-    state.user.email,
+    userEmail,
   ]);
   useInterval(syncToServer, 1e4);
 }
