@@ -11,6 +11,7 @@ import { NormalizedMoods } from "../../../types";
 import MoodCell from "./MoodCell";
 import { monthFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
+import { moodsSelector } from "../../../selectors";
 
 export const computeAverageByMonth = (
   moods: NormalizedMoods
@@ -45,10 +46,10 @@ export const computeAverageByMonth = (
 
 export default function MonthlyAverages() {
   const state = React.useContext(StateContext);
-  const averageByMonth = React.useMemo(
-    () => computeAverageByMonth(state.moods),
-    [state.moods]
-  );
+  const moods = moodsSelector(state);
+  const averageByMonth = React.useMemo(() => computeAverageByMonth(moods), [
+    moods,
+  ]);
 
   return (
     <Paper>

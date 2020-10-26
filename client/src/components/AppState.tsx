@@ -1,10 +1,5 @@
 import * as React from "react";
-import {
-  FluxStandardAction,
-  NormalizedEvents,
-  AppEvent,
-  NormalizedMoods,
-} from "../types";
+import { FluxStandardAction, NormalizedEvents, AppEvent } from "../types";
 
 type Action =
   | FluxStandardAction<"app/signOut">
@@ -24,7 +19,6 @@ export interface State {
   isStorageLoading: boolean;
   isSyncingFromServer: boolean;
   isSyncingToServer: boolean;
-  moods: NormalizedMoods;
   syncFromServerError: boolean;
   syncToServerError: boolean;
 }
@@ -40,7 +34,6 @@ export const createInitialState = (): State => ({
   isStorageLoading: true,
   isSyncingFromServer: false,
   isSyncingToServer: false,
-  moods: { allIds: [], byId: {} },
   syncFromServerError: false,
   syncToServerError: false,
 });
@@ -52,11 +45,6 @@ export const DispatchContext = React.createContext<React.Dispatch<Action>>(
 );
 export const StateContext = React.createContext<State>(initialState);
 
-const omit = <O, K extends keyof O>(object: O, key: K): Omit<O, K> => {
-  const { [key]: _, ...rest } = object;
-  return rest;
-};
-
 const getLastEvent = (normalizedState: NormalizedEvents): AppEvent => {
   if (!normalizedState.allIds.length)
     throw Error("Error: `allIds` must have length > 0");
@@ -64,52 +52,11 @@ const getLastEvent = (normalizedState: NormalizedEvents): AppEvent => {
   return normalizedState.byId[lastId];
 };
 
-const moodReducer = (
-  moods: NormalizedMoods,
-  event: AppEvent
-): NormalizedMoods => {
-  switch (event.type) {
-    case "v1/moods/create":
-      return {
-        allIds: [...moods.allIds, event.createdAt],
-        byId: { ...moods.byId, [event.createdAt]: event.payload },
-      };
-    case "v1/moods/delete":
-      return {
-        allIds: moods.allIds.filter((id) => id !== event.payload),
-        byId: omit(moods.byId, event.payload),
-      };
-    case "v1/moods/update":
-      return {
-        ...moods,
-        byId: {
-          ...moods.byId,
-          [event.payload.id]: omit(
-            { ...event.payload, updatedAt: event.createdAt },
-            "id"
-          ),
-        },
-      };
-  }
-};
-
-const deriveMoodsFromEvents = (
-  normalizedEvents: NormalizedEvents,
-  moods: NormalizedMoods
-): NormalizedMoods =>
-  normalizedEvents.allIds
-    .map((id) => normalizedEvents.byId[id])
-    .reduce(moodReducer, moods);
-
 export const appStateReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "app/signOut": {
       const initialState = createInitialState();
-      return {
-        ...state,
-        events: initialState.events,
-        moods: initialState.moods,
-      };
+      return { ...state, events: initialState.events };
     }
     case "app/storageLoaded":
       return { ...state, isStorageLoading: false };
@@ -131,24 +78,12 @@ export const appStateReducer = (state: State, action: Action): State => {
       const idsToSync = [...state.events.idsToSync, action.payload.createdAt];
       const events = { ...state.events, allIds, byId, idsToSync };
       if (!lastEvent || action.payload.createdAt > lastEvent.createdAt)
-        return {
-          ...state,
-          events,
-          moods: moodReducer(state.moods, action.payload),
-        };
+        return { ...state, events };
       events.allIds.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
-      return {
-        ...state,
-        events,
-        moods: deriveMoodsFromEvents(events, state.moods),
-      };
+      return { ...state, events };
     }
     case "events/loadFromStorage":
-      return {
-        ...state,
-        events: action.payload,
-        moods: deriveMoodsFromEvents(action.payload, state.moods),
-      };
+      return { ...state, events: action.payload };
     case "events/syncFromServer": {
       if (!action.payload.length) return state;
       const byId = { ...state.events.byId };
@@ -158,26 +93,16 @@ export const appStateReducer = (state: State, action: Action): State => {
         return {
           ...state,
           events: { ...state.events, allIds: serverEventIds, byId },
-          moods: action.payload.reduce(moodReducer, state.moods),
         };
       }
       const lastClientEvent = getLastEvent(state.events);
       const lastServerEvent = action.payload[action.payload.length - 1];
       const allIds = [...new Set([...state.events.allIds, ...serverEventIds])];
       const events = { ...state.events, allIds, byId };
-      if (lastServerEvent.createdAt > lastClientEvent.createdAt) {
-        return {
-          ...state,
-          events,
-          moods: action.payload.reduce(moodReducer, state.moods),
-        };
-      }
+      if (lastServerEvent.createdAt > lastClientEvent.createdAt)
+        return { ...state, events };
       events.allIds.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
-      return {
-        ...state,
-        events,
-        moods: deriveMoodsFromEvents(events, { allIds: [], byId: {} }),
-      };
+      return { ...state, events };
     }
     case "syncToServer/error":
       return {

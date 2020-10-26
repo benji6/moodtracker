@@ -1,6 +1,5 @@
 import chroma from "chroma-js";
 import { set, add } from "date-fns";
-import { State } from "./components/AppState";
 import { MOOD_RANGE } from "./constants";
 import { NormalizedMoods } from "./types";
 
@@ -81,15 +80,15 @@ export const computeAverageMoodInInterval = (
 // date range and if they exist will also include
 // first mood before range and first mood after range
 export const getEnvelopingMoodIds = (
-  ids: State["moods"]["allIds"],
+  ids: NormalizedMoods["allIds"],
   fromDate: Date,
   toDate: Date
-): State["moods"]["allIds"] => {
+): NormalizedMoods["allIds"] => {
   if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
 
   const t0 = fromDate.getTime();
   const t1 = toDate.getTime();
-  const envelopingMoodIds: State["moods"]["allIds"] = [];
+  const envelopingMoodIds: NormalizedMoods["allIds"] = [];
 
   let i = 0;
 
@@ -110,10 +109,10 @@ export const getEnvelopingMoodIds = (
 };
 
 export const getMoodIdsInInterval = (
-  ids: State["moods"]["allIds"],
+  ids: NormalizedMoods["allIds"],
   fromDate: Date,
   toDate: Date
-): State["moods"]["allIds"] => {
+): NormalizedMoods["allIds"] => {
   if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
 
   const idsInInterval: typeof ids = [];

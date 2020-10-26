@@ -9,15 +9,17 @@ import MonthlyAverages from "./MonthlyAverages";
 import WeeklyAverages from "./WeeklyAverages";
 import AverageMoodByDay from "./AverageMoodByDay";
 import AverageMoodByHour from "./AverageMoodByHour";
+import { moodsSelector } from "../../../selectors";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
 
   return (
     <Paper.Group>
       {state.events.hasLoadedFromServer ? (
-        state.moods.allIds.length ? (
+        moods.allIds.length ? (
           <>
             <MoodStats />
             <WeeklyAverages />

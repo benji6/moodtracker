@@ -5,6 +5,7 @@ import { subDays, addDays, getDay } from "date-fns";
 import { roundDateDown, computeAverageMoodInInterval } from "../../../utils";
 import { StateContext } from "../../AppState";
 import { NormalizedMoods } from "../../../types";
+import { moodsSelector } from "../../../selectors";
 
 const DAYS_PER_WEEK = 7;
 const NUMBER_OF_WEEKS_TO_AVERAGE_OVER = 4;
@@ -61,11 +62,11 @@ const computeAverages = (
 
 export default function AverageMoodByDay() {
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
 
-  const { averages, weeksUsed } = React.useMemo(
-    () => computeAverages(state.moods),
-    [state.moods]
-  );
+  const { averages, weeksUsed } = React.useMemo(() => computeAverages(moods), [
+    moods,
+  ]);
 
   return (
     <Paper>

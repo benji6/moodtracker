@@ -5,6 +5,7 @@ import { moodToColor, mapRight } from "../../../utils";
 import { StateContext } from "../../AppState";
 import { useNavigate, useLocation } from "@reach/router";
 import { NormalizedMoods } from "../../../types";
+import { moodsSelector } from "../../../selectors";
 
 const DAYS_PER_PAGE = 6;
 
@@ -37,6 +38,7 @@ export default function MoodList() {
   const location = useLocation();
   const navigate = useNavigate();
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
 
   const pageStr = new URLSearchParams(location?.search).get("page");
   const page = pageStr === null ? 0 : parseInt(pageStr) - 1;
@@ -46,9 +48,7 @@ export default function MoodList() {
     return null;
   }
 
-  const moodsGroupedByDay = React.useMemo(() => groupByDay(state.moods), [
-    state.moods,
-  ]);
+  const moodsGroupedByDay = React.useMemo(() => groupByDay(moods), [moods]);
   const pageCount = Math.ceil(moodsGroupedByDay.length / DAYS_PER_PAGE);
 
   if (pageStr === "1" || page < 0 || page >= pageCount) {
@@ -73,7 +73,7 @@ export default function MoodList() {
             <h3>{date}</h3>
             <CardGroup>
               {mapRight(ids, (id) => {
-                const mood = state.moods.byId[id];
+                const mood = moods.byId[id];
                 return (
                   <Card
                     color={moodToColor(mood.mood)}

@@ -13,6 +13,7 @@ import {
   formatWeek,
   WEEK_OPTIONS,
 } from "../../../formatters";
+import { moodsSelector } from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   getMoodIdsInInterval,
@@ -39,18 +40,17 @@ export default function Week({
   if (!weekStr || !isoDateRegex.test(weekStr)) return <Redirect to="/404" />;
 
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
 
-  if (!state.moods.allIds.length)
+  if (!moods.allIds.length)
     return (
       <Paper.Group>
         <AddFirstMoodCta />
       </Paper.Group>
     );
 
-  const firstMoodDate = new Date(state.moods.allIds[0]);
-  const finalMoodDate = new Date(
-    state.moods.allIds[state.moods.allIds.length - 1]
-  );
+  const firstMoodDate = new Date(moods.allIds[0]);
+  const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
 
   const week = startOfWeek(createLocalDate(weekStr), WEEK_OPTIONS);
   const nextWeek = addWeeks(week, 1);
@@ -59,11 +59,7 @@ export default function Week({
   const showPrevious = week > firstMoodDate;
   const showNext = nextWeek <= finalMoodDate;
 
-  const moodIdsInWeek = getMoodIdsInInterval(
-    state.moods.allIds,
-    week,
-    nextWeek
-  );
+  const moodIdsInWeek = getMoodIdsInInterval(moods.allIds, week, nextWeek);
 
   const weekLength = differenceInCalendarDays(nextWeek, week);
 

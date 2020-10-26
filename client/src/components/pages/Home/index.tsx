@@ -5,7 +5,7 @@ import { StateContext } from "../../AppState";
 import MoodList from "./MoodList";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import { useSelector } from "react-redux";
-import { userIsSignedInSelector } from "../../../selectors";
+import { moodsSelector, userIsSignedInSelector } from "../../../selectors";
 
 export interface HomeState {
   dayCount: number | undefined;
@@ -14,13 +14,14 @@ export interface HomeState {
 
 export default function Home(_: RouteComponentProps) {
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
 
   return (
     <Paper.Group>
       {userIsSignedIn ? (
         state.events.hasLoadedFromServer ? (
-          state.moods.allIds.length ? (
+          moods.allIds.length ? (
             <MoodList />
           ) : (
             <AddFirstMoodCta />

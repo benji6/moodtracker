@@ -45,13 +45,6 @@ const createStateWithEvents = (): State => ({
     ],
     nextCursor: "test-cursor-123",
   },
-  moods: {
-    allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
-    byId: {
-      "2020-05-07T19:39:00.000Z": { mood: 9 },
-      "2020-05-07T20:32:00.000Z": { mood: 7 },
-    },
-  },
 });
 
 describe("appStateReducer", () => {
@@ -96,12 +89,6 @@ describe("appStateReducer", () => {
           hasLoadedFromServer: false,
           idsToSync: ["2020-05-07T19:53:00.000Z"],
         },
-        moods: {
-          allIds: ["2020-05-07T19:53:00.000Z"],
-          byId: {
-            "2020-05-07T19:53:00.000Z": { mood: 7 },
-          },
-        },
       });
     });
 
@@ -145,12 +132,6 @@ describe("appStateReducer", () => {
             ],
             nextCursor: "test-cursor-123",
           },
-          moods: {
-            allIds: ["2020-05-07T20:32:00.000Z"],
-            byId: {
-              "2020-05-07T20:32:00.000Z": { mood: 7 },
-            },
-          },
         });
       });
 
@@ -192,16 +173,6 @@ describe("appStateReducer", () => {
               "2020-05-07T20:34:00.000Z",
             ],
             nextCursor: "test-cursor-123",
-          },
-          moods: {
-            allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
-            byId: {
-              "2020-05-07T19:39:00.000Z": { mood: 9 },
-              "2020-05-07T20:32:00.000Z": {
-                mood: 5,
-                updatedAt: "2020-05-07T20:34:00.000Z",
-              },
-            },
           },
         });
       });
@@ -248,18 +219,6 @@ describe("appStateReducer", () => {
             ],
             nextCursor: "test-cursor-123",
           },
-          moods: {
-            allIds: [
-              "2020-05-07T19:39:00.000Z",
-              "2020-05-07T20:32:00.000Z",
-              "2020-05-07T20:33:00.001Z",
-            ],
-            byId: {
-              "2020-05-07T19:39:00.000Z": { mood: 9 },
-              "2020-05-07T20:32:00.000Z": { mood: 7 },
-              "2020-05-07T20:33:00.001Z": { mood: 4 },
-            },
-          },
         });
       });
 
@@ -301,10 +260,6 @@ describe("appStateReducer", () => {
               "2020-05-07T20:33:00.001Z",
             ],
             nextCursor: "test-cursor-123",
-          },
-          moods: {
-            allIds: ["2020-05-07T20:32:00.000Z"],
-            byId: { "2020-05-07T20:32:00.000Z": { mood: 7 } },
           },
         });
       });
@@ -348,16 +303,6 @@ describe("appStateReducer", () => {
             ],
             nextCursor: "test-cursor-123",
           },
-          moods: {
-            allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
-            byId: {
-              "2020-05-07T19:39:00.000Z": { mood: 9 },
-              "2020-05-07T20:32:00.000Z": {
-                mood: 2,
-                updatedAt: "2020-05-07T20:33:00.001Z",
-              },
-            },
-          },
         });
       });
     });
@@ -376,16 +321,6 @@ describe("appStateReducer", () => {
     ).toEqual({
       ...createInitialState(),
       events: events,
-      moods: {
-        allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:32:00.000Z"],
-        byId: {
-          "2020-05-07T19:39:00.000Z": { mood: 9 },
-          "2020-05-07T20:32:00.000Z": {
-            mood: 7,
-            updatedAt: "2020-05-07T20:33:00.000Z",
-          },
-        },
-      },
     });
   });
 
@@ -457,12 +392,6 @@ describe("appStateReducer", () => {
           },
           hasLoadedFromServer: false,
           idsToSync: [],
-        },
-        moods: {
-          allIds: ["2020-05-07T19:56:00.000Z"],
-          byId: {
-            "2020-05-07T19:56:00.000Z": { mood: 8 },
-          },
         },
       });
     });
@@ -554,16 +483,6 @@ describe("appStateReducer", () => {
             "2020-05-07T20:33:00.000Z",
           ],
           nextCursor: "test-cursor-123",
-        },
-        moods: {
-          allIds: ["2020-05-07T19:56:00.000Z", "2020-05-07T20:32:00.000Z"],
-          byId: {
-            "2020-05-07T19:56:00.000Z": { mood: 8 },
-            "2020-05-07T20:32:00.000Z": {
-              mood: 3,
-              updatedAt: "2020-05-07T20:33:00.000Z",
-            },
-          },
         },
       });
     });

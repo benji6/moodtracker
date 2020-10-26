@@ -5,6 +5,7 @@ import { computeAverageMoodInInterval, moodToColor } from "../../../utils";
 import { StateContext } from "../../AppState";
 import { NormalizedMoods } from "../../../types";
 import { MOOD_RANGE } from "../../../constants";
+import { moodsSelector } from "../../../selectors";
 
 const HOURS_PER_DAY = 24;
 const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
@@ -58,11 +59,11 @@ const computeAverages = (
 
 export default function AverageMoodByHour() {
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
 
-  const { averages, daysUsed } = React.useMemo(
-    () => computeAverages(state.moods),
-    [state.moods]
-  );
+  const { averages, daysUsed } = React.useMemo(() => computeAverages(moods), [
+    moods,
+  ]);
 
   const xLabels: [number, string][] = [];
   for (let i = 0; i < HOURS_PER_DAY; i += 4)

@@ -8,6 +8,7 @@ import {
 import { Paper } from "eri";
 import * as React from "react";
 import { dayMonthFormatter, monthFormatter } from "../../../formatters";
+import { moodsSelector } from "../../../selectors";
 import {
   formatIsoMonthInLocalTimezone,
   getMoodIdsInInterval,
@@ -28,18 +29,17 @@ export default function Month({
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
 
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
 
-  if (!state.moods.allIds.length)
+  if (!moods.allIds.length)
     return (
       <Paper.Group>
         <AddFirstMoodCta />
       </Paper.Group>
     );
 
-  const firstMoodDate = new Date(state.moods.allIds[0]);
-  const finalMoodDate = new Date(
-    state.moods.allIds[state.moods.allIds.length - 1]
-  );
+  const firstMoodDate = new Date(moods.allIds[0]);
+  const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
 
   const month = new Date(monthStr);
   const prevMonth = subMonths(month, 1);
@@ -48,11 +48,7 @@ export default function Month({
   const showPrevious = month > firstMoodDate;
   const showNext = nextMonth <= finalMoodDate;
 
-  const moodIdsInMonth = getMoodIdsInInterval(
-    state.moods.allIds,
-    month,
-    nextMonth
-  );
+  const moodIdsInMonth = getMoodIdsInInterval(moods.allIds, month, nextMonth);
 
   const monthLength = differenceInCalendarDays(nextMonth, month);
 

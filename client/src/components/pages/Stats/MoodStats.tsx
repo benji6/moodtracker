@@ -8,6 +8,7 @@ import {
   getEnvelopingMoodIds,
 } from "../../../utils";
 import MoodChart from "./MoodChart";
+import { moodsSelector } from "../../../selectors";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -78,6 +79,7 @@ export const statsReducer = (
 
 export default function MoodStats() {
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
   const [localState, localDispatch] = React.useReducer(statsReducer, {
     dayCount: 7,
     page: 0,
@@ -86,7 +88,7 @@ export default function MoodStats() {
   const now = Date.now();
 
   let pageCount = 1;
-  let visibleIds = state.moods.allIds;
+  let visibleIds = moods.allIds;
 
   const domain: [number, number] = [
     visibleIds.length
@@ -101,12 +103,12 @@ export default function MoodStats() {
     domain[0] = domain[1] - domainSpread;
 
     visibleIds = getEnvelopingMoodIds(
-      state.moods.allIds,
+      moods.allIds,
       new Date(domain[0]),
       new Date(domain[1])
     );
 
-    const oldestMoodId = state.moods.allIds[0];
+    const oldestMoodId = moods.allIds[0];
 
     if (oldestMoodId) {
       const dt = now - new Date(oldestMoodId).getTime();

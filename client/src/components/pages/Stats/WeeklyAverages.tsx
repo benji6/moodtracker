@@ -11,6 +11,7 @@ import { NormalizedMoods } from "../../../types";
 import MoodCell from "./MoodCell";
 import { Link } from "@reach/router";
 import { formatWeek, WEEK_OPTIONS } from "../../../formatters";
+import { moodsSelector } from "../../../selectors";
 
 export const computeAverageByWeek = (
   moods: NormalizedMoods
@@ -46,8 +47,9 @@ export const computeAverageByWeek = (
 
 export default function WeeklyAverages() {
   const state = React.useContext(StateContext);
-  const averageByWeek = React.useMemo(() => computeAverageByWeek(state.moods), [
-    state.moods,
+  const moods = moodsSelector(state);
+  const averageByWeek = React.useMemo(() => computeAverageByWeek(moods), [
+    moods,
   ]);
 
   return (

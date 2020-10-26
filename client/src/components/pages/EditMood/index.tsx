@@ -4,15 +4,17 @@ import { Button, Paper, RadioButton } from "eri";
 import { DispatchContext, StateContext } from "../../AppState";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
+import { moodsSelector } from "../../../selectors";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
   const navigate = useNavigate();
   const dispatch = React.useContext(DispatchContext);
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   if (!id) return <Redirect to="/404" />;
-  const mood = state.moods.byId[id];
+  const mood = moods.byId[id];
   if (!mood) return <Redirect to="/404" />;
 
   return (

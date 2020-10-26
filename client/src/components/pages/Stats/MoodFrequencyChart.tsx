@@ -1,6 +1,7 @@
 import { BarChart, Paper } from "eri";
 import * as React from "react";
 import { MOOD_RANGE } from "../../../constants";
+import { moodsSelector } from "../../../selectors";
 import { getMoodIdsInInterval, moodToColor } from "../../../utils";
 import { StateContext } from "../../AppState";
 
@@ -13,13 +14,11 @@ interface Props {
 
 export default function MoodFrequencyChart({ fromDate, toDate }: Props) {
   const state = React.useContext(StateContext);
-  const moodIdsInMonth = getMoodIdsInInterval(
-    state.moods.allIds,
-    fromDate,
-    toDate
-  );
+  const moods = moodsSelector(state);
 
-  const moodValues = moodIdsInMonth.map((id) => state.moods.byId[id].mood);
+  const moodIdsInMonth = getMoodIdsInInterval(moods.allIds, fromDate, toDate);
+
+  const moodValues = moodIdsInMonth.map((id) => moods.byId[id].mood);
   const moodCounter = new Map(
     [...Array(MOOD_RANGE[1] - MOOD_RANGE[0] + 1).keys()].map((n) => [
       MOOD_RANGE[0] + n,

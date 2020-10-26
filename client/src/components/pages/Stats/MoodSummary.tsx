@@ -1,5 +1,6 @@
 import { Paper } from "eri";
 import * as React from "react";
+import { moodsSelector } from "../../../selectors";
 import {
   computeAverageMoodInInterval,
   getMoodIdsInInterval,
@@ -26,28 +27,26 @@ const WorstMoodCell = ({ moodValues }: { moodValues: number[] }) =>
     <td className="center">N/A</td>
   );
 
-export default function MoodSummary({ dates, periodName }: Props) {
+export default function MoodSummary({
+  dates: [date0, date1, date2, date3],
+  periodName,
+}: Props) {
   const state = React.useContext(StateContext);
-  const [date0, date1, date2, date3] = dates;
-  const firstMoodDate = new Date(state.moods.allIds[0]);
-  const finalMoodDate = new Date(
-    state.moods.allIds[state.moods.allIds.length - 1]
-  );
+  const moods = moodsSelector(state);
+
+  const firstMoodDate = new Date(moods.allIds[0]);
+  const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
   const showPrevious = date1 > firstMoodDate;
   const showNext = date2 <= finalMoodDate;
-  const moodValues = getMoodIdsInInterval(state.moods.allIds, date1, date2).map(
-    (id) => state.moods.byId[id].mood
+  const moodValues = getMoodIdsInInterval(moods.allIds, date1, date2).map(
+    (id) => moods.byId[id].mood
   );
-  const prevMoodValues = getMoodIdsInInterval(
-    state.moods.allIds,
-    date0,
-    date1
-  ).map((id) => state.moods.byId[id].mood);
-  const nextMoodValues = getMoodIdsInInterval(
-    state.moods.allIds,
-    date2,
-    date3
-  ).map((id) => state.moods.byId[id].mood);
+  const prevMoodValues = getMoodIdsInInterval(moods.allIds, date0, date1).map(
+    (id) => moods.byId[id].mood
+  );
+  const nextMoodValues = getMoodIdsInInterval(moods.allIds, date2, date3).map(
+    (id) => moods.byId[id].mood
+  );
 
   return (
     <Paper>
@@ -66,15 +65,15 @@ export default function MoodSummary({ dates, periodName }: Props) {
             <td>Average mood</td>
             {showPrevious && (
               <MoodCell
-                mood={computeAverageMoodInInterval(state.moods, date0, date1)}
+                mood={computeAverageMoodInInterval(moods, date0, date1)}
               />
             )}
             <MoodCell
-              mood={computeAverageMoodInInterval(state.moods, date1, date2)}
+              mood={computeAverageMoodInInterval(moods, date1, date2)}
             />
             {showNext && (
               <MoodCell
-                mood={computeAverageMoodInInterval(state.moods, date2, date3)}
+                mood={computeAverageMoodInInterval(moods, date2, date3)}
               />
             )}
           </tr>

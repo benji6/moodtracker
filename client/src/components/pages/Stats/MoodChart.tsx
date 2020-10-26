@@ -1,6 +1,7 @@
 import { LineChart } from "eri";
 import * as React from "react";
 import { MOOD_RANGE } from "../../../constants";
+import { moodsSelector } from "../../../selectors";
 import { NormalizedMoods } from "../../../types";
 import {
   computeAverageMoodInInterval,
@@ -50,14 +51,15 @@ interface Props {
 
 export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
   const state = React.useContext(StateContext);
+  const moods = moodsSelector(state);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
   const envelopingMoodIds = getEnvelopingMoodIds(
-    state.moods.allIds,
+    moods.allIds,
     fromDate,
     toDate
   );
   const data: [number, number][] = envelopingMoodIds.map((id) => {
-    const mood = state.moods.byId[id];
+    const mood = moods.byId[id];
     return [new Date(id).getTime(), mood.mood];
   });
 
@@ -69,7 +71,7 @@ export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
       domain={domain}
       range={MOOD_RANGE}
       trendlinePoints={computeTrendlinePoints(
-        { ...state.moods, allIds: envelopingMoodIds },
+        { ...moods, allIds: envelopingMoodIds },
         domain
       )}
       xAxisLabel="Date"
