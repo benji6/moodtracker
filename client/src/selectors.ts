@@ -2,6 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 
+export const appIsStorageLoadingSelector = (state: RootState) =>
+  state.app.isStorageLoading;
 export const eventsIsSyncingFromServerSelector = (state: RootState) =>
   state.events.isSyncingFromServer;
 export const eventsIsSyncingToServerSelector = (state: RootState) =>

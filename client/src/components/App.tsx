@@ -6,17 +6,19 @@ import Router from "./Router";
 import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
-import { StateContext } from "./AppState";
 import { useSelector } from "react-redux";
-import { userIsSignedInSelector } from "../selectors";
+import {
+  appIsStorageLoadingSelector,
+  userIsSignedInSelector,
+} from "../selectors";
 
 export default function App() {
   useUser();
   useEvents();
   useStorage();
+  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const state = React.useContext(StateContext);
 
   return (
     <>
@@ -30,7 +32,7 @@ export default function App() {
         />
       </Header>
       <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
-      <Main>{state.isStorageLoading ? <Spinner /> : <Router />}</Main>
+      <Main>{isStorageLoading ? <Spinner /> : <Router />}</Main>
       {userIsSignedIn && (
         <QuickNav>
           <QuickNav.Link aria-label="home" to="/">

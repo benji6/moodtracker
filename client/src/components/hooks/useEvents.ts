@@ -1,9 +1,9 @@
 import * as React from "react";
-import { StateContext } from "../AppState";
 import useInterval from "./useInterval";
 import { getEvents, postEvents } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  appIsStorageLoadingSelector,
   eventsIsSyncingFromServerSelector,
   eventsSelector,
   userEmailSelector,
@@ -12,18 +12,17 @@ import {
 import eventsSlice from "../../store/eventsSlice";
 
 export default function useEvents() {
-  const dispatch = useDispatch();
+  const events = useSelector(eventsSelector);
+  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
   const isSyncingToServer = useSelector(eventsIsSyncingFromServerSelector);
-  const state = React.useContext(StateContext);
-  const events = useSelector(eventsSelector);
   const userEmail = useSelector(userEmailSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
+  const dispatch = useDispatch();
 
   const syncFromServer = (): void =>
     void (async (): Promise<void> => {
-      if (!userIsSignedIn || isSyncingFromServer || state.isStorageLoading)
-        return;
+      if (!userIsSignedIn || isSyncingFromServer || isStorageLoading) return;
       dispatch(eventsSlice.actions.syncFromServerStart());
       try {
         const { events: serverEvents, nextCursor } = await getEvents(
@@ -39,7 +38,7 @@ export default function useEvents() {
         dispatch(eventsSlice.actions.syncFromServerError());
       }
     })();
-  React.useEffect(syncFromServer, [state.isStorageLoading, userEmail]);
+  React.useEffect(syncFromServer, [isStorageLoading, userEmail]);
   useInterval(syncFromServer, 6e4);
 
   const syncToServer = (): void =>
@@ -47,7 +46,7 @@ export default function useEvents() {
       if (
         !userIsSignedIn ||
         isSyncingToServer ||
-        state.isStorageLoading ||
+        isStorageLoading ||
         !events.idsToSync.length
       )
         return;
@@ -61,7 +60,7 @@ export default function useEvents() {
     })();
   React.useEffect(syncToServer, [
     events.idsToSync,
-    state.isStorageLoading,
+    isStorageLoading,
     userEmail,
   ]);
   useInterval(syncToServer, 1e4);
