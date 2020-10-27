@@ -1,10 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  addHours,
   addMonths,
   addWeeks,
   eachMonthOfInterval,
   eachWeekOfInterval,
+  getHours,
+  set,
+  subHours,
 } from "date-fns";
+import { HOURS_PER_DAY } from "./constants";
 import { WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
@@ -81,6 +86,51 @@ export const moodsSelector = createSelector(
     return { allIds, byId };
   }
 );
+
+const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
+type Averages = [number, number][];
+export const averageByHourSelector = createSelector(moodsSelector, (moods): {
+  averages: Averages;
+  daysUsed: number;
+} => {
+  let daysUsed = 0;
+  const startDate = subHours(
+    set(new Date(), {
+      milliseconds: 0,
+      minutes: 30,
+      seconds: 0,
+    }),
+    1
+  );
+  const averages: Averages = Array(HOURS_PER_DAY);
+
+  for (let n = 0; n < HOURS_PER_DAY; n++) {
+    let sumOfAverageMoods = 0;
+    let i = 0;
+
+    for (; i < NUMBER_OF_DAYS_TO_AVERAGE_OVER; i++) {
+      const fromDate = subHours(startDate, n + HOURS_PER_DAY * i);
+      try {
+        sumOfAverageMoods += computeAverageMoodInInterval(
+          moods,
+          fromDate,
+          addHours(fromDate, 1)
+        );
+      } catch {
+        break;
+      }
+    }
+
+    daysUsed = Math.max(daysUsed, i);
+
+    if (i) {
+      const hours = getHours(subHours(startDate, n));
+      averages[hours] = [hours, sumOfAverageMoods / i];
+    }
+  }
+
+  return { averages: averages.filter((x) => x !== undefined), daysUsed };
+});
 
 export const averageByMonthSelector = createSelector(moodsSelector, (moods): [
   Date,
