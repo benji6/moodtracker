@@ -71,6 +71,7 @@ export default createSlice({
       state.syncToServerError = true;
     },
     syncToServerSuccess: (state) => {
+      state.idsToSync = [];
       state.isSyncingToServer = false;
       state.syncToServerError = false;
     },

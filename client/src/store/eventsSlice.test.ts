@@ -486,6 +486,7 @@ describe("eventsSlice", () => {
       store.dispatch(eventsSlice.actions.syncToServerSuccess());
       expect(eventsSelector(store.getState())).toEqual({
         ...stateWithEvents,
+        idsToSync: [],
         isSyncingToServer: false,
         syncToServerError: false,
       });
