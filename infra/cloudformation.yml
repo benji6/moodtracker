@@ -113,6 +113,7 @@ Resources:
     Type: AWS::Cognito::UserPoolClient
     Properties:
       PreventUserExistenceErrors: ENABLED
+      RefreshTokenValidity: 365 # max value in days
       UserPoolId: !Ref CognitoUserPool
   CognitoUserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
