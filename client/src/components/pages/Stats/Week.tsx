@@ -10,8 +10,8 @@ import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import {
-  dayMonthFormatter,
   formatWeek,
+  weekdayShortFormatter,
   WEEK_OPTIONS,
 } from "../../../formatters";
 import { moodsSelector } from "../../../selectors";
@@ -69,7 +69,7 @@ export default function Week({
       week,
       Math.round((i * weekLength) / (X_LABELS_COUNT - 1))
     );
-    xLabels.push([date.getTime(), dayMonthFormatter.format(date)]);
+    xLabels.push([date.getTime(), weekdayShortFormatter.format(date)]);
   }
 
   return (

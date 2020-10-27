@@ -27,8 +27,12 @@ const weekFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
-export const weekdayformatter = Intl.DateTimeFormat(undefined, {
+export const weekdayFormatter = Intl.DateTimeFormat(undefined, {
   weekday: "long",
+});
+
+export const weekdayShortFormatter = Intl.DateTimeFormat(undefined, {
+  weekday: "short",
 });
 
 // TODO: One day we should be able to remove this
