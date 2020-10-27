@@ -3,9 +3,9 @@ import { Paper } from "eri";
 import MoodCell from "./MoodCell";
 import { subDays, addDays, getDay } from "date-fns";
 import { roundDateDown, computeAverageMoodInInterval } from "../../../utils";
-import { StateContext } from "../../AppState";
 import { NormalizedMoods } from "../../../types";
 import { moodsSelector } from "../../../selectors";
+import { useSelector } from "react-redux";
 
 const DAYS_PER_WEEK = 7;
 const NUMBER_OF_WEEKS_TO_AVERAGE_OVER = 4;
@@ -61,8 +61,7 @@ const computeAverages = (
 };
 
 export default function AverageMoodByDay() {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
 
   const { averages, weeksUsed } = React.useMemo(() => computeAverages(moods), [
     moods,

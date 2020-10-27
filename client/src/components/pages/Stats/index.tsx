@@ -1,7 +1,6 @@
 import { RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
-import { StateContext } from "../../AppState";
 import MoodStats from "./MoodStats";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
@@ -9,16 +8,17 @@ import MonthlyAverages from "./MonthlyAverages";
 import WeeklyAverages from "./WeeklyAverages";
 import AverageMoodByDay from "./AverageMoodByDay";
 import AverageMoodByHour from "./AverageMoodByHour";
-import { moodsSelector } from "../../../selectors";
+import { eventsSelector, moodsSelector } from "../../../selectors";
+import { useSelector } from "react-redux";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const events = useSelector(eventsSelector);
+  const moods = useSelector(moodsSelector);
 
   return (
     <Paper.Group>
-      {state.events.hasLoadedFromServer ? (
+      {events.hasLoadedFromServer ? (
         moods.allIds.length ? (
           <>
             <MoodStats />

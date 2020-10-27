@@ -1,7 +1,6 @@
 import { addMonths, eachMonthOfInterval } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
-import { StateContext } from "../../AppState";
 import {
   mapRight,
   computeAverageMoodInInterval,
@@ -12,6 +11,7 @@ import MoodCell from "./MoodCell";
 import { monthFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
 import { moodsSelector } from "../../../selectors";
+import { useSelector } from "react-redux";
 
 export const computeAverageByMonth = (
   moods: NormalizedMoods
@@ -45,8 +45,7 @@ export const computeAverageByMonth = (
 };
 
 export default function MonthlyAverages() {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
   const averageByMonth = React.useMemo(() => computeAverageByMonth(moods), [
     moods,
   ]);

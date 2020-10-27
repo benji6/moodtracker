@@ -1,9 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { State } from "./components/AppState";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 
-const eventsSelector = (state: State) => state.events;
+export const eventsIsSyncingFromServerSelector = (state: RootState) =>
+  state.events.isSyncingFromServer;
+export const eventsIsSyncingToServerSelector = (state: RootState) =>
+  state.events.isSyncingToServer;
+export const eventsSyncFromServerErrorSelector = (state: RootState) =>
+  state.events.syncFromServerError;
+export const eventsSyncToServerErrorSelector = (state: RootState) =>
+  state.events.syncToServerError;
+export const eventsSelector = (state: RootState) => state.events;
 export const userEmailSelector = (state: RootState) => state.user.email;
 export const userIdSelector = (state: RootState) => state.user.id;
 export const userIsSignedInSelector = (state: RootState) =>
@@ -47,9 +54,17 @@ export const moodsSelector = createSelector(
           delete byId[event.payload];
           break;
         }
-        case "v1/moods/update":
-          byId[event.payload.id].mood = event.payload.mood;
-          byId[event.payload.id].updatedAt = event.createdAt;
+        case "v1/moods/update": {
+          const currentMood = byId[event.payload.id];
+
+          // for reasons that are beyond my energy to investigate there is
+          // a runtime error if you try to update the mood object directly
+          byId[event.payload.id] = {
+            ...currentMood,
+            mood: event.payload.mood,
+            updatedAt: event.createdAt,
+          };
+        }
       }
     }
 

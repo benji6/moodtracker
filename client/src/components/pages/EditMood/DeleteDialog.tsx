@@ -1,7 +1,8 @@
 import { Dialog, Button } from "eri";
 import * as React from "react";
-import { DispatchContext } from "../../AppState";
 import { useNavigate } from "@reach/router";
+import { useDispatch } from "react-redux";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   id: string;
@@ -11,7 +12,7 @@ interface Props {
 
 export default function DeleteDialog({ id, onClose, open }: Props) {
   const navigate = useNavigate();
-  const dispatch = React.useContext(DispatchContext);
+  const dispatch = useDispatch();
 
   return (
     <Dialog onClose={onClose} open={open} title="Delete mood?">
@@ -19,14 +20,13 @@ export default function DeleteDialog({ id, onClose, open }: Props) {
         <Button
           danger
           onClick={() => {
-            dispatch({
-              type: "events/add",
-              payload: {
+            dispatch(
+              eventsSlice.actions.add({
                 type: "v1/moods/delete",
                 createdAt: new Date().toISOString(),
                 payload: id,
-              },
-            });
+              })
+            );
             navigate("/");
           }}
         >

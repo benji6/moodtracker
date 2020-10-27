@@ -1,7 +1,6 @@
 import { startOfWeek, eachWeekOfInterval, addWeeks } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
-import { StateContext } from "../../AppState";
 import {
   mapRight,
   computeAverageMoodInInterval,
@@ -12,6 +11,7 @@ import MoodCell from "./MoodCell";
 import { Link } from "@reach/router";
 import { formatWeek, WEEK_OPTIONS } from "../../../formatters";
 import { moodsSelector } from "../../../selectors";
+import { useSelector } from "react-redux";
 
 export const computeAverageByWeek = (
   moods: NormalizedMoods
@@ -46,8 +46,7 @@ export const computeAverageByWeek = (
 };
 
 export default function WeeklyAverages() {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
   const averageByWeek = React.useMemo(() => computeAverageByWeek(moods), [
     moods,
   ]);

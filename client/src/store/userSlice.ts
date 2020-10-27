@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserDetails } from "../types";
+
+export interface UserDetails {
+  email: string;
+  id: string;
+}
 
 interface UserState {
   email: string | undefined;
@@ -15,8 +19,12 @@ export default createSlice({
     loading: true,
   } as UserState,
   reducers: {
-    clear: () => ({ email: undefined, id: undefined, loading: false }),
-    set: (_, action: PayloadAction<UserDetails>) => ({
+    clear: (): UserState => ({
+      email: undefined,
+      id: undefined,
+      loading: false,
+    }),
+    set: (_, action: PayloadAction<UserDetails>): UserState => ({
       ...action.payload,
       loading: false,
     }),

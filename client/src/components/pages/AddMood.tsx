@@ -1,13 +1,14 @@
 import { useNavigate, RouteComponentProps } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton, requiredValidator } from "eri";
-import { DispatchContext } from "../AppState";
 import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
+import { useDispatch } from "react-redux";
+import eventsSlice from "../../store/eventsSlice";
 
 export default function AddMood(_: RouteComponentProps) {
   useRedirectUnauthed();
   const navigate = useNavigate();
-  const dispatch = React.useContext(DispatchContext);
+  const dispatch = useDispatch();
   const [moodError, setMoodError] = React.useState<string | undefined>();
 
   return (
@@ -24,14 +25,13 @@ export default function AddMood(_: RouteComponentProps) {
               setMoodError(fieldError);
               return;
             }
-            dispatch({
-              type: "events/add",
-              payload: {
+            dispatch(
+              eventsSlice.actions.add({
                 type: "v1/moods/create",
                 createdAt: new Date().toISOString(),
                 payload: { mood: Number(moodValue) },
-              },
-            });
+              })
+            );
             navigate("/");
           }}
         >

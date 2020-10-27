@@ -1,31 +1,42 @@
 import * as React from "react";
-import { DispatchContext, StateContext } from "../AppState";
+import { StateContext } from "../AppState";
 import useInterval from "./useInterval";
 import { getEvents, postEvents } from "../../api";
-import { useSelector } from "react-redux";
-import { userEmailSelector, userIsSignedInSelector } from "../../selectors";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  eventsIsSyncingFromServerSelector,
+  eventsSelector,
+  userEmailSelector,
+  userIsSignedInSelector,
+} from "../../selectors";
+import eventsSlice from "../../store/eventsSlice";
 
 export default function useEvents() {
-  const dispatch = React.useContext(DispatchContext);
+  const dispatch = useDispatch();
+  const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
+  const isSyncingToServer = useSelector(eventsIsSyncingFromServerSelector);
   const state = React.useContext(StateContext);
+  const events = useSelector(eventsSelector);
   const userEmail = useSelector(userEmailSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
 
   const syncFromServer = (): void =>
     void (async (): Promise<void> => {
-      if (
-        !userIsSignedIn ||
-        state.isSyncingFromServer ||
-        state.isStorageLoading
-      )
+      if (!userIsSignedIn || isSyncingFromServer || state.isStorageLoading)
         return;
-      dispatch({ type: "syncFromServer/start" });
+      dispatch(eventsSlice.actions.syncFromServerStart());
       try {
-        const { events, nextCursor } = await getEvents(state.events.nextCursor);
-        dispatch({ type: "events/syncFromServer", payload: events });
-        dispatch({ type: "syncFromServer/success", payload: nextCursor });
+        const { events: serverEvents, nextCursor } = await getEvents(
+          events.nextCursor
+        );
+        dispatch(
+          eventsSlice.actions.syncFromServerSuccess({
+            cursor: nextCursor,
+            events: serverEvents,
+          })
+        );
       } catch {
-        dispatch({ type: "syncFromServer/error" });
+        dispatch(eventsSlice.actions.syncFromServerError());
       }
     })();
   React.useEffect(syncFromServer, [state.isStorageLoading, userEmail]);
@@ -35,23 +46,21 @@ export default function useEvents() {
     void (async () => {
       if (
         !userIsSignedIn ||
-        state.isSyncingToServer ||
+        isSyncingToServer ||
         state.isStorageLoading ||
-        !state.events.idsToSync.length
+        !events.idsToSync.length
       )
         return;
-      dispatch({ type: "syncToServer/start" });
+      dispatch(eventsSlice.actions.syncToServerStart());
       try {
-        await postEvents(
-          state.events.idsToSync.map((id) => state.events.byId[id])
-        );
-        dispatch({ type: "syncToServer/success" });
+        await postEvents(events.idsToSync.map((id) => events.byId[id]));
+        dispatch(eventsSlice.actions.syncToServerSuccess());
       } catch {
-        dispatch({ type: "syncToServer/error" });
+        dispatch(eventsSlice.actions.syncToServerError());
       }
     })();
   React.useEffect(syncToServer, [
-    state.events.idsToSync,
+    events.idsToSync,
     state.isStorageLoading,
     userEmail,
   ]);

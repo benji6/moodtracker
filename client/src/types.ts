@@ -5,17 +5,6 @@ export type FluxStandardAction<
   ? { type: Type }
   : { payload: Payload; type: Type };
 
-export interface NormalizedEvents {
-  allIds: string[];
-  byId: { [id: string]: AppEvent };
-
-  // Is false until initial load from server succeeds or errors.
-  // This allows us to display a loading spinner when switching users.
-  hasLoadedFromServer: boolean;
-  idsToSync: string[];
-  nextCursor: string | undefined;
-}
-
 export interface NormalizedMoods {
   allIds: string[];
   byId: { [id: string]: Mood & { updatedAt?: string } };
@@ -35,8 +24,3 @@ export type AppEvent =
   | MoodEvent<"v1/moods/create", Mood>
   | MoodEvent<"v1/moods/delete", string>
   | MoodEvent<"v1/moods/update", Mood & { id: string }>;
-
-export interface UserDetails {
-  email: string;
-  id: string;
-}

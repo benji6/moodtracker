@@ -1,12 +1,11 @@
 import * as React from "react";
 import { getIdToken } from "../../cognito";
-import { DispatchContext } from "../AppState";
 import storage from "../../storage";
 import { useDispatch } from "react-redux";
 import userSlice from "../../store/userSlice";
+import eventsSlice from "../../store/eventsSlice";
 
 export default function useUser(): void {
-  const appDispatch = React.useContext(DispatchContext);
   const dispatch = useDispatch();
 
   React.useEffect(
@@ -30,7 +29,7 @@ export default function useUser(): void {
         } catch (e) {
           if (e.message === "No current user") {
             dispatch(userSlice.actions.clear());
-            appDispatch({ type: "app/signOut" });
+            dispatch(eventsSlice.actions.clear());
           }
         }
       })(),

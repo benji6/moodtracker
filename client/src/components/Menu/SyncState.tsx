@@ -1,14 +1,13 @@
 import { Icon, Spinner } from "eri";
 import * as React from "react";
-import { StateContext } from "../AppState";
+import { useSelector } from "react-redux";
+import { eventsIsSyncingFromServerSelector } from "../../selectors";
 
 export default function SyncState() {
-  const {
-    isSyncingFromServer,
-    isSyncingToServer,
-    syncFromServerError,
-    syncToServerError,
-  } = React.useContext(StateContext);
+  const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
+  const isSyncingToServer = useSelector(eventsIsSyncingFromServerSelector);
+  const syncFromServerError = useSelector(eventsIsSyncingFromServerSelector);
+  const syncToServerError = useSelector(eventsIsSyncingFromServerSelector);
 
   return (
     <>

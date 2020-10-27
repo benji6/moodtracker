@@ -1,9 +1,9 @@
 import { BarChart, Paper } from "eri";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { MOOD_RANGE } from "../../../constants";
 import { moodsSelector } from "../../../selectors";
 import { getMoodIdsInInterval, moodToColor } from "../../../utils";
-import { StateContext } from "../../AppState";
 
 const MOOD_FREQUENCY_CHART_MAX_Y_LABELS = 10;
 
@@ -13,8 +13,7 @@ interface Props {
 }
 
 export default function MoodFrequencyChart({ fromDate, toDate }: Props) {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
 
   const moodIdsInMonth = getMoodIdsInInterval(moods.allIds, fromDate, toDate);
 

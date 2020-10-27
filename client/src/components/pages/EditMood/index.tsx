@@ -1,17 +1,17 @@
 import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton } from "eri";
-import { DispatchContext, StateContext } from "../../AppState";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
 import { moodsSelector } from "../../../selectors";
+import { useDispatch, useSelector } from "react-redux";
+import eventsSlice from "../../../store/eventsSlice";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
   const navigate = useNavigate();
-  const dispatch = React.useContext(DispatchContext);
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const dispatch = useDispatch();
+  const moods = useSelector(moodsSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   if (!id) return <Redirect to="/404" />;
   const mood = moods.byId[id];
@@ -36,17 +36,16 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            dispatch({
-              type: "events/add",
-              payload: {
+            dispatch(
+              eventsSlice.actions.add({
                 type: "v1/moods/update",
                 createdAt: new Date().toISOString(),
                 payload: {
                   id,
                   mood: Number((e.target as HTMLFormElement).mood.value),
                 },
-              },
-            });
+              })
+            );
             navigate("/");
           }}
         >

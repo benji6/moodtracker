@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FluxStandardAction } from "../../../types";
 import { Paper, RadioButton, Pagination } from "eri";
-import { StateContext } from "../../AppState";
 import {
   roundDateUp,
   roundDateDown,
@@ -9,6 +8,7 @@ import {
 } from "../../../utils";
 import MoodChart from "./MoodChart";
 import { moodsSelector } from "../../../selectors";
+import { useSelector } from "react-redux";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -78,8 +78,7 @@ export const statsReducer = (
 };
 
 export default function MoodStats() {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
   const [localState, localDispatch] = React.useReducer(statsReducer, {
     dayCount: 7,
     page: 0,

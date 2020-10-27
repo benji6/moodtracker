@@ -1,9 +1,10 @@
 import { Dialog, Button } from "eri";
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userPool } from "../../cognito";
+import { eventsSelector } from "../../selectors";
+import eventsSlice from "../../store/eventsSlice";
 import userSlice from "../../store/userSlice";
-import { DispatchContext, StateContext } from "../AppState";
 
 interface Props {
   onClose(): void;
@@ -11,9 +12,8 @@ interface Props {
 }
 
 export default function SignOutDialog({ onClose, open }: Props) {
-  const state = React.useContext(StateContext);
+  const events = useSelector(eventsSelector);
   const dispatch = useDispatch();
-  const appDispatch = React.useContext(DispatchContext);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleSignOut = () => {
@@ -22,7 +22,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
     if (currentUser) currentUser.signOut();
     onClose();
     dispatch(userSlice.actions.clear());
-    appDispatch({ type: "app/signOut" });
+    dispatch(eventsSlice.actions.clear());
     setIsLoading(false);
   };
 
@@ -33,7 +33,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
       open={open}
       title="Sign out?"
     >
-      {state.events.idsToSync.length ? (
+      {events.idsToSync.length ? (
         <p>
           <strong>
             WARNING: some of your data has not yet been synced to the server and

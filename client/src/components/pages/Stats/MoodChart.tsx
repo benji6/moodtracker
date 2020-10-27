@@ -1,5 +1,6 @@
 import { LineChart } from "eri";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { MOOD_RANGE } from "../../../constants";
 import { moodsSelector } from "../../../selectors";
 import { NormalizedMoods } from "../../../types";
@@ -8,7 +9,6 @@ import {
   getEnvelopingMoodIds,
   moodToColor,
 } from "../../../utils";
-import { StateContext } from "../../AppState";
 
 const TRENDLINE_POINTS_COUNT = 32;
 const TRENDLINE_MOVING_AVERAGE_PERIOD_COUNT = 3;
@@ -50,8 +50,7 @@ interface Props {
 }
 
 export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
   const envelopingMoodIds = getEnvelopingMoodIds(
     moods.allIds,

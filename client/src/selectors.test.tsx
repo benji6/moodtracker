@@ -1,11 +1,11 @@
-import { createInitialState } from "./components/AppState";
 import { moodsSelector } from "./selectors";
+import store, { RootState } from "./store";
 
 describe("selectors", () => {
-  let initialState: ReturnType<typeof createInitialState>;
+  let initialState: RootState;
 
-  beforeEach(() => {
-    initialState = createInitialState();
+  beforeAll(() => {
+    initialState = store.getState();
   });
 
   describe("moodsSelector", () => {

@@ -2,10 +2,10 @@ import * as React from "react";
 import { Paper, LineChart } from "eri";
 import { subHours, addHours, getHours, set, setHours } from "date-fns";
 import { computeAverageMoodInInterval, moodToColor } from "../../../utils";
-import { StateContext } from "../../AppState";
 import { NormalizedMoods } from "../../../types";
 import { MOOD_RANGE } from "../../../constants";
 import { moodsSelector } from "../../../selectors";
+import { useSelector } from "react-redux";
 
 const HOURS_PER_DAY = 24;
 const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
@@ -58,8 +58,7 @@ const computeAverages = (
 };
 
 export default function AverageMoodByHour() {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
 
   const { averages, daysUsed } = React.useMemo(() => computeAverages(moods), [
     moods,

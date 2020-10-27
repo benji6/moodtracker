@@ -8,6 +8,7 @@ import {
 import { subWeeks } from "date-fns/esm";
 import { Paper } from "eri";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
   formatWeek,
@@ -18,7 +19,6 @@ import {
   formatIsoDateInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
-import { StateContext } from "../../AppState";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChart from "./MoodChart";
 import MoodFrequencyChart from "./MoodFrequencyChart";
@@ -39,8 +39,7 @@ export default function Week({
 }: RouteComponentProps<{ week: string }>) {
   if (!weekStr || !isoDateRegex.test(weekStr)) return <Redirect to="/404" />;
 
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
 
   if (!moods.allIds.length)
     return (

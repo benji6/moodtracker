@@ -1,11 +1,11 @@
 import { Paper } from "eri";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { moodsSelector } from "../../../selectors";
 import {
   computeAverageMoodInInterval,
   getMoodIdsInInterval,
 } from "../../../utils";
-import { StateContext } from "../../AppState";
 import MoodCell from "./MoodCell";
 
 interface Props {
@@ -31,8 +31,7 @@ export default function MoodSummary({
   dates: [date0, date1, date2, date3],
   periodName,
 }: Props) {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const moods = useSelector(moodsSelector);
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);

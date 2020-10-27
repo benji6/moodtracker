@@ -1,11 +1,14 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
-import { StateContext } from "../../AppState";
 import MoodList from "./MoodList";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import { useSelector } from "react-redux";
-import { moodsSelector, userIsSignedInSelector } from "../../../selectors";
+import {
+  eventsSelector,
+  moodsSelector,
+  userIsSignedInSelector,
+} from "../../../selectors";
 
 export interface HomeState {
   dayCount: number | undefined;
@@ -13,14 +16,14 @@ export interface HomeState {
 }
 
 export default function Home(_: RouteComponentProps) {
-  const state = React.useContext(StateContext);
-  const moods = moodsSelector(state);
+  const events = useSelector(eventsSelector);
+  const moods = useSelector(moodsSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
 
   return (
     <Paper.Group>
       {userIsSignedIn ? (
-        state.events.hasLoadedFromServer ? (
+        events.hasLoadedFromServer ? (
           moods.allIds.length ? (
             <MoodList />
           ) : (
