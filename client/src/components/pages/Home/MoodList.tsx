@@ -3,18 +3,10 @@ import * as React from "react";
 import CardGroup from "eri/dist/components/Card/CardGroup";
 import { moodToColor, mapRight } from "../../../utils";
 import { useNavigate, useLocation } from "@reach/router";
-import { NormalizedMoods } from "../../../types";
-import { moodsSelector } from "../../../selectors";
+import { groupMoodsByDaySelector, moodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 
-const DAYS_PER_PAGE = 6;
-
-const dateFormatter = Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "long",
-  weekday: "long",
-  year: "numeric",
-});
+const DAYS_PER_PAGE = 7;
 
 const timeFormatter = Intl.DateTimeFormat(undefined, {
   hour: "numeric",
@@ -22,22 +14,11 @@ const timeFormatter = Intl.DateTimeFormat(undefined, {
   second: "numeric",
 });
 
-const groupByDay = (moods: NormalizedMoods): [string, string[]][] => {
-  const moodsGroupedByDate: { [date: string]: string[] } = {};
-
-  for (const id of moods.allIds) {
-    const key = dateFormatter.format(new Date(id));
-    if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
-    else moodsGroupedByDate[key] = [id];
-  }
-
-  return Object.entries(moodsGroupedByDate);
-};
-
 export default function MoodList() {
   const location = useLocation();
   const navigate = useNavigate();
   const moods = useSelector(moodsSelector);
+  const moodsGroupedByDay = useSelector(groupMoodsByDaySelector);
 
   const pageStr = new URLSearchParams(location?.search).get("page");
   const page = pageStr === null ? 0 : parseInt(pageStr) - 1;
@@ -47,7 +28,6 @@ export default function MoodList() {
     return null;
   }
 
-  const moodsGroupedByDay = React.useMemo(() => groupByDay(moods), [moods]);
   const pageCount = Math.ceil(moodsGroupedByDay.length / DAYS_PER_PAGE);
 
   if (pageStr === "1" || page < 0 || page >= pageCount) {

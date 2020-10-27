@@ -13,7 +13,7 @@ import {
   subHours,
 } from "date-fns";
 import { DAYS_PER_WEEK, HOURS_PER_DAY } from "./constants";
-import { weekdayformatter, WEEK_OPTIONS } from "./formatters";
+import { dateFormatter, weekdayformatter, WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 import { computeAverageMoodInInterval, roundDateDown } from "./utils";
@@ -249,4 +249,19 @@ export const averageByWeekSelector = createSelector(moodsSelector, (moods): [
   }
 
   return averageByWeek;
+});
+
+export const groupMoodsByDaySelector = createSelector(moodsSelector, (moods): [
+  string,
+  string[]
+][] => {
+  const moodsGroupedByDate: { [date: string]: string[] } = {};
+
+  for (const id of moods.allIds) {
+    const key = dateFormatter.format(new Date(id));
+    if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
+    else moodsGroupedByDate[key] = [id];
+  }
+
+  return Object.entries(moodsGroupedByDate);
 });

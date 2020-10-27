@@ -9,6 +9,13 @@ export const dayMonthFormatter = Intl.DateTimeFormat(undefined, {
   month: "short",
 });
 
+export const dateFormatter = Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "long",
+  weekday: "long",
+  year: "numeric",
+});
+
 export const monthFormatter = Intl.DateTimeFormat(undefined, {
   month: "long",
   year: "numeric",
