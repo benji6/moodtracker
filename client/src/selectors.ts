@@ -1,6 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { addWeeks, eachWeekOfInterval } from "date-fns";
+import { WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
+import { computeAverageMoodInInterval } from "./utils";
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
   state.app.isStorageLoading;
@@ -73,3 +76,36 @@ export const moodsSelector = createSelector(
     return { allIds, byId };
   }
 );
+
+export const averageByWeekSelector = createSelector(moodsSelector, (moods): [
+  Date,
+  number
+][] => {
+  const averageByWeek: [Date, number][] = [];
+
+  const weeks = eachWeekOfInterval(
+    {
+      start: new Date(moods.allIds[0]),
+      end: new Date(moods.allIds[moods.allIds.length - 1]),
+    },
+    WEEK_OPTIONS
+  );
+
+  if (moods.allIds.length === 1) {
+    return [[weeks[0], moods.byId[moods.allIds[0]].mood]];
+  }
+
+  weeks.push(addWeeks(weeks[weeks.length - 1], 1));
+
+  for (let i = 1; i < weeks.length; i++) {
+    const week0 = weeks[i - 1];
+    const week1 = weeks[i];
+
+    averageByWeek.push([
+      week0,
+      computeAverageMoodInInterval(moods, week0, week1),
+    ]);
+  }
+
+  return averageByWeek;
+});
