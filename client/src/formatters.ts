@@ -20,6 +20,10 @@ const weekFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
+export const weekdayformatter = Intl.DateTimeFormat(undefined, {
+  weekday: "long",
+});
+
 // TODO: One day we should be able to remove this
 const formatRange = (dateA: Date, dateB: Date) =>
   "formatRange" in weekFormatter

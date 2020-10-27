@@ -1,19 +1,22 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  addDays,
   addHours,
   addMonths,
   addWeeks,
   eachMonthOfInterval,
   eachWeekOfInterval,
+  getDay,
   getHours,
   set,
+  subDays,
   subHours,
 } from "date-fns";
-import { HOURS_PER_DAY } from "./constants";
-import { WEEK_OPTIONS } from "./formatters";
+import { DAYS_PER_WEEK, HOURS_PER_DAY } from "./constants";
+import { weekdayformatter, WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
-import { computeAverageMoodInInterval } from "./utils";
+import { computeAverageMoodInInterval, roundDateDown } from "./utils";
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
   state.app.isStorageLoading;
@@ -87,10 +90,61 @@ export const moodsSelector = createSelector(
   }
 );
 
+type DayAverages = [
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined]
+];
+
+const NUMBER_OF_WEEKS_TO_AVERAGE_OVER = 4;
+export const averageByDaySelector = createSelector(moodsSelector, (moods): {
+  averages: DayAverages;
+  weeksUsed: number;
+} => {
+  let weeksUsed = 0;
+  const startDate = roundDateDown(new Date());
+  const averages = Array(DAYS_PER_WEEK);
+
+  for (let n = 0; n < DAYS_PER_WEEK; n++) {
+    let sumOfAverageMoods = 0;
+    let i = 0;
+
+    for (; i < NUMBER_OF_WEEKS_TO_AVERAGE_OVER; i++) {
+      const fromDate = subDays(startDate, n + DAYS_PER_WEEK * i);
+      try {
+        sumOfAverageMoods += computeAverageMoodInInterval(
+          moods,
+          fromDate,
+          addDays(fromDate, 1)
+        );
+      } catch {
+        break;
+      }
+    }
+
+    weeksUsed = Math.max(weeksUsed, i);
+
+    const dateForDayOfWeek = subDays(startDate, n);
+    const dateFnsDay = getDay(dateForDayOfWeek);
+    const averagesIndex = (dateFnsDay ? dateFnsDay : DAYS_PER_WEEK) - 1;
+
+    averages[averagesIndex] = [
+      weekdayformatter.format(dateForDayOfWeek),
+      i ? sumOfAverageMoods / i : undefined,
+    ];
+  }
+
+  return { averages: averages as DayAverages, weeksUsed };
+});
+
 const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
-type Averages = [number, number][];
+type HourAverages = [number, number][];
 export const averageByHourSelector = createSelector(moodsSelector, (moods): {
-  averages: Averages;
+  averages: HourAverages;
   daysUsed: number;
 } => {
   let daysUsed = 0;
@@ -102,7 +156,7 @@ export const averageByHourSelector = createSelector(moodsSelector, (moods): {
     }),
     1
   );
-  const averages: Averages = Array(HOURS_PER_DAY);
+  const averages: HourAverages = Array(HOURS_PER_DAY);
 
   for (let n = 0; n < HOURS_PER_DAY; n++) {
     let sumOfAverageMoods = 0;
