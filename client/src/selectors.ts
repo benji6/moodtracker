@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { addWeeks, eachWeekOfInterval } from "date-fns";
+import {
+  addMonths,
+  addWeeks,
+  eachMonthOfInterval,
+  eachWeekOfInterval,
+} from "date-fns";
 import { WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
@@ -76,6 +81,38 @@ export const moodsSelector = createSelector(
     return { allIds, byId };
   }
 );
+
+export const averageByMonthSelector = createSelector(moodsSelector, (moods): [
+  Date,
+  number
+][] => {
+  const averageByMonth: [Date, number][] = [];
+
+  const months = eachMonthOfInterval({
+    start: new Date(moods.allIds[0]),
+    end: new Date(moods.allIds[moods.allIds.length - 1]),
+  });
+
+  const finalMonth = addMonths(months[months.length - 1], 1);
+
+  if (moods.allIds.length === 1) {
+    return [[months[0], moods.byId[moods.allIds[0]].mood]];
+  }
+
+  months.push(finalMonth);
+
+  for (let i = 1; i < months.length; i++) {
+    const month0 = months[i - 1];
+    const month1 = months[i];
+
+    averageByMonth.push([
+      month0,
+      computeAverageMoodInInterval(moods, month0, month1),
+    ]);
+  }
+
+  return averageByMonth;
+});
 
 export const averageByWeekSelector = createSelector(moodsSelector, (moods): [
   Date,

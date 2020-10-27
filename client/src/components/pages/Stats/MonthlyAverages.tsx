@@ -1,54 +1,14 @@
-import { addMonths, eachMonthOfInterval } from "date-fns";
 import * as React from "react";
 import { Paper } from "eri";
-import {
-  mapRight,
-  computeAverageMoodInInterval,
-  formatIsoMonthInLocalTimezone,
-} from "../../../utils";
-import { NormalizedMoods } from "../../../types";
+import { mapRight, formatIsoMonthInLocalTimezone } from "../../../utils";
 import MoodCell from "./MoodCell";
 import { monthFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
-import { moodsSelector } from "../../../selectors";
+import { averageByMonthSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 
-export const computeAverageByMonth = (
-  moods: NormalizedMoods
-): [Date, number][] => {
-  const averageByMonth: [Date, number][] = [];
-
-  const months = eachMonthOfInterval({
-    start: new Date(moods.allIds[0]),
-    end: new Date(moods.allIds[moods.allIds.length - 1]),
-  });
-
-  const finalMonth = addMonths(months[months.length - 1], 1);
-
-  if (moods.allIds.length === 1) {
-    return [[months[0], moods.byId[moods.allIds[0]].mood]];
-  }
-
-  months.push(finalMonth);
-
-  for (let i = 1; i < months.length; i++) {
-    const month0 = months[i - 1];
-    const month1 = months[i];
-
-    averageByMonth.push([
-      month0,
-      computeAverageMoodInInterval(moods, month0, month1),
-    ]);
-  }
-
-  return averageByMonth;
-};
-
 export default function MonthlyAverages() {
-  const moods = useSelector(moodsSelector);
-  const averageByMonth = React.useMemo(() => computeAverageByMonth(moods), [
-    moods,
-  ]);
+  const averageByMonth = useSelector(averageByMonthSelector);
 
   return (
     <Paper>
