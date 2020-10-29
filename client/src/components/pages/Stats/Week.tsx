@@ -1,14 +1,10 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import {
-  addDays,
-  addWeeks,
-  differenceInCalendarDays,
-  startOfWeek,
-} from "date-fns";
+import { addDays, addWeeks, startOfWeek } from "date-fns";
 import { subWeeks } from "date-fns/esm";
 import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { DAYS_PER_WEEK } from "../../../constants";
 import {
   formatWeek,
   weekdayShortFormatter,
@@ -23,8 +19,6 @@ import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChart from "./MoodChart";
 import MoodFrequencyChart from "./MoodFrequencyChart";
 import MoodSummary from "./MoodSummary";
-
-const X_LABELS_COUNT = 5;
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -60,15 +54,10 @@ export default function Week({
 
   const moodIdsInWeek = getMoodIdsInInterval(moods.allIds, week, nextWeek);
 
-  const weekLength = differenceInCalendarDays(nextWeek, week);
-
   const xLabels: [number, string][] = [];
 
-  for (let i = 0; i < X_LABELS_COUNT; i++) {
-    const date = addDays(
-      week,
-      Math.round((i * weekLength) / (X_LABELS_COUNT - 1))
-    );
+  for (let i = 0; i <= DAYS_PER_WEEK; i++) {
+    const date = addDays(week, i);
     xLabels.push([date.getTime(), weekdayShortFormatter.format(date)]);
   }
 
