@@ -100,11 +100,10 @@ export default createSlice({
       if (!state.allIds.length) {
         state.allIds = serverEventIds;
       } else {
-        const lastClientEvent = getLastEvent(state);
-        const lastServerEvent =
-          action.payload.events[action.payload.events.length - 1];
+        const lastClientId = state.allIds[state.allIds.length - 1];
+        const firstServerEvent = action.payload.events[0];
         state.allIds = [...new Set([...state.allIds, ...serverEventIds])];
-        if (lastServerEvent.createdAt < lastClientEvent.createdAt)
+        if (firstServerEvent.createdAt < lastClientId)
           state.allIds.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
       }
     },

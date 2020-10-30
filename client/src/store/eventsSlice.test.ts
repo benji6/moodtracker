@@ -262,23 +262,6 @@ describe("eventsSlice", () => {
       expect(eventsSelector(store.getState())).toEqual(stateWithEvents);
     });
 
-    // test("syncFromServer/start", () => {
-    //   expect(
-    //     appStateReducer(
-    //       {
-    //         ...createInitialState(),
-    //         isSyncingFromServer: false,
-    //         syncFromServerError: true,
-    //       },
-    //       { type: "syncFromServer/start" }
-    //     )
-    //   ).toEqual({
-    //     ...createInitialState(),
-    //     isSyncingFromServer: true,
-    //     syncFromServerError: false,
-    //   });
-    // });
-
     test("syncFromServerStart", () => {
       const expectedState = {
         ...stateWithEvents,
@@ -393,8 +376,8 @@ describe("eventsSlice", () => {
             cursor: "cursor-567",
             events: [
               {
-                createdAt: "2020-05-07T20:35:00.000Z",
-                payload: { mood: 9 },
+                createdAt: "2020-05-07T19:35:00.000Z",
+                payload: { mood: 7 },
                 type: "v1/moods/create",
               },
               {
@@ -403,8 +386,8 @@ describe("eventsSlice", () => {
                 type: "v1/moods/create",
               },
               {
-                createdAt: "2020-05-07T19:35:00.000Z",
-                payload: { mood: 7 },
+                createdAt: "2020-05-07T20:35:00.000Z",
+                payload: { mood: 9 },
                 type: "v1/moods/create",
               },
             ],
