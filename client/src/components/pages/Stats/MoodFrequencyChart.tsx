@@ -1,4 +1,4 @@
-import { BarChart, Paper } from "eri";
+import { Chart, Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { MOOD_RANGE } from "../../../constants";
@@ -51,17 +51,22 @@ export default function MoodFrequencyChart({ fromDate, toDate }: Props) {
   return (
     <Paper>
       <h3>Mood frequency</h3>
-      <BarChart
+      <Chart.BarChart
         aria-label="Chart displaying the frequency at which different moods were recorded"
         colorFromX={(x) => moodToColor(x * 10)}
         data={moodFrequencyData.map(([_, frequency]) => frequency)}
         domain={MOOD_RANGE}
         range={[0, maxFrequency]}
-        xAxisLabel="Mood"
+        xAxisTitle="Mood"
         xLabels={moodFrequencyData.map(([mood]) => mood).map(String)}
-        yAxisLabel="Count"
-        yLabels={moodFrequencyYLabels}
-      />
+        yAxisTitle="Count"
+      >
+        <Chart.YGridLines lines={moodFrequencyYLabels.map(([y]) => y)} />
+        <Chart.YAxis
+          labels={moodFrequencyYLabels}
+          markers={moodFrequencyYLabels.map(([x]) => x)}
+        />
+      </Chart.BarChart>
     </Paper>
   );
 }

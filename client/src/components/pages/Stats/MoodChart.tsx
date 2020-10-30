@@ -1,4 +1,4 @@
-import { LineChart } from "eri";
+import { Chart } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { MOOD_RANGE } from "../../../constants";
@@ -61,9 +61,15 @@ export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
     const mood = moods.byId[id];
     return [new Date(id).getTime(), mood.mood];
   });
+  const yLabels: [number, string][] = [
+    ...Array(MOOD_RANGE[1] + 1).keys(),
+  ].map((y) => [y, String(y)]);
+
+  const xLines = xLabels.map(([x]) => x);
+  const yLines = yLabels.map(([y]) => y);
 
   return (
-    <LineChart
+    <Chart.LineChart
       aria-label="Chart displaying mood against time"
       colorFromY={moodToColor}
       data={data}
@@ -73,10 +79,13 @@ export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
         { ...moods, allIds: envelopingMoodIds },
         domain
       )}
-      xAxisLabel="Date"
-      xLabels={xLabels}
-      yAxisLabel="Mood"
-      yLabels={[...Array(MOOD_RANGE[1] + 1).keys()].map((y) => [y, String(y)])}
-    />
+      xAxisTitle="Date"
+      yAxisTitle="Mood"
+    >
+      <Chart.XGridLines lines={xLines} />
+      <Chart.YGridLines lines={yLines} />
+      <Chart.XAxis labels={xLabels} markers={xLines} />
+      <Chart.YAxis labels={yLabels} markers={yLines} />
+    </Chart.LineChart>
   );
 }
