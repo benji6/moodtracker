@@ -55,10 +55,18 @@ export default function Week({
   const moodIdsInWeek = getMoodIdsInInterval(moods.allIds, week, nextWeek);
 
   const xLabels: [number, string][] = [];
+  for (let i = 0; i < DAYS_PER_WEEK; i++) {
+    const date = addDays(week, i);
+    xLabels.push([
+      (date.getTime() + addDays(date, 1).getTime()) / 2,
+      weekdayShortFormatter.format(date),
+    ]);
+  }
 
+  const xLines: number[] = [];
   for (let i = 0; i <= DAYS_PER_WEEK; i++) {
     const date = addDays(week, i);
-    xLabels.push([date.getTime(), weekdayShortFormatter.format(date)]);
+    xLines.push(date.getTime());
   }
 
   return (
@@ -87,7 +95,12 @@ export default function Week({
       {moodIdsInWeek.length ? (
         <>
           <Paper>
-            <MoodChart fromDate={week} toDate={nextWeek} xLabels={xLabels} />
+            <MoodChart
+              fromDate={week}
+              toDate={nextWeek}
+              xLabels={xLabels}
+              xLines={xLines}
+            />
           </Paper>
           <MoodFrequencyChart fromDate={week} toDate={nextWeek} />
         </>

@@ -47,9 +47,15 @@ interface Props {
   fromDate: Date;
   toDate: Date;
   xLabels: [number, string][];
+  xLines?: number[];
 }
 
-export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
+export default function MoodChart({
+  fromDate,
+  toDate,
+  xLabels,
+  xLines = xLabels.map(([x]) => x),
+}: Props) {
   const moods = useSelector(moodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
   const envelopingMoodIds = getEnvelopingMoodIds(
@@ -65,7 +71,6 @@ export default function MoodChart({ fromDate, toDate, xLabels }: Props) {
     ...Array(MOOD_RANGE[1] + 1).keys(),
   ].map((y) => [y, String(y)]);
 
-  const xLines = xLabels.map(([x]) => x);
   const yLines = yLabels.map(([y]) => y);
 
   return (
