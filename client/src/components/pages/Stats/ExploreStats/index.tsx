@@ -138,6 +138,7 @@ export default function ExploreStats(_: RouteComponentProps) {
         <h2>Mood chart</h2>
         <MoodChart
           fromDate={new Date(domain[0])}
+          hidePoints
           toDate={new Date(domain[1])}
           xLabels={createXLabels(domain, now)}
         />

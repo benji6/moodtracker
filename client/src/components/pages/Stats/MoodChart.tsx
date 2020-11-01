@@ -45,6 +45,7 @@ export const computeTrendlinePoints = (
 
 interface Props {
   fromDate: Date;
+  hidePoints?: boolean;
   toDate: Date;
   xLabels: [number, string][];
   xLines?: number[];
@@ -52,6 +53,7 @@ interface Props {
 
 export default function MoodChart({
   fromDate,
+  hidePoints = false,
   toDate,
   xLabels,
   xLines = xLabels.map(([x]) => x),
@@ -76,17 +78,26 @@ export default function MoodChart({
   return (
     <Chart.LineChart
       aria-label="Chart displaying mood against time"
-      colorFromY={moodToColor}
-      data={data}
       domain={domain}
       range={MOOD_RANGE}
-      trendlinePoints={computeTrendlinePoints(
-        { ...moods, allIds: envelopingMoodIds },
-        domain
-      )}
       xAxisTitle="Date"
       yAxisTitle="Mood"
     >
+      <Chart.PlotArea>
+        <Chart.Line
+          color={hidePoints ? undefined : "var(--e-color-balance-less)"}
+          data={computeTrendlinePoints(
+            { ...moods, allIds: envelopingMoodIds },
+            domain
+          )}
+          thickness={2}
+        />
+        <Chart.Line
+          color={hidePoints ? "var(--e-color-balance-less)" : undefined}
+          data={data}
+        />
+        {!hidePoints && <Chart.Points colorFromY={moodToColor} data={data} />}
+      </Chart.PlotArea>
       <Chart.XGridLines lines={xLines} />
       <Chart.YGridLines lines={yLines} />
       <Chart.XAxis labels={xLabels} markers={xLines} />

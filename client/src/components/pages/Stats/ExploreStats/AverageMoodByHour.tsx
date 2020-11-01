@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Chart, Paper } from "eri";
 import { setHours } from "date-fns";
-import { moodToColor } from "../../../../utils";
 import { HOURS_PER_DAY, MOOD_RANGE } from "../../../../constants";
 import { averageByHourSelector } from "../../../../selectors";
 import { useSelector } from "react-redux";
@@ -28,13 +27,14 @@ export default function AverageMoodByHour() {
       <h2>Average mood by hour</h2>
       <Chart.LineChart
         aria-label="Chart displaying average mood against hour of the day"
-        colorFromY={moodToColor}
-        data={averages}
         domain={[0, HOURS_PER_DAY - 1]}
         range={MOOD_RANGE}
         xAxisTitle="Hour of day"
         yAxisTitle="Mood"
       >
+        <Chart.PlotArea>
+          <Chart.Line data={averages} thickness={2} />
+        </Chart.PlotArea>
         <Chart.XGridLines lines={xLines} />
         <Chart.YGridLines lines={yLines} />
         <Chart.XAxis labels={xLabels} markers={xLines} />
