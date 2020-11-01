@@ -264,7 +264,15 @@ describe("utils", () => {
 
   describe("computeStandardDeviation", () => {
     it("returns 0 when the array is empty", () => {
-      expect(computeStandardDeviation([])).toBe(-0);
+      expect(computeStandardDeviation([])).toBe(0);
+    });
+
+    it("returns 0 when the array contains a single item", () => {
+      expect(computeStandardDeviation([5])).toBe(0);
+    });
+
+    it("returns 0 when all items in the array are the same", () => {
+      expect(computeStandardDeviation([5, 5, 5, 5, 5])).toBe(0);
     });
 
     it("returns the correct standard deviation", () => {

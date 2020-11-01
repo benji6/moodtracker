@@ -77,6 +77,7 @@ export const computeAverageMoodInInterval = (
 };
 
 export const computeStandardDeviation = (xs: number[]): number => {
+  if (xs.length <= 1) return 0;
   let sum = 0;
   for (const x of xs) sum += x;
   const mean = sum / xs.length;
