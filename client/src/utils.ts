@@ -76,6 +76,15 @@ export const computeAverageMoodInInterval = (
   return (area / maxArea) * (MOOD_RANGE[1] - MOOD_RANGE[0]);
 };
 
+export const computeStandardDeviation = (xs: number[]): number => {
+  let sum = 0;
+  for (const x of xs) sum += x;
+  const mean = sum / xs.length;
+  let sumOfSquaredDifferences = 0;
+  for (const x of xs) sumOfSquaredDifferences += (x - mean) ** 2;
+  return Math.sqrt(sumOfSquaredDifferences / (xs.length - 1));
+};
+
 // hard to name, but will return all moods within
 // date range and if they exist will also include
 // first mood before range and first mood after range

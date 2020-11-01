@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { moodsSelector } from "../../../selectors";
 import {
   computeAverageMoodInInterval,
+  computeStandardDeviation,
   getMoodIdsInInterval,
 } from "../../../utils";
 import MoodCell from "./MoodCell";
@@ -89,10 +90,28 @@ export default function MoodSummary({
             {showNext && <WorstMoodCell moodValues={nextMoodValues} />}
           </tr>
           <tr>
+            <td>Standard deviation</td>
+            {showPrevious && (
+              <td className="center">
+                {computeStandardDeviation(prevMoodValues).toFixed(1)}
+              </td>
+            )}
+            <td className="center">
+              {computeStandardDeviation(moodValues).toFixed(1)}
+            </td>
+            {showNext && (
+              <td className="center">
+                {computeStandardDeviation(nextMoodValues).toFixed(1)}
+              </td>
+            )}
+          </tr>
+          <tr>
             <td>Total moods recorded</td>
-            {showPrevious && <td>{prevMoodValues.length}</td>}
-            <td>{moodValues.length}</td>
-            {showNext && <td>{nextMoodValues.length}</td>}
+            {showPrevious && (
+              <td className="center">{prevMoodValues.length}</td>
+            )}
+            <td className="center">{moodValues.length}</td>
+            {showNext && <td className="center">{nextMoodValues.length}</td>}
           </tr>
         </tbody>
       </table>

@@ -9,6 +9,7 @@ import {
   formatIsoMonthInLocalTimezone,
   getMoodIdsInInterval,
   formatIsoDateInLocalTimezone,
+  computeStandardDeviation,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -258,6 +259,18 @@ describe("utils", () => {
           )
         ).toEqual(4.5);
       });
+    });
+  });
+
+  describe("computeStandardDeviation", () => {
+    it("returns 0 when the array is empty", () => {
+      expect(computeStandardDeviation([])).toBe(-0);
+    });
+
+    it("returns the correct standard deviation", () => {
+      expect(
+        computeStandardDeviation([727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1])
+      ).toBeCloseTo(420.96);
     });
   });
 
