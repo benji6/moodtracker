@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
-    "downlevelIteration": true,
     "esModuleInterop": true, // for tests
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["dom", "es2016"],
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "rootDir": "src",
     "sourceMap": true,
     "strict": true,
-    "target": "es5"
+    "target": "ES2015"
   }
 }
