@@ -13,6 +13,7 @@ import SignUp from "./pages/SignUp";
 import Stats from "./pages/Stats";
 import Verify from "./pages/Verify";
 import Week from "./pages/Stats/Week";
+import ExploreStats from "./pages/Stats/ExploreStats";
 
 export default function Router() {
   return (
@@ -22,6 +23,7 @@ export default function Router() {
       <About path="about" />
       <AddMood path="add" />
       <EditMood path="edit/:id" />
+      <ExploreStats path="stats/explore" />
       <Month path="stats/months/:month" />
       <ResendVerification path="resend-verification" />
       <SeeAlso path="see-also" />

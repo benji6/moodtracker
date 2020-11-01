@@ -1,7 +1,7 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import { addDays, addWeeks, startOfWeek } from "date-fns";
 import { subWeeks } from "date-fns/esm";
-import { Paper } from "eri";
+import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK } from "../../../constants";
@@ -10,13 +10,14 @@ import {
   weekdayShortFormatter,
   WEEK_OPTIONS,
 } from "../../../formatters";
-import { moodsSelector } from "../../../selectors";
+import { eventsSelector, moodsSelector } from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
+import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
-import MoodChart from "./MoodChart";
+import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyChart from "./MoodFrequencyChart";
 import MoodSummary from "./MoodSummary";
 
@@ -31,10 +32,13 @@ const createLocalDate = (dateStr: string) => {
 export default function Week({
   week: weekStr,
 }: RouteComponentProps<{ week: string }>) {
+  useRedirectUnauthed();
   if (!weekStr || !isoDateRegex.test(weekStr)) return <Redirect to="/404" />;
 
-  const moods = useSelector(moodsSelector);
+  const events = useSelector(eventsSelector);
+  if (!events.hasLoadedFromServer) return <Spinner />;
 
+  const moods = useSelector(moodsSelector);
   if (!moods.allIds.length)
     return (
       <Paper.Group>
@@ -95,12 +99,7 @@ export default function Week({
       {moodIdsInWeek.length ? (
         <>
           <Paper>
-            <MoodChart
-              fromDate={week}
-              toDate={nextWeek}
-              xLabels={xLabels}
-              xLines={xLines}
-            />
+            <MoodChartForWeek week={week} />
           </Paper>
           <MoodFrequencyChart fromDate={week} toDate={nextWeek} />
         </>

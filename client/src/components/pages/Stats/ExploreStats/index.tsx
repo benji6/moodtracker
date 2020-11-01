@@ -1,14 +1,19 @@
 import * as React from "react";
-import { FluxStandardAction } from "../../../types";
-import { Paper, RadioButton, Pagination } from "eri";
+import { FluxStandardAction } from "../../../../types";
+import { Paper, RadioButton, Pagination, Spinner } from "eri";
 import {
   roundDateUp,
   roundDateDown,
   getEnvelopingMoodIds,
-} from "../../../utils";
-import MoodChart from "./MoodChart";
-import { moodsSelector } from "../../../selectors";
+} from "../../../../utils";
+import MoodChart from "../MoodChart";
+import { eventsSelector, moodsSelector } from "../../../../selectors";
 import { useSelector } from "react-redux";
+import { RouteComponentProps } from "@reach/router";
+import AverageMoodByDay from "./AverageMoodByDay";
+import AverageMoodByHour from "./AverageMoodByHour";
+import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
+import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -77,8 +82,20 @@ export const statsReducer = (
   }
 };
 
-export default function MoodStats() {
+export default function ExploreStats(_: RouteComponentProps) {
+  useRedirectUnauthed();
+
+  const events = useSelector(eventsSelector);
+  if (!events.hasLoadedFromServer) return <Spinner />;
+
   const moods = useSelector(moodsSelector);
+  if (!moods.allIds.length)
+    return (
+      <Paper.Group>
+        <AddFirstMoodCta />
+      </Paper.Group>
+    );
+
   const [localState, localDispatch] = React.useReducer(statsReducer, {
     dayCount: 7,
     page: 0,
@@ -116,61 +133,65 @@ export default function MoodStats() {
   }
 
   return (
-    <Paper>
-      <h2>Mood chart</h2>
-      <MoodChart
-        fromDate={new Date(domain[0])}
-        toDate={new Date(domain[1])}
-        xLabels={createXLabels(domain, now)}
-      />
-      <RadioButton.Group label="Number of days to show">
-        {[
-          ...[...Array(4).keys()]
-            .map((n) => (n + 1) * 7)
-            .map((n) => (
-              <RadioButton
-                key={n}
-                name="day-count"
-                onChange={() =>
-                  localDispatch({
-                    payload: n,
-                    type: "moods/setDaysToShow",
-                  })
-                }
-                checked={localState.dayCount === n}
-                value={n}
-              >
-                {n}
-              </RadioButton>
-            )),
-          <RadioButton
-            key="all"
-            name="day-count"
-            onChange={() =>
-              localDispatch({
-                payload: undefined,
-                type: "moods/setDaysToShow",
-              })
-            }
-            checked={localState.dayCount === undefined}
-            value={undefined}
-          >
-            All
-          </RadioButton>,
-        ]}
-      </RadioButton.Group>
-      {pageCount > 1 && (
-        <>
-          <h3>Page</h3>
-          <Pagination
-            onChange={(n) =>
-              localDispatch({ payload: n, type: "moods/setPage" })
-            }
-            page={localState.page}
-            pageCount={pageCount}
-          />
-        </>
-      )}
-    </Paper>
+    <Paper.Group>
+      <Paper>
+        <h2>Mood chart</h2>
+        <MoodChart
+          fromDate={new Date(domain[0])}
+          toDate={new Date(domain[1])}
+          xLabels={createXLabels(domain, now)}
+        />
+        <RadioButton.Group label="Number of days to show">
+          {[
+            ...[...Array(4).keys()]
+              .map((n) => (n + 1) * 7)
+              .map((n) => (
+                <RadioButton
+                  key={n}
+                  name="day-count"
+                  onChange={() =>
+                    localDispatch({
+                      payload: n,
+                      type: "moods/setDaysToShow",
+                    })
+                  }
+                  checked={localState.dayCount === n}
+                  value={n}
+                >
+                  {n}
+                </RadioButton>
+              )),
+            <RadioButton
+              key="all"
+              name="day-count"
+              onChange={() =>
+                localDispatch({
+                  payload: undefined,
+                  type: "moods/setDaysToShow",
+                })
+              }
+              checked={localState.dayCount === undefined}
+              value={undefined}
+            >
+              All
+            </RadioButton>,
+          ]}
+        </RadioButton.Group>
+        {pageCount > 1 && (
+          <>
+            <h3>Page</h3>
+            <Pagination
+              onChange={(n) =>
+                localDispatch({ payload: n, type: "moods/setPage" })
+              }
+              page={localState.page}
+              pageCount={pageCount}
+            />
+          </>
+        )}
+      </Paper>
+      <AverageMoodByDay />
+      <AverageMoodByHour />
+    </Paper.Group>
   );
 }

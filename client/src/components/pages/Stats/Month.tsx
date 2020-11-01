@@ -5,15 +5,16 @@ import {
   differenceInCalendarDays,
   subMonths,
 } from "date-fns";
-import { Paper } from "eri";
+import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { dayMonthFormatter, monthFormatter } from "../../../formatters";
-import { moodsSelector } from "../../../selectors";
+import { eventsSelector, moodsSelector } from "../../../selectors";
 import {
   formatIsoMonthInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
+import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChart from "./MoodChart";
 import MoodFrequencyChart from "./MoodFrequencyChart";
@@ -26,10 +27,13 @@ const isoMonthRegex = /^\d{4}-\d{2}$/;
 export default function Month({
   month: monthStr,
 }: RouteComponentProps<{ month: string }>) {
+  useRedirectUnauthed();
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
 
-  const moods = useSelector(moodsSelector);
+  const events = useSelector(eventsSelector);
+  if (!events.hasLoadedFromServer) return <Spinner />;
 
+  const moods = useSelector(moodsSelector);
   if (!moods.allIds.length)
     return (
       <Paper.Group>

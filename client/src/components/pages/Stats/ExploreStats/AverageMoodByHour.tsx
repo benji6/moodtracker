@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Chart, Paper } from "eri";
 import { setHours } from "date-fns";
-import { moodToColor } from "../../../utils";
-import { HOURS_PER_DAY, MOOD_RANGE } from "../../../constants";
-import { averageByHourSelector } from "../../../selectors";
+import { moodToColor } from "../../../../utils";
+import { HOURS_PER_DAY, MOOD_RANGE } from "../../../../constants";
+import { averageByHourSelector } from "../../../../selectors";
 import { useSelector } from "react-redux";
 
 const arbitraryDate = new Date();

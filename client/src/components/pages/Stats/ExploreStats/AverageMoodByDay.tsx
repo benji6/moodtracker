@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Paper } from "eri";
-import MoodCell from "./MoodCell";
-import { averageByDaySelector } from "../../../selectors";
+import MoodCell from "../MoodCell";
+import { averageByDaySelector } from "../../../../selectors";
 import { useSelector } from "react-redux";
 
 export default function AverageMoodByDay() {
