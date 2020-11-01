@@ -23,12 +23,6 @@ import MoodSummary from "./MoodSummary";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-const createLocalDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  date.setMinutes(date.getTimezoneOffset());
-  return date;
-};
-
 export default function Week({
   week: weekStr,
 }: RouteComponentProps<{ week: string }>) {
@@ -49,7 +43,7 @@ export default function Week({
   const firstMoodDate = new Date(moods.allIds[0]);
   const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
 
-  const week = startOfWeek(createLocalDate(weekStr), WEEK_OPTIONS);
+  const week = startOfWeek(new Date(`${weekStr}T00:00:00`), WEEK_OPTIONS);
   const nextWeek = addWeeks(week, 1);
   const prevWeek = subWeeks(week, 1);
 

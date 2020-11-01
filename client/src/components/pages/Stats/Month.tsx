@@ -44,7 +44,7 @@ export default function Month({
   const firstMoodDate = new Date(moods.allIds[0]);
   const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
 
-  const month = new Date(monthStr);
+  const month = new Date(`${monthStr}T00:00:00`);
   const prevMonth = subMonths(month, 1);
   const nextMonth = addMonths(month, 1);
 
