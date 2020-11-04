@@ -36,7 +36,7 @@ describe("e2e", () => {
     await menuButton.tap();
 
     // seems like a very high timeout but it starts to flake if we reduce it
-    await page.waitFor(4000); // TODO migrate to waitForTimeout https://github.com/puppeteer/puppeteer/issues/6214
+    await page.waitForTimeout(4000);
 
     const signOutButton = (await page.$('[data-test-id="sign-out-button"]'))!;
     await signOutButton.click();
