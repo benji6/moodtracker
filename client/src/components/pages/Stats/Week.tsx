@@ -18,8 +18,8 @@ import {
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForWeek from "./MoodChartForWeek";
-import MoodFrequencyChart from "./MoodFrequencyChart";
-import MoodSummary from "./MoodSummary";
+import MoodFrequencyForPeriodChart from "./MoodFrequencyForPeriodChart";
+import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -86,16 +86,16 @@ export default function Week({
           )}
         </div>
       </Paper>
-      <MoodSummary
+      <MoodSummaryForPeriod
         dates={[prevWeek, week, nextWeek, addWeeks(nextWeek, 1)]}
-        periodName="week"
+        periodType="week"
       />
       {moodIdsInWeek.length ? (
         <>
           <Paper>
             <MoodChartForWeek week={week} />
           </Paper>
-          <MoodFrequencyChart fromDate={week} toDate={nextWeek} />
+          <MoodFrequencyForPeriodChart fromDate={week} toDate={nextWeek} />
         </>
       ) : (
         <Paper>

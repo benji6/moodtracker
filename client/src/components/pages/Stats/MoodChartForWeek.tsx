@@ -2,7 +2,7 @@ import { addDays, addWeeks } from "date-fns";
 import * as React from "react";
 import { DAYS_PER_WEEK } from "../../../constants";
 import { weekdayShortFormatter } from "../../../formatters";
-import MoodChart from "./MoodChart";
+import MoodChartForPeriod from "./MoodChartForPeriod";
 
 interface Props {
   week: Date;
@@ -27,7 +27,7 @@ export default function MoodChartForWeek({ week }: Props) {
   }
 
   return (
-    <MoodChart
+    <MoodChartForPeriod
       fromDate={week}
       toDate={nextWeek}
       xLabels={xLabels}

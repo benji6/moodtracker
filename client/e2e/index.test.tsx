@@ -20,9 +20,9 @@ describe("e2e", () => {
   });
 
   test("user can sign in and sign out", async () => {
-    const signInLink = (await page.$('[href="/sign-in"]'))!;
+    const signInLink = (await page.$('[data-test-id="sign-in-link"]'))!;
+    await page.waitForTimeout(100);
     await signInLink.tap();
-
     const emailInput = (await page.waitForSelector('[type="email"]'))!;
     await emailInput.type(TEST_USER_EMAIL);
 

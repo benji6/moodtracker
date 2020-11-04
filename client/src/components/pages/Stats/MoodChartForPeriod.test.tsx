@@ -1,6 +1,6 @@
-import { computeTrendlinePoints } from "./MoodChart";
+import { computeTrendlinePoints } from "./MoodChartForPeriod";
 
-describe("MoodChart", () => {
+describe("MoodChartForPeriod", () => {
   test("computeTrendlinePoints", () => {
     expect(
       computeTrendlinePoints(

@@ -6,7 +6,7 @@ import {
   roundDateDown,
   getEnvelopingMoodIds,
 } from "../../../../utils";
-import MoodChart from "../MoodChart";
+import MoodChartForPeriod from "../MoodChartForPeriod";
 import { eventsSelector, moodsSelector } from "../../../../selectors";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "@reach/router";
@@ -136,7 +136,7 @@ export default function ExploreStats(_: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>Mood chart</h2>
-        <MoodChart
+        <MoodChartForPeriod
           fromDate={new Date(domain[0])}
           hidePoints
           toDate={new Date(domain[1])}

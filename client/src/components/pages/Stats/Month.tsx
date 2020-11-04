@@ -16,9 +16,9 @@ import {
 } from "../../../utils";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
-import MoodChart from "./MoodChart";
-import MoodFrequencyChart from "./MoodFrequencyChart";
-import MoodSummary from "./MoodSummary";
+import MoodChartForPeriod from "./MoodChartForPeriod";
+import MoodFrequencyForPeriodChart from "./MoodFrequencyForPeriodChart";
+import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -84,16 +84,20 @@ export default function Month({
           )}
         </div>
       </Paper>
-      <MoodSummary
+      <MoodSummaryForPeriod
         dates={[prevMonth, month, nextMonth, addMonths(nextMonth, 1)]}
-        periodName="month"
+        periodType="month"
       />
       {moodIdsInMonth.length ? (
         <>
           <Paper>
-            <MoodChart fromDate={month} toDate={nextMonth} xLabels={xLabels} />
+            <MoodChartForPeriod
+              fromDate={month}
+              toDate={nextMonth}
+              xLabels={xLabels}
+            />
           </Paper>
-          <MoodFrequencyChart fromDate={month} toDate={nextMonth} />
+          <MoodFrequencyForPeriodChart fromDate={month} toDate={nextMonth} />
         </>
       ) : (
         <Paper>
