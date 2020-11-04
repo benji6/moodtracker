@@ -83,6 +83,8 @@ export default function MoodChart({
       xAxisTitle="Date"
       yAxisTitle="Mood"
     >
+      <Chart.XGridLines lines={xLines} />
+      <Chart.YGridLines lines={yLines} />
       <Chart.PlotArea>
         <Chart.Line
           color={hidePoints ? undefined : "var(--e-color-balance-less)"}
@@ -98,8 +100,6 @@ export default function MoodChart({
         />
         {!hidePoints && <Chart.Points colorFromY={moodToColor} data={data} />}
       </Chart.PlotArea>
-      <Chart.XGridLines lines={xLines} />
-      <Chart.YGridLines lines={yLines} />
       <Chart.XAxis labels={xLabels} markers={xLines} />
       <Chart.YAxis labels={yLabels} markers={yLines} />
     </Chart.LineChart>

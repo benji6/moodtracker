@@ -59,13 +59,13 @@ export default function MoodFrequencyChart({ fromDate, toDate }: Props) {
         xLabels={moodFrequencyData.map(([mood]) => mood).map(String)}
         yAxisTitle="Count"
       >
+        <Chart.YGridLines lines={moodFrequencyYLabels.map(([y]) => y)} />
         <Chart.PlotArea>
           <Chart.Bars
             colorFromX={(x) => moodToColor(x * 10)}
             data={moodFrequencyData.map(([_, frequency]) => frequency)}
           />
         </Chart.PlotArea>
-        <Chart.YGridLines lines={moodFrequencyYLabels.map(([y]) => y)} />
         <Chart.YAxis
           labels={moodFrequencyYLabels}
           markers={moodFrequencyYLabels.map(([x]) => x)}

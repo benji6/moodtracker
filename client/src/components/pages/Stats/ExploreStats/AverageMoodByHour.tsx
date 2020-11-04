@@ -32,11 +32,11 @@ export default function AverageMoodByHour() {
         xAxisTitle="Hour of day"
         yAxisTitle="Mood"
       >
+        <Chart.XGridLines lines={xLines} />
+        <Chart.YGridLines lines={yLines} />
         <Chart.PlotArea>
           <Chart.Line data={averages} thickness={2} />
         </Chart.PlotArea>
-        <Chart.XGridLines lines={xLines} />
-        <Chart.YGridLines lines={yLines} />
         <Chart.XAxis labels={xLabels} markers={xLines} />
         <Chart.YAxis labels={yLabels} markers={yLines} />
       </Chart.LineChart>
