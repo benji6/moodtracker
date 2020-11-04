@@ -1,6 +1,5 @@
 import { Card, Paper, SubHeading, Pagination } from "eri";
 import * as React from "react";
-import CardGroup from "eri/dist/components/Card/CardGroup";
 import { moodToColor, mapRight } from "../../../utils";
 import { useNavigate, useLocation } from "@reach/router";
 import { groupMoodsByDaySelector, moodsSelector } from "../../../selectors";
@@ -50,7 +49,7 @@ export default function MoodList() {
         ([date, ids]) => (
           <Paper key={date}>
             <h3>{date}</h3>
-            <CardGroup>
+            <Card.Group>
               {mapRight(ids, (id) => {
                 const mood = moods.byId[id];
                 return (
@@ -68,7 +67,7 @@ export default function MoodList() {
                   </Card>
                 );
               })}
-            </CardGroup>
+            </Card.Group>
           </Paper>
         )
       )}
