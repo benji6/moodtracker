@@ -6,3 +6,4 @@
 *.svg
 *.toml
 dist
+src/prerendered-fragments

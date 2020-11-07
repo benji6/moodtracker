@@ -1,12 +1,13 @@
 {
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheList",
+    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheList && node scripts/createPrerenderedHtml",
     "build:js": "CACHE_LIST=CACHE_LIST parcel build --no-source-maps src/index.html",
     "build:robots": "touch dist/robots.txt",
     "fmt": "prettier --write '**/*'",
     "icons": "node scripts/icons",
     "start": "parcel src/index.html --open",
+    "start-prerender": "parcel src/index.prerender.html --open",
     "test": "run-p test:*",
     "test:audit": "yarn audit --level critical || [ $? -lt 16 ]",
     "test:e2e": "jest e2e",
