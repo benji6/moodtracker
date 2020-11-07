@@ -1,8 +1,9 @@
 const favicons = require("favicons");
 const fs = require("fs").promises;
 const path = require("path");
+const { SOURCE_PATH } = require("./constants");
 
-const iconsPath = path.join(__dirname, "..", "src", "icons");
+const iconsPath = path.join(SOURCE_PATH, "icons");
 const source = path.join(iconsPath, "icon.svg");
 
 const configuration = {

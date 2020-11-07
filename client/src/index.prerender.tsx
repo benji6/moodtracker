@@ -1,5 +1,6 @@
 import { EriProvider } from "eri";
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
 import { Provider } from "react-redux";
 import App from "./components/App";
@@ -9,11 +10,11 @@ import appSlice from "./store/appSlice";
 store.dispatch(appSlice.actions.storageLoaded());
 
 const html = ReactDOMServer.renderToString(
-  <EriProvider>
+  <EriProvider renderingToString>
     <Provider store={store}>
       <App />
     </Provider>
   </EriProvider>
 );
 
-console.log(html);
+ReactDOM.render(<pre id="output">{html}</pre>, document.getElementById("root"));
