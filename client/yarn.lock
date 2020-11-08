@@ -3062,9 +3062,9 @@ date-fns@^2.15.0:
   integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
 deasync@^0.1.14:
-  version "0.1.20"
-  resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.20.tgz#546fd2660688a1eeed55edce2308c5cf7104f9da"
-  integrity sha512-E1GI7jMI57hL30OX6Ht/hfQU8DO4AuB9m72WFm4c38GNbUD4Q03//XZaOIHZiY+H1xUaomcot5yk2q/qIZQkGQ==
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.21.tgz#bb11eabd4466c0d8776f0d82deb8a6126460d30f"
+  integrity sha512-kUmM8Y+PZpMpQ+B4AuOW9k2Pfx/mSupJtxOsLzmnHY2WqZUYRFccFn2RhzPAqt3Xb+sorK/badW2D4zNzqZz5w==
   dependencies:
     bindings "^1.5.0"
     node-addon-api "^1.7.1"
@@ -3418,10 +3418,10 @@ envinfo@^7.3.1:
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.7.3.tgz#4b2d8622e3e7366afb8091b23ed95569ea0208cc"
   integrity sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
 
-eri@^24.1.2:
-  version "24.2.0"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-24.2.0.tgz#5491512043aa8277ac2650c3ee24b43d88faef2b"
-  integrity sha512-3XXiwws7OydxzCv0/Q5UO9pMVHprMy49prdn4nJ4/eGMvwGTwJxTDK9t5ztXv6oYmtU9Kt/5Sq0tMYZYR3tcmA==
+eri@^25.0.0:
+  version "25.0.3"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-25.0.3.tgz#70b0a02f903b4e17f67d4e64598b8b4a0cbf623d"
+  integrity sha512-s+eSe+5Dec/aKdpmw8MfYpgziLMXU+t226VHLa5SB5c3r92MndIaEm7lommuwhUkzDgKM9sALALKqYY1mJSxxw==
   dependencies:
     react-transition-group "^4.4.1"
 
@@ -8689,9 +8689,9 @@ ws@^6.1.2:
     async-limiter "~1.0.0"
 
 ws@^7.2.3:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
-  integrity sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.0.tgz#a5dd76a24197940d4a8bb9e0e152bb4503764da7"
+  integrity sha512-kyFwXuV/5ymf+IXhS6f0+eAFvydbaBW3zjpT6hUdAh/hbVjTIB5EHBGi0bPoCLSK2wcuz3BrEkB9LrYv1Nm4NQ==
 
 xhr@^2.0.1:
   version "2.5.0"

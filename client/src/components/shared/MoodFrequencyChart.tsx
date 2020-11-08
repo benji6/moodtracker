@@ -1,6 +1,5 @@
 import { Chart } from "eri";
 import * as React from "react";
-import { MOOD_RANGE } from "../../constants";
 import { moodToColor } from "../../utils";
 
 const MOOD_FREQUENCY_CHART_MAX_Y_LABELS = 10;
@@ -25,7 +24,6 @@ export default function MoodFrequencyChart({ data }: Props) {
   return (
     <Chart.BarChart
       aria-label="Chart displaying the frequency at which different moods were recorded"
-      domain={MOOD_RANGE}
       range={[0, maxFrequency]}
       xAxisTitle="Mood"
       xLabels={data.map((_, i) => i).map(String)}
