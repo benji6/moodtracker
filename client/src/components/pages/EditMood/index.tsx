@@ -1,11 +1,13 @@
 import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
-import { Button, Paper, RadioButton } from "eri";
+import { Button, Paper, RadioButton, TextField } from "eri";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
 import { moodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
+import { noPunctuationValidator } from "../../../validators";
+import { ServerMood } from "../../../types";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
@@ -13,6 +15,9 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const dispatch = useDispatch();
   const moods = useSelector(moodsSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [descriptionError, setDescriptionError] = React.useState<
+    string | undefined
+  >();
   if (!id) return <Redirect to="/404" />;
   const mood = moods.byId[id];
   if (!mood) return <Redirect to="/404" />;
@@ -36,14 +41,26 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
+
+            const descriptionValue: string = (e.target as HTMLFormElement)
+              .description.value;
+            const descriptionFieldError = noPunctuationValidator(
+              descriptionValue
+            );
+            if (descriptionFieldError)
+              return setDescriptionError(descriptionFieldError);
+
+            const payload: ServerMood = {
+              id,
+              mood: Number((e.target as HTMLFormElement).mood.value),
+            };
+            if (descriptionValue) payload.description = descriptionValue.trim();
+
             dispatch(
               eventsSlice.actions.add({
                 type: "v1/moods/update",
                 createdAt: new Date().toISOString(),
-                payload: {
-                  id,
-                  mood: Number((e.target as HTMLFormElement).mood.value),
-                },
+                payload,
               })
             );
             navigate("/");
@@ -63,6 +80,16 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
               </RadioButton>
             ))}
           </RadioButton.Group>
+          <TextField
+            autoComplete="on"
+            defaultValue={mood.description}
+            error={descriptionError}
+            label="Description (optional)"
+            maxLength={32}
+            name="description"
+            required={false}
+            supportiveText="Try to describe how you feel using a short (32 characters) list of words separated by spaces."
+          />
           <Button.Group>
             <Button>Update</Button>
             <Button danger onClick={() => setIsDialogOpen(true)} type="button">

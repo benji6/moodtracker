@@ -1,17 +1,12 @@
-import { Card, Paper, SubHeading, Pagination } from "eri";
+import { Card, Paper, Pagination } from "eri";
 import * as React from "react";
-import { moodToColor, mapRight } from "../../../utils";
+import { mapRight } from "../../../utils";
 import { useNavigate, useLocation } from "@reach/router";
 import { groupMoodsByDaySelector, moodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
+import MoodCard from "./MoodCard";
 
 const DAYS_PER_PAGE = 7;
-
-const timeFormatter = Intl.DateTimeFormat(undefined, {
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-});
 
 export default function MoodList() {
   const location = useLocation();
@@ -50,23 +45,9 @@ export default function MoodList() {
           <Paper key={date}>
             <h3>{date}</h3>
             <Card.Group>
-              {mapRight(ids, (id) => {
-                const mood = moods.byId[id];
-                return (
-                  <Card
-                    color={moodToColor(mood.mood)}
-                    key={id}
-                    onClick={() => navigate(`edit/${id}`)}
-                  >
-                    <h3 className="center">
-                      {mood.mood}
-                      <SubHeading>
-                        {timeFormatter.format(new Date(id))}
-                      </SubHeading>
-                    </h3>
-                  </Card>
-                );
-              })}
+              {mapRight(ids, (id) => (
+                <MoodCard id={id} key={id} {...moods.byId[id]} />
+              ))}
             </Card.Group>
           </Paper>
         )

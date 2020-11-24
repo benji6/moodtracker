@@ -79,6 +79,7 @@ export const moodsSelector = createSelector(
           // a runtime error if you try to update the mood object directly
           byId[event.payload.id] = {
             ...currentMood,
+            description: event.payload.description,
             mood: event.payload.mood,
             updatedAt: event.createdAt,
           };

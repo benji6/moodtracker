@@ -100,7 +100,7 @@ describe("selectors", () => {
               "2020-10-10T08:01:00.000Z": {
                 createdAt: "2020-10-10T08:01:00.000Z",
                 type: "v1/moods/create",
-                payload: { mood: 8 },
+                payload: { description: "happy", mood: 8 },
               },
               "2020-10-10T08:02:00.000Z": {
                 createdAt: "2020-10-10T08:02:00.000Z",
@@ -115,7 +115,11 @@ describe("selectors", () => {
               "2020-10-10T08:04:00.000Z": {
                 createdAt: "2020-10-10T08:04:00.000Z",
                 type: "v1/moods/update",
-                payload: { id: "2020-10-10T08:01:00.000Z", mood: 10 },
+                payload: {
+                  id: "2020-10-10T08:01:00.000Z",
+                  description: "joy",
+                  mood: 10,
+                },
               },
             },
           },
@@ -124,6 +128,7 @@ describe("selectors", () => {
         allIds: ["2020-10-10T08:01:00.000Z", "2020-10-10T08:03:00.000Z"],
         byId: {
           "2020-10-10T08:01:00.000Z": {
+            description: "joy",
             mood: 10,
             updatedAt: "2020-10-10T08:04:00.000Z",
           },
