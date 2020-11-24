@@ -22,4 +22,8 @@ start:
 test:
 	./bin/test.sh
 
+# Runs all CI tests (cloudformation checks and e2e tests not yet supported)
+test-ci:
+	./bin/test-ci.sh
+
 .PHONY: deploy help init start test

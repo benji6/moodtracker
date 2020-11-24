@@ -14,7 +14,8 @@
     "test:e2e": "jest e2e",
     "test:fmt": "prettier --check '**/*'",
     "test:types": "tsc --noEmit",
-    "test:unit": "TZ=UTC jest src"
+    "test:unit": "TZ=UTC jest src",
+    "test-ci": "run-p test:audit test:fmt test:types test:unit"
   },
   "browserslist": [
     ">1.25%"
