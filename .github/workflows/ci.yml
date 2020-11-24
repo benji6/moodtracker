@@ -3,7 +3,7 @@ on: push
 
 jobs:
   test:
-    name: Run tests
+    name: Test
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,5 +13,3 @@ jobs:
           node-version: 14
       - run: make init
       - run: make test-ci
-        env:
-          CI: true
