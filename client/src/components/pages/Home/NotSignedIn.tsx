@@ -53,7 +53,10 @@ export default function NotSignedIn() {
           You can record a short description of your mood and reflect on it on a
           week-by-week or month-by-month basis.
         </p>
-        <WordCloud words={WORD_CLOUD_DEMO_PROPS} />
+        <WordCloud
+          aria-label="Word cloud displaying mood descriptions"
+          words={WORD_CLOUD_DEMO_PROPS}
+        />
         <h3>See how often you log moods</h3>
         <MoodFrequencyChart {...MOOD_FREQUENCY_DEMO_PROPS} />
         <h3>See how your mood fluctuates over the day/week</h3>

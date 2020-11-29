@@ -9,7 +9,7 @@ interface Props {
   toDate: Date;
 }
 
-export default function WordCloudForPeriod({ fromDate, toDate }: Props) {
+export default function MoodCloudForPeriod({ fromDate, toDate }: Props) {
   const moods = useSelector(moodsSelector);
   const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, fromDate, toDate);
 
@@ -32,7 +32,10 @@ export default function WordCloudForPeriod({ fromDate, toDate }: Props) {
   return (
     <Paper>
       <h3>Mood cloud</h3>
-      <WordCloud words={words} />
+      <WordCloud
+        aria-label="Word cloud displaying mood descriptions"
+        words={words}
+      />
     </Paper>
   );
 }
