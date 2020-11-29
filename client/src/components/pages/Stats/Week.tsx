@@ -20,6 +20,7 @@ import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyForPeriodChart from "./MoodFrequencyForPeriodChart";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import WordCloudForPeriod from "./WordCloudForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -96,6 +97,7 @@ export default function Week({
             <MoodChartForWeek week={week} />
           </Paper>
           <MoodFrequencyForPeriodChart fromDate={week} toDate={nextWeek} />
+          <WordCloudForPeriod fromDate={week} toDate={nextWeek} />
         </>
       ) : (
         <Paper>

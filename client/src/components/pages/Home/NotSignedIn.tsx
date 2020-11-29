@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@reach/router";
-import { Button, Paper } from "eri";
+import { Button, Paper, WordCloud } from "eri";
 import * as React from "react";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodChart from "../../shared/MoodChart";
@@ -10,6 +10,7 @@ import {
   MOOD_BY_HOUR_DEMO_PROPS,
   MOOD_FREQUENCY_DEMO_PROPS,
   MOOD_SUMMARY_DEMO_PROPS,
+  WORD_CLOUD_DEMO_PROPS,
 } from "./constants";
 
 export default function NotSignedIn() {
@@ -47,6 +48,12 @@ export default function NotSignedIn() {
         <MoodChart {...LINE_CHART_DEMO_PROPS} />
         <h3>Review on a weekly or monthly basis</h3>
         <MoodSummary {...MOOD_SUMMARY_DEMO_PROPS} />
+        <h3>Describe how you feel and reflect on it</h3>
+        <p>
+          You can record a short description of your mood and reflect on it on a
+          week-by-week or month-by-month basis.
+        </p>
+        <WordCloud words={WORD_CLOUD_DEMO_PROPS} />
         <h3>See how often you log moods</h3>
         <MoodFrequencyChart {...MOOD_FREQUENCY_DEMO_PROPS} />
         <h3>See how your mood fluctuates over the day/week</h3>

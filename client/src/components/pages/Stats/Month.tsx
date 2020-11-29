@@ -19,6 +19,7 @@ import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodFrequencyForPeriodChart from "./MoodFrequencyForPeriodChart";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import WordCloudForPeriod from "./WordCloudForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -98,6 +99,7 @@ export default function Month({
             />
           </Paper>
           <MoodFrequencyForPeriodChart fromDate={month} toDate={nextMonth} />
+          <WordCloudForPeriod fromDate={month} toDate={nextMonth} />
         </>
       ) : (
         <Paper>
