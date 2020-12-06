@@ -33,6 +33,6 @@ export default function useUser(): void {
           }
         }
       })(),
-    []
+    [dispatch]
   );
 }

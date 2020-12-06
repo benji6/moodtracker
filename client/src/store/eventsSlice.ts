@@ -48,7 +48,7 @@ export default createSlice({
   initialState: createInitialState(),
   reducers: {
     add: (state, action: PayloadAction<AppEvent>) => {
-      let lastEvent = state.allIds.length ? getLastEvent(state) : undefined;
+      const lastEvent = state.allIds.length ? getLastEvent(state) : undefined;
       if (lastEvent && lastEvent.createdAt > action.payload.createdAt) {
         const date = new Date(lastEvent.createdAt);
         date.setUTCMilliseconds(date.getUTCMilliseconds() + 1);

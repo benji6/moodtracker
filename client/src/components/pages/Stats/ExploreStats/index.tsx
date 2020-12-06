@@ -84,22 +84,20 @@ export const statsReducer = (
 
 export default function ExploreStats(_: RouteComponentProps) {
   useRedirectUnauthed();
-
   const events = useSelector(eventsSelector);
-  if (!events.hasLoadedFromServer) return <Spinner />;
-
   const moods = useSelector(moodsSelector);
+  const [localState, localDispatch] = React.useReducer(statsReducer, {
+    dayCount: 7,
+    page: 0,
+  });
+
+  if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>
         <AddFirstMoodCta />
       </Paper.Group>
     );
-
-  const [localState, localDispatch] = React.useReducer(statsReducer, {
-    dayCount: 7,
-    page: 0,
-  });
 
   const now = Date.now();
 

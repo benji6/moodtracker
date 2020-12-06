@@ -44,7 +44,8 @@ export const weekdayShortFormatter = Intl.DateTimeFormat(undefined, {
 // TODO: One day we should be able to remove this
 const formatRange = (dateA: Date, dateB: Date) =>
   "formatRange" in weekFormatter
-    ? (weekFormatter as any).formatRange(dateA, dateB)
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (weekFormatter as any).formatRange(dateA, dateB)
     : `${weekFormatter.format(dateA)} – ${weekFormatter.format(dateB)}`;
 
 export const formatWeek = (week: Date): string =>

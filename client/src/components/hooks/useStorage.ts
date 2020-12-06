@@ -30,12 +30,12 @@ export default function useStorage() {
 
   lastUserId.current = userId;
 
-  // save user
+  // save/clear user
   React.useEffect(() => {
     if (userLoading) return;
     if (!userEmail || !userId) storage.deleteUser();
     else storage.setUser({ email: userEmail, id: userId });
-  }, [userEmail, userId]);
+  }, [userEmail, userLoading, userId]);
 
   // load events
   React.useEffect(() => {
@@ -49,7 +49,7 @@ export default function useStorage() {
         dispatch(appSlice.actions.storageLoaded());
       }
     })();
-  }, [isStorageLoading, userId, userLoading]);
+  }, [dispatch, isStorageLoading, userId, userLoading]);
 
   // save events
   React.useEffect(() => {

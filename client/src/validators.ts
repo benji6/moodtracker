@@ -1,4 +1,4 @@
-const punctuationRegex = /[\‒\–\—\―|$&~=\\\/⁄@+*!?({[\]})<>‹›«».;:^‘’“”'",،、`·\•†‡°″¡¿※#№÷×%‰\−‱¶′‴§_‖¦]/;
+const punctuationRegex = /[‒–—―|$&~=\\/⁄@+*!?({[\]})<>‹›«».;:^‘’“”'",،、`·•†‡°″¡¿※#№÷×%‰−‱¶′‴§_‖¦]/;
 
 export const PUNCTUATION_ERROR_MESSAGE =
   "This field must not contain any special characters";

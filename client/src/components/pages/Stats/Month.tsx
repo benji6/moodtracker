@@ -29,12 +29,11 @@ export default function Month({
   month: monthStr,
 }: RouteComponentProps<{ month: string }>) {
   useRedirectUnauthed();
-  if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
-
   const events = useSelector(eventsSelector);
-  if (!events.hasLoadedFromServer) return <Spinner />;
-
   const moods = useSelector(moodsSelector);
+
+  if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
+  if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>

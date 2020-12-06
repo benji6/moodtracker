@@ -9,5 +9,5 @@ export default function useRedirectAuthed() {
 
   React.useEffect(() => {
     if (userIsSignedIn) navigate("/");
-  }, []);
+  }, [navigate, userIsSignedIn]);
 }

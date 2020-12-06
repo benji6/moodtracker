@@ -13,17 +13,17 @@ import { WEEK_OPTIONS } from "../../../formatters";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
-
   const events = useSelector(eventsSelector);
-  if (!events.hasLoadedFromServer) return <Spinner />;
-
   const moods = useSelector(moodsSelector);
+
   if (!moods.allIds.length)
     return (
       <Paper.Group>
         <AddFirstMoodCta />
       </Paper.Group>
     );
+
+  if (!events.hasLoadedFromServer) return <Spinner />;
 
   const week = startOfWeek(new Date(), WEEK_OPTIONS);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { join as pathJoin } from "path";
 
 const cacheName = "v1";

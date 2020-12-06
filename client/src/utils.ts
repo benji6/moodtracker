@@ -147,7 +147,7 @@ export const formatIsoMonthInLocalTimezone = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 
 export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
-  let ys = [];
+  const ys = [];
   for (let i = xs.length - 1; i >= 0; i--) ys.push(f(xs[i]));
   return ys;
 };

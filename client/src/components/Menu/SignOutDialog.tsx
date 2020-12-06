@@ -37,8 +37,8 @@ export default function SignOutDialog({ onClose, open }: Props) {
         <p>
           <strong>
             WARNING: some of your data has not yet been synced to the server and
-            will be lost if you sign out now. If you don't want to lose any data
-            please connect to the internet to sync before logging out.
+            will be lost if you sign out now. If you don&apos;t want to lose any
+            data please connect to the internet to sync before logging out.
           </strong>
         </p>
       ) : (

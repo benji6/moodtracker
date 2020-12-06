@@ -38,6 +38,7 @@ export default function useEvents() {
         dispatch(eventsSlice.actions.syncFromServerError());
       }
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(syncFromServer, [isStorageLoading, userEmail]);
   useInterval(syncFromServer, 6e4);
 
@@ -58,6 +59,7 @@ export default function useEvents() {
         dispatch(eventsSlice.actions.syncToServerError());
       }
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(syncToServer, [
     events.idsToSync,
     isStorageLoading,
