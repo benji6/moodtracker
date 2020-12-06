@@ -7,7 +7,7 @@ export default function AddFirstMoodCta() {
     <Paper>
       <p>Welcome to MoodTracker!</p>
       <p>
-        <Link to="/add">Click here to add your first mood</Link>
+        <Link to="/add">Add your first mood here</Link>
       </p>
     </Paper>
   );

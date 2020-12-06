@@ -1,7 +1,13 @@
+import { startOfWeek } from "date-fns";
 import { Menu as EriMenu, Button } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { WEEK_OPTIONS } from "../../formatters";
 import { userEmailSelector, userIsSignedInSelector } from "../../selectors";
+import {
+  formatIsoDateInLocalTimezone,
+  formatIsoMonthInLocalTimezone,
+} from "../../utils";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
 
@@ -18,6 +24,8 @@ export default function Menu({ handleMenuClose, open }: Props) {
     setIsDialogOpen(false);
     handleMenuClose();
   };
+
+  const now = new Date();
 
   return (
     <>
@@ -57,6 +65,20 @@ export default function Menu({ handleMenuClose, open }: Props) {
               <EriMenu.SubList>
                 <EriMenu.Link onClick={handleMenuClose} to="/stats/explore">
                   Explore
+                </EriMenu.Link>
+                <EriMenu.Link
+                  onClick={handleMenuClose}
+                  to={`/stats/weeks/${formatIsoDateInLocalTimezone(
+                    startOfWeek(now, WEEK_OPTIONS)
+                  )}`}
+                >
+                  This week
+                </EriMenu.Link>
+                <EriMenu.Link
+                  onClick={handleMenuClose}
+                  to={`/stats/months/${formatIsoMonthInLocalTimezone(now)}`}
+                >
+                  This month
                 </EriMenu.Link>
               </EriMenu.SubList>
             </>

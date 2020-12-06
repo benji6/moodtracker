@@ -7,9 +7,6 @@ import MonthlyAverages from "./MonthlyAverages";
 import WeeklyAverages from "./WeeklyAverages";
 import { eventsSelector, moodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
-import MoodChartForWeek from "./MoodChartForWeek";
-import { startOfWeek } from "date-fns";
-import { WEEK_OPTIONS } from "../../../formatters";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -25,17 +22,12 @@ export default function Stats(_: RouteComponentProps) {
 
   if (!events.hasLoadedFromServer) return <Spinner />;
 
-  const week = startOfWeek(new Date(), WEEK_OPTIONS);
-
   return (
     <Paper.Group>
       <Paper>
-        <h2>Mood this week</h2>
-        <MoodChartForWeek week={week} />
-      </Paper>
-      <Paper>
+        <h2>Explore</h2>
         <p className="center">
-          <Link to="/stats/explore">Explore</Link>
+          <Link to="/stats/explore">More insights here</Link>
         </p>
       </Paper>
       <WeeklyAverages />
