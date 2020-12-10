@@ -14,6 +14,8 @@ import Stats from "./pages/Stats";
 import Verify from "./pages/Verify";
 import Week from "./pages/Stats/Week";
 import ExploreStats from "./pages/Stats/ExploreStats";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function Router() {
   return (
@@ -23,9 +25,11 @@ export default function Router() {
       <About path="about" />
       <AddMood path="add" />
       <EditMood path="edit/:id" />
+      <ForgotPassword path="forgot-password" />
       <ExploreStats path="stats/explore" />
       <Month path="stats/months/:month" />
       <ResendVerification path="resend-verification" />
+      <ResetPassword path="reset-password" />
       <SeeAlso path="see-also" />
       <SignIn path="sign-in" />
       <SignUp path="sign-up" />
