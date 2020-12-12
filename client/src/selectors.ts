@@ -60,6 +60,7 @@ export const moodsSelector = createSelector(
             }
 
           if (index === undefined) {
+            // eslint-disable-next-line no-console
             console.error(
               `Delete event error - could not find mood to delete: ${JSON.stringify(
                 event

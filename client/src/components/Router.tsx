@@ -16,6 +16,7 @@ import Week from "./pages/Stats/Week";
 import ExploreStats from "./pages/Stats/ExploreStats";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import ChangePassword from "./pages/ChangePassword";
 
 export default function Router() {
   return (
@@ -24,6 +25,7 @@ export default function Router() {
       <Home path="/" />
       <About path="about" />
       <AddMood path="add" />
+      <ChangePassword path="change-password" />
       <EditMood path="edit/:id" />
       <ForgotPassword path="forgot-password" />
       <ExploreStats path="stats/explore" />

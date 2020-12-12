@@ -1,8 +1,7 @@
 import { RouteComponentProps } from "@reach/router";
-import { CognitoUser } from "amazon-cognito-identity-js";
 import { ResetPasswordPage } from "eri";
 import * as React from "react";
-import { userPool } from "../../cognito";
+import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
@@ -13,11 +12,7 @@ export default function ResetPassword(_: RouteComponentProps) {
     <ResetPasswordPage
       onSubmit={async ({ code, email, password, setSubmitError }) =>
         new Promise((resolve, reject) => {
-          const cognitoUser = new CognitoUser({
-            Pool: userPool,
-            Username: email,
-          });
-          cognitoUser.confirmPassword(code, password, {
+          createCognitoUser(email).confirmPassword(code, password, {
             onSuccess: resolve,
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -16,6 +16,7 @@
     "@typescript-eslint/no-non-null-assertion": 0,
     "@typescript-eslint/no-unused-vars": [2, { "argsIgnorePattern": "^_$" }],
     "jsx-a11y/accessible-emoji": 0,
+    "no-console": 2,
     "react/jsx-no-target-blank": 0
   },
   "settings": {

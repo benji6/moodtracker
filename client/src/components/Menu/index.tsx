@@ -81,6 +81,9 @@ export default function Menu({ handleMenuClose, open }: Props) {
                   This month
                 </EriMenu.Link>
               </EriMenu.SubList>
+              <EriMenu.Link onClick={handleMenuClose} to="/change-password">
+                Change password
+              </EriMenu.Link>
             </>
           )}
           <EriMenu.Link onClick={handleMenuClose} to="/about">

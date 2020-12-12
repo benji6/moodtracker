@@ -1,18 +1,13 @@
-import { CognitoUser } from "amazon-cognito-identity-js";
 import { ResendVerificationPage } from "eri";
 import { RouteComponentProps, useNavigate } from "@reach/router";
 import * as React from "react";
-import { userPool } from "../../cognito";
+import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 const resendConfirmation = ({ email }: { email: string }) =>
   new Promise((resolve, reject) => {
-    const cognitoUser = new CognitoUser({
-      Pool: userPool,
-      Username: email,
-    });
-    cognitoUser.resendConfirmationCode((err, result) =>
+    createCognitoUser(email).resendConfirmationCode((err, result) =>
       err ? reject(err) : resolve(result)
     );
   });

@@ -1626,9 +1626,9 @@
   integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
 
 "@types/node@*":
-  version "14.14.12"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.12.tgz#0b1d86f8c40141091285dea02e4940df73bba43f"
-  integrity sha512-ASH8OPHMNlkdjrEdmoILmzFfsJICvhBsFfAum4aKZ/9U4B6M6tTmTPh+f3ttWdD74CEGV5XvXWkbyfSdXaTd7g==
+  version "14.14.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.13.tgz#9e425079799322113ae8477297ae6ef51b8e0cdf"
+  integrity sha512-vbxr0VZ8exFMMAjCW8rJwaya0dMCDyYW2ZRdTyjtrCvJoENMpdUHOT/eTzvgyA5ZnqRZ/sI0NwqAxNHKYokLJQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -3620,9 +3620,9 @@ envinfo@^7.3.1:
   integrity sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
 
 eri@^27.0.0:
-  version "27.1.1"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-27.1.1.tgz#58d3ac77e4da265e128aa9407a7464717d6395f1"
-  integrity sha512-9p5JAX2xyrrMyo2pxxxfCubMuXQRtEyQLZpdWyEM3cQGgM9puh5inuIvV8/H6B3ieZlz72W2wyoE6jZynuvOnw==
+  version "27.1.4"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-27.1.4.tgz#6135ae5e2a6c213ce4d62e27c74d21b5bdd1960b"
+  integrity sha512-RbqQiIE9aM6/O8rx6zf+5oRuXPjXVI0bRo70VhucAnnIkYDO//RJEhwpaKMowTc1ItQx19e/G80r3ym2zCzJ+A==
   dependencies:
     react-transition-group "^4.4.1"
 

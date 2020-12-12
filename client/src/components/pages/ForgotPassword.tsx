@@ -1,8 +1,7 @@
 import { RouteComponentProps } from "@reach/router";
-import { CognitoUser } from "amazon-cognito-identity-js";
 import { ForgotPasswordPage } from "eri";
 import * as React from "react";
-import { userPool } from "../../cognito";
+import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
@@ -13,11 +12,7 @@ export default function ForgotPassword(_: RouteComponentProps) {
     <ForgotPasswordPage
       onSubmit={({ email, setSubmitError }) =>
         new Promise((resolve, reject) => {
-          const cognitoUser = new CognitoUser({
-            Pool: userPool,
-            Username: email,
-          });
-          cognitoUser.forgotPassword({
+          createCognitoUser(email).forgotPassword({
             inputVerificationCode: resolve,
 
             // doesn't actually seem to be invoked (inputVerificationCode is called instead)
