@@ -46,7 +46,7 @@ make deploy
 
 #### UI
 
-Master is automatically deployed with [Netlify](http://netlify.com).
+Continuously deployed with [Netlify](http://netlify.com).
 
 ##### N.B.
 
