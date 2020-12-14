@@ -37,16 +37,22 @@ export default function MoodChart({
       <Chart.XGridLines lines={xLines} />
       <Chart.YGridLines lines={yLines} />
       <Chart.PlotArea>
-        <Chart.Line
-          color={hidePoints ? undefined : "var(--e-color-balance-less)"}
-          data={trendlinePoints}
-          thickness={2}
-        />
-        <Chart.Line
-          color={hidePoints ? "var(--e-color-balance-less)" : undefined}
-          data={data}
-        />
-        {!hidePoints && <Chart.Points colorFromY={moodToColor} data={data} />}
+        {hidePoints ? (
+          <>
+            <Chart.Line color="var(--e-color-balance-less)" data={data} />
+            <Chart.Line data={trendlinePoints} thickness={2} />
+          </>
+        ) : (
+          <>
+            <Chart.Line
+              color="var(--e-color-balance-less)"
+              data={trendlinePoints}
+              thickness={2}
+            />
+            <Chart.Line data={data} />
+            <Chart.Points colorFromY={moodToColor} data={data} />
+          </>
+        )}
       </Chart.PlotArea>
       <Chart.XAxis labels={xLabels} markers={xLines} />
       <Chart.YAxis labels={yLabels} markers={yLines} />
