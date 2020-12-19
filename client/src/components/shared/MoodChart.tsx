@@ -1,6 +1,6 @@
 import { Chart } from "eri";
 import * as React from "react";
-import { MOOD_RANGE } from "../../constants";
+import { MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
 import { moodToColor } from "../../utils";
 
 interface Props {
@@ -20,9 +20,7 @@ export default function MoodChart({
   xLabels,
   xLines = xLabels.map(([x]) => x),
 }: Props) {
-  const yLabels: [number, string][] = [
-    ...Array(MOOD_RANGE[1] + 1).keys(),
-  ].map((y) => [y, String(y)]);
+  const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
 
   const yLines = yLabels.map(([y]) => y);
 

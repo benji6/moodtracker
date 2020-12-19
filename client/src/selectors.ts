@@ -13,7 +13,11 @@ import {
   subHours,
 } from "date-fns";
 import { DAYS_PER_WEEK, HOURS_PER_DAY } from "./constants";
-import { dateFormatter, weekdayFormatter, WEEK_OPTIONS } from "./formatters";
+import {
+  dateFormatter,
+  weekdayFormatterShort,
+  WEEK_OPTIONS,
+} from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 import { computeAverageMoodInInterval, roundDateDown } from "./utils";
@@ -92,7 +96,7 @@ export const moodsSelector = createSelector(
   }
 );
 
-type DayAverages = [
+export type DayAverages = [
   [string, number | undefined],
   [string, number | undefined],
   [string, number | undefined],
@@ -135,7 +139,7 @@ export const averageByDaySelector = createSelector(moodsSelector, (moods): {
     const averagesIndex = (dateFnsDay ? dateFnsDay : DAYS_PER_WEEK) - 1;
 
     averages[averagesIndex] = [
-      weekdayFormatter.format(dateForDayOfWeek),
+      weekdayFormatterShort.format(dateForDayOfWeek),
       i ? sumOfAverageMoods / i : undefined,
     ];
   }

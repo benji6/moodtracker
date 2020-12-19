@@ -33,11 +33,7 @@ const weekFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
-export const weekdayFormatter = Intl.DateTimeFormat(undefined, {
-  weekday: "long",
-});
-
-export const weekdayShortFormatter = Intl.DateTimeFormat(undefined, {
+export const weekdayFormatterShort = Intl.DateTimeFormat(undefined, {
   weekday: "short",
 });
 

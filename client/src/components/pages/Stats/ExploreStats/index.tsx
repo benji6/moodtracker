@@ -10,7 +10,7 @@ import MoodChartForPeriod from "../MoodChartForPeriod";
 import { eventsSelector, moodsSelector } from "../../../../selectors";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "@reach/router";
-import AverageMoodByDay from "./AverageMoodByDay";
+import AverageMoodByWeekday from "./AverageMoodByWeekday";
 import AverageMoodByHour from "./AverageMoodByHour";
 import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
@@ -189,7 +189,7 @@ export default function ExploreStats(_: RouteComponentProps) {
           </>
         )}
       </Paper>
-      <AverageMoodByDay />
+      <AverageMoodByWeekday />
       <AverageMoodByHour />
     </Paper.Group>
   );

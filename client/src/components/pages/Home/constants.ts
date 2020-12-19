@@ -1,4 +1,6 @@
-export const LINE_CHART_DEMO_PROPS: {
+import { DayAverages } from "../../../selectors";
+
+export const LINE_CHART_PROPS: {
   data: [number, number][];
   domain: [number, number];
   trendlinePoints: [number, number][];
@@ -126,7 +128,7 @@ export const LINE_CHART_DEMO_PROPS: {
   ],
 };
 
-export const MOOD_BY_HOUR_DEMO_PROPS = {
+export const MOOD_BY_HOUR_PROPS = {
   data: [
     [0, 7.4365],
     [1, 7.3998],
@@ -155,11 +157,23 @@ export const MOOD_BY_HOUR_DEMO_PROPS = {
   ] as [number, number][],
 };
 
-export const MOOD_FREQUENCY_DEMO_PROPS = {
+export const MOOD_BY_WEEKDAY_PROPS = {
+  averages: [
+    ["Mon", 4.82],
+    ["Tue", 5.51],
+    ["Wed", 5.08],
+    ["Thu", 6.73],
+    ["Fri", 8.01],
+    ["Sat", 8.17],
+    ["Sun", 7.44],
+  ] as DayAverages,
+};
+
+export const MOOD_FREQUENCY_PROPS = {
   data: [0, 0, 0, 0, 1, 4, 9, 18, 7, 1, 0],
 };
 
-export const MOOD_SUMMARY_DEMO_PROPS = {
+export const MOOD_SUMMARY_PROPS = {
   currentPeriod: {
     best: 9,
     mean: 7.8,
@@ -177,7 +191,7 @@ export const MOOD_SUMMARY_DEMO_PROPS = {
   periodType: "week" as const,
 };
 
-export const WORD_CLOUD_DEMO_PROPS = {
+export const WORD_CLOUD_PROPS = {
   Afraid: 1,
   Agitated: 2,
   Amused: 2,

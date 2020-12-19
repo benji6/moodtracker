@@ -2,15 +2,17 @@ import { Link, useNavigate } from "@reach/router";
 import { Button, Paper, WordCloud } from "eri";
 import * as React from "react";
 import MoodByHourChart from "../../shared/MoodByHourChart";
+import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 import MoodSummary from "../../shared/MoodSummary";
 import {
-  LINE_CHART_DEMO_PROPS,
-  MOOD_BY_HOUR_DEMO_PROPS,
-  MOOD_FREQUENCY_DEMO_PROPS,
-  MOOD_SUMMARY_DEMO_PROPS,
-  WORD_CLOUD_DEMO_PROPS,
+  LINE_CHART_PROPS,
+  MOOD_BY_HOUR_PROPS,
+  MOOD_BY_WEEKDAY_PROPS,
+  MOOD_FREQUENCY_PROPS,
+  MOOD_SUMMARY_PROPS,
+  WORD_CLOUD_PROPS,
 } from "./constants";
 
 export default function NotSignedIn() {
@@ -45,9 +47,9 @@ export default function NotSignedIn() {
         <h2>Features</h2>
         <p>The app is mostly just nice graphs 🤓</p>
         <h3>Analyze your mood over time</h3>
-        <MoodChart {...LINE_CHART_DEMO_PROPS} />
+        <MoodChart {...LINE_CHART_PROPS} />
         <h3>Review on a weekly or monthly basis</h3>
-        <MoodSummary {...MOOD_SUMMARY_DEMO_PROPS} />
+        <MoodSummary {...MOOD_SUMMARY_PROPS} />
         <h3>Describe how you feel and reflect on it</h3>
         <p>
           You can record a short description of your mood and reflect on it on a
@@ -55,17 +57,23 @@ export default function NotSignedIn() {
         </p>
         <WordCloud
           aria-label="Word cloud displaying mood descriptions"
-          words={WORD_CLOUD_DEMO_PROPS}
+          words={WORD_CLOUD_PROPS}
         />
-        <h3>See how often you log moods</h3>
-        <MoodFrequencyChart {...MOOD_FREQUENCY_DEMO_PROPS} />
-        <h3>See how your mood fluctuates over the day/week</h3>
+        <h3>See how your mood fluctuates by day of the week</h3>
         <p>
           MoodTracker can analyze your data over time to give you insights about
-          how the time of day and day of the week influence your mood. This can
-          help you understand yourself better 😌
+          how the day of the week influences your mood.
         </p>
-        <MoodByHourChart {...MOOD_BY_HOUR_DEMO_PROPS} />
+        <MoodByWeekdayChart {...MOOD_BY_WEEKDAY_PROPS} />
+        <h3>See how your mood fluctuates by the time of day</h3>
+        <p>
+          MoodTracker can also analyze your data over time to give you insights
+          about how the time of day influences your mood. This can help you
+          understand yourself better 😌
+        </p>
+        <MoodByHourChart {...MOOD_BY_HOUR_PROPS} />
+        <h3>See how often you log moods</h3>
+        <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
       </Paper>
       <Paper>
         <h2>Give it a go!</h2>

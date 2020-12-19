@@ -3610,9 +3610,9 @@ envinfo@^7.3.1:
   integrity sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
 
 eri@^27.0.0:
-  version "27.1.9"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-27.1.9.tgz#9130708be4b31d679d578ea630c5fb11d724ab6d"
-  integrity sha512-HkLGZbTGKToUtoYSWtlMxrplqfQItbu7KJAceksh+G0YyR3+qoe7haL0nO5SZzf5C+lGIgrEkuvmedxqMvKpXw==
+  version "27.2.0"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-27.2.0.tgz#1838c2a0d87356c26ae8f36fd48b7f84a0416633"
+  integrity sha512-RfUDXfawgKbF6b7REj0+/qhfiZi/+Jz9qh4KRQHHlD9Dwf3mFxhvwI5ysDKT3Odbq1IpLfdD0hOHUjcuTZEhpg==
   dependencies:
     react-transition-group "^4.4.1"
 

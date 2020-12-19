@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Chart } from "eri";
 import { setHours } from "date-fns";
-import { HOURS_PER_DAY, MOOD_RANGE } from "../../constants";
+import { HOURS_PER_DAY, MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
 
 const arbitraryDate = new Date();
 const formatter = Intl.DateTimeFormat(undefined, { hour: "numeric" });
@@ -15,9 +15,7 @@ export default function MoodByHourChart({ data }: Props) {
   for (let i = 0; i < HOURS_PER_DAY; i += 4)
     xLabels.push([i, formatter.format(setHours(arbitraryDate, i))]);
 
-  const yLabels: [number, string][] = [
-    ...Array(MOOD_RANGE[1] + 1).keys(),
-  ].map((y) => [y, String(y)]);
+  const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
 
   const xLines = xLabels.map(([x]) => x);
   const yLines = yLabels.map(([y]) => y);

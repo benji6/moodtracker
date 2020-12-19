@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK } from "../../../constants";
 import {
   formatWeek,
-  weekdayShortFormatter,
+  weekdayFormatterShort,
   WEEK_OPTIONS,
 } from "../../../formatters";
 import { eventsSelector, moodsSelector } from "../../../selectors";
@@ -57,7 +57,7 @@ export default function Week({
     const date = addDays(week, i);
     xLabels.push([
       (date.getTime() + addDays(date, 1).getTime()) / 2,
-      weekdayShortFormatter.format(date),
+      weekdayFormatterShort.format(date),
     ]);
   }
 

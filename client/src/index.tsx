@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import App from "./components/App";
 import store from "./store";
 
-ReactDOM.hydrate(
+(process.env.NODE_ENV === "production" ? ReactDOM.hydrate : ReactDOM.render)(
   <EriProvider>
     <Provider store={store}>
       <App />
