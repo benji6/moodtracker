@@ -1,5 +1,5 @@
-import { RouteComponentProps, useNavigate } from "@reach/router";
-import { Fab, Icon, Paper, Spinner } from "eri";
+import { RouteComponentProps } from "@reach/router";
+import { Paper, Spinner } from "eri";
 import * as React from "react";
 import MoodList from "./MoodList";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
@@ -17,7 +17,6 @@ export interface HomeState {
 }
 
 export default function Home(_: RouteComponentProps) {
-  const navigate = useNavigate();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
@@ -28,13 +27,7 @@ export default function Home(_: RouteComponentProps) {
     <Paper.Group>
       {events.hasLoadedFromServer ? (
         moods.allIds.length ? (
-          <>
-            <MoodList />{" "}
-            <Fab onClick={() => navigate(`/add`)}>
-              <Icon name="plus" size="4" />
-              Add mood
-            </Fab>
-          </>
+          <MoodList />
         ) : (
           <AddFirstMoodCta />
         )

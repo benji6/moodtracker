@@ -3,7 +3,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDOMServer from "react-dom/server";
 import { Provider } from "react-redux";
-import App from "./components/App";
+import Router from "./components/Router";
 import store from "./store";
 import appSlice from "./store/appSlice";
 
@@ -12,7 +12,7 @@ store.dispatch(appSlice.actions.storageLoaded());
 const html = ReactDOMServer.renderToString(
   <EriProvider renderingToString>
     <Provider store={store}>
-      <App />
+      <Router />
     </Provider>
   </EriProvider>
 );

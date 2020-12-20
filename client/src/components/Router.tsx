@@ -17,27 +17,30 @@ import ExploreStats from "./pages/Stats/ExploreStats";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
+import App from "./App";
 
 export default function Router() {
   return (
     <ReachRouter>
-      <_404 default />
-      <Home path="/" />
-      <About path="about" />
-      <AddMood path="add" />
-      <ChangePassword path="change-password" />
-      <EditMood path="edit/:id" />
-      <ForgotPassword path="forgot-password" />
-      <ExploreStats path="stats/explore" />
-      <Month path="stats/months/:month" />
-      <ResendVerification path="resend-verification" />
-      <ResetPassword path="reset-password" />
-      <SeeAlso path="see-also" />
-      <SignIn path="sign-in" />
-      <SignUp path="sign-up" />
-      <Stats path="stats" />
-      <Verify path="verify" />
-      <Week path="stats/weeks/:week" />
+      <App path="/">
+        <_404 default />
+        <Home path="/" />
+        <About path="about" />
+        <AddMood path="add" />
+        <ChangePassword path="change-password" />
+        <EditMood path="edit/:id" />
+        <ForgotPassword path="forgot-password" />
+        <ExploreStats path="stats/explore" />
+        <Month path="stats/months/:month" />
+        <ResendVerification path="resend-verification" />
+        <ResetPassword path="reset-password" />
+        <SeeAlso path="see-also" />
+        <SignIn path="sign-in" />
+        <SignUp path="sign-up" />
+        <Stats path="stats" />
+        <Verify path="verify" />
+        <Week path="stats/weeks/:week" />
+      </App>
     </ReachRouter>
   );
 }

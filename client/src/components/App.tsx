@@ -1,8 +1,7 @@
-import { Link } from "@reach/router";
+import { Link, RouteComponentProps } from "@reach/router";
 import { Header, Menu as EriMenu, Main, Spinner, QuickNav, Icon } from "eri";
 import * as React from "react";
 import Menu from "./Menu";
-import Router from "./Router";
 import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
@@ -11,8 +10,13 @@ import {
   appIsStorageLoadingSelector,
   userIsSignedInSelector,
 } from "../selectors";
+import AddMoodFab from "./AddMoodFab";
 
-export default function App() {
+interface IProps extends RouteComponentProps {
+  children: React.ReactNode;
+}
+
+export default function App({ children }: IProps) {
   useUser();
   useEvents();
   useStorage();
@@ -32,7 +36,8 @@ export default function App() {
         />
       </Header>
       <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
-      <Main>{isStorageLoading ? <Spinner /> : <Router />}</Main>
+      <Main>{isStorageLoading ? <Spinner /> : children}</Main>
+      <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>
           <QuickNav.Link aria-label="home" to="/">
