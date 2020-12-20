@@ -11,10 +11,7 @@ interface Props {
   toDate: Date;
 }
 
-export default function MoodFrequencyForPeriodChart({
-  fromDate,
-  toDate,
-}: Props) {
+export default function MoodFrequencyForPeriod({ fromDate, toDate }: Props) {
   const moods = useSelector(moodsSelector);
 
   const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, fromDate, toDate);

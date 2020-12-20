@@ -17,7 +17,7 @@ import {
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
-import MoodFrequencyForPeriodChart from "./MoodFrequencyForPeriodChart";
+import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
 
@@ -91,13 +91,14 @@ export default function Month({
       {moodIdsInMonth.length ? (
         <>
           <Paper>
+            <h3>Mood chart</h3>
             <MoodChartForPeriod
               fromDate={month}
               toDate={nextMonth}
               xLabels={xLabels}
             />
           </Paper>
-          <MoodFrequencyForPeriodChart fromDate={month} toDate={nextMonth} />
+          <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />
           <MoodCloudForPeriod fromDate={month} toDate={nextMonth} />
         </>
       ) : (

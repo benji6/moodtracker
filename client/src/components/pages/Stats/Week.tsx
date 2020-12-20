@@ -18,9 +18,10 @@ import {
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForWeek from "./MoodChartForWeek";
-import MoodFrequencyForPeriodChart from "./MoodFrequencyForPeriodChart";
+import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
+import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -93,9 +94,11 @@ export default function Week({
       {moodIdsInWeek.length ? (
         <>
           <Paper>
+            <h3>Mood chart</h3>
             <MoodChartForWeek week={week} />
           </Paper>
-          <MoodFrequencyForPeriodChart fromDate={week} toDate={nextWeek} />
+          <MoodByWeekdayForPeriod fromDate={week} toDate={nextWeek} />
+          <MoodFrequencyForPeriod fromDate={week} toDate={nextWeek} />
           <MoodCloudForPeriod fromDate={week} toDate={nextWeek} />
         </>
       ) : (
