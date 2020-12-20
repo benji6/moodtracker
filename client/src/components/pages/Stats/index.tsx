@@ -24,14 +24,14 @@ export default function Stats(_: RouteComponentProps) {
 
   return (
     <Paper.Group>
+      <Weeks />
+      <Months />
       <Paper>
         <h2>Explore</h2>
         <p className="center">
           <Link to="/stats/explore">More insights here</Link>
         </p>
       </Paper>
-      <Weeks />
-      <Months />
     </Paper.Group>
   );
 }

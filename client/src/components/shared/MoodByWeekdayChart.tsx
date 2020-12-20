@@ -1,8 +1,17 @@
 import * as React from "react";
 import { Chart } from "eri";
-import { DayAverages } from "../../selectors";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
 import { moodToColor } from "../../utils";
+
+export type DayAverages = [
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined],
+  [string, number | undefined]
+];
 
 interface IProps {
   averages: DayAverages;

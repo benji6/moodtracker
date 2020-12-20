@@ -1,4 +1,4 @@
-import { DayAverages } from "../../../selectors";
+import { DayAverages } from "../../shared/MoodByWeekdayChart";
 
 export const LINE_CHART_PROPS: {
   data: [number, number][];

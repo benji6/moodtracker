@@ -10,6 +10,7 @@ import {
   getMoodIdsInInterval,
   formatIsoDateInLocalTimezone,
   computeStandardDeviation,
+  computeMean,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -260,6 +261,13 @@ describe("utils", () => {
         ).toEqual(4.5);
       });
     });
+  });
+
+  test("computeMean", () => {
+    expect(computeMean([])).toBeUndefined();
+    expect(computeMean([5])).toBe(5);
+    expect(computeMean([1, 5])).toBe(3);
+    expect(computeMean([1, 2, 3, 4, 5, 6, 7])).toBe(4);
   });
 
   describe("computeStandardDeviation", () => {

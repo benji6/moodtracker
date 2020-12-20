@@ -63,9 +63,6 @@ export default function Menu({ handleMenuClose, open }: Props) {
                 Stats
               </EriMenu.Link>
               <EriMenu.SubList>
-                <EriMenu.Link onClick={handleMenuClose} to="/stats/explore">
-                  Explore
-                </EriMenu.Link>
                 <EriMenu.Link
                   onClick={handleMenuClose}
                   to={`/stats/weeks/${formatIsoDateInLocalTimezone(
@@ -79,6 +76,9 @@ export default function Menu({ handleMenuClose, open }: Props) {
                   to={`/stats/months/${formatIsoMonthInLocalTimezone(now)}`}
                 >
                   This month
+                </EriMenu.Link>
+                <EriMenu.Link onClick={handleMenuClose} to="/stats/explore">
+                  Explore
                 </EriMenu.Link>
               </EriMenu.SubList>
               <EriMenu.Link onClick={handleMenuClose} to="/change-password">
