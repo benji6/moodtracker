@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const MAX_WEEKS_PER_PAGE = 8;
 
-export default function WeeklyAverages() {
+export default function Weeks() {
   const averageByWeek = useSelector(averageByWeekSelector);
   const [page, setPage] = React.useState(0);
 
@@ -23,7 +23,7 @@ export default function WeeklyAverages() {
 
   return (
     <Paper>
-      <h2>Weekly averages</h2>
+      <h2>Weeks</h2>
       <table>
         <thead>
           <tr>

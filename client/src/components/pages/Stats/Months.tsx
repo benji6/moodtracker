@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const MAX_MONTHS_PER_PAGE = 12;
 
-export default function MonthlyAverages() {
+export default function Months() {
   const averageByMonth = useSelector(averageByMonthSelector);
   const [page, setPage] = React.useState(0);
 
@@ -22,7 +22,7 @@ export default function MonthlyAverages() {
 
   return (
     <Paper>
-      <h2>Monthly averages</h2>
+      <h2>Months</h2>
       <table>
         <thead>
           <tr>

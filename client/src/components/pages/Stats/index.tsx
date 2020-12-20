@@ -3,8 +3,8 @@ import { Paper, Spinner } from "eri";
 import * as React from "react";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
-import MonthlyAverages from "./MonthlyAverages";
-import WeeklyAverages from "./WeeklyAverages";
+import Months from "./Months";
+import Weeks from "./Weeks";
 import { eventsSelector, moodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 
@@ -30,8 +30,8 @@ export default function Stats(_: RouteComponentProps) {
           <Link to="/stats/explore">More insights here</Link>
         </p>
       </Paper>
-      <WeeklyAverages />
-      <MonthlyAverages />
+      <Weeks />
+      <Months />
     </Paper.Group>
   );
 }
