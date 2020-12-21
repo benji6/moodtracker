@@ -20,15 +20,14 @@ export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
   const moodsByWeekdayIndex: (number[] | undefined)[] = Array(DAYS_PER_WEEK);
 
   for (let t0 = fromDate; t0 < toDate; t0 = addDays(t0, 1)) {
-    try {
-      const mood = computeAverageMoodInInterval(moods, t0, addDays(t0, 1));
-      const dateFnsWeekdayIndex = getDay(t0);
-      const weekdayIndex =
-        (dateFnsWeekdayIndex ? dateFnsWeekdayIndex : DAYS_PER_WEEK) - 1;
-      const moodsForWeekday = moodsByWeekdayIndex[weekdayIndex];
-      if (moodsForWeekday) moodsForWeekday.push(mood);
-      else moodsByWeekdayIndex[weekdayIndex] = [mood];
-    } catch {}
+    const mood = computeAverageMoodInInterval(moods, t0, addDays(t0, 1));
+    if (mood === undefined) continue;
+    const dateFnsWeekdayIndex = getDay(t0);
+    const weekdayIndex =
+      (dateFnsWeekdayIndex ? dateFnsWeekdayIndex : DAYS_PER_WEEK) - 1;
+    const moodsForWeekday = moodsByWeekdayIndex[weekdayIndex];
+    if (moodsForWeekday) moodsForWeekday.push(mood);
+    else moodsByWeekdayIndex[weekdayIndex] = [mood];
   }
 
   const startOfWeekDate = startOfWeek(fromDate, WEEK_OPTIONS);

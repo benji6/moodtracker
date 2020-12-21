@@ -17,8 +17,8 @@ import { MOOD_RANGE } from "./constants";
 describe("utils", () => {
   describe("computeAverageMoodInInterval", () => {
     describe("when the fromDate is after the toDate", () => {
-      it("throws an error", () => {
-        expect(() =>
+      it("returns undefined", () => {
+        expect(
           computeAverageMoodInInterval(
             {
               allIds: ["2020-07-28T00:00:00.000Z"],
@@ -27,13 +27,13 @@ describe("utils", () => {
             new Date("2020-07-31T00:00:00.000Z"),
             new Date("2020-07-30T00:00:00.000Z")
           )
-        ).toThrow(Error("fromDate must be equal to or before toDate"));
+        ).toBeUndefined();
       });
     });
 
     describe("when there are 0 moods", () => {
-      it("throws an error", () => {
-        expect(() =>
+      it("returns undefined", () => {
+        expect(
           computeAverageMoodInInterval(
             {
               allIds: [],
@@ -42,7 +42,7 @@ describe("utils", () => {
             new Date("2020-07-30T00:00:00.000Z"),
             new Date("2020-07-31T00:00:00.000Z")
           )
-        ).toThrow(Error("No moods"));
+        ).toBeUndefined();
       });
     });
 
@@ -90,8 +90,8 @@ describe("utils", () => {
         ).toEqual(5);
       });
 
-      it("throws an error when the mood does not intersect with the interval", () => {
-        expect(() =>
+      it("returns undefined when the mood does not intersect with the interval", () => {
+        expect(
           computeAverageMoodInInterval(
             {
               allIds: ["2020-07-28T00:00:00.000Z"],
@@ -100,8 +100,8 @@ describe("utils", () => {
             new Date("2020-07-25T00:00:00.000Z"),
             new Date("2020-07-25T00:00:00.000Z")
           )
-        ).toThrow(Error("No moods intersect with provided interval"));
-        expect(() =>
+        ).toBeUndefined();
+        expect(
           computeAverageMoodInInterval(
             {
               allIds: ["2020-07-28T00:00:00.000Z"],
@@ -110,8 +110,8 @@ describe("utils", () => {
             new Date("2020-07-24T00:00:00.000Z"),
             new Date("2020-07-25T00:00:00.000Z")
           )
-        ).toThrow(Error("No moods intersect with provided interval"));
-        expect(() =>
+        ).toBeUndefined();
+        expect(
           computeAverageMoodInInterval(
             {
               allIds: ["2020-07-28T00:00:00.000Z"],
@@ -120,8 +120,8 @@ describe("utils", () => {
             new Date("2020-07-30T00:00:00.000Z"),
             new Date("2020-07-30T00:00:00.000Z")
           )
-        ).toThrow(Error("No moods intersect with provided interval"));
-        expect(() =>
+        ).toBeUndefined();
+        expect(
           computeAverageMoodInInterval(
             {
               allIds: ["2020-07-28T00:00:00.000Z"],
@@ -130,7 +130,7 @@ describe("utils", () => {
             new Date("2020-07-30T00:00:00.000Z"),
             new Date("2020-07-31T00:00:00.000Z")
           )
-        ).toThrow(Error("No moods intersect with provided interval"));
+        ).toBeUndefined();
       });
     });
 

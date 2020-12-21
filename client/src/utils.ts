@@ -7,8 +7,12 @@ export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
   fromDate: Date,
   toDate: Date
-): number => {
-  if (!moods.allIds.length) throw Error("No moods");
+): number | undefined => {
+  if (!moods.allIds.length) {
+    // eslint-disable-next-line no-console
+    console.warn("No moods");
+    return;
+  }
 
   const earliestMoodTime = new Date(moods.allIds[0]).getTime();
   const latestMoodTime = new Date(
@@ -18,9 +22,16 @@ export const computeAverageMoodInInterval = (
   const d0 = fromDate.getTime();
   const d1 = toDate.getTime();
 
-  if (d1 < d0) throw Error("fromDate must be equal to or before toDate");
-  if (d0 > latestMoodTime || d1 < earliestMoodTime)
-    throw Error("No moods intersect with provided interval");
+  if (d1 < d0) {
+    // eslint-disable-next-line no-console
+    console.warn("fromDate must be equal to or before toDate");
+    return;
+  }
+  if (d0 > latestMoodTime || d1 < earliestMoodTime) {
+    // eslint-disable-next-line no-console
+    console.warn("No moods intersect with provided interval");
+    return;
+  }
 
   if (moods.allIds.length === 1) return moods.byId[moods.allIds[0]].mood;
   if (d1 === earliestMoodTime) return moods.byId[toDate.toISOString()].mood;

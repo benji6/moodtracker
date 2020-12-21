@@ -10,7 +10,7 @@ const OptionalMoodCell = ({ mood }: { mood?: number }) =>
 
 interface PeriodData {
   best?: number;
-  mean: number;
+  mean?: number;
   standardDeviation: number;
   total: number;
   worst?: number;
@@ -42,9 +42,9 @@ export default function MoodSummary({
       <tbody>
         <tr>
           <td>Average mood</td>
-          {previousPeriod && <MoodCell mood={previousPeriod.mean} />}
-          <MoodCell mood={currentPeriod.mean} />
-          {nextPeriod && <MoodCell mood={nextPeriod.mean} />}
+          {previousPeriod && <OptionalMoodCell mood={previousPeriod.mean} />}
+          <OptionalMoodCell mood={currentPeriod.mean} />
+          {nextPeriod && <OptionalMoodCell mood={nextPeriod.mean} />}
         </tr>
         <tr>
           <td>Best mood</td>

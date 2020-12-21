@@ -103,7 +103,9 @@ export default function Week({
         </>
       ) : (
         <Paper>
-          <p>No data for this week.</p>
+          <p>
+            No data for this week, <Link to="/add">add a mood here</Link>!
+          </p>
         </Paper>
       )}
     </Paper.Group>

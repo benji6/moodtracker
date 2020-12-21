@@ -35,7 +35,7 @@ export const computeTrendlinePoints = (
       new Date(t0),
       new Date(t1)
     );
-    trendlinePoints.push([trendlineX, mood]);
+    if (mood !== undefined) trendlinePoints.push([trendlineX, mood]);
   }
 
   return trendlinePoints;

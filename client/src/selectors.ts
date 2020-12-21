@@ -112,15 +112,13 @@ export const averageByHourSelector = createSelector(moodsSelector, (moods): {
 
     for (; i < NUMBER_OF_DAYS_TO_AVERAGE_OVER; i++) {
       const fromDate = subHours(startDate, n + HOURS_PER_DAY * i);
-      try {
-        sumOfAverageMoods += computeAverageMoodInInterval(
-          moods,
-          fromDate,
-          addHours(fromDate, 1)
-        );
-      } catch {
-        break;
-      }
+      const averageMoodInInterval = computeAverageMoodInInterval(
+        moods,
+        fromDate,
+        addHours(fromDate, 1)
+      );
+      if (averageMoodInInterval === undefined) break;
+      sumOfAverageMoods += averageMoodInInterval;
     }
 
     daysUsed = Math.max(daysUsed, i);
@@ -156,11 +154,13 @@ export const averageByMonthSelector = createSelector(moodsSelector, (moods): [
   for (let i = 1; i < months.length; i++) {
     const month0 = months[i - 1];
     const month1 = months[i];
-
-    averageByMonth.push([
+    const averageMoodInInterval = computeAverageMoodInInterval(
+      moods,
       month0,
-      computeAverageMoodInInterval(moods, month0, month1),
-    ]);
+      month1
+    );
+    if (averageMoodInInterval !== undefined)
+      averageByMonth.push([month0, averageMoodInInterval]);
   }
 
   return averageByMonth;
@@ -189,11 +189,13 @@ export const averageByWeekSelector = createSelector(moodsSelector, (moods): [
   for (let i = 1; i < weeks.length; i++) {
     const week0 = weeks[i - 1];
     const week1 = weeks[i];
-
-    averageByWeek.push([
+    const averageMoodInInterval = computeAverageMoodInInterval(
+      moods,
       week0,
-      computeAverageMoodInInterval(moods, week0, week1),
-    ]);
+      week1
+    );
+    if (averageMoodInInterval !== undefined)
+      averageByWeek.push([week0, averageMoodInInterval]);
   }
 
   return averageByWeek;
