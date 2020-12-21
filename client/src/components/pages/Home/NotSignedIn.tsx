@@ -24,9 +24,11 @@ export default function NotSignedIn() {
       <Paper>
         <h2>Welcome to MoodTracker!</h2>
         <p>
-          MoodTracker is a free and open source web app that lets you track your
-          mood. It&apos;s simple to use, works offline and because it runs in
-          your browser you can use it across all your devices!
+          MoodTracker is a free and open source web app app that aims to help
+          you understand yourself better. Track your emotional landscape, keep a
+          mood journal and gain new insights into yourself. It&apos;s simple to
+          use, works offline and because it runs in your browser you can use it
+          across all your devices!
         </p>
         <Button.Group>
           <Button onClick={navigateToSignUp} type="button">
