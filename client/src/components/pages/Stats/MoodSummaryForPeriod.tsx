@@ -12,18 +12,18 @@ import MoodSummary from "../../shared/MoodSummary";
 interface Props {
   dates: [Date, Date, Date, Date];
   periodType: "month" | "week";
+  showNext: boolean;
 }
 
 export default function MoodSummaryForPeriod({
   dates: [date0, date1, date2, date3],
   periodType,
+  showNext,
 }: Props) {
   const moods = useSelector(moodsSelector);
 
   const firstMoodDate = new Date(moods.allIds[0]);
-  const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
   const showPrevious = date1 > firstMoodDate;
-  const showNext = date2 <= finalMoodDate;
   const moodValues = getMoodIdsInInterval(moods.allIds, date1, date2).map(
     (id) => moods.byId[id].mood
   );

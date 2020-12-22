@@ -42,14 +42,13 @@ export default function Week({
     );
 
   const firstMoodDate = new Date(moods.allIds[0]);
-  const finalMoodDate = new Date(moods.allIds[moods.allIds.length - 1]);
 
   const week = startOfWeek(new Date(`${weekStr}T00:00:00`), WEEK_OPTIONS);
   const nextWeek = addWeeks(week, 1);
   const prevWeek = subWeeks(week, 1);
 
   const showPrevious = week > firstMoodDate;
-  const showNext = nextWeek <= finalMoodDate;
+  const showNext = nextWeek <= new Date();
 
   const moodIdsInWeek = getMoodIdsInInterval(moods.allIds, week, nextWeek);
 
@@ -90,6 +89,7 @@ export default function Week({
       <MoodSummaryForPeriod
         dates={[prevWeek, week, nextWeek, addWeeks(nextWeek, 1)]}
         periodType="week"
+        showNext={showNext}
       />
       {moodIdsInWeek.length ? (
         <>
