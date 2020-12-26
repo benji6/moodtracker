@@ -11,7 +11,7 @@ export const userPool = new CognitoUserPool({
   UserPoolId: "us-east-1_rdB8iu5X4",
 });
 
-export const authenticateUser = ({
+const authenticateUser = ({
   authenticationDetails,
   cognitoUser,
 }: {
