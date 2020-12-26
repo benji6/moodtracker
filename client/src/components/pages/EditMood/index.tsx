@@ -84,10 +84,10 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             autoComplete="on"
             defaultValue={mood.description}
             error={descriptionError}
-            label="Description (optional)"
+            label="Description"
             maxLength={32}
             name="description"
-            required={false}
+            optional
             supportiveText="Try to describe how you feel using a short (32 characters) list of words separated by spaces."
           />
           <Button.Group>

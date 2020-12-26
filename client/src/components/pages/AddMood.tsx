@@ -67,11 +67,11 @@ export default function AddMood(_: RouteComponentProps) {
           <TextField
             autoComplete="on"
             error={descriptionError}
-            label="Description (optional)"
+            label="Description"
             maxLength={32}
             name="description"
-            required={false}
-            supportiveText="Try to describe how you feel using a short (32 characters) list of words separated by spaces."
+            optional
+            supportiveText="Try to describe how you feel using a short (32 characters max) list of words separated by spaces"
           />
           <Button.Group>
             <Button>Submit</Button>
