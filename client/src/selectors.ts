@@ -72,13 +72,13 @@ export const moodsSelector = createSelector(
         }
         case "v1/moods/update": {
           const currentMood = byId[event.payload.id];
+          const { id: _, ...serverMood } = event.payload;
 
           // for reasons that are beyond my energy to investigate there is
           // a runtime error if you try to update the mood object directly
           byId[event.payload.id] = {
             ...currentMood,
-            description: event.payload.description,
-            mood: event.payload.mood,
+            ...serverMood,
             updatedAt: event.createdAt,
           };
         }

@@ -100,7 +100,11 @@ describe("selectors", () => {
               "2020-10-10T08:01:00.000Z": {
                 createdAt: "2020-10-10T08:01:00.000Z",
                 type: "v1/moods/create",
-                payload: { description: "happy", mood: 8 },
+                payload: {
+                  description: "happy",
+                  exploration: "foo",
+                  mood: 8,
+                },
               },
               "2020-10-10T08:02:00.000Z": {
                 createdAt: "2020-10-10T08:02:00.000Z",
@@ -118,6 +122,7 @@ describe("selectors", () => {
                 payload: {
                   id: "2020-10-10T08:01:00.000Z",
                   description: "joy",
+                  exploration: "bar",
                   mood: 10,
                 },
               },
@@ -129,6 +134,7 @@ describe("selectors", () => {
         byId: {
           "2020-10-10T08:01:00.000Z": {
             description: "joy",
+            exploration: "bar",
             mood: 10,
             updatedAt: "2020-10-10T08:04:00.000Z",
           },

@@ -1,6 +1,6 @@
 import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
-import { Button, Paper, RadioButton, TextField } from "eri";
+import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
 import { moodsSelector } from "../../../selectors";
@@ -41,20 +41,21 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
+            const formEl = e.target as HTMLFormElement;
+            const descriptionValue: string = formEl.description.value;
+            const explorationValue: string = formEl.exploration.value;
+            const moodValue: string = formEl.mood.value;
 
-            const descriptionValue: string = (e.target as HTMLFormElement)
-              .description.value;
             const descriptionFieldError = noPunctuationValidator(
               descriptionValue
             );
+
             if (descriptionFieldError)
               return setDescriptionError(descriptionFieldError);
 
-            const payload: ServerMood = {
-              id,
-              mood: Number((e.target as HTMLFormElement).mood.value),
-            };
+            const payload: ServerMood = { id, mood: Number(moodValue) };
             if (descriptionValue) payload.description = descriptionValue.trim();
+            if (explorationValue) payload.exploration = explorationValue.trim();
 
             dispatch(
               eventsSlice.actions.add({
@@ -89,6 +90,14 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             name="description"
             optional
             supportiveText="Try to describe how you feel using a short (32 characters) list of words separated by spaces."
+          />
+          <TextArea
+            defaultValue={mood.exploration}
+            label="Exploration"
+            name="exploration"
+            optional
+            rows={3}
+            supportiveText="This is a space to explore how you're feeling, why you're feeling that way and what's going on in your life right now"
           />
           <Button.Group>
             <Button>Update</Button>

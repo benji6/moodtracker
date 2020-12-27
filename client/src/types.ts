@@ -12,6 +12,7 @@ export interface NormalizedMoods {
 
 export interface Mood {
   description?: string;
+  exploration?: string;
   mood: number;
 }
 

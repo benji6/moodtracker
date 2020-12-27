@@ -5,7 +5,12 @@ import { timeFormatter } from "../../../formatters";
 import { ServerMood } from "../../../types";
 import { moodToColor } from "../../../utils";
 
-export default function MoodCard({ id, description, mood }: ServerMood) {
+export default function MoodCard({
+  id,
+  description,
+  exploration,
+  mood,
+}: ServerMood) {
   const navigate = useNavigate();
 
   return (
@@ -22,9 +27,14 @@ export default function MoodCard({ id, description, mood }: ServerMood) {
           </SubHeading>
         )}
       </h3>
-      <p className="center" style={{ lineHeight: 1 }}>
+      <p className="center" style={{ lineHeight: 1, marginBottom: 0 }}>
         <small>{timeFormatter.format(new Date(id))}</small>
       </p>
+      {exploration && (
+        <p style={{ lineHeight: 1, marginTop: "var(--e-space-0)" }}>
+          <small>{exploration}</small>
+        </p>
+      )}
     </Card>
   );
 }

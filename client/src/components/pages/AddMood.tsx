@@ -1,6 +1,13 @@
 import { useNavigate, RouteComponentProps } from "@reach/router";
 import * as React from "react";
-import { Button, Paper, RadioButton, requiredValidator, TextField } from "eri";
+import {
+  Button,
+  Paper,
+  RadioButton,
+  requiredValidator,
+  TextArea,
+  TextField,
+} from "eri";
 import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
@@ -24,15 +31,18 @@ export default function AddMood(_: RouteComponentProps) {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            const moodValue: string = (e.target as HTMLFormElement).mood.value;
+            const formEl = e.target as HTMLFormElement;
+            const descriptionValue: string = formEl.description.value;
+            const explorationValue: string = formEl.exploration.value;
+            const moodValue: string = formEl.mood.value;
+
             const moodFieldError = requiredValidator(moodValue);
             if (moodFieldError) setMoodError(moodFieldError);
 
-            const descriptionValue: string = (e.target as HTMLFormElement)
-              .description.value;
             const descriptionFieldError = noPunctuationValidator(
               descriptionValue
             );
+
             if (descriptionFieldError)
               setDescriptionError(descriptionFieldError);
 
@@ -40,6 +50,7 @@ export default function AddMood(_: RouteComponentProps) {
 
             const payload: Mood = { mood: Number(moodValue) };
             if (descriptionValue) payload.description = descriptionValue.trim();
+            if (explorationValue) payload.exploration = explorationValue.trim();
 
             dispatch(
               eventsSlice.actions.add({
@@ -72,6 +83,13 @@ export default function AddMood(_: RouteComponentProps) {
             name="description"
             optional
             supportiveText="Try to describe how you feel using a short (32 characters max) list of words separated by spaces"
+          />
+          <TextArea
+            label="Exploration"
+            name="exploration"
+            optional
+            rows={3}
+            supportiveText="This is a space to explore how you're feeling, why you're feeling that way and what's going on in your life right now"
           />
           <Button.Group>
             <Button>Submit</Button>
