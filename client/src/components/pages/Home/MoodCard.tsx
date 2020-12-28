@@ -31,7 +31,10 @@ export default function MoodCard({
         <small>{timeFormatter.format(new Date(id))}</small>
       </p>
       {exploration && (
-        <p style={{ lineHeight: 1, marginTop: "var(--e-space-0)" }}>
+        <p
+          className="pre-line"
+          style={{ lineHeight: 1, marginTop: "var(--e-space-0)" }}
+        >
           <small>{exploration}</small>
         </p>
       )}
