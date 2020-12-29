@@ -88,7 +88,7 @@ export default function AddMood(_: RouteComponentProps) {
             label="Exploration"
             name="exploration"
             optional
-            rows={3}
+            rows={5}
             supportiveText="This is a space to explore how you're feeling, why you're feeling that way and what's going on in your life right now"
           />
           <Button.Group>
