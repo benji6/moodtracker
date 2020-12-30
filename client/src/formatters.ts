@@ -12,6 +12,12 @@ export const dayMonthFormatter = Intl.DateTimeFormat(undefined, {
 export const dateFormatter = Intl.DateTimeFormat(undefined, {
   day: "numeric",
   month: "long",
+  year: "numeric",
+});
+
+export const dateWeekdayFormatter = Intl.DateTimeFormat(undefined, {
+  day: "numeric",
+  month: "long",
   weekday: "long",
   year: "numeric",
 });
@@ -27,22 +33,16 @@ export const timeFormatter = Intl.DateTimeFormat(undefined, {
   second: "numeric",
 });
 
-const weekFormatter = Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
 export const weekdayFormatterShort = Intl.DateTimeFormat(undefined, {
   weekday: "short",
 });
 
 // TODO: One day we should be able to remove this
 const formatRange = (dateA: Date, dateB: Date) =>
-  "formatRange" in weekFormatter
+  "formatRange" in dateFormatter
     ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (weekFormatter as any).formatRange(dateA, dateB)
-    : `${weekFormatter.format(dateA)} – ${weekFormatter.format(dateB)}`;
+      (dateFormatter as any).formatRange(dateA, dateB)
+    : `${dateFormatter.format(dateA)} – ${dateFormatter.format(dateB)}`;
 
 export const formatWeek = (week: Date): string =>
   formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));

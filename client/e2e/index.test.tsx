@@ -7,11 +7,19 @@ describe("e2e", () => {
   let browser: puppeteer.Browser;
   let page: puppeteer.Page;
 
+  const tapAndNavigate = async (
+    el: puppeteer.ElementHandle<Element>
+  ): Promise<puppeteer.Response> => {
+    const [response] = await Promise.all([page.waitForNavigation(), el.tap()]);
+    return response;
+  };
+
   beforeEach(async () => {
     browser = await puppeteer.launch({
       defaultViewport: { height: 640, width: 360 },
     });
     page = await browser.newPage();
+    page.setDefaultTimeout(3e3);
     await page.goto("http://localhost:1234");
   });
 
@@ -20,30 +28,31 @@ describe("e2e", () => {
   });
 
   test("user can sign in and sign out", async () => {
-    const signInLink = (await page.$('[data-test-id="sign-in-link"]'))!;
+    const signInLink = await page.waitForSelector(
+      '[data-test-id="sign-in-link"]'
+    );
     await page.waitForTimeout(100);
-    await signInLink.tap();
-    const emailInput = (await page.waitForSelector('[type="email"]'))!;
-    await emailInput.type(TEST_USER_EMAIL);
+    await tapAndNavigate(signInLink);
 
+    const emailInput = await page.waitForSelector('[type="email"]');
+    await emailInput.type(TEST_USER_EMAIL);
     const passwordInput = (await page.$('[type="password"]'))!;
     await passwordInput.type(TEST_USER_PASSWORD);
-    await passwordInput.press("Enter");
+    await Promise.all([page.waitForNavigation(), passwordInput.press("Enter")]);
 
     await page.waitForSelector('[data-test-id="mood-list"]');
-
     const menuButton = (await page.$('[data-test-id="menu-button"]'))!;
     await menuButton.tap();
 
-    // seems like a very high timeout but it starts to flake if we reduce it
-    await page.waitForTimeout(4000);
-
-    const signOutButton = (await page.$('[data-test-id="sign-out-button"]'))!;
-    await signOutButton.click();
-    const signOutConfirmButton = (await page.waitForSelector(
+    const signOutButton = await page.waitForSelector(
+      '[data-test-id="sign-out-button"]'
+    );
+    await page.waitForTimeout(100);
+    await signOutButton.tap();
+    const signOutConfirmButton = await page.waitForSelector(
       '[data-test-id="sign-out-confirm-button"]'
-    ))!;
-    await signOutConfirmButton.tap();
+    );
+    await tapAndNavigate(signOutConfirmButton);
 
     expect(await page.$('[href="/sign-in"]')).toBeTruthy();
   });

@@ -10,7 +10,7 @@ import {
   subHours,
 } from "date-fns";
 import { HOURS_PER_DAY } from "./constants";
-import { dateFormatter, WEEK_OPTIONS } from "./formatters";
+import { dateWeekdayFormatter, WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 import { computeAverageMoodInInterval } from "./utils";
@@ -208,7 +208,7 @@ export const groupMoodsByDaySelector = createSelector(moodsSelector, (moods): [
   const moodsGroupedByDate: { [date: string]: string[] } = {};
 
   for (const id of moods.allIds) {
-    const key = dateFormatter.format(new Date(id));
+    const key = dateWeekdayFormatter.format(new Date(id));
     if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
     else moodsGroupedByDate[key] = [id];
   }

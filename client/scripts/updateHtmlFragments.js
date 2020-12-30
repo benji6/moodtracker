@@ -19,10 +19,11 @@ const knownRoutes = new Set(routesToVisit);
 
   while (routesToVisit.length) {
     const route = routesToVisit.pop();
+    console.log("Crawling route: ", route);
 
     await page.goto(`${ORIGIN}${route}`);
 
-    const output = await page.$("#output");
+    const output = await page.waitForSelector("#output");
 
     const html = await output.evaluate((node) => node.textContent);
     const $ = cheerio.load(html);
@@ -39,8 +40,6 @@ const knownRoutes = new Set(routesToVisit);
     }
   }
 
-  console.log("Routes to prerender: ", knownRoutes);
-
   await browser.close();
 
   // nicer experience if starting with narrow resolution markup
@@ -50,9 +49,10 @@ const knownRoutes = new Set(routesToVisit);
   page = await browser.newPage();
 
   for (const route of knownRoutes.values()) {
+    console.log("Scraping route: ", route);
     await page.goto(`${ORIGIN}${route}`);
 
-    const output = await page.$("#output");
+    const output = await page.waitForSelector("#output");
     const htmlFragment = await output.evaluate((node) => node.textContent);
 
     fs.writeFile(
@@ -62,4 +62,6 @@ const knownRoutes = new Set(routesToVisit);
   }
 
   await browser.close();
+
+  console.log("Finished successfully! 🍄");
 })();
