@@ -17,7 +17,9 @@ interface Props {
 
 export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
   const moods = useSelector(moodsSelector);
-  const moodsByWeekdayIndex: (number[] | undefined)[] = Array(DAYS_PER_WEEK);
+  const moodsByWeekdayIndex: (number[] | undefined)[] = [
+    ...Array(DAYS_PER_WEEK),
+  ];
 
   for (let t0 = fromDate; t0 < toDate; t0 = addDays(t0, 1)) {
     const mood = computeAverageMoodInInterval(moods, t0, addDays(t0, 1));
