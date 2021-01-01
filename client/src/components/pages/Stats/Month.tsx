@@ -25,6 +25,7 @@ import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
+import MoodCalendarForMonth from "./MoodCalendarForMonth";
 
 const X_LABELS_COUNT = 5;
 
@@ -104,6 +105,7 @@ export default function Month({
               xLabels={xLabels}
             />
           </Paper>
+          <MoodCalendarForMonth month={month} />
           <MoodByWeekdayForPeriod fromDate={month} toDate={nextMonth} />
           <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />
           <MoodCloudForPeriod fromDate={month} toDate={nextMonth} />

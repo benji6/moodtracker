@@ -1,6 +1,6 @@
 import chroma from "chroma-js";
-import { set, add } from "date-fns";
-import { MOOD_RANGE } from "./constants";
+import { set, add, getDay } from "date-fns";
+import { DAYS_PER_WEEK, MOOD_RANGE } from "./constants";
 import { NormalizedMoods } from "./types";
 
 export const computeAverageMoodInInterval = (
@@ -163,6 +163,18 @@ export const formatIsoDateInLocalTimezone = (date: Date): string =>
 
 export const formatIsoMonthInLocalTimezone = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+
+export const getWeekdayIndex = (date: Date): 0 | 1 | 2 | 3 | 4 | 5 | 6 => {
+  const dateFnsWeekdayIndex = getDay(date);
+  return ((dateFnsWeekdayIndex ? dateFnsWeekdayIndex : DAYS_PER_WEEK) - 1) as
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6;
+};
 
 export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
   const ys = [];

@@ -33,6 +33,10 @@ export const timeFormatter = Intl.DateTimeFormat(undefined, {
   second: "numeric",
 });
 
+export const weekdayFormatterNarrow = Intl.DateTimeFormat(undefined, {
+  weekday: "narrow",
+});
+
 export const weekdayFormatterShort = Intl.DateTimeFormat(undefined, {
   weekday: "short",
 });
