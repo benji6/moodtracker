@@ -5,14 +5,16 @@ import {
   Paper,
   RadioButton,
   requiredValidator,
+  Spinner,
   TextArea,
   TextField,
 } from "eri";
 import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { noPunctuationValidator } from "../../validators";
 import { Mood } from "../../types";
+import { appIsStorageLoadingSelector } from "../../selectors";
 
 export default function AddMood(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -22,6 +24,7 @@ export default function AddMood(_: RouteComponentProps) {
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined
   >();
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
     <Paper.Group>

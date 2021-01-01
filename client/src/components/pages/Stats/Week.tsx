@@ -10,7 +10,11 @@ import {
   weekdayFormatterShort,
   WEEK_OPTIONS,
 } from "../../../formatters";
-import { eventsSelector, moodsSelector } from "../../../selectors";
+import {
+  appIsStorageLoadingSelector,
+  eventsSelector,
+  moodsSelector,
+} from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   getMoodIdsInInterval,
@@ -31,6 +35,7 @@ export default function Week({
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!weekStr || !isoDateRegex.test(weekStr)) return <Redirect to="/404" />;
   if (!events.hasLoadedFromServer) return <Spinner />;

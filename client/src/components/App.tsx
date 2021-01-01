@@ -1,15 +1,12 @@
 import { Link, RouteComponentProps } from "@reach/router";
-import { Header, Menu as EriMenu, Main, Spinner, QuickNav, Icon } from "eri";
+import { Header, Menu as EriMenu, Main, QuickNav, Icon } from "eri";
 import * as React from "react";
 import Menu from "./Menu";
 import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import { useSelector } from "react-redux";
-import {
-  appIsStorageLoadingSelector,
-  userIsSignedInSelector,
-} from "../selectors";
+import { userIsSignedInSelector } from "../selectors";
 import AddMoodFab from "./AddMoodFab";
 
 interface IProps extends RouteComponentProps {
@@ -20,7 +17,6 @@ export default function App({ children }: IProps) {
   useUser();
   useEvents();
   useStorage();
-  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -36,7 +32,7 @@ export default function App({ children }: IProps) {
         />
       </Header>
       <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
-      <Main>{isStorageLoading ? <Spinner /> : children}</Main>
+      <Main>{children}</Main>
       <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>

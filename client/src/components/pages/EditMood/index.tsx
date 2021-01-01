@@ -1,9 +1,9 @@
 import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
-import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
+import { Button, Paper, RadioButton, Spinner, TextArea, TextField } from "eri";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
-import { moodsSelector } from "../../../selectors";
+import { appIsStorageLoadingSelector, moodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { noPunctuationValidator } from "../../../validators";
@@ -18,6 +18,8 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined
   >();
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
+
   if (!id) return <Redirect to="/404" />;
   const mood = moods.byId[id];
   if (!mood) return <Redirect to="/404" />;

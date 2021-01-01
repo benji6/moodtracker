@@ -1,15 +1,19 @@
 import { RouteComponentProps } from "@reach/router";
-import { ChangePasswordPage } from "eri";
+import { ChangePasswordPage, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
-import { userEmailSelector } from "../../selectors";
+import {
+  appIsStorageLoadingSelector,
+  userEmailSelector,
+} from "../../selectors";
 import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
 
 export default function ChangePassword(_: RouteComponentProps) {
   useRedirectUnauthed();
   const email = useSelector(userEmailSelector)!;
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
     <ChangePasswordPage

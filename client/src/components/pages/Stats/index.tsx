@@ -5,13 +5,18 @@ import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import Months from "./Months";
 import Weeks from "./Weeks";
-import { eventsSelector, moodsSelector } from "../../../selectors";
+import {
+  appIsStorageLoadingSelector,
+  eventsSelector,
+  moodsSelector,
+} from "../../../selectors";
 import { useSelector } from "react-redux";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!moods.allIds.length)
     return (

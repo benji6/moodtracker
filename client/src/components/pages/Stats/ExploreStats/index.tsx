@@ -7,7 +7,11 @@ import {
   getEnvelopingMoodIds,
 } from "../../../../utils";
 import MoodChartForPeriod from "../MoodChartForPeriod";
-import { eventsSelector, moodsSelector } from "../../../../selectors";
+import {
+  appIsStorageLoadingSelector,
+  eventsSelector,
+  moodsSelector,
+} from "../../../../selectors";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "@reach/router";
 import AverageMoodByHour from "./AverageMoodByHour";
@@ -89,6 +93,7 @@ export default function ExploreStats(_: RouteComponentProps) {
     dayCount: 7,
     page: 0,
   });
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)

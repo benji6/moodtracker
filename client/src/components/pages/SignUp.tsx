@@ -1,10 +1,12 @@
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
-import { SignUpPage } from "eri";
+import { SignUpPage, Spinner } from "eri";
 import { RouteComponentProps, navigate } from "@reach/router";
 import * as React from "react";
 import { userPool } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
 import useRedirectAuthed from "../hooks/useRedirectAuthed";
+import { useSelector } from "react-redux";
+import { appIsStorageLoadingSelector } from "../../selectors";
 
 const signUp = ({
   attributeList,
@@ -30,6 +32,8 @@ const signUp = ({
 
 export default function SignUp(_: RouteComponentProps) {
   useRedirectAuthed();
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
+
   return (
     <SignUpPage
       onSubmit={async ({ email, password, setSubmitError }) => {

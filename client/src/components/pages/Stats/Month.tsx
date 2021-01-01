@@ -9,7 +9,11 @@ import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { dayMonthFormatter, monthFormatter } from "../../../formatters";
-import { eventsSelector, moodsSelector } from "../../../selectors";
+import {
+  appIsStorageLoadingSelector,
+  eventsSelector,
+  moodsSelector,
+} from "../../../selectors";
 import {
   formatIsoMonthInLocalTimezone,
   getMoodIdsInInterval,
@@ -32,6 +36,7 @@ export default function Month({
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
+  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
   if (!events.hasLoadedFromServer) return <Spinner />;
