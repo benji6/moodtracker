@@ -19,6 +19,12 @@ export default function Blog(_: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>Blog</h2>
+        <p>Welcome to the MoodTracker blog!</p>
+        <p>
+          This space is for announcing interesting new features and
+          developments. Less exciting stuff like bugfixes and performance
+          improvements won&apos;t get a mention here.
+        </p>
       </Paper>
       {Object.entries(BLOG_POSTS).map(([dateString, { __html, title }]) => (
         <Paper key={dateString}>
