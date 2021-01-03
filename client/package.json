@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheList && node scripts/createPrerenderedHtml",
-    "build:js": "CACHE_LIST=CACHE_LIST parcel build --no-source-maps src/index.html",
+    "build:parcel": "CACHE_LIST=CACHE_LIST parcel build --no-source-maps src/index.html",
     "build:robots": "touch dist/robots.txt",
     "fmt": "yarn test:lint --fix && prettier --write '**/*'",
     "html-fragments": "node scripts/updateHtmlFragments",
