@@ -1,14 +1,12 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  addHours,
-  addMonths,
-  addWeeks,
-  eachMonthOfInterval,
-  eachWeekOfInterval,
-  getHours,
-  set,
-  subHours,
-} from "date-fns";
+import addHours from "date-fns/addHours";
+import addMonths from "date-fns/addMonths";
+import addWeeks from "date-fns/addWeeks";
+import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
+import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
+import getHours from "date-fns/getHours";
+import set from "date-fns/set";
+import subHours from "date-fns/subHours";
 import { HOURS_PER_DAY } from "./constants";
 import { dateWeekdayFormatter, WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";

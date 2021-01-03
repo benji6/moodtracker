@@ -1,5 +1,7 @@
 import chroma from "chroma-js";
-import { set, add, getDay } from "date-fns";
+import add from "date-fns/add";
+import getDay from "date-fns/getDay";
+import set from "date-fns/set";
 import { DAYS_PER_WEEK, MOOD_RANGE } from "./constants";
 import { NormalizedMoods } from "./types";
 

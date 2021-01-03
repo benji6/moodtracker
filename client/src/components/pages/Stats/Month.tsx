@@ -1,10 +1,4 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import {
-  addDays,
-  addMonths,
-  differenceInCalendarDays,
-  subMonths,
-} from "date-fns";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -26,6 +20,10 @@ import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "./MoodCalendarForMonth";
+import subMonths from "date-fns/subMonths";
+import addMonths from "date-fns/addMonths";
+import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
+import addDays from "date-fns/addDays";
 
 const X_LABELS_COUNT = 5;
 

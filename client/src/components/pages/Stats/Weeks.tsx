@@ -1,4 +1,3 @@
-import { startOfWeek } from "date-fns";
 import * as React from "react";
 import { Pagination, Paper } from "eri";
 import { mapRight, formatIsoDateInLocalTimezone } from "../../../utils";
@@ -7,6 +6,7 @@ import { Link } from "@reach/router";
 import { formatWeek, WEEK_OPTIONS } from "../../../formatters";
 import { averageByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
+import startOfWeek from "date-fns/startOfWeek";
 
 const MAX_WEEKS_PER_PAGE = 8;
 

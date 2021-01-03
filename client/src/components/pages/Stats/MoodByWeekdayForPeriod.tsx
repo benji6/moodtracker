@@ -9,9 +9,9 @@ import {
   computeMean,
   getWeekdayIndex,
 } from "../../../utils";
-import { addDays } from "date-fns";
 import { Paper } from "eri";
 import { DAYS_PER_WEEK, WEEKDAY_LABELS_SHORT } from "../../../constants";
+import addDays from "date-fns/addDays";
 
 interface Props {
   fromDate: Date;

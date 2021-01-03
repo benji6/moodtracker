@@ -1,4 +1,5 @@
-import { addDays, addWeeks } from "date-fns";
+import addDays from "date-fns/addDays";
+import addWeeks from "date-fns/addWeeks";
 import * as React from "react";
 import { DAYS_PER_WEEK } from "../../../constants";
 import { weekdayFormatterShort } from "../../../formatters";

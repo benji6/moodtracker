@@ -1,6 +1,4 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import { addDays, addWeeks, startOfWeek } from "date-fns";
-import { subWeeks } from "date-fns/esm";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -26,6 +24,10 @@ import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
+import startOfWeek from "date-fns/startOfWeek";
+import addWeeks from "date-fns/addWeeks";
+import subWeeks from "date-fns/subWeeks";
+import addDays from "date-fns/addDays";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 

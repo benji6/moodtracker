@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Chart } from "eri";
-import { setHours } from "date-fns";
 import { HOURS_PER_DAY, MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
+import setHours from "date-fns/setHours";
 
 const arbitraryDate = new Date();
 const formatter = Intl.DateTimeFormat(undefined, { hour: "numeric" });

@@ -1,4 +1,5 @@
-import { addDays, startOfWeek } from "date-fns";
+import addDays from "date-fns/addDays";
+import startOfWeek from "date-fns/startOfWeek";
 import {
   weekdayFormatterNarrow,
   weekdayFormatterShort,
