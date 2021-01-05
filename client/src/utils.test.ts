@@ -531,14 +531,18 @@ describe("utils", () => {
   });
 
   test("moodToColor", () => {
-    expect(moodToColor(MOOD_RANGE[0])).toMatchInlineSnapshot(`"#1747f0"`);
+    expect(moodToColor(MOOD_RANGE[0])).toMatchInlineSnapshot(
+      `"rgb(23, 71, 240)"`
+    );
     expect(
       moodToColor(MOOD_RANGE[0] + (MOOD_RANGE[1] + MOOD_RANGE[0]) / 2)
-    ).toMatchInlineSnapshot(`"#00e0e0"`);
-    expect(moodToColor(MOOD_RANGE[1])).toMatchInlineSnapshot(`"#30ff20"`);
+    ).toMatchInlineSnapshot(`"rgb(0, 224, 224)"`);
+    expect(moodToColor(MOOD_RANGE[1])).toMatchInlineSnapshot(
+      `"rgb(48, 255, 32)"`
+    );
     expect(
       moodToColor(MOOD_RANGE[0] + (MOOD_RANGE[1] - MOOD_RANGE[0]) / Math.PI)
-    ).toMatchInlineSnapshot(`"#00b8fe"`);
+    ).toMatchInlineSnapshot(`"rgb(0, 181, 250)"`);
   });
 
   test("roundDateDown", () => {

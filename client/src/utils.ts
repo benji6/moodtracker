@@ -1,4 +1,4 @@
-import chroma from "chroma-js";
+import { interpolateHcl } from "d3-interpolate";
 import add from "date-fns/add";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
@@ -184,15 +184,20 @@ export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
   return ys;
 };
 
-const getColor = chroma
-  .scale(["1747f0", "00e0e0", "30ff20"])
-  .domain([MOOD_RANGE[0], MOOD_RANGE[1]])
-  .mode("lch");
+const getColorNegative = interpolateHcl("#1747f0", "#00e0e0");
+const getColorPositive = interpolateHcl("#00e0e0", "#30ff20");
+const getColor = (n: number) =>
+  n < 0.5 ? getColorNegative(n * 2) : getColorPositive((n - 0.5) * 2);
 
-// chroma-js has a cache which is very useful
-// to limit memory overhead we round the mood
-export const moodToColor = (mood: number): string =>
-  getColor(Number(mood.toFixed(1))).hex();
+const colorCache = new Map<string, string>();
+export const moodToColor = (mood: number): string => {
+  const roundedMood = mood.toFixed(1);
+  const cachedColor = colorCache.get(roundedMood);
+  if (cachedColor) return cachedColor;
+  const color = getColor(Number(roundedMood) / 10);
+  colorCache.set(roundedMood, color);
+  return color;
+};
 
 export const roundDateDown = (date: Date): Date =>
   set(date, {
