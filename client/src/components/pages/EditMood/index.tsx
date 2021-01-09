@@ -7,7 +7,7 @@ import { appIsStorageLoadingSelector, moodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { noPunctuationValidator } from "../../../validators";
-import { ServerMood } from "../../../types";
+import { UpdateMood } from "../../../types";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
@@ -55,17 +55,41 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             if (descriptionFieldError)
               return setDescriptionError(descriptionFieldError);
 
-            const payload: ServerMood = { id, mood: Number(moodValue) };
-            if (descriptionValue) payload.description = descriptionValue.trim();
-            if (explorationValue) payload.exploration = explorationValue.trim();
+            const payload: UpdateMood = { id };
+            let shouldUpdate = false;
 
-            dispatch(
-              eventsSlice.actions.add({
-                type: "v1/moods/update",
-                createdAt: new Date().toISOString(),
-                payload,
-              })
-            );
+            const moodValueNumber = Number(moodValue);
+            if (moodValueNumber !== mood.mood) {
+              payload.mood = moodValueNumber;
+              shouldUpdate = true;
+            }
+
+            const trimmedDescriptionValue = descriptionValue.trim();
+            if (
+              descriptionValue &&
+              trimmedDescriptionValue !== mood.description
+            ) {
+              payload.description = trimmedDescriptionValue;
+              shouldUpdate = true;
+            }
+
+            const trimmedExplorationValue = explorationValue.trim();
+            if (
+              explorationValue &&
+              trimmedExplorationValue !== mood.exploration
+            ) {
+              payload.exploration = explorationValue.trim();
+              shouldUpdate = true;
+            }
+
+            if (shouldUpdate)
+              dispatch(
+                eventsSlice.actions.add({
+                  type: "v1/moods/update",
+                  createdAt: new Date().toISOString(),
+                  payload,
+                })
+              );
             navigate("/");
           }}
         >

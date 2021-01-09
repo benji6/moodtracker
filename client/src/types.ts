@@ -18,6 +18,13 @@ export interface Mood {
 
 export type ServerMood = Mood & { id: string };
 
+export interface UpdateMood {
+  description?: string;
+  exploration?: string;
+  id: string;
+  mood?: number;
+}
+
 type MoodEvent<Type extends string, Payload> = {
   createdAt: string;
   payload: Payload;
@@ -27,4 +34,4 @@ type MoodEvent<Type extends string, Payload> = {
 export type AppEvent =
   | MoodEvent<"v1/moods/create", Mood>
   | MoodEvent<"v1/moods/delete", string>
-  | MoodEvent<"v1/moods/update", ServerMood>;
+  | MoodEvent<"v1/moods/update", UpdateMood>;
