@@ -34,7 +34,12 @@ const knownRoutes = new Set(routesToVisit);
       .toArray();
 
     for (const link of links) {
-      if (url.parse(link).host || knownRoutes.has(link)) continue;
+      if (
+        url.parse(link).host ||
+        knownRoutes.has(link) ||
+        link.startsWith("/stats")
+      )
+        continue;
       knownRoutes.add(link);
       routesToVisit.push(link);
     }

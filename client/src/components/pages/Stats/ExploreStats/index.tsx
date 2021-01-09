@@ -1,10 +1,12 @@
 import * as React from "react";
-import { FluxStandardAction } from "../../../../types";
-import { Paper, RadioButton, Pagination, Spinner } from "eri";
+import subDays from "date-fns/subDays";
+import addDays from "date-fns/addDays";
+import { Paper, Spinner, DateField } from "eri";
 import {
   roundDateUp,
   roundDateDown,
-  getEnvelopingMoodIds,
+  isoDateFromIsoDateAndTime,
+  formatIsoDateInLocalTimezone,
 } from "../../../../utils";
 import MoodChartForPeriod from "../MoodChartForPeriod";
 import {
@@ -17,6 +19,7 @@ import { RouteComponentProps } from "@reach/router";
 import AverageMoodByHour from "./AverageMoodByHour";
 import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
+import { DAYS_PER_WEEK } from "../../../../constants";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -41,19 +44,18 @@ const createXLabels = (
       : roundDateDown;
 
   for (let i = 1; i < X_LABELS_COUNT - 1; i++) {
-    labels.push(
-      convertDateToLabel(
-        roundFn(
-          new Date(
-            domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1)
-          )
+    const label = convertDateToLabel(
+      roundFn(
+        new Date(
+          domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1)
         )
       )
     );
+    if (!labels.some(([x]) => x === label[0])) labels.push(label);
   }
 
-  labels.push(convertDateToLabel(roundDateDown(new Date(domain[1]))));
-
+  const label = convertDateToLabel(roundDateDown(new Date(domain[1])));
+  if (!labels.some(([x]) => x === label[0])) labels.push(label);
   return labels;
 };
 
@@ -62,37 +64,17 @@ const dateFormatter = Intl.DateTimeFormat(undefined, {
   month: "short",
 });
 
-type StatsAction =
-  | FluxStandardAction<"moods/setDaysToShow", number | undefined>
-  | FluxStandardAction<"moods/setPage", number>;
-
-export interface StatsState {
-  dayCount: number | undefined;
-  page: number;
-}
-
-export const statsReducer = (
-  state: StatsState,
-  action: StatsAction
-): StatsState => {
-  switch (action.type) {
-    case "moods/setDaysToShow": {
-      const payload = "payload" in action ? action.payload : undefined;
-      return { dayCount: payload, page: 0 };
-    }
-    case "moods/setPage":
-      return { ...state, page: action.payload };
-  }
-};
-
 export default function ExploreStats(_: RouteComponentProps) {
   useRedirectUnauthed();
+  const dateNow = new Date();
+  const [dateFrom, setDateFrom] = React.useState(
+    roundDateDown(subDays(dateNow, DAYS_PER_WEEK))
+  );
+  const maxDate = roundDateUp(dateNow);
+  const [dateTo, setDateTo] = React.useState(maxDate);
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
-  const [localState, localDispatch] = React.useReducer(statsReducer, {
-    dayCount: 7,
-    page: 0,
-  });
+
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!events.hasLoadedFromServer) return <Spinner />;
@@ -103,95 +85,46 @@ export default function ExploreStats(_: RouteComponentProps) {
       </Paper.Group>
     );
 
-  const now = Date.now();
-
-  let pageCount = 1;
-  let visibleIds = moods.allIds;
-
   const domain: [number, number] = [
-    visibleIds.length
-      ? new Date(visibleIds[0]).getTime()
-      : now - MILLISECONDS_IN_A_DAY,
-    now,
+    new Date(dateFrom).getTime(),
+    new Date(dateTo).getTime(),
   ];
-
-  if (localState.dayCount !== undefined) {
-    const domainSpread = localState.dayCount * MILLISECONDS_IN_A_DAY;
-    domain[1] = now - domainSpread * localState.page;
-    domain[0] = domain[1] - domainSpread;
-
-    visibleIds = getEnvelopingMoodIds(
-      moods.allIds,
-      new Date(domain[0]),
-      new Date(domain[1])
-    );
-
-    const oldestMoodId = moods.allIds[0];
-
-    if (oldestMoodId) {
-      const dt = now - new Date(oldestMoodId).getTime();
-      pageCount = Math.ceil(dt / domainSpread);
-    }
-  }
 
   return (
     <Paper.Group>
       <Paper>
         <h2>Mood chart</h2>
         <MoodChartForPeriod
-          fromDate={new Date(domain[0])}
+          fromDate={new Date(dateFrom)}
           hidePoints
-          toDate={new Date(domain[1])}
-          xLabels={createXLabels(domain, now)}
+          toDate={new Date(dateTo)}
+          xLabels={createXLabels(domain, dateNow.getTime())}
         />
-        <RadioButton.Group label="Number of days to show">
-          {[
-            ...[...Array(4).keys()]
-              .map((n) => (n + 1) * 7)
-              .map((n) => (
-                <RadioButton
-                  key={n}
-                  name="day-count"
-                  onChange={() =>
-                    localDispatch({
-                      payload: n,
-                      type: "moods/setDaysToShow",
-                    })
-                  }
-                  checked={localState.dayCount === n}
-                  value={n}
-                >
-                  {n}
-                </RadioButton>
-              )),
-            <RadioButton
-              key="all"
-              name="day-count"
-              onChange={() =>
-                localDispatch({
-                  payload: undefined,
-                  type: "moods/setDaysToShow",
-                })
-              }
-              checked={localState.dayCount === undefined}
-              value={undefined}
-            >
-              All
-            </RadioButton>,
-          ]}
-        </RadioButton.Group>
-        {pageCount > 1 && (
-          <>
-            <h3>Page</h3>
-            <Pagination
-              onChange={(n) =>
-                localDispatch({ payload: n, type: "moods/setPage" })
-              }
-              page={localState.page}
-              pageCount={pageCount}
-            />
-          </>
-        )}
+        <DateField
+          label="From"
+          max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
+          min={isoDateFromIsoDateAndTime(moods.allIds[0])}
+          onChange={(e) => {
+            const date = new Date(e.target.value);
+            if (
+              date < roundDateDown(dateTo) &&
+              date >= roundDateDown(new Date(moods.allIds[0]))
+            )
+              setDateFrom(new Date(e.target.value));
+          }}
+          value={formatIsoDateInLocalTimezone(dateFrom)}
+        />
+        <DateField
+          label="To"
+          max={formatIsoDateInLocalTimezone(maxDate)}
+          min={formatIsoDateInLocalTimezone(addDays(dateFrom, 1))}
+          onChange={(e) => {
+            const date = new Date(e.target.value);
+            if (date > dateFrom && date <= maxDate)
+              setDateTo(new Date(e.target.value));
+          }}
+          value={formatIsoDateInLocalTimezone(dateTo)}
+        />
       </Paper>
       <AverageMoodByHour />
     </Paper.Group>
