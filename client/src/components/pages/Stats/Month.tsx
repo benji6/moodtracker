@@ -4,15 +4,19 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
+  formatWeekWithYear,
   monthFormatter,
+  WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters";
 import {
   appIsStorageLoadingSelector,
+  averageByWeekSelector,
   eventsSelector,
   moodsSelector,
 } from "../../../selectors";
 import {
+  formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
@@ -29,6 +33,8 @@ import subMonths from "date-fns/subMonths";
 import addMonths from "date-fns/addMonths";
 import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import addDays from "date-fns/addDays";
+import MoodCell from "./MoodCell";
+import startOfWeek from "date-fns/startOfWeek";
 
 const X_LABELS_COUNT = 5;
 
@@ -40,6 +46,7 @@ export default function Month({
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
+  const averageByWeek = useSelector(averageByWeekSelector);
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
@@ -120,6 +127,40 @@ export default function Month({
           <Paper>
             <h3>Calendar view</h3>
             <MoodCalendarForMonth month={month} />
+          </Paper>
+          <Paper>
+            <h3>Weeks</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Week</th>
+                  <th>Average mood</th>
+                </tr>
+              </thead>
+              <tbody>
+                {averageByWeek
+                  .filter(
+                    ([week]) => week < nextMonth && addDays(week, 7) >= month
+                  )
+                  .map(([week, averageMood]) => {
+                    const weekStr = formatWeekWithYear(week);
+                    return (
+                      <tr key={weekStr}>
+                        <td>
+                          <Link
+                            to={`weeks/${formatIsoDateInLocalTimezone(
+                              startOfWeek(week, WEEK_OPTIONS)
+                            )}`}
+                          >
+                            {weekStr}
+                          </Link>
+                        </td>
+                        <MoodCell mood={averageMood} />
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
           </Paper>
           <MoodByWeekdayForPeriod fromDate={month} toDate={nextMonth} />
           <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />

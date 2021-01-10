@@ -139,6 +139,8 @@ const makeAverageByPeriodSelector = (
   createSelector(moodsSelector, (moods): [Date, number][] => {
     const averageByPeriod: [Date, number][] = [];
 
+    if (!moods.allIds.length) return averageByPeriod;
+
     const periods = eachPeriodOfInterval({
       start: new Date(moods.allIds[0]),
       end: new Date(moods.allIds[moods.allIds.length - 1]),
