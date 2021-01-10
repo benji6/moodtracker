@@ -1,25 +1,34 @@
 import * as React from "react";
 import { Pagination, Paper } from "eri";
-import { mapRight, formatIsoDateInLocalTimezone } from "../../../utils";
+import {
+  mapRight,
+  formatIsoDateInLocalTimezone,
+  createDateFromLocalDateString,
+} from "../../../utils";
 import MoodCell from "./MoodCell";
 import { Link } from "@reach/router";
 import { formatWeekWithYear, WEEK_OPTIONS } from "../../../formatters";
-import { averageByWeekSelector } from "../../../selectors";
+import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import startOfWeek from "date-fns/startOfWeek";
 
 const MAX_WEEKS_PER_PAGE = 8;
 
 export default function Weeks() {
-  const averageByWeek = useSelector(averageByWeekSelector);
+  const normalizedAveragesByWeek = useSelector(
+    normalizedAveragesByWeekSelector
+  );
   const [page, setPage] = React.useState(0);
 
-  const pageCount = Math.ceil(averageByWeek.length / MAX_WEEKS_PER_PAGE);
+  const pageCount = Math.ceil(
+    normalizedAveragesByWeek.allIds.length / MAX_WEEKS_PER_PAGE
+  );
   const startIndex = Math.max(
     0,
-    averageByWeek.length - MAX_WEEKS_PER_PAGE * (page + 1)
+    normalizedAveragesByWeek.allIds.length - MAX_WEEKS_PER_PAGE * (page + 1)
   );
-  const endIndex = averageByWeek.length - MAX_WEEKS_PER_PAGE * page;
+  const endIndex =
+    normalizedAveragesByWeek.allIds.length - MAX_WEEKS_PER_PAGE * page;
 
   return (
     <Paper>
@@ -33,21 +42,22 @@ export default function Weeks() {
         </thead>
         <tbody>
           {mapRight(
-            averageByWeek.slice(startIndex, endIndex),
-            ([week, averageMood]) => {
-              const weekStr = formatWeekWithYear(week);
+            normalizedAveragesByWeek.allIds.slice(startIndex, endIndex),
+            (dateString) => {
+              const week = createDateFromLocalDateString(dateString);
+              const weekFormattedString = formatWeekWithYear(week);
               return (
-                <tr key={weekStr}>
+                <tr key={weekFormattedString}>
                   <td>
                     <Link
                       to={`weeks/${formatIsoDateInLocalTimezone(
                         startOfWeek(week, WEEK_OPTIONS)
                       )}`}
                     >
-                      {weekStr}
+                      {weekFormattedString}
                     </Link>
                   </td>
-                  <MoodCell mood={averageMood} />
+                  <MoodCell mood={normalizedAveragesByWeek.byId[dateString]} />
                 </tr>
               );
             }

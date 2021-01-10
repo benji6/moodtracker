@@ -1,7 +1,7 @@
 import {
-  averageByMonthSelector,
-  averageByWeekSelector,
-  averageByYearSelector,
+  normalizedAveragesByMonthSelector,
+  normalizedAveragesByWeekSelector,
+  normalizedAveragesByYearSelector,
   moodsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
@@ -199,7 +199,7 @@ describe("selectors", () => {
   describe("averageByMonthSelector", () => {
     it("works with 1 mood", () => {
       expect(
-        averageByMonthSelector({
+        normalizedAveragesByMonthSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -213,12 +213,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020-07-01"), 5]]);
+      ).toEqual({ allIds: ["2020-07-01"], byId: { "2020-07-01": 5 } });
     });
 
     it("works with 2 moods in the same month", () => {
       expect(
-        averageByMonthSelector({
+        normalizedAveragesByMonthSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -237,12 +237,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020-07-01"), 6]]);
+      ).toEqual({ allIds: ["2020-07-01"], byId: { "2020-07-01": 6 } });
     });
 
     it("works with 2 moods in adjacent months", () => {
       expect(
-        averageByMonthSelector({
+        normalizedAveragesByMonthSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -261,13 +261,13 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([
-        [new Date("2020-06-01"), 5],
-        [new Date("2020-07-01"), 5],
-      ]);
+      ).toEqual({
+        allIds: ["2020-06-01", "2020-07-01"],
+        byId: { "2020-06-01": 5, "2020-07-01": 5 },
+      });
 
       expect(
-        averageByMonthSelector({
+        normalizedAveragesByMonthSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -287,22 +287,22 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            2020-06-01T00:00:00.000Z,
-            5.05,
+        Object {
+          "allIds": Array [
+            "2020-06-01",
+            "2020-07-01",
           ],
-          Array [
-            2020-07-01T00:00:00.000Z,
-            6.550000000000001,
-          ],
-        ]
+          "byId": Object {
+            "2020-06-01": 5.05,
+            "2020-07-01": 6.550000000000001,
+          },
+        }
       `);
     });
 
     it("works with 2 moods in separate non-adjacent months", () => {
       expect(
-        averageByMonthSelector({
+        normalizedAveragesByMonthSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -321,15 +321,18 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([
-        [new Date("2020-04-01"), 5],
-        [new Date("2020-05-01"), 5],
-        [new Date("2020-06-01"), 5],
-        [new Date("2020-07-01"), 5],
-      ]);
+      ).toEqual({
+        allIds: ["2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01"],
+        byId: {
+          "2020-04-01": 5,
+          "2020-05-01": 5,
+          "2020-06-01": 5,
+          "2020-07-01": 5,
+        },
+      });
 
       expect(
-        averageByMonthSelector({
+        normalizedAveragesByMonthSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -349,24 +352,20 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            2020-04-01T00:00:00.000Z,
-            3.857142857142857,
+        Object {
+          "allIds": Array [
+            "2020-04-01",
+            "2020-05-01",
+            "2020-06-01",
+            "2020-07-01",
           ],
-          Array [
-            2020-05-01T00:00:00.000Z,
-            5.736263736263737,
-          ],
-          Array [
-            2020-06-01T00:00:00.000Z,
-            7.747252747252748,
-          ],
-          Array [
-            2020-07-01T00:00:00.000Z,
-            8.868131868131869,
-          ],
-        ]
+          "byId": Object {
+            "2020-04-01": 3.857142857142857,
+            "2020-05-01": 5.736263736263737,
+            "2020-06-01": 7.747252747252748,
+            "2020-07-01": 8.868131868131869,
+          },
+        }
       `);
     });
   });
@@ -374,7 +373,7 @@ describe("selectors", () => {
   describe("averageByWeekSelector", () => {
     it("works with 1 mood", () => {
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -388,12 +387,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020-07-27"), 5]]);
+      ).toEqual({ allIds: ["2020-07-27"], byId: { "2020-07-27": 5 } });
     });
 
     it("gets date correct", () => {
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -407,12 +406,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020-08-10"), 5]]);
+      ).toEqual({ allIds: ["2020-08-10"], byId: { "2020-08-10": 5 } });
     });
 
     it("works with 2 moods in the same week", () => {
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -431,12 +430,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020-07-27"), 6]]);
+      ).toEqual({ allIds: ["2020-07-27"], byId: { "2020-07-27": 6 } });
     });
 
     it("works with 2 moods in adjacent weeks", () => {
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -455,13 +454,13 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([
-        [new Date("2020-07-20"), 5],
-        [new Date("2020-07-27"), 5],
-      ]);
+      ).toEqual({
+        allIds: ["2020-07-20", "2020-07-27"],
+        byId: { "2020-07-20": 5, "2020-07-27": 5 },
+      });
 
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -481,22 +480,22 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            2020-07-20T00:00:00.000Z,
-            4,
+        Object {
+          "allIds": Array [
+            "2020-07-20",
+            "2020-07-27",
           ],
-          Array [
-            2020-07-27T00:00:00.000Z,
-            5.5,
-          ],
-        ]
+          "byId": Object {
+            "2020-07-20": 4,
+            "2020-07-27": 5.5,
+          },
+        }
       `);
     });
 
     it("works with 2 moods in separate non-adjacent weeks", () => {
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -515,16 +514,25 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([
-        [new Date("2020-06-29"), 5],
-        [new Date("2020-07-06"), 5],
-        [new Date("2020-07-13"), 5],
-        [new Date("2020-07-20"), 5],
-        [new Date("2020-07-27"), 5],
-      ]);
+      ).toEqual({
+        allIds: [
+          "2020-06-29",
+          "2020-07-06",
+          "2020-07-13",
+          "2020-07-20",
+          "2020-07-27",
+        ],
+        byId: {
+          "2020-06-29": 5,
+          "2020-07-06": 5,
+          "2020-07-13": 5,
+          "2020-07-20": 5,
+          "2020-07-27": 5,
+        },
+      });
 
       expect(
-        averageByWeekSelector({
+        normalizedAveragesByWeekSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -544,24 +552,20 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            2020-06-29T00:00:00.000Z,
-            4.050000000000001,
+        Object {
+          "allIds": Array [
+            "2020-06-29",
+            "2020-07-06",
+            "2020-07-13",
+            "2020-07-20",
           ],
-          Array [
-            2020-07-06T00:00:00.000Z,
-            4.449999999999999,
-          ],
-          Array [
-            2020-07-13T00:00:00.000Z,
-            5.15,
-          ],
-          Array [
-            2020-07-20T00:00:00.000Z,
-            5.75,
-          ],
-        ]
+          "byId": Object {
+            "2020-06-29": 4.050000000000001,
+            "2020-07-06": 4.449999999999999,
+            "2020-07-13": 5.15,
+            "2020-07-20": 5.75,
+          },
+        }
       `);
     });
   });
@@ -569,7 +573,7 @@ describe("selectors", () => {
   describe("averageByYearSelector", () => {
     it("works with 1 mood", () => {
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -583,9 +587,9 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020"), 5]]);
+      ).toEqual({ allIds: ["2020-01-01"], byId: { "2020-01-01": 5 } });
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -599,12 +603,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2021"), 5]]);
+      ).toEqual({ allIds: ["2021-01-01"], byId: { "2021-01-01": 5 } });
     });
 
     it("works with 2 moods in the same year", () => {
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -623,12 +627,12 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([[new Date("2020"), 6]]);
+      ).toEqual({ allIds: ["2020-01-01"], byId: { "2020-01-01": 6 } });
     });
 
     it("works with 2 moods in adjacent years", () => {
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -647,13 +651,13 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([
-        [new Date("2020"), 5],
-        [new Date("2021"), 5],
-      ]);
+      ).toEqual({
+        allIds: ["2020-01-01", "2021-01-01"],
+        byId: { "2020-01-01": 5, "2021-01-01": 5 },
+      });
 
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -673,18 +677,20 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            2020-01-01T00:00:00.000Z,
-            4.5,
+        Object {
+          "allIds": Array [
+            "2020-01-01",
           ],
-        ]
+          "byId": Object {
+            "2020-01-01": 4.5,
+          },
+        }
       `);
     });
 
     it("works with 2 moods in separate non-adjacent years", () => {
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -703,14 +709,13 @@ describe("selectors", () => {
             },
           },
         })
-      ).toEqual([
-        [new Date("2020"), 5],
-        [new Date("2021"), 5],
-        [new Date("2022"), 5],
-      ]);
+      ).toEqual({
+        allIds: ["2020-01-01", "2021-01-01", "2022-01-01"],
+        byId: { "2020-01-01": 5, "2021-01-01": 5, "2022-01-01": 5 },
+      });
 
       expect(
-        averageByYearSelector({
+        normalizedAveragesByYearSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -730,20 +735,18 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            2020-01-01T00:00:00.000Z,
-            4.24,
+        Object {
+          "allIds": Array [
+            "2020-01-01",
+            "2021-01-01",
+            "2022-01-01",
           ],
-          Array [
-            2021-01-01T00:00:00.000Z,
-            4.966666666666667,
-          ],
-          Array [
-            2022-01-01T00:00:00.000Z,
-            5.726666666666667,
-          ],
-        ]
+          "byId": Object {
+            "2020-01-01": 4.24,
+            "2021-01-01": 4.966666666666667,
+            "2022-01-01": 5.726666666666667,
+          },
+        }
       `);
     });
   });

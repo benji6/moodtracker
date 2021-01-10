@@ -1,24 +1,33 @@
 import * as React from "react";
 import { Pagination, Paper } from "eri";
-import { mapRight, formatIsoYearInLocalTimezone } from "../../../utils";
+import {
+  mapRight,
+  formatIsoYearInLocalTimezone,
+  createDateFromLocalDateString,
+} from "../../../utils";
 import MoodCell from "./MoodCell";
 import { yearFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
-import { averageByYearSelector } from "../../../selectors";
+import { normalizedAveragesByYearSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 
 const MAX_YEARS_PER_PAGE = 8;
 
 export default function Years() {
-  const averageByYear = useSelector(averageByYearSelector);
+  const normalizedAveragesByYear = useSelector(
+    normalizedAveragesByYearSelector
+  );
   const [page, setPage] = React.useState(0);
 
-  const pageCount = Math.ceil(averageByYear.length / MAX_YEARS_PER_PAGE);
+  const pageCount = Math.ceil(
+    normalizedAveragesByYear.allIds.length / MAX_YEARS_PER_PAGE
+  );
   const startIndex = Math.max(
     0,
-    averageByYear.length - MAX_YEARS_PER_PAGE * (page + 1)
+    normalizedAveragesByYear.allIds.length - MAX_YEARS_PER_PAGE * (page + 1)
   );
-  const endIndex = averageByYear.length - MAX_YEARS_PER_PAGE * page;
+  const endIndex =
+    normalizedAveragesByYear.allIds.length - MAX_YEARS_PER_PAGE * page;
 
   return (
     <Paper>
@@ -32,17 +41,18 @@ export default function Years() {
         </thead>
         <tbody>
           {mapRight(
-            averageByYear.slice(startIndex, endIndex),
-            ([year, averageMood]) => {
-              const yearString = yearFormatter.format(year);
+            normalizedAveragesByYear.allIds.slice(startIndex, endIndex),
+            (dateString) => {
+              const year = createDateFromLocalDateString(dateString);
+              const yearFormattedString = yearFormatter.format(year);
               return (
-                <tr key={yearString}>
+                <tr key={yearFormattedString}>
                   <td>
                     <Link to={`years/${formatIsoYearInLocalTimezone(year)}`}>
-                      {yearString}
+                      {yearFormattedString}
                     </Link>
                   </td>
-                  <MoodCell mood={averageMood} />
+                  <MoodCell mood={normalizedAveragesByYear.byId[dateString]} />
                 </tr>
               );
             }

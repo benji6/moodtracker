@@ -14,6 +14,7 @@ import {
   isoDateFromIsoDateAndTime,
   getWeekdayIndex,
   formatIsoYearInLocalTimezone,
+  createDateFromLocalDateString,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -271,6 +272,12 @@ describe("utils", () => {
     expect(computeMean([5])).toBe(5);
     expect(computeMean([1, 5])).toBe(3);
     expect(computeMean([1, 2, 3, 4, 5, 6, 7])).toBe(4);
+  });
+
+  test("createDateFromLocalDateString", () => {
+    expect(createDateFromLocalDateString("2021-01-01")).toEqual(
+      new Date("2021-01-01T00:00:00")
+    );
   });
 
   describe("computeStandardDeviation", () => {

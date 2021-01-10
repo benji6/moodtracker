@@ -13,7 +13,10 @@ import { HOURS_PER_DAY } from "./constants";
 import { dateWeekdayFormatter, WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
-import { computeAverageMoodInInterval } from "./utils";
+import {
+  computeAverageMoodInInterval,
+  formatIsoDateInLocalTimezone,
+} from "./utils";
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
   state.app.isStorageLoading;
@@ -132,14 +135,19 @@ export const averageByHourSelector = createSelector(moodsSelector, (moods): {
   return { averages: averages.filter((x) => x !== undefined), daysUsed };
 });
 
-const makeAverageByPeriodSelector = (
+const makeNormalizedAveragesByPeriodSelector = (
   eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
   addPeriods: (date: Date, n: number) => Date
 ) =>
-  createSelector(moodsSelector, (moods): [Date, number][] => {
-    const averageByPeriod: [Date, number][] = [];
+  createSelector(moodsSelector, (moods): {
+    allIds: string[];
+    byId: { [k: string]: number };
+  } => {
+    const allIds: string[] = [];
+    const byId: { [k: string]: number } = {};
+    const normalizedAverages = { allIds, byId };
 
-    if (!moods.allIds.length) return averageByPeriod;
+    if (!moods.allIds.length) return normalizedAverages;
 
     const periods = eachPeriodOfInterval({
       start: new Date(moods.allIds[0]),
@@ -148,8 +156,12 @@ const makeAverageByPeriodSelector = (
 
     const finalPeriod = addPeriods(periods[periods.length - 1], 1);
 
-    if (moods.allIds.length === 1)
-      return [[periods[0], moods.byId[moods.allIds[0]].mood]];
+    if (moods.allIds.length === 1) {
+      const id = formatIsoDateInLocalTimezone(periods[0]);
+      allIds.push(id);
+      byId[id] = moods.byId[moods.allIds[0]].mood;
+      return normalizedAverages;
+    }
 
     periods.push(finalPeriod);
 
@@ -157,25 +169,28 @@ const makeAverageByPeriodSelector = (
       const p0 = periods[i - 1];
       const p1 = periods[i];
       const averageMoodInInterval = computeAverageMoodInInterval(moods, p0, p1);
-      if (averageMoodInInterval !== undefined)
-        averageByPeriod.push([p0, averageMoodInInterval]);
+      if (averageMoodInInterval !== undefined) {
+        const id = formatIsoDateInLocalTimezone(p0);
+        allIds.push(id);
+        byId[id] = averageMoodInInterval;
+      }
     }
 
-    return averageByPeriod;
+    return normalizedAverages;
   });
 
-export const averageByMonthSelector = makeAverageByPeriodSelector(
+export const normalizedAveragesByMonthSelector = makeNormalizedAveragesByPeriodSelector(
   eachMonthOfInterval,
   addMonths
 );
 
-export const averageByWeekSelector = makeAverageByPeriodSelector(
+export const normalizedAveragesByWeekSelector = makeNormalizedAveragesByPeriodSelector(
   ({ start, end }: Interval) =>
     eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
   addWeeks
 );
 
-export const averageByYearSelector = makeAverageByPeriodSelector(
+export const normalizedAveragesByYearSelector = makeNormalizedAveragesByPeriodSelector(
   eachYearOfInterval,
   addYears
 );

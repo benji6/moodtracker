@@ -11,11 +11,12 @@ import {
 } from "../../../formatters";
 import {
   appIsStorageLoadingSelector,
-  averageByWeekSelector,
+  normalizedAveragesByWeekSelector,
   eventsSelector,
   moodsSelector,
 } from "../../../selectors";
 import {
+  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
@@ -35,6 +36,7 @@ import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import addDays from "date-fns/addDays";
 import MoodCell from "./MoodCell";
 import startOfWeek from "date-fns/startOfWeek";
+import subDays from "date-fns/subDays";
 
 const X_LABELS_COUNT = 5;
 
@@ -46,7 +48,9 @@ export default function Month({
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
-  const averageByWeek = useSelector(averageByWeekSelector);
+  const normalizedAveragesByWeek = useSelector(
+    normalizedAveragesByWeekSelector
+  );
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
@@ -63,6 +67,10 @@ export default function Month({
   const month = new Date(monthStr);
   const prevMonth = subMonths(month, 1);
   const nextMonth = addMonths(month, 1);
+  const nextMonthDateString = formatIsoDateInLocalTimezone(nextMonth);
+  const monthMinus7DaysDateString = formatIsoDateInLocalTimezone(
+    subDays(month, 7)
+  );
 
   const showPrevious = month > firstMoodDate;
   const showNext = nextMonth <= new Date();
@@ -138,14 +146,17 @@ export default function Month({
                 </tr>
               </thead>
               <tbody>
-                {averageByWeek
+                {normalizedAveragesByWeek.allIds
                   .filter(
-                    ([week]) => week < nextMonth && addDays(week, 7) >= month
+                    (dateString) =>
+                      dateString >= monthMinus7DaysDateString &&
+                      dateString < nextMonthDateString
                   )
-                  .map(([week, averageMood]) => {
+                  .map((dateString) => {
+                    const week = createDateFromLocalDateString(dateString);
                     const weekStr = formatWeekWithYear(week);
                     return (
-                      <tr key={weekStr}>
+                      <tr key={dateString}>
                         <td>
                           <Link
                             to={`weeks/${formatIsoDateInLocalTimezone(
@@ -155,7 +166,9 @@ export default function Month({
                             {weekStr}
                           </Link>
                         </td>
-                        <MoodCell mood={averageMood} />
+                        <MoodCell
+                          mood={normalizedAveragesByWeek.byId[dateString]}
+                        />
                       </tr>
                     );
                   })}
