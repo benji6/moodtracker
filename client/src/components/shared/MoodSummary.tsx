@@ -19,7 +19,7 @@ interface PeriodData {
 interface Props {
   currentPeriod: PeriodData;
   nextPeriod?: PeriodData;
-  periodType: "month" | "week";
+  periodType: "month" | "week" | "year";
   previousPeriod?: PeriodData;
 }
 

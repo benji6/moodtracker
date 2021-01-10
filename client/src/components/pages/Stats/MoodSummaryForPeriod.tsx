@@ -11,7 +11,7 @@ import MoodSummary from "../../shared/MoodSummary";
 
 interface Props {
   dates: [Date, Date, Date, Date];
-  periodType: "month" | "week";
+  periodType: "month" | "week" | "year";
   showNext: boolean;
 }
 

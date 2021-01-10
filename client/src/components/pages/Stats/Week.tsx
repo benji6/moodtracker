@@ -50,7 +50,7 @@ export default function Week({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const week = startOfWeek(new Date(`${weekStr}T00:00:00`), WEEK_OPTIONS);
+  const week = startOfWeek(new Date(weekStr), WEEK_OPTIONS);
   const nextWeek = addWeeks(week, 1);
   const prevWeek = subWeeks(week, 1);
 

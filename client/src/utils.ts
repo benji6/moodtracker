@@ -166,6 +166,9 @@ export const formatIsoDateInLocalTimezone = (date: Date): string =>
 export const formatIsoMonthInLocalTimezone = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 
+export const formatIsoYearInLocalTimezone = (date: Date): string =>
+  String(date.getFullYear());
+
 export const getWeekdayIndex = (date: Date): 0 | 1 | 2 | 3 | 4 | 5 | 6 => {
   const dateFnsWeekdayIndex = getDay(date);
   return ((dateFnsWeekdayIndex ? dateFnsWeekdayIndex : DAYS_PER_WEEK) - 1) as

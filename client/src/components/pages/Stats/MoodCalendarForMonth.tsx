@@ -1,6 +1,5 @@
 import addDays from "date-fns/addDays";
 import getDaysInMonth from "date-fns/getDaysInMonth";
-import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK, WEEKDAY_LABELS_NARROW } from "../../../constants";
@@ -11,13 +10,17 @@ import {
   moodToColor,
 } from "../../../utils";
 
-const BLOCK_SIZE = "var(--e-space-4)";
+const GRID_GAP = "var(--e-space-0)";
 
 interface Props {
+  blockSize?: string;
   month: Date;
 }
 
-export default function MoodCalendarForMonth({ month }: Props) {
+export default function MoodCalendarForMonth({
+  blockSize = "var(--e-space-4)",
+  month,
+}: Props) {
   const moods = useSelector(moodsSelector);
 
   // undefined represents padding before the month
@@ -37,39 +40,38 @@ export default function MoodCalendarForMonth({ month }: Props) {
   }
 
   return (
-    <Paper>
-      <h3>Calendar view</h3>
-      <div
-        aria-label="A calendar visualization of mood for each day of the month"
-        style={{
-          display: "grid",
-          gridGap: "var(--e-space-0)",
-          gridTemplateColumns: "repeat(7, 1fr)",
-          margin: "auto",
-          maxWidth: `calc(${DAYS_PER_WEEK} * ${BLOCK_SIZE})`,
-        }}
-      >
-        {WEEKDAY_LABELS_NARROW.map((label, i) => (
-          <div key={i} className="center">
-            <small>{label}</small>
-          </div>
-        ))}
-        {data.map((mood, i) => (
-          <div
-            key={i}
-            style={{
-              background:
-                mood === null
-                  ? "var(--e-color-balance-less)"
-                  : mood === undefined
-                  ? "none"
-                  : moodToColor(mood),
-              height: BLOCK_SIZE,
-            }}
-            title={mood === null ? "No data" : mood?.toFixed(1)}
-          />
-        ))}
-      </div>
-    </Paper>
+    <div
+      aria-label="A calendar visualization of mood for each day of the month"
+      style={{
+        display: "grid",
+        gridGap: GRID_GAP,
+        gridTemplateColumns: "repeat(7, 1fr)",
+        margin: "auto",
+        maxWidth: `calc(${DAYS_PER_WEEK} * ${blockSize} + ${
+          DAYS_PER_WEEK - 1
+        } * ${GRID_GAP})`,
+      }}
+    >
+      {WEEKDAY_LABELS_NARROW.map((label, i) => (
+        <div key={i} className="center">
+          <small>{label}</small>
+        </div>
+      ))}
+      {data.map((mood, i) => (
+        <div
+          key={i}
+          style={{
+            background:
+              mood === null
+                ? "var(--e-color-balance-less)"
+                : mood === undefined
+                ? "none"
+                : moodToColor(mood),
+            height: blockSize,
+          }}
+          title={mood === null ? "No data" : mood?.toFixed(1)}
+        />
+      ))}
+    </div>
   );
 }

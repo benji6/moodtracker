@@ -2,7 +2,7 @@ import * as React from "react";
 import { Pagination, Paper } from "eri";
 import { mapRight, formatIsoMonthInLocalTimezone } from "../../../utils";
 import MoodCell from "./MoodCell";
-import { monthFormatter } from "../../../formatters";
+import { monthYearFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
 import { averageByMonthSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
@@ -34,7 +34,7 @@ export default function Months() {
           {mapRight(
             averageByMonth.slice(startIndex, endIndex),
             ([month, averageMood]) => {
-              const monthStr = monthFormatter.format(month);
+              const monthStr = monthYearFormatter.format(month);
               return (
                 <tr key={monthStr}>
                   <td>

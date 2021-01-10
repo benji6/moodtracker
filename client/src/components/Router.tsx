@@ -19,6 +19,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
 import App from "./App";
 import Blog from "./pages/Blog";
+import Year from "./pages/Stats/Year";
 
 export default function Router() {
   return (
@@ -42,6 +43,7 @@ export default function Router() {
         <Stats path="/stats" />
         <Verify path="/verify" />
         <Week path="/stats/weeks/:week" />
+        <Year path="/stats/years/:year" />
       </App>
     </ReachRouter>
   );

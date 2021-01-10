@@ -7,6 +7,7 @@ import { userEmailSelector, userIsSignedInSelector } from "../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
+  formatIsoYearInLocalTimezone,
 } from "../../utils";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
@@ -76,6 +77,12 @@ export default function Menu({ handleMenuClose, open }: Props) {
                   to={`/stats/months/${formatIsoMonthInLocalTimezone(now)}`}
                 >
                   This month
+                </EriMenu.Link>
+                <EriMenu.Link
+                  onClick={handleMenuClose}
+                  to={`/stats/years/${formatIsoYearInLocalTimezone(now)}`}
+                >
+                  This year
                 </EriMenu.Link>
                 <EriMenu.Link onClick={handleMenuClose} to="/stats/explore">
                   Explore

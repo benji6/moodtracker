@@ -48,7 +48,7 @@ export default function Month({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const month = new Date(`${monthStr}T00:00:00`);
+  const month = new Date(monthStr);
   const prevMonth = subMonths(month, 1);
   const nextMonth = addMonths(month, 1);
 
@@ -103,7 +103,10 @@ export default function Month({
               xLabels={xLabels}
             />
           </Paper>
-          <MoodCalendarForMonth month={month} />
+          <Paper>
+            <h3>Calendar view</h3>
+            <MoodCalendarForMonth month={month} />
+          </Paper>
           <MoodByWeekdayForPeriod fromDate={month} toDate={nextMonth} />
           <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />
           <MoodCloudForPeriod fromDate={month} toDate={nextMonth} />

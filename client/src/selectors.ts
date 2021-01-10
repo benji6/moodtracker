@@ -2,8 +2,10 @@ import { createSelector } from "@reduxjs/toolkit";
 import addHours from "date-fns/addHours";
 import addMonths from "date-fns/addMonths";
 import addWeeks from "date-fns/addWeeks";
+import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
+import eachYearOfInterval from "date-fns/eachYearOfInterval";
 import getHours from "date-fns/getHours";
 import set from "date-fns/set";
 import subHours from "date-fns/subHours";
@@ -130,74 +132,51 @@ export const averageByHourSelector = createSelector(moodsSelector, (moods): {
   return { averages: averages.filter((x) => x !== undefined), daysUsed };
 });
 
-export const averageByMonthSelector = createSelector(moodsSelector, (moods): [
-  Date,
-  number
-][] => {
-  const averageByMonth: [Date, number][] = [];
+const makeAverageByPeriodSelector = (
+  eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
+  addPeriods: (date: Date, n: number) => Date
+) =>
+  createSelector(moodsSelector, (moods): [Date, number][] => {
+    const averageByPeriod: [Date, number][] = [];
 
-  const months = eachMonthOfInterval({
-    start: new Date(moods.allIds[0]),
-    end: new Date(moods.allIds[moods.allIds.length - 1]),
-  });
-
-  const finalMonth = addMonths(months[months.length - 1], 1);
-
-  if (moods.allIds.length === 1) {
-    return [[months[0], moods.byId[moods.allIds[0]].mood]];
-  }
-
-  months.push(finalMonth);
-
-  for (let i = 1; i < months.length; i++) {
-    const month0 = months[i - 1];
-    const month1 = months[i];
-    const averageMoodInInterval = computeAverageMoodInInterval(
-      moods,
-      month0,
-      month1
-    );
-    if (averageMoodInInterval !== undefined)
-      averageByMonth.push([month0, averageMoodInInterval]);
-  }
-
-  return averageByMonth;
-});
-
-export const averageByWeekSelector = createSelector(moodsSelector, (moods): [
-  Date,
-  number
-][] => {
-  const averageByWeek: [Date, number][] = [];
-
-  const weeks = eachWeekOfInterval(
-    {
+    const periods = eachPeriodOfInterval({
       start: new Date(moods.allIds[0]),
       end: new Date(moods.allIds[moods.allIds.length - 1]),
-    },
-    WEEK_OPTIONS
-  );
+    });
 
-  if (moods.allIds.length === 1) {
-    return [[weeks[0], moods.byId[moods.allIds[0]].mood]];
-  }
+    const finalPeriod = addPeriods(periods[periods.length - 1], 1);
 
-  weeks.push(addWeeks(weeks[weeks.length - 1], 1));
+    if (moods.allIds.length === 1)
+      return [[periods[0], moods.byId[moods.allIds[0]].mood]];
 
-  for (let i = 1; i < weeks.length; i++) {
-    const week0 = weeks[i - 1];
-    const week1 = weeks[i];
-    const averageMoodInInterval = computeAverageMoodInInterval(
-      moods,
-      week0,
-      week1
-    );
-    if (averageMoodInInterval !== undefined)
-      averageByWeek.push([week0, averageMoodInInterval]);
-  }
+    periods.push(finalPeriod);
 
-  return averageByWeek;
-});
+    for (let i = 1; i < periods.length; i++) {
+      const p0 = periods[i - 1];
+      const p1 = periods[i];
+      const averageMoodInInterval = computeAverageMoodInInterval(moods, p0, p1);
+      if (averageMoodInInterval !== undefined)
+        averageByPeriod.push([p0, averageMoodInInterval]);
+    }
+
+    return averageByPeriod;
+  });
+
+export const averageByMonthSelector = makeAverageByPeriodSelector(
+  eachMonthOfInterval,
+  addMonths
+);
+
+export const averageByWeekSelector = makeAverageByPeriodSelector(
+  ({ start, end }: Interval) =>
+    eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
+  addWeeks
+);
+
+export const averageByYearSelector = makeAverageByPeriodSelector(
+  eachYearOfInterval,
+  addYears
+);
 
 export const groupMoodsByDaySelector = createSelector(moodsSelector, (moods): [
   string,

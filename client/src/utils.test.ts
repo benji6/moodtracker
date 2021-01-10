@@ -13,6 +13,7 @@ import {
   computeMean,
   isoDateFromIsoDateAndTime,
   getWeekdayIndex,
+  formatIsoYearInLocalTimezone,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -523,6 +524,18 @@ describe("utils", () => {
     );
     expect(formatIsoMonthInLocalTimezone(new Date("2020-10-01T00:00:00"))).toBe(
       "2020-10"
+    );
+  });
+
+  test("formatIsoYearInLocalTimezone", () => {
+    expect(formatIsoYearInLocalTimezone(new Date("2020-01-01T00:00:00"))).toBe(
+      "2020"
+    );
+    expect(formatIsoYearInLocalTimezone(new Date("2020-12-31T23:59:59"))).toBe(
+      "2020"
+    );
+    expect(formatIsoYearInLocalTimezone(new Date("2021-01-01T00:00:00"))).toBe(
+      "2021"
     );
   });
 

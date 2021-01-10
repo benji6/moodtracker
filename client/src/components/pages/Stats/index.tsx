@@ -11,6 +11,7 @@ import {
   moodsSelector,
 } from "../../../selectors";
 import { useSelector } from "react-redux";
+import Years from "./Years";
 
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -31,6 +32,7 @@ export default function Stats(_: RouteComponentProps) {
     <Paper.Group>
       <Weeks />
       <Months />
+      <Years />
       <Paper>
         <h2>Explore</h2>
         <p className="center">
