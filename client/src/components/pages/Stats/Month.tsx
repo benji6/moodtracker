@@ -1,8 +1,12 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import { Paper, Spinner } from "eri";
+import { Icon, Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { dayMonthFormatter, monthFormatter } from "../../../formatters";
+import {
+  dayMonthFormatter,
+  monthFormatter,
+  yearFormatter,
+} from "../../../formatters";
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
@@ -10,6 +14,7 @@ import {
 } from "../../../selectors";
 import {
   formatIsoMonthInLocalTimezone,
+  formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
@@ -72,18 +77,27 @@ export default function Month({
   return (
     <Paper.Group>
       <Paper>
-        <h2>{monthFormatter.format(month)}</h2>
+        <h2>
+          {monthFormatter.format(month)}
+          <SubHeading>
+            <Link to={`../../years/${formatIsoYearInLocalTimezone(month)}`}>
+              {yearFormatter.format(month)}
+            </Link>
+          </SubHeading>
+        </h2>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
-              Previous month
+              <Icon draw name="left" size="inherit" />
+              {monthFormatter.format(prevMonth)}
             </Link>
           ) : (
             <span />
           )}
           {showNext && (
             <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
-              Next month
+              {monthFormatter.format(nextMonth)}
+              <Icon draw name="right" size="inherit" />
             </Link>
           )}
         </div>
