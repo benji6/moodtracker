@@ -1,12 +1,14 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import { Paper, Spinner } from "eri";
+import { Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK } from "../../../constants";
 import {
   formatWeek,
+  monthFormatter,
   weekdayFormatterShort,
   WEEK_OPTIONS,
+  yearFormatter,
 } from "../../../formatters";
 import {
   appIsStorageLoadingSelector,
@@ -15,6 +17,8 @@ import {
 } from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
+  formatIsoMonthInLocalTimezone,
+  formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
@@ -77,7 +81,20 @@ export default function Week({
   return (
     <Paper.Group>
       <Paper>
-        <h2>{formatWeek(week)}</h2>
+        <h2>
+          {formatWeek(week)}
+          <SubHeading>
+            <Link
+              to={`../../months/${formatIsoMonthInLocalTimezone(nextWeek)}`}
+            >
+              {monthFormatter.format(nextWeek)}
+            </Link>{" "}
+            |{" "}
+            <Link to={`../../years/${formatIsoYearInLocalTimezone(nextWeek)}`}>
+              {yearFormatter.format(nextWeek)}
+            </Link>
+          </SubHeading>
+        </h2>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevWeek)}`}>

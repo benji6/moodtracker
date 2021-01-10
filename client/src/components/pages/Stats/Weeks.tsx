@@ -3,7 +3,7 @@ import { Pagination, Paper } from "eri";
 import { mapRight, formatIsoDateInLocalTimezone } from "../../../utils";
 import MoodCell from "./MoodCell";
 import { Link } from "@reach/router";
-import { formatWeek, WEEK_OPTIONS } from "../../../formatters";
+import { formatWeekWithYear, WEEK_OPTIONS } from "../../../formatters";
 import { averageByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import startOfWeek from "date-fns/startOfWeek";
@@ -35,7 +35,7 @@ export default function Weeks() {
           {mapRight(
             averageByWeek.slice(startIndex, endIndex),
             ([week, averageMood]) => {
-              const weekStr = formatWeek(week);
+              const weekStr = formatWeekWithYear(week);
               return (
                 <tr key={weekStr}>
                   <td>
