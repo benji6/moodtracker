@@ -78,7 +78,7 @@ describe("selectors", () => {
       });
     });
 
-    test("with an update event", () => {
+    test("with an update event that changes all event properties", () => {
       expect(
         moodsSelector({
           ...initialState,
@@ -136,6 +136,67 @@ describe("selectors", () => {
             description: "joy",
             exploration: "bar",
             mood: 10,
+            updatedAt: "2020-10-10T08:04:00.000Z",
+          },
+          "2020-10-10T08:03:00.000Z": { mood: 7 },
+        },
+      });
+    });
+
+    test("with an update event that changes a single property", () => {
+      expect(
+        moodsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-10T08:01:00.000Z",
+              "2020-10-10T08:02:00.000Z",
+              "2020-10-10T08:03:00.000Z",
+              "2020-10-10T08:04:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-10-10T08:01:00.000Z": {
+                createdAt: "2020-10-10T08:01:00.000Z",
+                type: "v1/moods/create",
+                payload: {
+                  description: "happy",
+                  exploration: "foo",
+                  mood: 8,
+                },
+              },
+              "2020-10-10T08:02:00.000Z": {
+                createdAt: "2020-10-10T08:02:00.000Z",
+                type: "v1/moods/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+              "2020-10-10T08:03:00.000Z": {
+                createdAt: "2020-10-10T08:03:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+              "2020-10-10T08:04:00.000Z": {
+                createdAt: "2020-10-10T08:04:00.000Z",
+                type: "v1/moods/update",
+                payload: {
+                  id: "2020-10-10T08:01:00.000Z",
+                  description: "joy",
+                },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:01:00.000Z", "2020-10-10T08:03:00.000Z"],
+        byId: {
+          "2020-10-10T08:01:00.000Z": {
+            description: "joy",
             updatedAt: "2020-10-10T08:04:00.000Z",
           },
           "2020-10-10T08:03:00.000Z": { mood: 7 },
