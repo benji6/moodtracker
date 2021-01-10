@@ -1,5 +1,5 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import { Paper, Spinner, SubHeading } from "eri";
+import { Icon, Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK } from "../../../constants";
@@ -98,6 +98,7 @@ export default function Week({
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevWeek)}`}>
+              <Icon draw name="left" size="inherit" />
               Previous week
             </Link>
           ) : (
@@ -106,6 +107,7 @@ export default function Week({
           {showNext && (
             <Link to={`../${formatIsoDateInLocalTimezone(nextWeek)}`}>
               Next week
+              <Icon draw name="right" size="inherit" />
             </Link>
           )}
         </div>

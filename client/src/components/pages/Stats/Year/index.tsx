@@ -4,7 +4,7 @@ import {
   RouteComponentProps,
   useNavigate,
 } from "@reach/router";
-import { Paper, Spinner, SubHeading } from "eri";
+import { Icon, Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import {
@@ -108,14 +108,16 @@ export default function Year({
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoYearInLocalTimezone(prevYear)}`}>
-              Previous year
+              <Icon draw name="left" size="inherit" />
+              {yearFormatter.format(prevYear)}
             </Link>
           ) : (
             <span />
           )}
           {showNext && (
             <Link to={`../${formatIsoYearInLocalTimezone(nextYear)}`}>
-              Next year
+              {yearFormatter.format(nextYear)}
+              <Icon draw name="right" size="inherit" />
             </Link>
           )}
         </div>
