@@ -1,0 +1,13 @@
+.m-calendar-day {
+  animation: m-calendar-day-keyframes var(--e-time-1) var(--e-easing-standard)
+    forwards;
+  opacity: 0;
+  transform: scale(0);
+}
+
+@keyframes m-calendar-day-keyframes {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

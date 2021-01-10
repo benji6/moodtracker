@@ -2,13 +2,14 @@ import addDays from "date-fns/addDays";
 import getDaysInMonth from "date-fns/getDaysInMonth";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { DAYS_PER_WEEK, WEEKDAY_LABELS_NARROW } from "../../../constants";
-import { moodsSelector } from "../../../selectors";
+import { DAYS_PER_WEEK, WEEKDAY_LABELS_NARROW } from "../../../../constants";
+import { moodsSelector } from "../../../../selectors";
 import {
   computeAverageMoodInInterval,
   getWeekdayIndex,
   moodToColor,
-} from "../../../utils";
+} from "../../../../utils";
+import "./style.css";
 
 const GRID_GAP = "var(--e-space-0)";
 
@@ -60,7 +61,9 @@ export default function MoodCalendarForMonth({
       {data.map((mood, i) => (
         <div
           key={i}
+          className="m-calendar-day"
           style={{
+            animationDelay: `calc(var(--e-time-2) / ${data.length} * ${i}`,
             background:
               mood === null
                 ? "var(--e-color-balance-less)"
