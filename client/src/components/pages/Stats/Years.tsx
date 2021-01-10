@@ -52,7 +52,7 @@ export default function Years() {
                       {yearFormattedString}
                     </Link>
                   </td>
-                  <MoodCell mood={normalizedAveragesByYear.byId[dateString]} />
+                  <MoodCell mood={normalizedAveragesByYear.byId[dateString]!} />
                 </tr>
               );
             }

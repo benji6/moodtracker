@@ -64,7 +64,7 @@ export default function Month({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const month = new Date(monthStr);
+  const month = createDateFromLocalDateString(monthStr);
   const prevMonth = subMonths(month, 1);
   const nextMonth = addMonths(month, 1);
   const nextMonthDateString = formatIsoDateInLocalTimezone(nextMonth);
@@ -167,7 +167,7 @@ export default function Month({
                           </Link>
                         </td>
                         <MoodCell
-                          mood={normalizedAveragesByWeek.byId[dateString]}
+                          mood={normalizedAveragesByWeek.byId[dateString]!}
                         />
                       </tr>
                     );

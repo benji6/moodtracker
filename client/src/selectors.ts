@@ -141,7 +141,7 @@ const makeNormalizedAveragesByPeriodSelector = (
 ) =>
   createSelector(moodsSelector, (moods): {
     allIds: string[];
-    byId: { [k: string]: number };
+    byId: { [k: string]: number | undefined };
   } => {
     const allIds: string[] = [];
     const byId: { [k: string]: number } = {};

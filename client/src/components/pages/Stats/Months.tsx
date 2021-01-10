@@ -52,7 +52,9 @@ export default function Months() {
                       {monthStr}
                     </Link>
                   </td>
-                  <MoodCell mood={normalizedAveragesByMonth.byId[dateString]} />
+                  <MoodCell
+                    mood={normalizedAveragesByMonth.byId[dateString]!}
+                  />
                 </tr>
               );
             }

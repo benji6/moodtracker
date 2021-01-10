@@ -57,7 +57,7 @@ export default function Weeks() {
                       {weekFormattedString}
                     </Link>
                   </td>
-                  <MoodCell mood={normalizedAveragesByWeek.byId[dateString]} />
+                  <MoodCell mood={normalizedAveragesByWeek.byId[dateString]!} />
                 </tr>
               );
             }
