@@ -1,0 +1,12 @@
+.m-calendar-button {
+  border-radius: var(--e-border-radius-0);
+  transition: background-color var(--e-time-0) var(--e-easing-standard);
+}
+
+.m-calendar-button:hover {
+  background: var(--e-color-ground-less);
+}
+
+.m-calendar-button:active {
+  background: var(--e-color-highlight-default);
+}

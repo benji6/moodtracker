@@ -1,33 +1,40 @@
-import { Link, Redirect, RouteComponentProps } from "@reach/router";
-import { Paper, Spinner } from "eri";
+import {
+  Link,
+  Redirect,
+  RouteComponentProps,
+  useNavigate,
+} from "@reach/router";
+import { Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
   monthFormatter,
   yearFormatter,
-} from "../../../formatters";
+} from "../../../../formatters";
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
   moodsSelector,
-} from "../../../selectors";
+} from "../../../../selectors";
 import {
+  formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
-} from "../../../utils";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
-import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
-import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
-import MoodCloudForPeriod from "./MoodCloudForPeriod";
-import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
-import MoodCalendarForMonth from "./MoodCalendarForMonth";
+} from "../../../../utils";
+import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
+import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
+import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
+import MoodSummaryForPeriod from "../MoodSummaryForPeriod";
+import MoodCloudForPeriod from "../MoodCloudForPeriod";
+import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
+import MoodCalendarForMonth from "../MoodCalendarForMonth";
 import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import addDays from "date-fns/addDays";
 import subYears from "date-fns/subYears";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
+import "./style.css";
 
 const X_LABELS_COUNT = 5;
 
@@ -39,6 +46,7 @@ export default function Year({
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
+  const navigate = useNavigate();
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!yearStr || !isoYearRegex.test(yearStr)) return <Redirect to="/404" />;
@@ -78,11 +86,19 @@ export default function Year({
 
   for (let i = 0; i < months.length - 1; i++) {
     const month = months[i];
+    const monthString = monthFormatter.format(month);
     calendars.push(
-      <div key={String(month)}>
-        <h4 className="center">{monthFormatter.format(month)}</h4>
+      <button
+        aria-label={`Drill down into ${monthString}`}
+        className="m-calendar-button"
+        key={String(month)}
+        onClick={() =>
+          navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`)
+        }
+      >
+        <h4 className="center">{monthString}</h4>
         <MoodCalendarForMonth blockSize="var(--e-space-2)" month={month} />
-      </div>
+      </button>
     );
   }
   return (
@@ -112,7 +128,10 @@ export default function Year({
       {moodIdsInPeriod.length ? (
         <>
           <Paper>
-            <h3>Calendar view</h3>
+            <h3>
+              Calendar view
+              <SubHeading>Tap a month to explore it in more detail</SubHeading>
+            </h3>
             <div
               style={{
                 display: "grid",
