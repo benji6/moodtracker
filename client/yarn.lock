@@ -3631,9 +3631,9 @@ envinfo@^7.3.1:
   integrity sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
 
 eri@^28.0.0:
-  version "28.1.0"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-28.1.0.tgz#3fd58c4579fcfa42c9415058cb7836d571432cc3"
-  integrity sha512-1wSpfwtlDc460IKjD6/8ua86G/bj5w/u/qkMrSaMVemiO7wjhaaO/Dn/nksFaq4AYjuLMQ3RoOFGcoUnLrTDRg==
+  version "28.1.1"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-28.1.1.tgz#42179af86050003f4baa28cca0e674afa43d9fb6"
+  integrity sha512-X7BmZ3M7sCABBby1ar9GUvR57TmYu/CPlfbq+jGmZy7js9iATR+txAirY9RX6uzlUXoAtEsFbKJqSw2u63P+Xg==
   dependencies:
     react-transition-group "^4.4.1"
 
@@ -9063,9 +9063,9 @@ upath@^1.1.1:
   integrity sha512-aZwGpamFO61g3OlfT7OQCHqhGnW43ieH9WZeP7QxN/G/jS4jfqUkZxoryvJgVPEcrl5NL/ggHsSmLMHuH64Lhg==
 
 uri-js@^4.2.2:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.4.0.tgz#aa714261de793e8a82347a7bcc9ce74e86f28602"
-  integrity sha512-B0yRTzYdUCCn9n+F4+Gh4yIDtMQcaJsmYBDsTSG8g/OejKBodLQ2IHfN3bM7jUsRXndopT7OIXWdYqc1fjmV6g==
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.4.1.tgz#9b1a52595225859e55f669d928f88c6c57f2a77e"
+  integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
 
