@@ -29,11 +29,7 @@ export const computeAverageMoodInInterval = (
     console.warn("fromDate must be equal to or before toDate");
     return;
   }
-  if (d0 > latestMoodTime || d1 < earliestMoodTime) {
-    // eslint-disable-next-line no-console
-    console.warn("No moods intersect with provided interval");
-    return;
-  }
+  if (d0 > latestMoodTime || d1 < earliestMoodTime) return;
 
   if (moods.allIds.length === 1) return moods.byId[moods.allIds[0]].mood;
   if (d1 === earliestMoodTime) return moods.byId[toDate.toISOString()].mood;
