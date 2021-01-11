@@ -25,7 +25,7 @@ import {
 import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
-import MoodSummaryForPeriod from "../MoodSummaryForPeriod";
+import MoodSummaryForYear from "../MoodSummaryForYear";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
@@ -122,9 +122,8 @@ export default function Year({
           )}
         </div>
       </Paper>
-      <MoodSummaryForPeriod
+      <MoodSummaryForYear
         dates={[prevYear, year, nextYear, addYears(nextYear, 1)]}
-        periodType="year"
         showNext={showNext}
       />
       {moodIdsInPeriod.length ? (

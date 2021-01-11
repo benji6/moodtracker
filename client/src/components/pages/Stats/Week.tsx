@@ -25,7 +25,7 @@ import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
-import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import startOfWeek from "date-fns/startOfWeek";
@@ -112,9 +112,8 @@ export default function Week({
           )}
         </div>
       </Paper>
-      <MoodSummaryForPeriod
+      <MoodSummaryForWeek
         dates={[prevWeek, week, nextWeek, addWeeks(nextWeek, 1)]}
-        periodType="week"
         showNext={showNext}
       />
       {moodIdsInWeek.length ? (

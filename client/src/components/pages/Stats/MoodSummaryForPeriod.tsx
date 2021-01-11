@@ -1,10 +1,7 @@
 import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import {
-  moodsSelector,
-  normalizedAveragesByPeriodSelector,
-} from "../../../selectors";
+import { moodsSelector } from "../../../selectors";
 import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
@@ -14,19 +11,23 @@ import MoodSummary from "../../shared/MoodSummary";
 
 interface Props {
   dates: [Date, Date, Date, Date];
+  normalizedAverages: {
+    allIds: string[];
+    byId: {
+      [k: string]: number | undefined;
+    };
+  };
   periodType: "month" | "week" | "year";
   showNext: boolean;
 }
 
 export default function MoodSummaryForPeriod({
   dates: [date0, date1, date2, date3],
+  normalizedAverages,
   periodType,
   showNext,
 }: Props) {
   const moods = useSelector(moodsSelector);
-  const normalizedAverages = useSelector(normalizedAveragesByPeriodSelector)[
-    periodType
-  ];
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;

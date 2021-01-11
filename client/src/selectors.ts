@@ -202,13 +202,6 @@ export const normalizedAveragesByYearSelector = makeNormalizedAveragesByPeriodSe
   addYears
 );
 
-export const normalizedAveragesByPeriodSelector = createSelector(
-  normalizedAveragesByMonthSelector,
-  normalizedAveragesByWeekSelector,
-  normalizedAveragesByYearSelector,
-  (month, week, year) => ({ month, week, year } as const)
-);
-
 export const groupMoodsByDaySelector = createSelector(moodsSelector, (moods): [
   string,
   string[]

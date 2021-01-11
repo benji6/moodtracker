@@ -26,7 +26,7 @@ import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
-import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import MoodSummaryForMonth from "./MoodSummaryForMonth";
 import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "./MoodCalendarForMonth";
@@ -117,9 +117,8 @@ export default function Month({
           )}
         </div>
       </Paper>
-      <MoodSummaryForPeriod
+      <MoodSummaryForMonth
         dates={[prevMonth, month, nextMonth, addMonths(nextMonth, 1)]}
-        periodType="month"
         showNext={showNext}
       />
       {moodIdsInMonth.length ? (

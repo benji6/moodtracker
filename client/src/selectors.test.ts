@@ -4,7 +4,6 @@ import {
   normalizedAveragesByYearSelector,
   moodsSelector,
   normalizedAveragesByDaySelector,
-  normalizedAveragesByPeriodSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -926,43 +925,6 @@ describe("selectors", () => {
           },
         }
       `);
-    });
-  });
-
-  test("normalizedAveragesByPeriodSelector", () => {
-    expect(
-      normalizedAveragesByPeriodSelector({
-        ...initialState,
-        events: {
-          ...initialState.events,
-          allIds: ["2019-12-29T00:00:00.000Z", "2020-01-02T00:00:00.000Z"],
-          byId: {
-            "2019-12-29T00:00:00.000Z": {
-              createdAt: "2019-12-29T00:00:00.000Z",
-              type: "v1/moods/create",
-              payload: { mood: 4 },
-            },
-            "2020-01-02T00:00:00.000Z": {
-              createdAt: "2020-01-02T00:00:00.000Z",
-              type: "v1/moods/create",
-              payload: { mood: 6 },
-            },
-          },
-        },
-      })
-    ).toEqual({
-      month: {
-        allIds: ["2019-12-01", "2020-01-01"],
-        byId: { "2019-12-01": 4.75, "2020-01-01": 5.75 },
-      },
-      week: {
-        allIds: ["2019-12-23", "2019-12-30"],
-        byId: { "2019-12-23": 4.25, "2019-12-30": 5.25 },
-      },
-      year: {
-        allIds: ["2019-01-01", "2020-01-01"],
-        byId: { "2019-01-01": 4.75, "2020-01-01": 5.75 },
-      },
     });
   });
 });
