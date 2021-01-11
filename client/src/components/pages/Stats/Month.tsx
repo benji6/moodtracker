@@ -158,7 +158,7 @@ export default function Month({
                       <tr key={dateString}>
                         <td>
                           <Link
-                            to={`weeks/${formatIsoDateInLocalTimezone(
+                            to={`../../weeks/${formatIsoDateInLocalTimezone(
                               startOfWeek(week, WEEK_OPTIONS)
                             )}`}
                           >

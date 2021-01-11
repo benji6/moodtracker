@@ -16,8 +16,11 @@ import {
   appIsStorageLoadingSelector,
   eventsSelector,
   moodsSelector,
+  normalizedAveragesByMonthSelector,
 } from "../../../../selectors";
 import {
+  createDateFromLocalDateString,
+  formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
@@ -35,6 +38,7 @@ import subYears from "date-fns/subYears";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import "./style.css";
+import MoodCell from "../MoodCell";
 
 const X_LABELS_COUNT = 5;
 
@@ -47,6 +51,9 @@ export default function Year({
   const events = useSelector(eventsSelector);
   const moods = useSelector(moodsSelector);
   const navigate = useNavigate();
+  const normalizedAveragesByMonth = useSelector(
+    normalizedAveragesByMonthSelector
+  );
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!yearStr || !isoYearRegex.test(yearStr)) return <Redirect to="/404" />;
@@ -63,6 +70,9 @@ export default function Year({
   const year = new Date(yearStr);
   const prevYear = subYears(year, 1);
   const nextYear = addYears(year, 1);
+
+  const yearDateString = formatIsoDateInLocalTimezone(year);
+  const nextYearDateString = formatIsoDateInLocalTimezone(nextYear);
 
   const showPrevious = year > firstMoodDate;
   const showNext = nextYear <= new Date();
@@ -142,6 +152,45 @@ export default function Year({
             >
               {calendars}
             </div>
+          </Paper>
+          <Paper>
+            <h3>Months</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>Average mood</th>
+                </tr>
+              </thead>
+              <tbody>
+                {normalizedAveragesByMonth.allIds
+                  .filter(
+                    (dateString) =>
+                      dateString >= yearDateString &&
+                      dateString < nextYearDateString
+                  )
+                  .map((dateString) => {
+                    const month = createDateFromLocalDateString(dateString);
+                    const monthStringFormatted = monthFormatter.format(month);
+                    return (
+                      <tr key={dateString}>
+                        <td>
+                          <Link
+                            to={`../../months/${formatIsoMonthInLocalTimezone(
+                              month
+                            )}`}
+                          >
+                            {monthStringFormatted}
+                          </Link>
+                        </td>
+                        <MoodCell
+                          mood={normalizedAveragesByMonth.byId[dateString]!}
+                        />
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
           </Paper>
           <MoodByWeekdayForPeriod fromDate={year} toDate={nextYear} />
           <MoodFrequencyForPeriod fromDate={year} toDate={nextYear} />
