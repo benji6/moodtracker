@@ -1,8 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
+import addDays from "date-fns/addDays";
 import addHours from "date-fns/addHours";
 import addMonths from "date-fns/addMonths";
 import addWeeks from "date-fns/addWeeks";
 import addYears from "date-fns/addYears";
+import eachDayOfInterval from "date-fns/eachDayOfInterval";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
@@ -179,6 +181,11 @@ const makeNormalizedAveragesByPeriodSelector = (
     return normalizedAverages;
   });
 
+export const normalizedAveragesByDaySelector = makeNormalizedAveragesByPeriodSelector(
+  eachDayOfInterval,
+  addDays
+);
+
 export const normalizedAveragesByMonthSelector = makeNormalizedAveragesByPeriodSelector(
   eachMonthOfInterval,
   addMonths
@@ -193,6 +200,13 @@ export const normalizedAveragesByWeekSelector = makeNormalizedAveragesByPeriodSe
 export const normalizedAveragesByYearSelector = makeNormalizedAveragesByPeriodSelector(
   eachYearOfInterval,
   addYears
+);
+
+export const normalizedAveragesByPeriodSelector = createSelector(
+  normalizedAveragesByMonthSelector,
+  normalizedAveragesByWeekSelector,
+  normalizedAveragesByYearSelector,
+  (month, week, year) => ({ month, week, year } as const)
 );
 
 export const groupMoodsByDaySelector = createSelector(moodsSelector, (moods): [

@@ -3,9 +3,9 @@ import getDaysInMonth from "date-fns/getDaysInMonth";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK, WEEKDAY_LABELS_NARROW } from "../../../../constants";
-import { moodsSelector } from "../../../../selectors";
+import { normalizedAveragesByDaySelector } from "../../../../selectors";
 import {
-  computeAverageMoodInInterval,
+  formatIsoDateInLocalTimezone,
   getWeekdayIndex,
   moodToColor,
 } from "../../../../utils";
@@ -22,7 +22,7 @@ export default function MoodCalendarForMonth({
   blockSize = "var(--e-space-4)",
   month,
 }: Props) {
-  const moods = useSelector(moodsSelector);
+  const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
 
   // undefined represents padding before the month
   // null represents days that have no average mood
@@ -35,8 +35,9 @@ export default function MoodCalendarForMonth({
   let d0 = month;
   while (daysInMonth--) {
     const d1 = addDays(d0, 1);
-    const averageMood = computeAverageMoodInInterval(moods, d0, d1);
-    data.push(averageMood ?? null);
+    const dateString = formatIsoDateInLocalTimezone(d1);
+    const mood = normalizedAveragesByDay.byId[dateString];
+    data.push(mood ?? null);
     d0 = d1;
   }
 

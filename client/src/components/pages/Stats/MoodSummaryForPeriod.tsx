@@ -1,10 +1,13 @@
 import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { moodsSelector } from "../../../selectors";
 import {
-  computeAverageMoodInInterval,
+  moodsSelector,
+  normalizedAveragesByPeriodSelector,
+} from "../../../selectors";
+import {
   computeStandardDeviation,
+  formatIsoDateInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
 import MoodSummary from "../../shared/MoodSummary";
@@ -21,6 +24,9 @@ export default function MoodSummaryForPeriod({
   showNext,
 }: Props) {
   const moods = useSelector(moodsSelector);
+  const normalizedAverages = useSelector(normalizedAveragesByPeriodSelector)[
+    periodType
+  ];
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;
@@ -40,7 +46,7 @@ export default function MoodSummaryForPeriod({
       <MoodSummary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
-          mean: computeAverageMoodInInterval(moods, date1, date2),
+          mean: normalizedAverages.byId[formatIsoDateInLocalTimezone(date1)],
           standardDeviation: computeStandardDeviation(moodValues),
           total: moodValues.length,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
@@ -51,7 +57,8 @@ export default function MoodSummaryForPeriod({
                 best: nextMoodValues.length
                   ? Math.max(...nextMoodValues)
                   : undefined,
-                mean: computeAverageMoodInInterval(moods, date2, date3),
+                mean:
+                  normalizedAverages.byId[formatIsoDateInLocalTimezone(date2)],
                 standardDeviation: computeStandardDeviation(nextMoodValues),
                 total: nextMoodValues.length,
                 worst: nextMoodValues.length
@@ -67,7 +74,8 @@ export default function MoodSummaryForPeriod({
                 best: prevMoodValues.length
                   ? Math.max(...prevMoodValues)
                   : undefined,
-                mean: computeAverageMoodInInterval(moods, date0, date1),
+                mean:
+                  normalizedAverages.byId[formatIsoDateInLocalTimezone(date0)],
                 standardDeviation: computeStandardDeviation(prevMoodValues),
                 total: prevMoodValues.length,
                 worst: prevMoodValues.length

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { moodsSelector } from "../../../selectors";
+import { normalizedAveragesByDaySelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodByWeekdayChart, {
   DayAverages,
 } from "../../shared/MoodByWeekdayChart";
 import {
-  computeAverageMoodInInterval,
   computeMean,
+  formatIsoDateInLocalTimezone,
   getWeekdayIndex,
 } from "../../../utils";
 import { Paper } from "eri";
@@ -19,13 +19,13 @@ interface Props {
 }
 
 export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
-  const moods = useSelector(moodsSelector);
+  const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
   const moodsByWeekdayIndex: (number[] | undefined)[] = [
     ...Array(DAYS_PER_WEEK),
   ];
 
   for (let t0 = fromDate; t0 < toDate; t0 = addDays(t0, 1)) {
-    const mood = computeAverageMoodInInterval(moods, t0, addDays(t0, 1));
+    const mood = normalizedAveragesByDay.byId[formatIsoDateInLocalTimezone(t0)];
     if (mood === undefined) continue;
     const weekdayIndex = getWeekdayIndex(t0);
     const moodsForWeekday = moodsByWeekdayIndex[weekdayIndex];
