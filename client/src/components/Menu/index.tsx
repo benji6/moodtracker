@@ -55,7 +55,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
           <EriMenu.Link onClick={handleMenuClose} to="/">
             Home
           </EriMenu.Link>
-          {userIsSignedIn && (
+          {userIsSignedIn ? (
             <>
               <EriMenu.Link onClick={handleMenuClose} to="/add">
                 Add mood
@@ -92,6 +92,10 @@ export default function Menu({ handleMenuClose, open }: Props) {
                 Change password
               </EriMenu.Link>
             </>
+          ) : (
+            <EriMenu.Link onClick={handleMenuClose} to="/sign-in">
+              Sign in
+            </EriMenu.Link>
           )}
           <EriMenu.Link onClick={handleMenuClose} to="/about">
             About
