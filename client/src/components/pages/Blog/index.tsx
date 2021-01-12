@@ -4,6 +4,10 @@ import * as React from "react";
 import { dateFormatter } from "../../../formatters";
 
 const BLOG_POSTS = {
+  "2021-01-12": {
+    __html: require("./2021-01-12"),
+    title: "Yearly statistics and other improvements to stats",
+  },
   "2021-01-09": {
     __html: require("./2021-01-09"),
     title: "New feature - date controls on explore page",
@@ -26,8 +30,8 @@ export default function Blog(_: RouteComponentProps) {
         <p>Welcome to the MoodTracker blog!</p>
         <p>
           This space is for announcing interesting new features and
-          developments. Less exciting stuff like bugfixes and performance
-          improvements won&apos;t get a mention here.
+          developments. Less exciting stuff like bugfixes, performance
+          improvements and minor UI changes won&apos;t get a mention here.
         </p>
       </Paper>
       {Object.entries(BLOG_POSTS).map(([dateString, { __html, title }]) => (
