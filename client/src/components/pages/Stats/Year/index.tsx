@@ -145,9 +145,10 @@ export default function Year({
             </h3>
             <div
               style={{
+                alignItems: "start",
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(8em, 1fr))",
-                gridColumnGap: "var(--e-space-1)",
+                gridGap: "var(--e-space-0)",
               }}
             >
               {calendars}
