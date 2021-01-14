@@ -20,6 +20,7 @@ import ChangePassword from "./pages/ChangePassword";
 import App from "./App";
 import Blog from "./pages/Blog";
 import Year from "./pages/Stats/Year";
+import Export from "./pages/Export";
 
 export default function Router() {
   return (
@@ -34,6 +35,7 @@ export default function Router() {
         <EditMood path="/edit/:id" />
         <ForgotPassword path="/forgot-password" />
         <ExploreStats path="/stats/explore" />
+        <Export path="/export" />
         <Month path="/stats/months/:month" />
         <ResendVerification path="/resend-verification" />
         <ResetPassword path="/reset-password" />

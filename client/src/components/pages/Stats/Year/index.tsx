@@ -15,7 +15,7 @@ import {
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
-  moodsSelector,
+  normalizedMoodsSelector,
   normalizedAveragesByMonthSelector,
 } from "../../../../selectors";
 import {
@@ -49,7 +49,7 @@ export default function Year({
 }: RouteComponentProps<{ year: string }>) {
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
     normalizedAveragesByMonthSelector

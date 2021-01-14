@@ -8,7 +8,7 @@ import Weeks from "./Weeks";
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
-  moodsSelector,
+  normalizedMoodsSelector,
 } from "../../../selectors";
 import { useSelector } from "react-redux";
 import Years from "./Years";
@@ -23,7 +23,7 @@ import { WEEK_OPTIONS } from "../../../formatters";
 export default function Stats(_: RouteComponentProps) {
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!moods.allIds.length)

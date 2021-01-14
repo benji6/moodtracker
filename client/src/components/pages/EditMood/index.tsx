@@ -3,7 +3,10 @@ import * as React from "react";
 import { Button, Paper, RadioButton, Spinner, TextArea, TextField } from "eri";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import DeleteDialog from "./DeleteDialog";
-import { appIsStorageLoadingSelector, moodsSelector } from "../../../selectors";
+import {
+  appIsStorageLoadingSelector,
+  normalizedMoodsSelector,
+} from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { noPunctuationValidator } from "../../../validators";
@@ -13,7 +16,7 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined

@@ -13,7 +13,7 @@ import {
   appIsStorageLoadingSelector,
   normalizedAveragesByWeekSelector,
   eventsSelector,
-  moodsSelector,
+  normalizedMoodsSelector,
 } from "../../../selectors";
 import {
   createDateFromLocalDateString,
@@ -47,7 +47,7 @@ export default function Month({
 }: RouteComponentProps<{ month: string }>) {
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   const normalizedAveragesByWeek = useSelector(
     normalizedAveragesByWeekSelector
   );

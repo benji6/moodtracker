@@ -91,6 +91,9 @@ export default function Menu({ handleMenuClose, open }: Props) {
               <EriMenu.Link onClick={handleMenuClose} to="/change-password">
                 Change password
               </EriMenu.Link>
+              <EriMenu.Link onClick={handleMenuClose} to="/export">
+                Export data
+              </EriMenu.Link>
             </>
           ) : (
             <EriMenu.Link onClick={handleMenuClose} to="/sign-in">

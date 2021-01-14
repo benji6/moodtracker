@@ -12,7 +12,7 @@ import MoodChartForPeriod from "../MoodChartForPeriod";
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
-  moodsSelector,
+  normalizedMoodsSelector,
 } from "../../../../selectors";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "@reach/router";
@@ -73,7 +73,7 @@ export default function ExploreStats(_: RouteComponentProps) {
   const maxDate = roundDateUp(dateNow);
   const [dateTo, setDateTo] = React.useState(maxDate);
   const events = useSelector(eventsSelector);
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
 
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 

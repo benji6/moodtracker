@@ -13,7 +13,7 @@ import {
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
-  moodsSelector,
+  normalizedMoodsSelector,
 } from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
@@ -40,7 +40,7 @@ export default function Week({
 }: RouteComponentProps<{ week: string }>) {
   useRedirectUnauthed();
   const events = useSelector(eventsSelector);
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!weekStr || !isoDateRegex.test(weekStr)) return <Redirect to="/404" />;

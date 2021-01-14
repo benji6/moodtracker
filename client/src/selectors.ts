@@ -37,7 +37,7 @@ export const userIsSignedInSelector = (state: RootState) =>
   Boolean(state.user.email);
 export const userLoadingSelector = (state: RootState) => state.user.loading;
 
-export const moodsSelector = createSelector(
+export const normalizedMoodsSelector = createSelector(
   eventsSelector,
   (events): NormalizedMoods => {
     const allIds: NormalizedMoods["allIds"] = [];
@@ -94,54 +94,69 @@ export const moodsSelector = createSelector(
   }
 );
 
+// TODO - test
+export const denormalizedMoodsSelector = createSelector(
+  normalizedMoodsSelector,
+  (moods) =>
+    moods.allIds.map((id) => ({
+      ...moods.byId[id],
+      createdAt: id,
+    }))
+);
+
 const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
 type HourAverages = [number, number][];
-export const averageByHourSelector = createSelector(moodsSelector, (moods): {
-  averages: HourAverages;
-  daysUsed: number;
-} => {
-  let daysUsed = 0;
-  const startDate = subHours(
-    set(new Date(), {
-      milliseconds: 0,
-      minutes: 30,
-      seconds: 0,
-    }),
-    1
-  );
-  const averages: HourAverages = Array(HOURS_PER_DAY);
+export const averageByHourSelector = createSelector(
+  normalizedMoodsSelector,
+  (
+    moods
+  ): {
+    averages: HourAverages;
+    daysUsed: number;
+  } => {
+    let daysUsed = 0;
+    const startDate = subHours(
+      set(new Date(), {
+        milliseconds: 0,
+        minutes: 30,
+        seconds: 0,
+      }),
+      1
+    );
+    const averages: HourAverages = Array(HOURS_PER_DAY);
 
-  for (let n = 0; n < HOURS_PER_DAY; n++) {
-    let sumOfAverageMoods = 0;
-    let i = 0;
+    for (let n = 0; n < HOURS_PER_DAY; n++) {
+      let sumOfAverageMoods = 0;
+      let i = 0;
 
-    for (; i < NUMBER_OF_DAYS_TO_AVERAGE_OVER; i++) {
-      const fromDate = subHours(startDate, n + HOURS_PER_DAY * i);
-      const averageMoodInInterval = computeAverageMoodInInterval(
-        moods,
-        fromDate,
-        addHours(fromDate, 1)
-      );
-      if (averageMoodInInterval === undefined) break;
-      sumOfAverageMoods += averageMoodInInterval;
+      for (; i < NUMBER_OF_DAYS_TO_AVERAGE_OVER; i++) {
+        const fromDate = subHours(startDate, n + HOURS_PER_DAY * i);
+        const averageMoodInInterval = computeAverageMoodInInterval(
+          moods,
+          fromDate,
+          addHours(fromDate, 1)
+        );
+        if (averageMoodInInterval === undefined) break;
+        sumOfAverageMoods += averageMoodInInterval;
+      }
+
+      daysUsed = Math.max(daysUsed, i);
+
+      if (i) {
+        const hours = getHours(subHours(startDate, n));
+        averages[hours] = [hours, sumOfAverageMoods / i];
+      }
     }
 
-    daysUsed = Math.max(daysUsed, i);
-
-    if (i) {
-      const hours = getHours(subHours(startDate, n));
-      averages[hours] = [hours, sumOfAverageMoods / i];
-    }
+    return { averages: averages.filter((x) => x !== undefined), daysUsed };
   }
-
-  return { averages: averages.filter((x) => x !== undefined), daysUsed };
-});
+);
 
 const makeNormalizedAveragesByPeriodSelector = (
   eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
   addPeriods: (date: Date, n: number) => Date
 ) =>
-  createSelector(moodsSelector, (moods): {
+  createSelector(normalizedMoodsSelector, (moods): {
     allIds: string[];
     byId: { [k: string]: number | undefined };
   } => {
@@ -202,17 +217,17 @@ export const normalizedAveragesByYearSelector = makeNormalizedAveragesByPeriodSe
   addYears
 );
 
-export const groupMoodsByDaySelector = createSelector(moodsSelector, (moods): [
-  string,
-  string[]
-][] => {
-  const moodsGroupedByDate: { [date: string]: string[] } = {};
+export const groupMoodsByDaySelector = createSelector(
+  normalizedMoodsSelector,
+  (moods): [string, string[]][] => {
+    const moodsGroupedByDate: { [date: string]: string[] } = {};
 
-  for (const id of moods.allIds) {
-    const key = dateWeekdayFormatter.format(new Date(id));
-    if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
-    else moodsGroupedByDate[key] = [id];
+    for (const id of moods.allIds) {
+      const key = dateWeekdayFormatter.format(new Date(id));
+      if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
+      else moodsGroupedByDate[key] = [id];
+    }
+
+    return Object.entries(moodsGroupedByDate);
   }
-
-  return Object.entries(moodsGroupedByDate);
-});
+);

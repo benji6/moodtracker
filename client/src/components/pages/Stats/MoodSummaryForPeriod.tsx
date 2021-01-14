@@ -1,7 +1,7 @@
 import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { moodsSelector } from "../../../selectors";
+import { normalizedMoodsSelector } from "../../../selectors";
 import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
@@ -27,7 +27,7 @@ export default function MoodSummaryForPeriod({
   periodType,
   showNext,
 }: Props) {
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;

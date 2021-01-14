@@ -2,7 +2,10 @@ import { Card, Paper, Pagination } from "eri";
 import * as React from "react";
 import { mapRight } from "../../../utils";
 import { useNavigate, useLocation } from "@reach/router";
-import { groupMoodsByDaySelector, moodsSelector } from "../../../selectors";
+import {
+  groupMoodsByDaySelector,
+  normalizedMoodsSelector,
+} from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodCard from "./MoodCard";
 
@@ -11,7 +14,7 @@ const DAYS_PER_PAGE = 7;
 export default function MoodList() {
   const location = useLocation();
   const navigate = useNavigate();
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   const moodsGroupedByDay = useSelector(groupMoodsByDaySelector);
 
   const pageStr = new URLSearchParams(location?.search).get("page");

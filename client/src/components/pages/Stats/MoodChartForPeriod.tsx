@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { moodsSelector } from "../../../selectors";
+import { normalizedMoodsSelector } from "../../../selectors";
 import { NormalizedMoods } from "../../../types";
 import {
   computeAverageMoodInInterval,
@@ -56,7 +56,7 @@ export default function MoodChartForPeriod({
   xLabels,
   xLines = xLabels.map(([x]) => x),
 }: Props) {
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
   const envelopingMoodIds = getEnvelopingMoodIds(
     moods.allIds,

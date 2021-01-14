@@ -6,7 +6,7 @@ import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import { useSelector } from "react-redux";
 import {
   eventsSelector,
-  moodsSelector,
+  normalizedMoodsSelector,
   userIsSignedInSelector,
 } from "../../../selectors";
 import NotSignedIn from "./NotSignedIn";
@@ -18,7 +18,7 @@ export interface HomeState {
 
 export default function Home(_: RouteComponentProps) {
   const events = useSelector(eventsSelector);
-  const moods = useSelector(moodsSelector);
+  const moods = useSelector(normalizedMoodsSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
 
   if (!userIsSignedIn) return <NotSignedIn />;
