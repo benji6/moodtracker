@@ -17,7 +17,7 @@ export const NETWORK_ERROR_MESSAGE =
 
 // extracted from the cognito console and update manually for now
 // if it ever starts increasing quickly then we can automate this
-export const TOTAL_USERS = 33;
+export const TOTAL_USERS = 34;
 
 const now = Date.now();
 const startOfWeekDate = startOfWeek(now, WEEK_OPTIONS);
