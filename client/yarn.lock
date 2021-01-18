@@ -4722,10 +4722,10 @@ icss-replace-symbols@1.1.0, icss-replace-symbols@^1.1.0:
   resolved "https://registry.yarnpkg.com/icss-replace-symbols/-/icss-replace-symbols-1.1.0.tgz#06ea6f83679a7749e386cfe1fe812ae5db223ded"
   integrity sha1-Bupvg2ead0njhs/h/oEq5dsiPe0=
 
-idb-keyval@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-3.2.0.tgz#cbbf354deb5684b6cdc84376294fc05932845bd6"
-  integrity sha512-slx8Q6oywCCSfKgPgL0sEsXtPVnSbTLWpyiDcu6msHOyKOLari1TD1qocXVCft80umnkk3/Qqh3lwoFt8T/BPQ==
+idb-keyval@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-5.0.1.tgz#d3913debfb58edee299da5cf2dded6c2670c05ef"
+  integrity sha512-bfi+Znn6oSPPgGcVUj2tYMIOQ5TD6V1qj50SdKQecGZx9lqUATcQ7ArHOt9sPcEhACoYe//yr2igmS6SMc59SA==
 
 ieee754@^1.1.13, ieee754@^1.1.4:
   version "1.2.1"
