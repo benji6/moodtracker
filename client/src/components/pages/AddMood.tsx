@@ -15,6 +15,7 @@ import eventsSlice from "../../store/eventsSlice";
 import { noPunctuationValidator } from "../../validators";
 import { Mood } from "../../types";
 import { appIsStorageLoadingSelector } from "../../selectors";
+import { DESCRIPTION_MAX_LENGTH } from "../../constants";
 
 export default function AddMood(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -82,10 +83,10 @@ export default function AddMood(_: RouteComponentProps) {
             autoComplete="on"
             error={descriptionError}
             label="Description"
-            maxLength={32}
+            maxLength={DESCRIPTION_MAX_LENGTH}
             name="description"
             optional
-            supportiveText="Try to describe how you feel using a short (32 characters max) list of words separated by spaces"
+            supportiveText={`Try to describe how you feel using a short (${DESCRIPTION_MAX_LENGTH} characters) list of words separated by spaces.`}
           />
           <TextArea
             label="Exploration"

@@ -7,6 +7,7 @@ import {
 } from "./formatters";
 
 export const DAYS_PER_WEEK = 7;
+export const DESCRIPTION_MAX_LENGTH = 32;
 export const HOURS_PER_DAY = 24;
 export const MOOD_RANGE: [number, number] = [0, 10];
 export const MOOD_INTEGERS = [

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { noPunctuationValidator } from "../../../validators";
 import { UpdateMood } from "../../../types";
+import { DESCRIPTION_MAX_LENGTH } from "../../../constants";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
@@ -115,10 +116,10 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             defaultValue={mood.description}
             error={descriptionError}
             label="Description"
-            maxLength={32}
+            maxLength={DESCRIPTION_MAX_LENGTH}
             name="description"
             optional
-            supportiveText="Try to describe how you feel using a short (32 characters) list of words separated by spaces."
+            supportiveText={`Try to describe how you feel using a short (${DESCRIPTION_MAX_LENGTH} characters) list of words separated by spaces.`}
           />
           <TextArea
             defaultValue={mood.exploration}
