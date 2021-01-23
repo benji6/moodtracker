@@ -5,7 +5,7 @@ import {
   formatIsoMonthInLocalTimezone,
   createDateFromLocalDateString,
 } from "../../../utils";
-import MoodCell from "./MoodCell";
+import MoodCell from "../../shared/MoodCell";
 import { monthYearFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
 import { normalizedAveragesByMonthSelector } from "../../../selectors";

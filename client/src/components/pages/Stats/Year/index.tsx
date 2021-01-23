@@ -38,7 +38,7 @@ import subYears from "date-fns/subYears";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import "./style.css";
-import MoodCell from "../MoodCell";
+import MoodCell from "../../../shared/MoodCell";
 
 const X_LABELS_COUNT = 5;
 

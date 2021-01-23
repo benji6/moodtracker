@@ -5,7 +5,7 @@ import {
   formatIsoDateInLocalTimezone,
   createDateFromLocalDateString,
 } from "../../../utils";
-import MoodCell from "./MoodCell";
+import MoodCell from "../../shared/MoodCell";
 import { Link } from "@reach/router";
 import { formatWeekWithYear, WEEK_OPTIONS } from "../../../formatters";
 import { normalizedAveragesByWeekSelector } from "../../../selectors";

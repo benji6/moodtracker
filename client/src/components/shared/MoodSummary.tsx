@@ -1,12 +1,5 @@
 import * as React from "react";
-import MoodCell from "../pages/Stats/MoodCell";
-
-const OptionalMoodCell = ({ mood }: { mood?: number }) =>
-  mood === undefined ? (
-    <td className="center">N/A</td>
-  ) : (
-    <MoodCell mood={mood} />
-  );
+import OptionalMoodCell from "./OptionalMoodCell";
 
 interface PeriodData {
   best?: number;

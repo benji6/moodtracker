@@ -5,7 +5,7 @@ import {
   formatIsoYearInLocalTimezone,
   createDateFromLocalDateString,
 } from "../../../utils";
-import MoodCell from "./MoodCell";
+import MoodCell from "../../shared/MoodCell";
 import { yearFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
 import { normalizedAveragesByYearSelector } from "../../../selectors";

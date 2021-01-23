@@ -1,6 +1,6 @@
 import * as React from "react";
-import { MOOD_RANGE } from "../../../constants";
-import { moodToColor } from "../../../utils";
+import { MOOD_RANGE } from "../../constants";
+import { moodToColor } from "../../utils";
 
 const moodFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 1,

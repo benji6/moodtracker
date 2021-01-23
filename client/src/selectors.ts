@@ -12,7 +12,7 @@ import getHours from "date-fns/getHours";
 import set from "date-fns/set";
 import subHours from "date-fns/subHours";
 import { HOURS_PER_DAY } from "./constants";
-import { dateWeekdayFormatter, WEEK_OPTIONS } from "./formatters";
+import { WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 import {
@@ -214,19 +214,4 @@ export const normalizedAveragesByWeekSelector = makeNormalizedAveragesByPeriodSe
 export const normalizedAveragesByYearSelector = makeNormalizedAveragesByPeriodSelector(
   eachYearOfInterval,
   addYears
-);
-
-export const groupMoodsByDaySelector = createSelector(
-  normalizedMoodsSelector,
-  (moods): [string, string[]][] => {
-    const moodsGroupedByDate: { [date: string]: string[] } = {};
-
-    for (const id of moods.allIds) {
-      const key = dateWeekdayFormatter.format(new Date(id));
-      if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
-      else moodsGroupedByDate[key] = [id];
-    }
-
-    return Object.entries(moodsGroupedByDate);
-  }
 );

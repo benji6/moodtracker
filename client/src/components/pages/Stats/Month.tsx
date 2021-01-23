@@ -34,7 +34,7 @@ import subMonths from "date-fns/subMonths";
 import addMonths from "date-fns/addMonths";
 import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import addDays from "date-fns/addDays";
-import MoodCell from "./MoodCell";
+import MoodCell from "../../shared/MoodCell";
 import startOfWeek from "date-fns/startOfWeek";
 import subDays from "date-fns/subDays";
 
