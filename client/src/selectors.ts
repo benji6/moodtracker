@@ -94,7 +94,6 @@ export const normalizedMoodsSelector = createSelector(
   }
 );
 
-// TODO - test
 export const denormalizedMoodsSelector = createSelector(
   normalizedMoodsSelector,
   (moods) =>
