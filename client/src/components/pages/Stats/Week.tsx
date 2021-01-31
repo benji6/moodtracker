@@ -32,6 +32,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import addWeeks from "date-fns/addWeeks";
 import subWeeks from "date-fns/subWeeks";
 import addDays from "date-fns/addDays";
+import { subDays } from "date-fns";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -56,6 +57,7 @@ export default function Week({
 
   const week = startOfWeek(new Date(weekStr), WEEK_OPTIONS);
   const nextWeek = addWeeks(week, 1);
+  const lastDayOfWeek = subDays(nextWeek, 1);
   const prevWeek = subWeeks(week, 1);
 
   const showPrevious = week > firstMoodDate;
@@ -85,13 +87,17 @@ export default function Week({
           {formatWeek(week)}
           <SubHeading>
             <Link
-              to={`../../months/${formatIsoMonthInLocalTimezone(nextWeek)}`}
+              to={`../../months/${formatIsoMonthInLocalTimezone(
+                lastDayOfWeek
+              )}`}
             >
-              {monthFormatter.format(nextWeek)}
+              {monthFormatter.format(lastDayOfWeek)}
             </Link>{" "}
             |{" "}
-            <Link to={`../../years/${formatIsoYearInLocalTimezone(nextWeek)}`}>
-              {yearFormatter.format(nextWeek)}
+            <Link
+              to={`../../years/${formatIsoYearInLocalTimezone(lastDayOfWeek)}`}
+            >
+              {yearFormatter.format(lastDayOfWeek)}
             </Link>
           </SubHeading>
         </h2>
