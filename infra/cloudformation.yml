@@ -8,6 +8,11 @@ Outputs:
     Value: !Ref CognitoUserPoolClient
   CognitoUserPoolId:
     Value: !Ref CognitoUserPool
+Parameters:
+  SnsEmailAddress:
+    Description: This is an email address for SNS to forward to
+    NoEcho: true
+    Type: String
 Resources:
   ApiGateway:
     Type: AWS::ApiGateway::RestApi
@@ -319,3 +324,23 @@ Resources:
               - Action: dynamodb:BatchWriteItem
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn
+  SesReceiptRule:
+    Type: "AWS::SES::ReceiptRule"
+    Properties:
+      Rule:
+        Actions:
+          - SNSAction:
+              TopicArn: !Ref SnsTopicEmails
+        Enabled: true
+        Name: moodtracker.link-emails-to-sns
+        Recipients:
+          - noreply@moodtracker.link
+        ScanEnabled: true
+      RuleSetName: default-rule-set
+  SnsTopicEmails:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: !Ref SnsEmailAddress
+          Protocol: EMAIL
+      TopicName: moodtracker-emails
