@@ -1,15 +1,18 @@
 import puppeteer from "puppeteer";
+import {
+  Browser,
+  ElementHandle,
+  Page,
+} from "puppeteer/lib/cjs/puppeteer/api-docs-entry";
 
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 
 describe("e2e", () => {
-  let browser: puppeteer.Browser;
-  let page: puppeteer.Page;
+  let browser: Browser;
+  let page: Page;
 
-  const tapAndNavigate = async (
-    el: puppeteer.ElementHandle<Element>
-  ): Promise<puppeteer.Response> => {
+  const tapAndNavigate = async (el: ElementHandle<Element>) => {
     const [response] = await Promise.all([page.waitForNavigation(), el.tap()]);
     return response;
   };
@@ -28,13 +31,13 @@ describe("e2e", () => {
   });
 
   test("user can sign in and sign out", async () => {
-    const signInLink = await page.waitForSelector(
+    const signInLink = (await page.waitForSelector(
       '[data-test-id="sign-in-link"]'
-    );
+    ))!;
     await page.waitForTimeout(100);
     await tapAndNavigate(signInLink);
 
-    const emailInput = await page.waitForSelector('[type="email"]');
+    const emailInput = (await page.waitForSelector('[type="email"]'))!;
     await emailInput.type(TEST_USER_EMAIL);
     const passwordInput = (await page.$('[type="password"]'))!;
     await passwordInput.type(TEST_USER_PASSWORD);
@@ -44,14 +47,14 @@ describe("e2e", () => {
     const menuButton = (await page.$('[data-test-id="menu-button"]'))!;
     await menuButton.tap();
 
-    const signOutButton = await page.waitForSelector(
+    const signOutButton = (await page.waitForSelector(
       '[data-test-id="sign-out-button"]'
-    );
+    ))!;
     await page.waitForTimeout(100);
     await signOutButton.tap();
-    const signOutConfirmButton = await page.waitForSelector(
+    const signOutConfirmButton = (await page.waitForSelector(
       '[data-test-id="sign-out-confirm-button"]'
-    );
+    ))!;
     await tapAndNavigate(signOutConfirmButton);
 
     expect(await page.$('[href="/sign-in"]')).toBeTruthy();
