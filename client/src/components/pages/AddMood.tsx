@@ -16,6 +16,7 @@ import { noPunctuationValidator } from "../../validators";
 import { Mood } from "../../types";
 import { appIsStorageLoadingSelector } from "../../selectors";
 import { DESCRIPTION_MAX_LENGTH } from "../../constants";
+import useKeyboardSave from "../hooks/useKeyboardSave";
 
 export default function AddMood(_: RouteComponentProps) {
   useRedirectUnauthed();
@@ -25,6 +26,38 @@ export default function AddMood(_: RouteComponentProps) {
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined
   >();
+  const formRef = React.useRef<HTMLFormElement>(null);
+
+  const handleSubmit = () => {
+    const formEl = formRef.current!;
+    const descriptionValue: string = formEl.description.value;
+    const explorationValue: string = formEl.exploration.value;
+    const moodValue: string = formEl.mood.value;
+
+    const moodFieldError = requiredValidator(moodValue);
+    if (moodFieldError) setMoodError(moodFieldError);
+
+    const descriptionFieldError = noPunctuationValidator(descriptionValue);
+
+    if (descriptionFieldError) setDescriptionError(descriptionFieldError);
+
+    if (descriptionFieldError || moodFieldError) return;
+
+    const payload: Mood = { mood: Number(moodValue) };
+    if (descriptionValue) payload.description = descriptionValue.trim();
+    if (explorationValue) payload.exploration = explorationValue.trim();
+
+    dispatch(
+      eventsSlice.actions.add({
+        type: "v1/moods/create",
+        createdAt: new Date().toISOString(),
+        payload,
+      })
+    );
+    navigate("/");
+  };
+
+  useKeyboardSave(handleSubmit);
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
@@ -35,36 +68,9 @@ export default function AddMood(_: RouteComponentProps) {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            const formEl = e.target as HTMLFormElement;
-            const descriptionValue: string = formEl.description.value;
-            const explorationValue: string = formEl.exploration.value;
-            const moodValue: string = formEl.mood.value;
-
-            const moodFieldError = requiredValidator(moodValue);
-            if (moodFieldError) setMoodError(moodFieldError);
-
-            const descriptionFieldError = noPunctuationValidator(
-              descriptionValue
-            );
-
-            if (descriptionFieldError)
-              setDescriptionError(descriptionFieldError);
-
-            if (descriptionFieldError || moodFieldError) return;
-
-            const payload: Mood = { mood: Number(moodValue) };
-            if (descriptionValue) payload.description = descriptionValue.trim();
-            if (explorationValue) payload.exploration = explorationValue.trim();
-
-            dispatch(
-              eventsSlice.actions.add({
-                type: "v1/moods/create",
-                createdAt: new Date().toISOString(),
-                payload,
-              })
-            );
-            navigate("/");
+            handleSubmit();
           }}
+          ref={formRef}
         >
           <RadioButton.Group
             error={moodError}

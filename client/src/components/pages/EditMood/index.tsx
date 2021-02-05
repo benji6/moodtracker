@@ -12,6 +12,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { noPunctuationValidator } from "../../../validators";
 import { UpdateMood } from "../../../types";
 import { DESCRIPTION_MAX_LENGTH } from "../../../constants";
+import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   useRedirectUnauthed();
@@ -22,6 +23,54 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined
   >();
+
+  const formRef = React.useRef<HTMLFormElement>(null);
+
+  const handleSubmit = () => {
+    const formEl = formRef.current!;
+    const descriptionValue: string = formEl.description.value;
+    const explorationValue: string = formEl.exploration.value;
+    const moodValue: string = formEl.mood.value;
+
+    const descriptionFieldError = noPunctuationValidator(descriptionValue);
+
+    if (descriptionFieldError)
+      return setDescriptionError(descriptionFieldError);
+
+    // There's some code further down that redirects the user
+    // if `id` is not defined
+    const payload: UpdateMood = { id: id! };
+    let shouldUpdate = false;
+
+    const moodValueNumber = Number(moodValue);
+    if (moodValueNumber !== mood.mood) {
+      payload.mood = moodValueNumber;
+      shouldUpdate = true;
+    }
+
+    const trimmedDescriptionValue = descriptionValue.trim();
+    if (descriptionValue && trimmedDescriptionValue !== mood.description) {
+      payload.description = trimmedDescriptionValue;
+      shouldUpdate = true;
+    }
+
+    const trimmedExplorationValue = explorationValue.trim();
+    if (explorationValue && trimmedExplorationValue !== mood.exploration) {
+      payload.exploration = explorationValue.trim();
+      shouldUpdate = true;
+    }
+
+    if (shouldUpdate)
+      dispatch(
+        eventsSlice.actions.add({
+          type: "v1/moods/update",
+          createdAt: new Date().toISOString(),
+          payload,
+        })
+      );
+    navigate("/");
+  };
+  useKeyboardSave(handleSubmit);
   if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!id) return <Redirect to="/404" />;
@@ -47,55 +96,9 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            const formEl = e.target as HTMLFormElement;
-            const descriptionValue: string = formEl.description.value;
-            const explorationValue: string = formEl.exploration.value;
-            const moodValue: string = formEl.mood.value;
-
-            const descriptionFieldError = noPunctuationValidator(
-              descriptionValue
-            );
-
-            if (descriptionFieldError)
-              return setDescriptionError(descriptionFieldError);
-
-            const payload: UpdateMood = { id };
-            let shouldUpdate = false;
-
-            const moodValueNumber = Number(moodValue);
-            if (moodValueNumber !== mood.mood) {
-              payload.mood = moodValueNumber;
-              shouldUpdate = true;
-            }
-
-            const trimmedDescriptionValue = descriptionValue.trim();
-            if (
-              descriptionValue &&
-              trimmedDescriptionValue !== mood.description
-            ) {
-              payload.description = trimmedDescriptionValue;
-              shouldUpdate = true;
-            }
-
-            const trimmedExplorationValue = explorationValue.trim();
-            if (
-              explorationValue &&
-              trimmedExplorationValue !== mood.exploration
-            ) {
-              payload.exploration = explorationValue.trim();
-              shouldUpdate = true;
-            }
-
-            if (shouldUpdate)
-              dispatch(
-                eventsSlice.actions.add({
-                  type: "v1/moods/update",
-                  createdAt: new Date().toISOString(),
-                  payload,
-                })
-              );
-            navigate("/");
+            handleSubmit();
           }}
+          ref={formRef}
         >
           <RadioButton.Group label="Mood">
             {[...Array(11)].map((_, i) => (
