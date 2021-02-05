@@ -98,6 +98,10 @@ Resources:
             Priority: 1
       AutoVerifiedAttributes:
         - email
+      EmailConfiguration:
+        EmailSendingAccount: DEVELOPER
+        From: noreply@moodtracker.link
+        SourceArn: arn:aws:ses:us-east-1:315965384508:identity/noreply@moodtracker.link
       Policies:
         PasswordPolicy:
           MinimumLength: 8
