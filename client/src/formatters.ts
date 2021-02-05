@@ -76,3 +76,8 @@ const formatRange = (dateA: Date, dateB: Date) =>
     : `${dateFormatter.format(dateA)} – ${dateFormatter.format(dateB)}`;
 export const formatWeekWithYear = (week: Date): string =>
   formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
+
+export const moodFormatter = Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 1,
+  minimumFractionDigits: 1,
+});

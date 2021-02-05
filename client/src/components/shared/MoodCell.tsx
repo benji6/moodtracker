@@ -1,11 +1,7 @@
 import * as React from "react";
 import { MOOD_RANGE } from "../../constants";
+import { moodFormatter } from "../../formatters";
 import { moodToColor } from "../../utils";
-
-const moodFormatter = Intl.NumberFormat(undefined, {
-  maximumFractionDigits: 1,
-  minimumFractionDigits: 1,
-});
 
 interface Props {
   mood: number;

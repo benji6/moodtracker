@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
   monthFormatter,
+  moodFormatter,
   yearFormatter,
 } from "../../../../formatters";
 import {
@@ -97,6 +98,10 @@ export default function Year({
   for (let i = 0; i < months.length - 1; i++) {
     const month = months[i];
     const monthString = monthFormatter.format(month);
+    const averageMood =
+      normalizedAveragesByMonth.byId[formatIsoDateInLocalTimezone(month)];
+    const formattedAverageMood =
+      averageMood === undefined ? undefined : moodFormatter.format(averageMood);
     calendars.push(
       <button
         aria-label={`Drill down into ${monthString}`}
@@ -105,8 +110,18 @@ export default function Year({
         onClick={() =>
           navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`)
         }
+        title={
+          formattedAverageMood === undefined
+            ? undefined
+            : `Average mood for ${monthString}: ${formattedAverageMood}`
+        }
       >
-        <h4 className="center">{monthString}</h4>
+        <h4 className="center">
+          {monthString}
+          <small>
+            {formattedAverageMood !== undefined && ` (${formattedAverageMood})`}
+          </small>
+        </h4>
         <MoodCalendarForMonth blockSize="var(--e-space-2)" month={month} />
       </button>
     );
