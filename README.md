@@ -1,5 +1,6 @@
 # MoodTracker
 
+![CI](https://github.com/benji6/moodtracker/workflows/CI/badge.svg)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/0d744c93-11e8-4072-85e2-4a168c1ae8ae/deploy-status)](https://app.netlify.com/sites/benji6-moodtracker/deploys)
 
 ## About
