@@ -15,6 +15,7 @@ import {
   getWeekdayIndex,
   formatIsoYearInLocalTimezone,
   createDateFromLocalDateString,
+  getNormalizedDescriptionWordsFromMood,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -508,6 +509,31 @@ describe("utils", () => {
         )
       ).toEqual(["2020-09-02T00:00:00", "2020-09-03T00:00:00"]);
     });
+  });
+
+  test("getNormalizedDescriptionWordsFromMood", () => {
+    expect(getNormalizedDescriptionWordsFromMood({ mood: 5 })).toEqual([]);
+    expect(
+      getNormalizedDescriptionWordsFromMood({ description: "", mood: 5 })
+    ).toEqual([]);
+    expect(
+      getNormalizedDescriptionWordsFromMood({ description: "   ", mood: 5 })
+    ).toEqual([]);
+    expect(
+      getNormalizedDescriptionWordsFromMood({ description: "pikachu", mood: 5 })
+    ).toEqual(["Pikachu"]);
+    expect(
+      getNormalizedDescriptionWordsFromMood({
+        description: "   pikachu   ",
+        mood: 5,
+      })
+    ).toEqual(["Pikachu"]);
+    expect(
+      getNormalizedDescriptionWordsFromMood({
+        description: "  Bulbasaur pIkaChu  🙂   ",
+        mood: 5,
+      })
+    ).toEqual(["Bulbasaur", "Pikachu", "🙂"]);
   });
 
   test("formatIsoDateInLocalTimezone", () => {

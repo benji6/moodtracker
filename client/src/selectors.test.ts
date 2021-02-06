@@ -5,6 +5,7 @@ import {
   normalizedMoodsSelector,
   normalizedAveragesByDaySelector,
   denormalizedMoodsSelector,
+  normalizedDescriptionWordsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -372,6 +373,48 @@ describe("selectors", () => {
         },
       ]);
     });
+  });
+
+  test("descriptionsSelector", () => {
+    expect(
+      normalizedDescriptionWordsSelector({
+        ...initialState,
+        events: {
+          ...initialState.events,
+          allIds: [
+            "2020-07-10T00:00:00.000Z",
+            "2020-08-10T00:00:00.000Z",
+            "2020-09-10T00:00:00.000Z",
+            "2020-09-11T00:00:00.000Z",
+          ],
+          byId: {
+            "2020-07-10T00:00:00.000Z": {
+              createdAt: "2020-07-10T00:00:00.000Z",
+              type: "v1/moods/create",
+              payload: { description: "will be overridden", mood: 5 },
+            },
+            "2020-08-10T00:00:00.000Z": {
+              createdAt: "2020-08-10T00:00:00.000Z",
+              type: "v1/moods/create",
+              payload: { description: "  pIkaChu  ", mood: 5 },
+            },
+            "2020-09-10T00:00:00.000Z": {
+              createdAt: "2020-09-10T00:00:00.000Z",
+              type: "v1/moods/create",
+              payload: { description: "  Bulbasaur Pikachu  🙂   ", mood: 5 },
+            },
+            "2020-09-11T00:00:00.000Z": {
+              createdAt: "2020-09-11T00:00:00.000Z",
+              type: "v1/moods/update",
+              payload: {
+                id: "2020-07-10T00:00:00.000Z",
+                description: "charmander squirtle pikachu",
+              },
+            },
+          },
+        },
+      })
+    ).toEqual(["🙂", "Bulbasaur", "Charmander", "Pikachu", "Squirtle"]);
   });
 
   describe("normalizedAveragesByDaySelector", () => {

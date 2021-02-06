@@ -2,7 +2,10 @@ import { Paper, WordCloud } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../selectors";
-import { getMoodIdsInInterval } from "../../../utils";
+import {
+  getMoodIdsInInterval,
+  getNormalizedDescriptionWordsFromMood,
+} from "../../../utils";
 
 interface Props {
   fromDate: Date;
@@ -16,12 +19,10 @@ export default function MoodCloudForPeriod({ fromDate, toDate }: Props) {
   const words: { [word: string]: number } = {};
 
   for (const id of moodIdsInPeriod) {
-    const { description } = moods.byId[id];
-    if (!description) continue;
-    for (const word of description.split(/\s+/)) {
-      const caseNormalizedWord = `${word[0].toUpperCase()}${word
-        .toLowerCase()
-        .slice(1)}`;
+    const normalizedDescriptionWords = getNormalizedDescriptionWordsFromMood(
+      moods.byId[id]
+    );
+    for (const caseNormalizedWord of normalizedDescriptionWords) {
       if (words[caseNormalizedWord]) words[caseNormalizedWord] += 1;
       else words[caseNormalizedWord] = 1;
     }

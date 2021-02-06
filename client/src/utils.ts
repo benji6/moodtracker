@@ -3,7 +3,7 @@ import add from "date-fns/add";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { DAYS_PER_WEEK, MOOD_RANGE } from "./constants";
-import { NormalizedMoods } from "./types";
+import { Mood, NormalizedMoods } from "./types";
 
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
@@ -104,6 +104,18 @@ export const computeStandardDeviation = (xs: number[]): number => {
 
 export const createDateFromLocalDateString = (dateString: string) =>
   new Date(`${dateString}T00:00:00`);
+
+export const getNormalizedDescriptionWordsFromMood = ({
+  description,
+}: Mood): string[] => {
+  const descriptions: string[] = [];
+  if (!description) return descriptions;
+  for (const word of description.split(/\s+/)) {
+    if (!word) continue;
+    descriptions.push(`${word[0].toUpperCase()}${word.toLowerCase().slice(1)}`);
+  }
+  return descriptions;
+};
 
 // hard to name, but will return all moods within
 // date range and if they exist will also include

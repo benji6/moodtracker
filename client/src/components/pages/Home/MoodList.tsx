@@ -1,7 +1,18 @@
-import { Card, Paper, Pagination, TextField, Toggle, Select } from "eri";
+import {
+  Card,
+  Paper,
+  Pagination,
+  TextField,
+  Toggle,
+  Select,
+  ComboBox,
+} from "eri";
 import * as React from "react";
 import { mapRight } from "../../../utils";
-import { normalizedMoodsSelector } from "../../../selectors";
+import {
+  normalizedDescriptionWordsSelector,
+  normalizedMoodsSelector,
+} from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodCard from "./MoodCard";
 import { DESCRIPTION_MAX_LENGTH, MOOD_INTEGERS } from "../../../constants";
@@ -75,6 +86,9 @@ export const reducer = (state: State, action: Action) => {
 export default function MoodList() {
   const moods = useSelector(normalizedMoodsSelector);
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
+  const normalizedDescriptionWords = useSelector(
+    normalizedDescriptionWordsSelector
+  );
 
   const normalizedFilterDescription = localState.filterDescription
     .trim()
@@ -176,7 +190,7 @@ export default function MoodList() {
                     </option>
                   ))}
                 </Select>
-                <TextField
+                <ComboBox
                   label="Description"
                   maxLength={DESCRIPTION_MAX_LENGTH}
                   onChange={(e) =>
@@ -185,6 +199,7 @@ export default function MoodList() {
                       type: "filterDescription/set",
                     })
                   }
+                  options={normalizedDescriptionWords}
                   value={localState.filterDescription}
                 />
                 <TextField

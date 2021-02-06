@@ -18,6 +18,7 @@ import { NormalizedMoods } from "./types";
 import {
   computeAverageMoodInInterval,
   formatIsoDateInLocalTimezone,
+  getNormalizedDescriptionWordsFromMood,
 } from "./utils";
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
@@ -194,6 +195,21 @@ const makeNormalizedAveragesByPeriodSelector = (
 
     return normalizedAverages;
   });
+
+export const normalizedDescriptionWordsSelector = createSelector(
+  normalizedMoodsSelector,
+  (normalizedMoods): string[] => {
+    const descriptionWords = new Set<string>();
+    for (let i = 0; i < normalizedMoods.allIds.length; i++) {
+      const id = normalizedMoods.allIds[i];
+      const mood = normalizedMoods.byId[id];
+      const normalizedWords = getNormalizedDescriptionWordsFromMood(mood);
+      for (let j = 0; j < normalizedWords.length; j++)
+        descriptionWords.add(normalizedWords[j]);
+    }
+    return [...descriptionWords].sort((a, b) => a.localeCompare(b));
+  }
+);
 
 export const normalizedAveragesByDaySelector = makeNormalizedAveragesByPeriodSelector(
   eachDayOfInterval,
