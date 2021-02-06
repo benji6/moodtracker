@@ -1,8 +1,8 @@
 import addDays from "date-fns/addDays";
 import startOfWeek from "date-fns/startOfWeek";
 import {
-  weekdayFormatterNarrow,
-  weekdayFormatterShort,
+  weekdayNarrowFormatter,
+  weekdayShortFormatter,
   WEEK_OPTIONS,
 } from "./formatters";
 
@@ -35,9 +35,9 @@ const weekdayDates = [
 
 type WeekdayLabels = [string, string, string, string, string, string, string];
 export const WEEKDAY_LABELS_NARROW: WeekdayLabels = weekdayDates.map((date) =>
-  weekdayFormatterNarrow.format(date)
+  weekdayNarrowFormatter.format(date)
 ) as WeekdayLabels;
 
 export const WEEKDAY_LABELS_SHORT: WeekdayLabels = weekdayDates.map((date) =>
-  weekdayFormatterShort.format(date)
+  weekdayShortFormatter.format(date)
 ) as WeekdayLabels;

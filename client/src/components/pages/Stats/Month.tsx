@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
   formatWeekWithYear,
-  monthFormatter,
+  monthLongFormatter,
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters";
@@ -93,7 +93,7 @@ export default function Month({
     <Paper.Group>
       <Paper>
         <h2>
-          {monthFormatter.format(month)}
+          {monthLongFormatter.format(month)}
           <SubHeading>
             <Link to={`../../years/${formatIsoYearInLocalTimezone(month)}`}>
               {yearFormatter.format(month)}
@@ -104,14 +104,14 @@ export default function Month({
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
               <Icon draw name="left" size="inherit" />
-              {monthFormatter.format(prevMonth)}
+              {monthLongFormatter.format(prevMonth)}
             </Link>
           ) : (
             <span />
           )}
           {showNext && (
             <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
-              {monthFormatter.format(nextMonth)}
+              {monthLongFormatter.format(nextMonth)}
               <Icon draw name="right" size="inherit" />
             </Link>
           )}

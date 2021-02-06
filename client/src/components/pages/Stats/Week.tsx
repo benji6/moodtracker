@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { DAYS_PER_WEEK } from "../../../constants";
 import {
   formatWeek,
-  monthFormatter,
-  weekdayFormatterShort,
+  monthLongFormatter,
+  weekdayShortFormatter,
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters";
@@ -32,7 +32,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import addWeeks from "date-fns/addWeeks";
 import subWeeks from "date-fns/subWeeks";
 import addDays from "date-fns/addDays";
-import { subDays } from "date-fns";
+import subDays from "date-fns/subDays";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -70,7 +70,7 @@ export default function Week({
     const date = addDays(week, i);
     xLabels.push([
       (date.getTime() + addDays(date, 1).getTime()) / 2,
-      weekdayFormatterShort.format(date),
+      weekdayShortFormatter.format(date),
     ]);
   }
 
@@ -91,7 +91,7 @@ export default function Week({
                 lastDayOfWeek
               )}`}
             >
-              {monthFormatter.format(lastDayOfWeek)}
+              {monthLongFormatter.format(lastDayOfWeek)}
             </Link>{" "}
             |{" "}
             <Link

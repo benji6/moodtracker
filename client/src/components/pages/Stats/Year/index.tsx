@@ -9,7 +9,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
-  monthFormatter,
+  monthLongFormatter,
   moodFormatter,
   yearFormatter,
 } from "../../../../formatters";
@@ -20,7 +20,6 @@ import {
   normalizedAveragesByMonthSelector,
 } from "../../../../selectors";
 import {
-  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
@@ -38,8 +37,8 @@ import addDays from "date-fns/addDays";
 import subYears from "date-fns/subYears";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
+import MoodByMonthChart from "./MoodByMonthChart";
 import "./style.css";
-import MoodCell from "../../../shared/MoodCell";
 
 const X_LABELS_COUNT = 5;
 
@@ -72,9 +71,6 @@ export default function Year({
   const prevYear = subYears(year, 1);
   const nextYear = addYears(year, 1);
 
-  const yearDateString = formatIsoDateInLocalTimezone(year);
-  const nextYearDateString = formatIsoDateInLocalTimezone(nextYear);
-
   const showPrevious = year > firstMoodDate;
   const showNext = nextYear <= new Date();
 
@@ -91,13 +87,15 @@ export default function Year({
     xLabels.push([date.getTime(), dayMonthFormatter.format(date)]);
   }
 
-  const months = eachMonthOfInterval({ start: year, end: nextYear });
+  const months = eachMonthOfInterval({ start: year, end: nextYear }).slice(
+    0,
+    -1
+  );
 
   const calendars = [];
 
-  for (let i = 0; i < months.length - 1; i++) {
-    const month = months[i];
-    const monthString = monthFormatter.format(month);
+  for (const month of months) {
+    const monthString = monthLongFormatter.format(month);
     const averageMood =
       normalizedAveragesByMonth.byId[formatIsoDateInLocalTimezone(month)];
     const formattedAverageMood =
@@ -168,42 +166,7 @@ export default function Year({
           </Paper>
           <Paper>
             <h3>Months</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Month</th>
-                  <th>Average mood</th>
-                </tr>
-              </thead>
-              <tbody>
-                {normalizedAveragesByMonth.allIds
-                  .filter(
-                    (dateString) =>
-                      dateString >= yearDateString &&
-                      dateString < nextYearDateString
-                  )
-                  .map((dateString) => {
-                    const month = createDateFromLocalDateString(dateString);
-                    const monthStringFormatted = monthFormatter.format(month);
-                    return (
-                      <tr key={dateString}>
-                        <td>
-                          <Link
-                            to={`../../months/${formatIsoMonthInLocalTimezone(
-                              month
-                            )}`}
-                          >
-                            {monthStringFormatted}
-                          </Link>
-                        </td>
-                        <MoodCell
-                          mood={normalizedAveragesByMonth.byId[dateString]!}
-                        />
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table>
+            <MoodByMonthChart months={months} />
           </Paper>
           <MoodByWeekdayForPeriod fromDate={year} toDate={nextYear} />
           <MoodFrequencyForPeriod fromDate={year} toDate={nextYear} />

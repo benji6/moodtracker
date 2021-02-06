@@ -1,9 +1,7 @@
 import endOfWeek from "date-fns/endOfWeek";
 import startOfWeek from "date-fns/startOfWeek";
 
-export const WEEK_OPTIONS = {
-  weekStartsOn: 1,
-} as const;
+export const WEEK_OPTIONS = { weekStartsOn: 1 } as const;
 
 export const dayMonthFormatter = Intl.DateTimeFormat(undefined, {
   day: "numeric",
@@ -23,8 +21,11 @@ export const dateWeekdayFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
-export const monthFormatter = Intl.DateTimeFormat(undefined, {
+export const monthLongFormatter = Intl.DateTimeFormat(undefined, {
   month: "long",
+});
+export const monthNarrowFormatter = Intl.DateTimeFormat(undefined, {
+  month: "narrow",
 });
 
 export const monthYearFormatter = Intl.DateTimeFormat(undefined, {
@@ -38,11 +39,10 @@ export const timeFormatter = Intl.DateTimeFormat(undefined, {
   second: "numeric",
 });
 
-export const weekdayFormatterNarrow = Intl.DateTimeFormat(undefined, {
+export const weekdayNarrowFormatter = Intl.DateTimeFormat(undefined, {
   weekday: "narrow",
 });
-
-export const weekdayFormatterShort = Intl.DateTimeFormat(undefined, {
+export const weekdayShortFormatter = Intl.DateTimeFormat(undefined, {
   weekday: "short",
 });
 

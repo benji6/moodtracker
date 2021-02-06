@@ -29,7 +29,7 @@ export default function MoodByWeekdayChart({ averages }: IProps) {
       <Chart.YGridLines lines={MOOD_INTEGERS as number[]} />
       <Chart.PlotArea>
         <Chart.Bars
-          colorFromY={(y) => moodToColor(y)}
+          colorFromY={moodToColor}
           data={averages.map(([, averageMood]) => averageMood)}
         />
       </Chart.PlotArea>
