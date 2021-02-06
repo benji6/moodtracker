@@ -111,16 +111,13 @@ export default function Year({
           navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`)
         }
         title={
-          formattedAverageMood === undefined
-            ? undefined
-            : `Average mood for ${monthString}: ${formattedAverageMood}`
+          formattedAverageMood &&
+          `Average mood for ${monthString}: ${formattedAverageMood}`
         }
       >
         <h4 className="center">
           {monthString}
-          <small>
-            {formattedAverageMood !== undefined && ` (${formattedAverageMood})`}
-          </small>
+          <small>{formattedAverageMood && ` (${formattedAverageMood})`}</small>
         </h4>
         <MoodCalendarForMonth blockSize="var(--e-space-2)" month={month} />
       </button>
