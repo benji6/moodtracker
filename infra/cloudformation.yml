@@ -116,7 +116,8 @@ Resources:
       UserPoolName: moodtracker
       VerificationMessageTemplate:
         DefaultEmailOption: CONFIRM_WITH_LINK
-        EmailMessageByLink: "{##Follow this link##} to complete your signup with MoodTracker"
+        EmailMessageByLink: |
+          Welcome to MoodTracker! You're almost signed up, just {##follow this link to verify your email address##}, then go back to the app and sign in!
         EmailSubjectByLink: MoodTracker email verification
   CognitoUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
