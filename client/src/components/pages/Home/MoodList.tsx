@@ -177,6 +177,7 @@ export default function MoodList() {
                         : { type: "filterMood/clear" }
                     )
                   }
+                  required={false}
                   value={
                     localState.filterMood === undefined
                       ? ""
@@ -200,6 +201,7 @@ export default function MoodList() {
                     })
                   }
                   options={normalizedDescriptionWords}
+                  required={false}
                   value={localState.filterDescription}
                 />
                 <TextField
@@ -210,6 +212,7 @@ export default function MoodList() {
                       type: "filterExploration/set",
                     })
                   }
+                  required={false}
                   value={localState.filterExploration}
                 />
                 <table>

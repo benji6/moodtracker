@@ -1,18 +1,13 @@
 import puppeteer from "puppeteer";
-import {
-  Browser,
-  ElementHandle,
-  Page,
-} from "puppeteer/lib/cjs/puppeteer/api-docs-entry";
 
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 
 describe("e2e", () => {
-  let browser: Browser;
-  let page: Page;
+  let browser: puppeteer.Browser;
+  let page: puppeteer.Page;
 
-  const tapAndNavigate = async (el: ElementHandle<Element>) => {
+  const tapAndNavigate = async (el: puppeteer.ElementHandle<Element>) => {
     const [response] = await Promise.all([page.waitForNavigation(), el.tap()]);
     return response;
   };
