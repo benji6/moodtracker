@@ -50,4 +50,5 @@ print(json.dumps({
   'Consumed capacity': response['ConsumedCapacity'],
   'Breakdown by day': compute_breakdown(get_iso_date_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
+  'Users who have created at least 1 event': len({event['userId'] for event in events}),
 }, indent=2))
