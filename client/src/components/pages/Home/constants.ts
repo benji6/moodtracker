@@ -192,6 +192,13 @@ export const MOOD_SUMMARY_PROPS = {
 };
 
 export const WORD_CLOUD_PROPS = {
+  "😄": 2,
+  "😊": 4,
+  "😌": 3,
+  "😔": 2,
+  "😖": 2,
+  "😡": 1,
+  "🙂": 3,
   Afraid: 1,
   Agitated: 2,
   Amused: 2,
