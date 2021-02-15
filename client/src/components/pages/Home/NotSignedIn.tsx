@@ -78,6 +78,14 @@ export default function NotSignedIn() {
         <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
       </Paper>
       <Paper>
+        <h2>Find out more</h2>
+        <p>
+          Read about our ongoing development efforts on our{" "}
+          <Link to="/blog">blog</Link>, or check out our{" "}
+          <Link to="/about">about page</Link>.
+        </p>
+      </Paper>
+      <Paper>
         <h2>Give it a go!</h2>
         <Button.Group>
           <Button onClick={navigateToSignUp} type="button">
