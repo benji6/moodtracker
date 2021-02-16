@@ -3562,9 +3562,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.649:
-  version "1.3.665"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.665.tgz#6d0937376f6a919c0f289202c4be77790a6175e5"
-  integrity sha512-LIjx1JheOz7LM8DMEQ2tPnbBzJ4nVG1MKutsbEMLnJfwfVdPIsyagqfLp56bOWhdBrYGXWHaTayYkllIU2TauA==
+  version "1.3.666"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.666.tgz#59f3ce1e45b860a0ebe439b72664354efbb8bc62"
+  integrity sha512-/mP4HFQ0fKIX4sXltG6kfcoGrfNDZwCIyWbH2SIcVaa9u7Rm0HKjambiHNg5OEruicTl9s1EwbERLwxZwk19aw==
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -3633,10 +3633,10 @@ envinfo@^7.3.1:
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.7.4.tgz#c6311cdd38a0e86808c1c9343f667e4267c4a320"
   integrity sha512-TQXTYFVVwwluWSFis6K2XKxgrD22jEv0FTuLCQI+OjH7rn93+iY0fSSFM5lrSxFY+H1+B0/cvvlamr3UsBivdQ==
 
-eri@^28.0.0:
-  version "28.2.3"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-28.2.3.tgz#5fe37b3c62fc5970ace85267ad00e758a5e0f2c1"
-  integrity sha512-eaNlcuDd4vhImuXbPw1Y/vhwL5+1QSBKqW8/BjijCuqpR1yfS/fiyevMXN7/EU6L6G2K7ge4T6bAx297c1KAhw==
+eri@^29.0.0:
+  version "29.0.1"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-29.0.1.tgz#d10fdf8c1473f8e95dffcf50ef89f8310be20bf4"
+  integrity sha512-+n+gF7lEAfhwkKBJdSD9HFKSTDI6d5GBpjaSbkUpleiMb87EHteKgno7tfEqySFXOeV3wYx1UUXZZgQnpMBPYw==
   dependencies:
     react-transition-group "^4.4.1"
 
