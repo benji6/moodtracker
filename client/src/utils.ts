@@ -127,23 +127,26 @@ export const getEnvelopingMoodIds = (
 ): NormalizedMoods["allIds"] => {
   if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
 
-  const t0 = fromDate.getTime();
-  const t1 = toDate.getTime();
-  const envelopingMoodIds: NormalizedMoods["allIds"] = [];
+  // We use these ISO-8601 strings to do string comparison of dates.
+  // This is a very hot code path and testing indicates that this
+  // comparison method is significantly faster than converting
+  // and comparing in date object format or in number format.
+  // A limitation is that the format of all IDs must be derived
+  // from `toISOString` otherwise this may not function as expected.
+  const fromIso = fromDate.toISOString();
+  const toIso = toDate.toISOString();
 
   let i = 0;
+  for (; i < ids.length; i++) if (ids[i] >= fromIso) break;
 
-  for (; i < ids.length; i++) {
-    const moodTime = new Date(ids[i]).getTime();
-    if (moodTime >= t0) break;
-  }
+  const envelopingMoodIds: NormalizedMoods["allIds"] = [];
 
   if (i > 0) envelopingMoodIds.push(ids[i - 1]);
 
   for (; i < ids.length; i++) {
     const id = ids[i];
     envelopingMoodIds.push(id);
-    if (new Date(id).getTime() > t1) break;
+    if (id > toIso) break;
   }
 
   return envelopingMoodIds;
