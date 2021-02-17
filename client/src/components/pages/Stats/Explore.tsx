@@ -21,6 +21,8 @@ import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
 import { DAYS_PER_WEEK } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import { dayMonthFormatter } from "../../../formatters";
+import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
+import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -122,7 +124,9 @@ export default function Explore(_: RouteComponentProps) {
           xLabels={createXLabels(domain, dateNow.getTime())}
         />
       </Paper>
+      <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
       <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
+      <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
     </Paper.Group>
   );
 }
