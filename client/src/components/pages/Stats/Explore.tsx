@@ -7,19 +7,20 @@ import {
   roundDateDown,
   isoDateFromIsoDateAndTime,
   formatIsoDateInLocalTimezone,
-} from "../../../../utils";
-import MoodChartForPeriod from "../MoodChartForPeriod";
+} from "../../../utils";
+import MoodChartForPeriod from "./MoodChartForPeriod";
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
   normalizedMoodsSelector,
-} from "../../../../selectors";
+} from "../../../selectors";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "@reach/router";
-import AverageMoodByHour from "./AverageMoodByHour";
-import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
-import { DAYS_PER_WEEK } from "../../../../constants";
+import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
+import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import { DAYS_PER_WEEK } from "../../../constants";
+import MoodByHourForPeriod from "./MoodByHourForPeriod";
+import { dayMonthFormatter } from "../../../formatters";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -27,7 +28,7 @@ const X_LABELS_COUNT = 4; // must be at least 2
 
 const convertDateToLabel = (date: Date): [number, string] => [
   Number(date),
-  dateFormatter.format(date),
+  dayMonthFormatter.format(date),
 ];
 
 const createXLabels = (
@@ -59,12 +60,7 @@ const createXLabels = (
   return labels;
 };
 
-const dateFormatter = Intl.DateTimeFormat(undefined, {
-  day: "numeric",
-  month: "short",
-});
-
-export default function ExploreStats(_: RouteComponentProps) {
+export default function Explore(_: RouteComponentProps) {
   useRedirectUnauthed();
   const dateNow = new Date();
   const [dateFrom, setDateFrom] = React.useState(
@@ -85,21 +81,12 @@ export default function ExploreStats(_: RouteComponentProps) {
       </Paper.Group>
     );
 
-  const domain: [number, number] = [
-    new Date(dateFrom).getTime(),
-    new Date(dateTo).getTime(),
-  ];
+  const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
 
   return (
     <Paper.Group>
       <Paper>
-        <h2>Mood chart</h2>
-        <MoodChartForPeriod
-          fromDate={new Date(dateFrom)}
-          hidePoints
-          toDate={new Date(dateTo)}
-          xLabels={createXLabels(domain, dateNow.getTime())}
-        />
+        <h2>Explore</h2>
         <DateField
           label="From"
           max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
@@ -126,7 +113,16 @@ export default function ExploreStats(_: RouteComponentProps) {
           value={formatIsoDateInLocalTimezone(dateTo)}
         />
       </Paper>
-      <AverageMoodByHour />
+      <Paper>
+        <h3>Mood chart</h3>
+        <MoodChartForPeriod
+          fromDate={dateFrom}
+          hidePoints
+          toDate={dateTo}
+          xLabels={createXLabels(domain, dateNow.getTime())}
+        />
+      </Paper>
+      <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
     </Paper.Group>
   );
 }

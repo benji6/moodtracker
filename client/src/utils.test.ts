@@ -16,6 +16,7 @@ import {
   formatIsoYearInLocalTimezone,
   createDateFromLocalDateString,
   getNormalizedDescriptionWordsFromMood,
+  formatIsoDateHourInLocalTimezone,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -546,6 +547,18 @@ describe("utils", () => {
     expect(formatIsoDateInLocalTimezone(new Date("2020-10-01T00:00:01"))).toBe(
       "2020-10-01"
     );
+  });
+
+  test("formatIsoDateHourInLocalTimezone", () => {
+    expect(
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:01:01"))
+    ).toBe("2021-02-14T00:00:00.000Z");
+    expect(
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:00:00"))
+    ).toBe("2021-02-14T00:00:00.000Z");
+    expect(
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-13T23:59:59"))
+    ).toBe("2021-02-13T23:00:00.000Z");
   });
 
   test("formatIsoMonthInLocalTimezone", () => {

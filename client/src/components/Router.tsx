@@ -13,7 +13,7 @@ import SignUp from "./pages/SignUp";
 import Stats from "./pages/Stats";
 import Verify from "./pages/Verify";
 import Week from "./pages/Stats/Week";
-import ExploreStats from "./pages/Stats/ExploreStats";
+import Explore from "./pages/Stats/Explore";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ChangePassword from "./pages/ChangePassword";
@@ -34,7 +34,7 @@ export default function Router() {
         <ChangePassword path="/change-password" />
         <EditMood path="/edit/:id" />
         <ForgotPassword path="/forgot-password" />
-        <ExploreStats path="/stats/explore" />
+        <Explore path="/stats/explore" />
         <Export path="/export" />
         <Month path="/stats/months/:month" />
         <ResendVerification path="/resend-verification" />

@@ -6,6 +6,7 @@ import {
   normalizedAveragesByDaySelector,
   denormalizedMoodsSelector,
   normalizedDescriptionWordsSelector,
+  normalizedAveragesByHourSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -587,6 +588,191 @@ describe("selectors", () => {
             "2020-04-07": 6.75,
             "2020-04-08": 8.25,
             "2020-04-09": 9,
+          },
+        }
+      `);
+    });
+  });
+
+  describe.only("normalizedAveragesByHourSelector", () => {
+    it("works with 1 mood", () => {
+      expect(
+        normalizedAveragesByHourSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-07-10T00:00:00.000Z"],
+            byId: {
+              "2020-07-10T00:00:00.000Z": {
+                createdAt: "2020-07-10T00:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-07-10T00:00:00.000Z"],
+        byId: { "2020-07-10T00:00:00.000Z": 5 },
+      });
+    });
+
+    it("works with 2 moods in the same hour", () => {
+      expect(
+        normalizedAveragesByHourSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-07-28T00:00:00.000Z", "2020-07-28T00:30:00.000Z"],
+            byId: {
+              "2020-07-28T00:00:00.000Z": {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-07-28T00:30:00.000Z": {
+                createdAt: "2020-07-28T00:30:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-07-28T00:00:00.000Z"],
+        byId: { "2020-07-28T00:00:00.000Z": 6 },
+      });
+    });
+
+    it("works with 2 moods in adjacent hours", () => {
+      expect(
+        normalizedAveragesByHourSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T01:00:00.000Z"],
+            byId: {
+              "2020-07-27T00:00:00.000Z": {
+                createdAt: "2020-07-27T00:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-07-27T01:00:00.000Z": {
+                createdAt: "2020-07-27T01:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T01:00:00.000Z"],
+        byId: { "2020-07-27T00:00:00.000Z": 5, "2020-07-27T01:00:00.000Z": 5 },
+      });
+
+      expect(
+        normalizedAveragesByHourSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T01:00:00.000Z"],
+            byId: {
+              "2020-07-27T00:00:00.000Z": {
+                createdAt: "2020-07-27T00:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 4 },
+              },
+              "2020-07-27T01:00:00.000Z": {
+                createdAt: "2020-07-27T01:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+            },
+          },
+        })
+      ).toMatchInlineSnapshot(`
+        Object {
+          "allIds": Array [
+            "2020-07-27T00:00:00.000Z",
+            "2020-07-27T01:00:00.000Z",
+          ],
+          "byId": Object {
+            "2020-07-27T00:00:00.000Z": 5.5,
+            "2020-07-27T01:00:00.000Z": 7,
+          },
+        }
+      `);
+    });
+
+    it.only("works with 2 moods in separate non-adjacent hours", () => {
+      expect(
+        normalizedAveragesByHourSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T03:00:00.000Z"],
+            byId: {
+              "2020-07-27T00:00:00.000Z": {
+                createdAt: "2020-07-27T00:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-07-27T03:00:00.000Z": {
+                createdAt: "2020-07-27T03:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: [
+          "2020-07-27T00:00:00.000Z",
+          "2020-07-27T01:00:00.000Z",
+          "2020-07-27T02:00:00.000Z",
+          "2020-07-27T03:00:00.000Z",
+        ],
+        byId: {
+          "2020-07-27T00:00:00.000Z": 5,
+          "2020-07-27T01:00:00.000Z": 5,
+          "2020-07-27T02:00:00.000Z": 5,
+          "2020-07-27T03:00:00.000Z": 5,
+        },
+      });
+
+      expect(
+        normalizedAveragesByHourSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T03:00:00.000Z"],
+            byId: {
+              "2020-07-27T00:00:00.000Z": {
+                createdAt: "2020-07-27T00:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 3 },
+              },
+              "2020-07-27T03:00:00.000Z": {
+                createdAt: "2020-07-27T03:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 9 },
+              },
+            },
+          },
+        })
+      ).toMatchInlineSnapshot(`
+        Object {
+          "allIds": Array [
+            "2020-07-27T00:00:00.000Z",
+            "2020-07-27T01:00:00.000Z",
+            "2020-07-27T02:00:00.000Z",
+            "2020-07-27T03:00:00.000Z",
+          ],
+          "byId": Object {
+            "2020-07-27T00:00:00.000Z": 4,
+            "2020-07-27T01:00:00.000Z": 6,
+            "2020-07-27T02:00:00.000Z": 8,
+            "2020-07-27T03:00:00.000Z": 9,
           },
         }
       `);

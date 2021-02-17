@@ -172,13 +172,22 @@ export const getMoodIdsInInterval = (
 };
 
 export const formatIsoDateInLocalTimezone = (date: Date): string =>
-  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+  `${formatIsoMonthInLocalTimezone(date)}-${String(date.getDate()).padStart(
     2,
     "0"
-  )}-${String(date.getDate()).padStart(2, "0")}`;
+  )}`;
+
+export const formatIsoDateHourInLocalTimezone = (date: Date): string =>
+  `${formatIsoDateInLocalTimezone(date)}T${String(date.getHours()).padStart(
+    2,
+    "0"
+  )}:00:00.000Z`;
 
 export const formatIsoMonthInLocalTimezone = (date: Date): string =>
-  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+  `${formatIsoYearInLocalTimezone(date)}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}`;
 
 export const formatIsoYearInLocalTimezone = (date: Date): string =>
   String(date.getFullYear());

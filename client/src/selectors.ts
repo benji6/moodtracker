@@ -5,18 +5,16 @@ import addMonths from "date-fns/addMonths";
 import addWeeks from "date-fns/addWeeks";
 import addYears from "date-fns/addYears";
 import eachDayOfInterval from "date-fns/eachDayOfInterval";
+import eachHourOfInterval from "date-fns/eachHourOfInterval";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
-import getHours from "date-fns/getHours";
-import set from "date-fns/set";
-import subHours from "date-fns/subHours";
-import { HOURS_PER_DAY } from "./constants";
 import { WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
 import { NormalizedMoods } from "./types";
 import {
   computeAverageMoodInInterval,
+  formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedDescriptionWordsFromMood,
 } from "./utils";
@@ -104,57 +102,10 @@ export const denormalizedMoodsSelector = createSelector(
     }))
 );
 
-const NUMBER_OF_DAYS_TO_AVERAGE_OVER = 7;
-type HourAverages = [number, number][];
-export const averageByHourSelector = createSelector(
-  normalizedMoodsSelector,
-  (
-    moods
-  ): {
-    averages: HourAverages;
-    daysUsed: number;
-  } => {
-    let daysUsed = 0;
-    const startDate = subHours(
-      set(new Date(), {
-        milliseconds: 0,
-        minutes: 30,
-        seconds: 0,
-      }),
-      1
-    );
-    const averages: HourAverages = Array(HOURS_PER_DAY);
-
-    for (let n = 0; n < HOURS_PER_DAY; n++) {
-      let sumOfAverageMoods = 0;
-      let i = 0;
-
-      for (; i < NUMBER_OF_DAYS_TO_AVERAGE_OVER; i++) {
-        const fromDate = subHours(startDate, n + HOURS_PER_DAY * i);
-        const averageMoodInInterval = computeAverageMoodInInterval(
-          moods,
-          fromDate,
-          addHours(fromDate, 1)
-        );
-        if (averageMoodInInterval === undefined) break;
-        sumOfAverageMoods += averageMoodInInterval;
-      }
-
-      daysUsed = Math.max(daysUsed, i);
-
-      if (i) {
-        const hours = getHours(subHours(startDate, n));
-        averages[hours] = [hours, sumOfAverageMoods / i];
-      }
-    }
-
-    return { averages: averages.filter((x) => x !== undefined), daysUsed };
-  }
-);
-
 const makeNormalizedAveragesByPeriodSelector = (
   eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
-  addPeriods: (date: Date, n: number) => Date
+  addPeriods: (date: Date, n: number) => Date,
+  createId = formatIsoDateInLocalTimezone
 ) =>
   createSelector(normalizedMoodsSelector, (moods): {
     allIds: string[];
@@ -174,7 +125,7 @@ const makeNormalizedAveragesByPeriodSelector = (
     const finalPeriod = addPeriods(periods[periods.length - 1], 1);
 
     if (moods.allIds.length === 1) {
-      const id = formatIsoDateInLocalTimezone(periods[0]);
+      const id = createId(periods[0]);
       allIds.push(id);
       byId[id] = moods.byId[moods.allIds[0]].mood;
       return normalizedAverages;
@@ -187,7 +138,7 @@ const makeNormalizedAveragesByPeriodSelector = (
       const p1 = periods[i];
       const averageMoodInInterval = computeAverageMoodInInterval(moods, p0, p1);
       if (averageMoodInInterval !== undefined) {
-        const id = formatIsoDateInLocalTimezone(p0);
+        const id = createId(p0);
         allIds.push(id);
         byId[id] = averageMoodInInterval;
       }
@@ -214,6 +165,12 @@ export const normalizedDescriptionWordsSelector = createSelector(
 export const normalizedAveragesByDaySelector = makeNormalizedAveragesByPeriodSelector(
   eachDayOfInterval,
   addDays
+);
+
+export const normalizedAveragesByHourSelector = makeNormalizedAveragesByPeriodSelector(
+  eachHourOfInterval,
+  addHours,
+  formatIsoDateHourInLocalTimezone
 );
 
 export const normalizedAveragesByMonthSelector = makeNormalizedAveragesByPeriodSelector(
