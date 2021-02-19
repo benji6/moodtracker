@@ -7,6 +7,7 @@ import {
   roundDateDown,
   isoDateFromIsoDateAndTime,
   formatIsoDateInLocalTimezone,
+  getMoodIdsInInterval,
 } from "../../../utils";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import {
@@ -84,6 +85,7 @@ export default function Explore(_: RouteComponentProps) {
     );
 
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
+  const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, dateFrom, dateTo);
 
   return (
     <Paper.Group>
@@ -115,18 +117,26 @@ export default function Explore(_: RouteComponentProps) {
           value={formatIsoDateInLocalTimezone(dateTo)}
         />
       </Paper>
-      <Paper>
-        <h3>Mood chart</h3>
-        <MoodChartForPeriod
-          fromDate={dateFrom}
-          hidePoints
-          toDate={dateTo}
-          xLabels={createXLabels(domain, dateNow.getTime())}
-        />
-      </Paper>
-      <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
-      <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
-      <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
+      {moodIdsInPeriod.length ? (
+        <>
+          <Paper>
+            <h3>Mood chart</h3>
+            <MoodChartForPeriod
+              fromDate={dateFrom}
+              hidePoints
+              toDate={dateTo}
+              xLabels={createXLabels(domain, dateNow.getTime())}
+            />
+          </Paper>
+          <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
+          <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
+          <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
+        </>
+      ) : (
+        <Paper>
+          <p>No data for the selected period</p>
+        </Paper>
+      )}
     </Paper.Group>
   );
 }
