@@ -39,6 +39,7 @@ import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import MoodByMonthChart from "./MoodByMonthChart";
 import "./style.css";
+import MoodByHourForPeriod from "../MoodByHourForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -169,8 +170,9 @@ export default function Year({
             <MoodByMonthChart months={months} />
           </Paper>
           <MoodByWeekdayForPeriod fromDate={year} toDate={nextYear} />
-          <MoodFrequencyForPeriod fromDate={year} toDate={nextYear} />
+          <MoodByHourForPeriod fromDate={year} toDate={nextYear} />
           <MoodCloudForPeriod fromDate={year} toDate={nextYear} />
+          <MoodFrequencyForPeriod fromDate={year} toDate={nextYear} />
         </>
       ) : (
         <Paper>

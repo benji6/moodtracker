@@ -37,6 +37,7 @@ import addDays from "date-fns/addDays";
 import MoodCell from "../../shared/MoodCell";
 import startOfWeek from "date-fns/startOfWeek";
 import subDays from "date-fns/subDays";
+import MoodByHourForPeriod from "./MoodByHourForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -175,8 +176,9 @@ export default function Month({
             </table>
           </Paper>
           <MoodByWeekdayForPeriod fromDate={month} toDate={nextMonth} />
-          <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />
+          <MoodByHourForPeriod fromDate={month} toDate={nextMonth} />
           <MoodCloudForPeriod fromDate={month} toDate={nextMonth} />
+          <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />
         </>
       ) : (
         <Paper>

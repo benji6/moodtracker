@@ -33,6 +33,7 @@ import addWeeks from "date-fns/addWeeks";
 import subWeeks from "date-fns/subWeeks";
 import addDays from "date-fns/addDays";
 import subDays from "date-fns/subDays";
+import MoodByHourForPeriod from "./MoodByHourForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -129,8 +130,9 @@ export default function Week({
             <MoodChartForWeek week={week} />
           </Paper>
           <MoodByWeekdayForPeriod fromDate={week} toDate={nextWeek} />
-          <MoodFrequencyForPeriod fromDate={week} toDate={nextWeek} />
+          <MoodByHourForPeriod fromDate={week} toDate={nextWeek} />
           <MoodCloudForPeriod fromDate={week} toDate={nextWeek} />
+          <MoodFrequencyForPeriod fromDate={week} toDate={nextWeek} />
         </>
       ) : (
         <Paper>
