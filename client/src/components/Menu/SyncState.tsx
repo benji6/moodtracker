@@ -15,25 +15,27 @@ export default function SyncState() {
       <p className="center">
         {syncFromServerError || syncToServerError ? (
           <>
-            Data saved locally <Icon draw name="save" />
+            <Icon draw name="save" />
+            Data saved locally
           </>
         ) : isSyncingFromServer ? (
           isSyncingToServer ? (
             <>
-              Syncing <Spinner inline />
+              <Spinner inline /> Syncing
             </>
           ) : (
             <>
-              Syncing from server <Spinner inline />
+              <Spinner inline /> Syncing from server
             </>
           )
         ) : isSyncingToServer ? (
           <>
-            Syncing to server <Spinner inline />
+            <Spinner inline /> Syncing to server
           </>
         ) : (
           <>
-            Synced with server <Icon draw name="check" />
+            <Icon draw name="check" />
+            Synced with server
           </>
         )}
       </p>

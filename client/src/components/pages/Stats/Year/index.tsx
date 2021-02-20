@@ -137,8 +137,7 @@ export default function Year({
           )}
           {showNext && (
             <Link to={`../${formatIsoYearInLocalTimezone(nextYear)}`}>
-              {yearFormatter.format(nextYear)}
-              <Icon draw name="right" />
+              {yearFormatter.format(nextYear)} <Icon draw name="right" />
             </Link>
           )}
         </div>

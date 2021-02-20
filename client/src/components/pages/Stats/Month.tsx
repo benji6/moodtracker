@@ -112,8 +112,7 @@ export default function Month({
           )}
           {showNext && (
             <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
-              {monthLongFormatter.format(nextMonth)}
-              <Icon draw name="right" />
+              {monthLongFormatter.format(nextMonth)} <Icon draw name="right" />
             </Link>
           )}
         </div>

@@ -113,8 +113,7 @@ export default function Week({
           )}
           {showNext && (
             <Link to={`../${formatIsoDateInLocalTimezone(nextWeek)}`}>
-              Next week
-              <Icon draw name="right" />
+              Next week <Icon draw name="right" />
             </Link>
           )}
         </div>
