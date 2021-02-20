@@ -1,0 +1,13 @@
+.m-menu__header {
+  margin: var(--e-space-3) var(--e-space-3) calc(-1 * var(--e-space-4));
+}
+
+@media (min-width: 66rem) {
+  .m-menu__header {
+    margin-bottom: calc(-1 * var(--e-space-3));
+  }
+}
+
+.m-menu__footer {
+  margin: calc(-1 * var(--e-space-1)) var(--e-space-3) 0;
+}

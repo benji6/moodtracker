@@ -11,6 +11,7 @@ import {
 } from "../../utils";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
+import "./style.css";
 
 interface Props {
   open: boolean;
@@ -32,7 +33,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
     <>
       <EriMenu onClose={handleMenuClose} open={open}>
         {userIsSignedIn && (
-          <>
+          <div className="m-menu__header">
             <strong>Signed in</strong>
             <p>
               <em>{userEmail}</em>
@@ -49,7 +50,7 @@ export default function Menu({ handleMenuClose, open }: Props) {
               </Button>
             </Button.Group>
             <hr />
-          </>
+          </div>
         )}
         <EriMenu.List>
           <EriMenu.Link onClick={handleMenuClose} to="/">

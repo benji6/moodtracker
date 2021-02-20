@@ -10,7 +10,7 @@ export default function SyncState() {
   const syncToServerError = useSelector(eventsIsSyncingFromServerSelector);
 
   return (
-    <>
+    <div className="m-menu__footer">
       <hr />
       <p className="center">
         {syncFromServerError || syncToServerError ? (
@@ -37,6 +37,6 @@ export default function SyncState() {
           </>
         )}
       </p>
-    </>
+    </div>
   );
 }
