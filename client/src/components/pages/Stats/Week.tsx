@@ -105,7 +105,7 @@ export default function Week({
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevWeek)}`}>
-              <Icon draw name="left" size="inherit" />
+              <Icon draw name="left" />
               Previous week
             </Link>
           ) : (
@@ -114,7 +114,7 @@ export default function Week({
           {showNext && (
             <Link to={`../${formatIsoDateInLocalTimezone(nextWeek)}`}>
               Next week
-              <Icon draw name="right" size="inherit" />
+              <Icon draw name="right" />
             </Link>
           )}
         </div>

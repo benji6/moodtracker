@@ -129,7 +129,7 @@ export default function Year({
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoYearInLocalTimezone(prevYear)}`}>
-              <Icon draw name="left" size="inherit" />
+              <Icon draw name="left" />
               {yearFormatter.format(prevYear)}
             </Link>
           ) : (
@@ -138,7 +138,7 @@ export default function Year({
           {showNext && (
             <Link to={`../${formatIsoYearInLocalTimezone(nextYear)}`}>
               {yearFormatter.format(nextYear)}
-              <Icon draw name="right" size="inherit" />
+              <Icon draw name="right" />
             </Link>
           )}
         </div>
