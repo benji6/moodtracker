@@ -9,6 +9,12 @@ import {
 } from "../../selectors";
 import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
 import { unparse } from "papaparse";
+import { formatIsoDateInLocalTimezone } from "../../utils";
+
+const createFilename = (extension: "csv" | "json"): string =>
+  `moodtracker-data-export-${formatIsoDateInLocalTimezone(
+    new Date()
+  )}.${extension}`;
 
 export default function Export(_: RouteComponentProps) {
   const denormalizedMoods = useSelector(denormalizedMoodsSelector);
@@ -35,7 +41,7 @@ export default function Export(_: RouteComponentProps) {
                   [unparse(denormalizedMoods, { columns: [...columns] })],
                   { type: "text/csv" }
                 ),
-                "moodtracker-data-export.csv"
+                createFilename("csv")
               );
             }}
           >
@@ -47,7 +53,7 @@ export default function Export(_: RouteComponentProps) {
                 new Blob([JSON.stringify(denormalizedMoods)], {
                   type: "application/json",
                 }),
-                "moodtracker-data-export.json"
+                createFilename("json")
               );
             }}
             variant="secondary"
