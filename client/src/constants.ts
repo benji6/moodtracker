@@ -16,9 +16,9 @@ export const MOOD_INTEGERS = [
 export const NETWORK_ERROR_MESSAGE =
   "Something went wrong, check your internet connection and try again";
 
-// extracted from the cognito console and update manually for now
-// if it ever starts increasing quickly then we can automate this
-export const TOTAL_USERS = 39;
+// extracted from cognito and update manually for now
+// if needed we can look at automating this in the future
+export const TOTAL_USERS = 40;
 
 const now = Date.now();
 const startOfWeekDate = startOfWeek(now, WEEK_OPTIONS);
