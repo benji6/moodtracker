@@ -104,7 +104,7 @@ export default function Month({
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
-              <Icon draw name="left" />
+              <Icon margin="right" name="left" />
               {monthLongFormatter.format(prevMonth)}
             </Link>
           ) : (
@@ -112,7 +112,8 @@ export default function Month({
           )}
           {showNext && (
             <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
-              {monthLongFormatter.format(nextMonth)} <Icon draw name="right" />
+              {monthLongFormatter.format(nextMonth)}
+              <Icon margin="left" name="right" />
             </Link>
           )}
         </div>

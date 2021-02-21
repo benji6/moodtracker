@@ -54,17 +54,17 @@ export default function Menu({ handleMenuClose, open }: Props) {
         )}
         <EriMenu.List>
           <EriMenu.Link onClick={handleMenuClose} to="/">
-            <Icon draw name="home" />
+            <Icon margin="right" name="home" />
             Home
           </EriMenu.Link>
           {userIsSignedIn ? (
             <>
               <EriMenu.Link onClick={handleMenuClose} to="/add">
-                <Icon draw name="plus" />
+                <Icon margin="right" name="plus" />
                 Add mood
               </EriMenu.Link>
               <EriMenu.Link onClick={handleMenuClose} to="/stats">
-                <Icon draw name="chart" />
+                <Icon margin="right" name="chart" />
                 Stats
               </EriMenu.Link>
               <EriMenu.SubList>
@@ -74,53 +74,53 @@ export default function Menu({ handleMenuClose, open }: Props) {
                     startOfWeek(now, WEEK_OPTIONS)
                   )}`}
                 >
-                  <Icon draw name="chart" />
+                  <Icon margin="right" name="chart" />
                   This week
                 </EriMenu.Link>
                 <EriMenu.Link
                   onClick={handleMenuClose}
                   to={`/stats/months/${formatIsoMonthInLocalTimezone(now)}`}
                 >
-                  <Icon draw name="chart" />
+                  <Icon margin="right" name="chart" />
                   This month
                 </EriMenu.Link>
                 <EriMenu.Link
                   onClick={handleMenuClose}
                   to={`/stats/years/${formatIsoYearInLocalTimezone(now)}`}
                 >
-                  <Icon draw name="chart" />
+                  <Icon margin="right" name="chart" />
                   This year
                 </EriMenu.Link>
                 <EriMenu.Link onClick={handleMenuClose} to="/stats/explore">
-                  <Icon draw name="chart" />
+                  <Icon margin="right" name="chart" />
                   Explore
                 </EriMenu.Link>
               </EriMenu.SubList>
               <EriMenu.Link onClick={handleMenuClose} to="/change-password">
-                <Icon draw name="lock" />
+                <Icon margin="right" name="lock" />
                 Change password
               </EriMenu.Link>
               <EriMenu.Link onClick={handleMenuClose} to="/export">
-                <Icon draw name="download" />
+                <Icon margin="right" name="download" />
                 Export data
               </EriMenu.Link>
             </>
           ) : (
             <EriMenu.Link onClick={handleMenuClose} to="/sign-in">
-              <Icon draw name="key" />
+              <Icon margin="right" name="key" />
               Sign in
             </EriMenu.Link>
           )}
           <EriMenu.Link onClick={handleMenuClose} to="/about">
-            <Icon draw name="help" />
+            <Icon margin="right" name="help" />
             About
           </EriMenu.Link>
           <EriMenu.Link onClick={handleMenuClose} to="/blog">
-            <Icon draw name="book" />
+            <Icon margin="right" name="book" />
             Blog
           </EriMenu.Link>
           <EriMenu.Link onClick={handleMenuClose} to="/see-also">
-            <Icon draw name="link" />
+            <Icon margin="right" name="link" />
             See also
           </EriMenu.Link>
         </EriMenu.List>
