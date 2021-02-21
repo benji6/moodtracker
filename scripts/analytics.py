@@ -7,6 +7,7 @@
 import boto3
 import json
 import operator
+from collections import defaultdict
 
 cognito_client = boto3.client('cognito-idp')
 dynamodb = boto3.resource('dynamodb')
@@ -24,13 +25,26 @@ try:
 except NameError as e:
   raise Exception('Failed to find moodtracker user pool') from e
 
+list_users_response = cognito_client.list_users(UserPoolId=user_pool_id)
+
+if 'PaginationToken' in list_users_response:
+  print('Warning: only 1 cognito user pool page was scanned')
+
+total_enabled_users = 0
+user_status_breakdown = defaultdict(int)
+
+for user in list_users_response['Users']:
+  if user['Enabled']:
+    total_enabled_users += 1
+  user_status_breakdown[user['UserStatus']] += 1
+
 table_scan_response = table.scan(
   ProjectionExpression='createdAt,userId',
   ReturnConsumedCapacity='TOTAL',
 )
 
 if 'LastEvaluatedKey' in table_scan_response:
-  print('Warning: only 1 page was scanned')
+  print('Warning: only 1 DynamoDB table page was scanned')
 
 events = table_scan_response['Items']
 events.sort(key=operator.itemgetter('createdAt'))
@@ -65,4 +79,7 @@ print(json.dumps({
   'DynamoDB consumed capacity units': table_scan_response['ConsumedCapacity']['CapacityUnits'],
   'Users who have created at least 1 event': len({event['userId'] for event in events}),
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
+  'Actual number of users in Cognito user pool': len(list_users_response['Users']),
+  'Number of enabled users in Cognito user pool': total_enabled_users,
+  'Breakdown of user totals by status in Cognito user pool': user_status_breakdown,
 }, indent=2))
