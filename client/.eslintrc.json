@@ -6,8 +6,7 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
-    "prettier",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "react", "react-hooks", "jsx-a11y"],
