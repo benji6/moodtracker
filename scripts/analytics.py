@@ -73,10 +73,22 @@ def get_iso_date_string(date_time_string):
 def get_iso_month_string(date_time_string):
   return date_time_string[0:7]
 
+events_count_by_user = defaultdict(int)
+for event in events:
+  events_count_by_user[event['userId']] += 1
+
+number_of_events_against_number_of_users = defaultdict(int)
+for k,v in events_count_by_user.items():
+  number_of_events_against_number_of_users[v] += 1
+
+number_of_events_against_number_of_users = dict(sorted(number_of_events_against_number_of_users.items()))
+
 print(json.dumps({
   'Breakdown by day': compute_breakdown(get_iso_date_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
+  'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
   'DynamoDB consumed capacity units': table_scan_response['ConsumedCapacity']['CapacityUnits'],
+  'Total number of events': len(events),
   'Users who have created at least 1 event': len({event['userId'] for event in events}),
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
   'Actual number of users in Cognito user pool': len(list_users_response['Users']),
