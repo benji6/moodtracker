@@ -165,7 +165,7 @@ Resources:
       FunctionName: MoodTrackerEventsGet
       Handler: index.handler
       Role: !GetAtt LambdaEventsGetRole.Arn
-      Runtime: python3.7
+      Runtime: python3.8
   LambdaEventsGetPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -204,7 +204,7 @@ Resources:
       FunctionName: MoodTrackerEventsPost
       Handler: index.handler
       Role: !GetAtt LambdaEventsPostRole.Arn
-      Runtime: python3.7
+      Runtime: python3.8
   LambdaEventsPostPermission:
     Type: AWS::Lambda::Permission
     Properties:
