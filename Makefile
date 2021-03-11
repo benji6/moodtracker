@@ -1,6 +1,10 @@
+# Generates the cloudformation file
+cloudformation:
+	@./bin/cloudformation.py
+
 # Deploy infrastructure
-deploy:
-	./bin/deploy.sh
+deploy: cloudformation
+	@./bin/deploy.sh
 
 # Print this help message
 help:
@@ -12,18 +16,18 @@ help:
 
 # Install all dependencies
 init:
-	./bin/init.sh
+	@./bin/init.sh
 
 # Run the project locally
 start:
-	./bin/start.sh
+	@./bin/start.sh
 
 # Run all tests
-test:
-	./bin/test.sh
+test: cloudformation
+	@./bin/test.sh
 
 # Runs all CI tests (cloudformation checks and e2e tests not yet supported)
 test-ci:
-	./bin/test-ci.sh
+	@./bin/test-ci.sh
 
-.PHONY: deploy help init start test
+.PHONY: cloudformation deploy help init start test
