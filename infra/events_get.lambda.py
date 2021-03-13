@@ -4,14 +4,15 @@ import operator
 from boto3.dynamodb.conditions import Attr, Key
 from datetime import datetime, timedelta
 
-headers = {
+EXPRESSION_ATTRIBUTE_NAMES = {'#t': 'type'}
+PROJECTION_EXPRESSION='createdAt,payload,serverCreatedAt,#t'
+HEADERS = {
   'Access-Control-Allow-Origin': 'http://localhost:1234',
   'Content-Type': 'application/json',
 }
+
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('moodtracker_events')
-expression_attribute_names = {'#t': 'type'}
-projection_expression='createdAt,payload,serverCreatedAt,#t'
 
 def handler(event, context):
   user_id = event['requestContext']['authorizer']['claims']['sub']
@@ -23,23 +24,23 @@ def handler(event, context):
         print(e)
         return {
           'body': json.dumps({'error': 'Invalid "cursor" query string parameter'}),
-          'headers': headers,
+          'headers': HEADERS,
           'statusCode': 400,
         }
       # protect against pathological clock skew
       cursor_date_str = (cursor_date - timedelta(minutes=30)).isoformat()
       response = table.query(
-        ExpressionAttributeNames=expression_attribute_names,
+        ExpressionAttributeNames=EXPRESSION_ATTRIBUTE_NAMES,
         IndexName='serverCreatedAt',
         KeyConditionExpression=Key('userId').eq(user_id) & Key('serverCreatedAt').gt(cursor_date_str),
-        ProjectionExpression=projection_expression,
+        ProjectionExpression=PROJECTION_EXPRESSION,
       )
       response['Items'].sort(key=operator.itemgetter('serverCreatedAt'))
     else:
       response = table.query(
-        ExpressionAttributeNames=expression_attribute_names,
+        ExpressionAttributeNames=EXPRESSION_ATTRIBUTE_NAMES,
         KeyConditionExpression=Key('userId').eq(user_id),
-        ProjectionExpression=projection_expression,
+        ProjectionExpression=PROJECTION_EXPRESSION,
       )
     events = response['Items']
     last_server_created_at = None
@@ -54,13 +55,13 @@ def handler(event, context):
         payload['mood'] = float(payload['mood'])
     return {
       'body': json.dumps({'events': events, 'nextCursor': last_server_created_at}),
-      'headers': headers,
+      'headers': HEADERS,
       'statusCode': 200,
     }
   except Exception as e:
     print(e)
     return {
       'body': json.dumps({'error': 'Internal server error'}),
-      'headers': headers,
+      'headers': HEADERS,
       'statusCode': 500,
     }
