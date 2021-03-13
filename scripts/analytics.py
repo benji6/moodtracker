@@ -9,23 +9,14 @@ import json
 import operator
 from collections import defaultdict
 
+USER_POOL_ID = 'us-east-1_rdB8iu5X4'
+
 cognito_client = boto3.client('cognito-idp')
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('moodtracker_events')
 
-list_user_pools_response = cognito_client.list_user_pools(MaxResults=8)
-
-for pool in list_user_pools_response['UserPools']:
-  if pool['Name'] == 'moodtracker':
-    user_pool_id = pool['Id']
-    break
-
-try:
-  describe_user_pool_response = cognito_client.describe_user_pool(UserPoolId=user_pool_id)
-except NameError as e:
-  raise Exception('Failed to find moodtracker user pool') from e
-
-list_users_response = cognito_client.list_users(UserPoolId=user_pool_id)
+describe_user_pool_response = cognito_client.describe_user_pool(UserPoolId=USER_POOL_ID)
+list_users_response = cognito_client.list_users(UserPoolId=USER_POOL_ID)
 
 if 'PaginationToken' in list_users_response:
   print('Warning: only 1 cognito user pool page was scanned')

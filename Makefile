@@ -1,3 +1,7 @@
+# Compiles some basic usage analytics
+analytics:
+	@./bin/analytics.sh
+
 # Generates the cloudformation file
 cloudformation:
 	@./bin/cloudformation.py
@@ -30,4 +34,4 @@ test: cloudformation
 test-ci:
 	@./bin/test-ci.sh
 
-.PHONY: cloudformation deploy help init start test
+.PHONY: analytics cloudformation deploy help init start test
