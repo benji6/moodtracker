@@ -2,13 +2,18 @@
 analytics:
 	@./bin/analytics.sh
 
-# Generates the cloudformation file
+# Generates the CloudFormation file
 cloudformation:
+	@echo "🍄 CloudFormation template built successfully! 🍄"
 	@./bin/cloudformation.py
 
 # Deploy infrastructure
-deploy: cloudformation
+deploy: test/cloudformation
 	@./bin/deploy.sh
+
+# Deployment dry run to view potential changes
+deploy/dry-run: test/cloudformation
+	@aws cloudformation deploy --capabilities CAPABILITY_IAM --no-execute-changeset --stack-name moodtracker --template-file infra/cloudformation.yml
 
 # Print this help message
 help:
@@ -27,11 +32,16 @@ start:
 	@./bin/start.sh
 
 # Run all tests
-test: cloudformation
+test: test/cloudformation
 	@./bin/test.sh
 
-# Runs all CI tests (cloudformation checks and e2e tests not yet supported)
-test-ci:
+# Runs all CI tests (CloudFormation checks and e2e tests not yet supported)
+test/ci:
 	@./bin/test-ci.sh
 
-.PHONY: analytics cloudformation deploy help init start test
+# Builds and validates the CloudFormation template
+test/cloudformation: cloudformation
+	@aws cloudformation validate-template --template-body file://infra/cloudformation.yml > /dev/null
+	@echo "🍄 CloudFormation template validated successfully! 🍄"
+
+.PHONY: analytics cloudformation deploy deploy/dry-run help init start test test/ci test/cloudformation

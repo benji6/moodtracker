@@ -7,8 +7,6 @@ handle_error() {
 
 trap 'handle_error $LINENO $?' ERR
 
-aws cloudformation validate-template --template-body file://infra/cloudformation.yml | cat
-
 pushd client > /dev/null
 yarn test
 popd > /dev/null
