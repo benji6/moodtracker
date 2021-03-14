@@ -1,0 +1,15 @@
+{
+  "Statement": [
+    {
+      "Action": ["Update:Modify"],
+      "Condition": {
+        "StringEquals": {
+          "ResourceType": ["AWS::Lambda::Function", "AWS::Lambda::Permission"]
+        }
+      },
+      "Effect": "Allow",
+      "Principal": "*",
+      "Resource": "*"
+    }
+  ]
+}

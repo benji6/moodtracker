@@ -27,6 +27,11 @@ help:
 init:
 	@./bin/init.sh
 
+# Updates the CloudFormation stack policy
+stack-policy:
+	@aws cloudformation set-stack-policy --stack-name moodtracker --stack-policy-body file://infra/stack-policy.json | cat
+	@echo "🍄 CloudFormation stack policy updated successfully! 🍄"
+
 # Run the project locally
 start:
 	@./bin/start.sh
@@ -44,4 +49,4 @@ test/cloudformation: cloudformation
 	@aws cloudformation validate-template --template-body file://infra/cloudformation.yml > /dev/null
 	@echo "🍄 CloudFormation template validated successfully! 🍄"
 
-.PHONY: analytics cloudformation deploy deploy/dry-run help init start test test/ci test/cloudformation
+.PHONY: analytics cloudformation deploy deploy/dry-run help init stack-policy start test test/ci test/cloudformation
