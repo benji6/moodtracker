@@ -4,8 +4,8 @@ analytics:
 
 # Generates the CloudFormation file
 cloudformation:
-	@echo "🍄 CloudFormation template built successfully! 🍄"
 	@./bin/cloudformation.py
+	@echo "🍄 CloudFormation template built successfully! 🍄"
 
 # Deploy infrastructure
 deploy: test/cloudformation
