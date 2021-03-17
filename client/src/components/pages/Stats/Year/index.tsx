@@ -26,7 +26,7 @@ import {
   getMoodIdsInInterval,
 } from "../../../../utils";
 import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../../shared/AddFirstMoodCta";
+import GetStartedCta from "../../../shared/GetStartedCta";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
@@ -62,7 +62,7 @@ export default function Year({
   if (!moods.allIds.length)
     return (
       <Paper.Group>
-        <AddFirstMoodCta />
+        <GetStartedCta />
       </Paper.Group>
     );
 

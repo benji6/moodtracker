@@ -1,7 +1,7 @@
 import { Router as ReachRouter } from "@reach/router";
 import * as React from "react";
 import _404 from "./pages/_404";
-import About from "./pages/About";
+import About from "./pages/Settings/About";
 import AddMood from "./pages/AddMood";
 import EditMood from "./pages/EditMood";
 import Home from "./pages/Home";
@@ -20,7 +20,9 @@ import ChangePassword from "./pages/ChangePassword";
 import App from "./App";
 import Blog from "./pages/Blog";
 import Year from "./pages/Stats/Year";
-import Export from "./pages/Export";
+import Export from "./pages/Settings/Export";
+import Settings from "./pages/Settings";
+import Notifications from "./pages/Settings/Notifications";
 
 export default function Router() {
   return (
@@ -31,15 +33,17 @@ export default function Router() {
         <About path="/about" />
         <AddMood path="/add" />
         <Blog path="/blog" />
-        <ChangePassword path="/change-password" />
+        <ChangePassword path="/settings/change-password" />
         <EditMood path="/edit/:id" />
         <ForgotPassword path="/forgot-password" />
         <Explore path="/stats/explore" />
-        <Export path="/export" />
+        <Export path="/settings/export" />
         <Month path="/stats/months/:month" />
+        <Notifications path="/settings/notifications" />
         <ResendVerification path="/resend-verification" />
         <ResetPassword path="/reset-password" />
         <SeeAlso path="/see-also" />
+        <Settings path="/settings" />
         <SignIn path="/sign-in" />
         <SignUp path="/sign-up" />
         <Stats path="/stats" />

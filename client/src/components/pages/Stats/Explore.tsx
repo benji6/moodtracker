@@ -18,7 +18,7 @@ import {
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "@reach/router";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import GetStartedCta from "../../shared/GetStartedCta";
 import { DAYS_PER_WEEK } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import { dayMonthFormatter } from "../../../formatters";
@@ -80,7 +80,7 @@ export default function Explore(_: RouteComponentProps) {
   if (!moods.allIds.length)
     return (
       <Paper.Group>
-        <AddFirstMoodCta />
+        <GetStartedCta />
       </Paper.Group>
     );
 

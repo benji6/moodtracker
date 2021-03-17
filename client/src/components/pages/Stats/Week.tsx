@@ -22,7 +22,7 @@ import {
   getMoodIdsInInterval,
 } from "../../../utils";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
@@ -50,7 +50,7 @@ export default function Week({
   if (!moods.allIds.length)
     return (
       <Paper.Group>
-        <AddFirstMoodCta />
+        <GetStartedCta />
       </Paper.Group>
     );
 

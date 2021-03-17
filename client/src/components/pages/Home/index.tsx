@@ -2,7 +2,7 @@ import { RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
 import MoodList from "./MoodList";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import GetStartedCta from "../../shared/GetStartedCta";
 import { useSelector } from "react-redux";
 import {
   eventsSelector,
@@ -29,7 +29,7 @@ export default function Home(_: RouteComponentProps) {
         moods.allIds.length ? (
           <MoodList />
         ) : (
-          <AddFirstMoodCta />
+          <GetStartedCta />
         )
       ) : (
         <Spinner />

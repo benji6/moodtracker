@@ -11,3 +11,14 @@
 .m-menu__footer {
   margin: calc(-1 * var(--e-space-1)) var(--e-space-3) 0;
 }
+
+.m-menu__new-cta {
+  --color: var(--e-color-highlight-3);
+
+  border-radius: var(--e-border-radius-1);
+  border: var(--e-border-width-1) solid var(--color);
+  color: var(--color);
+  font-size: var(--e-font-size-0);
+  margin-left: var(--e-space-1);
+  padding: 0 var(--e-space-1);
+}

@@ -3,6 +3,7 @@ import { AppEvent } from "./types";
 
 const API_URL = "https://moodtracker.link/api";
 const EVENTS_URL = `${API_URL}/events`;
+const WEEKLY_EMAILS_URL = `${API_URL}/weekly-emails`;
 
 const fetchWithAuth: typeof fetch = async (
   input: RequestInfo,
@@ -29,6 +30,27 @@ export const getEvents = async (
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
+};
+
+export const getWeeklyEmails = async (): Promise<boolean> => {
+  const response = await fetchWithAuth(WEEKLY_EMAILS_URL);
+  if (response.status === 404) return false;
+  if (!response.ok) throw Error(String(response.status));
+  return true;
+};
+
+export const disableWeeklyEmails = async (): Promise<void> => {
+  const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
+    method: "DELETE",
+  });
+  if (!response.ok) throw Error(String(response.status));
+};
+
+export const enableWeeklyEmails = async (): Promise<void> => {
+  const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
+    method: "POST",
+  });
+  if (!response.ok) throw Error(String(response.status));
 };
 
 export const postEvents = async (events: AppEvent[]): Promise<void> => {

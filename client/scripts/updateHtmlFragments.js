@@ -37,7 +37,7 @@ const knownRoutes = new Set(routesToVisit);
       if (
         url.parse(link).host ||
         knownRoutes.has(link) ||
-        link.startsWith("/export") ||
+        link.startsWith("/settings") ||
         link.startsWith("/stats")
       )
         continue;

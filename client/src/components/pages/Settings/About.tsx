@@ -2,8 +2,8 @@ import { RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { TOTAL_USERS } from "../../constants";
-import { userIsSignedInSelector } from "../../selectors";
+import { TOTAL_USERS } from "../../../constants";
+import { userIsSignedInSelector } from "../../../selectors";
 
 export default function About(_: RouteComponentProps) {
   const isSignedIn = useSelector(userIsSignedInSelector);

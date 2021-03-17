@@ -1,10 +1,21 @@
 {
   "Statement": [
     {
-      "Action": ["Update:Modify"],
+      "Action": ["Update:Delete", "Update:Modify", "Update:Replace"],
       "Condition": {
         "StringEquals": {
           "ResourceType": ["AWS::Lambda::Function", "AWS::Lambda::Permission"]
+        }
+      },
+      "Effect": "Allow",
+      "Principal": "*",
+      "Resource": "*"
+    },
+    {
+      "Action": ["Update:Modify"],
+      "Condition": {
+        "StringEquals": {
+          "ResourceType": ["AWS::ApiGateway::Method", "AWS::Events::Rule"]
         }
       },
       "Effect": "Allow",

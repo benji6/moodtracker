@@ -15,6 +15,9 @@ import {
   WORD_CLOUD_PROPS,
 } from "./constants";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const addMoodImgSrc = require("../Blog/2020-12-30/screenshot-1.png");
+
 export default function NotSignedIn() {
   const navigate = useNavigate();
   const navigateToSignUp = () => navigate("/sign-up");
@@ -47,20 +50,25 @@ export default function NotSignedIn() {
       </Paper>
       <Paper>
         <h2>Features</h2>
-        <p>The app is mostly just nice graphs 🤓</p>
+        <h3>Record how you feel and why</h3>
+        <img
+          alt="Screenshot demonstrating adding a mood with an exploration"
+          src={addMoodImgSrc}
+        />
         <h3>Analyze your mood over time</h3>
         <MoodChart {...LINE_CHART_PROPS} />
-        <h3>Review on a weekly or monthly basis</h3>
-        <MoodSummary {...MOOD_SUMMARY_PROPS} />
         <h3>Describe how you feel and reflect on it</h3>
         <p>
           You can record a short description of your mood and reflect on it on a
-          week-by-week or month-by-month basis.
+          week-by-week, month-by-month or year-by-year basis.
         </p>
         <WordCloud
           aria-label="Word cloud displaying mood descriptions"
           words={WORD_CLOUD_PROPS}
         />
+        <h3>Review on a weekly, monthly or yearly basis</h3>
+        <p>Opt in to receive weekly email updates!</p>
+        <MoodSummary {...MOOD_SUMMARY_PROPS} />
         <h3>See how your mood fluctuates by day of the week</h3>
         <p>
           MoodTracker can analyze your data over time to give you insights about
@@ -74,7 +82,8 @@ export default function NotSignedIn() {
           understand yourself better 😌
         </p>
         <MoodByHourChart {...MOOD_BY_HOUR_PROPS} />
-        <h3>See how often you log moods</h3>
+        <h3>And much more!</h3>
+        <p>See how often you log moods.</p>
         <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
       </Paper>
       <Paper>

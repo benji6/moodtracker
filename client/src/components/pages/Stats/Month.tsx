@@ -23,7 +23,7 @@ import {
   getMoodIdsInInterval,
 } from "../../../utils";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForMonth from "./MoodSummaryForMonth";
@@ -59,7 +59,7 @@ export default function Month({
   if (!moods.allIds.length)
     return (
       <Paper.Group>
-        <AddFirstMoodCta />
+        <GetStartedCta />
       </Paper.Group>
     );
 

@@ -2,7 +2,7 @@ import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
 import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
-import AddFirstMoodCta from "../../shared/AddFirstMoodCta";
+import GetStartedCta from "../../shared/GetStartedCta";
 import Months from "./Months";
 import Weeks from "./Weeks";
 import {
@@ -29,7 +29,7 @@ export default function Stats(_: RouteComponentProps) {
   if (!moods.allIds.length)
     return (
       <Paper.Group>
-        <AddFirstMoodCta />
+        <GetStartedCta />
       </Paper.Group>
     );
 

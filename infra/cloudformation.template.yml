@@ -9,6 +9,11 @@ Outputs:
   CognitoUserPoolId:
     Value: !Ref CognitoUserPool
 Parameters:
+  SesNoreplyArn:
+    Default: arn:aws:ses:us-east-1:315965384508:identity/noreply@moodtracker.link
+    Description: ARN for the MoodTracker noreply email address
+    NoEcho: true
+    Type: String
   SnsEmailAddress:
     Description: This is an email address for SNS to forward to
     NoEcho: true
@@ -33,6 +38,10 @@ Resources:
       - ApiGatewayEventsGet
       - ApiGatewayEventsOptions
       - ApiGatewayEventsPost
+      - ApiGatewayWeeklyEmailsDelete
+      - ApiGatewayWeeklyEmailsGet
+      - ApiGatewayWeeklyEmailsOptions
+      - ApiGatewayWeeklyEmailsPost
     Properties:
       RestApiId: !Ref ApiGateway
       StageName: prod
@@ -89,6 +98,71 @@ Resources:
         Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaEventsPost.Arn}/invocations"
       ResourceId: !Ref ApiGatewayEventsResource
       RestApiId: !Ref ApiGateway
+  ApiGatewayWeeklyEmailsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: weekly-emails
+      RestApiId: !Ref ApiGateway
+  ApiGatewayWeeklyEmailsOptions:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,POST,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+      ResourceId: !Ref ApiGatewayWeeklyEmailsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayWeeklyEmailsDelete:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: DELETE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaWeeklyEmailsDelete.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayWeeklyEmailsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayWeeklyEmailsGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaWeeklyEmailsGet.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayWeeklyEmailsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayWeeklyEmailsPost:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: POST
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaWeeklyEmailsPost.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayWeeklyEmailsResource
+      RestApiId: !Ref ApiGateway
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -101,7 +175,7 @@ Resources:
       EmailConfiguration:
         EmailSendingAccount: DEVELOPER
         From: noreply@moodtracker.link
-        SourceArn: arn:aws:ses:us-east-1:315965384508:identity/noreply@moodtracker.link
+        SourceArn: !Ref SesNoreplyArn
       Policies:
         PasswordPolicy:
           MinimumLength: 8
@@ -156,6 +230,70 @@ Resources:
           Projection:
             ProjectionType: "ALL"
       TableName: moodtracker_events
+  # Records all users that have signed up to weekly emails
+  DynamoWeeklyEmailsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      TableName: moodtracker_weekly_emails
+  EventBusWeeklyEmailsRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: EventBusWeeklyEmails
+      Description: Rule to trigger MoodTracker weekly emails
+      ScheduleExpression: cron(0 9 ? * MON *)
+      Targets:
+        - Arn: !GetAtt LambdaWeeklyEmailsSend.Arn
+          Id: LambdaWeeklyEmailsSend
+  LambdaWeeklyEmailsSend:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{weekly_emails_send.lambda.py}}}
+      FunctionName: MoodTrackerWeeklyEmailsSend
+      Handler: index.handler
+      Role: !GetAtt LambdaWeeklyEmailsRole.Arn
+      Runtime: python3.8
+  LambdaWeeklyEmailsSendEventBusPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaWeeklyEmailsSend.Arn
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt EventBusWeeklyEmailsRule.Arn
+  LambdaWeeklyEmailsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_emails_send_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: cognito-idp:ListUsers
+                Effect: Allow
+                Resource: !GetAtt CognitoUserPool.Arn
+              - Action: dynamodb:Scan
+                Effect: Allow
+                Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
+              - Action: ses:SendEmail
+                Effect: Allow
+                Resource: !Ref SesNoreplyArn
   LambdaEventsGet:
     Type: AWS::Lambda::Function
     Properties:
@@ -232,6 +370,117 @@ Resources:
               - Action: dynamodb:BatchWriteItem
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn
+  LambdaWeeklyEmailsDelete:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{weekly_emails_delete.lambda.py}}}
+      FunctionName: MoodTrackerWeeklyEmailsDelete
+      Handler: index.handler
+      Role: !GetAtt LambdaWeeklyEmailsDeleteRole.Arn
+      Runtime: python3.8
+  LambdaWeeklyEmailsDeletePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaWeeklyEmailsDelete.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaWeeklyEmailsDeleteRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_weekly_emails_delete_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:DeleteItem
+                Effect: Allow
+                Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
+  LambdaWeeklyEmailsGet:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{weekly_emails_get.lambda.py}}}
+      FunctionName: MoodTrackerWeeklyEmailsGet
+      Handler: index.handler
+      Role: !GetAtt LambdaWeeklyEmailsGetRole.Arn
+      Runtime: python3.8
+  LambdaWeeklyEmailsGetPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaWeeklyEmailsGet.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaWeeklyEmailsGetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_weekly_emails_get_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:Query
+                Effect: Allow
+                Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
+  LambdaWeeklyEmailsPost:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{weekly_emails_post.lambda.py}}}
+      FunctionName: MoodTrackerWeeklyEmailsPost
+      Handler: index.handler
+      Role: !GetAtt LambdaWeeklyEmailsPostRole.Arn
+      Runtime: python3.8
+  LambdaWeeklyEmailsPostPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaWeeklyEmailsPost.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaWeeklyEmailsPostRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_weekly_emails_post_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:PutItem
+                Effect: Allow
+                Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
   SesReceiptRule:
     Type: "AWS::SES::ReceiptRule"
     Properties:

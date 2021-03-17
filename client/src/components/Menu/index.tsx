@@ -96,14 +96,31 @@ export default function Menu({ handleMenuClose, open }: Props) {
                   Explore
                 </EriMenu.Link>
               </EriMenu.SubList>
-              <EriMenu.Link onClick={handleMenuClose} to="/change-password">
-                <Icon margin="right" name="lock" />
-                Change password
+              <EriMenu.Link onClick={handleMenuClose} to="/settings">
+                <Icon margin="right" name="chart" />
+                Settings
               </EriMenu.Link>
-              <EriMenu.Link onClick={handleMenuClose} to="/export">
-                <Icon margin="right" name="download" />
-                Export data
-              </EriMenu.Link>
+              <EriMenu.SubList>
+                <EriMenu.Link
+                  onClick={handleMenuClose}
+                  to="/settings/notifications"
+                >
+                  <Icon margin="right" name="bell" />
+                  Notifications
+                  <span className="m-menu__new-cta">New!</span>
+                </EriMenu.Link>
+                <EriMenu.Link
+                  onClick={handleMenuClose}
+                  to="/settings/change-password"
+                >
+                  <Icon margin="right" name="lock" />
+                  Change password
+                </EriMenu.Link>
+                <EriMenu.Link onClick={handleMenuClose} to="/settings/export">
+                  <Icon margin="right" name="download" />
+                  Export data
+                </EriMenu.Link>
+              </EriMenu.SubList>
             </>
           ) : (
             <EriMenu.Link onClick={handleMenuClose} to="/sign-in">
