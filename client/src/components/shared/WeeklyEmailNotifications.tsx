@@ -18,8 +18,12 @@ export default function WeeklyEmailNotifications() {
   React.useEffect(
     () =>
       void (async () => {
-        const enabled = await getWeeklyEmails();
-        setIsWeeklyEmailsEnabled(enabled);
+        try {
+          const enabled = await getWeeklyEmails();
+          setIsWeeklyEmailsEnabled(enabled);
+        } catch {
+          setError(true);
+        }
       })(),
     []
   );
@@ -33,20 +37,16 @@ export default function WeeklyEmailNotifications() {
       onChange={async () => {
         setIsUpdating(true);
         if (error) setError(false);
-        if (isWeeklyEmailsEnabled) {
-          try {
+        try {
+          if (isWeeklyEmailsEnabled) {
             await disableWeeklyEmails();
             setIsWeeklyEmailsEnabled(false);
-          } catch {
-            setError(true);
-          }
-        } else {
-          try {
+          } else {
             await enableWeeklyEmails();
             setIsWeeklyEmailsEnabled(true);
-          } catch {
-            setError(true);
           }
+        } catch {
+          setError(true);
         }
         setIsUpdating(false);
       }}
