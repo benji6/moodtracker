@@ -19,6 +19,7 @@
     ],
     "jsx-a11y/accessible-emoji": 0,
     "no-console": 2,
+    "no-constant-condition": 0,
     "no-empty": [2, { "allowEmptyCatch": true }],
     "react/jsx-no-target-blank": 0
   },
