@@ -128,13 +128,13 @@ export default function Menu({ handleMenuClose, open }: Props) {
               Sign in
             </EriMenu.Link>
           )}
-          <EriMenu.Link onClick={handleMenuClose} to="/about">
-            <Icon margin="right" name="help" />
-            About
-          </EriMenu.Link>
           <EriMenu.Link onClick={handleMenuClose} to="/blog">
             <Icon margin="right" name="book" />
             Blog
+          </EriMenu.Link>
+          <EriMenu.Link onClick={handleMenuClose} to="/about">
+            <Icon margin="right" name="help" />
+            About
           </EriMenu.Link>
           <EriMenu.Link onClick={handleMenuClose} to="/see-also">
             <Icon margin="right" name="link" />

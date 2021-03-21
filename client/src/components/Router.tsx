@@ -1,7 +1,7 @@
 import { Router as ReachRouter } from "@reach/router";
 import * as React from "react";
 import _404 from "./pages/_404";
-import About from "./pages/Settings/About";
+import About from "./pages/About";
 import AddMood from "./pages/AddMood";
 import EditMood from "./pages/EditMood";
 import Home from "./pages/Home";
@@ -16,7 +16,7 @@ import Week from "./pages/Stats/Week";
 import Explore from "./pages/Stats/Explore";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import ChangePassword from "./pages/ChangePassword";
+import ChangePassword from "./pages/Settings/ChangePassword";
 import App from "./App";
 import Blog from "./pages/Blog";
 import Year from "./pages/Stats/Year";
@@ -30,6 +30,7 @@ export default function Router() {
       <App path="/">
         <_404 default />
         <Home path="/" />
+        <About path="/about" />
         <About path="/about" />
         <AddMood path="/add" />
         <Blog path="/blog" />

@@ -2,13 +2,13 @@ import { RouteComponentProps } from "@reach/router";
 import { ChangePasswordPage, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { createAuthenticatedUserAndSession } from "../../cognito";
-import { NETWORK_ERROR_MESSAGE } from "../../constants";
+import { createAuthenticatedUserAndSession } from "../../../cognito";
+import { NETWORK_ERROR_MESSAGE } from "../../../constants";
 import {
   appIsStorageLoadingSelector,
   userEmailSelector,
-} from "../../selectors";
-import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
+} from "../../../selectors";
+import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 
 export default function ChangePassword(_: RouteComponentProps) {
   useRedirectUnauthed();
