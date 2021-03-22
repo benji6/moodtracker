@@ -21,16 +21,19 @@ export default function SyncState() {
         ) : isSyncingFromServer ? (
           isSyncingToServer ? (
             <>
-              Syncing <Spinner inline />
+              Syncing
+              <Spinner inline margin="left" />
             </>
           ) : (
             <>
-              Syncing from server <Spinner inline />
+              Syncing from server
+              <Spinner inline margin="left" />
             </>
           )
         ) : isSyncingToServer ? (
           <>
-            Syncing to server <Spinner inline />
+            Syncing to server
+            <Spinner inline margin="left" />
           </>
         ) : (
           <>
