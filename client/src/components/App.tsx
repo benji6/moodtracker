@@ -1,7 +1,7 @@
 import { Link, RouteComponentProps } from "@reach/router";
-import { Header, Menu as EriMenu, Main, QuickNav, Icon } from "eri";
+import { Header, Nav as EriNav, Main, QuickNav, Icon } from "eri";
 import * as React from "react";
-import Menu from "./Menu";
+import Nav from "./Menu";
 import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
@@ -18,7 +18,7 @@ export default function App({ children }: IProps) {
   useEvents();
   useStorage();
   const userIsSignedIn = useSelector(userIsSignedInSelector);
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   return (
     <>
@@ -26,12 +26,12 @@ export default function App({ children }: IProps) {
         <h1>
           <Link to="/">MoodTracker</Link>
         </h1>
-        <EriMenu.Button
-          data-test-id="menu-button"
-          onClick={() => setIsMenuOpen(true)}
+        <EriNav.Button
+          data-test-id="nav-button"
+          onClick={() => setIsNavOpen(true)}
         />
       </Header>
-      <Menu handleMenuClose={() => setIsMenuOpen(false)} open={isMenuOpen} />
+      <Nav handleNavClose={() => setIsNavOpen(false)} open={isNavOpen} />
       <Main>{children}</Main>
       <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (

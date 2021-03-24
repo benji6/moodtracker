@@ -1,5 +1,5 @@
 import startOfWeek from "date-fns/startOfWeek";
-import { Menu as EriMenu, Button, Icon } from "eri";
+import { Nav as EriNav, Button, Icon } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEK_OPTIONS } from "../../formatters";
@@ -15,25 +15,25 @@ import "./style.css";
 
 interface Props {
   open: boolean;
-  handleMenuClose(): void;
+  handleNavClose(): void;
 }
 
-export default function Menu({ handleMenuClose, open }: Props) {
+export default function Nav({ handleNavClose, open }: Props) {
   const userEmail = useSelector(userEmailSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const handleDialogClose = () => {
     setIsDialogOpen(false);
-    handleMenuClose();
+    handleNavClose();
   };
 
   const now = new Date();
 
   return (
     <>
-      <EriMenu onClose={handleMenuClose} open={open}>
+      <EriNav onClose={handleNavClose} open={open}>
         {userIsSignedIn && (
-          <div className="m-menu__header">
+          <div className="m-nav__header">
             <strong>Signed in</strong>
             <p>
               <em>{userEmail}</em>
@@ -52,97 +52,99 @@ export default function Menu({ handleMenuClose, open }: Props) {
             <hr />
           </div>
         )}
-        <EriMenu.List>
-          <EriMenu.Link onClick={handleMenuClose} to="/">
+        <EriNav.List>
+          <EriNav.Link onClick={handleNavClose} to="/">
             <Icon margin="right" name="home" />
             Home
-          </EriMenu.Link>
+          </EriNav.Link>
           {userIsSignedIn ? (
             <>
-              <EriMenu.Link onClick={handleMenuClose} to="/add">
+              <EriNav.Link onClick={handleNavClose} to="/add">
                 <Icon margin="right" name="plus" />
                 Add mood
-              </EriMenu.Link>
-              <EriMenu.Link onClick={handleMenuClose} to="/stats">
+              </EriNav.Link>
+              <EriNav.Link onClick={handleNavClose} to="/stats">
                 <Icon margin="right" name="chart" />
                 Stats
-              </EriMenu.Link>
-              <EriMenu.SubList>
-                <EriMenu.Link
-                  onClick={handleMenuClose}
+              </EriNav.Link>
+              <EriNav.SubList>
+                <EriNav.Link
+                  onClick={handleNavClose}
                   to={`/stats/weeks/${formatIsoDateInLocalTimezone(
                     startOfWeek(now, WEEK_OPTIONS)
                   )}`}
                 >
                   <Icon margin="right" name="chart" />
                   This week
-                </EriMenu.Link>
-                <EriMenu.Link
-                  onClick={handleMenuClose}
+                </EriNav.Link>
+                <EriNav.Link
+                  onClick={handleNavClose}
                   to={`/stats/months/${formatIsoMonthInLocalTimezone(now)}`}
                 >
                   <Icon margin="right" name="chart" />
                   This month
-                </EriMenu.Link>
-                <EriMenu.Link
-                  onClick={handleMenuClose}
+                </EriNav.Link>
+                <EriNav.Link
+                  onClick={handleNavClose}
                   to={`/stats/years/${formatIsoYearInLocalTimezone(now)}`}
                 >
                   <Icon margin="right" name="chart" />
                   This year
-                </EriMenu.Link>
-                <EriMenu.Link onClick={handleMenuClose} to="/stats/explore">
+                </EriNav.Link>
+                <EriNav.Link onClick={handleNavClose} to="/stats/explore">
                   <Icon margin="right" name="chart" />
                   Explore
-                </EriMenu.Link>
-              </EriMenu.SubList>
-              <EriMenu.Link onClick={handleMenuClose} to="/settings">
+                </EriNav.Link>
+              </EriNav.SubList>
+              <EriNav.Link onClick={handleNavClose} to="/settings">
                 <Icon margin="right" name="chart" />
                 Settings
-              </EriMenu.Link>
-              <EriMenu.SubList>
-                <EriMenu.Link
-                  onClick={handleMenuClose}
+              </EriNav.Link>
+              <EriNav.SubList>
+                <EriNav.Link
+                  onClick={handleNavClose}
                   to="/settings/notifications"
                 >
                   <Icon margin="right" name="bell" />
                   Notifications
-                  <span className="m-menu__new-cta">New!</span>
-                </EriMenu.Link>
-                <EriMenu.Link
-                  onClick={handleMenuClose}
+                  <span className="m-nav__new-cta br-1 bw-1 fs-0 ml-1 px-1">
+                    New!
+                  </span>
+                </EriNav.Link>
+                <EriNav.Link
+                  onClick={handleNavClose}
                   to="/settings/change-password"
                 >
                   <Icon margin="right" name="lock" />
                   Change password
-                </EriMenu.Link>
-                <EriMenu.Link onClick={handleMenuClose} to="/settings/export">
+                </EriNav.Link>
+                <EriNav.Link onClick={handleNavClose} to="/settings/export">
                   <Icon margin="right" name="download" />
                   Export data
-                </EriMenu.Link>
-              </EriMenu.SubList>
+                </EriNav.Link>
+              </EriNav.SubList>
             </>
           ) : (
-            <EriMenu.Link onClick={handleMenuClose} to="/sign-in">
+            <EriNav.Link onClick={handleNavClose} to="/sign-in">
               <Icon margin="right" name="key" />
               Sign in
-            </EriMenu.Link>
+            </EriNav.Link>
           )}
-          <EriMenu.Link onClick={handleMenuClose} to="/blog">
+          <EriNav.Link onClick={handleNavClose} to="/blog">
             <Icon margin="right" name="book" />
             Blog
-          </EriMenu.Link>
-          <EriMenu.Link onClick={handleMenuClose} to="/about">
+          </EriNav.Link>
+          <EriNav.Link onClick={handleNavClose} to="/about">
             <Icon margin="right" name="help" />
             About
-          </EriMenu.Link>
-          <EriMenu.Link onClick={handleMenuClose} to="/see-also">
+          </EriNav.Link>
+          <EriNav.Link onClick={handleNavClose} to="/see-also">
             <Icon margin="right" name="link" />
             See also
-          </EriMenu.Link>
-        </EriMenu.List>
+          </EriNav.Link>
+        </EriNav.List>
         {userIsSignedIn && <SyncState />}
-      </EriMenu>
+      </EriNav>
       <SignOutDialog onClose={handleDialogClose} open={isDialogOpen} />
     </>
   );

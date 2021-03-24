@@ -11,7 +11,7 @@ const routesToVisit = ["/"];
 const knownRoutes = new Set(routesToVisit);
 
 (async () => {
-  // menu is only open on wide resolutions
+  // nav is only open on wide resolutions
   let browser = await puppeteer.launch({
     defaultViewport: { height: 1050, width: 1680 },
   });

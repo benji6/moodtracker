@@ -39,8 +39,8 @@ describe("e2e", () => {
     await Promise.all([page.waitForNavigation(), passwordInput.press("Enter")]);
 
     await page.waitForSelector('[data-test-id="mood-list"]');
-    const menuButton = (await page.$('[data-test-id="menu-button"]'))!;
-    await menuButton.tap();
+    const navButton = (await page.$('[data-test-id="nav-button"]'))!;
+    await navButton.tap();
 
     const signOutButton = (await page.waitForSelector(
       '[data-test-id="sign-out-button"]'

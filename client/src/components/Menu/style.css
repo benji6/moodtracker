@@ -1,24 +1,20 @@
-.m-menu__header {
+.m-nav__header {
   margin: var(--e-space-3) var(--e-space-3) calc(-1 * var(--e-space-4));
 }
 
 @media (min-width: 66rem) {
-  .m-menu__header {
+  .m-nav__header {
     margin-bottom: calc(-1 * var(--e-space-3));
   }
 }
 
-.m-menu__footer {
+.m-nav__footer {
   margin: calc(-1 * var(--e-space-1)) var(--e-space-3) 0;
 }
 
-.m-menu__new-cta {
+.m-nav__new-cta {
   --color: var(--e-color-highlight-3);
 
-  border-radius: var(--e-border-radius-1);
-  border: var(--e-border-width-1) solid var(--color);
+  border-color: var(--color);
   color: var(--color);
-  font-size: var(--e-font-size-0);
-  margin-left: var(--e-space-1);
-  padding: 0 var(--e-space-1);
 }

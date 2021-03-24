@@ -10,7 +10,7 @@ export default function SyncState() {
   const syncToServerError = useSelector(eventsIsSyncingFromServerSelector);
 
   return (
-    <div className="m-menu__footer">
+    <div className="m-nav__footer">
       <hr />
       <p className="center">
         {syncFromServerError || syncToServerError ? (

@@ -104,7 +104,7 @@ export default function Year({
     calendars.push(
       <button
         aria-label={`Drill down into ${monthString}`}
-        className="m-calendar-button"
+        className="m-calendar-button br-0 p-1"
         key={String(month)}
         onClick={() =>
           navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`)
