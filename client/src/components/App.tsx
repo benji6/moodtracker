@@ -1,7 +1,7 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Header, Nav as EriNav, Main, QuickNav, Icon } from "eri";
 import * as React from "react";
-import Nav from "./Menu";
+import Nav from "./Nav";
 import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";

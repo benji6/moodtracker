@@ -36,7 +36,9 @@ export default function Nav({ handleNavClose, open }: Props) {
           <div className="m-nav__header">
             <strong>Signed in</strong>
             <p>
-              <em>{userEmail}</em>
+              <small>
+                <em>{userEmail}</em>
+              </small>
             </p>
             <Button.Group>
               <Button
