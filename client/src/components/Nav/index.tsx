@@ -11,6 +11,7 @@ import {
 } from "../../utils";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
+import MoodTrackerIcon from "../../icons/Icon";
 import "./style.css";
 
 interface Props {
@@ -34,23 +35,27 @@ export default function Nav({ handleNavClose, open }: Props) {
       <EriNav onClose={handleNavClose} open={open}>
         {userIsSignedIn && (
           <div className="m-nav__header">
-            <strong>Signed in</strong>
-            <p>
-              <small>
-                <em>{userEmail}</em>
-              </small>
-            </p>
-            <Button.Group>
+            <div className="m-profile">
+              <MoodTrackerIcon className="br-max bs-0" />
+              <div className="m-profile__text-container">
+                <b>Signed in</b>
+                <small>
+                  <em>{userEmail}</em>
+                </small>
+              </div>
+            </div>
+            <div className="center my-3">
               <Button
                 danger
                 data-test-id="sign-out-button"
                 onClick={() => setIsDialogOpen(true)}
+                style={{ border: 0, boxShadow: "none", paddingBottom: 0 }}
                 type="button"
                 variant="secondary"
               >
                 Sign out
               </Button>
-            </Button.Group>
+            </div>
             <hr />
           </div>
         )}

@@ -18,3 +18,15 @@
   border-color: var(--color);
   color: var(--color);
 }
+
+.m-profile {
+  align-items: center;
+  display: grid;
+  grid-column-gap: var(--e-space-2);
+  grid-template-columns: 2.5em 1fr;
+}
+
+.m-profile__text-container {
+  display: flex;
+  flex-direction: column;
+}
