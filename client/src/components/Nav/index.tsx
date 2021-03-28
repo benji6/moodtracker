@@ -54,6 +54,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                 variant="secondary"
               >
                 Sign out
+                <Icon name="sign-out" margin="left" />
               </Button>
             </div>
             <hr />
