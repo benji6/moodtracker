@@ -12,13 +12,6 @@
   margin: calc(-1 * var(--e-space-1)) var(--e-space-3) 0;
 }
 
-.m-nav__new-cta {
-  --color: var(--e-color-highlight-3);
-
-  border-color: var(--color);
-  color: var(--color);
-}
-
 .m-profile {
   align-items: center;
   display: grid;

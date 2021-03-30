@@ -115,9 +115,6 @@ export default function Nav({ handleNavClose, open }: Props) {
                 >
                   <Icon margin="right" name="bell" />
                   Notifications
-                  <span className="m-nav__new-cta br-1 bw-1 fs-0 ml-1 px-1">
-                    New!
-                  </span>
                 </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
