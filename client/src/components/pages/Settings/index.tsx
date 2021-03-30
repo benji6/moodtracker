@@ -1,8 +1,7 @@
-import { RouteComponentProps } from "@reach/router";
 import { Icon, Nav, Paper } from "eri";
 import * as React from "react";
 
-export default function Settings(_: RouteComponentProps) {
+export default function Settings() {
   return (
     <Paper.Group>
       <Paper>

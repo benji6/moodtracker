@@ -1,12 +1,8 @@
 import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
-import { Button, Paper, RadioButton, Spinner, TextArea, TextField } from "eri";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
+import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
 import DeleteDialog from "./DeleteDialog";
-import {
-  appIsStorageLoadingSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
+import { normalizedMoodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { noPunctuationValidator } from "../../../validators";
@@ -15,7 +11,6 @@ import { DESCRIPTION_MAX_LENGTH } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
-  useRedirectUnauthed();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const moods = useSelector(normalizedMoodsSelector);
@@ -71,7 +66,6 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
     navigate("/");
   };
   useKeyboardSave(handleSubmit);
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!id) return <Redirect to="/404" />;
   const mood = moods.byId[id];

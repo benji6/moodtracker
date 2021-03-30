@@ -10,18 +10,13 @@ import {
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters";
-import {
-  appIsStorageLoadingSelector,
-  eventsSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
+import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
@@ -40,10 +35,8 @@ const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 export default function Week({
   week: weekStr,
 }: RouteComponentProps<{ week: string }>) {
-  useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!weekStr || !isoDateRegex.test(weekStr)) return <Redirect to="/404" />;
   if (!events.hasLoadedFromServer) return <Spinner />;

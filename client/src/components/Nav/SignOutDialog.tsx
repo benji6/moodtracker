@@ -2,6 +2,7 @@ import { Dialog, Button } from "eri";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userPool } from "../../cognito";
+import { TEST_IDS } from "../../constants";
 import { eventsSelector } from "../../selectors";
 import eventsSlice from "../../store/eventsSlice";
 import userSlice from "../../store/userSlice";
@@ -47,7 +48,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
       <Button.Group>
         <Button
           danger
-          data-test-id="sign-out-confirm-button"
+          data-test-id={TEST_IDS.signOutConfirmButton}
           disabled={isLoading}
           onClick={handleSignOut}
         >

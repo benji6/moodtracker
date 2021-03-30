@@ -23,34 +23,42 @@ import Year from "./pages/Stats/Year";
 import Export from "./pages/Settings/Export";
 import Settings from "./pages/Settings";
 import Notifications from "./pages/Settings/Notifications";
+import AuthedOnlyPage from "./shared/AuthedOnlyPage";
+import _401 from "./pages/_401";
 
 export default function Router() {
   return (
     <ReachRouter>
       <App path="/">
+        <_401 path="/401" />
         <_404 default />
-        <Home path="/" />
         <About path="/about" />
-        <About path="/about" />
-        <AddMood path="/add" />
+        <AuthedOnlyPage Component={AddMood} path="/add" />
+        <AuthedOnlyPage
+          Component={ChangePassword}
+          path="/settings/change-password"
+        />
+        <AuthedOnlyPage Component={EditMood} path="/edit/:id" />
+        <AuthedOnlyPage Component={Explore} path="/stats/explore" />
+        <AuthedOnlyPage Component={Export} path="/settings/export" />
+        <AuthedOnlyPage Component={Month} path="/stats/months/:month" />
+        <AuthedOnlyPage
+          Component={Notifications}
+          path="/settings/notifications"
+        />
+        <AuthedOnlyPage Component={Settings} path="/settings" />
+        <AuthedOnlyPage Component={Stats} path="/stats" />
+        <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
+        <AuthedOnlyPage Component={Year} path="/stats/years/:year" />
         <Blog path="/blog" />
-        <ChangePassword path="/settings/change-password" />
-        <EditMood path="/edit/:id" />
         <ForgotPassword path="/forgot-password" />
-        <Explore path="/stats/explore" />
-        <Export path="/settings/export" />
-        <Month path="/stats/months/:month" />
-        <Notifications path="/settings/notifications" />
+        <Home path="/" />
         <ResendVerification path="/resend-verification" />
         <ResetPassword path="/reset-password" />
         <SeeAlso path="/see-also" />
-        <Settings path="/settings" />
         <SignIn path="/sign-in" />
         <SignUp path="/sign-up" />
-        <Stats path="/stats" />
         <Verify path="/verify" />
-        <Week path="/stats/weeks/:week" />
-        <Year path="/stats/years/:year" />
       </App>
     </ReachRouter>
   );

@@ -14,7 +14,6 @@ import {
   yearFormatter,
 } from "../../../../formatters";
 import {
-  appIsStorageLoadingSelector,
   eventsSelector,
   normalizedMoodsSelector,
   normalizedAveragesByMonthSelector,
@@ -25,7 +24,6 @@ import {
   formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../../utils";
-import useRedirectUnauthed from "../../../hooks/useRedirectUnauthed";
 import GetStartedCta from "../../../shared/GetStartedCta";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
@@ -48,14 +46,12 @@ const isoYearRegex = /^\d{4}$/;
 export default function Year({
   year: yearStr,
 }: RouteComponentProps<{ year: string }>) {
-  useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
     normalizedAveragesByMonthSelector
   );
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!yearStr || !isoYearRegex.test(yearStr)) return <Redirect to="/404" />;
   if (!events.hasLoadedFromServer) return <Spinner />;

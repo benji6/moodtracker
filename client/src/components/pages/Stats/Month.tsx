@@ -10,7 +10,6 @@ import {
   yearFormatter,
 } from "../../../formatters";
 import {
-  appIsStorageLoadingSelector,
   normalizedAveragesByWeekSelector,
   eventsSelector,
   normalizedMoodsSelector,
@@ -22,7 +21,6 @@ import {
   formatIsoYearInLocalTimezone,
   getMoodIdsInInterval,
 } from "../../../utils";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
@@ -46,13 +44,11 @@ const isoMonthRegex = /^\d{4}-\d{2}$/;
 export default function Month({
   month: monthStr,
 }: RouteComponentProps<{ month: string }>) {
-  useRedirectUnauthed();
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const normalizedAveragesByWeek = useSelector(
     normalizedAveragesByWeekSelector
   );
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
   if (!events.hasLoadedFromServer) return <Spinner />;

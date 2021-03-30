@@ -1,13 +1,8 @@
-import { RouteComponentProps } from "@reach/router";
-import { Button, Paper, Spinner } from "eri";
+import { Button, Paper } from "eri";
 import { saveAs } from "file-saver";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import {
-  appIsStorageLoadingSelector,
-  denormalizedMoodsSelector,
-} from "../../../selectors";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
+import { denormalizedMoodsSelector } from "../../../selectors";
 import { unparse } from "papaparse";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
 
@@ -16,11 +11,8 @@ const createFilename = (extension: "csv" | "json"): string =>
     new Date()
   )}.${extension}`;
 
-export default function Export(_: RouteComponentProps) {
+export default function Export() {
   const denormalizedMoods = useSelector(denormalizedMoodsSelector);
-
-  useRedirectUnauthed();
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
     <Paper.Group>

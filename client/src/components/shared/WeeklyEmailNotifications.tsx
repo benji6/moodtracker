@@ -1,13 +1,11 @@
 import { Spinner, Toggle } from "eri";
 import * as React from "react";
-import { useSelector } from "react-redux";
 import {
   disableWeeklyEmails,
   enableWeeklyEmails,
   getWeeklyEmails,
 } from "../../api";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
-import { appIsStorageLoadingSelector } from "../../selectors";
 
 export default function WeeklyEmailNotifications() {
   const [isUpdating, setIsUpdating] = React.useState(false);
@@ -27,7 +25,6 @@ export default function WeeklyEmailNotifications() {
       })(),
     []
   );
-  const isAppStorageLoading = useSelector(appIsStorageLoadingSelector);
 
   return (
     <Toggle
@@ -51,9 +48,7 @@ export default function WeeklyEmailNotifications() {
         setIsUpdating(false);
       }}
       label={
-        isAppStorageLoading ||
-        isUpdating ||
-        isWeeklyEmailsEnabled === undefined ? (
+        isUpdating || isWeeklyEmailsEnabled === undefined ? (
           <span>
             <Spinner inline />
           </span>

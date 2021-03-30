@@ -10,14 +10,8 @@ import {
   getMoodIdsInInterval,
 } from "../../../utils";
 import MoodChartForPeriod from "./MoodChartForPeriod";
-import {
-  appIsStorageLoadingSelector,
-  eventsSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
+import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
-import { RouteComponentProps } from "@reach/router";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { DAYS_PER_WEEK } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
@@ -63,8 +57,7 @@ const createXLabels = (
   return labels;
 };
 
-export default function Explore(_: RouteComponentProps) {
-  useRedirectUnauthed();
+export default function Explore() {
   const dateNow = new Date();
   const [dateFrom, setDateFrom] = React.useState(
     roundDateDown(subDays(dateNow, DAYS_PER_WEEK))
@@ -73,8 +66,6 @@ export default function Explore(_: RouteComponentProps) {
   const [dateTo, setDateTo] = React.useState(maxDate);
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
-
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)

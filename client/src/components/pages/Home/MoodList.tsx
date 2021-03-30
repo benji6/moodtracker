@@ -15,7 +15,11 @@ import {
 } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodCard from "./MoodCard";
-import { DESCRIPTION_MAX_LENGTH, MOOD_INTEGERS } from "../../../constants";
+import {
+  DESCRIPTION_MAX_LENGTH,
+  MOOD_INTEGERS,
+  TEST_IDS,
+} from "../../../constants";
 import { dateWeekdayFormatter } from "../../../formatters";
 import OptionalMoodCell from "../../shared/OptionalMoodCell";
 import { FluxStandardAction } from "../../../types";
@@ -149,7 +153,7 @@ export default function MoodList() {
 
   return (
     <>
-      <Paper data-test-id="mood-list">
+      <Paper data-test-id={TEST_IDS.moodList}>
         <h2>Mood list</h2>
         {filterFeatureAvailable && (
           <>

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@reach/router";
 import { Button, Paper, WordCloud } from "eri";
 import * as React from "react";
+import { TEST_IDS } from "../../../constants";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
@@ -41,7 +42,7 @@ export default function NotSignedIn() {
         <p>
           <small>
             If you already have an account you can{" "}
-            <Link data-test-id="sign-in-link" to="/sign-in">
+            <Link data-test-id={TEST_IDS.signInLink} to="/sign-in">
               sign in here
             </Link>
             .

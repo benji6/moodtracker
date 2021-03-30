@@ -16,6 +16,15 @@ export const MOOD_INTEGERS = [
 export const NETWORK_ERROR_MESSAGE =
   "Something went wrong, check your internet connection and try again";
 
+export const TEST_IDS = {
+  addMoodPage: "add-mood-page",
+  moodList: "mood-list",
+  navButton: "nav-button",
+  signInLink: "sign-in-link",
+  signOutButton: "sign-out-button",
+  signOutConfirmButton: "sign-out-confirm-button",
+};
+
 // extracted from cognito and updated manually for now
 // if needed we can look at automating this in the future
 export const TOTAL_USERS = 47;

@@ -8,6 +8,7 @@ import useUser from "./hooks/useUser";
 import { useSelector } from "react-redux";
 import { userIsSignedInSelector } from "../selectors";
 import AddMoodFab from "./AddMoodFab";
+import { TEST_IDS } from "../constants";
 
 interface IProps extends RouteComponentProps {
   children: React.ReactNode;
@@ -27,7 +28,7 @@ export default function App({ children }: IProps) {
           <Link to="/">MoodTracker</Link>
         </h1>
         <EriNav.Button
-          data-test-id="nav-button"
+          data-test-id={TEST_IDS.navButton}
           onClick={() => setIsNavOpen(true)}
         />
       </Header>

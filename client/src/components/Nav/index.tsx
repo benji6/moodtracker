@@ -13,6 +13,7 @@ import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
 import MoodTrackerIcon from "../../icons/Icon";
 import "./style.css";
+import { TEST_IDS } from "../../constants";
 
 interface Props {
   open: boolean;
@@ -47,7 +48,7 @@ export default function Nav({ handleNavClose, open }: Props) {
             <div className="center my-3">
               <Button
                 danger
-                data-test-id="sign-out-button"
+                data-test-id={TEST_IDS.signOutButton}
                 onClick={() => setIsDialogOpen(true)}
                 style={{ border: 0, boxShadow: "none", paddingBottom: 0 }}
                 type="button"

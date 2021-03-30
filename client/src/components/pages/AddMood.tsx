@@ -1,25 +1,21 @@
-import { useNavigate, RouteComponentProps } from "@reach/router";
+import { useNavigate } from "@reach/router";
 import * as React from "react";
 import {
   Button,
   Paper,
   RadioButton,
   requiredValidator,
-  Spinner,
   TextArea,
   TextField,
 } from "eri";
-import useRedirectUnauthed from "../hooks/useRedirectUnauthed";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { noPunctuationValidator } from "../../validators";
 import { Mood } from "../../types";
-import { appIsStorageLoadingSelector } from "../../selectors";
-import { DESCRIPTION_MAX_LENGTH } from "../../constants";
+import { DESCRIPTION_MAX_LENGTH, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 
-export default function AddMood(_: RouteComponentProps) {
-  useRedirectUnauthed();
+export default function AddMood() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = React.useState<string | undefined>();
@@ -58,10 +54,9 @@ export default function AddMood(_: RouteComponentProps) {
   };
 
   useKeyboardSave(handleSubmit);
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
-    <Paper.Group>
+    <Paper.Group data-test-id={TEST_IDS.addMoodPage}>
       <Paper>
         <h2>Add mood</h2>
         <form

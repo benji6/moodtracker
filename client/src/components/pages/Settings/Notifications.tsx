@@ -1,12 +1,8 @@
-import { RouteComponentProps } from "@reach/router";
 import { Paper } from "eri";
 import * as React from "react";
-import useRedirectUnauthed from "../../hooks/useRedirectUnauthed";
 import WeeklyEmailNotifications from "../../shared/WeeklyEmailNotifications";
 
-export default function Notifications(_: RouteComponentProps) {
-  useRedirectUnauthed();
-
+export default function Notifications() {
   return (
     <Paper.Group>
       <Paper>
