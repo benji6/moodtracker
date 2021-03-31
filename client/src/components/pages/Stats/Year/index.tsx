@@ -114,7 +114,7 @@ export default function Year({
           {monthString}
           <small>{formattedAverageMood && ` (${formattedAverageMood})`}</small>
         </h4>
-        <MoodCalendarForMonth blockSize="var(--e-space-2)" month={month} />
+        <MoodCalendarForMonth blockSize="var(--space-2)" month={month} />
       </button>
     );
   }
@@ -155,7 +155,7 @@ export default function Year({
                 alignItems: "start",
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(8em, 1fr))",
-                gridGap: "var(--e-space-0)",
+                gridGap: "var(--space-0)",
               }}
             >
               {calendars}

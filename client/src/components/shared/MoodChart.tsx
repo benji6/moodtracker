@@ -37,13 +37,13 @@ export default function MoodChart({
       <Chart.PlotArea>
         {hidePoints ? (
           <>
-            <Chart.Line color="var(--e-color-balance-less)" data={data} />
+            <Chart.Line color="var(--color-balance-less)" data={data} />
             <Chart.Line data={trendlinePoints} thickness={2} />
           </>
         ) : (
           <>
             <Chart.Line
-              color="var(--e-color-balance-less)"
+              color="var(--color-balance-less)"
               data={trendlinePoints}
               thickness={2}
             />

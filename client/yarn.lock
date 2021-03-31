@@ -3650,10 +3650,10 @@ envinfo@^7.3.1:
   resolved "https://registry.yarnpkg.com/envinfo/-/envinfo-7.7.4.tgz#c6311cdd38a0e86808c1c9343f667e4267c4a320"
   integrity sha512-TQXTYFVVwwluWSFis6K2XKxgrD22jEv0FTuLCQI+OjH7rn93+iY0fSSFM5lrSxFY+H1+B0/cvvlamr3UsBivdQ==
 
-eri@^30.0.0:
-  version "30.1.1"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-30.1.1.tgz#84e3966442cf2477913968666ed0f47e68e76970"
-  integrity sha512-wXv4FMkvp7QKeflVo0ZQQGy/530cUpPiZ8X9KtWoJP8w5nTaCOGt5ppD8+/pnPbFBMuhl9OBumLvo3/u8a3thw==
+eri@^31.0.0:
+  version "31.0.0"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-31.0.0.tgz#0020841812e9edb20386d621a3c5d5bab1b3bc53"
+  integrity sha512-dwTY4/foBE95hMD1UqIKyaMFNZI0DG6473ds32ZNIEMqG2+0+ogiGzmKRvjVrqtypGFSFHTYInG/ZTgmH3pVAQ==
   dependencies:
     react-transition-group "^4.4.1"
 

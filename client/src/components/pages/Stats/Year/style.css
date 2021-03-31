@@ -1,13 +1,13 @@
 .m-calendar-button {
-  transition: background-color var(--e-time-0) var(--e-easing-standard);
+  transition: background-color var(--time-0) var(--easing-standard);
 }
 
 .m-calendar-button:hover {
-  background: var(--e-color-ground-less);
+  background: var(--color-ground-less);
 }
 
 .m-calendar-button:active {
-  background: var(--e-color-highlight-default);
+  background: var(--color-highlight-default);
 }
 
 .m-calendar-button h4 {

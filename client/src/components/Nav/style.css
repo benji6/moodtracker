@@ -1,21 +1,21 @@
 .m-nav__header {
-  margin: var(--e-space-3) var(--e-space-3) calc(-1 * var(--e-space-4));
+  margin: var(--space-3) var(--space-3) calc(-1 * var(--space-4));
 }
 
 @media (min-width: 66rem) {
   .m-nav__header {
-    margin-bottom: calc(-1 * var(--e-space-3));
+    margin-bottom: calc(-1 * var(--space-3));
   }
 }
 
 .m-nav__footer {
-  margin: calc(-1 * var(--e-space-1)) var(--e-space-3) 0;
+  margin: calc(-1 * var(--space-1)) var(--space-3) 0;
 }
 
 .m-profile {
   align-items: center;
   display: grid;
-  grid-column-gap: var(--e-space-2);
+  grid-column-gap: var(--space-2);
   grid-template-columns: 2.5em 1fr;
 }
 

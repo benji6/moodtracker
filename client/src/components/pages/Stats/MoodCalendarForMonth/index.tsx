@@ -11,7 +11,7 @@ import {
 } from "../../../../utils";
 import "./style.css";
 
-const GRID_GAP = "var(--e-space-0)";
+const GRID_GAP = "var(--space-0)";
 
 interface Props {
   blockSize?: string;
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function MoodCalendarForMonth({
-  blockSize = "var(--e-space-4)",
+  blockSize = "var(--space-4)",
   month,
 }: Props) {
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
@@ -64,10 +64,10 @@ export default function MoodCalendarForMonth({
           key={i}
           className="m-calendar-day"
           style={{
-            animationDelay: `calc(var(--e-time-2) / ${data.length} * ${i}`,
+            animationDelay: `calc(var(--time-2) / ${data.length} * ${i}`,
             background:
               mood === null
-                ? "var(--e-color-balance-less)"
+                ? "var(--color-balance-less)"
                 : mood === undefined
                 ? "none"
                 : moodToColor(mood),

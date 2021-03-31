@@ -22,7 +22,7 @@ export default function MoodCard({
       <h3 className="center" style={{ lineHeight: 1, marginBottom: ".1em" }}>
         {mood}
         {description && (
-          <SubHeading style={{ margin: "var(--e-space-0) 0" }}>
+          <SubHeading style={{ margin: "var(--space-0) 0" }}>
             {description}
           </SubHeading>
         )}
@@ -33,7 +33,7 @@ export default function MoodCard({
       {exploration && (
         <p
           className="pre-line"
-          style={{ lineHeight: 1, marginTop: "var(--e-space-0)" }}
+          style={{ lineHeight: 1, marginTop: "var(--space-0)" }}
         >
           <small>{exploration}</small>
         </p>

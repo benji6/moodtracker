@@ -13,15 +13,15 @@ export default function MoodCell({ mood }: Props) {
       <span>{moodFormatter.format(mood)}</span>
       <div
         style={{
-          background: "var(--e-color-ground-less)",
-          borderRadius: "var(--e-border-radius-0)",
-          height: "var(--e-space-0)",
+          background: "var(--color-ground-less)",
+          borderRadius: "var(--border-radius-0)",
+          height: "var(--space-0)",
         }}
       >
         <div
           style={{
             background: moodToColor(mood),
-            borderRadius: "var(--e-border-radius-0)",
+            borderRadius: "var(--border-radius-0)",
             height: "100%",
             width: `${mood * MOOD_RANGE[1]}%`,
           }}
