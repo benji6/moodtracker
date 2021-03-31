@@ -3,6 +3,7 @@ import { TEST_IDS } from "../src/constants";
 
 const ORIGIN = "http://localhost:1234";
 const ADD_URL = `${ORIGIN}/add`;
+const RESET_PASSWORD_URL = `${ORIGIN}/reset-password`;
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 
@@ -36,7 +37,13 @@ describe("e2e", () => {
   });
 
   describe("when the user is not signed in", () => {
-    test("user can not access protected routes", async () => {
+    test("the user can access routes which are not available to authenticated users", async () => {
+      await page.goto(RESET_PASSWORD_URL);
+      await page.waitForSelector(SELECTORS.resetPasswordPage);
+      expect(page.url()).toBe(RESET_PASSWORD_URL);
+    });
+
+    test("the user can not access protected routes", async () => {
       await page.goto(ADD_URL);
       await page.waitForSelector(SELECTORS.signInLink);
       expect(page.url().replace(/\/$/, "")).toBe(ORIGIN);
@@ -76,7 +83,14 @@ describe("e2e", () => {
       ))!;
       await tapAndNavigate(signOutConfirmButton);
 
-      expect(await page.$('[href="/sign-in"]')).toBeTruthy();
+      expect(await page.$(SELECTORS.signInLink)).toBeTruthy();
+    });
+
+    test("the user can not access routes which are not available to authenticated users", async () => {
+      await page.goto(RESET_PASSWORD_URL);
+      await page.waitForSelector(SELECTORS.moodList);
+      expect(page.url().replace(/\/$/, "")).toBe(ORIGIN);
+      expect(await page.$(SELECTORS.resetPasswordPage)).toBeNull();
     });
 
     test("user can access protected routes", async () => {

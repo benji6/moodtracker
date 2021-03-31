@@ -1,11 +1,8 @@
-import { ResendVerificationPage, Spinner } from "eri";
+import { ResendVerificationPage } from "eri";
 import { RouteComponentProps, useNavigate } from "@reach/router";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
-import useRedirectAuthed from "../hooks/useRedirectAuthed";
-import { useSelector } from "react-redux";
-import { appIsStorageLoadingSelector } from "../../selectors";
 
 const resendConfirmation = ({ email }: { email: string }) =>
   new Promise((resolve, reject) => {
@@ -15,9 +12,7 @@ const resendConfirmation = ({ email }: { email: string }) =>
   });
 
 export default function ResendVerification(_: RouteComponentProps) {
-  useRedirectAuthed();
   const navigate = useNavigate();
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
     <ResendVerificationPage

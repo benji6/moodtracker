@@ -1,18 +1,13 @@
 import { RouteComponentProps } from "@reach/router";
-import { ResetPasswordPage, Spinner } from "eri";
+import { ResetPasswordPage } from "eri";
 import * as React from "react";
-import { useSelector } from "react-redux";
 import { createCognitoUser } from "../../cognito";
-import { NETWORK_ERROR_MESSAGE } from "../../constants";
-import { appIsStorageLoadingSelector } from "../../selectors";
-import useRedirectAuthed from "../hooks/useRedirectAuthed";
+import { NETWORK_ERROR_MESSAGE, TEST_IDS } from "../../constants";
 
 export default function ResetPassword(_: RouteComponentProps) {
-  useRedirectAuthed();
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
-
   return (
     <ResetPasswordPage
+      data-test-id={TEST_IDS.resetPasswordPage}
       onSubmit={async ({ code, email, password, setSubmitError }) =>
         new Promise((resolve, reject) => {
           createCognitoUser(email).confirmPassword(code, password, {

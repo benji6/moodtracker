@@ -25,6 +25,7 @@ import Settings from "./pages/Settings";
 import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import _401 from "./pages/_401";
+import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 
 export default function Router() {
   return (
@@ -32,7 +33,12 @@ export default function Router() {
       <App path="/">
         <_401 path="/401" />
         <_404 default />
+
         <About path="/about" />
+        <Blog path="/blog" />
+        <Home path="/" />
+        <SeeAlso path="/see-also" />
+
         <AuthedOnlyPage Component={AddMood} path="/add" />
         <AuthedOnlyPage
           Component={ChangePassword}
@@ -50,15 +56,16 @@ export default function Router() {
         <AuthedOnlyPage Component={Stats} path="/stats" />
         <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
         <AuthedOnlyPage Component={Year} path="/stats/years/:year" />
-        <Blog path="/blog" />
-        <ForgotPassword path="/forgot-password" />
-        <Home path="/" />
-        <ResendVerification path="/resend-verification" />
-        <ResetPassword path="/reset-password" />
-        <SeeAlso path="/see-also" />
-        <SignIn path="/sign-in" />
-        <SignUp path="/sign-up" />
-        <Verify path="/verify" />
+
+        <UnauthedOnlyPage Component={ForgotPassword} path="/forgot-password" />
+        <UnauthedOnlyPage Component={ResetPassword} path="/reset-password" />
+        <UnauthedOnlyPage
+          Component={ResendVerification}
+          path="/resend-verification"
+        />
+        <UnauthedOnlyPage Component={SignIn} path="/sign-in" />
+        <UnauthedOnlyPage Component={SignUp} path="/sign-up" />
+        <UnauthedOnlyPage Component={Verify} path="/verify" />
       </App>
     </ReachRouter>
   );

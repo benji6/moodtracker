@@ -20,6 +20,7 @@ export const TEST_IDS = {
   addMoodPage: "add-mood-page",
   moodList: "mood-list",
   navButton: "nav-button",
+  resetPasswordPage: "reset-password-page",
   signInLink: "sign-in-link",
   signOutButton: "sign-out-button",
   signOutConfirmButton: "sign-out-confirm-button",

@@ -1,12 +1,10 @@
 import { Link, useNavigate, RouteComponentProps } from "@reach/router";
-import { SignInPage, Spinner } from "eri";
+import { SignInPage } from "eri";
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
-import { appIsStorageLoadingSelector } from "../../selectors";
 import userSlice from "../../store/userSlice";
-import useRedirectAuthed from "../hooks/useRedirectAuthed";
 
 // The properties declared here are by no means exhaustive
 interface TokenPayload {
@@ -15,10 +13,8 @@ interface TokenPayload {
 }
 
 export default function SignIn(_: RouteComponentProps) {
-  useRedirectAuthed();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  if (useSelector(appIsStorageLoadingSelector)) return <Spinner />;
 
   return (
     <SignInPage
