@@ -23,6 +23,16 @@
   "lang": "en",
   "name": "MoodTracker",
   "short_name": "MoodTracker",
+  "shortcuts": [
+    {
+      "name": "Add mood",
+      "url": "/add"
+    },
+    {
+      "name": "View stats",
+      "url": "/stats"
+    }
+  ],
   "start_url": "./",
   "theme_color": "#001429"
 }
