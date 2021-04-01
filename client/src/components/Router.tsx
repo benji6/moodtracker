@@ -21,7 +21,6 @@ import App from "./App";
 import Blog from "./pages/Blog";
 import Year from "./pages/Stats/Year";
 import Export from "./pages/Settings/Export";
-import Settings from "./pages/Settings";
 import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import _401 from "./pages/_401";
@@ -52,7 +51,6 @@ export default function Router() {
           Component={Notifications}
           path="/settings/notifications"
         />
-        <AuthedOnlyPage Component={Settings} path="/settings" />
         <AuthedOnlyPage Component={Stats} path="/stats" />
         <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
         <AuthedOnlyPage Component={Year} path="/stats/years/:year" />

@@ -50,9 +50,8 @@ export default function Nav({ handleNavClose, open }: Props) {
                 danger
                 data-test-id={TEST_IDS.signOutButton}
                 onClick={() => setIsDialogOpen(true)}
-                style={{ border: 0, boxShadow: "none", paddingBottom: 0 }}
                 type="button"
-                variant="secondary"
+                variant="tertiary"
               >
                 Sign out
                 <Icon name="sign-out" margin="left" />
@@ -76,7 +75,18 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <Icon margin="right" name="chart" />
                 Stats
               </EriNav.Link>
-              <EriNav.SubList>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <Icon margin="right" name="chart" />
+                    Stats
+                  </span>
+                }
+              >
+                <EriNav.Link onClick={handleNavClose} to="/stats">
+                  <Icon margin="right" name="chart" />
+                  Overview
+                </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to={`/stats/weeks/${formatIsoDateInLocalTimezone(
@@ -105,11 +115,14 @@ export default function Nav({ handleNavClose, open }: Props) {
                   Explore
                 </EriNav.Link>
               </EriNav.SubList>
-              <EriNav.Link onClick={handleNavClose} to="/settings">
-                <Icon margin="right" name="chart" />
-                Settings
-              </EriNav.Link>
-              <EriNav.SubList>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <Icon margin="right" name="settings" />
+                    Settings
+                  </span>
+                }
+              >
                 <EriNav.Link
                   onClick={handleNavClose}
                   to="/settings/notifications"
