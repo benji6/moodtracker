@@ -52,4 +52,3 @@ Continuously deployed with [Netlify](http://netlify.com).
 ##### N.B.
 
 - Because icons take a long time to generate and do not change often they are created from the master SVG file by running `yarn icons` in the `/client` dir and committed to version control.
-- Prerendering HTML is also time consuming. To do so run `yarn start-prerender` in the `/client` dir in one terminal and then run `yarn html-fragments` in the `/client` dir in another terminal. HTML fragments for the different routes are committed to source control in `client/src/prerendered-fragments`.

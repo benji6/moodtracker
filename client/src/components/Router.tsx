@@ -25,6 +25,7 @@ import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import _401 from "./pages/_401";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
+import StorageLoadedPage from "./shared/StorageLoadedPage";
 
 export default function Router() {
   return (
@@ -35,7 +36,6 @@ export default function Router() {
 
         <About path="/about" />
         <Blog path="/blog" />
-        <Home path="/" />
         <SeeAlso path="/see-also" />
 
         <AuthedOnlyPage Component={AddMood} path="/add" />
@@ -54,6 +54,8 @@ export default function Router() {
         <AuthedOnlyPage Component={Overview} path="/stats" />
         <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
         <AuthedOnlyPage Component={Year} path="/stats/years/:year" />
+
+        <StorageLoadedPage Component={Home} path="/" />
 
         <UnauthedOnlyPage Component={ForgotPassword} path="/forgot-password" />
         <UnauthedOnlyPage Component={ResetPassword} path="/reset-password" />

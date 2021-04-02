@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Router from "./components/Router";
 
-(process.env.NODE_ENV === "production" ? ReactDOM.hydrate : ReactDOM.render)(
+ReactDOM.render(
   <EriProvider>
     <Provider store={store}>
       <Router />

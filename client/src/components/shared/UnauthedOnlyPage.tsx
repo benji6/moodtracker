@@ -1,25 +1,16 @@
 import { Redirect, RouteComponentProps } from "@reach/router";
-import { Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import {
-  appIsStorageLoadingSelector,
-  userIsSignedInSelector,
-} from "../../selectors";
+import { userIsSignedInSelector } from "../../selectors";
+import withStorageLoaded from "../hocs/withStorageLoaded";
 
 interface Props extends RouteComponentProps {
   Component: React.ComponentType<RouteComponentProps>;
 }
 
-export default function UnauthedOnlyPage({ Component, ...rest }: Props) {
-  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
+function UnauthedOnlyPage({ Component, ...rest }: Props) {
   const userIsSignedIn = useSelector(userIsSignedInSelector);
-
-  return isStorageLoading ? (
-    <Spinner />
-  ) : userIsSignedIn ? (
-    <Redirect to="/404" />
-  ) : (
-    <Component {...rest} />
-  );
+  return userIsSignedIn ? <Redirect to="/404" /> : <Component {...rest} />;
 }
+
+export default withStorageLoaded(UnauthedOnlyPage);
