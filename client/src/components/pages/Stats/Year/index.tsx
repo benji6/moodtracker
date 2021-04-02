@@ -38,6 +38,7 @@ import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import MoodByMonthChart from "./MoodByMonthChart";
 import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
+import PrevNextControls from "../../../shared/PrevNextControls";
 
 const X_LABELS_COUNT = 5;
 
@@ -100,7 +101,7 @@ export default function Year({
     calendars.push(
       <button
         aria-label={`Drill down into ${monthString}`}
-        className="m-calendar-button br-0 p-1"
+        className="m-year__calendar-button br-0 p-1"
         key={String(month)}
         onClick={() =>
           navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`)
@@ -114,7 +115,7 @@ export default function Year({
           {monthString}
           <small>{formattedAverageMood && ` (${formattedAverageMood})`}</small>
         </h4>
-        <MoodCalendarForMonth blockSize="var(--space-2)" month={month} />
+        <MoodCalendarForMonth month={month} small />
       </button>
     );
   }
@@ -122,7 +123,7 @@ export default function Year({
     <Paper.Group>
       <Paper>
         <h2>{yearFormatter.format(year)}</h2>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoYearInLocalTimezone(prevYear)}`}>
               <Icon margin="right" name="left" />
@@ -137,7 +138,7 @@ export default function Year({
               <Icon margin="left" name="right" />
             </Link>
           )}
-        </div>
+        </PrevNextControls>
       </Paper>
       <MoodSummaryForYear
         dates={[prevYear, year, nextYear, addYears(nextYear, 1)]}
@@ -150,16 +151,7 @@ export default function Year({
               Calendar view
               <SubHeading>Tap a month to explore it in more detail</SubHeading>
             </h3>
-            <div
-              style={{
-                alignItems: "start",
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(8em, 1fr))",
-                gridGap: "var(--space-0)",
-              }}
-            >
-              {calendars}
-            </div>
+            <div className="m-year__calendar-grid">{calendars}</div>
           </Paper>
           <Paper>
             <h3>Months</h3>

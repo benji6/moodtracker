@@ -36,6 +36,7 @@ import MoodCell from "../../shared/MoodCell";
 import startOfWeek from "date-fns/startOfWeek";
 import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
+import PrevNextControls from "../../shared/PrevNextControls";
 
 const X_LABELS_COUNT = 5;
 
@@ -97,7 +98,7 @@ export default function Month({
             </Link>
           </SubHeading>
         </h2>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
               <Icon margin="right" name="left" />
@@ -112,7 +113,7 @@ export default function Month({
               <Icon margin="left" name="right" />
             </Link>
           )}
-        </div>
+        </PrevNextControls>
       </Paper>
       <MoodSummaryForMonth
         dates={[prevMonth, month, nextMonth, addMonths(nextMonth, 1)]}

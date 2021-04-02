@@ -1,15 +1,19 @@
-.m-calendar-button {
+.m-year__calendar-button {
   transition: background-color var(--time-0) var(--easing-standard);
 }
-
-.m-calendar-button:hover {
+.m-year__calendar-button:hover {
   background: var(--color-ground-less);
 }
-
-.m-calendar-button:active {
+.m-year__calendar-button:active {
   background: var(--color-highlight-default);
 }
-
-.m-calendar-button h4 {
+.m-year__calendar-button h4 {
   margin-top: 0;
+}
+
+.m-year__calendar-grid {
+  align-items: start;
+  display: grid;
+  grid-gap: var(--space-0);
+  grid-template-columns: repeat(auto-fit, minmax(8em, 1fr));
 }

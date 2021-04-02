@@ -2,7 +2,7 @@ import addDays from "date-fns/addDays";
 import getDaysInMonth from "date-fns/getDaysInMonth";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { DAYS_PER_WEEK, WEEKDAY_LABELS_NARROW } from "../../../../constants";
+import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
 import { normalizedAveragesByDaySelector } from "../../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
@@ -11,17 +11,12 @@ import {
 } from "../../../../utils";
 import "./style.css";
 
-const GRID_GAP = "var(--space-0)";
-
 interface Props {
-  blockSize?: string;
   month: Date;
+  small?: boolean;
 }
 
-export default function MoodCalendarForMonth({
-  blockSize = "var(--space-4)",
-  month,
-}: Props) {
+export default function MoodCalendarForMonth({ month, small }: Props) {
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
 
   // undefined represents padding before the month
@@ -44,15 +39,9 @@ export default function MoodCalendarForMonth({
   return (
     <div
       aria-label="A calendar visualization of mood for each day of the month"
-      style={{
-        display: "grid",
-        gridGap: GRID_GAP,
-        gridTemplateColumns: "repeat(7, 1fr)",
-        margin: "auto",
-        maxWidth: `calc(${DAYS_PER_WEEK} * ${blockSize} + ${
-          DAYS_PER_WEEK - 1
-        } * ${GRID_GAP})`,
-      }}
+      className={`m-mood-calendar-for-month${
+        small ? " m-mood-calendar-for-month--small" : ""
+      }`}
     >
       {WEEKDAY_LABELS_NARROW.map((label, i) => (
         <div key={i} className="center">
@@ -62,7 +51,7 @@ export default function MoodCalendarForMonth({
       {data.map((mood, i) => (
         <div
           key={i}
-          className="m-calendar-day"
+          className="m-mood-calendar-for-month__day "
           style={{
             animationDelay: `calc(var(--time-2) / ${data.length} * ${i}`,
             background:
@@ -71,7 +60,6 @@ export default function MoodCalendarForMonth({
                 : mood === undefined
                 ? "none"
                 : moodToColor(mood),
-            height: blockSize,
           }}
           title={mood === null ? "No data" : mood?.toFixed(1)}
         />

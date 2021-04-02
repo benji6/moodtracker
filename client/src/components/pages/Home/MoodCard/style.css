@@ -1,0 +1,14 @@
+.m-mood-card__exploration {
+  line-height: 1;
+  margin-top: var(--space-0);
+}
+
+.m-mood-card__heading {
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.m-mood-card__time {
+  line-height: 1;
+  margin-bottom: 0;
+}

@@ -29,6 +29,7 @@ import subWeeks from "date-fns/subWeeks";
 import addDays from "date-fns/addDays";
 import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
+import PrevNextControls from "../../shared/PrevNextControls";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -95,7 +96,7 @@ export default function Week({
             </Link>
           </SubHeading>
         </h2>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevWeek)}`}>
               <Icon margin="right" name="left" />
@@ -110,7 +111,7 @@ export default function Week({
               <Icon margin="left" name="right" />
             </Link>
           )}
-        </div>
+        </PrevNextControls>
       </Paper>
       <MoodSummaryForWeek
         dates={[prevWeek, week, nextWeek, addWeeks(nextWeek, 1)]}

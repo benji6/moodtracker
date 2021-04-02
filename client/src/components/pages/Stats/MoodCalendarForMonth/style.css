@@ -1,6 +1,26 @@
-.m-calendar-day {
+.m-mood-calendar-for-month {
+  --block-size: var(--space-4);
+  --days-per-week: 7;
+  --grid-gap: var(--space-0);
+
+  display: grid;
+  grid-gap: var(--grid-gap);
+  grid-template-columns: repeat(7, 1fr);
+  margin: auto;
+  max-width: calc(
+    var(--days-per-week) * var(--block-size) + (var(--days-per-week) - 1) *
+      var(--grid-gap)
+  );
+}
+
+.m-mood-calendar-for-month--small {
+  --block-size: var(--space-2);
+}
+
+.m-mood-calendar-for-month__day {
   animation: m-calendar-day-keyframes var(--time-1) var(--easing-standard)
     forwards;
+  height: var(--block-size);
   opacity: 0;
   transform: scale(0);
 }
