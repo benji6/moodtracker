@@ -71,10 +71,6 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <Icon margin="right" name="plus" />
                 Add mood
               </EriNav.Link>
-              <EriNav.Link onClick={handleNavClose} to="/stats">
-                <Icon margin="right" name="chart" />
-                Stats
-              </EriNav.Link>
               <EriNav.SubList
                 heading={
                   <span>
