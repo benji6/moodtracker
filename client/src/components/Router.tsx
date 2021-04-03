@@ -10,7 +10,7 @@ import ResendVerification from "./pages/ResendVerification";
 import SeeAlso from "./pages/SeeAlso";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Stats from "./pages/Stats";
+import Overview from "./pages/Stats/Overview";
 import Verify from "./pages/Verify";
 import Week from "./pages/Stats/Week";
 import Explore from "./pages/Stats/Explore";
@@ -51,7 +51,7 @@ export default function Router() {
           Component={Notifications}
           path="/settings/notifications"
         />
-        <AuthedOnlyPage Component={Stats} path="/stats" />
+        <AuthedOnlyPage Component={Overview} path="/stats" />
         <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
         <AuthedOnlyPage Component={Year} path="/stats/years/:year" />
 
