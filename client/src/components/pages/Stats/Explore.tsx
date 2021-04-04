@@ -18,6 +18,7 @@ import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import { dayMonthFormatter } from "../../../formatters";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -82,6 +83,7 @@ export default function Explore() {
     <Paper.Group>
       <Paper>
         <h2>Explore</h2>
+        <MoodGradientForPeriod fromDate={dateFrom} toDate={dateTo} />
         <DateField
           label="From"
           max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}

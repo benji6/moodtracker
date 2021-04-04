@@ -10,6 +10,8 @@ import { yearFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
 import { normalizedAveragesByYearSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import addYears from "date-fns/addYears";
 
 const MAX_YEARS_PER_PAGE = 8;
 
@@ -36,6 +38,7 @@ export default function Years() {
         <thead>
           <tr>
             <th>Year</th>
+            <th>Mood gradient</th>
             <th>Average mood</th>
           </tr>
         </thead>
@@ -51,6 +54,12 @@ export default function Years() {
                     <Link to={`years/${formatIsoYearInLocalTimezone(year)}`}>
                       {yearFormattedString}
                     </Link>
+                  </td>
+                  <td>
+                    <MoodGradientForPeriod
+                      fromDate={year}
+                      toDate={addYears(year, 1)}
+                    />
                   </td>
                   <MoodCell mood={normalizedAveragesByYear.byId[dateString]!} />
                 </tr>

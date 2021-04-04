@@ -7,6 +7,7 @@ import Weeks from "./Weeks";
 import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import Years from "./Years";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
 
 export default function Overview() {
   const events = useSelector(eventsSelector);
@@ -25,6 +26,10 @@ export default function Overview() {
     <Paper.Group>
       <Paper>
         <h2>Overview</h2>
+        <MoodGradientForPeriod
+          fromDate={new Date(moods.allIds[0])}
+          toDate={new Date(moods.allIds[moods.allIds.length - 1])}
+        />
       </Paper>
       <Weeks />
       <Months />

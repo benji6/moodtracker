@@ -4,6 +4,10 @@ import * as React from "react";
 import { dateFormatter } from "../../../formatters";
 
 const BLOG_POSTS = {
+  "2021-04-04": {
+    __html: require("./2021-04-04"),
+    title: "New feature - mood gradient visualization",
+  },
   "2021-03-18": {
     __html: require("./2021-03-18"),
     title: "New feature - weekly email updates",

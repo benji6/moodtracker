@@ -11,6 +11,8 @@ import { formatWeekWithYear, WEEK_OPTIONS } from "../../../formatters";
 import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import startOfWeek from "date-fns/startOfWeek";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import addWeeks from "date-fns/addWeeks";
 
 const MAX_WEEKS_PER_PAGE = 8;
 
@@ -37,6 +39,7 @@ export default function Weeks() {
         <thead>
           <tr>
             <th>Week</th>
+            <th>Mood gradient</th>
             <th>Average mood</th>
           </tr>
         </thead>
@@ -56,6 +59,12 @@ export default function Weeks() {
                     >
                       {weekFormattedString}
                     </Link>
+                  </td>
+                  <td>
+                    <MoodGradientForPeriod
+                      fromDate={week}
+                      toDate={addWeeks(week, 1)}
+                    />
                   </td>
                   <MoodCell mood={normalizedAveragesByWeek.byId[dateString]!} />
                 </tr>

@@ -10,6 +10,8 @@ import { monthYearFormatter } from "../../../formatters";
 import { Link } from "@reach/router";
 import { normalizedAveragesByMonthSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import addMonths from "date-fns/addMonths";
 
 const MAX_MONTHS_PER_PAGE = 12;
 
@@ -36,6 +38,7 @@ export default function Months() {
         <thead>
           <tr>
             <th>Month</th>
+            <th>Mood gradient</th>
             <th>Average mood</th>
           </tr>
         </thead>
@@ -51,6 +54,12 @@ export default function Months() {
                     <Link to={`months/${formatIsoMonthInLocalTimezone(month)}`}>
                       {monthStr}
                     </Link>
+                  </td>
+                  <td>
+                    <MoodGradientForPeriod
+                      fromDate={month}
+                      toDate={addMonths(month, 1)}
+                    />
                   </td>
                   <MoodCell
                     mood={normalizedAveragesByMonth.byId[dateString]!}

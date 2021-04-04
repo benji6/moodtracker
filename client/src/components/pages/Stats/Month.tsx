@@ -32,11 +32,13 @@ import subMonths from "date-fns/subMonths";
 import addMonths from "date-fns/addMonths";
 import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import addDays from "date-fns/addDays";
+import addWeeks from "date-fns/addWeeks";
 import MoodCell from "../../shared/MoodCell";
 import startOfWeek from "date-fns/startOfWeek";
 import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -98,6 +100,7 @@ export default function Month({
             </Link>
           </SubHeading>
         </h2>
+        <MoodGradientForPeriod fromDate={month} toDate={nextMonth} />
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
@@ -139,6 +142,7 @@ export default function Month({
               <thead>
                 <tr>
                   <th>Week</th>
+                  <th>Mood gradient</th>
                   <th>Average mood</th>
                 </tr>
               </thead>
@@ -162,6 +166,12 @@ export default function Month({
                           >
                             {weekStr}
                           </Link>
+                        </td>
+                        <td>
+                          <MoodGradientForPeriod
+                            fromDate={week}
+                            toDate={addWeeks(week, 1)}
+                          />
                         </td>
                         <MoodCell
                           mood={normalizedAveragesByWeek.byId[dateString]!}

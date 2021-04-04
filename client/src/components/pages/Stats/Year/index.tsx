@@ -39,6 +39,7 @@ import MoodByMonthChart from "./MoodByMonthChart";
 import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import PrevNextControls from "../../../shared/PrevNextControls";
+import MoodGradientForPeriod from "../MoodGradientForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -123,6 +124,7 @@ export default function Year({
     <Paper.Group>
       <Paper>
         <h2>{yearFormatter.format(year)}</h2>
+        <MoodGradientForPeriod fromDate={year} toDate={nextYear} />
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoYearInLocalTimezone(prevYear)}`}>
