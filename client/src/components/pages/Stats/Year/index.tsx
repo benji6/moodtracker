@@ -8,7 +8,6 @@ import { Icon, Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import {
-  dayMonthFormatter,
   monthLongFormatter,
   moodFormatter,
   yearFormatter,
@@ -30,8 +29,6 @@ import MoodSummaryForYear from "../MoodSummaryForYear";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
-import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
-import addDays from "date-fns/addDays";
 import subYears from "date-fns/subYears";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
@@ -40,8 +37,6 @@ import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
-
-const X_LABELS_COUNT = 5;
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -74,17 +69,6 @@ export default function Year({
   const showNext = nextYear <= new Date();
 
   const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, year, nextYear);
-  const periodLength = differenceInCalendarDays(nextYear, year);
-
-  const xLabels: [number, string][] = [];
-
-  for (let i = 0; i < X_LABELS_COUNT; i++) {
-    const date = addDays(
-      year,
-      Math.round((i * periodLength) / (X_LABELS_COUNT - 1))
-    );
-    xLabels.push([date.getTime(), dayMonthFormatter.format(date)]);
-  }
 
   const months = eachMonthOfInterval({ start: year, end: nextYear }).slice(
     0,
