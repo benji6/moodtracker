@@ -28,7 +28,7 @@ export const TEST_IDS = {
 
 // extracted from cognito and updated manually for now
 // if needed we can look at automating this in the future
-export const TOTAL_USERS = 47;
+export const TOTAL_USERS = 48;
 
 const now = Date.now();
 const startOfWeekDate = startOfWeek(now, WEEK_OPTIONS);
