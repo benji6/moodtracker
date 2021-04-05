@@ -20,21 +20,38 @@ We hope you have a lovely day 🙂
     'Charset': 'UTF-8',
   },
   'Html': {
-    'Data': f"""
-      <p style="font-size: 1.25em">Good morning from MoodTracker!</p>
-      <p style="font-size: 1.25em">Your weekly report is now complete and ready to view, just click the link below:</p>
-      <p>
-        <a href="https://moodtracker.link/stats/weeks/{last_monday_iso}" style="background: #003870; border-radius: 0.66667em; font-size: 1.5em; margin: 0.5em 0; padding: 0.25em 1em; display: inline-block; text-decoration: none; color: #eff2f5;">Check out your weekly report!</a>
-      </p>
-      <p style="font-size: 1.25em">
-        We hope you have a lovely day 🙂
-      </p>
-      <p>
-        <small>
-          You're receiving this email because you signed up for MoodTracker weekly email updates. If you no longer wish to receive these updates you can turn them off on your <a href="https://moodtracker.link/settings/notifications">notification settings page</a>.
-        </small>
-      </p>
-    """,
+    'Data': f"""<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .button:hover, .button:focus {
+        background-color: #024b94 !important;
+      }
+      .button:active {
+        background-color: #00284f !important;
+      }
+      .link:hover, .link:focus {
+        color: #024b94 !important;
+        text-decoration: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <p style="font-size: 1.25em">Good morning from MoodTracker!</p>
+    <p style="font-size: 1.25em">Your weekly report is now complete and ready to view, just click the link below:</p>
+    <p>
+      <a class="button" href="https://moodtracker.link/stats/weeks/{last_monday_iso}" style="background-color: #003870; border-radius: 0.66667em; font-size: 1.5em; margin: 0.5em 0; padding: 0.75em 1em; display: inline-block; font-weight: bold; text-decoration: none; color: #eff2f5;">Check out your weekly report!</a>
+    </p>
+    <p style="font-size: 1.25em">
+      We hope you have a lovely day 🙂
+    </p>
+    <p>
+      <small>
+        You're receiving this email because you signed up for MoodTracker weekly email updates. If you no longer wish to receive these updates you can turn them off on your <a class="link" href="https://moodtracker.link/settings/notifications" style="color: #003870;">notification settings page</a>.
+      </small>
+    </p>
+  </body>
+</html>""",
     'Charset': 'UTF-8',
   }
 }
