@@ -1,7 +1,6 @@
-import { RouteComponentProps } from "@reach/router";
 import { VerifyPage } from "eri";
 import * as React from "react";
 
-export default function Verify(_: RouteComponentProps) {
+export default function Verify() {
   return <VerifyPage appName="MoodTracker" />;
 }

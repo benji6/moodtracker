@@ -1,10 +1,9 @@
-import { RouteComponentProps } from "@reach/router";
 import { ResetPasswordPage } from "eri";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE, TEST_IDS } from "../../constants";
 
-export default function ResetPassword(_: RouteComponentProps) {
+export default function ResetPassword() {
   return (
     <ResetPasswordPage
       data-test-id={TEST_IDS.resetPasswordPage}

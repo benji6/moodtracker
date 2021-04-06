@@ -1,4 +1,4 @@
-import { Link, useNavigate, RouteComponentProps } from "@reach/router";
+import { Link, useNavigate } from "@reach/router";
 import { SignInPage } from "eri";
 import * as React from "react";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ interface TokenPayload {
   sub: string;
 }
 
-export default function SignIn(_: RouteComponentProps) {
+export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

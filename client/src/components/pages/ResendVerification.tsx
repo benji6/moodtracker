@@ -1,5 +1,5 @@
 import { ResendVerificationPage } from "eri";
-import { RouteComponentProps, useNavigate } from "@reach/router";
+import { useNavigate } from "@reach/router";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
@@ -11,7 +11,7 @@ const resendConfirmation = ({ email }: { email: string }) =>
     );
   });
 
-export default function ResendVerification(_: RouteComponentProps) {
+export default function ResendVerification() {
   const navigate = useNavigate();
 
   return (

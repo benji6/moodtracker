@@ -1,10 +1,9 @@
-import { RouteComponentProps } from "@reach/router";
 import { ForgotPasswordPage } from "eri";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
 import { NETWORK_ERROR_MESSAGE } from "../../constants";
 
-export default function ForgotPassword(_: RouteComponentProps) {
+export default function ForgotPassword() {
   return (
     <ForgotPasswordPage
       onSubmit={({ email, setSubmitError }) =>
