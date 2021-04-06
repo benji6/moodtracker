@@ -1,10 +1,9 @@
-# This script pulls the number of users and the number
-# of events for each day and month from the database.
-# It will not scale in a cost effective manner
+# This script will not scale in a cost effective manner
 # and is very rudimentary, but suffices to give a basic
-# picture of usage over time for now.
+# picture of usage over time
 
 import boto3
+import datetime
 import json
 import operator
 from collections import defaultdict
@@ -59,8 +58,9 @@ def compute_breakdown(get_key):
 
   return results
 
-def get_iso_date_string(date_time_string):
-  return date_time_string[0:10]
+def get_iso_week_string(date_time_string):
+  y, w, d = datetime.date.fromisoformat(date_time_string[:10]).isocalendar()
+  return f"{y}-W{w:02d}"
 
 def get_iso_month_string(date_time_string):
   return date_time_string[0:7]
@@ -76,7 +76,7 @@ for k,v in events_count_by_user.items():
 number_of_events_against_number_of_users = dict(sorted(number_of_events_against_number_of_users.items()))
 
 print(json.dumps({
-  'Breakdown by day': compute_breakdown(get_iso_date_string),
+  'Breakdown by week': compute_breakdown(get_iso_week_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
   'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
   'DynamoDB consumed capacity units': events_table_scan_response['ConsumedCapacity']['CapacityUnits'],
