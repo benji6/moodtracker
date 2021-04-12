@@ -24,16 +24,16 @@ We hope you have a lovely day 🙂
 <html>
   <head>
     <style>
-      .button:hover, .button:focus {
+      .button:hover, .button:focus {{
         background-color: #024b94 !important;
-      }
-      .button:active {
+      }}
+      .button:active {{
         background-color: #00284f !important;
-      }
-      .link:hover, .link:focus {
+      }}
+      .link:hover, .link:focus {{
         color: #024b94 !important;
         text-decoration: none !important;
-      }
+      }}
     </style>
   </head>
   <body>
