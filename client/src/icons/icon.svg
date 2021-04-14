@@ -1,5 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" stroke="#000" stroke-width=".2" viewBox="0 0 10 10" >
-  <rect height="10" stroke="none" width="10" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" stroke="#000" viewBox="0 0 10 10" >
+  <style>
+    circle { stroke-width: 0.2; }
+    rect { fill: #fff; }
+    @media (prefers-color-scheme: dark) {
+      circle { stroke-width: 0; }
+      rect { fill: #000; }
+    }
+  </style>
+  <rect height="10" stroke="none" width="10" />
   <circle r="1.5" cx="3" cy="3" fill="#2575d0" />
   <circle r="1.5" cx="3" cy="7" fill="#3bd075" />
   <circle r="1.5" cx="7" cy="3" fill="#ffa033" />

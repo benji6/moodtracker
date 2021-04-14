@@ -1,6 +1,5 @@
 .*ignore
 .cache
-*.ico
 *.lock
 *.png
 *.svg
