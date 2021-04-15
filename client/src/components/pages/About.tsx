@@ -116,6 +116,40 @@ export default function About(_: RouteComponentProps) {
           .
         </p>
       </Paper>
+      <Paper>
+        <h2>Acknowledgements</h2>
+        <ul>
+          <li>
+            Open source icons from{" "}
+            <a href="https://feathericons.com" rel="noopener" target="_blank">
+              Feather
+            </a>{" "}
+            (MIT)
+          </li>
+          <li>
+            Open source meditation bell from{" "}
+            <a
+              href="https://freesound.org/people/fauxpress/sounds/42095"
+              rel="noopener"
+              target="_blank"
+            >
+              Freesound
+            </a>{" "}
+            (CC0 1.0)
+          </li>
+          <li>
+            A lot of open source software projects (
+            <a
+              href="https://github.com/benji6/moodtracker"
+              rel="noopener"
+              target="_blank"
+            >
+              see GitHub for details
+            </a>
+            )
+          </li>
+        </ul>
+      </Paper>
     </Paper.Group>
   );
 }
