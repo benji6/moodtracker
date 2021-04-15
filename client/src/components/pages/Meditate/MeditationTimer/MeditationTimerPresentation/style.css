@@ -1,0 +1,5 @@
+.m-meditation-timer__clock {
+  font-feature-settings: "tnum";
+  font-size: var(--font-size-4);
+  font-variant-numeric: tabular-nums;
+}

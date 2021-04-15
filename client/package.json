@@ -28,6 +28,7 @@
     "eri": "^32.0.0",
     "file-saver": "^2.0.5",
     "idb-keyval": "^5.0.4",
+    "nosleep.js": "^0.12.0",
     "papaparse": "^5.3.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

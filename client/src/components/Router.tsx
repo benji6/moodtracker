@@ -26,6 +26,8 @@ import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import _401 from "./pages/_401";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
+import Meditate from "./pages/Meditate";
+import MeditationTimer from "./pages/Meditate/MeditationTimer";
 
 export default function Router() {
   return (
@@ -39,30 +41,32 @@ export default function Router() {
         <SeeAlso path="/see-also" />
 
         <AuthedOnlyPage Component={AddMood} path="/add" />
+        <AuthedOnlyPage Component={EditMood} path="/edit/:id" />
+        <AuthedOnlyPage Component={Meditate} path="/meditate" />
+        <AuthedOnlyPage Component={MeditationTimer} path="/meditate/timer" />
         <AuthedOnlyPage
           Component={ChangePassword}
           path="/settings/change-password"
         />
-        <AuthedOnlyPage Component={EditMood} path="/edit/:id" />
-        <AuthedOnlyPage Component={Explore} path="/stats/explore" />
         <AuthedOnlyPage Component={Export} path="/settings/export" />
+        <AuthedOnlyPage Component={Overview} path="/stats" />
+        <AuthedOnlyPage Component={Explore} path="/stats/explore" />
         <AuthedOnlyPage Component={Month} path="/stats/months/:month" />
         <AuthedOnlyPage
           Component={Notifications}
           path="/settings/notifications"
         />
-        <AuthedOnlyPage Component={Overview} path="/stats" />
         <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
         <AuthedOnlyPage Component={Year} path="/stats/years/:year" />
 
         <StorageLoadedPage Component={Home} path="/" />
 
         <UnauthedOnlyPage Component={ForgotPassword} path="/forgot-password" />
-        <UnauthedOnlyPage Component={ResetPassword} path="/reset-password" />
         <UnauthedOnlyPage
           Component={ResendVerification}
           path="/resend-verification"
         />
+        <UnauthedOnlyPage Component={ResetPassword} path="/reset-password" />
         <UnauthedOnlyPage Component={SignIn} path="/sign-in" />
         <UnauthedOnlyPage Component={SignUp} path="/sign-up" />
         <UnauthedOnlyPage Component={Verify} path="/verify" />

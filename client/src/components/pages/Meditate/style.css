@@ -1,0 +1,5 @@
+.m-meditate__preset_group {
+  display: grid;
+  grid-gap: var(--space-1);
+  grid-template-columns: repeat(3, 1fr);
+}

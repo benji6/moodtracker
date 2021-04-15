@@ -30,6 +30,7 @@ export const PATTERNS = {
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,
+  secondsPerMinute: 60,
 } as const;
 
 export const TEST_IDS = {
