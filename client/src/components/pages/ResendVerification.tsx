@@ -2,7 +2,7 @@ import { ResendVerificationPage } from "eri";
 import { useNavigate } from "@reach/router";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
-import { NETWORK_ERROR_MESSAGE } from "../../constants";
+import { ERRORS } from "../../constants";
 
 const resendConfirmation = ({ email }: { email: string }) =>
   new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ export default function ResendVerification() {
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
-              setSubmitError(NETWORK_ERROR_MESSAGE);
+              setSubmitError(ERRORS.network);
               break;
             default:
               setSubmitError(

@@ -10,9 +10,13 @@ import {
 } from "eri";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
-import { noPunctuationValidator } from "../../validators";
 import { Mood } from "../../types";
-import { DESCRIPTION_MAX_LENGTH, TEST_IDS } from "../../constants";
+import {
+  DESCRIPTION_MAX_LENGTH,
+  ERRORS,
+  PATTERNS,
+  TEST_IDS,
+} from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 
 export default function AddMood() {
@@ -33,9 +37,9 @@ export default function AddMood() {
     const moodFieldError = requiredValidator(moodValue);
     if (moodFieldError) setMoodError(moodFieldError);
 
-    const descriptionFieldError = noPunctuationValidator(descriptionValue);
-
-    if (descriptionFieldError) setDescriptionError(descriptionFieldError);
+    const descriptionFieldError = (formEl.description as HTMLInputElement)
+      .validity.patternMismatch;
+    setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
 
     if (descriptionFieldError || moodFieldError) return;
 
@@ -82,11 +86,13 @@ export default function AddMood() {
           </RadioButton.Group>
           <TextField
             autoComplete="on"
+            data-test-id={TEST_IDS.descriptionInput}
             error={descriptionError}
             label="Description"
             maxLength={DESCRIPTION_MAX_LENGTH}
             name="description"
             optional
+            pattern={PATTERNS.noPunctuation}
             supportiveText={`Try to describe how you feel using a short (${DESCRIPTION_MAX_LENGTH} characters) list of words separated by spaces.`}
           />
           <TextArea
@@ -97,7 +103,7 @@ export default function AddMood() {
             supportiveText="This is a space to explore how you're feeling, why you're feeling that way and what's going on in your life right now"
           />
           <Button.Group>
-            <Button>Submit</Button>
+            <Button data-test-id={TEST_IDS.addMoodSubmitButton}>Submit</Button>
           </Button.Group>
         </form>
       </Paper>

@@ -1,7 +1,7 @@
 import { ForgotPasswordPage } from "eri";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
-import { NETWORK_ERROR_MESSAGE } from "../../constants";
+import { ERRORS } from "../../constants";
 
 export default function ForgotPassword() {
   return (
@@ -20,7 +20,7 @@ export default function ForgotPassword() {
             onFailure: (e: any) => {
               switch (e.code) {
                 case "NetworkError":
-                  setSubmitError(NETWORK_ERROR_MESSAGE);
+                  setSubmitError(ERRORS.network);
                   break;
                 default:
                   setSubmitError(

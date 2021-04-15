@@ -1,8 +1,13 @@
 import puppeteer from "puppeteer";
-import { TEST_IDS } from "../src/constants";
+import { ERRORS, TEST_IDS } from "../src/constants";
 
 const ORIGIN = "http://localhost:1234";
-const ADD_URL = `${ORIGIN}/add`;
+
+const URLS = {
+  add: `${ORIGIN}/add`,
+  statsOverview: `${ORIGIN}/stats`,
+};
+
 const RESET_PASSWORD_URL = `${ORIGIN}/reset-password`;
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
@@ -44,7 +49,7 @@ describe("e2e", () => {
     });
 
     test("the user can not access protected routes", async () => {
-      await page.goto(ADD_URL);
+      await page.goto(URLS.add);
       await page.waitForSelector(SELECTORS.signInLink);
       expect(page.url().replace(/\/$/, "")).toBe(ORIGIN);
       expect(await page.$(SELECTORS.addMoodPage)).toBeNull();
@@ -94,9 +99,51 @@ describe("e2e", () => {
     });
 
     test("user can access protected routes", async () => {
-      await page.goto(ADD_URL);
-      await page.waitForSelector(SELECTORS.addMoodPage);
-      expect(page.url()).toBe(ADD_URL);
+      await page.goto(URLS.statsOverview);
+      await page.waitForSelector(SELECTORS.statsOverviewPage);
+      expect(page.url()).toBe(URLS.statsOverview);
+    });
+
+    describe("adding a mood", () => {
+      let descriptionInput: puppeteer.ElementHandle<HTMLInputElement>;
+      let submitButton: puppeteer.ElementHandle<HTMLButtonElement>;
+
+      beforeEach(async () => {
+        await page.goto(URLS.add);
+        await page.waitForSelector(SELECTORS.addMoodPage);
+
+        descriptionInput = (await page.$(SELECTORS.descriptionInput))!;
+        submitButton = (await page.$(SELECTORS.addMoodSubmitButton))!;
+      });
+
+      test("error message is displayed when the mood field is invalid", async () => {
+        await submitButton.tap();
+        const error = (await page.$('[data-eri-id="field-error"]'))!;
+        const errorMessage = await error.evaluate((el) => el.textContent);
+        expect(errorMessage).toBe(ERRORS.required);
+      });
+
+      test("error message is displayed when the description field is invalid", async () => {
+        await page.type(SELECTORS.descriptionInput, 'hello"world', {
+          delay: 10,
+        });
+        await descriptionInput.press("Enter");
+
+        const errors = (await page.$$('[data-eri-id="field-error"]'))!;
+        expect(errors.length).toBe(2);
+        const errorMessage = await errors[1].evaluate((el) => el.textContent);
+        expect(errorMessage).toBe(ERRORS.specialCharacters);
+      });
+
+      test("error message is cleared when the description field is valid", async () => {
+        await page.type(SELECTORS.descriptionInput, "hello world", {
+          delay: 10,
+        });
+        await descriptionInput.press("Enter");
+
+        const errors = (await page.$$('[data-eri-id="field-error"]'))!;
+        expect(errors.length).toBe(1);
+      });
     });
   });
 });

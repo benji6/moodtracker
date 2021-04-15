@@ -8,6 +8,7 @@ import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import Years from "./Years";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import { TEST_IDS } from "../../../constants";
 
 export default function Overview() {
   const events = useSelector(eventsSelector);
@@ -23,7 +24,7 @@ export default function Overview() {
   if (!events.hasLoadedFromServer) return <Spinner />;
 
   return (
-    <Paper.Group>
+    <Paper.Group data-test-id={TEST_IDS.statsOverviewPage}>
       <Paper>
         <h2>Overview</h2>
         <MoodGradientForPeriod

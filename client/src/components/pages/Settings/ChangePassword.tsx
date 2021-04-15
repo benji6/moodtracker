@@ -2,7 +2,7 @@ import { ChangePasswordPage } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../../cognito";
-import { NETWORK_ERROR_MESSAGE } from "../../../constants";
+import { ERRORS } from "../../../constants";
 import { userEmailSelector } from "../../../selectors";
 
 export default function ChangePassword() {
@@ -28,7 +28,7 @@ export default function ChangePassword() {
                     setSubmitError("Too many attempts, please try again later");
                     break;
                   case "NetworkError":
-                    setSubmitError(NETWORK_ERROR_MESSAGE);
+                    setSubmitError(ERRORS.network);
                     break;
                   default:
                     setSubmitError(
@@ -42,7 +42,7 @@ export default function ChangePassword() {
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
-              setSubmitError(NETWORK_ERROR_MESSAGE);
+              setSubmitError(ERRORS.network);
               break;
             case "NotAuthorizedException":
               setSubmitError("Current password is incorrect, please try again");

@@ -3,7 +3,7 @@ import { SignInPage } from "eri";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../cognito";
-import { NETWORK_ERROR_MESSAGE } from "../../constants";
+import { ERRORS } from "../../constants";
 import userSlice from "../../store/userSlice";
 
 // The properties declared here are by no means exhaustive
@@ -30,7 +30,7 @@ export default function SignIn() {
         } catch (e) {
           switch (e.code) {
             case "NetworkError":
-              return setSubmitError(NETWORK_ERROR_MESSAGE);
+              return setSubmitError(ERRORS.network);
             case "UserNotConfirmedException":
               return setSubmitError(
                 <>

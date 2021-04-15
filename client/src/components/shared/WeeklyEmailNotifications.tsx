@@ -5,7 +5,7 @@ import {
   enableWeeklyEmails,
   getWeeklyEmails,
 } from "../../api";
-import { NETWORK_ERROR_MESSAGE } from "../../constants";
+import { ERRORS } from "../../constants";
 
 export default function WeeklyEmailNotifications() {
   const [isUpdating, setIsUpdating] = React.useState(false);
@@ -30,7 +30,7 @@ export default function WeeklyEmailNotifications() {
     <Toggle
       checked={isWeeklyEmailsEnabled}
       disabled={isUpdating}
-      error={error ? NETWORK_ERROR_MESSAGE : undefined}
+      error={error ? ERRORS.network : undefined}
       onChange={async () => {
         setIsUpdating(true);
         if (error) setError(false);

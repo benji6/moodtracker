@@ -5,9 +5,8 @@ import DeleteDialog from "./DeleteDialog";
 import { normalizedMoodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
-import { noPunctuationValidator } from "../../../validators";
 import { UpdateMood } from "../../../types";
-import { DESCRIPTION_MAX_LENGTH } from "../../../constants";
+import { DESCRIPTION_MAX_LENGTH, ERRORS, PATTERNS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
@@ -27,10 +26,9 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
     const explorationValue: string = formEl.exploration.value;
     const moodValue: string = formEl.mood.value;
 
-    const descriptionFieldError = noPunctuationValidator(descriptionValue);
-
-    if (descriptionFieldError)
-      return setDescriptionError(descriptionFieldError);
+    const descriptionFieldError = (formEl.description as HTMLInputElement)
+      .validity.patternMismatch;
+    setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
 
     // There's some code further down that redirects the user
     // if `id` is not defined
@@ -116,6 +114,7 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             maxLength={DESCRIPTION_MAX_LENGTH}
             name="description"
             optional
+            pattern={PATTERNS.noPunctuation}
             supportiveText={`Try to describe how you feel using a short (${DESCRIPTION_MAX_LENGTH} characters) list of words separated by spaces.`}
           />
           <TextArea

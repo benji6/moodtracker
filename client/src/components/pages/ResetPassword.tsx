@@ -1,7 +1,7 @@
 import { ResetPasswordPage } from "eri";
 import * as React from "react";
 import { createCognitoUser } from "../../cognito";
-import { NETWORK_ERROR_MESSAGE, TEST_IDS } from "../../constants";
+import { ERRORS, TEST_IDS } from "../../constants";
 
 export default function ResetPassword() {
   return (
@@ -26,7 +26,7 @@ export default function ResetPassword() {
                   );
                   break;
                 case "NetworkError":
-                  setSubmitError(NETWORK_ERROR_MESSAGE);
+                  setSubmitError(ERRORS.network);
                   break;
                 default:
                   setSubmitError(
