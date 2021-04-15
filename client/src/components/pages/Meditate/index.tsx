@@ -1,7 +1,7 @@
 import { useNavigate } from "@reach/router";
 import { Button, Paper, TextField } from "eri";
 import * as React from "react";
-import { ERRORS, TIME } from "../../../constants";
+import { ERRORS, TEST_IDS, TIME } from "../../../constants";
 import { SEARCH_PARAM_TIME_KEY } from "./constants";
 import "./style.css";
 
@@ -20,7 +20,7 @@ export default function Meditate() {
     );
 
   return (
-    <Paper.Group>
+    <Paper.Group data-test-id={TEST_IDS.meditatePage}>
       <Paper>
         <h2>Meditate</h2>
       </Paper>
@@ -29,6 +29,8 @@ export default function Meditate() {
         <div className="m-meditate__preset_group">
           {TIMES.map((minutes) => (
             <Button
+              data-minutes={minutes}
+              data-test-id={TEST_IDS.meditationPresetTimeButton}
               key={minutes}
               onClick={() => navigateToTimer(minutes)}
               variant="secondary"
@@ -63,6 +65,7 @@ export default function Meditate() {
         >
           <h3>Custom time</h3>
           <TextField
+            data-test-id={TEST_IDS.meditationCustomTimeInput}
             inputMode="numeric"
             error={error}
             label="Minutes"

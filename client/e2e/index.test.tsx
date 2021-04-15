@@ -1,18 +1,20 @@
 import puppeteer from "puppeteer";
 import { ERRORS, TEST_IDS } from "../src/constants";
 
-const ORIGIN = "http://localhost:1234";
+class URLS {
+  static readonly origin = "http://localhost:1234";
 
-const URLS = {
-  add: `${ORIGIN}/add`,
-  statsOverview: `${ORIGIN}/stats`,
-};
+  static readonly add = `${URLS.origin}/add`;
+  static readonly meditate = `${URLS.origin}/meditate`;
+  static readonly meditationTimer = `${URLS.meditate}/timer`;
+  static readonly resetPassowrd = `${URLS.origin}/reset-password`;
+  static readonly statsOverview = `${URLS.origin}/stats`;
+}
 
-const RESET_PASSWORD_URL = `${ORIGIN}/reset-password`;
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 
-const SELECTORS = {} as typeof TEST_IDS;
+const SELECTORS = {} as { [k in keyof typeof TEST_IDS]: string };
 for (const [k, v] of Object.entries(TEST_IDS))
   SELECTORS[k as keyof typeof TEST_IDS] = `[data-test-id="${v}"]`;
 
@@ -38,20 +40,20 @@ describe("e2e", () => {
   });
 
   beforeEach(async () => {
-    await page.goto(ORIGIN);
+    await page.goto(URLS.origin);
   });
 
   describe("when the user is not signed in", () => {
     test("the user can access routes which are not available to authenticated users", async () => {
-      await page.goto(RESET_PASSWORD_URL);
+      await page.goto(URLS.resetPassowrd);
       await page.waitForSelector(SELECTORS.resetPasswordPage);
-      expect(page.url()).toBe(RESET_PASSWORD_URL);
+      expect(page.url()).toBe(URLS.resetPassowrd);
     });
 
     test("the user can not access protected routes", async () => {
       await page.goto(URLS.add);
       await page.waitForSelector(SELECTORS.signInLink);
-      expect(page.url().replace(/\/$/, "")).toBe(ORIGIN);
+      expect(page.url().replace(/\/$/, "")).toBe(URLS.origin);
       expect(await page.$(SELECTORS.addMoodPage)).toBeNull();
     });
   });
@@ -92,9 +94,9 @@ describe("e2e", () => {
     });
 
     test("the user can not access routes which are not available to authenticated users", async () => {
-      await page.goto(RESET_PASSWORD_URL);
+      await page.goto(URLS.resetPassowrd);
       await page.waitForSelector(SELECTORS.moodList);
-      expect(page.url().replace(/\/$/, "")).toBe(ORIGIN);
+      expect(page.url().replace(/\/$/, "")).toBe(URLS.origin);
       expect(await page.$(SELECTORS.resetPasswordPage)).toBeNull();
     });
 
@@ -116,33 +118,82 @@ describe("e2e", () => {
         submitButton = (await page.$(SELECTORS.addMoodSubmitButton))!;
       });
 
-      test("error message is displayed when the mood field is invalid", async () => {
-        await submitButton.tap();
-        const error = (await page.$('[data-eri-id="field-error"]'))!;
-        const errorMessage = await error.evaluate((el) => el.textContent);
+      test("mood field errors", async () => {
+        await submitButton.evaluate((el) => el.click());
+
+        let errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(1);
+
+        const errorMessage = await errors[0].evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.required);
+
+        const moodRadioButton = (await page.$(SELECTORS.addMoodRadioButton))!;
+        await moodRadioButton.evaluate((el) => el.click());
+
+        errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(0);
       });
 
-      test("error message is displayed when the description field is invalid", async () => {
-        await page.type(SELECTORS.descriptionInput, 'hello"world', {
-          delay: 10,
-        });
+      test("description field errors", async () => {
+        let errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(0);
+
+        await descriptionInput.type('hello"world', { delay: 10 });
         await descriptionInput.press("Enter");
 
-        const errors = (await page.$$('[data-eri-id="field-error"]'))!;
-        expect(errors.length).toBe(2);
+        errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(2);
         const errorMessage = await errors[1].evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.specialCharacters);
+
+        await descriptionInput.click({ clickCount: 3 });
+        await descriptionInput.type("hello world", { delay: 10 });
+        await descriptionInput.press("Enter");
+        errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(1);
+      });
+    });
+
+    describe("meditation", () => {
+      beforeEach(async () => {
+        await page.goto(URLS.meditate);
+        await page.waitForSelector(SELECTORS.meditatePage);
       });
 
-      test("error message is cleared when the description field is valid", async () => {
-        await page.type(SELECTORS.descriptionInput, "hello world", {
-          delay: 10,
-        });
-        await descriptionInput.press("Enter");
+      test("using a preset time", async () => {
+        const button = (await page.$(
+          `${SELECTORS.meditationPresetTimeButton}[data-minutes="10"]`
+        ))!;
+        tapAndNavigate(button);
+        await page.waitForSelector(SELECTORS.meditatePage);
+        await page.waitForTimeout(100);
 
-        const errors = (await page.$$('[data-eri-id="field-error"]'))!;
-        expect(errors.length).toBe(1);
+        expect(page.url()).toBe(`${URLS.meditationTimer}?t=600`);
+      });
+
+      describe("using a custom time", async () => {
+        let errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(0);
+
+        const customTimeInput = (await page.$(
+          SELECTORS.meditationCustomTimeInput
+        ))!;
+        await customTimeInput.type("6e1");
+        await customTimeInput.press("Enter");
+
+        errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(1);
+
+        const errorMessage = await errors[0].evaluate((el) => el.textContent);
+        expect(errorMessage).toBe(ERRORS.specialCharacters);
+
+        await customTimeInput.click({ clickCount: 3 });
+        await customTimeInput.type("60");
+        await customTimeInput.press("Enter");
+        await page.waitForSelector(SELECTORS.meditatePage);
+        await page.waitForTimeout(100);
+
+        expect(page.url()).toBe(`${URLS.meditationTimer}?t=3600`);
       });
     });
   });

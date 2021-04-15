@@ -33,18 +33,30 @@ export const TIME = {
   secondsPerMinute: 60,
 } as const;
 
-export const TEST_IDS = {
-  addMoodPage: "add-mood-page",
-  addMoodSubmitButton: "add-mood-submit-button",
-  descriptionInput: "description-input",
-  moodList: "mood-list",
-  navButton: "nav-button",
-  resetPasswordPage: "reset-password-page",
-  signInLink: "sign-in-link",
-  signOutButton: "sign-out-button",
-  signOutConfirmButton: "sign-out-confirm-button",
-  statsOverviewPage: "stats-overview-page",
-};
+export const TEST_IDS = (() => {
+  const keys = [
+    "addMoodPage",
+    "addMoodRadioButton",
+    "addMoodSubmitButton",
+    "descriptionInput",
+    "meditatePage",
+    "meditationCustomTimeInput",
+    "meditationPresetTimeButton",
+    "meditationTimerPage",
+    "moodList",
+    "navButton",
+    "resetPasswordPage",
+    "signInLink",
+    "signOutButton",
+    "signOutConfirmButton",
+    "statsOverviewPage",
+  ] as const;
+  const testIds = {} as {
+    [k in typeof keys[number]]: typeof keys[number];
+  };
+  for (const key of keys) testIds[key] = key;
+  return testIds;
+})();
 
 const now = Date.now();
 const startOfWeekDate = startOfWeek(now, WEEK_OPTIONS);

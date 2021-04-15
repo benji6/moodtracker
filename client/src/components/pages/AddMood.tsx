@@ -79,7 +79,12 @@ export default function AddMood() {
             }}
           >
             {[...Array(11)].map((_, i) => (
-              <RadioButton key={i} name="mood" value={i}>
+              <RadioButton
+                data-test-id={TEST_IDS.addMoodRadioButton}
+                key={i}
+                name="mood"
+                value={i}
+              >
                 {i}
               </RadioButton>
             ))}

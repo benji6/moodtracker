@@ -1,6 +1,6 @@
 import { Button, Paper } from "eri";
 import * as React from "react";
-import { TIME } from "../../../../../constants";
+import { TEST_IDS, TIME } from "../../../../../constants";
 import Dimmer from "./Dimmer";
 import { TimerState } from "..";
 import "./style.css";
@@ -28,7 +28,7 @@ function MeditationTimerPresentation({
 }: Props) {
   return (
     <>
-      <Paper.Group>
+      <Paper.Group data-test-id={TEST_IDS.meditationTimerPage}>
         <Paper>
           <h2>Meditation timer</h2>
           <p className="m-meditation-timer__clock center">
