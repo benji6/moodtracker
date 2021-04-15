@@ -1,7 +1,7 @@
 import addDays from "date-fns/addDays";
 import addWeeks from "date-fns/addWeeks";
 import * as React from "react";
-import { DAYS_PER_WEEK } from "../../../constants";
+import { TIME } from "../../../constants";
 import { weekdayShortFormatter } from "../../../formatters";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 
@@ -13,7 +13,7 @@ export default function MoodChartForWeek({ week }: Props) {
   const nextWeek = addWeeks(week, 1);
 
   const xLabels: [number, string][] = [];
-  for (let i = 0; i < DAYS_PER_WEEK; i++) {
+  for (let i = 0; i < TIME.daysPerWeek; i++) {
     const date = addDays(week, i);
     xLabels.push([
       (date.getTime() + addDays(date, 1).getTime()) / 2,
@@ -22,7 +22,7 @@ export default function MoodChartForWeek({ week }: Props) {
   }
 
   const xLines: number[] = [];
-  for (let i = 0; i <= DAYS_PER_WEEK; i++) {
+  for (let i = 0; i <= TIME.daysPerWeek; i++) {
     const date = addDays(week, i);
     xLines.push(date.getTime());
   }

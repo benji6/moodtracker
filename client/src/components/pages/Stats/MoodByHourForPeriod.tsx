@@ -3,7 +3,7 @@ import { normalizedAveragesByHourSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import { computeMean, formatIsoDateHourInLocalTimezone } from "../../../utils";
 import { Paper } from "eri";
-import { DAYS_PER_WEEK } from "../../../constants";
+import { TIME } from "../../../constants";
 import addHours from "date-fns/addHours";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 
@@ -16,7 +16,9 @@ export default function MoodByHourForPeriod({ fromDate, toDate }: Props) {
   const normalizedAveragesByHour = useSelector(
     normalizedAveragesByHourSelector
   );
-  const moodsByHourIndex: (number[] | undefined)[] = [...Array(DAYS_PER_WEEK)];
+  const moodsByHourIndex: (number[] | undefined)[] = [
+    ...Array(TIME.daysPerWeek),
+  ];
 
   for (let t0 = fromDate; t0 < toDate; t0 = addHours(t0, 1)) {
     const mood =

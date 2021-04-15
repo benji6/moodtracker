@@ -2,7 +2,7 @@ import { interpolateHcl } from "d3-interpolate";
 import add from "date-fns/add";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
-import { DAYS_PER_WEEK, MOOD_RANGE } from "./constants";
+import { MOOD_RANGE, TIME } from "./constants";
 import { Mood, NormalizedMoods } from "./types";
 
 export const computeAverageMoodInInterval = (
@@ -194,14 +194,8 @@ export const formatIsoYearInLocalTimezone = (date: Date): string =>
 
 export const getWeekdayIndex = (date: Date): 0 | 1 | 2 | 3 | 4 | 5 | 6 => {
   const dateFnsWeekdayIndex = getDay(date);
-  return ((dateFnsWeekdayIndex ? dateFnsWeekdayIndex : DAYS_PER_WEEK) - 1) as
-    | 0
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6;
+  return ((dateFnsWeekdayIndex ? dateFnsWeekdayIndex : TIME.daysPerWeek) -
+    1) as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 export const isoDateFromIsoDateAndTime = (dateString: string): string =>

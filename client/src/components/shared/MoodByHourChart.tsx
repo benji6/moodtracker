@@ -1,7 +1,7 @@
 import setHours from "date-fns/setHours";
 import { Chart } from "eri";
 import * as React from "react";
-import { HOURS_PER_DAY, MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
+import { MOOD_INTEGERS, MOOD_RANGE, TIME } from "../../constants";
 import { hourNumericFormatter } from "../../formatters";
 
 const arbitraryDate = new Date();
@@ -12,7 +12,7 @@ interface Props {
 
 export default function MoodByHourChart({ data }: Props) {
   const xLabels: [number, string][] = [];
-  for (let i = 0; i < HOURS_PER_DAY; i += 4)
+  for (let i = 0; i < TIME.hoursPerDay; i += 4)
     xLabels.push([i, hourNumericFormatter.format(setHours(arbitraryDate, i))]);
 
   const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
@@ -23,7 +23,7 @@ export default function MoodByHourChart({ data }: Props) {
   return (
     <Chart.LineChart
       aria-label="Chart displaying average mood against hour of the day"
-      domain={[0, HOURS_PER_DAY - 1]}
+      domain={[0, TIME.hoursPerDay - 1]}
       range={MOOD_RANGE}
       xAxisTitle="Hour of day"
       yAxisTitle="Mood"

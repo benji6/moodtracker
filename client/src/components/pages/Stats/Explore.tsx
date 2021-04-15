@@ -13,7 +13,7 @@ import MoodChartForPeriod from "./MoodChartForPeriod";
 import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import GetStartedCta from "../../shared/GetStartedCta";
-import { DAYS_PER_WEEK } from "../../../constants";
+import { TIME } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import { dayMonthFormatter } from "../../../formatters";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
@@ -61,7 +61,7 @@ const createXLabels = (
 export default function Explore() {
   const dateNow = new Date();
   const [dateFrom, setDateFrom] = React.useState(
-    roundDateDown(subDays(dateNow, DAYS_PER_WEEK))
+    roundDateDown(subDays(dateNow, TIME.daysPerWeek))
   );
   const maxDate = roundDateUp(dateNow);
   const [dateTo, setDateTo] = React.useState(maxDate);

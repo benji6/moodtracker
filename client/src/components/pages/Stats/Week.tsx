@@ -2,7 +2,7 @@ import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { DAYS_PER_WEEK } from "../../../constants";
+import { TIME } from "../../../constants";
 import {
   formatWeek,
   monthLongFormatter,
@@ -62,7 +62,7 @@ export default function Week({
   const moodIdsInWeek = getMoodIdsInInterval(moods.allIds, week, nextWeek);
 
   const xLabels: [number, string][] = [];
-  for (let i = 0; i < DAYS_PER_WEEK; i++) {
+  for (let i = 0; i < TIME.daysPerWeek; i++) {
     const date = addDays(week, i);
     xLabels.push([
       (date.getTime() + addDays(date, 1).getTime()) / 2,
@@ -71,7 +71,7 @@ export default function Week({
   }
 
   const xLines: number[] = [];
-  for (let i = 0; i <= DAYS_PER_WEEK; i++) {
+  for (let i = 0; i <= TIME.daysPerWeek; i++) {
     const date = addDays(week, i);
     xLines.push(date.getTime());
   }

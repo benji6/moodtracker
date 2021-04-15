@@ -10,7 +10,7 @@ import {
   getWeekdayIndex,
 } from "../../../utils";
 import { Paper } from "eri";
-import { DAYS_PER_WEEK, WEEKDAY_LABELS_SHORT } from "../../../constants";
+import { TIME, WEEKDAY_LABELS_SHORT } from "../../../constants";
 import addDays from "date-fns/addDays";
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
 export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
   const moodsByWeekdayIndex: (number[] | undefined)[] = [
-    ...Array(DAYS_PER_WEEK),
+    ...Array(TIME.daysPerWeek),
   ];
 
   for (let t0 = fromDate; t0 < toDate; t0 = addDays(t0, 1)) {
