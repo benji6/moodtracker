@@ -30,7 +30,8 @@ for user in list_users_response['Users']:
   user_status_breakdown[user['UserStatus']] += 1
 
 events_table_scan_response = events_table.scan(
-  ProjectionExpression='createdAt,userId',
+  ExpressionAttributeNames={'#t': 'type'},
+  ProjectionExpression='createdAt,#t,userId',
   ReturnConsumedCapacity='TOTAL',
 )
 
@@ -75,12 +76,17 @@ for k,v in events_count_by_user.items():
 
 number_of_events_against_number_of_users = dict(sorted(number_of_events_against_number_of_users.items()))
 
+events_by_type = defaultdict(int)
+for event in events:
+  events_by_type[event.get('type')] += 1
+
 print(json.dumps({
   'Breakdown by week': compute_breakdown(get_iso_week_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
   'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
   'DynamoDB consumed capacity units': events_table_scan_response['ConsumedCapacity']['CapacityUnits'],
   'Total number of events': len(events),
+  'Events by type': events_by_type,
   'Users who have created at least 1 event': len({event['userId'] for event in events}),
   'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
