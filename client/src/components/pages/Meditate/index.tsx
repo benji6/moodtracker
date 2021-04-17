@@ -5,6 +5,7 @@ import { ERRORS, TEST_IDS, TIME } from "../../../constants";
 import { SEARCH_PARAM_TIME_KEY } from "./constants";
 import "./style.css";
 
+const MAX_MINUTES = 180;
 const MINUTES_INPUT_NAME = "minutes";
 const TIMES = [1, 2, 3, 5, 10, 15, 20, 30, 40];
 
@@ -52,13 +53,17 @@ export default function Meditate() {
 
             const requiredError = validity.valueMissing;
             const patternError = validity.patternMismatch;
-            const errorMessage = requiredError
-              ? ERRORS.required
-              : patternError
-              ? "Please type a valid whole number"
-              : "";
 
-            if (!errorMessage) navigateToTimer(Number(value));
+            const minutes = Number(value);
+
+            let errorMessage = "";
+            if (requiredError) errorMessage = ERRORS.required;
+            else if (patternError)
+              errorMessage = "Please type a valid whole number";
+            else if (minutes > MAX_MINUTES)
+              errorMessage = `The maximum allowed time is ${MAX_MINUTES} minutes`;
+
+            if (!errorMessage) navigateToTimer(minutes);
 
             setError(errorMessage);
           }}

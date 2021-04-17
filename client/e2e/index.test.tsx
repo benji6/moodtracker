@@ -172,20 +172,35 @@ describe("e2e", () => {
       });
 
       describe("using a custom time", async () => {
-        let errors = await page.$$('[data-eri-id="field-error"]');
-        expect(errors).toHaveLength(0);
+        let error = await page.$('[data-eri-id="field-error"]');
+        expect(error).toBeNull();
 
         const customTimeInput = (await page.$(
           SELECTORS.meditationCustomTimeInput
         ))!;
+        await customTimeInput.press("Enter");
+
+        error = (await page.$('[data-eri-id="field-error"]'))!;
+        expect(error).not.toBeNull();
+        let errorMessage = await error!.evaluate((el) => el.textContent);
+        expect(errorMessage).toBe(ERRORS.specialCharacters);
+
         await customTimeInput.type("6e1");
         await customTimeInput.press("Enter");
 
-        errors = await page.$$('[data-eri-id="field-error"]');
-        expect(errors).toHaveLength(1);
-
-        const errorMessage = await errors[0].evaluate((el) => el.textContent);
+        error = (await page.$('[data-eri-id="field-error"]'))!;
+        expect(error).not.toBeNull();
+        errorMessage = await error.evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.specialCharacters);
+
+        await customTimeInput.click({ clickCount: 3 });
+        await customTimeInput.type("181");
+        await customTimeInput.press("Enter");
+
+        error = (await page.$('[data-eri-id="field-error"]'))!;
+        expect(error).not.toBeNull();
+        errorMessage = await error.evaluate((el) => el.textContent);
+        expect(errorMessage).toBe("The maximum allowed time is 180 minutes");
 
         await customTimeInput.click({ clickCount: 3 });
         await customTimeInput.type("60");
