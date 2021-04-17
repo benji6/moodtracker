@@ -1,13 +1,6 @@
 import { useNavigate } from "@reach/router";
 import * as React from "react";
-import {
-  Button,
-  Paper,
-  RadioButton,
-  requiredValidator,
-  TextArea,
-  TextField,
-} from "eri";
+import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { Mood } from "../../types";
@@ -34,14 +27,13 @@ export default function AddMood() {
     const explorationValue: string = formEl.exploration.value;
     const moodValue: string = formEl.mood.value;
 
-    const moodFieldError = requiredValidator(moodValue);
-    if (moodFieldError) setMoodError(moodFieldError);
+    if (!moodValue) setMoodError(ERRORS.required);
 
     const descriptionFieldError = (formEl.description as HTMLInputElement)
       .validity.patternMismatch;
     setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
 
-    if (descriptionFieldError || moodFieldError) return;
+    if (descriptionFieldError || !moodValue) return;
 
     const payload: Mood = { mood: Number(moodValue) };
     if (descriptionValue) payload.description = descriptionValue.trim();
