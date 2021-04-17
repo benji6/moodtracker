@@ -71,6 +71,10 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <Icon margin="right" name="plus" />
                 Add mood
               </EriNav.Link>
+              <EriNav.Link onClick={handleNavClose} to="/meditate">
+                <Icon margin="right" name="bell" />
+                Meditate
+              </EriNav.Link>
               <EriNav.SubList
                 heading={
                   <span>
