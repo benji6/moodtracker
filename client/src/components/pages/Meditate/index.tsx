@@ -58,8 +58,7 @@ export default function Meditate() {
 
             let errorMessage = "";
             if (requiredError) errorMessage = ERRORS.required;
-            else if (patternError)
-              errorMessage = "Please type a valid whole number";
+            else if (patternError) errorMessage = ERRORS.integer;
             else if (minutes > MAX_MINUTES)
               errorMessage = `The maximum allowed time is ${MAX_MINUTES} minutes`;
 

@@ -17,6 +17,7 @@ export const MOOD_INTEGERS = [
 export const TOTAL_USERS = 48;
 
 export const ERRORS = {
+  integer: "Please type a valid whole number",
   network: "Something went wrong, check your internet connection and try again",
   specialCharacters: "This field must not contain any special characters",
   required: "Required",
