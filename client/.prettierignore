@@ -1,6 +1,7 @@
 .*ignore
 .cache
 *.lock
+*.mp3
 *.png
 *.svg
 *.toml
