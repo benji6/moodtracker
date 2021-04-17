@@ -1,9 +1,9 @@
 import { Button, Paper } from "eri";
 import * as React from "react";
-import { TEST_IDS, TIME } from "../../../../../constants";
+import { TEST_IDS } from "../../../../../constants";
 import Dimmer from "./Dimmer";
 import { TimerState } from "..";
-import "./style.css";
+import MeditationTimerClock from "./MeditationTimerClock";
 
 interface Props {
   dimmed: boolean;
@@ -12,8 +12,9 @@ interface Props {
   onPause(): void;
   onPlay(): void;
   onReveal(): void;
-  roundedSeconds: number;
+  roundedSecondsRemaining: number;
   timerState: TimerState;
+  totalSeconds: number;
 }
 
 function MeditationTimerPresentation({
@@ -23,24 +24,26 @@ function MeditationTimerPresentation({
   onPause,
   onPlay,
   onReveal,
-  roundedSeconds,
+  roundedSecondsRemaining,
   timerState,
+  totalSeconds,
 }: Props) {
   return (
     <>
       <Paper.Group data-test-id={TEST_IDS.meditationTimerPage}>
         <Paper>
           <h2>Meditation timer</h2>
-          <p className="m-meditation-timer__clock center">
-            {`${String(
-              Math.floor(roundedSeconds / TIME.secondsPerMinute)
-            ).padStart(2, "0")}:${String(
-              Math.floor(roundedSeconds % TIME.secondsPerMinute)
-            ).padStart(2, "0")}`}
-          </p>
+          <MeditationTimerClock
+            remainingSeconds={roundedSecondsRemaining}
+            totalSeconds={totalSeconds}
+          />
           <Button.Group>
             <Button onClick={onFinish}>Finish</Button>
-            <Button disabled={timerState === "FINISHED"} onClick={onDim}>
+            <Button
+              disabled={timerState === "FINISHED"}
+              onClick={onDim}
+              variant="secondary"
+            >
               Dim screen
             </Button>
             <Button
@@ -49,6 +52,7 @@ function MeditationTimerPresentation({
                 if (timerState === "PAUSED") return onPlay();
                 onPause();
               }}
+              variant="secondary"
             >
               {timerState === "PAUSED" ? "Play" : "Pause"}
             </Button>

@@ -14,7 +14,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location?.search);
   const timerDuration = Number(searchParams.get(SEARCH_PARAM_TIME_KEY));
-  const [remainingTime, setRemainingTime] = React.useState(timerDuration);
+  const [remainingTime, setRemainingTime] = React.useState(timerDuration * 1e3);
   const [timerState, setTimerState] = React.useState<TimerState>("TIMING");
   const [isDimmerEnabled, setIsDimmerEnabled] = React.useState(false);
   const initialTime = React.useRef(Date.now());
@@ -70,8 +70,9 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       onPause={onPause}
       onPlay={onPlay}
       onReveal={onReveal}
-      roundedSeconds={roundedSecondsRemaining}
+      roundedSecondsRemaining={roundedSecondsRemaining}
       timerState={timerState}
+      totalSeconds={timerDuration}
     />
   );
 }

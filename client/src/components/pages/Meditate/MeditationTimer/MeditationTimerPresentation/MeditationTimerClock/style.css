@@ -1,0 +1,10 @@
+.meditation-timer-clock__circle {
+  transform: rotate(0.75turn);
+  transform-origin: center;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.meditation-timer-clock__text {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}

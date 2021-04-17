@@ -37,13 +37,13 @@ export default function App({ children }: IProps) {
       <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>
-          <QuickNav.Link aria-label="home" to="/">
+          <QuickNav.Link aria-label="Home" to="/">
             <Icon name="home" size="4" />
           </QuickNav.Link>
-          <QuickNav.Link aria-label="statistics" to="/stats">
+          <QuickNav.Link aria-label="Statistics" to="/stats">
             <Icon name="chart" size="4" />
           </QuickNav.Link>
-          <QuickNav.Link aria-label="add new mood" to="/add">
+          <QuickNav.Link aria-label="Add new mood" to="/add">
             <Icon name="plus" size="4" />
           </QuickNav.Link>
         </QuickNav>

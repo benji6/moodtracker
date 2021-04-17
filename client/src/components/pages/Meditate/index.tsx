@@ -55,7 +55,7 @@ export default function Meditate() {
             const errorMessage = requiredError
               ? ERRORS.required
               : patternError
-              ? "Please type a valid number"
+              ? "Please type a valid whole number"
               : "";
 
             if (!errorMessage) navigateToTimer(Number(value));
