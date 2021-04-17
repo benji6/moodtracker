@@ -3606,9 +3606,9 @@ envinfo@^7.3.1:
   integrity sha512-/o+BXHmB7ocbHEAs6F2EnG0ogybVVUdkRunTT2glZU9XAaGmhqskrvKwqXuDfNjEO0LZKWdejEEpnq8aM0tOaw==
 
 eri@^33.0.1:
-  version "33.0.1"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-33.0.1.tgz#e4a0c8151418293bb88d0cefdb43bceb8c2ee583"
-  integrity sha512-NRQV7KRIbdIWPegNr3TlN80lE/SGxZ+SyYeJrPEkj7Dqntc9+dB0QBKveq9OTc/mtPGsVJ5fKrJ1hWH18IkRuw==
+  version "33.1.0"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-33.1.0.tgz#043b10f23472c7062fc52927fad441af28736765"
+  integrity sha512-63M0q/xyVoHo4IhhE41zTuk7S9JGxJtuhc1SOc2fawzoG8GBz9PZ1qiASHqgqw2r16oJFRSn/55okyjv57EIFA==
   dependencies:
     react-transition-group "^4.4.1"
 
@@ -6429,9 +6429,9 @@ object-copy@^0.1.0:
     kind-of "^3.0.3"
 
 object-inspect@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.9.0.tgz#c90521d74e1127b67266ded3394ad6116986533a"
-  integrity sha512-i3Bp9iTqwhaLZBxGkRfo5ZbE07BQRT7MGu8+nNgwW9ItGp1TzCTw2DLEoWwjClxBjOFI/hWljTAmYGCEwmtnOw==
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.10.1.tgz#b69d9494d35a56387bbaebbae61c55510d877a1a"
+  integrity sha512-WQUIkCSDPWm5ing/PTUkLr2KaOXX2uV/vz1hLGW2XbZ/RDUmtgcsOyEqA1ox0rkyNx9mJX4kxX+YWceje3pmag==
 
 object-inspect@~1.4.0:
   version "1.4.1"

@@ -1,4 +1,4 @@
-import { Button, Paper } from "eri";
+import { Button, Icon, Paper } from "eri";
 import * as React from "react";
 import { TEST_IDS } from "../../../../../constants";
 import Dimmer from "./Dimmer";
@@ -45,6 +45,7 @@ function MeditationTimerPresentation({
               variant="secondary"
             >
               Dim screen
+              <Icon margin="left" name="moon" />
             </Button>
             <Button
               disabled={timerState === "FINISHED"}
@@ -54,7 +55,17 @@ function MeditationTimerPresentation({
               }}
               variant="secondary"
             >
-              {timerState === "PAUSED" ? "Play" : "Pause"}
+              {timerState === "PAUSED" ? (
+                <>
+                  Play
+                  <Icon margin="left" name="play" />
+                </>
+              ) : (
+                <>
+                  Pause
+                  <Icon margin="left" name="pause" />
+                </>
+              )}
             </Button>
           </Button.Group>
         </Paper>
