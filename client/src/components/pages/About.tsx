@@ -1,12 +1,9 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
 import * as React from "react";
-import { useSelector } from "react-redux";
 import { TOTAL_USERS } from "../../constants";
-import { userIsSignedInSelector } from "../../selectors";
 
 export default function About(_: RouteComponentProps) {
-  const isSignedIn = useSelector(userIsSignedInSelector);
   return (
     <Paper.Group>
       <Paper>
@@ -18,15 +15,9 @@ export default function About(_: RouteComponentProps) {
           use, works offline and because it runs in your browser you can use it
           across all your devices!
         </p>
-        {isSignedIn ? (
-          <p>
-            You are one of <b>{TOTAL_USERS}</b> registered users! 📈
-          </p>
-        ) : (
-          <p>
-            There are currently <b>{TOTAL_USERS}</b> registered users! 📈
-          </p>
-        )}
+        <p>
+          There are currently <b>{TOTAL_USERS}</b> registered users! 📈
+        </p>
         <p>
           You can find the source code{" "}
           <a
@@ -36,18 +27,20 @@ export default function About(_: RouteComponentProps) {
           >
             here
           </a>{" "}
-          and if you have any ideas, feedback or bugs you can raise them{" "}
+          and if you have any ideas 💡, feedback 🗣️ or bugs 🐛 you can raise
+          them{" "}
           <a
             href="https://github.com/benji6/moodtracker/issues"
             rel="noopener"
             target="_blank"
           >
             here
-          </a>{" "}
-          🐛
+          </a>
+          .
         </p>
         <p>
-          The UI was put together using a component library I built called{" "}
+          The UI was put together using an open source component library I built
+          called{" "}
           <a
             href="https://github.com/benji6/eri"
             rel="noopener"
@@ -57,8 +50,26 @@ export default function About(_: RouteComponentProps) {
           </a>
           .
         </p>
-        <p>I hope you enjoy the app 🙂</p>
         <ShareButton />
+      </Paper>
+      <Paper>
+        <h2>Business model</h2>
+        <p>
+          I started building MoodTracker in April 2020 because I couldn&apos;t
+          find anything that worked in the way I wanted and because I enjoy
+          making things.
+        </p>
+        <p>
+          The app is currently free because there are very few active users,
+          which means that it costs me very little to run. If this app gets very
+          popular and starts costing a lot of money then I may explore revenue
+          models, but that doesn&apos;t seem like it will happen any time soon,
+          so for now I&apos;m very happy to share this experience for free.
+        </p>
+        <p>
+          I hope that those of you who are using it are enjoying it and finding
+          it useful! 🙂
+        </p>
       </Paper>
       <Paper>
         <h2>Privacy policy</h2>
