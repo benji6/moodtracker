@@ -36,7 +36,7 @@ export default function Meditate() {
               onClick={() => navigateToTimer(minutes)}
               variant="secondary"
             >
-              {minutes} mins
+              {minutes} min{minutes === 1 ? "" : "s"}
             </Button>
           ))}
         </div>
