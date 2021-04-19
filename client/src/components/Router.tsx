@@ -27,7 +27,7 @@ import _401 from "./pages/_401";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
 import Meditate from "./pages/Meditate";
-import MeditationTimer from "./pages/Meditate/MeditationTimer";
+import MeditationTimer from "./pages/MeditationTimer";
 
 export default function Router() {
   return (

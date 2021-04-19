@@ -1,8 +1,8 @@
 import { Redirect, RouteComponentProps, useNavigate } from "@reach/router";
 import NoSleep from "nosleep.js";
 import * as React from "react";
-import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
-import { SEARCH_PARAM_TIME_KEY } from "../constants";
+import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../constants";
+import useKeyboardEscape from "../../hooks/useKeyboardEscape";
 import bell from "./bell";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 
@@ -13,7 +13,9 @@ export type TimerState = "FINISHED" | "PAUSED" | "TIMING";
 export default function MeditationTimer({ location }: RouteComponentProps) {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location?.search);
-  const timerDuration = Number(searchParams.get(SEARCH_PARAM_TIME_KEY));
+  const timerDuration = Number(
+    searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY)
+  );
   const [remainingTime, setRemainingTime] = React.useState(timerDuration * 1e3);
   const [timerState, setTimerState] = React.useState<TimerState>("TIMING");
   const [isDimmerEnabled, setIsDimmerEnabled] = React.useState(false);
@@ -59,7 +61,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
     return () => void (abort = true);
   }, [isDimmerEnabled, timerDuration, timerState]);
 
-  if (!searchParams.has(SEARCH_PARAM_TIME_KEY))
+  if (!searchParams.has(MEDITATION_SEARCH_PARAM_TIME_KEY))
     return <Redirect to="/meditate" />;
 
   return (

@@ -1,8 +1,12 @@
 import { useNavigate } from "@reach/router";
 import { Button, Paper, TextField } from "eri";
 import * as React from "react";
-import { ERRORS, TEST_IDS, TIME } from "../../../constants";
-import { SEARCH_PARAM_TIME_KEY } from "./constants";
+import {
+  ERRORS,
+  MEDITATION_SEARCH_PARAM_TIME_KEY,
+  TEST_IDS,
+  TIME,
+} from "../../../constants";
 import "./style.css";
 
 const MAX_MINUTES = 180;
@@ -15,7 +19,7 @@ export default function Meditate() {
 
   const navigateToTimer = (minutes: number): void =>
     void navigate(
-      `/meditate/timer?${SEARCH_PARAM_TIME_KEY}=${
+      `/meditate/timer?${MEDITATION_SEARCH_PARAM_TIME_KEY}=${
         minutes * TIME.secondsPerMinute
       }`
     );

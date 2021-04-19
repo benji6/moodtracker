@@ -3,7 +3,8 @@ import { EventsStateToStore } from "./store/eventsSlice";
 import { UserDetails } from "./store/userSlice";
 
 const USER_KEY = "moodtracker:user";
-const getEventsKey = (userId: string): string => `moodtracker:${userId}:events`;
+const makeEventsKey = (userId: string): string =>
+  `moodtracker:${userId}:events`;
 
 export default {
   // user
@@ -12,9 +13,9 @@ export default {
   setUser: (user: UserDetails): Promise<void> => set(USER_KEY, user),
 
   //events
-  deleteEvents: (userId: string): Promise<void> => del(getEventsKey(userId)),
+  deleteEvents: (userId: string): Promise<void> => del(makeEventsKey(userId)),
   getEvents: (userId: string): Promise<EventsStateToStore | undefined> =>
-    get<EventsStateToStore | undefined>(getEventsKey(userId)),
+    get<EventsStateToStore | undefined>(makeEventsKey(userId)),
   setEvents: (userId: string, events: EventsStateToStore): Promise<void> =>
-    set(getEventsKey(userId), events),
+    set(makeEventsKey(userId), events),
 };

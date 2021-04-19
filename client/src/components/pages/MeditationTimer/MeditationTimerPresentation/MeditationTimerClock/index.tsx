@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TIME } from "../../../../../../constants";
+import { TIME } from "../../../../../constants";
 import "./style.css";
 
 const RADIUS = 1 / 3;
@@ -37,7 +37,7 @@ export default function MeditationTimerClock({
         cy="0.5"
         fill="transparent"
         r={RADIUS}
-        stroke="var(--color-figure-more)"
+        stroke="var(--color-theme)"
         strokeDasharray={CIRCUMFERENCE}
         strokeDashoffset={(remainingSeconds / totalSeconds) * CIRCUMFERENCE}
         strokeWidth={RING_THICKNESS}
