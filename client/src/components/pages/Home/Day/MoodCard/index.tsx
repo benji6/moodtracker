@@ -1,9 +1,9 @@
 import { useNavigate } from "@reach/router";
 import { Card, SubHeading } from "eri";
 import * as React from "react";
-import { timeFormatter } from "../../../../formatters";
-import { ServerMood } from "../../../../types";
-import { moodToColor } from "../../../../utils";
+import { timeFormatter } from "../../../../../formatters";
+import { ServerMood } from "../../../../../types";
+import { moodToColor } from "../../../../../utils";
 import "./style.css";
 
 export default function MoodCard({

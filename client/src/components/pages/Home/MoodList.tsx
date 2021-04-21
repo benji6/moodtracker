@@ -1,39 +1,30 @@
-import {
-  Card,
-  Paper,
-  Pagination,
-  TextField,
-  Toggle,
-  Select,
-  ComboBox,
-} from "eri";
+import { Paper, Pagination, TextField, Toggle, Select, ComboBox } from "eri";
 import * as React from "react";
-import { mapRight } from "../../../utils";
+import { isoDateFromIsoDateAndTime, mapRight } from "../../../utils";
 import {
   normalizedDescriptionWordsSelector,
   normalizedMoodsSelector,
 } from "../../../selectors";
 import { useSelector } from "react-redux";
-import MoodCard from "./MoodCard";
 import {
   DESCRIPTION_MAX_LENGTH,
   MOOD_INTEGERS,
   TEST_IDS,
 } from "../../../constants";
-import { dateWeekdayFormatter } from "../../../formatters";
 import OptionalMoodCell from "../../shared/OptionalMoodCell";
 import { FluxStandardAction } from "../../../types";
+import Day from "./Day";
 
 const DAYS_PER_PAGE = 7;
 
 const groupMoodIdsByDay = (
   moodIds: string[]
-): [formattedDate: string, moodIds: string[]][] => {
+): [dateStr: string, moodIds: string[]][] => {
   const moodsGroupedByDate: { [date: string]: string[] } = {};
 
   for (let i = 0; i < moodIds.length; i++) {
     const id = moodIds[i];
-    const key = dateWeekdayFormatter.format(new Date(id));
+    const key = isoDateFromIsoDateAndTime(id);
     if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
     else moodsGroupedByDate[key] = [id];
   }
@@ -248,16 +239,7 @@ export default function MoodList() {
             Math.max(endIndex - DAYS_PER_PAGE, 0),
             endIndex
           ),
-          ([formattedDateString, ids]) => (
-            <Paper key={formattedDateString}>
-              <h3>{formattedDateString}</h3>
-              <Card.Group>
-                {mapRight(ids, (id) => (
-                  <MoodCard id={id} key={id} {...moods.byId[id]} />
-                ))}
-              </Card.Group>
-            </Paper>
-          )
+          ([dayStr, ids]) => <Day day={dayStr} key={dayStr} moodIds={ids} />
         )
       ) : (
         <Paper>
