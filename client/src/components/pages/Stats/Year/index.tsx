@@ -18,6 +18,7 @@ import {
   normalizedAveragesByMonthSelector,
 } from "../../../../selectors";
 import {
+  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
@@ -61,7 +62,7 @@ export default function Year({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const year = new Date(yearStr);
+  const year = createDateFromLocalDateString(yearStr);
   const prevYear = subYears(year, 1);
   const nextYear = addYears(year, 1);
 

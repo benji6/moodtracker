@@ -12,6 +12,7 @@ import {
 } from "../../../formatters";
 import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import {
+  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
@@ -51,7 +52,10 @@ export default function Week({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const week = startOfWeek(new Date(weekStr), WEEK_OPTIONS);
+  const week = startOfWeek(
+    createDateFromLocalDateString(weekStr),
+    WEEK_OPTIONS
+  );
   const nextWeek = addWeeks(week, 1);
   const lastDayOfWeek = subDays(nextWeek, 1);
   const prevWeek = subWeeks(week, 1);
