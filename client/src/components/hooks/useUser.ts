@@ -2,7 +2,7 @@ import * as React from "react";
 import { getIdToken } from "../../cognito";
 import storage from "../../storage";
 import { useDispatch } from "react-redux";
-import userSlice from "../../store/userSlice";
+import userSlice, { UserDetails } from "../../store/userSlice";
 import eventsSlice from "../../store/eventsSlice";
 
 export default function useUser(): void {
@@ -11,9 +11,20 @@ export default function useUser(): void {
   React.useEffect(
     () =>
       void (async () => {
+        let storedUser: UserDetails | undefined;
+
         try {
-          const storedUser = await storage.getUser();
-          if (storedUser) dispatch(userSlice.actions.set(storedUser));
+          // Fails in Firefox private browsing
+          storedUser = await storage.getUser();
+        } catch {
+          dispatch(userSlice.actions.clear());
+          dispatch(eventsSlice.actions.clear());
+          return;
+        }
+
+        if (storedUser) dispatch(userSlice.actions.set(storedUser));
+
+        try {
           const idToken = await getIdToken();
           if (
             !storedUser ||
@@ -27,6 +38,7 @@ export default function useUser(): void {
               })
             );
         } catch (e) {
+          if (e.message !== "No current user") return;
           dispatch(userSlice.actions.clear());
           dispatch(eventsSlice.actions.clear());
         }
