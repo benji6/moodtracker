@@ -20,22 +20,26 @@ export default function MoodCard({
       key={id}
       onClick={() => navigate(`edit/${id}`)}
     >
-      <h3 className="m-mood-card__heading center">
-        {mood}
-        {description && (
-          <SubHeading style={{ margin: "var(--space-0) 0" }}>
-            {description}
-          </SubHeading>
+      <div className="m-mood-card">
+        <div>
+          <h3 className="m-mood-card__heading center">
+            {mood}
+            {description && (
+              <SubHeading style={{ margin: "var(--space-0) 0" }}>
+                {description}
+              </SubHeading>
+            )}
+          </h3>
+          <p className="m-mood-card__time center">
+            <small>{timeFormatter.format(new Date(id))}</small>
+          </p>
+        </div>
+        {exploration && (
+          <p className="m-mood-card__exploration pre-line">
+            <small>{exploration}</small>
+          </p>
         )}
-      </h3>
-      <p className="m-mood-card__time center">
-        <small>{timeFormatter.format(new Date(id))}</small>
-      </p>
-      {exploration && (
-        <p className="m-mood-card__exploration pre-line">
-          <small>{exploration}</small>
-        </p>
-      )}
+      </div>
     </Card>
   );
 }

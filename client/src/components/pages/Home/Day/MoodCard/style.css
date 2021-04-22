@@ -1,6 +1,12 @@
+.m-mood-card {
+  align-items: center;
+  column-gap: var(--space-1);
+  display: grid;
+  grid-template-columns: 5em 1fr;
+}
+
 .m-mood-card__exploration {
   line-height: 1;
-  margin-top: var(--space-0);
 }
 
 .m-mood-card__heading {
