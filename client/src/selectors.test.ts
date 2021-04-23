@@ -7,6 +7,7 @@ import {
   denormalizedMoodsSelector,
   normalizedDescriptionWordsSelector,
   normalizedAveragesByHourSelector,
+  moodIdsByDateSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -416,6 +417,79 @@ describe("selectors", () => {
         },
       })
     ).toEqual(["🙂", "Bulbasaur", "Charmander", "Pikachu", "Squirtle"]);
+  });
+
+  describe("moodIdsByDateSelector", () => {
+    test("when there are no events", () => {
+      expect(moodIdsByDateSelector(initialState)).toEqual({});
+    });
+
+    test("with a single create event", () => {
+      expect(
+        moodIdsByDateSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+            },
+          },
+        })
+      ).toEqual({ "2020-10-10": ["2020-10-10T08:00:00.000Z"] });
+    });
+
+    test("with 3 events and a deleted event", () => {
+      expect(
+        moodIdsByDateSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T07:00:00.000Z",
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-11T08:00:00.000Z",
+              "2020-10-11T08:02:00.000Z",
+              "2020-10-13T08:00:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T07:00:00.000Z": {
+                createdAt: "2020-10-10T07:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 2 },
+              },
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 3 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-11T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 10 },
+              },
+              "2020-10-11T08:02:00.000Z": {
+                createdAt: "2020-10-11T08:02:00.000Z",
+                type: "v1/moods/delete",
+                payload: "2020-10-11T08:00:00.000Z",
+              },
+              "2020-10-13T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        "2020-10-10": ["2020-10-10T07:00:00.000Z", "2020-10-10T08:00:00.000Z"],
+        "2020-10-13": ["2020-10-13T08:00:00.000Z"],
+      });
+    });
   });
 
   describe("normalizedAveragesByDaySelector", () => {

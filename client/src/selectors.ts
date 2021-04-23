@@ -17,6 +17,7 @@ import {
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedDescriptionWordsFromMood,
+  isoDateFromIsoDateAndTime,
 } from "./utils";
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
@@ -100,6 +101,24 @@ export const denormalizedMoodsSelector = createSelector(
       ...moods.byId[id],
       createdAt: id,
     }))
+);
+
+// some code may depend on the fact that the array
+// value in the returned object cannot be empty
+export const moodIdsByDateSelector = createSelector(
+  normalizedMoodsSelector,
+  ({ allIds }): { [date: string]: string[] | undefined } => {
+    const moodsGroupedByDate: { [date: string]: string[] } = {};
+
+    for (let i = 0; i < allIds.length; i++) {
+      const id = allIds[i];
+      const key = isoDateFromIsoDateAndTime(id);
+      if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
+      else moodsGroupedByDate[key] = [id];
+    }
+
+    return moodsGroupedByDate;
+  }
 );
 
 const makeNormalizedAveragesByPeriodSelector = (

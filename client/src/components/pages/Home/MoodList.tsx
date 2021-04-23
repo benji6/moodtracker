@@ -1,7 +1,20 @@
-import { Paper, Pagination, TextField, Toggle, Select, ComboBox } from "eri";
-import * as React from "react";
-import { isoDateFromIsoDateAndTime, mapRight } from "../../../utils";
 import {
+  Paper,
+  Pagination,
+  TextField,
+  Toggle,
+  Select,
+  ComboBox,
+  Card,
+} from "eri";
+import * as React from "react";
+import {
+  createDateFromLocalDateString,
+  isoDateFromIsoDateAndTime,
+  mapRight,
+} from "../../../utils";
+import {
+  moodIdsByDateSelector,
   normalizedDescriptionWordsSelector,
   normalizedMoodsSelector,
 } from "../../../selectors";
@@ -13,7 +26,10 @@ import {
 } from "../../../constants";
 import OptionalMoodCell from "../../shared/OptionalMoodCell";
 import { FluxStandardAction } from "../../../types";
-import Day from "./Day";
+import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
+import { dateWeekdayFormatter } from "../../../formatters";
+import MoodCard from "../../shared/MoodCard";
+import addDays from "date-fns/addDays";
 
 const DAYS_PER_PAGE = 7;
 
@@ -80,6 +96,7 @@ export const reducer = (state: State, action: Action) => {
 
 export default function MoodList() {
   const moods = useSelector(normalizedMoodsSelector);
+  const moodIdsByDate = useSelector(moodIdsByDateSelector);
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
   const normalizedDescriptionWords = useSelector(
     normalizedDescriptionWordsSelector
@@ -123,7 +140,9 @@ export default function MoodList() {
       })
     : moods.allIds;
 
-  const filteredMoodsGroupedByDay = groupMoodIdsByDay(filteredMoodIds);
+  const filteredMoodsGroupedByDay = shouldFilter
+    ? groupMoodIdsByDay(filteredMoodIds)
+    : Object.entries(moodIdsByDate);
 
   const pageCount = Math.max(
     Math.ceil(filteredMoodsGroupedByDay.length / DAYS_PER_PAGE),
@@ -239,7 +258,23 @@ export default function MoodList() {
             Math.max(endIndex - DAYS_PER_PAGE, 0),
             endIndex
           ),
-          ([dayStr, ids]) => <Day day={dayStr} key={dayStr} moodIds={ids} />
+          ([dayStr, ids]) => {
+            const day = createDateFromLocalDateString(dayStr);
+            return (
+              <Paper key={dayStr}>
+                <h3>{dateWeekdayFormatter.format(day)}</h3>
+                <MoodGradientForPeriod
+                  fromDate={day}
+                  toDate={addDays(day, 1)}
+                />
+                <Card.Group>
+                  {mapRight(ids!, (id) => (
+                    <MoodCard id={id} key={id} {...moods.byId[id]} />
+                  ))}
+                </Card.Group>
+              </Paper>
+            );
+          }
         )
       ) : (
         <Paper>

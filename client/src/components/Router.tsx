@@ -28,6 +28,7 @@ import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
 import Meditate from "./pages/Meditate";
 import MeditationTimer from "./pages/MeditationTimer";
+import Day from "./pages/Stats/Day";
 
 export default function Router() {
   return (
@@ -51,6 +52,7 @@ export default function Router() {
         <AuthedOnlyPage Component={Export} path="/settings/export" />
         <AuthedOnlyPage Component={Overview} path="/stats" />
         <AuthedOnlyPage Component={Explore} path="/stats/explore" />
+        <AuthedOnlyPage Component={Day} path="/stats/days/:day" />
         <AuthedOnlyPage Component={Month} path="/stats/months/:month" />
         <AuthedOnlyPage
           Component={Notifications}
