@@ -1,13 +1,20 @@
+import { useNavigate } from "@reach/router";
 import addDays from "date-fns/addDays";
 import getDaysInMonth from "date-fns/getDaysInMonth";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
-import { normalizedAveragesByDaySelector } from "../../../../selectors";
+import { dateFormatter } from "../../../../formatters";
 import {
+  normalizedAveragesByDaySelector,
+  normalizedMoodsSelector,
+} from "../../../../selectors";
+import {
+  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   getWeekdayIndex,
   moodToColor,
+  roundDateDown,
 } from "../../../../utils";
 import "./style.css";
 
@@ -17,11 +24,16 @@ interface Props {
 }
 
 export default function MoodCalendarForMonth({ month, small }: Props) {
+  const moods = useSelector(normalizedMoodsSelector);
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
+  const navigate = useNavigate();
+
+  const now = new Date();
+  const firstMoodDate = roundDateDown(new Date(moods.allIds[0]));
 
   // undefined represents padding before the month
-  // null represents days that have no average mood
-  const data: (number | null | undefined)[] = [];
+  // undefined mood represents days that have no average mood
+  const data: ({ dateString: string; mood?: number } | undefined)[] = [];
 
   let i = getWeekdayIndex(month);
   while (i--) data.push(undefined);
@@ -31,7 +43,7 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
   while (true) {
     const dateString = formatIsoDateInLocalTimezone(d0);
     const mood = normalizedAveragesByDay.byId[dateString];
-    data.push(mood ?? null);
+    data.push({ dateString, mood });
     if (!daysInMonth--) break;
     d0 = addDays(d0, 1);
   }
@@ -48,22 +60,40 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
           <small>{label}</small>
         </div>
       ))}
-      {data.map((mood, i) => (
-        <div
-          key={i}
-          className="m-mood-calendar-for-month__day "
-          style={{
-            animationDelay: `calc(var(--time-2) / ${data.length} * ${i}`,
-            background:
-              mood === null
-                ? "var(--color-balance-less)"
-                : mood === undefined
-                ? "none"
-                : moodToColor(mood),
-          }}
-          title={mood === null ? "No data" : mood?.toFixed(1)}
-        />
-      ))}
+      {data.map((datum, i) => {
+        const style = {
+          animationDelay: `calc(var(--time-2) / ${data.length} * ${i}`,
+          background:
+            datum === undefined
+              ? "none"
+              : datum.mood === undefined
+              ? "var(--color-balance-less)"
+              : moodToColor(datum.mood),
+        };
+        const title =
+          datum?.mood === undefined ? "No data" : datum.mood.toFixed(1);
+        const date = datum
+          ? createDateFromLocalDateString(datum.dateString)
+          : undefined;
+
+        return small || !datum || date! > now || date! < firstMoodDate ? (
+          <div
+            key={i}
+            className="m-mood-calendar-for-month__day"
+            style={style}
+            title={title}
+          />
+        ) : (
+          <button
+            aria-label={`View stats for ${dateFormatter.format(date!)}`}
+            key={i}
+            className="m-mood-calendar-for-month__day"
+            onClick={() => navigate(`/stats/days/${datum.dateString}`)}
+            style={style}
+            title={title}
+          />
+        );
+      })}
     </div>
   );
 }
