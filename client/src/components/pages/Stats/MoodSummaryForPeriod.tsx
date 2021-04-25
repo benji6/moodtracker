@@ -17,7 +17,7 @@ interface Props {
       [k: string]: number | undefined;
     };
   };
-  periodType: "month" | "week" | "year";
+  periodType: "day" | "month" | "week" | "year";
   showNext: boolean;
 }
 

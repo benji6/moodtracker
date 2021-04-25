@@ -27,6 +27,7 @@ import PrevNextControls from "../../shared/PrevNextControls";
 import MoodCard from "../../shared/MoodCard";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import startOfWeek from "date-fns/startOfWeek";
+import MoodSummaryForDay from "./MoodSummaryForDay";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -98,6 +99,10 @@ export default function Day({
           )}
         </PrevNextControls>
       </Paper>
+      <MoodSummaryForDay
+        dates={[prevDate, date, nextDate, addDays(nextDate, 1)]}
+        showNext={showNext}
+      />
       {moodIds ? (
         <Paper>
           <Card.Group>
