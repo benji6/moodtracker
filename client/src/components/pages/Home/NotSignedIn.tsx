@@ -61,13 +61,13 @@ export default function NotSignedIn() {
         <h3>Describe how you feel and reflect on it</h3>
         <p>
           You can record a short description of your mood and reflect on it on a
-          week-by-week, month-by-month or year-by-year basis.
+          day-by-day, week-by-week, month-by-month or year-by-year basis.
         </p>
         <WordCloud
           aria-label="Word cloud displaying mood descriptions"
           words={WORD_CLOUD_PROPS}
         />
-        <h3>Review on a weekly, monthly or yearly basis</h3>
+        <h3>Review on a daily, weekly, monthly or yearly basis</h3>
         <p>Opt in to receive weekly email updates!</p>
         <MoodSummary {...MOOD_SUMMARY_PROPS} />
         <h3>See how your mood fluctuates by day of the week</h3>
