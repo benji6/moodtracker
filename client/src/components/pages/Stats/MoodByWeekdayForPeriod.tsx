@@ -12,6 +12,7 @@ import {
 import { Paper } from "eri";
 import { TIME, WEEKDAY_LABELS_SHORT } from "../../../constants";
 import addDays from "date-fns/addDays";
+import { useNavigate } from "@reach/router";
 
 interface Props {
   fromDate: Date;
@@ -20,12 +21,17 @@ interface Props {
 
 export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
+  const navigate = useNavigate();
+
   const moodsByWeekdayIndex: (number[] | undefined)[] = [
     ...Array(TIME.daysPerWeek),
   ];
+  const dateStrings: string[] = [];
 
   for (let t0 = fromDate; t0 < toDate; t0 = addDays(t0, 1)) {
-    const mood = normalizedAveragesByDay.byId[formatIsoDateInLocalTimezone(t0)];
+    const dateString = formatIsoDateInLocalTimezone(t0);
+    dateStrings.push(dateString);
+    const mood = normalizedAveragesByDay.byId[dateString];
     if (mood === undefined) continue;
     const weekdayIndex = getWeekdayIndex(t0);
     const moodsForWeekday = moodsByWeekdayIndex[weekdayIndex];
@@ -41,7 +47,10 @@ export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
   return (
     <Paper>
       <h3>Average mood by weekday</h3>
-      <MoodByWeekdayChart averages={averages} />
+      <MoodByWeekdayChart
+        averages={averages}
+        onClick={(i) => navigate(`/stats/days/${dateStrings[i]}`)}
+      />
     </Paper>
   );
 }

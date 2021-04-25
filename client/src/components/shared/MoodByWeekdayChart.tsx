@@ -15,9 +15,10 @@ export type DayAverages = [
 
 interface IProps {
   averages: DayAverages;
+  onClick?(i: number): void;
 }
 
-export default function MoodByWeekdayChart({ averages }: IProps) {
+export default function MoodByWeekdayChart({ averages, onClick }: IProps) {
   return (
     <Chart.BarChart
       aria-label="Chart displaying average mood by weekday"
@@ -31,6 +32,7 @@ export default function MoodByWeekdayChart({ averages }: IProps) {
         <Chart.Bars
           colorFromY={moodToColor}
           data={averages.map(([, averageMood]) => averageMood)}
+          onClick={onClick}
         />
       </Chart.PlotArea>
       <Chart.YAxis
