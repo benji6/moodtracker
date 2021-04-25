@@ -21,7 +21,6 @@ import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  mapRight,
 } from "../../../utils";
 import GetStartedCta from "../../shared/GetStartedCta";
 import PrevNextControls from "../../shared/PrevNextControls";
@@ -102,7 +101,7 @@ export default function Day({
       {moodIds ? (
         <Paper>
           <Card.Group>
-            {mapRight(moodIds, (id) => (
+            {moodIds.map((id) => (
               <MoodCard id={id} key={id} {...moods.byId[id]} />
             ))}
           </Card.Group>
