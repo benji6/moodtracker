@@ -15,7 +15,7 @@ export const MOOD_INTEGERS = [
 
 // extracted from cognito and updated manually for now
 // if needed we can look at automating this in the future
-export const TOTAL_USERS = 48;
+export const TOTAL_USERS = 50;
 
 export const ERRORS = {
   integer: "Please type a valid whole number",
