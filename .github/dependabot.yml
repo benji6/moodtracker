@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/client"
+  schedule:
+    interval: monthly
+  open-pull-requests-limit: 99
+  ignore:
+  - dependency-name: marked
+    versions:
+    - 2.0.0
+  - dependency-name: amazon-cognito-identity-js
+    versions:
+    - 4.5.8
