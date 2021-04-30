@@ -4,12 +4,7 @@ import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { Mood } from "../../types";
-import {
-  DESCRIPTION_MAX_LENGTH,
-  ERRORS,
-  PATTERNS,
-  TEST_IDS,
-} from "../../constants";
+import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 
 export default function AddMood() {
@@ -23,14 +18,14 @@ export default function AddMood() {
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
-    const descriptionValue: string = formEl.description.value;
-    const explorationValue: string = formEl.exploration.value;
-    const moodValue: string = formEl.mood.value;
+    const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
+    const descriptionValue = descriptionEl.value;
+    const explorationValue: string = formEl[FIELDS.exploration.name].value;
+    const moodValue: string = formEl[FIELDS.mood.name].value;
 
     if (!moodValue) setMoodError(ERRORS.required);
 
-    const descriptionFieldError = (formEl.description as HTMLInputElement)
-      .validity.patternMismatch;
+    const descriptionFieldError = descriptionEl.validity.patternMismatch;
     setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
 
     if (descriptionFieldError || !moodValue) return;
@@ -65,7 +60,7 @@ export default function AddMood() {
         >
           <RadioButton.Group
             error={moodError}
-            label="Mood"
+            label={FIELDS.mood.label}
             onChange={() => {
               if (moodError) setMoodError(undefined);
             }}
@@ -74,7 +69,7 @@ export default function AddMood() {
               <RadioButton
                 data-test-id={TEST_IDS.addMoodRadioButton}
                 key={i}
-                name="mood"
+                name={FIELDS.mood.name}
                 value={i}
               >
                 {i}
@@ -82,23 +77,11 @@ export default function AddMood() {
             ))}
           </RadioButton.Group>
           <TextField
-            autoComplete="on"
+            {...FIELDS.description}
             data-test-id={TEST_IDS.descriptionInput}
             error={descriptionError}
-            label="Description"
-            maxLength={DESCRIPTION_MAX_LENGTH}
-            name="description"
-            optional
-            pattern={PATTERNS.noPunctuation}
-            supportiveText={`Try to describe how you feel using a short (${DESCRIPTION_MAX_LENGTH} characters) list of words separated by spaces.`}
           />
-          <TextArea
-            label="Exploration"
-            name="exploration"
-            optional
-            rows={5}
-            supportiveText="This is a space to explore how you're feeling, why you're feeling that way and what's going on in your life right now"
-          />
+          <TextArea {...FIELDS.exploration} />
           <Button.Group>
             <Button data-test-id={TEST_IDS.addMoodSubmitButton}>Submit</Button>
           </Button.Group>

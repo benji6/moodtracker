@@ -21,6 +21,7 @@ import {
 import { useSelector } from "react-redux";
 import {
   DESCRIPTION_MAX_LENGTH,
+  FIELDS,
   MOOD_INTEGERS,
   TEST_IDS,
 } from "../../../constants";
@@ -180,7 +181,7 @@ export default function MoodList() {
             {localState.shouldShowFilter && (
               <div className="slide-in">
                 <Select
-                  label="Mood"
+                  label={FIELDS.mood.label}
                   onChange={(e) =>
                     localDispatch(
                       e.target.value
@@ -206,7 +207,7 @@ export default function MoodList() {
                   ))}
                 </Select>
                 <ComboBox
-                  label="Description"
+                  label={FIELDS.description.label}
                   maxLength={DESCRIPTION_MAX_LENGTH}
                   onChange={(e) =>
                     localDispatch({
@@ -219,7 +220,7 @@ export default function MoodList() {
                   value={localState.filterDescription}
                 />
                 <TextField
-                  label="Exploration"
+                  label={FIELDS.exploration.label}
                   onChange={(e) =>
                     localDispatch({
                       payload: e.target.value,

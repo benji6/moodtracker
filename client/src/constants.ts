@@ -29,6 +29,30 @@ export const PATTERNS = {
     "[^‒–—―|$&~=\\/⁄@+*!?({[\\]})<>‹›«».;:^‘’“”'\",،、`·•†‡°″¡¿※#№÷×%‰−‱¶′‴§_‖¦]*",
 } as const;
 
+export const FIELDS = {
+  description: {
+    autoComplete: "on",
+    label: "Mood tags",
+    maxLength: DESCRIPTION_MAX_LENGTH,
+    name: "description",
+    optional: true,
+    pattern: PATTERNS.noPunctuation,
+    supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). These words will be used in your word clouds and as search terms.`,
+  },
+  exploration: {
+    label: "Exploration",
+    name: "exploration",
+    optional: true,
+    rows: 5,
+    supportiveText:
+      "Use this space to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
+  },
+  mood: {
+    label: "Mood",
+    name: "mood",
+  },
+} as const;
+
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,

@@ -6,7 +6,7 @@ import { normalizedMoodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { UpdateMood } from "../../../types";
-import { DESCRIPTION_MAX_LENGTH, ERRORS, PATTERNS } from "../../../constants";
+import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
@@ -22,12 +22,12 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
-    const descriptionValue: string = formEl.description.value;
-    const explorationValue: string = formEl.exploration.value;
-    const moodValue: string = formEl.mood.value;
+    const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
+    const descriptionValue = descriptionEl.value;
+    const explorationValue: string = formEl[FIELDS.exploration.name].value;
+    const moodValue: string = formEl[FIELDS.mood.name].value;
 
-    const descriptionFieldError = (formEl.description as HTMLInputElement)
-      .validity.patternMismatch;
+    const descriptionFieldError = descriptionEl.validity.patternMismatch;
     setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
 
     // There's some code further down that redirects the user
@@ -92,14 +92,14 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
           }}
           ref={formRef}
         >
-          <RadioButton.Group label="Mood">
+          <RadioButton.Group label={FIELDS.mood.label}>
             {[...Array(11)].map((_, i) => (
               <RadioButton
                 // There is old data where mood is a float between 0 and 10
                 // We handle that by rounding for this input control
                 defaultChecked={Math.round(mood.mood) === i}
                 key={i}
-                name="mood"
+                name={FIELDS.mood.name}
                 value={i}
               >
                 {i}
@@ -107,24 +107,11 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             ))}
           </RadioButton.Group>
           <TextField
-            autoComplete="on"
+            {...FIELDS.description}
             defaultValue={mood.description}
             error={descriptionError}
-            label="Description"
-            maxLength={DESCRIPTION_MAX_LENGTH}
-            name="description"
-            optional
-            pattern={PATTERNS.noPunctuation}
-            supportiveText={`Try to describe how you feel using a short (${DESCRIPTION_MAX_LENGTH} characters) list of words separated by spaces.`}
           />
-          <TextArea
-            defaultValue={mood.exploration}
-            label="Exploration"
-            name="exploration"
-            optional
-            rows={5}
-            supportiveText="This is a space to explore how you're feeling, why you're feeling that way and what's going on in your life right now"
-          />
+          <TextArea {...FIELDS.exploration} defaultValue={mood.exploration} />
           <Button.Group>
             <Button>Update</Button>
             <Button danger onClick={() => setIsDialogOpen(true)} type="button">
