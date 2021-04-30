@@ -11,7 +11,7 @@ export default function SeeAlso(_: RouteComponentProps) {
         <ul>
           <li>
             <a
-              href="https://meditation-timer.link"
+              href="https://meditation-timer.netlify.app"
               rel="noopener"
               target="_blank"
             >
