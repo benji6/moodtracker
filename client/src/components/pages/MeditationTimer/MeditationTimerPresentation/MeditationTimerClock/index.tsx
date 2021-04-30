@@ -2,9 +2,9 @@ import * as React from "react";
 import { TIME } from "../../../../../constants";
 import "./style.css";
 
-const RADIUS = 1 / 3;
+const RING_THICKNESS = 1 / 9;
+const RADIUS = 2 / 5 - RING_THICKNESS / 2;
 const CIRCUMFERENCE = 2 * RADIUS * Math.PI;
-const RING_THICKNESS = 0.1;
 const TEXT_LENGTH = (RADIUS - RING_THICKNESS) * 2;
 const TEXT_X = 0.5 - RADIUS + RING_THICKNESS;
 
@@ -45,8 +45,8 @@ export default function MeditationTimerClock({
       <text
         className="meditation-timer-clock__text"
         fill="var(--color-figure)"
-        dy="0.057"
-        fontSize="0.17"
+        dy="0.067"
+        fontSize="0.2"
         lengthAdjust="spacingAndGlyphs"
         textLength={TEXT_LENGTH}
         x={TEXT_X}
