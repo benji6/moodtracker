@@ -103,9 +103,11 @@ export default function MoodList() {
     normalizedDescriptionWordsSelector
   );
 
-  const normalizedFilterDescription = localState.filterDescription
+  const filterDescriptions = localState.filterDescription
     .trim()
-    .toLowerCase();
+    .toLowerCase()
+    .split(/\s+/);
+
   const normalizedFilterExploration = localState.filterExploration
     .trim()
     .toLowerCase();
@@ -115,7 +117,7 @@ export default function MoodList() {
   const shouldFilter = Boolean(
     filterFeatureAvailable &&
       (localState.filterMood !== undefined ||
-        normalizedFilterDescription ||
+        filterDescriptions.length ||
         normalizedFilterExploration)
   );
 
@@ -127,11 +129,15 @@ export default function MoodList() {
           mood.mood !== localState.filterMood
         )
           return false;
-        if (
-          normalizedFilterDescription &&
-          !mood.description?.toLowerCase().includes(normalizedFilterDescription)
-        )
-          return false;
+        if (filterDescriptions.length) {
+          const normalizedMoodDescription = mood.description?.toLowerCase();
+          if (
+            !filterDescriptions.every((description) =>
+              normalizedMoodDescription?.includes(description)
+            )
+          )
+            return false;
+        }
         if (
           normalizedFilterExploration &&
           !mood.exploration?.toLowerCase().includes(normalizedFilterExploration)
