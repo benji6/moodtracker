@@ -1,20 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" >
+  <style>
+    :root {
+      --color-theme: hsl(195,100%,33.3%);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-theme: hsl(195,100%,66.7%);
+      }
+    }
+  </style>
   <defs>
     <radialGradient id="gradient">
-      <stop offset="0" stop-color="hsl(195,100%,50%)"/>
-      <stop offset=".01" stop-color="hsl(195,100%,50%)"/>
-      <stop offset=".15" stop-color="#040606"/>
-      <stop offset=".2" stop-color="#040606"/>
-      <stop offset=".3" stop-color="hsl(195,100%,50%)"/>
-      <stop offset=".4" stop-color="#040606"/>
-      <stop offset=".45" stop-color="#040606"/>
-      <stop offset=".57" stop-color="hsl(195,100%,50%)"/>
-      <stop offset=".69" stop-color="#040606"/>
-      <stop offset=".75" stop-color="#040606"/>
-      <stop offset=".875" stop-color="hsl(195,100%,50%)"/>
-      <stop offset="1" stop-color="#040606"/>
+      <stop offset="0" stop-color="var(--color-theme)"/>
+      <stop offset=".01" stop-color="var(--color-theme)"/>
+      <stop offset=".15" stop-color="transparent"/>
+      <stop offset=".2" stop-color="transparent"/>
+      <stop offset=".3" stop-color="var(--color-theme)"/>
+      <stop offset=".4" stop-color="transparent"/>
+      <stop offset=".45" stop-color="transparent"/>
+      <stop offset=".57" stop-color="var(--color-theme)"/>
+      <stop offset=".69" stop-color="transparent"/>
+      <stop offset=".75" stop-color="transparent"/>
+      <stop offset=".875" stop-color="var(--color-theme)"/>
+      <stop offset="1" stop-color="transparent"/>
     </radialGradient>
   </defs>
-  <rect fill="#040606" height="1" stroke="none" width="1" />
   <circle r=".4" cx=".5" cy=".5" fill="url(#gradient)" />
 </svg>
