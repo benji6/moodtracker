@@ -45,8 +45,8 @@ export default function MeditationTimerClock({
       <text
         className="meditation-timer-clock__text"
         fill="var(--color-figure)"
-        dy="0.067"
-        fontSize="0.2"
+        dy="0.06"
+        fontSize="0.18"
         lengthAdjust="spacingAndGlyphs"
         textLength={TEXT_LENGTH}
         x={TEXT_X}
