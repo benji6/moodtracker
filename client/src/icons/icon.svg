@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" >
   <style>
     :root {
-      --color-theme: hsl(195,100%,33.3%);
+      --color-theme: hsl(210,100%,22%);
     }
     @media (prefers-color-scheme: dark) {
       :root {
