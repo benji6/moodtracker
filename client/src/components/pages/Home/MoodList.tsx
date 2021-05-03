@@ -106,7 +106,8 @@ export default function MoodList() {
   const filterDescriptions = localState.filterDescription
     .trim()
     .toLowerCase()
-    .split(/\s+/);
+    .split(/\s+/)
+    .filter(Boolean);
 
   const normalizedFilterExploration = localState.filterExploration
     .trim()
