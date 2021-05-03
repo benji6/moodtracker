@@ -69,6 +69,8 @@ export const TEST_IDS = (() => {
     "meditationCustomTimeInput",
     "meditationPresetTimeButton",
     "meditationTimerPage",
+    "moodCardMood",
+    "moodCardTime",
     "moodList",
     "navButton",
     "resetPasswordPage",

@@ -1,6 +1,7 @@
 import { useNavigate } from "@reach/router";
 import { Card, SubHeading } from "eri";
 import * as React from "react";
+import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../formatters";
 import { ServerMood } from "../../../types";
 import { moodToColor } from "../../../utils";
@@ -13,6 +14,7 @@ export default function MoodCard({
   mood,
 }: ServerMood) {
   const navigate = useNavigate();
+  const date = new Date(id);
 
   return (
     <Card
@@ -23,7 +25,7 @@ export default function MoodCard({
       <div className="m-mood-card">
         <div>
           <h3 className="m-mood-card__heading center">
-            {mood}
+            <span data-test-id={TEST_IDS.moodCardMood}>{mood}</span>
             {description && (
               <SubHeading style={{ margin: "var(--space-0) 0" }}>
                 {description}
@@ -31,7 +33,12 @@ export default function MoodCard({
             )}
           </h3>
           <p className="m-mood-card__time center">
-            <small>{timeFormatter.format(new Date(id))}</small>
+            <small
+              data-test-id={TEST_IDS.moodCardTime}
+              data-time={Math.round(date.getTime() / 1e3)}
+            >
+              {timeFormatter.format(date)}
+            </small>
           </p>
         </div>
         {exploration && (

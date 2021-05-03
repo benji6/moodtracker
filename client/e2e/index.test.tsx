@@ -5,6 +5,7 @@ class URLS {
   static readonly origin = "http://localhost:1234";
 
   static readonly add = `${URLS.origin}/add`;
+  static readonly home = `${URLS.origin}/`;
   static readonly meditate = `${URLS.origin}/meditate`;
   static readonly meditationTimer = `${URLS.meditate}/timer`;
   static readonly resetPassowrd = `${URLS.origin}/reset-password`;
@@ -151,6 +152,46 @@ describe("e2e", () => {
         await descriptionInput.press("Enter");
         errors = await page.$$('[data-eri-id="field-error"]');
         expect(errors).toHaveLength(1);
+      });
+
+      test("adding a mood with only a mood value", async () => {
+        const MOOD = Math.floor(Math.random() * 11);
+
+        await submitButton.evaluate((el) => el.click());
+
+        let errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(1);
+
+        const errorMessage = await errors[0].evaluate((el) => el.textContent);
+        expect(errorMessage).toBe(ERRORS.required);
+
+        const moodRadioButton = (await page.$(
+          `${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`
+        ))!;
+        await moodRadioButton.evaluate((el) => el.click());
+
+        errors = await page.$$('[data-eri-id="field-error"]');
+        expect(errors).toHaveLength(0);
+
+        const expectedTime = Math.round(Date.now() / 1e3);
+
+        await submitButton.evaluate((el) => el.click());
+        await page.waitForSelector(SELECTORS.moodList);
+
+        expect(page.url()).toBe(URLS.home);
+
+        const moodCardMood = await page.waitForSelector(SELECTORS.moodCardMood);
+        const moodCardMoodText = await moodCardMood!.evaluate(
+          (el) => el.textContent
+        );
+
+        expect(moodCardMoodText).toBe(String(MOOD));
+
+        const moodCardTime = await page.$(SELECTORS.moodCardTime);
+        const moodCardTimeValue = await moodCardTime!.evaluate((el) =>
+          el.getAttribute("data-time")
+        );
+        expect(moodCardTimeValue).toBe(String(expectedTime));
       });
     });
 
