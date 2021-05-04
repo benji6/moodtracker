@@ -1,9 +1,9 @@
 .m-icon {
-  --m-icon-color-theme: hsl(210, 100%, 22%);
+  --m-icon-color: hsl(210, 100%, 22%);
 }
 
 @media (prefers-color-scheme: dark) {
   .m-icon {
-    --m-icon-color-theme: hsl(195, 100%, 66.7%);
+    --m-icon-color: hsl(195, 100%, 66.7%);
   }
 }

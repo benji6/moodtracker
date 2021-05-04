@@ -1,28 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" >
   <style>
     :root {
-      --color-theme: hsl(210,100%,22%);
+      --m-icon-color: hsl(210,100%,22%);
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --color-theme: hsl(195,100%,66.7%);
+        --m-icon-color: hsl(195,100%,66.7%);
       }
     }
   </style>
   <defs>
     <radialGradient id="gradient">
-      <stop offset="0" stop-color="var(--color-theme)"/>
-      <stop offset=".01" stop-color="var(--color-theme)"/>
-      <stop offset=".15" stop-color="var(--color-theme)" stop-opacity="0"/>
-      <stop offset=".2" stop-color="var(--color-theme)" stop-opacity="0"/>
-      <stop offset=".3" stop-color="var(--color-theme)"/>
-      <stop offset=".4" stop-color="var(--color-theme)" stop-opacity="0"/>
-      <stop offset=".45" stop-color="var(--color-theme)" stop-opacity="0"/>
-      <stop offset=".57" stop-color="var(--color-theme)"/>
-      <stop offset=".69" stop-color="var(--color-theme)" stop-opacity="0"/>
-      <stop offset=".75" stop-color="var(--color-theme)" stop-opacity="0"/>
-      <stop offset=".875" stop-color="var(--color-theme)"/>
-      <stop offset="1" stop-color="var(--color-theme)" stop-opacity="0"/>
+      <stop offset="0" stop-color="var(--m-icon-color)"/>
+      <stop offset=".05" stop-color="var(--m-icon-color)"/>
+      <stop offset=".15" stop-color="var(--m-icon-color)" stop-opacity="0"/>
+      <stop offset=".2" stop-color="var(--m-icon-color)" stop-opacity="0"/>
+      <stop offset=".28" stop-color="var(--m-icon-color)"/>
+      <stop offset=".32" stop-color="var(--m-icon-color)"/>
+      <stop offset=".4" stop-color="var(--m-icon-color)" stop-opacity="0"/>
+      <stop offset=".45" stop-color="var(--m-icon-color)" stop-opacity="0"/>
+      <stop offset=".54" stop-color="var(--m-icon-color)"/>
+      <stop offset=".6" stop-color="var(--m-icon-color)"/>
+      <stop offset=".69" stop-color="var(--m-icon-color)" stop-opacity="0"/>
+      <stop offset=".75" stop-color="var(--m-icon-color)" stop-opacity="0"/>
+      <stop offset=".84" stop-color="var(--m-icon-color)"/>
+      <stop offset=".91" stop-color="var(--m-icon-color)"/>
+      <stop offset="1" stop-color="var(--m-icon-color)" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <circle r=".4" cx=".5" cy=".5" fill="url(#gradient)" />
