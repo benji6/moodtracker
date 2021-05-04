@@ -13,16 +13,16 @@
     <radialGradient id="gradient">
       <stop offset="0" stop-color="var(--color-theme)"/>
       <stop offset=".01" stop-color="var(--color-theme)"/>
-      <stop offset=".15" stop-color="transparent"/>
-      <stop offset=".2" stop-color="transparent"/>
+      <stop offset=".15" stop-color="var(--color-theme)" stop-opacity="0"/>
+      <stop offset=".2" stop-color="var(--color-theme)" stop-opacity="0"/>
       <stop offset=".3" stop-color="var(--color-theme)"/>
-      <stop offset=".4" stop-color="transparent"/>
-      <stop offset=".45" stop-color="transparent"/>
+      <stop offset=".4" stop-color="var(--color-theme)" stop-opacity="0"/>
+      <stop offset=".45" stop-color="var(--color-theme)" stop-opacity="0"/>
       <stop offset=".57" stop-color="var(--color-theme)"/>
-      <stop offset=".69" stop-color="transparent"/>
-      <stop offset=".75" stop-color="transparent"/>
+      <stop offset=".69" stop-color="var(--color-theme)" stop-opacity="0"/>
+      <stop offset=".75" stop-color="var(--color-theme)" stop-opacity="0"/>
       <stop offset=".875" stop-color="var(--color-theme)"/>
-      <stop offset="1" stop-color="transparent"/>
+      <stop offset="1" stop-color="var(--color-theme)" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <circle r=".4" cx=".5" cy=".5" fill="url(#gradient)" />
