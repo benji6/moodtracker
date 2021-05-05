@@ -12,25 +12,51 @@ export default function MoodTrackerIcon(
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <radialGradient id="gradient">
-          <stop offset="0" stopColor="var(--m-icon-color)" />
-          <stop offset=".05" stopColor="var(--m-icon-color)" />
-          <stop offset=".15" stopColor="var(--m-icon-color)" stopOpacity="0" />
-          <stop offset=".2" stopColor="var(--m-icon-color)" stopOpacity="0" />
-          <stop offset=".28" stopColor="var(--m-icon-color)" />
-          <stop offset=".32" stopColor="var(--m-icon-color)" />
-          <stop offset=".4" stopColor="var(--m-icon-color)" stopOpacity="0" />
-          <stop offset=".45" stopColor="var(--m-icon-color)" stopOpacity="0" />
-          <stop offset=".54" stopColor="var(--m-icon-color)" />
-          <stop offset=".6" stopColor="var(--m-icon-color)" />
-          <stop offset=".69" stopColor="var(--m-icon-color)" stopOpacity="0" />
-          <stop offset=".75" stopColor="var(--m-icon-color)" stopOpacity="0" />
-          <stop offset=".84" stopColor="var(--m-icon-color)" />
-          <stop offset=".91" stopColor="var(--m-icon-color)" />
-          <stop offset="1" stopColor="var(--m-icon-color)" stopOpacity="0" />
-        </radialGradient>
+        <linearGradient id="gradient">
+          <stop offset="25%" stopColor="var(--m-icon-color)" />
+          <stop offset="95%" stopColor="hsl(210,100%,44.35%)" />
+        </linearGradient>
+        <filter id="shadow">
+          <feDropShadow dx="-0.01" dy="0.00" stdDeviation="0.005" />
+        </filter>
       </defs>
-      <circle r=".4" cx=".5" cy=".5" fill="url(#gradient)" />
+      <g filter="url(#shadow)">
+        <mask id="circles-mask">
+          <rect x="0" y="0" width="100" height="100" fill="white" />
+          <circle
+            cx=".5"
+            cy=".5"
+            r=".065"
+            stroke="black"
+            strokeWidth="0.04"
+            fill="none"
+          />
+          <circle
+            cx=".5"
+            cy=".5"
+            r=".167"
+            stroke="black"
+            strokeWidth="0.045"
+            fill="none"
+          />
+          <circle
+            cx=".5"
+            cy=".5"
+            r=".29"
+            stroke="black"
+            strokeWidth="0.05"
+            fill="none"
+          />
+        </mask>
+        <circle
+          cx=".5"
+          cy=".5"
+          r=".4"
+          strokeWidth="0"
+          fill="url(#gradient)"
+          mask="url(#circles-mask)"
+        />
+      </g>
     </svg>
   );
 }
