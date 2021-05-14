@@ -24,7 +24,6 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
 
   const onDim = React.useCallback(() => setIsDimmerEnabled(true), []);
   const onFinish = React.useCallback(() => {
-    bell.stop();
     navigate("/meditate");
   }, [navigate]);
   const onPause = React.useCallback(() => {
@@ -43,6 +42,10 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
 
   React.useEffect(() => {
     noSleep.enable();
+    return () => {
+      bell.stop();
+      noSleep.disable();
+    };
   }, []);
 
   React.useEffect(() => {
