@@ -58,8 +58,9 @@ export default function MoodSummaryForPeriod({
                 best: nextMoodValues.length
                   ? Math.max(...nextMoodValues)
                   : undefined,
-                mean:
-                  normalizedAverages.byId[formatIsoDateInLocalTimezone(date2)],
+                mean: normalizedAverages.byId[
+                  formatIsoDateInLocalTimezone(date2)
+                ],
                 standardDeviation: computeStandardDeviation(nextMoodValues),
                 total: nextMoodValues.length,
                 worst: nextMoodValues.length
@@ -75,8 +76,9 @@ export default function MoodSummaryForPeriod({
                 best: prevMoodValues.length
                   ? Math.max(...prevMoodValues)
                   : undefined,
-                mean:
-                  normalizedAverages.byId[formatIsoDateInLocalTimezone(date0)],
+                mean: normalizedAverages.byId[
+                  formatIsoDateInLocalTimezone(date0)
+                ],
                 standardDeviation: computeStandardDeviation(prevMoodValues),
                 total: prevMoodValues.length,
                 worst: prevMoodValues.length

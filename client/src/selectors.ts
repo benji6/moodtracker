@@ -181,29 +181,25 @@ export const normalizedDescriptionWordsSelector = createSelector(
   }
 );
 
-export const normalizedAveragesByDaySelector = makeNormalizedAveragesByPeriodSelector(
-  eachDayOfInterval,
-  addDays
-);
+export const normalizedAveragesByDaySelector =
+  makeNormalizedAveragesByPeriodSelector(eachDayOfInterval, addDays);
 
-export const normalizedAveragesByHourSelector = makeNormalizedAveragesByPeriodSelector(
-  eachHourOfInterval,
-  addHours,
-  formatIsoDateHourInLocalTimezone
-);
+export const normalizedAveragesByHourSelector =
+  makeNormalizedAveragesByPeriodSelector(
+    eachHourOfInterval,
+    addHours,
+    formatIsoDateHourInLocalTimezone
+  );
 
-export const normalizedAveragesByMonthSelector = makeNormalizedAveragesByPeriodSelector(
-  eachMonthOfInterval,
-  addMonths
-);
+export const normalizedAveragesByMonthSelector =
+  makeNormalizedAveragesByPeriodSelector(eachMonthOfInterval, addMonths);
 
-export const normalizedAveragesByWeekSelector = makeNormalizedAveragesByPeriodSelector(
-  ({ start, end }: Interval) =>
-    eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
-  addWeeks
-);
+export const normalizedAveragesByWeekSelector =
+  makeNormalizedAveragesByPeriodSelector(
+    ({ start, end }: Interval) =>
+      eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
+    addWeeks
+  );
 
-export const normalizedAveragesByYearSelector = makeNormalizedAveragesByPeriodSelector(
-  eachYearOfInterval,
-  addYears
-);
+export const normalizedAveragesByYearSelector =
+  makeNormalizedAveragesByPeriodSelector(eachYearOfInterval, addYears);
