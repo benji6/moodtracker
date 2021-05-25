@@ -31,6 +31,7 @@ import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
 import { dateWeekdayFormatter } from "../../../formatters";
 import MoodCard from "../../shared/MoodCard";
 import addDays from "date-fns/addDays";
+import { Link } from "@reach/router";
 
 const DAYS_PER_PAGE = 7;
 
@@ -270,7 +271,11 @@ export default function MoodList() {
             const day = createDateFromLocalDateString(dayStr);
             return (
               <Paper key={dayStr}>
-                <h3>{dateWeekdayFormatter.format(day)}</h3>
+                <h3>
+                  <Link to={`/stats/days/${dayStr}`}>
+                    {dateWeekdayFormatter.format(day)}
+                  </Link>
+                </h3>
                 <MoodGradientForPeriod
                   fromDate={day}
                   toDate={addDays(day, 1)}
