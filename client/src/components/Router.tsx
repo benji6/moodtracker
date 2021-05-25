@@ -1,6 +1,5 @@
 import { Router as ReachRouter } from "@reach/router";
 import * as React from "react";
-import _404 from "./pages/_404";
 import About from "./pages/About";
 import AddMood from "./pages/AddMood";
 import EditMood from "./pages/EditMood";
@@ -23,55 +22,111 @@ import Year from "./pages/Stats/Year";
 import Export from "./pages/Settings/Export";
 import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
-import _401 from "./pages/_401";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
 import Meditate from "./pages/Meditate";
 import MeditationTimer from "./pages/MeditationTimer";
 import Day from "./pages/Stats/Day";
+import { Page } from "./shared/Page";
+import RedirectHome from "./pages/RedirectHome";
 
 export default function Router() {
   return (
     <ReachRouter>
       <App path="/">
-        <_401 path="/401" />
-        <_404 default />
+        <RedirectHome path="/401" />
+        <RedirectHome default />
 
-        <About path="/about" />
-        <Blog path="/blog" />
-        <SeeAlso path="/see-also" />
-
-        <AuthedOnlyPage Component={AddMood} path="/add" />
-        <AuthedOnlyPage Component={EditMood} path="/edit/:id" />
-        <AuthedOnlyPage Component={Meditate} path="/meditate" />
-        <AuthedOnlyPage Component={MeditationTimer} path="/meditate/timer" />
+        <AuthedOnlyPage Component={AddMood} path="/add" title="Add mood" />
+        <AuthedOnlyPage
+          Component={EditMood}
+          path="/edit/:id"
+          title="Edit mood"
+        />
+        <AuthedOnlyPage
+          Component={Meditate}
+          path="/meditate"
+          title="Meditate"
+        />
+        <AuthedOnlyPage
+          Component={MeditationTimer}
+          path="/meditate/timer"
+          title="Meditation timer"
+        />
         <AuthedOnlyPage
           Component={ChangePassword}
           path="/settings/change-password"
+          title="Change password"
         />
-        <AuthedOnlyPage Component={Export} path="/settings/export" />
-        <AuthedOnlyPage Component={Overview} path="/stats" />
-        <AuthedOnlyPage Component={Explore} path="/stats/explore" />
-        <AuthedOnlyPage Component={Day} path="/stats/days/:day" />
-        <AuthedOnlyPage Component={Month} path="/stats/months/:month" />
+        <AuthedOnlyPage
+          Component={Export}
+          path="/settings/export"
+          title="Export data"
+        />
         <AuthedOnlyPage
           Component={Notifications}
           path="/settings/notifications"
+          title="Notifications"
         />
-        <AuthedOnlyPage Component={Week} path="/stats/weeks/:week" />
-        <AuthedOnlyPage Component={Year} path="/stats/years/:year" />
+        <AuthedOnlyPage
+          Component={Overview}
+          path="/stats"
+          title="Stats overview"
+        />
+        <AuthedOnlyPage
+          Component={Explore}
+          path="/stats/explore"
+          title="Explore stats"
+        />
+        <AuthedOnlyPage
+          Component={Day}
+          path="/stats/days/:day"
+          title="Day stats"
+        />
+        <AuthedOnlyPage
+          Component={Month}
+          path="/stats/months/:month"
+          title="Month stats"
+        />
+        <AuthedOnlyPage
+          Component={Week}
+          path="/stats/weeks/:week"
+          title="Week stats"
+        />
+        <AuthedOnlyPage
+          Component={Year}
+          path="/stats/years/:year"
+          title="Year stats"
+        />
 
-        <StorageLoadedPage Component={Home} path="/" />
+        <Page Component={About} path="/about" title="About" />
+        <Page Component={Blog} path="/blog" title="Blog" />
+        <Page Component={SeeAlso} path="/see-also" title="See also" />
 
-        <UnauthedOnlyPage Component={ForgotPassword} path="/forgot-password" />
+        <StorageLoadedPage
+          Component={Home}
+          path="/"
+          title="A mood tracker & journal that helps you understand yourself"
+        />
+
+        <UnauthedOnlyPage
+          Component={ForgotPassword}
+          path="/forgot-password"
+          title="Forgot password"
+        />
         <UnauthedOnlyPage
           Component={ResendVerification}
           path="/resend-verification"
+          title="Resend verification"
         />
-        <UnauthedOnlyPage Component={ResetPassword} path="/reset-password" />
-        <UnauthedOnlyPage Component={SignIn} path="/sign-in" />
-        <UnauthedOnlyPage Component={SignUp} path="/sign-up" />
-        <UnauthedOnlyPage Component={Verify} path="/verify" />
+        <UnauthedOnlyPage
+          Component={ResetPassword}
+          path="/reset-password"
+          title="Reset password"
+        />
+        <UnauthedOnlyPage Component={SignIn} path="/sign-in" title="Sign in" />
+        <UnauthedOnlyPage Component={SignUp} path="/sign-up" title="Sign up" />
+        <UnauthedOnlyPage Component={Verify} path="/verify" title="Verify" />
       </App>
     </ReachRouter>
   );

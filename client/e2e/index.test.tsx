@@ -12,6 +12,9 @@ class URLS {
   static readonly statsOverview = `${URLS.origin}/stats`;
 }
 
+const ROOT_DOCUMENT_TITLE =
+  "MoodTracker - A mood tracker & journal that helps you understand yourself";
+
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 
@@ -45,10 +48,15 @@ describe("e2e", () => {
   });
 
   describe("when the user is not signed in", () => {
+    beforeEach(async () => {
+      expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
+    });
+
     test("the user can access routes which are not available to authenticated users", async () => {
       await page.goto(URLS.resetPassowrd);
       await page.waitForSelector(SELECTORS.resetPasswordPage);
       expect(page.url()).toBe(URLS.resetPassowrd);
+      expect(await page.title()).toBe("MoodTracker - Reset password");
     });
 
     test("the user can not access protected routes", async () => {
@@ -56,6 +64,7 @@ describe("e2e", () => {
       await page.waitForSelector(SELECTORS.signInLink);
       expect(page.url().replace(/\/$/, "")).toBe(URLS.origin);
       expect(await page.$(SELECTORS.addMoodPage)).toBeNull();
+      expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
     });
   });
 
@@ -95,16 +104,20 @@ describe("e2e", () => {
     });
 
     test("the user can not access routes which are not available to authenticated users", async () => {
+      expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
       await page.goto(URLS.resetPassowrd);
       await page.waitForSelector(SELECTORS.moodList);
       expect(page.url().replace(/\/$/, "")).toBe(URLS.origin);
       expect(await page.$(SELECTORS.resetPasswordPage)).toBeNull();
+      expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
     });
 
     test("user can access protected routes", async () => {
+      expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
       await page.goto(URLS.statsOverview);
       await page.waitForSelector(SELECTORS.statsOverviewPage);
       expect(page.url()).toBe(URLS.statsOverview);
+      expect(await page.title()).toBe("MoodTracker - Stats overview");
     });
 
     describe("adding a mood", () => {
