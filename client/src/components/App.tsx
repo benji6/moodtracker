@@ -38,13 +38,13 @@ export default function App({ children }: IProps) {
       {userIsSignedIn && (
         <QuickNav>
           <QuickNav.Link aria-label="Home" to="/">
-            <Icon name="home" size="4" />
+            <Icon name="home" size="3" />
           </QuickNav.Link>
           <QuickNav.Link aria-label="Statistics" to="/stats">
-            <Icon name="chart" size="4" />
+            <Icon name="chart" size="3" />
           </QuickNav.Link>
           <QuickNav.Link aria-label="Add new mood" to="/add">
-            <Icon name="plus" size="4" />
+            <Icon name="plus" size="3" />
           </QuickNav.Link>
         </QuickNav>
       )}

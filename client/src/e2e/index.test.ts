@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import { ERRORS, TEST_IDS } from "../src/constants";
+import { ERRORS, TEST_IDS } from "../constants";
 
 class URLS {
   static readonly origin = "http://localhost:1234";
@@ -21,6 +21,8 @@ const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 const SELECTORS = {} as { [k in keyof typeof TEST_IDS]: string };
 for (const [k, v] of Object.entries(TEST_IDS))
   SELECTORS[k as keyof typeof TEST_IDS] = `[data-test-id="${v}"]`;
+
+const TRANSITION_TIME = 120;
 
 describe("e2e", () => {
   let browser: puppeteer.Browser;
@@ -71,7 +73,7 @@ describe("e2e", () => {
   describe("when the user is signed in", () => {
     beforeAll(async () => {
       const signInLink = (await page.waitForSelector(SELECTORS.signInLink))!;
-      await page.waitForTimeout(100);
+      await page.waitForTimeout(TRANSITION_TIME);
       await tapAndNavigate(signInLink);
 
       const emailInput = (await page.waitForSelector('[type="email"]'))!;
@@ -93,12 +95,14 @@ describe("e2e", () => {
       const signOutButton = (await page.waitForSelector(
         SELECTORS.signOutButton
       ))!;
-      await page.waitForTimeout(100);
+      await page.waitForTimeout(TRANSITION_TIME);
+      await page.screenshot({ path: "thing.png" });
       await signOutButton.tap();
       const signOutConfirmButton = (await page.waitForSelector(
         SELECTORS.signOutConfirmButton
       ))!;
       await tapAndNavigate(signOutConfirmButton);
+      await page.waitForTimeout(TRANSITION_TIME);
 
       expect(await page.$(SELECTORS.signInLink)).toBeTruthy();
     });
@@ -220,7 +224,7 @@ describe("e2e", () => {
         ))!;
         tapAndNavigate(button);
         await page.waitForSelector(SELECTORS.meditatePage);
-        await page.waitForTimeout(100);
+        await page.waitForTimeout(TRANSITION_TIME);
 
         expect(page.url()).toBe(`${URLS.meditationTimer}?t=600`);
       });
@@ -264,7 +268,7 @@ describe("e2e", () => {
         expect(error).toBeNull();
 
         await page.waitForSelector(SELECTORS.meditationTimerPage);
-        await page.waitForTimeout(100);
+        await page.waitForTimeout(TRANSITION_TIME);
 
         expect(page.url()).toBe(`${URLS.meditationTimer}?t=3600`);
       });
