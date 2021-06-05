@@ -11,8 +11,9 @@ export default function AddMood() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = React.useState<string | undefined>();
-  const [descriptionError, setDescriptionError] =
-    React.useState<string | undefined>();
+  const [descriptionError, setDescriptionError] = React.useState<
+    string | undefined
+  >();
   const formRef = React.useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {

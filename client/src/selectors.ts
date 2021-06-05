@@ -126,45 +126,54 @@ const makeNormalizedAveragesByPeriodSelector = (
   addPeriods: (date: Date, n: number) => Date,
   createId = formatIsoDateInLocalTimezone
 ) =>
-  createSelector(normalizedMoodsSelector, (moods): {
-    allIds: string[];
-    byId: { [k: string]: number | undefined };
-  } => {
-    const allIds: string[] = [];
-    const byId: { [k: string]: number } = {};
-    const normalizedAverages = { allIds, byId };
+  createSelector(
+    normalizedMoodsSelector,
+    (
+      moods
+    ): {
+      allIds: string[];
+      byId: { [k: string]: number | undefined };
+    } => {
+      const allIds: string[] = [];
+      const byId: { [k: string]: number } = {};
+      const normalizedAverages = { allIds, byId };
 
-    if (!moods.allIds.length) return normalizedAverages;
+      if (!moods.allIds.length) return normalizedAverages;
 
-    const periods = eachPeriodOfInterval({
-      start: new Date(moods.allIds[0]),
-      end: new Date(moods.allIds[moods.allIds.length - 1]),
-    });
+      const periods = eachPeriodOfInterval({
+        start: new Date(moods.allIds[0]),
+        end: new Date(moods.allIds[moods.allIds.length - 1]),
+      });
 
-    const finalPeriod = addPeriods(periods[periods.length - 1], 1);
+      const finalPeriod = addPeriods(periods[periods.length - 1], 1);
 
-    if (moods.allIds.length === 1) {
-      const id = createId(periods[0]);
-      allIds.push(id);
-      byId[id] = moods.byId[moods.allIds[0]].mood;
+      if (moods.allIds.length === 1) {
+        const id = createId(periods[0]);
+        allIds.push(id);
+        byId[id] = moods.byId[moods.allIds[0]].mood;
+        return normalizedAverages;
+      }
+
+      periods.push(finalPeriod);
+
+      for (let i = 1; i < periods.length; i++) {
+        const p0 = periods[i - 1];
+        const p1 = periods[i];
+        const averageMoodInInterval = computeAverageMoodInInterval(
+          moods,
+          p0,
+          p1
+        );
+        if (averageMoodInInterval !== undefined) {
+          const id = createId(p0);
+          allIds.push(id);
+          byId[id] = averageMoodInInterval;
+        }
+      }
+
       return normalizedAverages;
     }
-
-    periods.push(finalPeriod);
-
-    for (let i = 1; i < periods.length; i++) {
-      const p0 = periods[i - 1];
-      const p1 = periods[i];
-      const averageMoodInInterval = computeAverageMoodInInterval(moods, p0, p1);
-      if (averageMoodInInterval !== undefined) {
-        const id = createId(p0);
-        allIds.push(id);
-        byId[id] = averageMoodInInterval;
-      }
-    }
-
-    return normalizedAverages;
-  });
+  );
 
 export const normalizedDescriptionWordsSelector = createSelector(
   normalizedMoodsSelector,

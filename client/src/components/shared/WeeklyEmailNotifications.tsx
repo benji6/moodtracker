@@ -9,8 +9,9 @@ import { ERRORS } from "../../constants";
 
 export default function WeeklyEmailNotifications() {
   const [isUpdating, setIsUpdating] = React.useState(false);
-  const [isWeeklyEmailsEnabled, setIsWeeklyEmailsEnabled] =
-    React.useState<boolean | undefined>();
+  const [isWeeklyEmailsEnabled, setIsWeeklyEmailsEnabled] = React.useState<
+    boolean | undefined
+  >();
   const [error, setError] = React.useState(false);
   React.useEffect(
     () =>

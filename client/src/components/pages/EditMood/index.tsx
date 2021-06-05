@@ -14,8 +14,9 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const dispatch = useDispatch();
   const moods = useSelector(normalizedMoodsSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [descriptionError, setDescriptionError] =
-    React.useState<string | undefined>();
+  const [descriptionError, setDescriptionError] = React.useState<
+    string | undefined
+  >();
 
   const formRef = React.useRef<HTMLFormElement>(null);
 

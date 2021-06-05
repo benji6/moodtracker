@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import { ERRORS, TEST_IDS } from "../constants";
+import { ERRORS, TEST_IDS } from "../src/constants";
 
 class URLS {
   static readonly origin = "http://localhost:1234";
@@ -22,7 +22,7 @@ const SELECTORS = {} as { [k in keyof typeof TEST_IDS]: string };
 for (const [k, v] of Object.entries(TEST_IDS))
   SELECTORS[k as keyof typeof TEST_IDS] = `[data-test-id="${v}"]`;
 
-const TRANSITION_TIME = 120;
+const TRANSITION_TIME = 200;
 
 describe("e2e", () => {
   let browser: puppeteer.Browser;
@@ -96,7 +96,6 @@ describe("e2e", () => {
         SELECTORS.signOutButton
       ))!;
       await page.waitForTimeout(TRANSITION_TIME);
-      await page.screenshot({ path: "thing.png" });
       await signOutButton.tap();
       const signOutConfirmButton = (await page.waitForSelector(
         SELECTORS.signOutConfirmButton

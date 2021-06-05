@@ -9,7 +9,7 @@
     "start": "parcel src/index.html --open",
     "test": "run-p test:*",
     "test:audit": "yarn audit --level critical || [ $? -lt 16 ]",
-    "test:e2e": "jest src/e2e",
+    "test:e2e": "jest e2e",
     "test:fmt": "prettier --check '**/*'",
     "test:lint": "eslint --ext js,ts,tsx .",
     "test:types": "tsc --noEmit",
