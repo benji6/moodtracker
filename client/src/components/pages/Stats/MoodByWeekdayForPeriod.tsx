@@ -15,11 +15,16 @@ import addDays from "date-fns/addDays";
 import { useNavigate } from "@reach/router";
 
 interface Props {
+  canDrillDown?: boolean;
   fromDate: Date;
   toDate: Date;
 }
 
-export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
+export default function MoodByWeekdayForPeriod({
+  canDrillDown,
+  fromDate,
+  toDate,
+}: Props) {
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
   const navigate = useNavigate();
 
@@ -49,7 +54,11 @@ export default function MoodByWeekdayForPeriod({ fromDate, toDate }: Props) {
       <h3>Average mood by weekday</h3>
       <MoodByWeekdayChart
         averages={averages}
-        onClick={(i) => navigate(`/stats/days/${dateStrings[i]}`)}
+        onClick={
+          canDrillDown
+            ? (i) => navigate(`/stats/days/${dateStrings[i]}`)
+            : undefined
+        }
       />
     </Paper>
   );

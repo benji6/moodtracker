@@ -129,7 +129,11 @@ export default function Week({
             <h3>Mood chart</h3>
             <MoodChartForWeek week={week} />
           </Paper>
-          <MoodByWeekdayForPeriod fromDate={week} toDate={nextWeek} />
+          <MoodByWeekdayForPeriod
+            canDrillDown
+            fromDate={week}
+            toDate={nextWeek}
+          />
           <MoodByHourForPeriod fromDate={week} toDate={nextWeek} />
           <MoodCloudForPeriod fromDate={week} toDate={nextWeek} />
           <MoodFrequencyForPeriod fromDate={week} toDate={nextWeek} />
