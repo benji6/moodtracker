@@ -8,6 +8,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { UpdateMood } from "../../../types";
 import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
+import { dateTimeFormatter } from "../../../formatters";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const navigate = useNavigate();
@@ -74,12 +75,13 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
       <Paper>
         <h2>Edit mood</h2>
         <p>
-          <small>Created: {new Date(id).toLocaleString()}</small>
+          <small>Created: {dateTimeFormatter.format(new Date(id))}</small>
           {mood.updatedAt && (
             <>
               <br />
               <small>
-                Last updated: {new Date(mood.updatedAt).toLocaleString()}
+                Last updated:{" "}
+                {dateTimeFormatter.format(new Date(mood.updatedAt))}
               </small>
             </>
           )}
