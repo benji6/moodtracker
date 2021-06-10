@@ -5,9 +5,16 @@ export type FluxStandardAction<
   ? { type: Type }
   : { payload: Payload; type: Type };
 
-export interface NormalizedMoods {
+type NormalizedTrackedCategory<TrackedCategory> = {
   allIds: string[];
-  byId: { [id: string]: Mood & { updatedAt?: string } };
+  byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
+};
+
+export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
+export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
+
+export interface Meditation {
+  seconds: number;
 }
 
 export interface Mood {
@@ -32,6 +39,7 @@ type MoodEvent<Type extends string, Payload> = {
 };
 
 export type AppEvent =
+  | MoodEvent<"v1/meditations/create", Meditation>
   | MoodEvent<"v1/moods/create", Mood>
   | MoodEvent<"v1/moods/delete", string>
   | MoodEvent<"v1/moods/update", UpdateMood>;

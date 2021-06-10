@@ -1,7 +1,7 @@
 import boto3
 import json
 import operator
-from boto3.dynamodb.conditions import Attr, Key
+from boto3.dynamodb.conditions import Key
 from datetime import datetime, timedelta
 
 EXPRESSION_ATTRIBUTE_NAMES = {'#t': 'type'}
@@ -53,6 +53,8 @@ def handler(event, context):
       payload = event['payload']
       if 'mood' in payload:
         payload['mood'] = float(payload['mood'])
+      elif 'seconds' in payload:
+        payload['seconds'] = int(payload['seconds'])
     return {
       'body': json.dumps({'events': events, 'nextCursor': last_server_created_at}),
       'headers': HEADERS,

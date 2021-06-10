@@ -11,6 +11,7 @@ interface Props {
   onFinish(): void;
   onPause(): void;
   onPlay(): void;
+  onRecordAndFinish(): void;
   onReveal(): void;
   roundedSecondsRemaining: number;
   timerState: TimerState;
@@ -23,6 +24,7 @@ function MeditationTimerPresentation({
   onFinish,
   onPause,
   onPlay,
+  onRecordAndFinish,
   onReveal,
   roundedSecondsRemaining,
   timerState,
@@ -37,37 +39,41 @@ function MeditationTimerPresentation({
             remainingSeconds={roundedSecondsRemaining}
             totalSeconds={totalSeconds}
           />
-          <Button.Group>
-            <Button onClick={onFinish}>Finish</Button>
-            <Button
-              disabled={timerState === "FINISHED"}
-              onClick={onDim}
-              variant="secondary"
-            >
-              Dim screen
-              <Icon margin="left" name="moon" />
-            </Button>
-            <Button
-              disabled={timerState === "FINISHED"}
-              onClick={() => {
-                if (timerState === "PAUSED") return onPlay();
-                onPause();
-              }}
-              variant="secondary"
-            >
-              {timerState === "PAUSED" ? (
-                <>
-                  Play
-                  <Icon margin="left" name="play" />
-                </>
-              ) : (
-                <>
-                  Pause
-                  <Icon margin="left" name="pause" />
-                </>
-              )}
-            </Button>
-          </Button.Group>
+          {timerState === "FINISHED" ? (
+            <Button.Group>
+              <Button onClick={onRecordAndFinish}>Record meditation</Button>
+              <Button onClick={onFinish} variant="secondary">
+                Finish
+              </Button>
+            </Button.Group>
+          ) : (
+            <Button.Group>
+              <Button onClick={onFinish}>Finish</Button>
+              <Button onClick={onDim} variant="secondary">
+                Dim screen
+                <Icon margin="left" name="moon" />
+              </Button>
+              <Button
+                onClick={() => {
+                  if (timerState === "PAUSED") return onPlay();
+                  onPause();
+                }}
+                variant="secondary"
+              >
+                {timerState === "PAUSED" ? (
+                  <>
+                    Play
+                    <Icon margin="left" name="play" />
+                  </>
+                ) : (
+                  <>
+                    Pause
+                    <Icon margin="left" name="pause" />
+                  </>
+                )}
+              </Button>
+            </Button.Group>
+          )}
         </Paper>
       </Paper.Group>
       <Dimmer enabled={dimmed} onClick={onReveal} />

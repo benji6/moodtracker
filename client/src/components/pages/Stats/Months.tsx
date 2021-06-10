@@ -24,12 +24,9 @@ export default function Months() {
   const pageCount = Math.ceil(
     normalizedAveragesByMonth.allIds.length / MAX_MONTHS_PER_PAGE
   );
-  const startIndex = Math.max(
-    0,
-    normalizedAveragesByMonth.allIds.length - MAX_MONTHS_PER_PAGE * (page + 1)
-  );
   const endIndex =
     normalizedAveragesByMonth.allIds.length - MAX_MONTHS_PER_PAGE * page;
+  const startIndex = Math.max(0, endIndex - MAX_MONTHS_PER_PAGE);
 
   return (
     <Paper>

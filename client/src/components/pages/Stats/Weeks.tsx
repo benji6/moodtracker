@@ -25,12 +25,9 @@ export default function Weeks() {
   const pageCount = Math.ceil(
     normalizedAveragesByWeek.allIds.length / MAX_WEEKS_PER_PAGE
   );
-  const startIndex = Math.max(
-    0,
-    normalizedAveragesByWeek.allIds.length - MAX_WEEKS_PER_PAGE * (page + 1)
-  );
   const endIndex =
     normalizedAveragesByWeek.allIds.length - MAX_WEEKS_PER_PAGE * page;
+  const startIndex = Math.max(0, endIndex - MAX_WEEKS_PER_PAGE);
 
   return (
     <Paper>

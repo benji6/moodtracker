@@ -11,7 +11,7 @@ import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
 import { WEEK_OPTIONS } from "./formatters";
 import { RootState } from "./store";
-import { NormalizedMoods } from "./types";
+import { NormalizedMeditations, NormalizedMoods } from "./types";
 import {
   computeAverageMoodInInterval,
   formatIsoDateHourInLocalTimezone,
@@ -37,26 +37,30 @@ export const userIsSignedInSelector = (state: RootState) =>
   Boolean(state.user.email);
 export const userLoadingSelector = (state: RootState) => state.user.loading;
 
-export const normalizedMoodsSelector = createSelector(
+const trackedCategoriesSelector = createSelector(
   eventsSelector,
-  (events): NormalizedMoods => {
-    const allIds: NormalizedMoods["allIds"] = [];
-    const byId: NormalizedMoods["byId"] = {};
+  (events): { meditations: NormalizedMeditations; moods: NormalizedMoods } => {
+    const meditations: NormalizedMeditations = { allIds: [], byId: {} };
+    const moods: NormalizedMoods = { allIds: [], byId: {} };
 
     for (const id of events.allIds) {
       const event = events.byId[id];
 
       switch (event.type) {
+        case "v1/meditations/create":
+          meditations.allIds.push(event.createdAt);
+          meditations.byId[event.createdAt] = event.payload;
+          break;
         case "v1/moods/create":
-          allIds.push(event.createdAt);
-          byId[event.createdAt] = event.payload;
+          moods.allIds.push(event.createdAt);
+          moods.byId[event.createdAt] = event.payload;
           break;
         case "v1/moods/delete": {
           let index: undefined | number;
-          let i = allIds.length;
+          let i = moods.allIds.length;
 
           while (i--)
-            if (allIds[i] === event.payload) {
+            if (moods.allIds[i] === event.payload) {
               index = i;
               break;
             }
@@ -71,17 +75,17 @@ export const normalizedMoodsSelector = createSelector(
             break;
           }
 
-          allIds.splice(index, 1);
-          delete byId[event.payload];
+          moods.allIds.splice(index, 1);
+          delete moods.byId[event.payload];
           break;
         }
         case "v1/moods/update": {
-          const currentMood = byId[event.payload.id];
+          const currentMood = moods.byId[event.payload.id];
           const { id: _, ...serverMood } = event.payload;
 
           // for reasons that are beyond my energy to investigate there is
           // a runtime error if you try to update the mood object directly
-          byId[event.payload.id] = {
+          moods.byId[event.payload.id] = {
             ...currentMood,
             ...serverMood,
             updatedAt: event.createdAt,
@@ -90,8 +94,18 @@ export const normalizedMoodsSelector = createSelector(
       }
     }
 
-    return { allIds, byId };
+    return { meditations, moods };
   }
+);
+
+export const normalizedMeditationsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ meditations }): NormalizedMeditations => meditations
+);
+
+export const normalizedMoodsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ moods }): NormalizedMoods => moods
 );
 
 export const denormalizedMoodsSelector = createSelector(

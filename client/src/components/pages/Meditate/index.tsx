@@ -7,6 +7,7 @@ import {
   TEST_IDS,
   TIME,
 } from "../../../constants";
+import MeditationLog from "./MeditationLog";
 import "./style.css";
 
 const MAX_MINUTES = 180;
@@ -28,6 +29,11 @@ export default function Meditate() {
     <Paper.Group data-test-id={TEST_IDS.meditatePage}>
       <Paper>
         <h2>Meditate</h2>
+        <p>
+          This is a place where you can meditate. Select a preset time or enter
+          a custom time and press start. Once your meditation is finished you
+          will have the opportunity to record it if you choose.
+        </p>
       </Paper>
       <Paper>
         <h3>Presets</h3>
@@ -86,6 +92,7 @@ export default function Meditate() {
           </Button.Group>
         </form>
       </Paper>
+      <MeditationLog />
     </Paper.Group>
   );
 }

@@ -8,6 +8,7 @@ import {
   normalizedDescriptionWordsSelector,
   normalizedAveragesByHourSelector,
   moodIdsByDateSelector,
+  normalizedMeditationsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -16,6 +17,76 @@ describe("selectors", () => {
 
   beforeAll(() => {
     initialState = store.getState();
+  });
+
+  describe("normalizedMeditationsSelector", () => {
+    test("when there are no events", () => {
+      expect(normalizedMeditationsSelector(initialState)).toEqual({
+        allIds: [],
+        byId: {},
+      });
+    });
+
+    test("with a single create event", () => {
+      expect(
+        normalizedMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:00:00.000Z"],
+        byId: { "2020-10-10T08:00:00.000Z": { seconds: 60 } },
+      });
+    });
+
+    test("with two create events and a mood create event", () => {
+      expect(
+        normalizedMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-11T08:00:00.000Z",
+              "2020-10-12T08:00:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-10-12T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 120 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:00:00.000Z", "2020-10-12T08:00:00.000Z"],
+        byId: {
+          "2020-10-10T08:00:00.000Z": { seconds: 60 },
+          "2020-10-12T08:00:00.000Z": { seconds: 120 },
+        },
+      });
+    });
   });
 
   describe("normalizedMoodsSelector", () => {
@@ -45,6 +116,45 @@ describe("selectors", () => {
       ).toEqual({
         allIds: ["2020-10-10T08:00:00.000Z"],
         byId: { "2020-10-10T08:00:00.000Z": { mood: 5 } },
+      });
+    });
+
+    test("with two create events and a meditation create event", () => {
+      expect(
+        normalizedMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-11T08:00:00.000Z",
+              "2020-10-12T08:00:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-10-12T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:00:00.000Z", "2020-10-12T08:00:00.000Z"],
+        byId: {
+          "2020-10-10T08:00:00.000Z": { mood: 5 },
+          "2020-10-12T08:00:00.000Z": { mood: 7 },
+        },
       });
     });
 

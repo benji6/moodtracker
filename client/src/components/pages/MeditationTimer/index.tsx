@@ -1,7 +1,10 @@
 import { Redirect, RouteComponentProps, useNavigate } from "@reach/router";
 import NoSleep from "nosleep.js";
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../constants";
+import eventsSlice from "../../../store/eventsSlice";
+import { Meditation } from "../../../types";
 import useKeyboardEscape from "../../hooks/useKeyboardEscape";
 import bell from "./bell";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
@@ -11,6 +14,7 @@ const noSleep = new NoSleep();
 export type TimerState = "FINISHED" | "PAUSED" | "TIMING";
 
 export default function MeditationTimer({ location }: RouteComponentProps) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location?.search);
   const timerDuration = Number(
@@ -26,6 +30,17 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   const onFinish = React.useCallback(() => {
     navigate("/meditate");
   }, [navigate]);
+  const onRecordAndFinish = React.useCallback(() => {
+    const payload: Meditation = { seconds: Math.round(timerDuration) };
+    dispatch(
+      eventsSlice.actions.add({
+        type: "v1/meditations/create",
+        createdAt: new Date().toISOString(),
+        payload,
+      })
+    );
+    onFinish();
+  }, [dispatch, onFinish, timerDuration]);
   const onPause = React.useCallback(() => {
     noSleep.disable();
     setTimerState("PAUSED");
@@ -74,6 +89,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       onFinish={onFinish}
       onPause={onPause}
       onPlay={onPlay}
+      onRecordAndFinish={onRecordAndFinish}
       onReveal={onReveal}
       roundedSecondsRemaining={roundedSecondsRemaining}
       timerState={timerState}

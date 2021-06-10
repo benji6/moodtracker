@@ -24,12 +24,9 @@ export default function Years() {
   const pageCount = Math.ceil(
     normalizedAveragesByYear.allIds.length / MAX_YEARS_PER_PAGE
   );
-  const startIndex = Math.max(
-    0,
-    normalizedAveragesByYear.allIds.length - MAX_YEARS_PER_PAGE * (page + 1)
-  );
   const endIndex =
     normalizedAveragesByYear.allIds.length - MAX_YEARS_PER_PAGE * page;
+  const startIndex = Math.max(0, endIndex - MAX_YEARS_PER_PAGE);
 
   return (
     <Paper>
