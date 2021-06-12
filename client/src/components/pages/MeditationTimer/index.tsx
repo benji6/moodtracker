@@ -23,6 +23,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   const [remainingTime, setRemainingTime] = React.useState(timerDuration * 1e3);
   const [timerState, setTimerState] = React.useState<TimerState>("TIMING");
   const [isDimmerEnabled, setIsDimmerEnabled] = React.useState(false);
+  const [timeFinished, setTimeFinished] = React.useState<Date | undefined>();
   const initialTime = React.useRef(Date.now());
   const roundedSecondsRemaining = Math.round(remainingTime / 1e3);
 
@@ -32,15 +33,24 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   }, [navigate]);
   const onFinishAndLog = React.useCallback(() => {
     const payload: Meditation = { seconds: Math.round(timerDuration) };
+    let createdAt: string;
+    if (timeFinished) createdAt = timeFinished.toISOString();
+    else {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "Problem logging meditation: Expected finish time to be defined, falling back to log time instead"
+      );
+      createdAt = new Date().toISOString();
+    }
     dispatch(
       eventsSlice.actions.add({
         type: "v1/meditations/create",
-        createdAt: new Date().toISOString(),
+        createdAt,
         payload,
       })
     );
     onFinish();
-  }, [dispatch, onFinish, timerDuration]);
+  }, [dispatch, onFinish, timeFinished, timerDuration]);
   const onPause = React.useCallback(() => {
     noSleep.disable();
     setTimerState("PAUSED");
@@ -70,6 +80,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       requestAnimationFrame(update);
       const t = timerDuration * 1e3 - (Date.now() - initialTime.current);
       if (t > 0) return setRemainingTime(t);
+      setTimeFinished(new Date());
       setTimerState("FINISHED");
       bell.start();
       noSleep.disable();
