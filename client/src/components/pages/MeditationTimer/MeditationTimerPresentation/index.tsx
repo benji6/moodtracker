@@ -9,9 +9,9 @@ interface Props {
   dimmed: boolean;
   onDim(): void;
   onFinish(): void;
+  onFinishAndLog(): void;
   onPause(): void;
   onPlay(): void;
-  onRecordAndFinish(): void;
   onReveal(): void;
   roundedSecondsRemaining: number;
   timerState: TimerState;
@@ -22,9 +22,9 @@ function MeditationTimerPresentation({
   dimmed,
   onDim,
   onFinish,
+  onFinishAndLog,
   onPause,
   onPlay,
-  onRecordAndFinish,
   onReveal,
   roundedSecondsRemaining,
   timerState,
@@ -41,7 +41,7 @@ function MeditationTimerPresentation({
           />
           {timerState === "FINISHED" ? (
             <Button.Group>
-              <Button onClick={onRecordAndFinish}>Record meditation</Button>
+              <Button onClick={onFinishAndLog}>Log meditation</Button>
               <Button onClick={onFinish} variant="secondary">
                 Finish
               </Button>

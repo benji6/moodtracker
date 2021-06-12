@@ -25,7 +25,7 @@ export default function MeditationLog() {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Time</th>
+            <th>Time finished</th>
             <th>Minutes</th>
           </tr>
         </thead>

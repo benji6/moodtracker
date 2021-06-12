@@ -30,7 +30,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   const onFinish = React.useCallback(() => {
     navigate("/meditate");
   }, [navigate]);
-  const onRecordAndFinish = React.useCallback(() => {
+  const onFinishAndLog = React.useCallback(() => {
     const payload: Meditation = { seconds: Math.round(timerDuration) };
     dispatch(
       eventsSlice.actions.add({
@@ -89,7 +89,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       onFinish={onFinish}
       onPause={onPause}
       onPlay={onPlay}
-      onRecordAndFinish={onRecordAndFinish}
+      onFinishAndLog={onFinishAndLog}
       onReveal={onReveal}
       roundedSecondsRemaining={roundedSecondsRemaining}
       timerState={timerState}
