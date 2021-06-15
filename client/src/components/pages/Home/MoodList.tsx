@@ -28,7 +28,7 @@ import {
 import OptionalMoodCell from "../../shared/OptionalMoodCell";
 import { FluxStandardAction } from "../../../types";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
-import { dateWeekdayFormatter } from "../../../formatters";
+import { dateWeekdayFormatter } from "../../../dateTimeFormatters";
 import MoodCard from "../../shared/MoodCard";
 import addDays from "date-fns/addDays";
 import { Link } from "@reach/router";

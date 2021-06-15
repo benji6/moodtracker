@@ -9,7 +9,7 @@ import eachHourOfInterval from "date-fns/eachHourOfInterval";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
-import { WEEK_OPTIONS } from "./formatters";
+import { WEEK_OPTIONS } from "./dateTimeFormatters";
 import { RootState } from "./store";
 import { NormalizedMeditations, NormalizedMoods } from "./types";
 import {

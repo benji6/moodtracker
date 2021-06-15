@@ -4,7 +4,7 @@ import { MOOD_INTEGERS, MOOD_RANGE } from "../../../../constants";
 import { formatIsoDateInLocalTimezone, moodToColor } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { normalizedAveragesByMonthSelector } from "../../../../selectors";
-import { monthNarrowFormatter } from "../../../../formatters";
+import { monthNarrowFormatter } from "../../../../dateTimeFormatters";
 
 interface IProps {
   months: Date[];

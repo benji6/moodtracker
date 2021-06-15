@@ -1,7 +1,7 @@
 import { RouteComponentProps } from "@reach/router";
 import { Paper, SubHeading } from "eri";
 import * as React from "react";
-import { dateFormatter } from "../../../formatters";
+import { dateFormatter } from "../../../dateTimeFormatters";
 
 const BLOG_POSTS = {
   "2021-04-25": {

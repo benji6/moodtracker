@@ -2,7 +2,8 @@ import { Pagination, Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { TIME } from "../../../constants";
-import { dateFormatter, timeFormatter } from "../../../formatters";
+import { dateFormatter, timeFormatter } from "../../../dateTimeFormatters";
+import { integerFormatter } from "../../../numberFormatters";
 import { normalizedMeditationsSelector } from "../../../selectors";
 import { mapRight } from "../../../utils";
 
@@ -35,7 +36,11 @@ export default function MeditationLog() {
               <tr key={id}>
                 <td>{dateFormatter.format(new Date(id))}</td>
                 <td>{timeFormatter.format(new Date(id))}</td>
-                <td>{meditations.byId[id].seconds / TIME.secondsPerMinute}</td>
+                <td>
+                  {integerFormatter.format(
+                    meditations.byId[id].seconds / TIME.secondsPerMinute
+                  )}
+                </td>
               </tr>
             );
           })}

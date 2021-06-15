@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MOOD_RANGE } from "../../../constants";
-import { moodFormatter } from "../../../formatters";
+import { oneDecimalPlaceFormatter } from "../../../numberFormatters";
 import { moodToColor } from "../../../utils";
 import "./style.css";
 
@@ -11,7 +11,7 @@ interface Props {
 export default function MoodCell({ mood }: Props) {
   return (
     <td className="center">
-      <span>{moodFormatter.format(mood)}</span>
+      <span>{oneDecimalPlaceFormatter.format(mood)}</span>
       <div className="m-mood-cell__bar-container">
         <div
           className="m-mood-cell__bar br-0"

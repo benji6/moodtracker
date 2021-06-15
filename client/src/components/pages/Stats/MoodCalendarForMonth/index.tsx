@@ -4,7 +4,7 @@ import getDaysInMonth from "date-fns/getDaysInMonth";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
-import { dateFormatter } from "../../../../formatters";
+import { dateFormatter } from "../../../../dateTimeFormatters";
 import {
   normalizedAveragesByDaySelector,
   normalizedMoodsSelector,

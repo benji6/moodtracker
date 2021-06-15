@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { TIME } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
-import { dayMonthFormatter } from "../../../formatters";
+import { dayMonthFormatter } from "../../../dateTimeFormatters";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";

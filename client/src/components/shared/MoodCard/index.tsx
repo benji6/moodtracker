@@ -2,7 +2,7 @@ import { useNavigate } from "@reach/router";
 import { Card, SubHeading } from "eri";
 import * as React from "react";
 import { TEST_IDS } from "../../../constants";
-import { timeFormatter } from "../../../formatters";
+import { timeFormatter } from "../../../dateTimeFormatters";
 import { ServerMood } from "../../../types";
 import { moodToColor } from "../../../utils";
 import "./style.css";

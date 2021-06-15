@@ -9,9 +9,8 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import {
   monthLongFormatter,
-  moodFormatter,
   yearFormatter,
-} from "../../../../formatters";
+} from "../../../../dateTimeFormatters";
 import {
   eventsSelector,
   normalizedMoodsSelector,
@@ -38,6 +37,7 @@ import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
+import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -83,7 +83,9 @@ export default function Year({
     const averageMood =
       normalizedAveragesByMonth.byId[formatIsoDateInLocalTimezone(month)];
     const formattedAverageMood =
-      averageMood === undefined ? undefined : moodFormatter.format(averageMood);
+      averageMood === undefined
+        ? undefined
+        : oneDecimalPlaceFormatter.format(averageMood);
     calendars.push(
       <button
         aria-label={`Drill down into ${monthString}`}

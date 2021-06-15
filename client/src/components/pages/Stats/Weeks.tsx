@@ -7,7 +7,7 @@ import {
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
 import { Link } from "@reach/router";
-import { formatWeekWithYear, WEEK_OPTIONS } from "../../../formatters";
+import { formatWeekWithYear, WEEK_OPTIONS } from "../../../dateTimeFormatters";
 import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import startOfWeek from "date-fns/startOfWeek";

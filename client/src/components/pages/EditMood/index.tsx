@@ -8,7 +8,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { UpdateMood } from "../../../types";
 import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
-import { dateTimeFormatter } from "../../../formatters";
+import { dateTimeFormatter } from "../../../dateTimeFormatters";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const navigate = useNavigate();

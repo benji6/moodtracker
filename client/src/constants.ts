@@ -4,7 +4,7 @@ import {
   weekdayNarrowFormatter,
   weekdayShortFormatter,
   WEEK_OPTIONS,
-} from "./formatters";
+} from "./dateTimeFormatters";
 
 export const DESCRIPTION_MAX_LENGTH = 32;
 export const MEDITATION_SEARCH_PARAM_TIME_KEY = "t";

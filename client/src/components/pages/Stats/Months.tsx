@@ -6,7 +6,7 @@ import {
   createDateFromLocalDateString,
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
-import { monthYearFormatter } from "../../../formatters";
+import { monthYearFormatter } from "../../../dateTimeFormatters";
 import { Link } from "@reach/router";
 import { normalizedAveragesByMonthSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
