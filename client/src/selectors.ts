@@ -132,13 +132,14 @@ export const normalizedMoodsSelector = createSelector(
   ({ moods }): NormalizedMoods => moods
 );
 
+export const denormalizedMeditationsSelector = createSelector(
+  normalizedMeditationsSelector,
+  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
+);
+
 export const denormalizedMoodsSelector = createSelector(
   normalizedMoodsSelector,
-  (moods) =>
-    moods.allIds.map((id) => ({
-      ...moods.byId[id],
-      createdAt: id,
-    }))
+  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
 );
 
 // some code may depend on the fact that the array

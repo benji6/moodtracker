@@ -9,6 +9,7 @@ import {
   normalizedAveragesByHourSelector,
   moodIdsByDateSelector,
   normalizedMeditationsSelector,
+  denormalizedMeditationsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -344,6 +345,64 @@ describe("selectors", () => {
           "2020-10-10T08:03:00.000Z": { mood: 7 },
         },
       });
+    });
+  });
+
+  describe("denormalizedMeditationsSelector", () => {
+    test("when there are no events", () => {
+      expect(denormalizedMeditationsSelector(initialState)).toEqual([]);
+    });
+
+    test("with a single create event", () => {
+      expect(
+        denormalizedMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+            },
+          },
+        })
+      ).toEqual([{ createdAt: "2020-10-10T08:00:00.000Z", seconds: 60 }]);
+    });
+
+    test("with a delete event", () => {
+      expect(
+        denormalizedMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-10T08:01:00.000Z",
+              "2020-10-10T08:02:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-10-10T08:01:00.000Z": {
+                createdAt: "2020-10-10T08:01:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 120 },
+              },
+              "2020-10-10T08:02:00.000Z": {
+                createdAt: "2020-10-10T08:02:00.000Z",
+                type: "v1/meditations/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+            },
+          },
+        })
+      ).toEqual([{ createdAt: "2020-10-10T08:01:00.000Z", seconds: 120 }]);
     });
   });
 
