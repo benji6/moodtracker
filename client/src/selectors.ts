@@ -51,6 +51,30 @@ const trackedCategoriesSelector = createSelector(
           meditations.allIds.push(event.createdAt);
           meditations.byId[event.createdAt] = event.payload;
           break;
+        case "v1/meditations/delete": {
+          let index: undefined | number;
+          let i = moods.allIds.length;
+
+          while (i--)
+            if (meditations.allIds[i] === event.payload) {
+              index = i;
+              break;
+            }
+
+          if (index === undefined) {
+            // eslint-disable-next-line no-console
+            console.error(
+              `Delete event error - could not find meditation to delete: ${JSON.stringify(
+                event
+              )}`
+            );
+            break;
+          }
+
+          meditations.allIds.splice(index, 1);
+          delete meditations.byId[event.payload];
+          break;
+        }
         case "v1/moods/create":
           moods.allIds.push(event.createdAt);
           moods.byId[event.createdAt] = event.payload;

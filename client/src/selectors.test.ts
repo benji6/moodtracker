@@ -87,6 +87,42 @@ describe("selectors", () => {
         },
       });
     });
+
+    test("with a delete event", () => {
+      expect(
+        normalizedMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-10T08:01:00.000Z",
+              "2020-10-10T08:02:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-10-10T08:01:00.000Z": {
+                createdAt: "2020-10-10T08:01:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 120 },
+              },
+              "2020-10-10T08:02:00.000Z": {
+                createdAt: "2020-10-10T08:02:00.000Z",
+                type: "v1/meditations/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:01:00.000Z"],
+        byId: { "2020-10-10T08:01:00.000Z": { seconds: 120 } },
+      });
+    });
   });
 
   describe("normalizedMoodsSelector", () => {

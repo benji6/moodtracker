@@ -40,6 +40,7 @@ type MoodEvent<Type extends string, Payload> = {
 
 export type AppEvent =
   | MoodEvent<"v1/meditations/create", Meditation>
+  | MoodEvent<"v1/meditations/delete", string>
   | MoodEvent<"v1/moods/create", Mood>
   | MoodEvent<"v1/moods/delete", string>
   | MoodEvent<"v1/moods/update", UpdateMood>;

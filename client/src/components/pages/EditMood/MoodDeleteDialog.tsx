@@ -10,7 +10,7 @@ interface Props {
   open: boolean;
 }
 
-export default function DeleteDialog({ id, onClose, open }: Props) {
+export default function MoodDeleteDialog({ id, onClose, open }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

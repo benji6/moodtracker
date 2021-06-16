@@ -1,7 +1,7 @@
 import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
-import DeleteDialog from "./DeleteDialog";
+import MoodDeleteDialog from "./MoodDeleteDialog";
 import { normalizedMoodsSelector } from "../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
@@ -128,7 +128,7 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
             </Button>
           </Button.Group>
         </form>
-        <DeleteDialog
+        <MoodDeleteDialog
           id={id}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}
