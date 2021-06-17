@@ -2,7 +2,7 @@ import { Button, Icon, Pagination, Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { TIME } from "../../../../constants";
-import { dateFormatter, timeFormatter } from "../../../../dateTimeFormatters";
+import { dateTimeFormatter } from "../../../../dateTimeFormatters";
 import { integerFormatter } from "../../../../numberFormatters";
 import { normalizedMeditationsSelector } from "../../../../selectors";
 import { mapRight } from "../../../../utils";
@@ -28,9 +28,8 @@ export default function MeditationLog() {
       <table>
         <thead>
           <tr>
-            <th>Date</th>
             <th>Time finished</th>
-            <th>Minutes</th>
+            <th>Mins</th>
             <th></th>
           </tr>
         </thead>
@@ -38,8 +37,7 @@ export default function MeditationLog() {
           {mapRight(meditations.allIds.slice(startIndex, endIndex), (id) => {
             return (
               <tr key={id}>
-                <td>{dateFormatter.format(new Date(id))}</td>
-                <td>{timeFormatter.format(new Date(id))}</td>
+                <td>{dateTimeFormatter.format(new Date(id))}</td>
                 <td>
                   {integerFormatter.format(
                     meditations.byId[id].seconds / TIME.secondsPerMinute
