@@ -97,15 +97,13 @@ export default createSlice({
       const serverEventIds = action.payload.events.map(
         (event) => event.createdAt
       );
-      if (!state.allIds.length) {
-        state.allIds = serverEventIds;
-      } else {
-        const lastClientId = state.allIds[state.allIds.length - 1];
-        const firstServerEvent = action.payload.events[0];
-        state.allIds = [...new Set([...state.allIds, ...serverEventIds])];
-        if (firstServerEvent.createdAt < lastClientId)
-          state.allIds.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
-      }
+      state.allIds = (
+        state.allIds.length
+          ? [...new Set([...state.allIds, ...serverEventIds])]
+          : serverEventIds
+      )
+        // The API offers no order guarantees
+        .sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
     },
   },
 });

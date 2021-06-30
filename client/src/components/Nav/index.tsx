@@ -60,6 +60,7 @@ export default function Nav({ handleNavClose, open }: Props) {
             <hr />
           </div>
         )}
+        {userIsSignedIn && <SyncState />}
         <EriNav.List>
           <EriNav.Link onClick={handleNavClose} to="/">
             <Icon margin="right" name="home" />
@@ -169,7 +170,6 @@ export default function Nav({ handleNavClose, open }: Props) {
             See also
           </EriNav.Link>
         </EriNav.List>
-        {userIsSignedIn && <SyncState />}
       </EriNav>
       <SignOutDialog onClose={handleDialogClose} open={isDialogOpen} />
     </>

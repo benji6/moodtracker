@@ -23,17 +23,27 @@ export default function useEvents() {
   const syncFromServer = (): void =>
     void (async (): Promise<void> => {
       if (!userIsSignedIn || isSyncingFromServer || isStorageLoading) return;
-      dispatch(eventsSlice.actions.syncFromServerStart());
       try {
-        const { events: serverEvents, nextCursor } = await getEvents(
-          events.nextCursor
-        );
-        dispatch(
-          eventsSlice.actions.syncFromServerSuccess({
-            cursor: nextCursor,
+        let cursor = events.nextCursor;
+        let isPaginating = true;
+        while (isPaginating) {
+          dispatch(eventsSlice.actions.syncFromServerStart());
+
+          const {
             events: serverEvents,
-          })
-        );
+            hasNextPage,
+            nextCursor,
+          } = await getEvents(cursor);
+          cursor = nextCursor;
+          isPaginating = hasNextPage;
+
+          dispatch(
+            eventsSlice.actions.syncFromServerSuccess({
+              cursor,
+              events: serverEvents,
+            })
+          );
+        }
       } catch {
         dispatch(eventsSlice.actions.syncFromServerError());
       }

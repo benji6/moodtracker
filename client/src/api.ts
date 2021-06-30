@@ -23,6 +23,7 @@ export const getEvents = async (
   cursor?: string
 ): Promise<{
   events: AppEvent[];
+  hasNextPage: boolean;
   nextCursor: string;
 }> => {
   const response = await fetchWithAuth(
