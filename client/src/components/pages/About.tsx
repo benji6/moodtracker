@@ -1,7 +1,8 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
 import * as React from "react";
-import { TOTAL_USERS } from "../../constants";
+import { BUILD_TIME, USERS } from "../../constants";
+import { dateFormatter } from "../../dateTimeFormatters";
 
 export default function About(_: RouteComponentProps) {
   return (
@@ -15,9 +16,7 @@ export default function About(_: RouteComponentProps) {
           use, works offline and because it runs in your browser you can use it
           across all your devices!
         </p>
-        <p>
-          There are currently <b>{TOTAL_USERS}</b> registered users! 📈
-        </p>
+        <h3>Open source</h3>
         <p>
           You can find the source code{" "}
           <a
@@ -49,6 +48,21 @@ export default function About(_: RouteComponentProps) {
             Eri
           </a>
           .
+        </p>
+        <h3>Users</h3>
+        <p>
+          There are currently <b>{USERS.confirmed}</b> confirmed users and{" "}
+          <b>{USERS.monthlyActiveUsers}</b> people have used MoodTracker over
+          the last month.
+        </p>
+        <h3>Updates</h3>
+        <p>
+          The version you&apos;re using was last updated on{" "}
+          <b>{dateFormatter.format(new Date(BUILD_TIME))}</b>.
+        </p>
+        <p>
+          Check out <Link to="/blog">our blog</Link> for major feature
+          announcements.
         </p>
         <ShareButton />
       </Paper>
