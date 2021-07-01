@@ -152,11 +152,11 @@ export const getEnvelopingMoodIds = (
   return envelopingMoodIds;
 };
 
-export const getMoodIdsInInterval = (
-  ids: NormalizedMoods["allIds"],
+export const getIdsInInterval = (
+  ids: string[],
   fromDate: Date,
   toDate: Date
-): NormalizedMoods["allIds"] => {
+): typeof ids => {
   if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
 
   const idsInInterval: typeof ids = [];

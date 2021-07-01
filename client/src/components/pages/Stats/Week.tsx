@@ -16,7 +16,7 @@ import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  getMoodIdsInInterval,
+  getIdsInInterval,
 } from "../../../utils";
 import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForWeek from "./MoodChartForWeek";
@@ -63,7 +63,7 @@ export default function Week({
   const showPrevious = week > firstMoodDate;
   const showNext = nextWeek <= new Date();
 
-  const moodIdsInWeek = getMoodIdsInInterval(moods.allIds, week, nextWeek);
+  const moodIdsInWeek = getIdsInInterval(moods.allIds, week, nextWeek);
 
   const xLabels: [number, string][] = [];
   for (let i = 0; i < TIME.daysPerWeek; i++) {

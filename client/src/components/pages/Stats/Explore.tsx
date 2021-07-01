@@ -7,7 +7,7 @@ import {
   roundDateDown,
   isoDateFromIsoDateAndTime,
   formatIsoDateInLocalTimezone,
-  getMoodIdsInInterval,
+  getIdsInInterval,
 } from "../../../utils";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
@@ -77,7 +77,7 @@ export default function Explore() {
     );
 
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
-  const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, dateFrom, dateTo);
+  const moodIdsInPeriod = getIdsInInterval(moods.allIds, dateFrom, dateTo);
 
   return (
     <Paper.Group>

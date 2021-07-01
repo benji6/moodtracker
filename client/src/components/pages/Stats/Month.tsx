@@ -19,7 +19,7 @@ import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  getMoodIdsInInterval,
+  getIdsInInterval,
 } from "../../../utils";
 import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
@@ -75,7 +75,7 @@ export default function Month({
   const showPrevious = month > firstMoodDate;
   const showNext = nextMonth <= new Date();
 
-  const moodIdsInMonth = getMoodIdsInInterval(moods.allIds, month, nextMonth);
+  const moodIdsInMonth = getIdsInInterval(moods.allIds, month, nextMonth);
 
   const monthLength = differenceInCalendarDays(nextMonth, month);
 

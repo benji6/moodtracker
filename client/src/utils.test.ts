@@ -7,7 +7,7 @@ import {
   roundDateDown,
   roundDateUp,
   formatIsoMonthInLocalTimezone,
-  getMoodIdsInInterval,
+  getIdsInInterval,
   formatIsoDateInLocalTimezone,
   computeStandardDeviation,
   computeMean,
@@ -448,17 +448,17 @@ describe("utils", () => {
     });
   });
 
-  describe("getMoodIdsInInterval", () => {
+  describe("getIdsInInterval", () => {
     it("throws an error when the fromDate is after the toDate", () => {
       expect(() =>
-        getMoodIdsInInterval(
+        getIdsInInterval(
           [],
           new Date("2020-09-01T00:00:00"),
           new Date("2020-09-01T00:00:00")
         )
       ).not.toThrow();
       expect(() =>
-        getMoodIdsInInterval(
+        getIdsInInterval(
           [],
           new Date("2020-09-01T00:00:01"),
           new Date("2020-09-01T00:00:00")
@@ -468,7 +468,7 @@ describe("utils", () => {
 
     it("returns an empty array when there are no mood IDs provided", () => {
       expect(
-        getMoodIdsInInterval(
+        getIdsInInterval(
           [],
           new Date("2020-09-02T00:00:00"),
           new Date("2020-09-03T00:00:00")
@@ -478,7 +478,7 @@ describe("utils", () => {
 
     it("returns an empty array when there are no moods within the interval", () => {
       expect(
-        getMoodIdsInInterval(
+        getIdsInInterval(
           ["2020-09-01T23:59:59", "2020-09-03T00:00:01"],
           new Date("2020-09-02T00:00:00"),
           new Date("2020-09-03T00:00:00")
@@ -488,7 +488,7 @@ describe("utils", () => {
 
     it("returns all moods when all moods are within the interval", () => {
       expect(
-        getMoodIdsInInterval(
+        getIdsInInterval(
           ["2020-09-02T00:00:00", "2020-09-03T00:00:00"],
           new Date("2020-09-02T00:00:00"),
           new Date("2020-09-03T00:00:00")
@@ -498,7 +498,7 @@ describe("utils", () => {
 
     it("only returns moods that are within the interval", () => {
       expect(
-        getMoodIdsInInterval(
+        getIdsInInterval(
           [
             "2020-09-01T23:59:59",
             "2020-09-02T00:00:00",

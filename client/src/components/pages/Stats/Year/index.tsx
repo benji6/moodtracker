@@ -21,7 +21,7 @@ import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  getMoodIdsInInterval,
+  getIdsInInterval,
 } from "../../../../utils";
 import GetStartedCta from "../../../shared/GetStartedCta";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
@@ -69,7 +69,7 @@ export default function Year({
   const showPrevious = year > firstMoodDate;
   const showNext = nextYear <= new Date();
 
-  const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, year, nextYear);
+  const moodIdsInPeriod = getIdsInInterval(moods.allIds, year, nextYear);
 
   const months = eachMonthOfInterval({ start: year, end: nextYear }).slice(
     0,

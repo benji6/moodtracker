@@ -3,7 +3,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../selectors";
 import {
-  getMoodIdsInInterval,
+  getIdsInInterval,
   getNormalizedDescriptionWordsFromMood,
 } from "../../../utils";
 
@@ -14,7 +14,7 @@ interface Props {
 
 export default function MoodCloudForPeriod({ fromDate, toDate }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
-  const moodIdsInPeriod = getMoodIdsInInterval(moods.allIds, fromDate, toDate);
+  const moodIdsInPeriod = getIdsInInterval(moods.allIds, fromDate, toDate);
 
   const words: { [word: string]: number } = {};
 

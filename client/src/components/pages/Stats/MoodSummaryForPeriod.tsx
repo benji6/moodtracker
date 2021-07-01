@@ -5,7 +5,7 @@ import { normalizedMoodsSelector } from "../../../selectors";
 import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
-  getMoodIdsInInterval,
+  getIdsInInterval,
 } from "../../../utils";
 import MoodSummary from "../../shared/MoodSummary";
 
@@ -31,13 +31,13 @@ export default function MoodSummaryForPeriod({
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;
-  const moodValues = getMoodIdsInInterval(moods.allIds, date1, date2).map(
+  const moodValues = getIdsInInterval(moods.allIds, date1, date2).map(
     (id) => moods.byId[id].mood
   );
-  const prevMoodValues = getMoodIdsInInterval(moods.allIds, date0, date1).map(
+  const prevMoodValues = getIdsInInterval(moods.allIds, date0, date1).map(
     (id) => moods.byId[id].mood
   );
-  const nextMoodValues = getMoodIdsInInterval(moods.allIds, date2, date3).map(
+  const nextMoodValues = getIdsInInterval(moods.allIds, date2, date3).map(
     (id) => moods.byId[id].mood
   );
 
