@@ -25,6 +25,10 @@ export default function MeditationLog() {
   return (
     <Paper>
       <h3>Log</h3>
+      <p>
+        You can see how much you meditated in the summary section of your stats
+        pages for any given period.
+      </p>
       <table>
         <thead>
           <tr>

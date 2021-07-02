@@ -5,6 +5,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
 import { dateFormatter } from "../../../../dateTimeFormatters";
+import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
 import {
   normalizedAveragesByDaySelector,
   normalizedMoodsSelector,
@@ -71,7 +72,9 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
               : moodToColor(datum.mood),
         };
         const title =
-          datum?.mood === undefined ? "No data" : datum.mood.toFixed(1);
+          datum?.mood === undefined
+            ? "No data"
+            : oneDecimalPlaceFormatter.format(datum.mood);
         const date = datum
           ? createDateFromLocalDateString(datum.dateString)
           : undefined;

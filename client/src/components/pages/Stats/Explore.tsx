@@ -8,14 +8,23 @@ import {
   isoDateFromIsoDateAndTime,
   formatIsoDateInLocalTimezone,
   getIdsInInterval,
+  computeSecondsMeditatedInInterval,
 } from "../../../utils";
 import MoodChartForPeriod from "./MoodChartForPeriod";
-import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
+import {
+  eventsSelector,
+  hasMeditationsSelector,
+  normalizedMeditationsSelector,
+  normalizedMoodsSelector,
+} from "../../../selectors";
 import { useSelector } from "react-redux";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { TIME } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
-import { dayMonthFormatter } from "../../../dateTimeFormatters";
+import {
+  dayMonthFormatter,
+  formatDurationFromSeconds,
+} from "../../../dateTimeFormatters";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
@@ -66,6 +75,8 @@ export default function Explore() {
   const maxDate = roundDateUp(dateNow);
   const [dateTo, setDateTo] = React.useState(maxDate);
   const events = useSelector(eventsSelector);
+  const meditations = useSelector(normalizedMeditationsSelector);
+  const showMeditationStats = useSelector(hasMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
 
   if (!events.hasLoadedFromServer) return <Spinner />;
@@ -77,6 +88,11 @@ export default function Explore() {
     );
 
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
+  const meditationIdsInPeriod = getIdsInInterval(
+    meditations.allIds,
+    dateFrom,
+    dateTo
+  );
   const moodIdsInPeriod = getIdsInInterval(moods.allIds, dateFrom, dateTo);
 
   return (
@@ -110,25 +126,47 @@ export default function Explore() {
           value={formatIsoDateInLocalTimezone(dateTo)}
         />
       </Paper>
-      {moodIdsInPeriod.length ? (
-        <>
-          <Paper>
-            <h3>Mood chart</h3>
-            <MoodChartForPeriod
-              fromDate={dateFrom}
-              hidePoints
-              toDate={dateTo}
-              xLabels={createXLabels(domain, dateNow.getTime())}
-            />
-          </Paper>
-          <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
-          <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
-          <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
-        </>
-      ) : (
+      {!meditationIdsInPeriod.length && !moodIdsInPeriod.length ? (
         <Paper>
           <p>No data for the selected period</p>
         </Paper>
+      ) : (
+        <>
+          {moodIdsInPeriod.length ? (
+            <>
+              <Paper>
+                <h3>Mood chart</h3>
+                <MoodChartForPeriod
+                  fromDate={dateFrom}
+                  hidePoints
+                  toDate={dateTo}
+                  xLabels={createXLabels(domain, dateNow.getTime())}
+                />
+              </Paper>
+              <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
+            </>
+          ) : (
+            <Paper>
+              <p>No mood data for the selected period</p>
+            </Paper>
+          )}
+          {showMeditationStats && (
+            <Paper>
+              <h3>Time meditated</h3>
+              <p>
+                {formatDurationFromSeconds(
+                  computeSecondsMeditatedInInterval(
+                    meditations,
+                    dateFrom,
+                    dateTo
+                  )
+                )}
+              </p>
+            </Paper>
+          )}
+        </>
       )}
     </Paper.Group>
   );

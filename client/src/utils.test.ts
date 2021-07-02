@@ -17,6 +17,7 @@ import {
   createDateFromLocalDateString,
   getNormalizedDescriptionWordsFromMood,
   formatIsoDateHourInLocalTimezone,
+  computeSecondsMeditatedInInterval,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -274,6 +275,228 @@ describe("utils", () => {
     expect(computeMean([5])).toBe(5);
     expect(computeMean([1, 5])).toBe(3);
     expect(computeMean([1, 2, 3, 4, 5, 6, 7])).toBe(4);
+  });
+
+  describe("computeSecondsMeditatedInInterval", () => {
+    describe("when the fromDate is after the toDate", () => {
+      it("throws an error", () => {
+        expect(() =>
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-31T00:00:00.000Z"),
+            new Date("2020-07-30T00:00:00.000Z")
+          )
+        ).toThrow(Error("`fromDate` should not be after `toDate`"));
+      });
+    });
+
+    describe("when there are 0 meditations", () => {
+      it("returns 0", () => {
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: [],
+              byId: {},
+            },
+            new Date("2020-07-30T00:00:00.000Z"),
+            new Date("2020-07-31T00:00:00.000Z")
+          )
+        ).toBe(0);
+      });
+    });
+
+    describe("when there is 1 meditation", () => {
+      it("returns the total seconds when the meditation is within the interval", () => {
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-28T00:00:00.000Z"),
+            new Date("2020-07-28T00:00:00.000Z")
+          )
+        ).toEqual(120);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-27T00:00:00.000Z"),
+            new Date("2020-07-28T00:00:00.000Z")
+          )
+        ).toEqual(120);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-28T00:00:00.000Z"),
+            new Date("2020-07-29T00:00:00.000Z")
+          )
+        ).toEqual(120);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-27T00:00:00.000Z"),
+            new Date("2020-07-29T00:00:00.000Z")
+          )
+        ).toEqual(120);
+      });
+
+      it("returns 0 when the meditation does not lie within the interval", () => {
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-25T00:00:00.000Z"),
+            new Date("2020-07-25T00:00:00.000Z")
+          )
+        ).toBe(0);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-24T00:00:00.000Z"),
+            new Date("2020-07-25T00:00:00.000Z")
+          )
+        ).toBe(0);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-30T00:00:00.000Z"),
+            new Date("2020-07-30T00:00:00.000Z")
+          )
+        ).toBe(0);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
+            },
+            new Date("2020-07-30T00:00:00.000Z"),
+            new Date("2020-07-31T00:00:00.000Z")
+          )
+        ).toBe(0);
+      });
+    });
+
+    describe("when there are multiple meditations", () => {
+      it("works with 2 meditations within the interval", () => {
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+                "2020-07-29T00:00:00.000Z": { seconds: 180 },
+              },
+            },
+            new Date("2020-07-28T00:00:00.000Z"),
+            new Date("2020-07-29T00:00:00.000Z")
+          )
+        ).toEqual(300);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+                "2020-07-29T00:00:00.000Z": { seconds: 180 },
+              },
+            },
+            new Date("2020-07-27T00:00:00.000Z"),
+            new Date("2020-07-29T00:00:00.000Z")
+          )
+        ).toEqual(300);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+                "2020-07-29T00:00:00.000Z": { seconds: 180 },
+              },
+            },
+            new Date("2020-07-28T00:00:00.000Z"),
+            new Date("2020-07-30T00:00:00.000Z")
+          )
+        ).toEqual(300);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+                "2020-07-29T00:00:00.000Z": { seconds: 180 },
+              },
+            },
+            new Date("2020-07-27T00:00:00.000Z"),
+            new Date("2020-08-02T00:00:00.000Z")
+          )
+        ).toEqual(300);
+      });
+
+      it("works with 2 meditations and only one in the interval", () => {
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
+              byId: {
+                "2020-07-24T00:00:00.000Z": { seconds: 60 },
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+              },
+            },
+            new Date("2020-07-26T00:00:00.000Z"),
+            new Date("2020-08-02T00:00:00.000Z")
+          )
+        ).toEqual(120);
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
+              byId: {
+                "2020-07-24T00:00:00.000Z": { seconds: 60 },
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+              },
+            },
+            new Date("2020-07-23T00:00:00.000Z"),
+            new Date("2020-07-24T00:00:00.000Z")
+          )
+        ).toEqual(60);
+      });
+
+      it("works with 2 meditations and both outside the interval", () => {
+        expect(
+          computeSecondsMeditatedInInterval(
+            {
+              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
+              byId: {
+                "2020-07-24T00:00:00.000Z": { seconds: 60 },
+                "2020-07-28T00:00:00.000Z": { seconds: 120 },
+              },
+            },
+            new Date("2020-07-25T00:00:00.000Z"),
+            new Date("2020-07-27T00:00:00.000Z")
+          )
+        ).toEqual(0);
+      });
+    });
   });
 
   test("createDateFromLocalDateString", () => {

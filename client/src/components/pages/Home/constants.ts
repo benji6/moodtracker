@@ -172,6 +172,7 @@ export const MOOD_SUMMARY_PROPS = {
   currentPeriod: {
     best: 9,
     mean: 7.8,
+    secondsMeditated: 60,
     standardDeviation: 0.52,
     total: 31,
     worst: 6,
@@ -179,6 +180,7 @@ export const MOOD_SUMMARY_PROPS = {
   previousPeriod: {
     best: 8,
     mean: 6.1,
+    secondsMeditated: 180,
     standardDeviation: 1.02,
     total: 61,
     worst: 4,

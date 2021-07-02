@@ -10,6 +10,7 @@ import {
   moodIdsByDateSelector,
   normalizedMeditationsSelector,
   denormalizedMeditationsSelector,
+  hasMeditationsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -579,6 +580,83 @@ describe("selectors", () => {
           mood: 7,
         },
       ]);
+    });
+  });
+
+  describe("hasMeditationsSelector", () => {
+    test("when there are no events", () => {
+      expect(hasMeditationsSelector(initialState)).toBe(false);
+    });
+
+    test("when there are events but no meditation events", () => {
+      expect(
+        hasMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 6 },
+              },
+            },
+          },
+        })
+      ).toBe(false);
+    });
+
+    test("with a single create event", () => {
+      expect(
+        hasMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+            },
+          },
+        })
+      ).toBe(true);
+    });
+
+    test("with two create events and a mood create event", () => {
+      expect(
+        hasMeditationsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-11T08:00:00.000Z",
+              "2020-10-12T08:00:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+              "2020-10-12T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 120 },
+              },
+            },
+          },
+        })
+      ).toBe(true);
     });
   });
 

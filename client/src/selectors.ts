@@ -142,6 +142,11 @@ export const denormalizedMoodsSelector = createSelector(
   ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
 );
 
+export const hasMeditationsSelector = createSelector(
+  normalizedMeditationsSelector,
+  ({ allIds }) => Boolean(allIds.length)
+);
+
 // some code may depend on the fact that the array
 // value in the returned object cannot be empty
 export const moodIdsByDateSelector = createSelector(

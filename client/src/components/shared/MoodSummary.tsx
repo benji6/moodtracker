@@ -1,9 +1,17 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
+import { formatDurationFromSeconds } from "../../dateTimeFormatters";
+import {
+  integerFormatter,
+  oneDecimalPlaceFormatter,
+} from "../../numberFormatters";
+import { hasMeditationsSelector } from "../../selectors";
 import OptionalMoodCell from "./OptionalMoodCell";
 
 interface PeriodData {
   best?: number;
   mean?: number;
+  secondsMeditated: number;
   standardDeviation: number;
   total: number;
   worst?: number;
@@ -22,6 +30,8 @@ export default function MoodSummary({
   periodType,
   previousPeriod,
 }: Props) {
+  const showMeditationStats = useSelector(hasMeditationsSelector);
+
   return (
     <table>
       <thead>
@@ -55,24 +65,54 @@ export default function MoodSummary({
           <td>Standard deviation</td>
           {previousPeriod && (
             <td className="center">
-              {previousPeriod.standardDeviation.toFixed(1)}
+              {oneDecimalPlaceFormatter.format(
+                previousPeriod.standardDeviation
+              )}
             </td>
           )}
           <td className="center">
-            {currentPeriod.standardDeviation.toFixed(1)}
+            {oneDecimalPlaceFormatter.format(currentPeriod.standardDeviation)}
           </td>
           {nextPeriod && (
             <td className="center">
-              {nextPeriod.standardDeviation.toFixed(1)}
+              {oneDecimalPlaceFormatter.format(nextPeriod.standardDeviation)}
             </td>
           )}
         </tr>
         <tr>
           <td>Total moods recorded</td>
-          {previousPeriod && <td className="center">{previousPeriod.total}</td>}
-          <td className="center">{currentPeriod.total}</td>
-          {nextPeriod && <td className="center">{nextPeriod.total}</td>}
+          {previousPeriod && (
+            <td className="center">
+              {integerFormatter.format(previousPeriod.total)}
+            </td>
+          )}
+          <td className="center">
+            {integerFormatter.format(currentPeriod.total)}
+          </td>
+          {nextPeriod && (
+            <td className="center">
+              {integerFormatter.format(nextPeriod.total)}
+            </td>
+          )}
         </tr>
+        {showMeditationStats && (
+          <tr>
+            <td>Time meditated</td>
+            {previousPeriod && (
+              <td className="center">
+                {formatDurationFromSeconds(previousPeriod.secondsMeditated)}
+              </td>
+            )}
+            <td className="center">
+              {formatDurationFromSeconds(currentPeriod.secondsMeditated)}
+            </td>
+            {nextPeriod && (
+              <td className="center">
+                {formatDurationFromSeconds(nextPeriod.secondsMeditated)}
+              </td>
+            )}
+          </tr>
+        )}
       </tbody>
     </table>
   );

@@ -3,7 +3,7 @@ import add from "date-fns/add";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { MOOD_RANGE, TIME } from "./constants";
-import { Mood, NormalizedMoods } from "./types";
+import { Mood, NormalizedMeditations, NormalizedMoods } from "./types";
 
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
@@ -90,6 +90,17 @@ export const computeMean = (xs: number[]): number | undefined => {
   let sum = 0;
   for (let i = 0; i < xs.length; i++) sum += xs[i];
   return sum / xs.length;
+};
+
+export const computeSecondsMeditatedInInterval = (
+  meditations: NormalizedMeditations,
+  d0: Date,
+  d1: Date
+): number => {
+  const ids = getIdsInInterval(meditations.allIds, d0, d1);
+  let sum = 0;
+  for (let i = 0; i < ids.length; i++) sum += meditations.byId[ids[i]].seconds;
+  return sum;
 };
 
 export const computeStandardDeviation = (xs: number[]): number => {
