@@ -35,7 +35,7 @@
     "react-redux": "^7.2.4"
   },
   "devDependencies": {
-    "@types/d3-interpolate": "^2.0.0",
+    "@types/d3-interpolate": "^3.0.1",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "^26.0.23",
     "@types/papaparse": "^5.2.5",

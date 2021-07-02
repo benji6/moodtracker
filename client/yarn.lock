@@ -1595,17 +1595,17 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/d3-color@^2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@types/d3-color/-/d3-color-2.0.2.tgz#4d77dc4304966b23e42878e2978fcdf50c969eb5"
-  integrity sha512-5zl/UNuZTK/7nGWjK2xDifBJ4CE2amKqS6Qnea+IwGNKAQ8Csh1ppakVHSO+uAdwLOmVHUjdoinmNG5OUUOfsw==
+"@types/d3-color@*":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-color/-/d3-color-3.0.1.tgz#3de066dbe308a7955a97cfd69b76a5240fb46c33"
+  integrity sha512-vcuR/rrvuoX6q0Rqe+gOScvYkTV7i6KZsfQozvThtAZ4CfuEM22OnZfiKP62nXHqRnIHXpBMy3JSha95qdYAxA==
 
-"@types/d3-interpolate@^2.0.0":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@types/d3-interpolate/-/d3-interpolate-2.0.2.tgz#78eddf7278b19e48e8652603045528d46897aba0"
-  integrity sha512-lElyqlUfIPyWG/cD475vl6msPL4aMU7eJvx1//Q177L8mdXoVPFl1djIESF2FKnc0NyaHvQlJpWwKJYwAhUoCw==
+"@types/d3-interpolate@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/d3-interpolate/-/d3-interpolate-3.0.1.tgz#e7d17fa4a5830ad56fe22ce3b4fac8541a9572dc"
+  integrity sha512-jx5leotSeac3jr0RePOH1KdR9rISG91QIE4Q2PYTu4OymLTZfA3SrnURSLzKH48HmXVUru50b8nje4E79oQSQw==
   dependencies:
-    "@types/d3-color" "^2"
+    "@types/d3-color" "*"
 
 "@types/file-saver@^2.0.1":
   version "2.0.2"
