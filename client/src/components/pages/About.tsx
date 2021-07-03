@@ -1,7 +1,7 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
 import * as React from "react";
-import { BUILD_TIME, USERS } from "../../constants";
+import { BUILD_TIME, MOODTRACKER_DESCRIPTION, USERS } from "../../constants";
 import { dateFormatter } from "../../dateTimeFormatters";
 
 export default function About(_: RouteComponentProps) {
@@ -9,13 +9,7 @@ export default function About(_: RouteComponentProps) {
     <Paper.Group>
       <Paper>
         <h2>About</h2>
-        <p>
-          MoodTracker is a free and open source web app app that aims to help
-          you understand yourself better. Track your emotional landscape, keep a
-          mood journal and gain new insights into yourself. It&apos;s simple to
-          use, works offline and because it runs in your browser you can use it
-          across all your devices!
-        </p>
+        <p>{MOODTRACKER_DESCRIPTION}</p>
         <h3>Open source</h3>
         <p>
           You can find the source code{" "}

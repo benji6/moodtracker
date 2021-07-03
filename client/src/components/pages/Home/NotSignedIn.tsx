@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@reach/router";
 import { Button, Paper, WordCloud } from "eri";
 import * as React from "react";
-import { TEST_IDS } from "../../../constants";
+import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
@@ -27,13 +27,7 @@ export default function NotSignedIn() {
     <Paper.Group>
       <Paper>
         <h2>Welcome to MoodTracker!</h2>
-        <p>
-          MoodTracker is a free and open source web app app that aims to help
-          you understand yourself better. Track your emotional landscape, keep a
-          mood journal and gain new insights into yourself. It&apos;s simple to
-          use, works offline and because it runs in your browser you can use it
-          across all your devices!
-        </p>
+        <p>{MOODTRACKER_DESCRIPTION}</p>
         <Button.Group>
           <Button onClick={navigateToSignUp} type="button">
             Sign up now to get started!
