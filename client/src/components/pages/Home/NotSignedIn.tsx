@@ -7,6 +7,7 @@ import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 import MoodSummary from "../../shared/MoodSummary";
+import MeditationTimerClock from "../MeditationTimer/MeditationTimerPresentation/MeditationTimerClock";
 import {
   LINE_CHART_PROPS,
   MOOD_BY_HOUR_PROPS,
@@ -77,9 +78,24 @@ export default function NotSignedIn() {
           understand yourself better 😌
         </p>
         <MoodByHourChart {...MOOD_BY_HOUR_PROPS} />
-        <h3>And much more!</h3>
-        <p>See how often you log moods.</p>
+        <h3>Meditate</h3>
+        <p>
+          MoodTracker has a built in meditation timer and meditation log so you
+          can track your practice and see how it interacts with your mood over
+          time.
+        </p>
+        <MeditationTimerClock remainingSeconds={222} totalSeconds={600} />
+        <h3>See how often you log moods</h3>
         <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
+        <h3>And much more!</h3>
+        <ul>
+          <li>Set up weekly email reports</li>
+          <li>
+            Export your data at any time, put it in a spreadsheet or do whatever
+            you want with it
+          </li>
+          <li>Discover new visualizations and features by signing up!</li>
+        </ul>
       </Paper>
       <Paper>
         <h2>Find out more</h2>
