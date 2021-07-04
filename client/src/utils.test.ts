@@ -15,9 +15,10 @@ import {
   getWeekdayIndex,
   formatIsoYearInLocalTimezone,
   createDateFromLocalDateString,
-  getNormalizedDescriptionWordsFromMood,
+  getNormalizedTagsFromDescription,
   formatIsoDateHourInLocalTimezone,
   computeSecondsMeditatedInInterval,
+  counter,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -275,6 +276,16 @@ describe("utils", () => {
     expect(computeMean([5])).toBe(5);
     expect(computeMean([1, 5])).toBe(3);
     expect(computeMean([1, 2, 3, 4, 5, 6, 7])).toBe(4);
+  });
+
+  test("counter", () => {
+    expect(counter([])).toEqual({});
+    expect(counter(["foo"])).toEqual({ foo: 1 });
+    expect(counter(["foo", "bar", "baz", "foo", "foo", "bar"])).toEqual({
+      bar: 2,
+      baz: 1,
+      foo: 3,
+    });
   });
 
   describe("computeSecondsMeditatedInInterval", () => {
@@ -736,27 +747,14 @@ describe("utils", () => {
   });
 
   test("getNormalizedDescriptionWordsFromMood", () => {
-    expect(getNormalizedDescriptionWordsFromMood({ mood: 5 })).toEqual([]);
+    expect(getNormalizedTagsFromDescription("")).toEqual([]);
+    expect(getNormalizedTagsFromDescription("   ")).toEqual([]);
+    expect(getNormalizedTagsFromDescription("pikachu")).toEqual(["Pikachu"]);
+    expect(getNormalizedTagsFromDescription("   pikachu   ")).toEqual([
+      "Pikachu",
+    ]);
     expect(
-      getNormalizedDescriptionWordsFromMood({ description: "", mood: 5 })
-    ).toEqual([]);
-    expect(
-      getNormalizedDescriptionWordsFromMood({ description: "   ", mood: 5 })
-    ).toEqual([]);
-    expect(
-      getNormalizedDescriptionWordsFromMood({ description: "pikachu", mood: 5 })
-    ).toEqual(["Pikachu"]);
-    expect(
-      getNormalizedDescriptionWordsFromMood({
-        description: "   pikachu   ",
-        mood: 5,
-      })
-    ).toEqual(["Pikachu"]);
-    expect(
-      getNormalizedDescriptionWordsFromMood({
-        description: "  Bulbasaur pIkaChu  🙂   ",
-        mood: 5,
-      })
+      getNormalizedTagsFromDescription("  Bulbasaur pIkaChu  🙂   ")
     ).toEqual(["Bulbasaur", "Pikachu", "🙂"]);
   });
 

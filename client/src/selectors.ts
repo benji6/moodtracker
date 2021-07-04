@@ -16,7 +16,7 @@ import {
   computeAverageMoodInInterval,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
-  getNormalizedDescriptionWordsFromMood,
+  getNormalizedTagsFromDescription,
   isoDateFromIsoDateAndTime,
 } from "./utils";
 
@@ -225,8 +225,10 @@ export const normalizedDescriptionWordsSelector = createSelector(
     const descriptionWords = new Set<string>();
     for (let i = 0; i < normalizedMoods.allIds.length; i++) {
       const id = normalizedMoods.allIds[i];
-      const mood = normalizedMoods.byId[id];
-      const normalizedWords = getNormalizedDescriptionWordsFromMood(mood);
+      const { description } = normalizedMoods.byId[id];
+      const normalizedWords = description
+        ? getNormalizedTagsFromDescription(description)
+        : [];
       for (let j = 0; j < normalizedWords.length; j++)
         descriptionWords.add(normalizedWords[j]);
     }

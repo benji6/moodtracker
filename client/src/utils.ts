@@ -3,7 +3,7 @@ import add from "date-fns/add";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { MOOD_RANGE, TIME } from "./constants";
-import { Mood, NormalizedMeditations, NormalizedMoods } from "./types";
+import { NormalizedMeditations, NormalizedMoods } from "./types";
 
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
@@ -113,14 +113,22 @@ export const computeStandardDeviation = (xs: number[]): number => {
   return Math.sqrt(sumOfSquaredDifferences / (xs.length - 1));
 };
 
+export const counter = (xs: string[]): { [word: string]: number } => {
+  const count: { [word: string]: number } = {};
+  for (const x of xs) {
+    if (count[x]) count[x] += 1;
+    else count[x] = 1;
+  }
+  return count;
+};
+
 export const createDateFromLocalDateString = (dateString: string) =>
   new Date(`${dateString}T00:00:00`);
 
-export const getNormalizedDescriptionWordsFromMood = ({
-  description,
-}: Mood): string[] => {
+export const getNormalizedTagsFromDescription = (
+  description: string
+): string[] => {
   const descriptions: string[] = [];
-  if (!description) return descriptions;
   for (const word of description.split(/\s+/)) {
     if (!word) continue;
     descriptions.push(`${word[0].toUpperCase()}${word.toLowerCase().slice(1)}`);
