@@ -1,3 +1,4 @@
+import differenceInHours from "date-fns/differenceInHours";
 import { Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
@@ -7,6 +8,8 @@ import {
   normalizedMoodsSelector,
 } from "../../../selectors";
 import { computeMean } from "../../../utils";
+
+const HOURS = 4;
 
 export default function MeditationStats() {
   const meditations = useSelector(normalizedMeditationsSelector);
@@ -18,17 +21,31 @@ export default function MeditationStats() {
   let i = 0;
   for (const meditationId of meditations.allIds) {
     for (; i < moods.allIds.length; i++) {
-      const moodId = moods.allIds[i];
-      if (moodId < meditationId || i === 0) continue;
-      const moodBefore = moods.byId[moods.allIds[i - 1]];
-      const moodAfter = moods.byId[moodId];
+      const moodAfterId = moods.allIds[i];
+      if (moodAfterId < meditationId || i === 0) continue;
+      const moodBeforeId = moods.allIds[i - 1];
+      const moodBefore = moods.byId[moodBeforeId];
+      const moodAfter = moods.byId[moodAfterId];
+      const meditationDate = new Date(meditationId);
+      const differenceBefore = differenceInHours(
+        meditationDate,
+        new Date(moodBeforeId)
+      );
+      const differenceAfter = differenceInHours(
+        new Date(moodAfterId),
+        meditationDate
+      );
+
+      if (differenceBefore > HOURS || differenceAfter > HOURS) break;
+
       moodChanges.push(moodAfter.mood - moodBefore.mood);
       break;
     }
   }
 
-  // Component does not render unless there are meditations
-  const averageMoodChangeAfterMeditation = computeMean(moodChanges)!;
+  const averageMoodChangeAfterMeditation = computeMean(moodChanges);
+
+  if (averageMoodChangeAfterMeditation === undefined) return null;
 
   return (
     <Paper>
@@ -45,7 +62,9 @@ export default function MeditationStats() {
               )}{" "}
               {averageMoodChangeAfterMeditation > 0 ? "higher" : "lower"}
             </b>{" "}
-            after meditation than the mood you record before.
+            than the mood you record before. This calculation only takes into
+            account the impact when you record a mood up to {HOURS} hours before
+            meditation and up to {HOURS} hours after.
           </>
         )}
       </p>
