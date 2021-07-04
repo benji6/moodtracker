@@ -35,6 +35,10 @@ export default function Meditate() {
           a custom time and press start. Once your meditation is finished you
           will have the opportunity to record it if you choose.
         </p>
+        <p>
+          Record your mood before and after to see how meditation changes things
+          for you.
+        </p>
       </Paper>
       <Paper>
         <h3>Presets</h3>
