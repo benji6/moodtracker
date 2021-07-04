@@ -3,7 +3,7 @@
 # picture of usage over time
 
 import boto3
-import datetime
+from datetime import date, timedelta
 import json
 import operator
 from collections import defaultdict
@@ -41,6 +41,12 @@ if 'LastEvaluatedKey' in events_table_scan_response:
 events = events_table_scan_response['Items']
 events.sort(key=operator.itemgetter('createdAt'))
 
+def date_from_js_iso(js_iso_string):
+  return date.fromisoformat(js_iso_string[:10])
+
+for event in events:
+  event['created_at_date'] = date_from_js_iso(event['createdAt'])
+
 def compute_breakdown(get_key):
   results = {}
 
@@ -60,7 +66,7 @@ def compute_breakdown(get_key):
   return results
 
 def get_iso_week_string(date_time_string):
-  y, w, d = datetime.date.fromisoformat(date_time_string[:10]).isocalendar()
+  y, w, d = date_from_js_iso(date_time_string).isocalendar()
   return f"{y}-W{w:02d}"
 
 def get_iso_month_string(date_time_string):
@@ -80,6 +86,11 @@ events_by_type = defaultdict(int)
 for event in events:
   events_by_type[event.get('type')] += 1
 
+date_7_days_ago = date.today()-timedelta(7)
+date_30_days_ago = date.today()-timedelta(30)
+date_60_days_ago = date.today()-timedelta(60)
+date_90_days_ago = date.today()-timedelta(90)
+
 print(json.dumps({
   'Breakdown by week': compute_breakdown(get_iso_week_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
@@ -87,7 +98,11 @@ print(json.dumps({
   'DynamoDB consumed capacity units': events_table_scan_response['ConsumedCapacity']['CapacityUnits'],
   'Total number of events': len(events),
   'Events by type': events_by_type,
-  'Users who have created at least 1 event': len({event['userId'] for event in events}),
+  'Users who have created at least 1 event over the last 7 days': len({event['userId'] for event in events if event['created_at_date'] > date_7_days_ago}),
+  'Users who have created at least 1 event over the last 30 days': len({event['userId'] for event in events if event['created_at_date'] > date_30_days_ago}),
+  'Users who have created at least 1 event over the last 60 days': len({event['userId'] for event in events if event['created_at_date'] > date_60_days_ago}),
+  'Users who have created at least 1 event over the last 90 days': len({event['userId'] for event in events if event['created_at_date'] > date_90_days_ago}),
+  'Users who have created at least 1 event over all time': len({event['userId'] for event in events}),
   'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
   'Actual number of users in Cognito user pool': len(list_users_response['Users']),
