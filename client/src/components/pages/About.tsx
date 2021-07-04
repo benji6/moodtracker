@@ -46,8 +46,8 @@ export default function About(_: RouteComponentProps) {
         <h3>Users</h3>
         <p>
           There are currently <b>{USERS.confirmed}</b> confirmed users and{" "}
-          <b>{USERS.monthlyActiveUsers}</b> people have used MoodTracker over
-          the last month.
+          <b>{USERS.activeUsersLast30Days}</b> people have used MoodTracker over
+          the last 30 days.
         </p>
         <h3>Updates</h3>
         <p>
