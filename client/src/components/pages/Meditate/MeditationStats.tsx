@@ -1,8 +1,9 @@
-import differenceInHours from "date-fns/differenceInHours";
+import differenceInSeconds from "date-fns/differenceInSeconds";
+import sub from "date-fns/sub";
 import { Paper, WordCloud } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
+import { MINIMUM_WORD_CLOUD_WORDS, TIME } from "../../../constants";
 import { twoDecimalPlacesFormatter } from "../../../numberFormatters";
 import {
   normalizedMeditationsSelector,
@@ -15,6 +16,7 @@ import {
 } from "../../../utils";
 
 const HOURS = 4;
+const SECONDS = HOURS * TIME.secondsPerHour;
 
 export default function MeditationStats() {
   const meditations = useSelector(normalizedMeditationsSelector);
@@ -33,17 +35,23 @@ export default function MeditationStats() {
       const moodBeforeId = moods.allIds[i - 1];
       const moodBefore = moods.byId[moodBeforeId];
       const moodAfter = moods.byId[moodAfterId];
-      const meditationDate = new Date(meditationId);
-      const differenceBefore = differenceInHours(
-        meditationDate,
+      const meditationLogDate = new Date(meditationId);
+      const meditationStartDate = sub(meditationLogDate, {
+        seconds: meditations.byId[meditationId].seconds,
+      });
+
+      // We use differenceInSeconds instead of differenceInHours as the latter
+      // rounds values down (i.e. a 4.4 hour difference is returned as 4 hours).
+      const differenceBefore = differenceInSeconds(
+        meditationStartDate,
         new Date(moodBeforeId)
       );
-      const differenceAfter = differenceInHours(
+      const differenceAfter = differenceInSeconds(
         new Date(moodAfterId),
-        meditationDate
+        meditationLogDate
       );
 
-      if (differenceBefore > HOURS || differenceAfter > HOURS) break;
+      if (differenceBefore > SECONDS || differenceAfter > SECONDS) break;
 
       moodChanges.push(moodAfter.mood - moodBefore.mood);
 
