@@ -16,15 +16,22 @@ events_table = dynamodb.Table('moodtracker_events')
 weekly_emails_table = dynamodb.Table('moodtracker_weekly_emails')
 
 describe_user_pool_response = cognito_client.describe_user_pool(UserPoolId=USER_POOL_ID)
-list_users_response = cognito_client.list_users(UserPoolId=USER_POOL_ID)
 
-if 'PaginationToken' in list_users_response:
-  print('Warning: only 1 cognito user pool page was scanned')
+list_users_response = cognito_client.list_users(UserPoolId=USER_POOL_ID)
+users = list_users_response['Users']
+user_pages = 1
+while 'PaginationToken' in list_users_response:
+  list_users_response = cognito_client.list_users(
+    PaginationToken=list_users_response['PaginationToken'],
+    UserPoolId=USER_POOL_ID,
+  )
+  users += list_users_response['Users']
+  user_pages += 1
 
 total_enabled_users = 0
 user_status_breakdown = defaultdict(int)
 
-for user in list_users_response['Users']:
+for user in users:
   if user['Enabled']:
     total_enabled_users += 1
   user_status_breakdown[user['UserStatus']] += 1
@@ -96,6 +103,7 @@ print(json.dumps({
   'Breakdown by month': compute_breakdown(get_iso_month_string),
   'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
   'DynamoDB consumed capacity units': events_table_scan_response['ConsumedCapacity']['CapacityUnits'],
+  'Number of Cognito user pages paginated over': user_pages,
   'Total number of events': len(events),
   'Events by type': events_by_type,
   'Users who have created at least 1 event over the last 7 days': len({event['userId'] for event in events if event['created_at_date'] > date_7_days_ago}),
@@ -105,7 +113,7 @@ print(json.dumps({
   'Users who have created at least 1 event over all time': len({event['userId'] for event in events}),
   'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
-  'Actual number of users in Cognito user pool': len(list_users_response['Users']),
+  'Actual number of users in Cognito user pool': len(users),
   'Number of enabled users in Cognito user pool': total_enabled_users,
   'Breakdown of user totals by status in Cognito user pool': user_status_breakdown,
 }, indent=2))
