@@ -91,12 +91,18 @@ number_of_events_against_number_of_users = dict(sorted(number_of_events_against_
 
 events_by_type = defaultdict(int)
 for event in events:
-  events_by_type[event.get('type')] += 1
+  events_by_type[event['type']] += 1
 
 date_7_days_ago = date.today()-timedelta(7)
 date_30_days_ago = date.today()-timedelta(30)
 date_60_days_ago = date.today()-timedelta(60)
 date_90_days_ago = date.today()-timedelta(90)
+
+user_ids_that_have_meditated = set()
+for event in events:
+  if 'meditations' in event['type']:
+    user_ids_that_have_meditated.add(event['userId'])
+
 
 print(json.dumps({
   'Breakdown by week': compute_breakdown(get_iso_week_string),
@@ -106,11 +112,12 @@ print(json.dumps({
   'Number of Cognito user pages paginated over': user_pages,
   'Total number of events': len(events),
   'Events by type': events_by_type,
-  'Users who have created at least 1 event over the last 7 days': len({event['userId'] for event in events if event['created_at_date'] > date_7_days_ago}),
-  'Users who have created at least 1 event over the last 30 days': len({event['userId'] for event in events if event['created_at_date'] > date_30_days_ago}),
-  'Users who have created at least 1 event over the last 60 days': len({event['userId'] for event in events if event['created_at_date'] > date_60_days_ago}),
-  'Users who have created at least 1 event over the last 90 days': len({event['userId'] for event in events if event['created_at_date'] > date_90_days_ago}),
-  'Users who have created at least 1 event over all time': len({event['userId'] for event in events}),
+  'Number of users who have created at least 1 event over the last 7 days': len({event['userId'] for event in events if event['created_at_date'] > date_7_days_ago}),
+  'Number of users who have created at least 1 event over the last 30 days': len({event['userId'] for event in events if event['created_at_date'] > date_30_days_ago}),
+  'Number of users who have created at least 1 event over the last 60 days': len({event['userId'] for event in events if event['created_at_date'] > date_60_days_ago}),
+  'Number of users who have created at least 1 event over the last 90 days': len({event['userId'] for event in events if event['created_at_date'] > date_90_days_ago}),
+  'Number of users who have created at least 1 event over all time': len({event['userId'] for event in events}),
+  'Number of users who have meditated': len(user_ids_that_have_meditated),
   'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
   'Actual number of users in Cognito user pool': len(users),
