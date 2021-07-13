@@ -4,16 +4,20 @@ import addHours from "date-fns/addHours";
 import addMonths from "date-fns/addMonths";
 import addWeeks from "date-fns/addWeeks";
 import addYears from "date-fns/addYears";
+import differenceInSeconds from "date-fns/differenceInSeconds";
 import eachDayOfInterval from "date-fns/eachDayOfInterval";
 import eachHourOfInterval from "date-fns/eachHourOfInterval";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
+import sub from "date-fns/sub";
+import { MEDITATION_STATS_HOURS_RANGE, TIME } from "./constants";
 import { WEEK_OPTIONS } from "./dateTimeFormatters";
 import { RootState } from "./store";
 import { NormalizedMeditations, NormalizedMoods } from "./types";
 import {
   computeAverageMoodInInterval,
+  computeMean,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedTagsFromDescription,
@@ -53,7 +57,7 @@ const trackedCategoriesSelector = createSelector(
           break;
         case "v1/meditations/delete": {
           let index: undefined | number;
-          let i = moods.allIds.length;
+          let i = meditations.allIds.length;
 
           while (i--)
             if (meditations.allIds[i] === event.payload) {
@@ -218,6 +222,70 @@ const makeNormalizedAveragesByPeriodSelector = (
       return normalizedAverages;
     }
   );
+
+export const meditationStatsSelector = createSelector(
+  normalizedMeditationsSelector,
+  normalizedMoodsSelector,
+  (
+    meditations,
+    moods
+  ): {
+    averageMoodChangeAfterMeditation: number | undefined;
+    wordsAfter: string[];
+    wordsBefore: string[];
+  } => {
+    const SECONDS = MEDITATION_STATS_HOURS_RANGE * TIME.secondsPerHour;
+
+    const moodChanges: number[] = [];
+    let wordsBefore: string[] = [];
+    let wordsAfter: string[] = [];
+    let i = 0;
+    for (const meditationId of meditations.allIds) {
+      for (; i < moods.allIds.length; i++) {
+        const moodAfterId = moods.allIds[i];
+        if (moodAfterId < meditationId || i === 0) continue;
+        const moodBeforeId = moods.allIds[i - 1];
+        const moodBefore = moods.byId[moodBeforeId];
+        const moodAfter = moods.byId[moodAfterId];
+        const meditationLogDate = new Date(meditationId);
+        const meditationStartDate = sub(meditationLogDate, {
+          seconds: meditations.byId[meditationId].seconds,
+        });
+
+        // We use differenceInSeconds instead of differenceInHours as the latter
+        // rounds values down (i.e. a 4.4 hour difference is returned as 4 hours).
+        const differenceBefore = differenceInSeconds(
+          meditationStartDate,
+          new Date(moodBeforeId)
+        );
+        const differenceAfter = differenceInSeconds(
+          new Date(moodAfterId),
+          meditationLogDate
+        );
+
+        if (differenceBefore > SECONDS || differenceAfter > SECONDS) break;
+
+        moodChanges.push(moodAfter.mood - moodBefore.mood);
+
+        if (moodBefore.description)
+          wordsBefore = wordsBefore.concat(
+            getNormalizedTagsFromDescription(moodBefore.description)
+          );
+        if (moodAfter.description)
+          wordsAfter = wordsAfter.concat(
+            getNormalizedTagsFromDescription(moodAfter.description)
+          );
+        break;
+      }
+    }
+
+    return {
+      averageMoodChangeAfterMeditation: computeMean(moodChanges),
+      wordsAfter,
+      wordsBefore,
+    };
+  }
+);
 
 export const normalizedDescriptionWordsSelector = createSelector(
   normalizedMoodsSelector,

@@ -11,6 +11,7 @@ import {
   normalizedMeditationsSelector,
   denormalizedMeditationsSelector,
   hasMeditationsSelector,
+  meditationStatsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -51,7 +52,7 @@ describe("selectors", () => {
       });
     });
 
-    test("with two create events and a mood create event", () => {
+    test("with two meditation create events and a mood create event", () => {
       expect(
         normalizedMeditationsSelector({
           ...initialState,
@@ -69,12 +70,12 @@ describe("selectors", () => {
                 payload: { seconds: 60 },
               },
               "2020-10-11T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
+                createdAt: "2020-10-11T08:00:00.000Z",
                 type: "v1/moods/create",
                 payload: { mood: 5 },
               },
               "2020-10-12T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
+                createdAt: "2020-10-12T08:00:00.000Z",
                 type: "v1/meditations/create",
                 payload: { seconds: 120 },
               },
@@ -159,7 +160,7 @@ describe("selectors", () => {
 
     test("with two create events and a meditation create event", () => {
       expect(
-        normalizedMeditationsSelector({
+        normalizedMoodsSelector({
           ...initialState,
           events: {
             ...initialState.events,
@@ -175,12 +176,12 @@ describe("selectors", () => {
                 payload: { mood: 5 },
               },
               "2020-10-11T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
+                createdAt: "2020-10-11T08:00:00.000Z",
                 type: "v1/meditations/create",
                 payload: { seconds: 60 },
               },
               "2020-10-12T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
+                createdAt: "2020-10-12T08:00:00.000Z",
                 type: "v1/moods/create",
                 payload: { mood: 7 },
               },
@@ -761,7 +762,7 @@ describe("selectors", () => {
                 payload: "2020-10-11T08:00:00.000Z",
               },
               "2020-10-13T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
+                createdAt: "2020-10-13T08:00:00.000Z",
                 type: "v1/moods/create",
                 payload: { mood: 7 },
               },
@@ -771,6 +772,90 @@ describe("selectors", () => {
       ).toEqual({
         "2020-10-10": ["2020-10-10T07:00:00.000Z", "2020-10-10T08:00:00.000Z"],
         "2020-10-13": ["2020-10-13T08:00:00.000Z"],
+      });
+    });
+  });
+
+  describe("meditationStatsSelector", () => {
+    test("with no meditations and no moods", () => {
+      expect(meditationStatsSelector(initialState)).toEqual({
+        averageMoodChangeAfterMeditation: undefined,
+        wordsAfter: [],
+        wordsBefore: [],
+      });
+    });
+
+    test("with no meditations and 1 mood", () => {
+      expect(
+        meditationStatsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        averageMoodChangeAfterMeditation: undefined,
+        wordsAfter: [],
+        wordsBefore: [],
+      });
+    });
+
+    test("with 1 meditation and no moods", () => {
+      expect(
+        meditationStatsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        averageMoodChangeAfterMeditation: undefined,
+        wordsAfter: [],
+        wordsBefore: [],
+      });
+    });
+
+    test("with 1 meditation and 2 moods", () => {
+      expect(
+        meditationStatsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 5 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        averageMoodChangeAfterMeditation: undefined,
+        wordsAfter: [],
+        wordsBefore: [],
       });
     });
   });
@@ -951,7 +1036,7 @@ describe("selectors", () => {
     });
   });
 
-  describe.only("normalizedAveragesByHourSelector", () => {
+  describe("normalizedAveragesByHourSelector", () => {
     it("works with 1 mood", () => {
       expect(
         normalizedAveragesByHourSelector({
@@ -1061,7 +1146,7 @@ describe("selectors", () => {
       `);
     });
 
-    it.only("works with 2 moods in separate non-adjacent hours", () => {
+    it("works with 2 moods in separate non-adjacent hours", () => {
       expect(
         normalizedAveragesByHourSelector({
           ...initialState,

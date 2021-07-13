@@ -9,6 +9,7 @@ import {
 export const BUILD_TIME = process.env.BUILD_TIME!;
 export const DESCRIPTION_MAX_LENGTH = 32;
 export const MEDITATION_SEARCH_PARAM_TIME_KEY = "t";
+export const MEDITATION_STATS_HOURS_RANGE = 4;
 export const MINIMUM_WORD_CLOUD_WORDS = 5;
 export const MOOD_RANGE: [number, number] = [0, 10];
 export const MOOD_INTEGERS = [
