@@ -43,6 +43,9 @@ export default function App({ children }: IProps) {
           <QuickNav.Link aria-label="Statistics" to="/stats">
             <Icon name="chart" size="3" />
           </QuickNav.Link>
+          <QuickNav.Link aria-label="Meditate" to="/meditate">
+            <Icon name="bell" size="3" />
+          </QuickNav.Link>
           <QuickNav.Link aria-label="Add new mood" to="/add">
             <Icon name="plus" size="3" />
           </QuickNav.Link>
