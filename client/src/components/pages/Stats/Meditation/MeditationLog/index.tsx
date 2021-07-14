@@ -1,11 +1,11 @@
 import { Button, Icon, Pagination, Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { TIME } from "../../../../constants";
-import { dateTimeFormatter } from "../../../../dateTimeFormatters";
-import { integerFormatter } from "../../../../numberFormatters";
-import { normalizedMeditationsSelector } from "../../../../selectors";
-import { mapRight } from "../../../../utils";
+import { TIME } from "../../../../../constants";
+import { dateTimeFormatter } from "../../../../../dateTimeFormatters";
+import { integerFormatter } from "../../../../../numberFormatters";
+import { normalizedMeditationsSelector } from "../../../../../selectors";
+import { mapRight } from "../../../../../utils";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 
 const MAX_ITEMS_PER_PAGE = 10;
@@ -16,8 +16,6 @@ export default function MeditationLog() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
 
-  if (!meditations.allIds.length) return null;
-
   const pageCount = Math.ceil(meditations.allIds.length / MAX_ITEMS_PER_PAGE);
   const endIndex = meditations.allIds.length - MAX_ITEMS_PER_PAGE * page;
   const startIndex = Math.max(0, endIndex - MAX_ITEMS_PER_PAGE);
@@ -25,10 +23,6 @@ export default function MeditationLog() {
   return (
     <Paper>
       <h3>Log</h3>
-      <p>
-        You can see how much you meditated in the summary section of your stats
-        pages for any given period.
-      </p>
       <table>
         <thead>
           <tr>

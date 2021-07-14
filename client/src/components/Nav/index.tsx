@@ -3,7 +3,11 @@ import { Nav as EriNav, Button, Icon } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEK_OPTIONS } from "../../dateTimeFormatters";
-import { userEmailSelector, userIsSignedInSelector } from "../../selectors";
+import {
+  hasMeditationsSelector,
+  userEmailSelector,
+  userIsSignedInSelector,
+} from "../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
@@ -21,6 +25,7 @@ interface Props {
 }
 
 export default function Nav({ handleNavClose, open }: Props) {
+  const hasMeditations = useSelector(hasMeditationsSelector);
   const userEmail = useSelector(userEmailSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -118,6 +123,12 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <Icon margin="right" name="chart" />
                   This year
                 </EriNav.Link>
+                {hasMeditations && (
+                  <EriNav.Link onClick={handleNavClose} to="/stats/meditation">
+                    <Icon margin="right" name="chart" />
+                    Meditation
+                  </EriNav.Link>
+                )}
                 <EriNav.Link onClick={handleNavClose} to="/stats/explore">
                   <Icon margin="right" name="chart" />
                   Explore

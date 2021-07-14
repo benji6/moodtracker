@@ -29,6 +29,7 @@ import MeditationTimer from "./pages/MeditationTimer";
 import Day from "./pages/Stats/Day";
 import { Page } from "./shared/Page";
 import RedirectHome from "./pages/RedirectHome";
+import Meditation from "./pages/Stats/Meditation";
 
 export default function Router() {
   return (
@@ -87,6 +88,11 @@ export default function Router() {
           Component={Month}
           path="/stats/months/:month"
           title="Month stats"
+        />
+        <AuthedOnlyPage
+          Component={Meditation}
+          path="/stats/meditation"
+          title="Meditation stats"
         />
         <AuthedOnlyPage
           Component={Week}

@@ -7,8 +7,6 @@ import {
   TEST_IDS,
   TIME,
 } from "../../../constants";
-import MeditationLog from "./MeditationLog";
-import MeditationStats from "./MeditationStats";
 import "./style.css";
 
 const MAX_MINUTES = 180;
@@ -97,8 +95,6 @@ export default function Meditate() {
           </Button.Group>
         </form>
       </Paper>
-      <MeditationStats />
-      <MeditationLog />
     </Paper.Group>
   );
 }
