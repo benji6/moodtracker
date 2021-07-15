@@ -36,10 +36,15 @@ export default function Overview() {
       <Months />
       <Years />
       <Paper>
-        <h2>Explore</h2>
-        <p className="center">
-          <Link to="/stats/explore">More insights here</Link>
-        </p>
+        <h2>More</h2>
+        <ul>
+          <li>
+            <Link to="/stats/meditation">Meditation stats</Link>
+          </li>
+          <li>
+            <Link to="/stats/explore">Explore</Link>
+          </li>
+        </ul>
       </Paper>
     </Paper.Group>
   );
