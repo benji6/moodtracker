@@ -288,7 +288,7 @@ export const meditationStatsSelector = createSelector(
     const filteredWordsAfter = { ...wordsAfter };
     const filteredWordsBefore = { ...wordsBefore };
 
-    for (const word of wordsBeforeList) {
+    for (const word of new Set(wordsBeforeList)) {
       // eslint-disable-next-line no-prototype-builtins
       if (!wordsAfter.hasOwnProperty(word)) continue;
       const afterCount = wordsAfter[word];

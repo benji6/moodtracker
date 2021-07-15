@@ -866,6 +866,81 @@ describe("selectors", () => {
         wordsBefore: {},
       });
     });
+
+    test("handles a complex example correctly", () => {
+      expect(
+        meditationStatsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-01-01T11:00:00.000Z",
+              "2020-01-01T12:00:00.000Z",
+              "2020-01-01T13:00:00.000Z",
+              "2020-01-02T11:00:00.000Z",
+              "2020-01-02T12:00:00.000Z",
+              "2020-01-02T13:00:00.000Z",
+              "2020-01-03T11:00:00.000Z",
+              "2020-01-03T12:00:00.000Z",
+              "2020-01-03T13:00:00.000Z",
+            ],
+            byId: {
+              "2020-01-01T11:00:00.000Z": {
+                createdAt: "2020-01-01T11:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { description: "Foo bar baz beforeOnly", mood: 4 },
+              },
+              "2020-01-01T12:00:00.000Z": {
+                createdAt: "2020-01-01T12:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-01-01T13:00:00.000Z": {
+                createdAt: "2020-01-01T13:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { description: "foo bar Baz afterOnly", mood: 6 },
+              },
+              "2020-01-02T11:00:00.000Z": {
+                createdAt: "2020-01-02T11:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { description: "foo Bar", mood: 7 },
+              },
+              "2020-01-02T12:00:00.000Z": {
+                createdAt: "2020-01-02T12:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-01-02T13:00:00.000Z": {
+                createdAt: "2020-01-02T13:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { description: "bar baz", mood: 7 },
+              },
+              "2020-01-03T11:00:00.000Z": {
+                createdAt: "2020-01-03T11:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { description: "foo", mood: 5 },
+              },
+              "2020-01-03T12:00:00.000Z": {
+                createdAt: "2020-01-03T12:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
+              },
+              "2020-01-03T13:00:00.000Z": {
+                createdAt: "2020-01-03T13:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { description: "baz", mood: 6 },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        averageMoodChangeAfterMeditation: 1,
+        filteredWordsAfter: { Afteronly: 1, Baz: 2 },
+        filteredWordsBefore: { Foo: 2, Beforeonly: 1 },
+        wordsAfter: { Afteronly: 1, Foo: 1, Bar: 2, Baz: 3 },
+        wordsBefore: { Foo: 3, Bar: 2, Baz: 1, Beforeonly: 1 },
+      });
+    });
   });
 
   describe("normalizedAveragesByDaySelector", () => {
