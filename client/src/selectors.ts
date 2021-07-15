@@ -18,6 +18,7 @@ import { NormalizedMeditations, NormalizedMoods } from "./types";
 import {
   computeAverageMoodInInterval,
   computeMean,
+  counter,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedTagsFromDescription,
@@ -231,14 +232,16 @@ export const meditationStatsSelector = createSelector(
     moods
   ): {
     averageMoodChangeAfterMeditation: number | undefined;
-    wordsAfter: string[];
-    wordsBefore: string[];
+    filteredWordsAfter: { [word: string]: number };
+    filteredWordsBefore: { [word: string]: number };
+    wordsAfter: { [word: string]: number };
+    wordsBefore: { [word: string]: number };
   } => {
     const SECONDS = MEDITATION_STATS_HOURS_RANGE * TIME.secondsPerHour;
 
     const moodChanges: number[] = [];
-    let wordsBefore: string[] = [];
-    let wordsAfter: string[] = [];
+    let wordsBeforeList: string[] = [];
+    let wordsAfterList: string[] = [];
     let i = 0;
     for (const meditationId of meditations.allIds) {
       for (; i < moods.allIds.length; i++) {
@@ -268,21 +271,53 @@ export const meditationStatsSelector = createSelector(
         moodChanges.push(moodAfter.mood - moodBefore.mood);
 
         if (moodBefore.description)
-          wordsBefore = wordsBefore.concat(
+          wordsBeforeList = wordsBeforeList.concat(
             getNormalizedTagsFromDescription(moodBefore.description)
           );
         if (moodAfter.description)
-          wordsAfter = wordsAfter.concat(
+          wordsAfterList = wordsAfterList.concat(
             getNormalizedTagsFromDescription(moodAfter.description)
           );
         break;
       }
     }
 
+    const wordsAfter = counter(wordsAfterList);
+    const wordsBefore = counter(wordsBeforeList);
+
+    const filteredWordsAfter = { ...wordsAfter };
+    const filteredWordsBefore = { ...wordsBefore };
+
+    for (const word of wordsBeforeList) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (!wordsAfter.hasOwnProperty(word)) continue;
+      const afterCount = wordsAfter[word];
+      const beforeCount = wordsBefore[word];
+
+      if (afterCount === beforeCount) {
+        delete filteredWordsAfter[word];
+        delete filteredWordsBefore[word];
+        continue;
+      }
+
+      const lowestCount = Math.min(afterCount, beforeCount);
+
+      if (afterCount === lowestCount) {
+        delete filteredWordsAfter[word];
+        filteredWordsBefore[word] -= lowestCount;
+      }
+      if (beforeCount === lowestCount) {
+        delete filteredWordsBefore[word];
+        filteredWordsAfter[word] -= lowestCount;
+      }
+    }
+
     return {
       averageMoodChangeAfterMeditation: computeMean(moodChanges),
-      wordsAfter,
-      wordsBefore,
+      filteredWordsAfter,
+      filteredWordsBefore,
+      wordsAfter: counter(wordsAfterList),
+      wordsBefore: counter(wordsBeforeList),
     };
   }
 );

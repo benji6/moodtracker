@@ -1,4 +1,4 @@
-import { Paper, WordCloud } from "eri";
+import { Paper, Toggle, WordCloud } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import {
@@ -7,11 +7,17 @@ import {
 } from "../../../../constants";
 import { twoDecimalPlacesFormatter } from "../../../../numberFormatters";
 import { meditationStatsSelector } from "../../../../selectors";
-import { counter } from "../../../../utils";
 
 export default function MeditationStats() {
-  const { averageMoodChangeAfterMeditation, wordsAfter, wordsBefore } =
-    useSelector(meditationStatsSelector);
+  const {
+    averageMoodChangeAfterMeditation,
+    filteredWordsAfter,
+    filteredWordsBefore,
+    wordsAfter,
+    wordsBefore,
+  } = useSelector(meditationStatsSelector);
+  const [shouldRemoveSharedWords, setShouldRemoveSharedWords] =
+    React.useState(true);
 
   // This case should never happen
   if (averageMoodChangeAfterMeditation === undefined) return null;
@@ -35,18 +41,28 @@ export default function MeditationStats() {
           </>
         )}
       </p>
-      {wordsBefore.length > MINIMUM_WORD_CLOUD_WORDS &&
-        wordsAfter.length > MINIMUM_WORD_CLOUD_WORDS && (
+      {Object.keys(filteredWordsAfter).length > MINIMUM_WORD_CLOUD_WORDS &&
+        Object.keys(filteredWordsBefore).length > MINIMUM_WORD_CLOUD_WORDS && (
           <>
-            <h3>Mood cloud before meditation</h3>
+            <h3>Mood clouds</h3>
+            <Toggle
+              checked={shouldRemoveSharedWords}
+              label="Filter out shared moods"
+              onChange={() =>
+                setShouldRemoveSharedWords(!shouldRemoveSharedWords)
+              }
+            />
+            <h4>Before meditation</h4>
             <WordCloud
               aria-label="Word cloud displaying mood descriptions before meditation"
-              words={counter(wordsBefore)}
+              words={
+                shouldRemoveSharedWords ? filteredWordsBefore : wordsBefore
+              }
             />
-            <h3>Mood cloud after meditation</h3>
+            <h4>After meditation</h4>
             <WordCloud
               aria-label="Word cloud displaying mood descriptions after meditation"
-              words={counter(wordsAfter)}
+              words={shouldRemoveSharedWords ? filteredWordsAfter : wordsAfter}
             />
           </>
         )}

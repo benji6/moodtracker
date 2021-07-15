@@ -780,8 +780,10 @@ describe("selectors", () => {
     test("with no meditations and no moods", () => {
       expect(meditationStatsSelector(initialState)).toEqual({
         averageMoodChangeAfterMeditation: undefined,
-        wordsAfter: [],
-        wordsBefore: [],
+        filteredWordsAfter: {},
+        filteredWordsBefore: {},
+        wordsAfter: {},
+        wordsBefore: {},
       });
     });
 
@@ -803,8 +805,10 @@ describe("selectors", () => {
         })
       ).toEqual({
         averageMoodChangeAfterMeditation: undefined,
-        wordsAfter: [],
-        wordsBefore: [],
+        filteredWordsAfter: {},
+        filteredWordsBefore: {},
+        wordsAfter: {},
+        wordsBefore: {},
       });
     });
 
@@ -826,8 +830,10 @@ describe("selectors", () => {
         })
       ).toEqual({
         averageMoodChangeAfterMeditation: undefined,
-        wordsAfter: [],
-        wordsBefore: [],
+        filteredWordsAfter: {},
+        filteredWordsBefore: {},
+        wordsAfter: {},
+        wordsBefore: {},
       });
     });
 
@@ -854,8 +860,10 @@ describe("selectors", () => {
         })
       ).toEqual({
         averageMoodChangeAfterMeditation: undefined,
-        wordsAfter: [],
-        wordsBefore: [],
+        filteredWordsAfter: {},
+        filteredWordsBefore: {},
+        wordsAfter: {},
+        wordsBefore: {},
       });
     });
   });
