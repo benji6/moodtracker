@@ -94,6 +94,10 @@ export default function NotSignedIn() {
             Export your data at any time, put it in a spreadsheet or do whatever
             you want with it
           </li>
+          <li>
+            See how the moods you register before meditation differ from the
+            ones you register after meditation
+          </li>
           <li>Discover new visualizations and features by signing up!</li>
         </ul>
       </Paper>
