@@ -112,7 +112,7 @@ export default function Router() {
         <StorageLoadedPage
           Component={Home}
           path="/"
-          title="A mood tracker & journal that helps you understand yourself"
+          title="A mood tracker & meditation timer that helps you understand yourself"
         />
 
         <UnauthedOnlyPage

@@ -13,7 +13,7 @@ class URLS {
 }
 
 const ROOT_DOCUMENT_TITLE =
-  "MoodTracker - A mood tracker & journal that helps you understand yourself";
+  "MoodTracker - A mood tracker & meditation timer that helps you understand yourself";
 
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
