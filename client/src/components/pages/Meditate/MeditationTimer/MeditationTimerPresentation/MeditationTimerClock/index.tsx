@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TIME } from "../../../../../constants";
+import { TIME } from "../../../../../../constants";
 import "./style.css";
 
 const RING_THICKNESS = 1 / 9;

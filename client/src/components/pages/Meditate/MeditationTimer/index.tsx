@@ -2,10 +2,10 @@ import { Redirect, RouteComponentProps, useNavigate } from "@reach/router";
 import NoSleep from "nosleep.js";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../constants";
-import eventsSlice from "../../../store/eventsSlice";
-import { Meditation } from "../../../types";
-import useKeyboardEscape from "../../hooks/useKeyboardEscape";
+import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../constants";
+import eventsSlice from "../../../../store/eventsSlice";
+import { Meditation } from "../../../../types";
+import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
 import bell from "./bell";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 

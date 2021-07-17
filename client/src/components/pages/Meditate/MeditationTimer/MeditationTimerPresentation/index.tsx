@@ -1,6 +1,6 @@
 import { Button, Icon, Paper } from "eri";
 import * as React from "react";
-import { TEST_IDS } from "../../../../constants";
+import { TEST_IDS } from "../../../../../constants";
 import Dimmer from "./Dimmer";
 import { TimerState } from "..";
 import MeditationTimerClock from "./MeditationTimerClock";

@@ -25,7 +25,7 @@ import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
 import Meditate from "./pages/Meditate";
-import MeditationTimer from "./pages/MeditationTimer";
+import MeditationTimer from "./pages/Meditate/MeditationTimer";
 import Day from "./pages/Stats/Day";
 import { Page } from "./shared/Page";
 import RedirectHome from "./pages/RedirectHome";

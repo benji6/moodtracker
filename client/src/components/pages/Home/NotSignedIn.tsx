@@ -7,7 +7,7 @@ import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 import MoodSummary from "../../shared/MoodSummary";
-import MeditationTimerClock from "../MeditationTimer/MeditationTimerPresentation/MeditationTimerClock";
+import MeditationTimerClock from "../Meditate/MeditationTimer/MeditationTimerPresentation/MeditationTimerClock";
 import {
   LINE_CHART_PROPS,
   MOOD_BY_HOUR_PROPS,
