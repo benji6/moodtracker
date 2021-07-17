@@ -1,7 +1,7 @@
 import { Button, Icon, Paper } from "eri";
 import * as React from "react";
+import { formatSecondsAsTime } from "../../../../../utils";
 import Dimmer from "../../Dimmer";
-import { formatSecondsAsTime } from "../../utils";
 import "./style.css";
 
 interface IProps {

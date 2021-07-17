@@ -1,11 +1,9 @@
 import { Button, Icon, Pagination, Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { TIME } from "../../../../../constants";
 import { dateTimeFormatter } from "../../../../../dateTimeFormatters";
-import { integerFormatter } from "../../../../../numberFormatters";
 import { normalizedMeditationsSelector } from "../../../../../selectors";
-import { mapRight } from "../../../../../utils";
+import { formatSecondsAsTime, mapRight } from "../../../../../utils";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 
 const MAX_ITEMS_PER_PAGE = 10;
@@ -27,7 +25,7 @@ export default function MeditationLog() {
         <thead>
           <tr>
             <th>Time finished</th>
-            <th>Mins</th>
+            <th>Time</th>
             <th></th>
           </tr>
         </thead>
@@ -36,11 +34,7 @@ export default function MeditationLog() {
             return (
               <tr key={id}>
                 <td>{dateTimeFormatter.format(new Date(id))}</td>
-                <td>
-                  {integerFormatter.format(
-                    meditations.byId[id].seconds / TIME.secondsPerMinute
-                  )}
-                </td>
+                <td>{formatSecondsAsTime(meditations.byId[id].seconds)}</td>
                 <td>
                   <Button
                     danger

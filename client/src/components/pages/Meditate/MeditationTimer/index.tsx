@@ -5,7 +5,7 @@ import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../constants";
 import eventsSlice from "../../../../store/eventsSlice";
 import { Meditation } from "../../../../types";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
-import { noSleep } from "../utils";
+import { noSleep } from "../nosleep";
 import bell from "./bell";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 

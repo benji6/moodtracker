@@ -211,6 +211,12 @@ export const formatIsoMonthInLocalTimezone = (date: Date): string =>
 export const formatIsoYearInLocalTimezone = (date: Date): string =>
   String(date.getFullYear());
 
+export const formatSecondsAsTime = (seconds: number): string =>
+  `${String(Math.floor(seconds / TIME.secondsPerMinute)).padStart(
+    2,
+    "0"
+  )}:${String(Math.floor(seconds % TIME.secondsPerMinute)).padStart(2, "0")}`;
+
 export const getWeekdayIndex = (date: Date): 0 | 1 | 2 | 3 | 4 | 5 | 6 => {
   const dateFnsWeekdayIndex = getDay(date);
   return ((dateFnsWeekdayIndex ? dateFnsWeekdayIndex : TIME.daysPerWeek) -

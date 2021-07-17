@@ -3,7 +3,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../../../store/eventsSlice";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
-import { noSleep } from "../utils";
+import { noSleep } from "../nosleep";
 import FreeMeditationPresentation from "./FreeMeditationPresentation";
 
 export default function FreeMeditation() {

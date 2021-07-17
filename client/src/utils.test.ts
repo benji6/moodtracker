@@ -19,6 +19,7 @@ import {
   formatIsoDateHourInLocalTimezone,
   computeSecondsMeditatedInInterval,
   counter,
+  formatSecondsAsTime,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -804,6 +805,17 @@ describe("utils", () => {
     expect(formatIsoYearInLocalTimezone(new Date("2021-01-01T00:00:00"))).toBe(
       "2021"
     );
+  });
+
+  test("formatSecondsAsTime", () => {
+    expect(formatSecondsAsTime(0)).toBe("00:00");
+    expect(formatSecondsAsTime(1)).toBe("00:01");
+    expect(formatSecondsAsTime(59)).toBe("00:59");
+    expect(formatSecondsAsTime(60)).toBe("01:00");
+    expect(formatSecondsAsTime(123)).toBe("02:03");
+    expect(formatSecondsAsTime(600)).toBe("10:00");
+    expect(formatSecondsAsTime(6001)).toBe("100:01");
+    expect(formatSecondsAsTime(60011)).toBe("1000:11");
   });
 
   test("getWeekdayIndex", () => {

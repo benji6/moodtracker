@@ -1,5 +1,5 @@
 import * as React from "react";
-import { formatSecondsAsTime } from "../../../utils";
+import { formatSecondsAsTime } from "../../../../../../utils";
 import "./style.css";
 
 const RING_THICKNESS = 1 / 9;
