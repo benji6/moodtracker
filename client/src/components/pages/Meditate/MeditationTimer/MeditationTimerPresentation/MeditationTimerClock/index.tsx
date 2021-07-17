@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TIME } from "../../../../../../constants";
+import { formatSecondsAsTime } from "../../../utils";
 import "./style.css";
 
 const RING_THICKNESS = 1 / 9;
@@ -52,11 +52,7 @@ export default function MeditationTimerClock({
         x={TEXT_X}
         y="0.5"
       >
-        {`${String(
-          Math.floor(remainingSeconds / TIME.secondsPerMinute)
-        ).padStart(2, "0")}:${String(
-          Math.floor(remainingSeconds % TIME.secondsPerMinute)
-        ).padStart(2, "0")}`}
+        {formatSecondsAsTime(remainingSeconds)}
       </text>
     </svg>
   );

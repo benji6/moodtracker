@@ -29,9 +29,10 @@ export default function Meditate() {
       <Paper>
         <h2>Meditate</h2>
         <p>
-          This is a place where you can meditate. Select a preset time or enter
-          a custom time and press start. Once your meditation is finished you
-          will have the opportunity to record it if you choose.
+          This is a place where you can meditate. Select a preset time, enter a
+          custom time or meditate freely with no fixed time. Once your
+          meditation is finished you will have the opportunity to record it if
+          you choose.
         </p>
         <p>
           Record your mood before and after to see how meditation changes things
@@ -53,6 +54,15 @@ export default function Meditate() {
             </Button>
           ))}
         </div>
+      </Paper>
+      <Paper>
+        <h3>Free meditation</h3>
+        <p>Meditate for however long you like</p>
+        <Button.Group>
+          <Button onClick={() => navigate("/meditate/free")} type="button">
+            Start
+          </Button>
+        </Button.Group>
       </Paper>
       <Paper>
         <form
@@ -81,6 +91,7 @@ export default function Meditate() {
           }}
         >
           <h3>Custom time</h3>
+          <p>Set a custom time for your meditation here</p>
           <TextField
             data-test-id={TEST_IDS.meditationCustomTimeInput}
             inputMode="numeric"

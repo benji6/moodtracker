@@ -30,6 +30,7 @@ import Day from "./pages/Stats/Day";
 import { Page } from "./shared/Page";
 import RedirectHome from "./pages/RedirectHome";
 import Meditation from "./pages/Stats/Meditation";
+import FreeMeditation from "./pages/Meditate/FreeMeditation";
 
 export default function Router() {
   return (
@@ -48,6 +49,11 @@ export default function Router() {
           Component={Meditate}
           path="/meditate"
           title="Meditate"
+        />
+        <AuthedOnlyPage
+          Component={FreeMeditation}
+          path="/meditate/free"
+          title="Free meditation"
         />
         <AuthedOnlyPage
           Component={MeditationTimer}
