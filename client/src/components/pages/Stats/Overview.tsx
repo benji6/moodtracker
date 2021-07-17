@@ -4,7 +4,11 @@ import * as React from "react";
 import GetStartedCta from "../../shared/GetStartedCta";
 import Months from "./Months";
 import Weeks from "./Weeks";
-import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
+import {
+  eventsSelector,
+  hasMeditationsSelector,
+  normalizedMoodsSelector,
+} from "../../../selectors";
 import { useSelector } from "react-redux";
 import Years from "./Years";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
@@ -13,6 +17,7 @@ import { TEST_IDS } from "../../../constants";
 export default function Overview() {
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
+  const hasMeditations = useSelector(hasMeditationsSelector);
 
   if (!moods.allIds.length)
     return (
@@ -38,9 +43,11 @@ export default function Overview() {
       <Paper>
         <h2>More</h2>
         <ul>
-          <li>
-            <Link to="/stats/meditation">Meditation stats</Link>
-          </li>
+          {hasMeditations && (
+            <li>
+              <Link to="/stats/meditation">Meditation stats</Link>
+            </li>
+          )}
           <li>
             <Link to="/stats/explore">Explore</Link>
           </li>
