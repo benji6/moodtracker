@@ -43,13 +43,13 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
     }
 
     const trimmedDescriptionValue = descriptionValue.trim();
-    if (descriptionValue && trimmedDescriptionValue !== mood.description) {
+    if (trimmedDescriptionValue !== mood.description) {
       payload.description = trimmedDescriptionValue;
       shouldUpdate = true;
     }
 
     const trimmedExplorationValue = explorationValue.trim();
-    if (explorationValue && trimmedExplorationValue !== mood.exploration) {
+    if (trimmedExplorationValue !== mood.exploration) {
       payload.exploration = explorationValue.trim();
       shouldUpdate = true;
     }
