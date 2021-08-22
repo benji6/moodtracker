@@ -69,14 +69,9 @@ const dayMonthLongFormatter = Intl.DateTimeFormat(undefined, {
   day: "numeric",
   month: "long",
 });
-// TODO: One day we should be able to remove this
 const formatRangeDateMonth = (dateA: Date, dateB: Date) =>
-  "formatRange" in dayMonthLongFormatter
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (dayMonthLongFormatter as any).formatRange(dateA, dateB)
-    : `${dayMonthLongFormatter.format(dateA)} – ${dayMonthLongFormatter.format(
-        dateB
-      )}`;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (dayMonthLongFormatter as any).formatRange(dateA, dateB); // TODO - remove any once types are up-to-date
 export const formatWeek = (week: Date): string =>
   formatRangeDateMonth(
     startOfWeek(week, WEEK_OPTIONS),
@@ -92,11 +87,8 @@ export const formatDurationFromSeconds = (seconds: number): string => {
   return durationString || "N/A";
 };
 
-// TODO: One day we should be able to remove this
 const formatRange = (dateA: Date, dateB: Date) =>
-  "formatRange" in dateFormatter
-    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (dateFormatter as any).formatRange(dateA, dateB)
-    : `${dateFormatter.format(dateA)} – ${dateFormatter.format(dateB)}`;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (dateFormatter as any).formatRange(dateA, dateB); // TODO - remove any once types are up-to-date
 export const formatWeekWithYear = (week: Date): string =>
   formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
