@@ -50,7 +50,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                 </small>
               </div>
             </div>
-            <div className="center my-3">
+            <div className="m-nav__sign-out center">
               <Button
                 danger
                 data-test-id={TEST_IDS.signOutButton}

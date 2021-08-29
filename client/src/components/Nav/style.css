@@ -2,6 +2,10 @@
   margin: var(--space-3) var(--space-3) 0;
 }
 
+.m-nav__sign-out {
+  margin-block: var(--space-2);
+}
+
 .m-nav__sync-state {
   margin: var(--space-3) var(--space-3) calc(-1 * var(--space-4));
 }

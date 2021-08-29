@@ -1,3 +1,4 @@
 .m-mood-gradient {
   height: var(--space-1);
+  margin-block: var(--space-2);
 }
