@@ -38,7 +38,7 @@ export default function useUser(): void {
               })
             );
         } catch (e) {
-          if (e.message !== "No current user") return;
+          if (e instanceof Error && e.message !== "No current user") return;
           dispatch(userSlice.actions.clear());
           dispatch(eventsSlice.actions.clear());
         }

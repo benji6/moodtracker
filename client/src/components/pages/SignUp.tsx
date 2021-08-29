@@ -37,7 +37,8 @@ export default function SignUp() {
         try {
           await signUp({ attributeList, email, password });
           navigate("/verify");
-        } catch (e) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (e: any) {
           switch (e.code) {
             case "NetworkError":
               setSubmitError(ERRORS.network);
