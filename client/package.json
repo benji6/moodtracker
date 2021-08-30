@@ -25,7 +25,7 @@
     "amazon-cognito-identity-js": "^5.0.2",
     "d3-interpolate": "^2.0.1",
     "date-fns": "^2.22.0",
-    "eri": "^34.0.0",
+    "eri": "^35.0.0",
     "file-saver": "^2.0.5",
     "idb-keyval": "^5.1.1",
     "nosleep.js": "^0.12.0",
