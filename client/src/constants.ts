@@ -20,7 +20,7 @@ export const MOODTRACKER_DESCRIPTION =
   "MoodTracker is a free and open source web app app that aims to help you understand yourself better. Track your emotional landscape, keep a mood journal, time your meditations, keep a meditation log and gain new insights into yourself. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!";
 
 // Updated manually for now
-export const USERS = { confirmed: 54, activeUsersLast30Days: 7 } as const;
+export const USER_STATS = { confirmed: 59, activeUsersLast30Days: 8 } as const;
 
 export const ERRORS = {
   integer: "Please type a valid whole number",

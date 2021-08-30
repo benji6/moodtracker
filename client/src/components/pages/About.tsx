@@ -1,7 +1,11 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
 import * as React from "react";
-import { BUILD_TIME, MOODTRACKER_DESCRIPTION, USERS } from "../../constants";
+import {
+  BUILD_TIME,
+  MOODTRACKER_DESCRIPTION,
+  USER_STATS,
+} from "../../constants";
 import { dateFormatter } from "../../dateTimeFormatters";
 
 export default function About(_: RouteComponentProps) {
@@ -45,9 +49,9 @@ export default function About(_: RouteComponentProps) {
         </p>
         <h3>Users</h3>
         <p>
-          There are currently <b>{USERS.confirmed}</b> confirmed users and{" "}
-          <b>{USERS.activeUsersLast30Days}</b> people have used MoodTracker over
-          the last 30 days.
+          There are currently <b>{USER_STATS.confirmed}</b> confirmed users and{" "}
+          <b>{USER_STATS.activeUsersLast30Days}</b> people have used MoodTracker
+          over the last 30 days.
         </p>
         <h3>Updates</h3>
         <p>
