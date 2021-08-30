@@ -104,7 +104,7 @@ export default function Month({
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
-              <Icon margin="right" name="left" />
+              <Icon margin="end" name="left" />
               {monthLongFormatter.format(prevMonth)}
             </Link>
           ) : (
@@ -113,7 +113,7 @@ export default function Month({
           {showNext && (
             <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
               {monthLongFormatter.format(nextMonth)}
-              <Icon margin="left" name="right" />
+              <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>

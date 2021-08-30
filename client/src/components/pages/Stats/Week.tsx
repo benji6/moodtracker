@@ -105,7 +105,7 @@ export default function Week({
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevWeek)}`}>
-              <Icon margin="right" name="left" />
+              <Icon margin="end" name="left" />
               Previous week
             </Link>
           ) : (
@@ -114,7 +114,7 @@ export default function Week({
           {showNext && (
             <Link to={`../${formatIsoDateInLocalTimezone(nextWeek)}`}>
               Next week
-              <Icon margin="left" name="right" />
+              <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>

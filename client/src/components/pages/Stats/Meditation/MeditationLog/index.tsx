@@ -45,7 +45,7 @@ export default function MeditationLog() {
                     type="button"
                     variant="tertiary"
                   >
-                    <Icon aria-label="Delete" margin="right" name="cross" />
+                    <Icon aria-label="Delete" margin="end" name="cross" />
                   </Button>
                 </td>
               </tr>

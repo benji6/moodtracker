@@ -85,7 +85,7 @@ export default function Day({
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevDate)}`}>
-              <Icon margin="right" name="left" />
+              <Icon margin="end" name="left" />
               Previous day
             </Link>
           ) : (
@@ -94,7 +94,7 @@ export default function Day({
           {showNext && (
             <Link to={`../${formatIsoDateInLocalTimezone(nextDate)}`}>
               Next day
-              <Icon margin="left" name="right" />
+              <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>

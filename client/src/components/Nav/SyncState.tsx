@@ -20,29 +20,29 @@ export default function SyncState() {
         {syncFromServerError || syncToServerError ? (
           <>
             Data saved locally
-            <Icon draw margin="left" name="save" />
+            <Icon draw margin="start" name="save" />
           </>
         ) : isSyncingFromServer ? (
           isSyncingToServer ? (
             <>
               Syncing
-              <Spinner inline margin="left" />
+              <Spinner inline margin="start" />
             </>
           ) : (
             <>
               Syncing from server
-              <Spinner inline margin="left" />
+              <Spinner inline margin="start" />
             </>
           )
         ) : isSyncingToServer ? (
           <>
             Syncing to server
-            <Spinner inline margin="left" />
+            <Spinner inline margin="start" />
           </>
         ) : (
           <>
             Synced with server
-            <Icon draw margin="left" name="check" />
+            <Icon draw margin="start" name="check" />
           </>
         )}
       </p>

@@ -51,7 +51,7 @@ function MeditationTimerPresentation({
               <Button onClick={onFinish}>Finish</Button>
               <Button onClick={onDim} variant="secondary">
                 Dim screen
-                <Icon margin="left" name="moon" />
+                <Icon margin="start" name="moon" />
               </Button>
               <Button
                 onClick={() => {
@@ -63,12 +63,12 @@ function MeditationTimerPresentation({
                 {timerState === "PAUSED" ? (
                   <>
                     Play
-                    <Icon margin="left" name="play" />
+                    <Icon margin="start" name="play" />
                   </>
                 ) : (
                   <>
                     Pause
-                    <Icon margin="left" name="pause" />
+                    <Icon margin="start" name="pause" />
                   </>
                 )}
               </Button>

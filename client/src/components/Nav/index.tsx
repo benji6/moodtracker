@@ -59,7 +59,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                 variant="tertiary"
               >
                 Sign out
-                <Icon name="sign-out" margin="left" />
+                <Icon name="sign-out" margin="start" />
               </Button>
             </div>
             <hr />
@@ -68,36 +68,36 @@ export default function Nav({ handleNavClose, open }: Props) {
         {userIsSignedIn && <SyncState />}
         <EriNav.List>
           <EriNav.Link onClick={handleNavClose} to="/">
-            <Icon margin="right" name="home" />
+            <Icon margin="end" name="home" />
             Home
           </EriNav.Link>
           {userIsSignedIn ? (
             <>
               <EriNav.Link onClick={handleNavClose} to="/add">
-                <Icon margin="right" name="plus" />
+                <Icon margin="end" name="plus" />
                 Add mood
               </EriNav.Link>
               <EriNav.Link onClick={handleNavClose} to="/meditate">
-                <Icon margin="right" name="bell" />
+                <Icon margin="end" name="bell" />
                 Meditate
               </EriNav.Link>
               <EriNav.SubList
                 heading={
                   <span>
-                    <Icon margin="right" name="chart" />
+                    <Icon margin="end" name="chart" />
                     Stats
                   </span>
                 }
               >
                 <EriNav.Link onClick={handleNavClose} to="/stats">
-                  <Icon margin="right" name="chart" />
+                  <Icon margin="end" name="chart" />
                   Overview
                 </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to={`/stats/days/${formatIsoDateInLocalTimezone(now)}`}
                 >
-                  <Icon margin="right" name="chart" />
+                  <Icon margin="end" name="chart" />
                   Today
                 </EriNav.Link>
                 <EriNav.Link
@@ -106,38 +106,38 @@ export default function Nav({ handleNavClose, open }: Props) {
                     startOfWeek(now, WEEK_OPTIONS)
                   )}`}
                 >
-                  <Icon margin="right" name="chart" />
+                  <Icon margin="end" name="chart" />
                   This week
                 </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to={`/stats/months/${formatIsoMonthInLocalTimezone(now)}`}
                 >
-                  <Icon margin="right" name="chart" />
+                  <Icon margin="end" name="chart" />
                   This month
                 </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to={`/stats/years/${formatIsoYearInLocalTimezone(now)}`}
                 >
-                  <Icon margin="right" name="chart" />
+                  <Icon margin="end" name="chart" />
                   This year
                 </EriNav.Link>
                 {hasMeditations && (
                   <EriNav.Link onClick={handleNavClose} to="/stats/meditation">
-                    <Icon margin="right" name="chart" />
+                    <Icon margin="end" name="chart" />
                     Meditation
                   </EriNav.Link>
                 )}
                 <EriNav.Link onClick={handleNavClose} to="/stats/explore">
-                  <Icon margin="right" name="chart" />
+                  <Icon margin="end" name="chart" />
                   Explore
                 </EriNav.Link>
               </EriNav.SubList>
               <EriNav.SubList
                 heading={
                   <span>
-                    <Icon margin="right" name="settings" />
+                    <Icon margin="end" name="settings" />
                     Settings
                   </span>
                 }
@@ -146,38 +146,38 @@ export default function Nav({ handleNavClose, open }: Props) {
                   onClick={handleNavClose}
                   to="/settings/notifications"
                 >
-                  <Icon margin="right" name="bell" />
+                  <Icon margin="end" name="bell" />
                   Notifications
                 </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to="/settings/change-password"
                 >
-                  <Icon margin="right" name="lock" />
+                  <Icon margin="end" name="lock" />
                   Change password
                 </EriNav.Link>
                 <EriNav.Link onClick={handleNavClose} to="/settings/export">
-                  <Icon margin="right" name="download" />
+                  <Icon margin="end" name="download" />
                   Export data
                 </EriNav.Link>
               </EriNav.SubList>
             </>
           ) : (
             <EriNav.Link onClick={handleNavClose} to="/sign-in">
-              <Icon margin="right" name="key" />
+              <Icon margin="end" name="key" />
               Sign in
             </EriNav.Link>
           )}
           <EriNav.Link onClick={handleNavClose} to="/blog">
-            <Icon margin="right" name="book" />
+            <Icon margin="end" name="book" />
             Blog
           </EriNav.Link>
           <EriNav.Link onClick={handleNavClose} to="/about">
-            <Icon margin="right" name="help" />
+            <Icon margin="end" name="help" />
             About
           </EriNav.Link>
           <EriNav.Link onClick={handleNavClose} to="/see-also">
-            <Icon margin="right" name="link" />
+            <Icon margin="end" name="link" />
             See also
           </EriNav.Link>
         </EriNav.List>

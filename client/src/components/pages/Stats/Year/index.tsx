@@ -115,7 +115,7 @@ export default function Year({
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoYearInLocalTimezone(prevYear)}`}>
-              <Icon margin="right" name="left" />
+              <Icon margin="end" name="left" />
               {yearFormatter.format(prevYear)}
             </Link>
           ) : (
@@ -124,7 +124,7 @@ export default function Year({
           {showNext && (
             <Link to={`../${formatIsoYearInLocalTimezone(nextYear)}`}>
               {yearFormatter.format(nextYear)}
-              <Icon margin="left" name="right" />
+              <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>
