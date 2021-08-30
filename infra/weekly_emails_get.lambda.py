@@ -1,6 +1,5 @@
 import boto3
 import json
-from boto3.dynamodb.conditions import Key
 
 HEADERS = {
   'Access-Control-Allow-Origin': 'http://localhost:1234',
@@ -14,23 +13,21 @@ def handler(event, context):
   user_id = event['requestContext']['authorizer']['claims']['sub']
 
   try:
-    response = table.query(
-      KeyConditionExpression=Key('userId').eq(user_id),
-      Select='COUNT',
-    )
+    response = table.get_item(Key={'userId': user_id})
 
-    if response['Count']:
+    if 'Item' not in response:
       return {
-        'body': json.dumps({'enabled': True}),
+        'body': json.dumps({'error': 'Not found'}),
         'headers': HEADERS,
-        'statusCode': 200,
+        'statusCode': 404,
       }
 
     return {
-      'body': json.dumps({'error': 'Not found'}),
+      'body': json.dumps({'enabled': True}),
       'headers': HEADERS,
-      'statusCode': 404,
+      'statusCode': 200,
     }
+
   except Exception as e:
     print(e)
     return {

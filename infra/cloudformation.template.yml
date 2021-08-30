@@ -441,7 +441,7 @@ Resources:
           PolicyDocument:
             Version: 2012-10-17
             Statement:
-              - Action: dynamodb:Query
+              - Action: dynamodb:GetItem
                 Effect: Allow
                 Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
   LambdaWeeklyEmailsPost:
