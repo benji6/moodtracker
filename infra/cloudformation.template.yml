@@ -38,6 +38,10 @@ Resources:
       - ApiGatewayEventsGet
       - ApiGatewayEventsOptions
       - ApiGatewayEventsPost
+      - ApiGatewaySettingsDelete
+      - ApiGatewaySettingsGet
+      - ApiGatewaySettingsOptions
+      - ApiGatewaySettingsPut
       - ApiGatewayWeeklyEmailsDelete
       - ApiGatewayWeeklyEmailsGet
       - ApiGatewayWeeklyEmailsOptions
@@ -97,6 +101,71 @@ Resources:
         Type: AWS_PROXY
         Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaEventsPost.Arn}/invocations"
       ResourceId: !Ref ApiGatewayEventsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewaySettingsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: settings
+      RestApiId: !Ref ApiGateway
+  ApiGatewaySettingsOptions:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: OPTIONS
+      Integration:
+        IntegrationResponses:
+          - StatusCode: 200
+            ResponseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,PUT,OPTIONS'"
+              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
+        RequestTemplates:
+          application/json: '{"statusCode": 200}'
+        Type: MOCK
+      MethodResponses:
+        - StatusCode: 200
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Headers: true
+            method.response.header.Access-Control-Allow-Methods: true
+            method.response.header.Access-Control-Allow-Origin: true
+      ResourceId: !Ref ApiGatewaySettingsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewaySettingsDelete:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: DELETE
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSettingsDelete.Arn}/invocations"
+      ResourceId: !Ref ApiGatewaySettingsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewaySettingsGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSettingsGet.Arn}/invocations"
+      ResourceId: !Ref ApiGatewaySettingsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewaySettingsPut:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: PUT
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSettingsPut.Arn}/invocations"
+      ResourceId: !Ref ApiGatewaySettingsResource
       RestApiId: !Ref ApiGateway
   ApiGatewayWeeklyEmailsResource:
     Type: AWS::ApiGateway::Resource
@@ -230,6 +299,17 @@ Resources:
           Projection:
             ProjectionType: "ALL"
       TableName: moodtracker_events
+  DynamoSettingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      TableName: moodtracker_settings
   # Records all users that have signed up to weekly emails
   DynamoWeeklyEmailsTable:
     Type: AWS::DynamoDB::Table
@@ -370,6 +450,117 @@ Resources:
               - Action: dynamodb:BatchWriteItem
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn
+  LambdaSettingsDelete:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{settings_delete.lambda.py}}}
+      FunctionName: MoodTrackerSettingsDelete
+      Handler: index.handler
+      Role: !GetAtt LambdaSettingsDeleteRole.Arn
+      Runtime: python3.8
+  LambdaSettingsDeletePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaSettingsDelete.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaSettingsDeleteRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_settings_delete_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:DeleteItem
+                Effect: Allow
+                Resource: !GetAtt DynamoSettingsTable.Arn
+  LambdaSettingsGet:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{settings_get.lambda.py}}}
+      FunctionName: MoodTrackerSettingsGet
+      Handler: index.handler
+      Role: !GetAtt LambdaSettingsGetRole.Arn
+      Runtime: python3.8
+  LambdaSettingsGetPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaSettingsGet.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaSettingsGetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_settings_get_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:GetItem
+                Effect: Allow
+                Resource: !GetAtt DynamoSettingsTable.Arn
+  LambdaSettingsPut:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{settings_put.lambda.py}}}
+      FunctionName: MoodTrackerSettingsPut
+      Handler: index.handler
+      Role: !GetAtt LambdaSettingsPutRole.Arn
+      Runtime: python3.8
+  LambdaSettingsPutPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaSettingsPut.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaSettingsPutRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_settings_put_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: dynamodb:PutItem
+                Effect: Allow
+                Resource: !GetAtt DynamoSettingsTable.Arn
   LambdaWeeklyEmailsDelete:
     Type: AWS::Lambda::Function
     Properties:
