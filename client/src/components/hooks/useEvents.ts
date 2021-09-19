@@ -1,6 +1,6 @@
 import * as React from "react";
 import useInterval from "./useInterval";
-import { getEvents, postEvents } from "../../api";
+import { eventsGet, eventsPost } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   appIsStorageLoadingSelector,
@@ -34,7 +34,7 @@ export default function useEvents() {
             events: serverEvents,
             hasNextPage,
             nextCursor,
-          } = await getEvents(cursor);
+          } = await eventsGet(cursor);
           cursor = nextCursor;
           isPaginating = hasNextPage;
 
@@ -64,7 +64,7 @@ export default function useEvents() {
         return;
       dispatch(eventsSlice.actions.syncToServerStart());
       try {
-        await postEvents(events.idsToSync.map((id) => events.byId[id]));
+        await eventsPost(events.idsToSync.map((id) => events.byId[id]));
         dispatch(eventsSlice.actions.syncToServerSuccess());
       } catch {
         dispatch(eventsSlice.actions.syncToServerError());

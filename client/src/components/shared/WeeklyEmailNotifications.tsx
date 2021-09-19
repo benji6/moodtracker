@@ -1,9 +1,9 @@
 import { Spinner, Toggle } from "eri";
 import * as React from "react";
 import {
-  disableWeeklyEmails,
-  enableWeeklyEmails,
-  getWeeklyEmails,
+  weeklyEmailsDisable,
+  weeklyEmailsEnable,
+  weeklyEmailsGet,
 } from "../../api";
 import { ERRORS } from "../../constants";
 
@@ -17,7 +17,7 @@ export default function WeeklyEmailNotifications() {
     () =>
       void (async () => {
         try {
-          const enabled = await getWeeklyEmails();
+          const enabled = await weeklyEmailsGet();
           setIsWeeklyEmailsEnabled(enabled);
         } catch {
           setError(true);
@@ -36,10 +36,10 @@ export default function WeeklyEmailNotifications() {
         if (error) setError(false);
         try {
           if (isWeeklyEmailsEnabled) {
-            await disableWeeklyEmails();
+            await weeklyEmailsDisable();
             setIsWeeklyEmailsEnabled(false);
           } else {
-            await enableWeeklyEmails();
+            await weeklyEmailsEnable();
             setIsWeeklyEmailsEnabled(true);
           }
         } catch {

@@ -19,7 +19,7 @@ const fetchWithAuth: typeof fetch = async (
   });
 };
 
-export const getEvents = async (
+export const eventsGet = async (
   cursor?: string
 ): Promise<{
   events: AppEvent[];
@@ -32,32 +32,29 @@ export const getEvents = async (
   if (!response.ok) throw Error(String(response.status));
   return response.json();
 };
-
-export const getWeeklyEmails = async (): Promise<boolean> => {
-  const response = await fetchWithAuth(WEEKLY_EMAILS_URL);
-  if (response.status === 404) return false;
-  if (!response.ok) throw Error(String(response.status));
-  return true;
-};
-
-export const disableWeeklyEmails = async (): Promise<void> => {
-  const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
-    method: "DELETE",
-  });
-  if (!response.ok) throw Error(String(response.status));
-};
-
-export const enableWeeklyEmails = async (): Promise<void> => {
-  const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
+export const eventsPost = async (events: AppEvent[]): Promise<void> => {
+  const response = await fetchWithAuth(EVENTS_URL, {
+    body: JSON.stringify(events),
+    headers: { "Content-Type": "application/json" },
     method: "POST",
   });
   if (!response.ok) throw Error(String(response.status));
 };
 
-export const postEvents = async (events: AppEvent[]): Promise<void> => {
-  const response = await fetchWithAuth(EVENTS_URL, {
-    body: JSON.stringify(events),
-    headers: { "Content-Type": "application/json" },
+export const weeklyEmailsGet = async (): Promise<boolean> => {
+  const response = await fetchWithAuth(WEEKLY_EMAILS_URL);
+  if (response.status === 404) return false;
+  if (!response.ok) throw Error(String(response.status));
+  return true;
+};
+export const weeklyEmailsDisable = async (): Promise<void> => {
+  const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
+    method: "DELETE",
+  });
+  if (!response.ok) throw Error(String(response.status));
+};
+export const weeklyEmailsEnable = async (): Promise<void> => {
+  const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
     method: "POST",
   });
   if (!response.ok) throw Error(String(response.status));
