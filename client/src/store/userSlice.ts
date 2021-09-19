@@ -11,19 +11,17 @@ interface UserState {
   loading: boolean;
 }
 
+const initialState: UserState = {
+  email: undefined,
+  id: undefined,
+  loading: true,
+};
+
 export default createSlice({
   name: "user",
-  initialState: {
-    email: undefined,
-    id: undefined,
-    loading: true,
-  } as UserState,
+  initialState,
   reducers: {
-    clear: (): UserState => ({
-      email: undefined,
-      id: undefined,
-      loading: false,
-    }),
+    clear: (): UserState => ({ ...initialState, loading: false }),
     set: (_, action: PayloadAction<UserDetails>): UserState => ({
       ...action.payload,
       loading: false,

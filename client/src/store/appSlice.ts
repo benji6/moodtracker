@@ -4,11 +4,13 @@ interface AppState {
   isStorageLoading: boolean;
 }
 
+const initialState: AppState = {
+  isStorageLoading: true,
+};
+
 export default createSlice({
   name: "app",
-  initialState: {
-    isStorageLoading: true,
-  } as AppState,
+  initialState,
   reducers: {
     storageLoaded: (state) => {
       state.isStorageLoading = false;
