@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { userIsSignedInSelector } from "../selectors";
 import AddMoodFab from "./AddMoodFab";
 import { TEST_IDS } from "../constants";
+import useSettings from "./hooks/useSettings";
 
 interface IProps extends RouteComponentProps {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ interface IProps extends RouteComponentProps {
 export default function App({ children }: IProps) {
   useUser();
   useEvents();
+  useSettings();
   useStorage();
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isNavOpen, setIsNavOpen] = React.useState(false);

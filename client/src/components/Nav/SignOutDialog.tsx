@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userPool } from "../../cognito";
 import { TEST_IDS } from "../../constants";
 import { eventsSelector } from "../../selectors";
-import eventsSlice from "../../store/eventsSlice";
-import userSlice from "../../store/userSlice";
+import { slicesToClearOnLogout } from "../../store";
 
 interface Props {
   onClose(): void;
@@ -22,8 +21,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
     const currentUser = userPool.getCurrentUser();
     if (currentUser) currentUser.signOut();
     onClose();
-    dispatch(userSlice.actions.clear());
-    dispatch(eventsSlice.actions.clear());
+    for (const slice of slicesToClearOnLogout) dispatch(slice.actions.clear());
     setIsLoading(false);
   };
 

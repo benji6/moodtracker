@@ -5,16 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   appIsStorageLoadingSelector,
   eventsSelector,
+  settingsDataSelector,
   userEmailSelector,
   userIdSelector,
   userLoadingSelector,
 } from "../../selectors";
 import eventsSlice from "../../store/eventsSlice";
 import appSlice from "../../store/appSlice";
+import settingsSlice from "../../store/settingsSlice";
 
 export default function useStorage() {
   const events = useSelector(eventsSelector);
   const isStorageLoading = useSelector(appIsStorageLoadingSelector);
+  const settingsData = useSelector(settingsDataSelector);
   const userEmail = useSelector(userEmailSelector);
   const userId = useSelector(userIdSelector);
   const userLoading = useSelector(userLoadingSelector);
@@ -25,6 +28,7 @@ export default function useStorage() {
   // handle user sign out
   if (lastUserId.current && !userId) {
     storage.deleteEvents(lastUserId.current);
+    storage.deleteSettings(lastUserId.current);
     navigate("/");
   }
 
@@ -37,21 +41,25 @@ export default function useStorage() {
     else storage.setUser({ email: userEmail, id: userId });
   }, [userEmail, userLoading, userId]);
 
-  // load events
+  // load events & settings
   React.useEffect(() => {
     if (userLoading || !isStorageLoading) return;
     void (async () => {
       try {
         if (!userId) return dispatch(appSlice.actions.storageLoaded());
-        const events = await storage.getEvents(userId);
+        const [events, settings] = await Promise.all([
+          storage.getEvents(userId),
+          storage.getSettings(userId),
+        ]);
         if (events) dispatch(eventsSlice.actions.loadFromStorage(events));
+        if (settings) dispatch(settingsSlice.actions.loadFromStorage(settings));
       } finally {
         dispatch(appSlice.actions.storageLoaded());
       }
     })();
   }, [dispatch, isStorageLoading, userId, userLoading]);
 
-  // save events
+  // save events & settings
   React.useEffect(() => {
     if (isStorageLoading || !userId) return;
     const { allIds, byId, hasLoadedFromServer, idsToSync, nextCursor } = events;
@@ -62,5 +70,6 @@ export default function useStorage() {
       idsToSync,
       nextCursor,
     });
-  }, [isStorageLoading, userId, events]);
+    if (settingsData) storage.setSettings(userId, settingsData);
+  }, [isStorageLoading, settingsData, userId, events]);
 }

@@ -36,6 +36,15 @@ export const eventsSyncFromServerErrorSelector = (state: RootState) =>
 export const eventsSyncToServerErrorSelector = (state: RootState) =>
   state.events.syncToServerError;
 export const eventsSelector = (state: RootState) => state.events;
+export const settingsDataSelector = (state: RootState) => state.settings.data;
+export const settingsIsSyncingFromServerSelector = (state: RootState) =>
+  state.settings.isSyncingFromServer;
+export const settingsIsSyncingToServerSelector = (state: RootState) =>
+  state.settings.isSyncingToServer;
+export const settingsRecordLocationSelector = (state: RootState) =>
+  state.settings.data?.recordLocation;
+export const settingsShouldSyncToServerSelector = (state: RootState) =>
+  state.settings.shouldSyncToServer;
 export const userEmailSelector = (state: RootState) => state.user.email;
 export const userIdSelector = (state: RootState) => state.user.id;
 export const userIsSignedInSelector = (state: RootState) =>

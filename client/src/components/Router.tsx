@@ -20,6 +20,7 @@ import App from "./App";
 import Blog from "./pages/Blog";
 import Year from "./pages/Stats/Year";
 import Export from "./pages/Settings/Export";
+import Location from "./pages/Settings/Location";
 import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
@@ -69,6 +70,11 @@ export default function Router() {
           Component={Export}
           path="/settings/export"
           title="Export data"
+        />
+        <AuthedOnlyPage
+          Component={Location}
+          path="/settings/location"
+          title="Location"
         />
         <AuthedOnlyPage
           Component={Notifications}
