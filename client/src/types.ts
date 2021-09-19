@@ -44,3 +44,8 @@ export type AppEvent =
   | MoodEvent<"v1/moods/create", Mood>
   | MoodEvent<"v1/moods/delete", string>
   | MoodEvent<"v1/moods/update", UpdateMood>;
+
+export interface Settings {
+  updatedAt: string;
+  recordLocation: boolean;
+}

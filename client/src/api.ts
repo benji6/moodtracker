@@ -1,8 +1,9 @@
 import { getIdToken } from "./cognito";
-import { AppEvent } from "./types";
+import { AppEvent, Settings } from "./types";
 
 const API_URL = "https://moodtracker.link/api";
 const EVENTS_URL = `${API_URL}/events`;
+const SETTINGS_URL = `${API_URL}/settings`;
 const WEEKLY_EMAILS_URL = `${API_URL}/weekly-emails`;
 
 const fetchWithAuth: typeof fetch = async (
@@ -56,6 +57,21 @@ export const weeklyEmailsDisable = async (): Promise<void> => {
 export const weeklyEmailsEnable = async (): Promise<void> => {
   const response = await fetchWithAuth(WEEKLY_EMAILS_URL, {
     method: "POST",
+  });
+  if (!response.ok) throw Error(String(response.status));
+};
+
+export const settingsGet = async (): Promise<Settings | undefined> => {
+  const response = await fetchWithAuth(SETTINGS_URL);
+  if (response.status === 404) return undefined;
+  if (!response.ok) throw Error(String(response.status));
+  const settings = await response.json();
+  return settings;
+};
+export const settingsSet = async (settings: Settings): Promise<void> => {
+  const response = await fetchWithAuth(SETTINGS_URL, {
+    method: "PUT",
+    body: JSON.stringify(settings),
   });
   if (!response.ok) throw Error(String(response.status));
 };
