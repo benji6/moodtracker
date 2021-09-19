@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   appIsStorageLoadingSelector,
   eventsIsSyncingFromServerSelector,
+  eventsIsSyncingToServerSelector,
   eventsSelector,
   userEmailSelector,
   userIsSignedInSelector,
@@ -15,7 +16,7 @@ export default function useEvents() {
   const events = useSelector(eventsSelector);
   const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
-  const isSyncingToServer = useSelector(eventsIsSyncingFromServerSelector);
+  const isSyncingToServer = useSelector(eventsIsSyncingToServerSelector);
   const userEmail = useSelector(userEmailSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const dispatch = useDispatch();
