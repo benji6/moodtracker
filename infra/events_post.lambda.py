@@ -1,6 +1,7 @@
 import boto3
 import json
 from datetime import datetime
+from decimal import Decimal
 
 HEADERS_NO_CONTENT = {
   'Access-Control-Allow-Origin': 'http://localhost:1234',
@@ -17,7 +18,7 @@ def handler(event, context):
   user_id = event['requestContext']['authorizer']['claims']['sub']
 
   try:
-    events = json.loads(event['body'])
+    events = json.loads(event['body'], parse_float=Decimal)
   except json.JSONDecodeError as e:
     print(e)
     return {

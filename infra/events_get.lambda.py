@@ -2,6 +2,7 @@ import boto3
 import json
 from boto3.dynamodb.conditions import Key
 from datetime import datetime, timedelta
+from decimal import Decimal
 
 HEADERS = {
   'Access-Control-Allow-Origin': 'http://localhost:1234',
@@ -37,7 +38,7 @@ def handler(event, context):
       ExpressionAttributeNames={'#t': 'type'},
       IndexName='serverCreatedAt',
       KeyConditionExpression=key_condition_expression,
-      Limit=1000,
+      Limit=500,
       ProjectionExpression='createdAt,payload,serverCreatedAt,#t',
     )
 
@@ -52,6 +53,10 @@ def handler(event, context):
         last_server_created_at = event['serverCreatedAt']
       del event['serverCreatedAt']
       payload = event['payload']
+      if 'location' in payload:
+        payload['location'] = {
+          k: float(v) if isinstance(v, Decimal) else v for k,v in payload['location'].items()
+        }
       if 'mood' in payload:
         payload['mood'] = float(payload['mood'])
       elif 'seconds' in payload:
