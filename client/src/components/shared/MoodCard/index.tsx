@@ -1,8 +1,10 @@
 import { useNavigate } from "@reach/router";
 import { Card, SubHeading } from "eri";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../dateTimeFormatters";
+import { normalizedMoodsSelector } from "../../../selectors";
 import { ServerMood } from "../../../types";
 import { moodToColor } from "../../../utils";
 import "./style.css";
@@ -15,6 +17,8 @@ export default function MoodCard({
 }: ServerMood) {
   const navigate = useNavigate();
   const date = new Date(id);
+  const normalizedMoods = useSelector(normalizedMoodsSelector);
+  const { location } = normalizedMoods.byId[id];
 
   return (
     <Card
@@ -39,6 +43,19 @@ export default function MoodCard({
             >
               {timeFormatter.format(date)}
             </small>
+            {location && (
+              <>
+                <br />
+                <small
+                  data-test-id={TEST_IDS.moodCardTime}
+                  data-time={Math.round(date.getTime() / 1e3)}
+                >
+                  Lat: {location.latitude}
+                  <br />
+                  Long: {location.longitude}
+                </small>
+              </>
+            )}
           </p>
         </div>
         {exploration && (

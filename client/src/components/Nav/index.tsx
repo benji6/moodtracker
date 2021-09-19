@@ -149,6 +149,10 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <Icon margin="end" name="bell" />
                   Notifications
                 </EriNav.Link>
+                <EriNav.Link onClick={handleNavClose} to="/settings/location">
+                  <Icon margin="end" name="location" />
+                  Location
+                </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to="/settings/change-password"

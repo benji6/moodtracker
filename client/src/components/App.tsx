@@ -10,6 +10,7 @@ import { userIsSignedInSelector } from "../selectors";
 import AddMoodFab from "./AddMoodFab";
 import { TEST_IDS } from "../constants";
 import useSettings from "./hooks/useSettings";
+import useGeolocation from "./hooks/useGeolocation";
 
 interface IProps extends RouteComponentProps {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ interface IProps extends RouteComponentProps {
 
 export default function App({ children }: IProps) {
   useUser();
+  useGeolocation();
   useEvents();
   useSettings();
   useStorage();

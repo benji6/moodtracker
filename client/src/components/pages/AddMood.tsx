@@ -1,11 +1,12 @@
 import { useNavigate } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { Mood } from "../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
+import { deviceGeolocationSelector } from "../../selectors";
 
 export default function AddMood() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function AddMood() {
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined
   >();
+  const geolocation = useSelector(deviceGeolocationSelector);
   const formRef = React.useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {
@@ -33,6 +35,7 @@ export default function AddMood() {
     const payload: Mood = { mood: Number(moodValue) };
     if (descriptionValue) payload.description = descriptionValue.trim();
     if (explorationValue) payload.exploration = explorationValue.trim();
+    if (geolocation) payload.location = geolocation;
 
     dispatch(
       eventsSlice.actions.add({

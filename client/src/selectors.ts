@@ -27,6 +27,8 @@ import {
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
   state.app.isStorageLoading;
+export const deviceGeolocationSelector = (state: RootState) =>
+  state.device.geolocation;
 export const eventsIsSyncingFromServerSelector = (state: RootState) =>
   state.events.isSyncingFromServer;
 export const eventsIsSyncingToServerSelector = (state: RootState) =>

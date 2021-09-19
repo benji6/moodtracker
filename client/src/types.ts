@@ -17,9 +17,16 @@ export interface Meditation {
   seconds: number;
 }
 
+export interface DeviceGeolocation {
+  accuracy: number;
+  latitude: number;
+  longitude: number;
+}
+
 export interface Mood {
   description?: string;
   exploration?: string;
+  location?: DeviceGeolocation;
   mood: number;
 }
 

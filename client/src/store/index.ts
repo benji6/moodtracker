@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import appSlice from "./appSlice";
+import deviceSlice from "./deviceSlice";
 import eventsSlice from "./eventsSlice";
 import settingsSlice from "./settingsSlice";
 import userSlice from "./userSlice";
@@ -13,6 +14,7 @@ export const slicesToClearOnLogout = [
 const store = configureStore({
   reducer: combineReducers({
     app: appSlice.reducer,
+    device: deviceSlice.reducer,
     events: eventsSlice.reducer,
     settings: settingsSlice.reducer,
     user: userSlice.reducer,
