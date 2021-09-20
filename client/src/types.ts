@@ -14,6 +14,7 @@ export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
 
 export interface Meditation {
+  location?: DeviceGeolocation;
   seconds: number;
 }
 
@@ -29,8 +30,6 @@ export interface Mood {
   location?: DeviceGeolocation;
   mood: number;
 }
-
-export type ServerMood = Mood & { id: string };
 
 export interface UpdateMood {
   description?: string;

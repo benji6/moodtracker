@@ -5,11 +5,14 @@ import { useSelector } from "react-redux";
 import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../dateTimeFormatters";
 import { normalizedMoodsSelector } from "../../../selectors";
-import { ServerMood } from "../../../types";
 import { moodToColor } from "../../../utils";
 import "./style.css";
 
-export default function MoodCard({ id }: ServerMood) {
+interface Props {
+  id: string;
+}
+
+export default function MoodCard({ id }: Props) {
   const navigate = useNavigate();
   const date = new Date(id);
   const normalizedMoods = useSelector(normalizedMoodsSelector);

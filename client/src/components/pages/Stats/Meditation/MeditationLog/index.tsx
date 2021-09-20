@@ -1,9 +1,9 @@
-import { Button, Icon, Pagination, Paper } from "eri";
+import { Card, Pagination, Paper } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { dateTimeFormatter } from "../../../../../dateTimeFormatters";
 import { normalizedMeditationsSelector } from "../../../../../selectors";
-import { formatSecondsAsTime, mapRight } from "../../../../../utils";
+import { mapRight } from "../../../../../utils";
+import MeditationCard from "./MeditationCard";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 
 const MAX_ITEMS_PER_PAGE = 10;
@@ -21,38 +21,18 @@ export default function MeditationLog() {
   return (
     <Paper>
       <h3>Log</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Time finished</th>
-            <th>Time</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {mapRight(meditations.allIds.slice(startIndex, endIndex), (id) => {
-            return (
-              <tr key={id}>
-                <td>{dateTimeFormatter.format(new Date(id))}</td>
-                <td>{formatSecondsAsTime(meditations.byId[id].seconds)}</td>
-                <td>
-                  <Button
-                    danger
-                    onClick={() => {
-                      setDialogId(id);
-                      setIsOpen(true);
-                    }}
-                    type="button"
-                    variant="tertiary"
-                  >
-                    <Icon aria-label="Delete" margin="end" name="cross" />
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <Card.Group>
+        {mapRight(meditations.allIds.slice(startIndex, endIndex), (id) => (
+          <MeditationCard
+            key={id}
+            id={id}
+            onDelete={() => {
+              setDialogId(id);
+              setIsOpen(true);
+            }}
+          />
+        ))}
+      </Card.Group>
       <Pagination onChange={setPage} page={page} pageCount={pageCount} />
       <MeditationDeleteDialog
         id={dialogId}

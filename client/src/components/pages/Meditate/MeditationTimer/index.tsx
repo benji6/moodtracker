@@ -1,7 +1,8 @@
 import { Redirect, RouteComponentProps, useNavigate } from "@reach/router";
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../constants";
+import { deviceGeolocationSelector } from "../../../../selectors";
 import eventsSlice from "../../../../store/eventsSlice";
 import { Meditation } from "../../../../types";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
@@ -14,6 +15,7 @@ export type TimerState = "FINISHED" | "PAUSED" | "TIMING";
 export default function MeditationTimer({ location }: RouteComponentProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const geolocation = useSelector(deviceGeolocationSelector);
   const searchParams = new URLSearchParams(location?.search);
   const timerDuration = Number(
     searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY)
@@ -31,6 +33,8 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   }, [navigate]);
   const onFinishAndLog = React.useCallback(() => {
     const payload: Meditation = { seconds: Math.round(timerDuration) };
+    if (geolocation) payload.location = geolocation;
+
     let createdAt: string;
     if (timeFinished) createdAt = timeFinished.toISOString();
     else {
