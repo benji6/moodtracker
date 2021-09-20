@@ -282,7 +282,7 @@ export default function MoodList() {
                 />
                 <Card.Group>
                   {mapRight(ids!, (id) => (
-                    <MoodCard id={id} key={id} {...moods.byId[id]} />
+                    <MoodCard id={id} key={id} />
                   ))}
                 </Card.Group>
               </Paper>

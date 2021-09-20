@@ -85,6 +85,13 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
               </small>
             </>
           )}
+          {mood.location && (
+            <>
+              <br />
+              <small>Latitude: {mood.location.latitude}</small> |{" "}
+              <small>Longitude: {mood.location.longitude}</small>
+            </>
+          )}
         </p>
         <form
           noValidate

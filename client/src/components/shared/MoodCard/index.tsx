@@ -9,16 +9,11 @@ import { ServerMood } from "../../../types";
 import { moodToColor } from "../../../utils";
 import "./style.css";
 
-export default function MoodCard({
-  id,
-  description,
-  exploration,
-  mood,
-}: ServerMood) {
+export default function MoodCard({ id }: ServerMood) {
   const navigate = useNavigate();
   const date = new Date(id);
   const normalizedMoods = useSelector(normalizedMoodsSelector);
-  const { location } = normalizedMoods.byId[id];
+  const { description, exploration, location, mood } = normalizedMoods.byId[id];
 
   return (
     <Card

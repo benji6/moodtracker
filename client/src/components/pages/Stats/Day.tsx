@@ -107,7 +107,7 @@ export default function Day({
         <Paper>
           <Card.Group>
             {moodIds.map((id) => (
-              <MoodCard id={id} key={id} {...moods.byId[id]} />
+              <MoodCard id={id} key={id} />
             ))}
           </Card.Group>
         </Paper>
