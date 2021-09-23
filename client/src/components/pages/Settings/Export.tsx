@@ -22,15 +22,38 @@ const createFilename = (
     new Date()
   )}.${extension}`;
 
+interface FlattenedDatum {
+  [k: string]: number | string;
+}
+
 const downloadCsv = (
   dataType: DataType,
   denormalizedData: DenormalizedData
 ) => {
   const columns: Set<string> = new Set();
-  for (const datum of denormalizedData)
-    for (const key of Object.keys(datum)) columns.add(key);
+  const flattenedDenormalizedData: FlattenedDatum[] = [];
+
+  for (const datum of denormalizedData) {
+    const flattenedDatum: FlattenedDatum = {};
+    for (const [key, val] of Object.entries(datum)) {
+      if (typeof val !== "object") {
+        flattenedDatum[key] = val;
+        columns.add(key);
+        continue;
+      }
+      for (const [k, v] of Object.entries(
+        val as Record<string, number | string>
+      )) {
+        const flattenedKey = `${key}:${k}`;
+        flattenedDatum[flattenedKey] = v;
+        columns.add(flattenedKey);
+      }
+    }
+    flattenedDenormalizedData.push(flattenedDatum);
+  }
+
   saveAs(
-    new Blob([unparse(denormalizedData, { columns: [...columns] })], {
+    new Blob([unparse(flattenedDenormalizedData, { columns: [...columns] })], {
       type: "text/csv",
     }),
     createFilename(dataType, "csv")
