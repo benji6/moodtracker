@@ -53,7 +53,9 @@ export default function WeeklyEmailNotifications() {
             <Spinner inline />
           </span>
         ) : (
-          "Weekly email notifications"
+          `Weekly email notifications ${
+            isWeeklyEmailsEnabled ? "en" : "dis"
+          }abled`
         )
       }
     />

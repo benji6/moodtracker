@@ -18,7 +18,11 @@ export default function LocationToggle() {
           )
         );
       }}
-      label={locationEnabled ? "Recording location" : "Not recording location"}
+      label={
+        locationEnabled
+          ? "Storing location against events you record"
+          : "Not recording location"
+      }
     />
   );
 }
