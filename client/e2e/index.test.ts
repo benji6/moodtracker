@@ -144,7 +144,9 @@ describe("e2e", () => {
         const errorMessage = await errors[0].evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.required);
 
-        const moodRadioButton = (await page.$(SELECTORS.addMoodRadioButton))!;
+        const moodRadioButton = (await page.$<HTMLInputElement>(
+          SELECTORS.addMoodRadioButton
+        ))!;
         await moodRadioButton.evaluate((el) => el.click());
 
         errors = await page.$$('[data-eri-id="field-error"]');
@@ -181,7 +183,7 @@ describe("e2e", () => {
         const errorMessage = await errors[0].evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.required);
 
-        const moodRadioButton = (await page.$(
+        const moodRadioButton = (await page.$<HTMLInputElement>(
           `${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`
         ))!;
         await moodRadioButton.evaluate((el) => el.click());
