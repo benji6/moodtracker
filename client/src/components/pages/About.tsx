@@ -1,12 +1,8 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
 import * as React from "react";
-import {
-  BUILD_TIME,
-  MOODTRACKER_DESCRIPTION,
-  USER_STATS,
-} from "../../constants";
-import { dateFormatter } from "../../dateTimeFormatters";
+import { MOODTRACKER_DESCRIPTION, USER_STATS } from "../../constants";
+import Version from "../shared/Version";
 
 export default function About(_: RouteComponentProps) {
   return (
@@ -54,10 +50,7 @@ export default function About(_: RouteComponentProps) {
           over the last 30 days.
         </p>
         <h3>Updates</h3>
-        <p>
-          The version you&apos;re using was last updated on{" "}
-          <b>{dateFormatter.format(new Date(BUILD_TIME))}</b>.
-        </p>
+        <Version />
         <p>
           Check out <Link to="/blog">our blog</Link> for major feature
           announcements.

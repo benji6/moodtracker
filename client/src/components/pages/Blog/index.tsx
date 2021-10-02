@@ -2,6 +2,7 @@ import { RouteComponentProps } from "@reach/router";
 import { Paper, SubHeading } from "eri";
 import * as React from "react";
 import { dateFormatter } from "../../../dateTimeFormatters";
+import Version from "../../shared/Version";
 
 const BLOG_POSTS = {
   "2021-09-24": {
@@ -81,6 +82,7 @@ export default function Blog(_: RouteComponentProps) {
           developments. Less exciting stuff like bugfixes, performance
           improvements and minor UI changes won&apos;t get a mention here.
         </p>
+        <Version />
       </Paper>
       {Object.entries(BLOG_POSTS).map(([dateString, { __html, title }]) => (
         <Paper key={dateString}>
