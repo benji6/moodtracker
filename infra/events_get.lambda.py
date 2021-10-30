@@ -4,10 +4,7 @@ from boto3.dynamodb.conditions import Key
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-HEADERS = {
-  'Access-Control-Allow-Origin': 'http://localhost:1234',
-  'Content-Type': 'application/json',
-}
+HEADERS = {'Content-Type': 'application/json'}
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('moodtracker_events')

@@ -36,14 +36,11 @@ Resources:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
       - ApiGatewayEventsGet
-      - ApiGatewayEventsOptions
       - ApiGatewayEventsPost
       - ApiGatewaySettingsGet
-      - ApiGatewaySettingsOptions
       - ApiGatewaySettingsPut
       - ApiGatewayWeeklyEmailsDelete
       - ApiGatewayWeeklyEmailsGet
-      - ApiGatewayWeeklyEmailsOptions
       - ApiGatewayWeeklyEmailsPost
     Properties:
       RestApiId: !Ref ApiGateway
@@ -53,29 +50,6 @@ Resources:
     Properties:
       ParentId: !GetAtt ApiGateway.RootResourceId
       PathPart: events
-      RestApiId: !Ref ApiGateway
-  ApiGatewayEventsOptions:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: OPTIONS
-      Integration:
-        IntegrationResponses:
-          - StatusCode: 200
-            ResponseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Methods: "'GET,POST,OPTIONS'"
-              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
-        RequestTemplates:
-          application/json: '{"statusCode": 200}'
-        Type: MOCK
-      MethodResponses:
-        - StatusCode: 200
-          ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: true
-            method.response.header.Access-Control-Allow-Methods: true
-            method.response.header.Access-Control-Allow-Origin: true
-      ResourceId: !Ref ApiGatewayEventsResource
       RestApiId: !Ref ApiGateway
   ApiGatewayEventsGet:
     Type: AWS::ApiGateway::Method
@@ -107,29 +81,6 @@ Resources:
       ParentId: !GetAtt ApiGateway.RootResourceId
       PathPart: settings
       RestApiId: !Ref ApiGateway
-  ApiGatewaySettingsOptions:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: OPTIONS
-      Integration:
-        IntegrationResponses:
-          - StatusCode: 200
-            ResponseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,PUT,OPTIONS'"
-              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
-        RequestTemplates:
-          application/json: '{"statusCode": 200}'
-        Type: MOCK
-      MethodResponses:
-        - StatusCode: 200
-          ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: true
-            method.response.header.Access-Control-Allow-Methods: true
-            method.response.header.Access-Control-Allow-Origin: true
-      ResourceId: !Ref ApiGatewaySettingsResource
-      RestApiId: !Ref ApiGateway
   ApiGatewaySettingsGet:
     Type: AWS::ApiGateway::Method
     Properties:
@@ -159,29 +110,6 @@ Resources:
     Properties:
       ParentId: !GetAtt ApiGateway.RootResourceId
       PathPart: weekly-emails
-      RestApiId: !Ref ApiGateway
-  ApiGatewayWeeklyEmailsOptions:
-    Type: AWS::ApiGateway::Method
-    Properties:
-      AuthorizationType: NONE
-      HttpMethod: OPTIONS
-      Integration:
-        IntegrationResponses:
-          - StatusCode: 200
-            ResponseParameters:
-              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,POST,OPTIONS'"
-              method.response.header.Access-Control-Allow-Origin: "'http://localhost:1234'"
-        RequestTemplates:
-          application/json: '{"statusCode": 200}'
-        Type: MOCK
-      MethodResponses:
-        - StatusCode: 200
-          ResponseParameters:
-            method.response.header.Access-Control-Allow-Headers: true
-            method.response.header.Access-Control-Allow-Methods: true
-            method.response.header.Access-Control-Allow-Origin: true
-      ResourceId: !Ref ApiGatewayWeeklyEmailsResource
       RestApiId: !Ref ApiGateway
   ApiGatewayWeeklyEmailsDelete:
     Type: AWS::ApiGateway::Method

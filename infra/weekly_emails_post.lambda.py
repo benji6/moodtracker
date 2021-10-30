@@ -2,13 +2,7 @@ import boto3
 import json
 from datetime import datetime
 
-HEADERS_NO_CONTENT = {
-  'Access-Control-Allow-Origin': 'http://localhost:1234',
-}
-HEADERS = {
-  **HEADERS_NO_CONTENT,
-  'Content-Type': 'application/json',
-}
+HEADERS = {'Content-Type': 'application/json'}
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('moodtracker_weekly_emails')
@@ -21,10 +15,7 @@ def handler(event, context):
       'createdAt': datetime.utcnow().isoformat(),
       'userId': user_id,
     })
-    return {
-      'headers': HEADERS_NO_CONTENT,
-      'statusCode': 204,
-    }
+    return {'statusCode': 204}
   except Exception as e:
     print(e)
     return {

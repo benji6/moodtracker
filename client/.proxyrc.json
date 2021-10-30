@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "changeOrigin": true,
+    "target": "https://moodtracker.link"
+  }
+}

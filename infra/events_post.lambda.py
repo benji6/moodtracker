@@ -3,13 +3,7 @@ import json
 from datetime import datetime
 from decimal import Decimal
 
-HEADERS_NO_CONTENT = {
-  'Access-Control-Allow-Origin': 'http://localhost:1234',
-}
-HEADERS = {
-  **HEADERS_NO_CONTENT,
-  'Content-Type': 'application/json',
-}
+HEADERS = {'Content-Type': 'application/json'}
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('moodtracker_events')
@@ -32,7 +26,7 @@ def handler(event, context):
         event['serverCreatedAt'] = datetime.utcnow().isoformat()
         event['userId'] = user_id
         batch.put_item(Item=event)
-    return {'headers': HEADERS_NO_CONTENT, 'statusCode': 204}
+    return {'statusCode': 204}
   except Exception as e:
     print(e)
     return {
