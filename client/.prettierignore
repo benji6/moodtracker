@@ -1,5 +1,5 @@
 .*ignore
-.cache
+.parcel-cache
 *.lock
 *.mp3
 *.png

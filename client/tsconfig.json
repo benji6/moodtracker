@@ -3,6 +3,7 @@
     "esModuleInterop": true, // for tests
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
+    "module": "ES2020",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "sourceMap": true,

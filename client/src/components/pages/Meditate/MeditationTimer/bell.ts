@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const meditationBellUri = require("./meditation-bell.mp3");
+const meditationBellUri = String(
+  new URL("meditation-bell.mp3", import.meta.url)
+);
 
 const audioContext = typeof AudioContext !== "undefined" && new AudioContext();
 let bufferSource: AudioBufferSourceNode | null = null;

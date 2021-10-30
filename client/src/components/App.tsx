@@ -12,6 +12,10 @@ import { TEST_IDS } from "../constants";
 import useSettings from "./hooks/useSettings";
 import useGeolocation from "./hooks/useGeolocation";
 
+// HACK - throws an exception if we don't assign this first
+// Have not figured out the underlying issue
+const QuickNavLink = QuickNav.Link;
+
 interface IProps extends RouteComponentProps {
   children: React.ReactNode;
 }
@@ -41,18 +45,18 @@ export default function App({ children }: IProps) {
       <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>
-          <QuickNav.Link aria-label="Home" to="/">
+          <QuickNavLink aria-label="Home" to="/">
             <Icon name="home" size="3" />
-          </QuickNav.Link>
-          <QuickNav.Link aria-label="Statistics" to="/stats">
+          </QuickNavLink>
+          <QuickNavLink aria-label="Statistics" to="/stats">
             <Icon name="chart" size="3" />
-          </QuickNav.Link>
-          <QuickNav.Link aria-label="Meditate" to="/meditate">
+          </QuickNavLink>
+          <QuickNavLink aria-label="Meditate" to="/meditate">
             <Icon name="bell" size="3" />
-          </QuickNav.Link>
-          <QuickNav.Link aria-label="Add new mood" to="/add">
+          </QuickNavLink>
+          <QuickNavLink aria-label="Add new mood" to="/add">
             <Icon name="plus" size="3" />
-          </QuickNav.Link>
+          </QuickNavLink>
         </QuickNav>
       )}
     </>

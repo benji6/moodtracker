@@ -17,8 +17,9 @@ import {
   WORD_CLOUD_PROPS,
 } from "./constants";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const addMoodImgSrc = require("../Blog/2020-12-30/screenshot-1.png");
+const addMoodImgSrc = String(
+  new URL("../Blog/2020-12-30/screenshot-1.png", import.meta.url)
+);
 
 export default function NotSignedIn() {
   const navigate = useNavigate();
