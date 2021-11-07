@@ -1,4 +1,3 @@
-import * as React from "react";
 import { normalizedAveragesByHourSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import { computeMean, formatIsoDateHourInLocalTimezone } from "../../../utils";

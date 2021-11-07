@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { normalizedAveragesByDaySelector } from "../../../selectors";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";

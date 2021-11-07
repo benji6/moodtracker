@@ -1,6 +1,5 @@
 import setHours from "date-fns/setHours";
 import { Chart } from "eri";
-import * as React from "react";
 import { MOOD_INTEGERS, MOOD_RANGE, TIME } from "../../constants";
 import { hourNumericFormatter } from "../../dateTimeFormatters";
 

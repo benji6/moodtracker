@@ -1,5 +1,4 @@
 import { Paper } from "eri";
-import * as React from "react";
 import LocationToggle from "../../shared/LocationToggle";
 
 export default function Location() {

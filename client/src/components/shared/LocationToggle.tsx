@@ -1,5 +1,4 @@
 import { Toggle } from "eri";
-import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsRecordLocationSelector } from "../../selectors";
 import settingsSlice from "../../store/settingsSlice";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Chart } from "eri";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
 import { moodToColor } from "../../utils";

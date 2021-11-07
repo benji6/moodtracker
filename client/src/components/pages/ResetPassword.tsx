@@ -1,5 +1,4 @@
 import { ResetPasswordPage } from "eri";
-import * as React from "react";
 import { createCognitoUser } from "../../cognito";
 import { ERRORS, TEST_IDS } from "../../constants";
 

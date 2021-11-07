@@ -1,6 +1,5 @@
 import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton } from "eri";
-import * as React from "react";
 import { MOODTRACKER_DESCRIPTION, USER_STATS } from "../../constants";
 import Version from "../shared/Version";
 

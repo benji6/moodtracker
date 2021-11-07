@@ -1,6 +1,5 @@
 import { Button, Paper } from "eri";
 import { saveAs } from "file-saver";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import {
   denormalizedMeditationsSelector,

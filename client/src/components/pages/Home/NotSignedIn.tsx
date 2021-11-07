@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "@reach/router";
 import { Button, Paper, WordCloud } from "eri";
-import * as React from "react";
 import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";

@@ -1,6 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
 import { Paper } from "eri";
-import * as React from "react";
 
 export default function SeeAlso(_: RouteComponentProps) {
   return (

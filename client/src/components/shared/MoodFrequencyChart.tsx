@@ -1,5 +1,4 @@
 import { Chart } from "eri";
-import * as React from "react";
 import { moodToColor } from "../../utils";
 
 // really this is the count minus 1 because it excludes 0

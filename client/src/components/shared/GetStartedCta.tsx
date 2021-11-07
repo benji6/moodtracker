@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button, Paper } from "eri";
 import { useNavigate } from "@reach/router";
 import WeeklyEmailNotifications from "./WeeklyEmailNotifications";

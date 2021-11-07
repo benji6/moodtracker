@@ -1,5 +1,4 @@
 import { Paper } from "eri";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../../constants";
 import { normalizedMoodsSelector } from "../../../selectors";

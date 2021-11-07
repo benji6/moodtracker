@@ -1,4 +1,3 @@
-import * as React from "react";
 import { MOOD_RANGE } from "../../../constants";
 import { oneDecimalPlaceFormatter } from "../../../numberFormatters";
 import { moodToColor } from "../../../utils";

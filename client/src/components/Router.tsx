@@ -1,5 +1,4 @@
 import { Router as ReachRouter } from "@reach/router";
-import * as React from "react";
 import About from "./pages/About";
 import AddMood from "./pages/AddMood";
 import EditMood from "./pages/EditMood";

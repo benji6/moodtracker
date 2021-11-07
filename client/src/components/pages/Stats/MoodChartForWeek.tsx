@@ -1,6 +1,5 @@
 import addDays from "date-fns/addDays";
 import addWeeks from "date-fns/addWeeks";
-import * as React from "react";
 import { TIME } from "../../../constants";
 import { weekdayShortFormatter } from "../../../dateTimeFormatters";
 import MoodChartForPeriod from "./MoodChartForPeriod";

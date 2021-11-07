@@ -52,7 +52,7 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       })
     );
     onFinish();
-  }, [dispatch, onFinish, timeFinished, timerDuration]);
+  }, [dispatch, geolocation, onFinish, timeFinished, timerDuration]);
   const onPause = React.useCallback(() => {
     noSleep.disable();
     setTimerState("PAUSED");

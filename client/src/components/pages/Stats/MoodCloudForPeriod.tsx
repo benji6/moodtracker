@@ -1,5 +1,4 @@
 import { Paper, WordCloud } from "eri";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
 import { normalizedMoodsSelector } from "../../../selectors";

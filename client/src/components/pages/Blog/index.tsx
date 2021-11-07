@@ -1,6 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
 import { Paper, SubHeading } from "eri";
-import * as React from "react";
 import { dateFormatter } from "../../../dateTimeFormatters";
 import Version from "../../shared/Version";
 

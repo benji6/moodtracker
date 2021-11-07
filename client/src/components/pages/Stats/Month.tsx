@@ -1,6 +1,5 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,

@@ -1,5 +1,4 @@
 import { ChangePasswordPage } from "eri";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../../cognito";
 import { ERRORS } from "../../../constants";

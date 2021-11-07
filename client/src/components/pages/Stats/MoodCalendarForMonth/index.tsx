@@ -1,7 +1,6 @@
 import { useNavigate } from "@reach/router";
 import addDays from "date-fns/addDays";
 import getDaysInMonth from "date-fns/getDaysInMonth";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
 import { dateFormatter } from "../../../../dateTimeFormatters";

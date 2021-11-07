@@ -1,6 +1,5 @@
 import "./style.css";
 import { Button, Card, Icon } from "eri";
-import * as React from "react";
 import { useSelector } from "react-redux";
 import { dateTimeFormatter } from "../../../../../../dateTimeFormatters";
 import { normalizedMeditationsSelector } from "../../../../../../selectors";

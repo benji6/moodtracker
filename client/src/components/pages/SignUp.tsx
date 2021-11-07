@@ -1,7 +1,6 @@
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { SignUpPage } from "eri";
 import { navigate } from "@reach/router";
-import * as React from "react";
 import { userPool } from "../../cognito";
 import { ERRORS } from "../../constants";
 

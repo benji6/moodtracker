@@ -1,6 +1,5 @@
 import { RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
-import * as React from "react";
 import MoodList from "./MoodList";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { useSelector } from "react-redux";

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { BUILD_TIME } from "../../constants";
 import { dateFormatter } from "../../dateTimeFormatters";
 

@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "@reach/router";
 import { SignInPage } from "eri";
-import * as React from "react";
 import { useDispatch } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../cognito";
 import { ERRORS } from "../../constants";

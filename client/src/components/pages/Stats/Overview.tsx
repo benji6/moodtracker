@@ -1,6 +1,5 @@
 import { Link } from "@reach/router";
 import { Paper, Spinner } from "eri";
-import * as React from "react";
 import GetStartedCta from "../../shared/GetStartedCta";
 import Months from "./Months";
 import Weeks from "./Weeks";
