@@ -1,6 +1,6 @@
 You can now search and filter through all your moods!
 
-![Screenshot demonstrating the new search feature](./screenshot.png "Screenshot demonstrating the new search feature")
+![Screenshot demonstrating the new search feature](screenshot.png "Screenshot demonstrating the new search feature")
 
 This can lead to some interesting insights. For instance:
 
