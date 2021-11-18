@@ -79,10 +79,6 @@ def compute_breakdown(get_key):
 
   return results
 
-def get_iso_week_string(date_time_string):
-  y, w, d = date_from_js_iso(date_time_string).isocalendar()
-  return f"{y}-W{w:02d}"
-
 def get_iso_month_string(date_time_string):
   return date_time_string[0:7]
 
@@ -112,7 +108,6 @@ for event in events:
 
 
 print(json.dumps({
-  'Breakdown by week': compute_breakdown(get_iso_week_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
   'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
   'DynamoDB consumed capacity units': consumed_capacity_units,
