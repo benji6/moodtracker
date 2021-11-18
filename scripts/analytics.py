@@ -41,11 +41,18 @@ events_table_scan_response = events_table.scan(
   ProjectionExpression='createdAt,#t,userId',
   ReturnConsumedCapacity='TOTAL',
 )
-
-if 'LastEvaluatedKey' in events_table_scan_response:
-  print('Warning: only 1 DynamoDB table page was scanned')
-
 events = events_table_scan_response['Items']
+consumed_capacity_units = events_table_scan_response['ConsumedCapacity']['CapacityUnits']
+while 'LastEvaluatedKey' in events_table_scan_response:
+  events_table_scan_response = events_table.scan(
+    ExclusiveStartKey=events_table_scan_response['LastEvaluatedKey'],
+    ExpressionAttributeNames={'#t': 'type'},
+    ProjectionExpression='createdAt,#t,userId',
+    ReturnConsumedCapacity='TOTAL',
+  )
+  events += events_table_scan_response['Items']
+  consumed_capacity_units += events_table_scan_response['ConsumedCapacity']['CapacityUnits']
+
 events.sort(key=operator.itemgetter('createdAt'))
 
 def date_from_js_iso(js_iso_string):
@@ -108,7 +115,7 @@ print(json.dumps({
   'Breakdown by week': compute_breakdown(get_iso_week_string),
   'Breakdown by month': compute_breakdown(get_iso_month_string),
   'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
-  'DynamoDB consumed capacity units': events_table_scan_response['ConsumedCapacity']['CapacityUnits'],
+  'DynamoDB consumed capacity units': consumed_capacity_units,
   'Number of Cognito user pages paginated over': user_pages,
   'Total number of events': len(events),
   'Events by type': events_by_type,
