@@ -232,6 +232,20 @@ Resources:
           Projection:
             ProjectionType: "ALL"
       TableName: moodtracker_events
+  DynamoGlobalCacheTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: key
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: key
+          KeyType: HASH
+      TableName: moodtracker_global_cache
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
   DynamoSettingsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -494,6 +508,12 @@ Resources:
               - Action: cognito-idp:ListUsers
                 Effect: Allow
                 Resource: !GetAtt CognitoUserPool.Arn
+              - Action: dynamodb:GetItem
+                Effect: Allow
+                Resource: !GetAtt DynamoGlobalCacheTable.Arn
+              - Action: dynamodb:PutItem
+                Effect: Allow
+                Resource: !GetAtt DynamoGlobalCacheTable.Arn
               - Action: dynamodb:Scan
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn
