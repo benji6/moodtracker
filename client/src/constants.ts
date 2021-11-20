@@ -19,9 +19,6 @@ export const MOOD_INTEGERS = [
 export const MOODTRACKER_DESCRIPTION =
   "MoodTracker is a free and open source web app app that aims to help you understand yourself better. Track your emotional landscape, keep a mood journal, time your meditations, keep a meditation log and gain new insights into yourself. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!";
 
-// Updated manually for now
-export const USER_STATS = { confirmed: 70, activeUsersLast30Days: 10 } as const;
-
 export const ERRORS = {
   integer: "Please type a valid whole number",
   network: "Something went wrong, check your internet connection and try again",
@@ -61,6 +58,7 @@ export const FIELDS = {
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,
+  secondsPerDay: 86400,
   secondsPerHour: 3600,
   secondsPerMinute: 60,
 } as const;

@@ -1,9 +1,10 @@
 import { getIdToken } from "./cognito";
-import { AppEvent, Settings } from "./types";
+import { AppEvent, Settings, Usage } from "./types";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
 const SETTINGS_URI = `${API_URI}/settings`;
+const USAGE_URI = `${API_URI}/usage`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
 const fetchWithAuth: typeof fetch = async (
@@ -65,8 +66,7 @@ export const settingsGet = async (): Promise<Settings | undefined> => {
   const response = await fetchWithAuth(SETTINGS_URI);
   if (response.status === 404) return undefined;
   if (!response.ok) throw Error(String(response.status));
-  const settings = await response.json();
-  return settings;
+  return response.json();
 };
 export const settingsSet = async (settings: Settings): Promise<void> => {
   const response = await fetchWithAuth(SETTINGS_URI, {
@@ -74,4 +74,10 @@ export const settingsSet = async (settings: Settings): Promise<void> => {
     body: JSON.stringify(settings),
   });
   if (!response.ok) throw Error(String(response.status));
+};
+
+export const usageGet = async (): Promise<Usage> => {
+  const response = await fetch(USAGE_URI);
+  if (!response.ok) throw Error(String(response.status));
+  return response.json();
 };

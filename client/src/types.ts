@@ -55,3 +55,9 @@ export interface Settings {
   updatedAt: string;
   recordLocation: boolean;
 }
+
+export interface Usage {
+  confirmedUsers: number;
+  MAUs: number;
+  WAUs: number;
+}

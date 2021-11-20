@@ -1,9 +1,5 @@
-# This script will not scale in a cost effective manner
-# and is very rudimentary, but suffices to give a basic
-# picture of usage over time
-
 import boto3
-from datetime import date, timedelta
+from datetime import date
 import json
 import operator
 from collections import defaultdict
@@ -96,11 +92,6 @@ events_by_type = defaultdict(int)
 for event in events:
   events_by_type[event['type']] += 1
 
-date_7_days_ago = date.today()-timedelta(7)
-date_30_days_ago = date.today()-timedelta(30)
-date_60_days_ago = date.today()-timedelta(60)
-date_90_days_ago = date.today()-timedelta(90)
-
 user_ids_that_have_meditated = set()
 for event in events:
   if 'meditations' in event['type']:
@@ -114,11 +105,7 @@ print(json.dumps({
   'Number of Cognito user pages paginated over': user_pages,
   'Total number of events': len(events),
   'Events by type': events_by_type,
-  'Number of users who have created at least 1 event over the last 7 days': len({event['userId'] for event in events if event['created_at_date'] > date_7_days_ago}),
-  'Number of users who have created at least 1 event over the last 30 days': len({event['userId'] for event in events if event['created_at_date'] > date_30_days_ago}),
-  'Number of users who have created at least 1 event over the last 60 days': len({event['userId'] for event in events if event['created_at_date'] > date_60_days_ago}),
-  'Number of users who have created at least 1 event over the last 90 days': len({event['userId'] for event in events if event['created_at_date'] > date_90_days_ago}),
-  'Number of users who have created at least 1 event over all time': len({event['userId'] for event in events}),
+  'Number of users who have created at least 1 event': len({event['userId'] for event in events}),
   'Number of users who have meditated': len(user_ids_that_have_meditated),
   'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
   'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],

@@ -1,9 +1,32 @@
 import { Link, RouteComponentProps } from "@reach/router";
-import { Paper, ShareButton } from "eri";
-import { MOODTRACKER_DESCRIPTION, USER_STATS } from "../../constants";
+import { Paper, ShareButton, Spinner } from "eri";
+import { useEffect, useState } from "react";
+import { usageGet } from "../../api";
+import { MOODTRACKER_DESCRIPTION, TIME } from "../../constants";
+import storage from "../../storage";
+import { Usage } from "../../types";
 import Version from "../shared/Version";
 
 export default function About(_: RouteComponentProps) {
+  const [usage, setUsage] = useState<Usage | undefined>();
+
+  useEffect(
+    () =>
+      void (async () => {
+        const cachedUsage = await storage.getUsage();
+        if (
+          cachedUsage &&
+          new Date().getTime() - cachedUsage.updatedAt.getTime() <
+            TIME.secondsPerDay * 1e3
+        )
+          return setUsage(cachedUsage.data);
+        const usage = await usageGet();
+        storage.setUsage(usage);
+        setUsage(usage);
+      })(),
+    []
+  );
+
   return (
     <Paper.Group>
       <Paper>
@@ -43,11 +66,19 @@ export default function About(_: RouteComponentProps) {
           .
         </p>
         <h3>Users</h3>
-        <p>
-          There are currently <b>{USER_STATS.confirmed}</b> confirmed users and{" "}
-          <b>{USER_STATS.activeUsersLast30Days}</b> people have used MoodTracker
-          over the last 30 days.
-        </p>
+        {usage ? (
+          <p>
+            There are currently <b>{usage.confirmedUsers}</b> confirmed users.{" "}
+            <b>{usage.MAUs}</b> people have used MoodTracker over the last 30
+            days, and <b>{usage.WAUs}</b> people have used it over the last 7
+            days.
+          </p>
+        ) : (
+          <p>
+            <Spinner inline margin="end" />
+            Fetching the latest stats...
+          </p>
+        )}
         <h3>Updates</h3>
         <Version />
         <p>

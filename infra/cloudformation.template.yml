@@ -39,6 +39,7 @@ Resources:
       - ApiGatewayEventsPost
       - ApiGatewaySettingsGet
       - ApiGatewaySettingsPut
+      - ApiGatewayUsageGet
       - ApiGatewayWeeklyEmailsDelete
       - ApiGatewayWeeklyEmailsGet
       - ApiGatewayWeeklyEmailsPost
@@ -104,6 +105,23 @@ Resources:
         Type: AWS_PROXY
         Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSettingsPut.Arn}/invocations"
       ResourceId: !Ref ApiGatewaySettingsResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayUsageResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: usage
+      RestApiId: !Ref ApiGateway
+  ApiGatewayUsageGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaUsageGet.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayUsageResource
       RestApiId: !Ref ApiGateway
   ApiGatewayWeeklyEmailsResource:
     Type: AWS::ApiGateway::Resource
@@ -439,6 +457,46 @@ Resources:
               - Action: dynamodb:PutItem
                 Effect: Allow
                 Resource: !GetAtt DynamoSettingsTable.Arn
+  LambdaUsageGet:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{usage_get.lambda.py}}}
+      FunctionName: MoodTrackerUsageGet
+      Handler: index.handler
+      Role: !GetAtt LambdaUsageGetRole.Arn
+      Runtime: python3.8
+  LambdaUsageGetPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaUsageGet.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaUsageGetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_usage_get_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action: cognito-idp:ListUsers
+                Effect: Allow
+                Resource: !GetAtt CognitoUserPool.Arn
+              - Action: dynamodb:Scan
+                Effect: Allow
+                Resource: !GetAtt DynamoEventsTable.Arn
   LambdaWeeklyEmailsDelete:
     Type: AWS::Lambda::Function
     Properties:
