@@ -31,7 +31,7 @@ def handler(event, context):
       'userPages': user_pages,
     })
 
-  if 'expires_at' in cache and now.timestamp() <= cache.get('expires_at'):
+  if 'expires_at' in cache and now.timestamp() <= cache['expires_at']:
     memory_cache_hit = True
     log()
     return cache['data']
@@ -39,10 +39,10 @@ def handler(event, context):
   try:
     cache_response = cache_table.get_item(Key={'key': CACHE_KEY})
     item = cache_response.get('Item')
-    if item and item['expiresAt'] < now.timestamp():
+    if item:
       db_cache_hit = True
       cache['expires_at'] = item['expiresAt']
-      cache['data'] = json.dumps(item['data'])
+      cache['data'] = item['data']
       log()
       return cache['data']
   except Exception as e:
