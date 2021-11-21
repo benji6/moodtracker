@@ -38,14 +38,13 @@ def handler(event, context):
 
   try:
     cache_response = cache_table.get_item(Key={'key': CACHE_KEY})
-    if 'Item' in cache_response:
+    item = cache_response.get('Item')
+    if item and item['expiresAt'] < now.timestamp():
       db_cache_hit = True
-      item = cache_response['Item']
-      if item['expiresAt'] < now.timestamp():
-        cache['expires_at'] = item['expiresAt']
-        cache['data'] = json.dumps(item['data'])
-        log()
-        return cache['data']
+      cache['expires_at'] = item['expiresAt']
+      cache['data'] = json.dumps(item['data'])
+      log()
+      return cache['data']
   except Exception as e:
     print(e)
 
