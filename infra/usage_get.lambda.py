@@ -1,6 +1,7 @@
 import boto3
 from boto3.dynamodb.conditions import Attr
 from datetime import datetime, timedelta
+import email
 import json
 
 CACHE_KEY = 'usage'
@@ -108,7 +109,11 @@ def handler(event, context):
       'MAUs': len({event['userId'] for event in events}),
       'WAUs': len({event['userId'] for event in events if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(7)}),
     }),
-    'headers': HEADERS,
+    'headers': {
+      **HEADERS,
+      'Cache-Control': 'immutable',
+      'Expires': email.utils.formatdate(cache['expires_at'], usegmt=True),
+    },
     'statusCode': 200,
   }
 
