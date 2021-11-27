@@ -8,11 +8,11 @@
     Referrer-Policy = "no-referrer-when-downgrade"
     X-Content-Type-Options = "nosniff"
 [[headers]]
-  for = "*.(css|ico|png|svg)"
+  for = "*.(css|md|png|svg)"
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
 [[headers]]
-  for = "src.*.js"
+  for = "index.*.js"
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
 [[redirects]]
