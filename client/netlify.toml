@@ -10,11 +10,11 @@
 [[headers]]
   for = "*.(css|ico|png|svg)"
   [headers.values]
-    Cache-Control = "public,max-age=31536000,immutable"
+    Cache-Control = "immutable,max-age=31536000"
 [[headers]]
   for = "src.*.js"
   [headers.values]
-    Cache-Control = "public,max-age=31536000,immutable"
+    Cache-Control = "immutable,max-age=31536000"
 [[redirects]]
   from = "api/*"
   status = 200
