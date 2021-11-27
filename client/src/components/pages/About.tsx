@@ -2,30 +2,16 @@ import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton, Spinner } from "eri";
 import { useEffect, useState } from "react";
 import { usageGet } from "../../api";
-import { MOODTRACKER_DESCRIPTION, TIME } from "../../constants";
-import storage from "../../storage";
+import { MOODTRACKER_DESCRIPTION } from "../../constants";
 import { Usage } from "../../types";
 import Version from "../shared/Version";
 
 export default function About(_: RouteComponentProps) {
   const [usage, setUsage] = useState<Usage | undefined>();
 
-  useEffect(
-    () =>
-      void (async () => {
-        const cachedUsage = await storage.getUsage();
-        if (
-          cachedUsage &&
-          new Date().getTime() - cachedUsage.updatedAt.getTime() <
-            TIME.secondsPerDay * 1e3
-        )
-          return setUsage(cachedUsage.data);
-        const usage = await usageGet();
-        storage.setUsage(usage);
-        setUsage(usage);
-      })(),
-    []
-  );
+  useEffect(() => {
+    usageGet().then(setUsage);
+  }, []);
 
   return (
     <Paper.Group>
