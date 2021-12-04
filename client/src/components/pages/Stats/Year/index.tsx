@@ -128,10 +128,7 @@ export default function Year({
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForYear
-        dates={[prevYear, year, nextYear, addYears(nextYear, 1)]}
-        showNext={showNext}
-      />
+      <MoodSummaryForYear dates={[prevYear, year, nextYear]} />
       {moodIdsInPeriod.length ? (
         <>
           <Paper>

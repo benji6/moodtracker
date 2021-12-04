@@ -117,10 +117,7 @@ export default function Month({
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForMonth
-        dates={[prevMonth, month, nextMonth, addMonths(nextMonth, 1)]}
-        showNext={showNext}
-      />
+      <MoodSummaryForMonth dates={[prevMonth, month, nextMonth]} />
       {moodIdsInMonth.length ? (
         <>
           <Paper>

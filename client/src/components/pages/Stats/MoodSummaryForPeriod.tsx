@@ -13,7 +13,7 @@ import {
 import MoodSummary from "../../shared/MoodSummary";
 
 interface Props {
-  dates: [Date, Date, Date, Date];
+  dates: [Date, Date, Date];
   normalizedAverages: {
     allIds: string[];
     byId: {
@@ -21,14 +21,12 @@ interface Props {
     };
   };
   periodType: "day" | "month" | "week" | "year";
-  showNext: boolean;
 }
 
 export default function MoodSummaryForPeriod({
-  dates: [date0, date1, date2, date3],
+  dates: [date0, date1, date2],
   normalizedAverages,
   periodType,
-  showNext,
 }: Props) {
   const meditations = useSelector(normalizedMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
@@ -40,9 +38,6 @@ export default function MoodSummaryForPeriod({
     (id) => moods.byId[id].mood
   );
   const prevMoodValues = getIdsInInterval(moods.allIds, date0, date1).map(
-    (id) => moods.byId[id].mood
-  );
-  const nextMoodValues = getIdsInInterval(moods.allIds, date2, date3).map(
     (id) => moods.byId[id].mood
   );
 
@@ -62,28 +57,6 @@ export default function MoodSummaryForPeriod({
           total: moodValues.length,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
         }}
-        nextPeriod={
-          showNext
-            ? {
-                best: nextMoodValues.length
-                  ? Math.max(...nextMoodValues)
-                  : undefined,
-                mean: normalizedAverages.byId[
-                  formatIsoDateInLocalTimezone(date2)
-                ],
-                secondsMeditated: computeSecondsMeditatedInInterval(
-                  meditations,
-                  date2,
-                  date3
-                ),
-                standardDeviation: computeStandardDeviation(nextMoodValues),
-                total: nextMoodValues.length,
-                worst: nextMoodValues.length
-                  ? Math.min(...nextMoodValues)
-                  : undefined,
-              }
-            : undefined
-        }
         periodType={periodType}
         previousPeriod={
           showPrevious

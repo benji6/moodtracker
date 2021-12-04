@@ -118,10 +118,7 @@ export default function Week({
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForWeek
-        dates={[prevWeek, week, nextWeek, addWeeks(nextWeek, 1)]}
-        showNext={showNext}
-      />
+      <MoodSummaryForWeek dates={[prevWeek, week, nextWeek]} />
       {moodIdsInWeek.length ? (
         <>
           <Paper>

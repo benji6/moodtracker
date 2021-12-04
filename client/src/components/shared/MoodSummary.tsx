@@ -18,14 +18,12 @@ interface PeriodData {
 
 interface Props {
   currentPeriod: PeriodData;
-  nextPeriod?: PeriodData;
   periodType: "day" | "month" | "week" | "year";
   previousPeriod?: PeriodData;
 }
 
 export default function MoodSummary({
   currentPeriod,
-  nextPeriod,
   periodType,
   previousPeriod,
 }: Props) {
@@ -38,7 +36,6 @@ export default function MoodSummary({
           <th>Stat</th>
           {previousPeriod && <th>Last {periodType}</th>}
           <th>This {periodType}</th>
-          {nextPeriod && <th>Next {periodType}</th>}
         </tr>
       </thead>
       <tbody>
@@ -46,19 +43,16 @@ export default function MoodSummary({
           <td>Average mood</td>
           {previousPeriod && <OptionalMoodCell mood={previousPeriod.mean} />}
           <OptionalMoodCell mood={currentPeriod.mean} />
-          {nextPeriod && <OptionalMoodCell mood={nextPeriod.mean} />}
         </tr>
         <tr>
           <td>Best mood</td>
           {previousPeriod && <OptionalMoodCell mood={previousPeriod.best} />}
           <OptionalMoodCell mood={currentPeriod.best} />
-          {nextPeriod && <OptionalMoodCell mood={nextPeriod.best} />}
         </tr>
         <tr>
           <td>Worst mood</td>
           {previousPeriod && <OptionalMoodCell mood={previousPeriod.worst} />}
           <OptionalMoodCell mood={currentPeriod.worst} />
-          {nextPeriod && <OptionalMoodCell mood={nextPeriod.worst} />}
         </tr>
         <tr>
           <td>Standard deviation</td>
@@ -72,11 +66,6 @@ export default function MoodSummary({
           <td className="center">
             {oneDecimalPlaceFormatter.format(currentPeriod.standardDeviation)}
           </td>
-          {nextPeriod && (
-            <td className="center">
-              {oneDecimalPlaceFormatter.format(nextPeriod.standardDeviation)}
-            </td>
-          )}
         </tr>
         <tr>
           <td>Total moods recorded</td>
@@ -88,11 +77,6 @@ export default function MoodSummary({
           <td className="center">
             {integerFormatter.format(currentPeriod.total)}
           </td>
-          {nextPeriod && (
-            <td className="center">
-              {integerFormatter.format(nextPeriod.total)}
-            </td>
-          )}
         </tr>
         {showMeditationStats && (
           <tr>
@@ -105,11 +89,6 @@ export default function MoodSummary({
             <td className="center">
               {formatDurationFromSeconds(currentPeriod.secondsMeditated)}
             </td>
-            {nextPeriod && (
-              <td className="center">
-                {formatDurationFromSeconds(nextPeriod.secondsMeditated)}
-              </td>
-            )}
           </tr>
         )}
       </tbody>

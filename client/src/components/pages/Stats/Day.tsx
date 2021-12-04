@@ -98,10 +98,7 @@ export default function Day({
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForDay
-        dates={[prevDate, date, nextDate, addDays(nextDate, 1)]}
-        showNext={showNext}
-      />
+      <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
       {moodIds ? (
         <Paper>
           <Card.Group>
