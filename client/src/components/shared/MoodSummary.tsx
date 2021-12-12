@@ -34,8 +34,8 @@ export default function MoodSummary({
       <thead>
         <tr>
           <th>Stat</th>
-          {previousPeriod && <th>Last {periodType}</th>}
-          <th>This {periodType}</th>
+          {previousPeriod && <th>Previous {periodType}</th>}
+          <th>Current {periodType}</th>
         </tr>
       </thead>
       <tbody>
