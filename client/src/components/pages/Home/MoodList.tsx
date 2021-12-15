@@ -25,7 +25,7 @@ import {
   MOOD_INTEGERS,
   TEST_IDS,
 } from "../../../constants";
-import OptionalMoodCell from "../../shared/OptionalMoodCell";
+import OptionalMoodCell from "./OptionalMoodCell";
 import { FluxStandardAction } from "../../../types";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
 import { dateWeekdayFormatter } from "../../../dateTimeFormatters";

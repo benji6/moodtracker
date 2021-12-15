@@ -1,0 +1,18 @@
+.m-mood-summary-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.m-mood-summary-item__mood-bar {
+  margin-block: var(--space-1);
+}
+
+.m-mood-summary-item__trend {
+  line-height: 1;
+}
+
+.m-mood-summary-item__value {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-4);
+}

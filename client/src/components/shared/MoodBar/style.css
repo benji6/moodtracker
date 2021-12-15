@@ -1,8 +1,8 @@
-.m-mood-cell__bar-container {
+.m-mood-bar {
   background: var(--color-ground-less);
   height: var(--space-0);
 }
 
-.m-mood-cell__bar {
+.m-mood-bar__bar {
   height: 100%;
 }

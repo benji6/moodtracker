@@ -1,4 +1,4 @@
-import MoodCell from "./MoodCell";
+import MoodCell from "../../shared/MoodCell";
 
 export default function OptionalMoodCell({ mood }: { mood?: number }) {
   return mood === undefined ? (

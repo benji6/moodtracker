@@ -51,7 +51,7 @@ export default function MoodGradientForPeriod({ fromDate, toDate }: Props) {
 
   return (
     <div
-      aria-label="Visualization of mood for this period as a color gradient over time"
+      aria-hidden="true"
       className="m-mood-gradient br-max"
       style={{ background }}
       title={title}
