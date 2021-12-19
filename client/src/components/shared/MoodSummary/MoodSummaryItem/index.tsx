@@ -26,16 +26,20 @@ export default function MoodSummaryItem({
 
   const difference =
     previousValue === undefined ? undefined : currentValue - previousValue;
-  const isDifferenceImmaterial = difference
-    ? difference >= -0.05 && difference < 0.05
-    : true;
+
+  const isDifferenceMaterial = difference
+    ? difference <= -0.05 || difference >= 0.05
+    : false;
+
+  let color = "var(--color-balance)";
+  if (isMood) color = moodToColor(currentValue);
+  else if (displayTrendSentiment && isDifferenceMaterial && difference) {
+    if (difference > 0) color = "var(--color-positive)";
+    else color = "var(--color-negative)";
+  }
 
   return (
-    <Card
-      color={
-        isMood ? moodToColor(currentValue) : "var(--color-highlight-default)"
-      }
-    >
+    <Card color={color}>
       <div className="m-mood-summary-item">
         <div>
           <b>{heading}</b>
@@ -49,7 +53,7 @@ export default function MoodSummaryItem({
         {difference !== undefined && (
           <div className="m-mood-summary-item__trend">
             <small>
-              {isDifferenceImmaterial ? (
+              {!isDifferenceMaterial ? (
                 <Icon draw margin="end" name="minus" />
               ) : difference < 0 ? (
                 <span className={displayTrendSentiment ? "negative" : ""}>
@@ -60,10 +64,10 @@ export default function MoodSummaryItem({
                   <Icon draw margin="end" name="up" />
                 </span>
               )}
-              {isDifferenceImmaterial
-                ? "The same as "
-                : `${format(Math.abs(difference))}
-              ${difference < 0 ? "less" : "more"} than `}
+              {isDifferenceMaterial
+                ? `${format(Math.abs(difference))}
+                ${difference < 0 ? "less" : "more"} than `
+                : "The same as "}
               previous {periodType}
             </small>
           </div>
