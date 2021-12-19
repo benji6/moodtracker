@@ -8,9 +8,18 @@ import Version from "../shared/Version";
 
 export default function About(_: RouteComponentProps) {
   const [usage, setUsage] = useState<Usage | undefined>();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    usageGet().then(setUsage);
+    usageGet().then(
+      (usage) => {
+        setUsage(usage);
+        if (error) setError(false);
+      },
+      () => setError(true)
+    );
+    // Run only once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -52,7 +61,12 @@ export default function About(_: RouteComponentProps) {
           .
         </p>
         <h3>Users</h3>
-        {usage ? (
+        {error ? (
+          <p className="negative">
+            Error fetching the latest usage statistics. You need an internet
+            connection to fetch this data, please check and try refreshing.
+          </p>
+        ) : usage ? (
           <p>
             There are currently <b>{usage.confirmedUsers}</b> confirmed users.{" "}
             <b>{usage.MAUs}</b> people have used MoodTracker over the last 30
