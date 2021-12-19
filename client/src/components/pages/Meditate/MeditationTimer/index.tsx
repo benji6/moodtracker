@@ -9,34 +9,37 @@ import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
 import { noSleep } from "../nosleep";
 import bell from "./bell";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
-
-export type TimerState = "FINISHED" | "PAUSED" | "TIMING";
+import { initialState, reducer } from "./reducer";
 
 export default function MeditationTimer({ location }: RouteComponentProps) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [localState, localDispatch] = React.useReducer(reducer, initialState);
+
   const geolocation = useSelector(deviceGeolocationSelector);
   const searchParams = new URLSearchParams(location?.search);
-  const timerDuration = Number(
+  const timerDurationInSeconds = Number(
     searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY)
   );
-  const [remainingTime, setRemainingTime] = React.useState(timerDuration * 1e3);
-  const [timerState, setTimerState] = React.useState<TimerState>("TIMING");
-  const [isDimmerEnabled, setIsDimmerEnabled] = React.useState(false);
-  const [timeFinished, setTimeFinished] = React.useState<Date | undefined>();
   const initialTime = React.useRef(Date.now());
-  const roundedSecondsRemaining = Math.round(remainingTime / 1e3);
+  const roundedSecondsRemaining = Math.round(
+    (localState.remainingTime ?? timerDurationInSeconds * 1e3) / 1e3
+  );
 
-  const onDim = React.useCallback(() => setIsDimmerEnabled(true), []);
+  const onDim = React.useCallback(
+    () => localDispatch({ payload: true, type: "isDimmerEnabled/set" }),
+    []
+  );
   const onFinish = React.useCallback(() => {
     navigate("/meditate");
   }, [navigate]);
   const onFinishAndLog = React.useCallback(() => {
-    const payload: Meditation = { seconds: Math.round(timerDuration) };
+    const payload: Meditation = { seconds: Math.round(timerDurationInSeconds) };
     if (geolocation) payload.location = geolocation;
 
     let createdAt: string;
-    if (timeFinished) createdAt = timeFinished.toISOString();
+    if (localState.timeFinished)
+      createdAt = localState.timeFinished.toISOString();
     else {
       // eslint-disable-next-line no-console
       console.warn(
@@ -52,20 +55,31 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       })
     );
     onFinish();
-  }, [dispatch, geolocation, onFinish, timeFinished, timerDuration]);
+  }, [
+    dispatch,
+    geolocation,
+    onFinish,
+    localState.timeFinished,
+    timerDurationInSeconds,
+  ]);
   const onPause = React.useCallback(() => {
     noSleep.disable();
-    setTimerState("PAUSED");
+    localDispatch({ payload: "PAUSED", type: "timerState/set" });
   }, []);
   const onPlay = React.useCallback(() => {
     noSleep.enable();
     initialTime.current =
-      Date.now() + roundedSecondsRemaining * 1e3 - timerDuration * 1e3;
-    setTimerState("TIMING");
-  }, [roundedSecondsRemaining, timerDuration]);
-  const onReveal = React.useCallback(() => setIsDimmerEnabled(false), []);
+      Date.now() + roundedSecondsRemaining * 1e3 - timerDurationInSeconds * 1e3;
+    localDispatch({ payload: "TIMING", type: "timerState/set" });
+  }, [roundedSecondsRemaining, timerDurationInSeconds]);
+  const onReveal = React.useCallback(
+    () => localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
+    []
+  );
 
-  useKeyboardEscape(() => setIsDimmerEnabled(false));
+  useKeyboardEscape(() =>
+    localDispatch({ payload: false, type: "isDimmerEnabled/set" })
+  );
 
   React.useEffect(() => {
     noSleep.enable();
@@ -78,26 +92,35 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   React.useEffect(() => {
     let abort = false;
     requestAnimationFrame(function update() {
-      if (timerState === "FINISHED" || timerState === "PAUSED" || abort) return;
+      if (
+        localState.timerState === "FINISHED" ||
+        localState.timerState === "PAUSED" ||
+        abort
+      )
+        return;
       requestAnimationFrame(update);
-      const t = timerDuration * 1e3 - (Date.now() - initialTime.current);
-      if (t > 0) return setRemainingTime(t);
-      setTimeFinished(new Date());
-      setTimerState("FINISHED");
+      const t =
+        timerDurationInSeconds * 1e3 - (Date.now() - initialTime.current);
+      if (t > 0)
+        return localDispatch({ payload: t, type: "remainingTime/set" });
+
+      localDispatch({ payload: new Date(), type: "timeFinished/set" });
       bell.start();
       noSleep.disable();
-      setRemainingTime(0);
-      if (isDimmerEnabled) setIsDimmerEnabled(false);
     });
     return () => void (abort = true);
-  }, [isDimmerEnabled, timerDuration, timerState]);
+  }, [
+    localState.isDimmerEnabled,
+    timerDurationInSeconds,
+    localState.timerState,
+  ]);
 
   if (!searchParams.has(MEDITATION_SEARCH_PARAM_TIME_KEY))
     return <Redirect to="/meditate" />;
 
   return (
     <MeditationTimerPresentation
-      dimmed={isDimmerEnabled}
+      dimmed={localState.isDimmerEnabled}
       onDim={onDim}
       onFinish={onFinish}
       onPause={onPause}
@@ -105,8 +128,8 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
       onFinishAndLog={onFinishAndLog}
       onReveal={onReveal}
       roundedSecondsRemaining={roundedSecondsRemaining}
-      timerState={timerState}
-      totalSeconds={timerDuration}
+      timerState={localState.timerState}
+      totalSeconds={timerDurationInSeconds}
     />
   );
 }
