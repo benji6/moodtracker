@@ -6,6 +6,21 @@ const createState = (props?: Partial<State>): State => ({
 });
 
 describe("MeditationTimer reducer", () => {
+  test("isDialogOpen/set", () => {
+    expect(
+      reducer(createState({ isDialogOpen: true }), {
+        payload: false,
+        type: "isDialogOpen/set",
+      })
+    ).toEqual(createState({ isDialogOpen: false }));
+    expect(
+      reducer(createState({ isDialogOpen: false }), {
+        payload: true,
+        type: "isDialogOpen/set",
+      })
+    ).toEqual(createState({ isDialogOpen: true }));
+  });
+
   test("isDimmerEnabled/set", () => {
     expect(
       reducer(createState(), { payload: false, type: "isDimmerEnabled/set" })

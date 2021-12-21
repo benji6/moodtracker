@@ -8,8 +8,9 @@ import MeditationTimerClock from "./MeditationTimerClock";
 interface Props {
   dimmed: boolean;
   onDim(): void;
+  onDontLog(): void;
   onFinish(): void;
-  onFinishAndLog(): void;
+  onLog(): void;
   onPause(): void;
   onPlay(): void;
   onReveal(): void;
@@ -21,8 +22,9 @@ interface Props {
 function MeditationTimerPresentation({
   dimmed,
   onDim,
+  onDontLog,
   onFinish,
-  onFinishAndLog,
+  onLog,
   onPause,
   onPlay,
   onReveal,
@@ -41,8 +43,8 @@ function MeditationTimerPresentation({
           />
           {timerState === "FINISHED" ? (
             <Button.Group>
-              <Button onClick={onFinishAndLog}>Log meditation</Button>
-              <Button onClick={onFinish} variant="secondary">
+              <Button onClick={onLog}>Log meditation</Button>
+              <Button onClick={onDontLog} variant="secondary">
                 Finish
               </Button>
             </Button.Group>

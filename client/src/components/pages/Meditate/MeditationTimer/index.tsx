@@ -8,6 +8,7 @@ import { Meditation } from "../../../../types";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
 import { noSleep } from "../nosleep";
 import bell from "./bell";
+import LogMeditationDialog from "./LogMeditationDialog";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 import { initialState, reducer } from "./reducer";
 
@@ -25,16 +26,42 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
   const roundedSecondsRemaining = Math.round(
     (localState.remainingTime ?? timerDurationInSeconds * 1e3) / 1e3
   );
+  const secondsMeditated = timerDurationInSeconds - roundedSecondsRemaining;
 
   const onDim = React.useCallback(
     () => localDispatch({ payload: true, type: "isDimmerEnabled/set" }),
     []
   );
-  const onFinish = React.useCallback(() => {
+  const onDontLog = React.useCallback(() => {
     navigate("/meditate");
   }, [navigate]);
-  const onFinishAndLog = React.useCallback(() => {
-    const payload: Meditation = { seconds: Math.round(timerDurationInSeconds) };
+  const onPause = React.useCallback(() => {
+    noSleep.disable();
+    localDispatch({ payload: "PAUSED", type: "timerState/set" });
+  }, []);
+  const onPlay = React.useCallback(() => {
+    noSleep.enable();
+    initialTime.current =
+      Date.now() + roundedSecondsRemaining * 1e3 - timerDurationInSeconds * 1e3;
+    localDispatch({ payload: "TIMING", type: "timerState/set" });
+  }, [roundedSecondsRemaining, timerDurationInSeconds]);
+  const onReveal = React.useCallback(
+    () => localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
+    []
+  );
+
+  const onCloseDialog = React.useCallback(() => {
+    localDispatch({ payload: false, type: "isDialogOpen/set" });
+    onPlay();
+  }, [onPlay]);
+  const onFinish = React.useCallback(() => {
+    if (secondsMeditated) {
+      localDispatch({ payload: true, type: "isDialogOpen/set" });
+      onPause();
+    } else onDontLog();
+  }, [onDontLog, onPause, secondsMeditated]);
+  const onLog = React.useCallback(() => {
+    const payload: Meditation = { seconds: Math.round(secondsMeditated) };
     if (geolocation) payload.location = geolocation;
 
     let createdAt: string;
@@ -54,28 +81,14 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
         payload,
       })
     );
-    onFinish();
+    onDontLog();
   }, [
     dispatch,
     geolocation,
-    onFinish,
+    onDontLog,
     localState.timeFinished,
-    timerDurationInSeconds,
+    secondsMeditated,
   ]);
-  const onPause = React.useCallback(() => {
-    noSleep.disable();
-    localDispatch({ payload: "PAUSED", type: "timerState/set" });
-  }, []);
-  const onPlay = React.useCallback(() => {
-    noSleep.enable();
-    initialTime.current =
-      Date.now() + roundedSecondsRemaining * 1e3 - timerDurationInSeconds * 1e3;
-    localDispatch({ payload: "TIMING", type: "timerState/set" });
-  }, [roundedSecondsRemaining, timerDurationInSeconds]);
-  const onReveal = React.useCallback(
-    () => localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
-    []
-  );
 
   useKeyboardEscape(() =>
     localDispatch({ payload: false, type: "isDimmerEnabled/set" })
@@ -119,17 +132,28 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
     return <Redirect to="/meditate" />;
 
   return (
-    <MeditationTimerPresentation
-      dimmed={localState.isDimmerEnabled}
-      onDim={onDim}
-      onFinish={onFinish}
-      onPause={onPause}
-      onPlay={onPlay}
-      onFinishAndLog={onFinishAndLog}
-      onReveal={onReveal}
-      roundedSecondsRemaining={roundedSecondsRemaining}
-      timerState={localState.timerState}
-      totalSeconds={timerDurationInSeconds}
-    />
+    <>
+      <MeditationTimerPresentation
+        dimmed={localState.isDimmerEnabled}
+        onDim={onDim}
+        onDontLog={onDontLog}
+        onFinish={onFinish}
+        onPause={onPause}
+        onPlay={onPlay}
+        onLog={onLog}
+        onReveal={onReveal}
+        roundedSecondsRemaining={roundedSecondsRemaining}
+        timerState={localState.timerState}
+        totalSeconds={timerDurationInSeconds}
+      />
+      <LogMeditationDialog
+        onClose={onCloseDialog}
+        onDontLog={onDontLog}
+        onLog={onLog}
+        open={localState.isDialogOpen}
+        secondsMeditated={secondsMeditated}
+        timerDurationInSeconds={timerDurationInSeconds}
+      />
+    </>
   );
 }
