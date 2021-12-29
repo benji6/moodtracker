@@ -1,16 +1,13 @@
 import "eri/dist/index.css";
-import { EriProvider } from "eri";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import Router from "./components/Router";
 
 ReactDOM.render(
-  <EriProvider>
-    <Provider store={store}>
-      <Router />
-    </Provider>
-  </EriProvider>,
+  <Provider store={store}>
+    <Router />
+  </Provider>,
   document.getElementById("root")
 );
 

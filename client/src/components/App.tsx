@@ -1,5 +1,5 @@
 import { Link, RouteComponentProps } from "@reach/router";
-import { Header, Nav as EriNav, Main, QuickNav, Icon } from "eri";
+import { Header, Nav as EriNav, QuickNav, Icon } from "eri";
 import * as React from "react";
 import Nav from "./Nav";
 import useEvents from "./hooks/useEvents";
@@ -41,7 +41,7 @@ export default function App({ children }: IProps) {
         />
       </Header>
       <Nav handleNavClose={() => setIsNavOpen(false)} open={isNavOpen} />
-      <Main>{children}</Main>
+      <main>{children}</main>
       <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>
