@@ -42,9 +42,6 @@ export default function App({ children }: IProps) {
       </Header>
       <Nav handleNavClose={() => setIsNavOpen(false)} open={isNavOpen} />
       <main>{children}</main>
-
-      {/* TODO - this div is a hack around some problematic CSS from Eri */}
-      <div />
       <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>
