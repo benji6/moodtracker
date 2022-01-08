@@ -29,6 +29,10 @@
       "url": "/add"
     },
     {
+      "name": "Meditate",
+      "url": "/meditate"
+    },
+    {
       "name": "View stats",
       "url": "/stats"
     }
