@@ -72,7 +72,7 @@ def handler(event, context):
     if user['Enabled'] and user['UserStatus'] == 'CONFIRMED':
       confirmed_users += 1
 
-  filter_expression = Attr('createdAt').gt((now - timedelta(30)).isoformat())
+  filter_expression = Attr('createdAt').gt((now - timedelta(60)).isoformat())
 
   try:
     events_response = events_table.scan(
@@ -102,11 +102,21 @@ def handler(event, context):
       'statusCode': 500,
     }
 
+  users_in_previous_30_day_window = set()
+  users_in_current_30_day_window = set()
+
+  for event in events:
+    if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(30):
+      users_in_current_30_day_window.add(event['userId'])
+    else:
+      users_in_previous_30_day_window.add(event['userId'])
+
   cache['expires_at'] = round(now.timestamp() + SECONDS_PER_DAY)
   cache['data'] = {
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
-      'MAUs': len({event['userId'] for event in events}),
+      'CRR': round(1 - len(users_in_previous_30_day_window - users_in_current_30_day_window) / len(users_in_previous_30_day_window), 3),
+      'MAUs': len(users_in_current_30_day_window),
       'WAUs': len({event['userId'] for event in events if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(7)}),
     }),
     'headers': {
