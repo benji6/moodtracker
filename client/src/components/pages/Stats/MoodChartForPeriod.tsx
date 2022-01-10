@@ -44,6 +44,7 @@ interface Props {
   fromDate: Date;
   hidePoints?: boolean;
   toDate: Date;
+  xAxisTitle?: string;
   xLabels: [number, string][];
   xLines?: number[];
 }
@@ -52,6 +53,7 @@ export default function MoodChartForPeriod({
   fromDate,
   hidePoints = false,
   toDate,
+  xAxisTitle,
   xLabels,
   xLines = xLabels.map(([x]) => x),
 }: Props) {
@@ -76,6 +78,7 @@ export default function MoodChartForPeriod({
         { ...moods, allIds: envelopingMoodIds },
         domain
       )}
+      xAxisTitle={xAxisTitle}
       xLabels={xLabels}
       xLines={xLines}
     />

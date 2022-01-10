@@ -1,11 +1,13 @@
 import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import addDays from "date-fns/addDays";
+import addHours from "date-fns/addHours";
 import subDays from "date-fns/subDays";
 import { Card, Icon, Paper, Spinner, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
   dateWeekdayFormatter,
   formatWeek,
+  hourNumericFormatter,
   monthLongFormatter,
   WEEK_OPTIONS,
   yearFormatter,
@@ -27,7 +29,10 @@ import MoodCard from "../../shared/MoodCard";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import startOfWeek from "date-fns/startOfWeek";
 import MoodSummaryForDay from "./MoodSummaryForDay";
+import MoodChartForPeriod from "./MoodChartForPeriod";
+import { TIME } from "../../../constants";
 
+const X_LABELS_COUNT = 6;
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function Day({
@@ -56,6 +61,16 @@ export default function Day({
   const showNext = nextDate <= new Date();
 
   const startOfWeekDate = startOfWeek(date, WEEK_OPTIONS);
+
+  const xLabels: [number, string][] = [];
+
+  for (let i = 0; i < X_LABELS_COUNT; i++) {
+    const d = addHours(
+      date,
+      Math.round((i * TIME.hoursPerDay) / X_LABELS_COUNT)
+    );
+    xLabels.push([d.getTime(), hourNumericFormatter.format(d)]);
+  }
 
   return (
     <Paper.Group>
@@ -100,13 +115,25 @@ export default function Day({
       </Paper>
       <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
       {moodIds ? (
-        <Paper>
-          <Card.Group>
-            {moodIds.map((id) => (
-              <MoodCard id={id} key={id} />
-            ))}
-          </Card.Group>
-        </Paper>
+        <>
+          <Paper>
+            <h3>Mood chart</h3>
+            <MoodChartForPeriod
+              fromDate={date}
+              toDate={nextDate}
+              xAxisTitle="Time"
+              xLabels={xLabels}
+            />
+          </Paper>
+          <Paper>
+            <h3>Moods</h3>
+            <Card.Group>
+              {moodIds.map((id) => (
+                <MoodCard id={id} key={id} />
+              ))}
+            </Card.Group>
+          </Paper>
+        </>
       ) : (
         <Paper>
           <p>No data for this day.</p>

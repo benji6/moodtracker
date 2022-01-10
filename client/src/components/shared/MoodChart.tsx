@@ -7,6 +7,7 @@ interface Props {
   domain: [number, number];
   trendlinePoints: [number, number][];
   hidePoints?: boolean;
+  xAxisTitle?: string;
   xLabels: [number, string][];
   xLines?: number[];
 }
@@ -16,6 +17,7 @@ export default function MoodChart({
   domain,
   hidePoints = false,
   trendlinePoints,
+  xAxisTitle = "Date",
   xLabels,
   xLines = xLabels.map(([x]) => x),
 }: Props) {
@@ -28,7 +30,7 @@ export default function MoodChart({
       aria-label="Chart displaying mood against time"
       domain={domain}
       range={MOOD_RANGE}
-      xAxisTitle="Date"
+      xAxisTitle={xAxisTitle}
       yAxisTitle="Mood"
     >
       <Chart.XGridLines lines={xLines} />
