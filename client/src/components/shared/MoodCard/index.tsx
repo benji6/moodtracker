@@ -21,7 +21,7 @@ export default function MoodCard({ id }: Props) {
     <Card
       color={moodToColor(mood)}
       key={id}
-      onClick={() => navigate(`edit/${id}`)}
+      onClick={() => navigate(`/edit/${id}`)}
     >
       <div className="m-mood-card">
         <div>
