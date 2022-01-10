@@ -116,6 +116,7 @@ def handler(event, context):
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
       'CRR': round(1 - len(users_in_previous_30_day_window - users_in_current_30_day_window) / len(users_in_previous_30_day_window), 3),
+      'DAUs': len({event['userId'] for event in events if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(1)}),
       'MAUs': len(users_in_current_30_day_window),
       'WAUs': len({event['userId'] for event in events if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(7)}),
     }),
