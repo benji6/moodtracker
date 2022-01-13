@@ -58,6 +58,8 @@ export interface Settings {
 
 export interface Usage {
   confirmedUsers: number;
+  CRR: number;
+  DAUs: number;
   MAUs: number;
   WAUs: number;
 }

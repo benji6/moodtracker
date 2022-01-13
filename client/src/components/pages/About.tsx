@@ -3,6 +3,7 @@ import { Paper, ShareButton, Spinner } from "eri";
 import { useEffect, useState } from "react";
 import { usageGet } from "../../api";
 import { MOODTRACKER_DESCRIPTION } from "../../constants";
+import { percentFormatter } from "../../numberFormatters";
 import { Usage } from "../../types";
 import Version from "../shared/Version";
 
@@ -60,25 +61,6 @@ export default function About(_: RouteComponentProps) {
           </a>
           .
         </p>
-        <h3>Users</h3>
-        {error ? (
-          <p className="negative">
-            Error fetching the latest usage statistics. You need an internet
-            connection to fetch this data, please check and try refreshing.
-          </p>
-        ) : usage ? (
-          <p>
-            There are currently <b>{usage.confirmedUsers}</b> confirmed users.{" "}
-            <b>{usage.MAUs}</b> people have used MoodTracker over the last 30
-            days, and <b>{usage.WAUs}</b> people have used it over the last 7
-            days.
-          </p>
-        ) : (
-          <p>
-            <Spinner inline margin="end" />
-            Fetching the latest stats...
-          </p>
-        )}
         <h3>Updates</h3>
         <Version />
         <p>
@@ -161,6 +143,56 @@ export default function About(_: RouteComponentProps) {
           </a>
           .
         </p>
+      </Paper>
+      <Paper>
+        <h2>Usage</h2>
+        {error ? (
+          <p className="negative">
+            Error fetching the latest usage statistics. You need an internet
+            connection to fetch this data, please check and try refreshing.
+          </p>
+        ) : usage ? (
+          <>
+            <p>
+              In case you were interested in how many other people are using
+              MoodTracker you can see some anonymized usage data here. This gets
+              automatically updated every day or so.
+            </p>
+            <table>
+              <thead>
+                <th>Stat</th>
+                <th>Value</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Users over the last 24 hours</td>
+                  <td>{usage.DAUs}</td>
+                </tr>
+                <tr>
+                  <td>Users over the last 7 days</td>
+                  <td>{usage.WAUs}</td>
+                </tr>
+                <tr>
+                  <td>Users over the last 30 days</td>
+                  <td>{usage.MAUs}</td>
+                </tr>
+                <tr>
+                  <td>Confirmed users</td>
+                  <td>{usage.confirmedUsers}</td>
+                </tr>
+                <tr>
+                  <td>Retention of users since a month ago</td>
+                  <td>{percentFormatter.format(usage.CRR)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        ) : (
+          <p>
+            <Spinner inline margin="end" />
+            Fetching the latest stats...
+          </p>
+        )}
       </Paper>
       <Paper>
         <h2>Acknowledgements</h2>
