@@ -11,8 +11,6 @@ dynamodb = boto3.resource('dynamodb')
 events_table = dynamodb.Table('moodtracker_events')
 weekly_emails_table = dynamodb.Table('moodtracker_weekly_emails')
 
-describe_user_pool_response = cognito_client.describe_user_pool(UserPoolId=USER_POOL_ID)
-
 list_users_response = cognito_client.list_users(UserPoolId=USER_POOL_ID)
 users = list_users_response['Users']
 user_pages = 1
@@ -25,12 +23,10 @@ while 'PaginationToken' in list_users_response:
   user_pages += 1
 
 total_enabled_users = 0
-user_status_breakdown = defaultdict(int)
 
 for user in users:
   if user['Enabled']:
     total_enabled_users += 1
-  user_status_breakdown[user['UserStatus']] += 1
 
 events_table_scan_response = events_table.scan(
   ExpressionAttributeNames={'#t': 'type'},
@@ -108,8 +104,6 @@ print(json.dumps({
   'Number of users who have created at least 1 event': len({event['userId'] for event in events}),
   'Number of users who have meditated': len(user_ids_that_have_meditated),
   'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
-  'Estimated number of users in Cognito user pool': describe_user_pool_response['UserPool']['EstimatedNumberOfUsers'],
-  'Actual number of users in Cognito user pool': len(users),
+  'Number of users in Cognito user pool': len(users),
   'Number of enabled users in Cognito user pool': total_enabled_users,
-  'Breakdown of user totals by status in Cognito user pool': user_status_breakdown,
 }, indent=2))
