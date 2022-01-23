@@ -9,15 +9,19 @@ import Version from "../shared/Version";
 
 export default function About(_: RouteComponentProps) {
   const [usage, setUsage] = useState<Usage | undefined>();
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<
+    "NETWORK_ERROR" | "SERVER_ERROR" | undefined
+  >();
 
   useEffect(() => {
     usageGet().then(
       (usage) => {
         setUsage(usage);
-        if (error) setError(false);
+        if (error) setError(undefined);
       },
-      () => setError(true)
+      (e: Error) => {
+        setError(e.message === "500" ? "SERVER_ERROR" : "NETWORK_ERROR");
+      }
     );
     // Run only once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,10 +151,25 @@ export default function About(_: RouteComponentProps) {
       <Paper>
         <h2>Usage</h2>
         {error ? (
-          <p className="negative">
-            Error fetching the latest usage statistics. You need an internet
-            connection to fetch this data, please check and try refreshing.
-          </p>
+          error === "SERVER_ERROR" ? (
+            <p className="negative">
+              Error fetching the latest usage statistics. Something has gone
+              wrong on our side, if the problem persists feel free to{" "}
+              <a
+                href="https://github.com/benji6/moodtracker/issues"
+                rel="noopener"
+                target="_blank"
+              >
+                raise an issue on GitHub
+              </a>
+              .
+            </p>
+          ) : (
+            <p className="negative">
+              Error fetching the latest usage statistics. You need an internet
+              connection to fetch this data, please check and try refreshing.
+            </p>
+          )
         ) : usage ? (
           <>
             <p>
@@ -160,8 +179,10 @@ export default function About(_: RouteComponentProps) {
             </p>
             <table>
               <thead>
-                <th>Stat</th>
-                <th>Value</th>
+                <tr>
+                  <th>Stat</th>
+                  <th>Value</th>
+                </tr>
               </thead>
               <tbody>
                 <tr>
