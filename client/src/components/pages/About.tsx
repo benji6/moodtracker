@@ -198,12 +198,22 @@ export default function About(_: RouteComponentProps) {
                   <td>{usage.MAUs}</td>
                 </tr>
                 <tr>
+                  <td>Users who are signed up to weekly emails</td>
+                  <td>{usage.usersWithWeeklyEmails}</td>
+                </tr>
+                <tr>
                   <td>Confirmed users</td>
                   <td>{usage.confirmedUsers}</td>
                 </tr>
                 <tr>
                   <td>Retention of users since a month ago</td>
                   <td>{percentFormatter.format(usage.CRR)}</td>
+                </tr>
+                <tr>
+                  <td>
+                    Users who have logged a meditation over the last 30 days
+                  </td>
+                  <td>{usage.meditationMAUs}</td>
                 </tr>
               </tbody>
             </table>
