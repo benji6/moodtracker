@@ -106,12 +106,15 @@ def handler(event, context):
       'statusCode': 500,
     }
 
-  user_ids_in_previous_30_day_window = set()
   user_ids_in_current_30_day_window = set()
+  user_ids_in_previous_30_day_window = set()
+  meditation_MAU_ids = set()
   for event in events:
     event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1])
     if event['createdAt'] > days_ago_30:
       user_ids_in_current_30_day_window.add(event['userId'])
+      if 'meditations' in event['type']:
+        meditation_MAU_ids.add(event['userId'])
     else:
       user_ids_in_previous_30_day_window.add(event['userId'])
 
@@ -119,6 +122,7 @@ def handler(event, context):
   cache['data'] = {
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
+      'meditationMAUs': len(meditation_MAU_ids),
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
       'DAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_1}),
       'MAUs': len(user_ids_in_current_30_day_window),
