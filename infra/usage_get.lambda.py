@@ -18,6 +18,10 @@ events_table = dynamodb.Table('moodtracker_events')
 
 def handler(event, context):
   now = datetime.now()
+  days_ago_1 = now - timedelta(1)
+  days_ago_7 = now - timedelta(7)
+  days_ago_30 = now - timedelta(30)
+  days_ago_60 = now - timedelta(60)
   consumed_capacity_units = 0
   confirmed_users = 0
   db_cache_hit = False
@@ -72,7 +76,7 @@ def handler(event, context):
     if user['Enabled'] and user['UserStatus'] == 'CONFIRMED':
       confirmed_users += 1
 
-  filter_expression = Attr('createdAt').gt((now - timedelta(60)).isoformat())
+  filter_expression = Attr('createdAt').gt(days_ago_60.isoformat())
 
   try:
     events_response = events_table.scan(
@@ -102,23 +106,23 @@ def handler(event, context):
       'statusCode': 500,
     }
 
-  users_in_previous_30_day_window = set()
-  users_in_current_30_day_window = set()
-
+  user_ids_in_previous_30_day_window = set()
+  user_ids_in_current_30_day_window = set()
   for event in events:
-    if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(30):
-      users_in_current_30_day_window.add(event['userId'])
+    event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1])
+    if event['createdAt'] > days_ago_30:
+      user_ids_in_current_30_day_window.add(event['userId'])
     else:
-      users_in_previous_30_day_window.add(event['userId'])
+      user_ids_in_previous_30_day_window.add(event['userId'])
 
   cache['expires_at'] = round(now.timestamp() + SECONDS_PER_DAY)
   cache['data'] = {
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
-      'CRR': round(1 - len(users_in_previous_30_day_window - users_in_current_30_day_window) / len(users_in_previous_30_day_window), 3),
-      'DAUs': len({event['userId'] for event in events if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(1)}),
-      'MAUs': len(users_in_current_30_day_window),
-      'WAUs': len({event['userId'] for event in events if datetime.fromisoformat(event['createdAt'][:-1]) > now - timedelta(7)}),
+      'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
+      'DAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_1}),
+      'MAUs': len(user_ids_in_current_30_day_window),
+      'WAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_7}),
     }),
     'headers': {
       **HEADERS,
