@@ -508,6 +508,9 @@ Resources:
               - Action: cognito-idp:ListUsers
                 Effect: Allow
                 Resource: !GetAtt CognitoUserPool.Arn
+              - Action: dynamodb:DescribeTable
+                Effect: Allow
+                Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
               - Action: dynamodb:GetItem
                 Effect: Allow
                 Resource: !GetAtt DynamoGlobalCacheTable.Arn

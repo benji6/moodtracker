@@ -6,7 +6,6 @@ from collections import defaultdict
 
 dynamodb = boto3.resource('dynamodb')
 events_table = dynamodb.Table('moodtracker_events')
-weekly_emails_table = dynamodb.Table('moodtracker_weekly_emails')
 
 events_table_scan_response = events_table.scan(
   ExpressionAttributeNames={'#t': 'type'},
@@ -65,5 +64,4 @@ number_of_events_against_number_of_users = dict(sorted(number_of_events_against_
 print(json.dumps({
   'Breakdown by month': compute_breakdown(get_iso_month_string),
   'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
-  'Estimated number of users who have subscribed to weekly emails': weekly_emails_table.item_count,
 }, indent=2))

@@ -15,6 +15,7 @@ cognito_client = boto3.client('cognito-idp')
 dynamodb = boto3.resource('dynamodb')
 cache_table = dynamodb.Table('moodtracker_global_cache')
 events_table = dynamodb.Table('moodtracker_events')
+weekly_emails_table = dynamodb.Table('moodtracker_weekly_emails')
 
 def handler(event, context):
   now = datetime.now()
@@ -123,6 +124,7 @@ def handler(event, context):
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
       'meditationMAUs': len(meditation_MAU_ids),
+      'usersWithWeeklyEmails': weekly_emails_table.item_count,
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
       'DAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_1}),
       'MAUs': len(user_ids_in_current_30_day_window),
