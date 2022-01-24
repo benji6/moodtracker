@@ -7,6 +7,7 @@ import { Mood } from "../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
+import LocationMap from "../shared/LocationMap";
 
 export default function AddMood() {
   const navigate = useNavigate();
@@ -53,6 +54,9 @@ export default function AddMood() {
     <Paper.Group data-test-id={TEST_IDS.addMoodPage}>
       <Paper>
         <h2>Add mood</h2>
+      </Paper>
+      <Paper>
+        <h3>Details</h3>
         <form
           noValidate
           onSubmit={(e) => {
@@ -90,6 +94,19 @@ export default function AddMood() {
           </Button.Group>
         </form>
       </Paper>
+      {geolocation && (
+        <Paper>
+          <h3>Location</h3>
+          <LocationMap
+            latitude={geolocation.latitude}
+            longitude={geolocation.longitude}
+          />
+          <p className="center">
+            <small>Latitude: {geolocation.latitude}</small> |{" "}
+            <small>Longitude: {geolocation.longitude}</small>
+          </p>
+        </Paper>
+      )}
     </Paper.Group>
   );
 }

@@ -31,7 +31,8 @@
     "papaparse": "^5.3.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-redux": "^7.2.4"
+    "react-redux": "^7.2.4",
+    "react-simple-maps": "^2.3.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.0.0",
@@ -45,6 +46,7 @@
     "@types/react": "^17.0.26",
     "@types/react-dom": "^17.0.5",
     "@types/react-redux": "^7.1.16",
+    "@types/react-simple-maps": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
     "eslint": "^8.4.0",

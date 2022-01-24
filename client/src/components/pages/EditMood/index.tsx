@@ -9,6 +9,7 @@ import { UpdateMood } from "../../../types";
 import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { dateTimeFormatter } from "../../../dateTimeFormatters";
+import LocationMap from "../../shared/LocationMap";
 
 export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   const navigate = useNavigate();
@@ -74,6 +75,9 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
     <Paper.Group>
       <Paper>
         <h2>Edit mood</h2>
+      </Paper>
+      <Paper>
+        <h3>Details</h3>
         <p>
           <small>Created: {dateTimeFormatter.format(new Date(id))}</small>
           {mood.updatedAt && (
@@ -83,13 +87,6 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
                 Last updated:{" "}
                 {dateTimeFormatter.format(new Date(mood.updatedAt))}
               </small>
-            </>
-          )}
-          {mood.location && (
-            <>
-              <br />
-              <small>Latitude: {mood.location.latitude}</small> |{" "}
-              <small>Longitude: {mood.location.longitude}</small>
             </>
           )}
         </p>
@@ -141,6 +138,19 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
           open={isDialogOpen}
         />
       </Paper>
+      {mood.location && (
+        <Paper>
+          <h3>Location</h3>
+          <LocationMap
+            latitude={mood.location.latitude}
+            longitude={mood.location.longitude}
+          />
+          <p className="center">
+            <small>Latitude: {mood.location.latitude}</small> |{" "}
+            <small>Longitude: {mood.location.longitude}</small>
+          </p>
+        </Paper>
+      )}
     </Paper.Group>
   );
 }

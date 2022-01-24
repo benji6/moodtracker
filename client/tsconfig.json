@@ -6,6 +6,7 @@
     "module": "ES2020",
     "moduleResolution": "node",
     "noUnusedLocals": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
     "target": "ES2019"
