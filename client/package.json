@@ -37,7 +37,7 @@
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.0.0",
     "@parcel/transformer-webmanifest": "^2.0.0",
-    "@types/d3-interpolate": "^2.0.0",
+    "@types/d3-interpolate": "^3.0.1",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "^27.0.2",
     "@types/marked": "^4.0.0",
