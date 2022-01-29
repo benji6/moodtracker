@@ -12,7 +12,6 @@ interface Props {
 
 export default function MoodFrequencyForPeriod({ fromDate, toDate }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
-
   const moodIdsInPeriod = getIdsInInterval(moods.allIds, fromDate, toDate);
 
   const moodValues = moodIdsInPeriod.map((id) => moods.byId[id].mood);

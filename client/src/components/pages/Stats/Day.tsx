@@ -136,7 +136,7 @@ export default function Day({
         </>
       ) : (
         <Paper>
-          <p>No data for this day.</p>
+          <p>No mood data for this day.</p>
         </Paper>
       )}
     </Paper.Group>

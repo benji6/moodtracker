@@ -149,7 +149,7 @@ export default function Year({
         </>
       ) : (
         <Paper>
-          <p>No data for this year.</p>
+          <p>No mood data for this year.</p>
         </Paper>
       )}
     </Paper.Group>

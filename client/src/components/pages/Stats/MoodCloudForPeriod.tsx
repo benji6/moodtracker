@@ -1,4 +1,4 @@
-import { Paper, WordCloud } from "eri";
+import { Paper, SubHeading, WordCloud } from "eri";
 import { useSelector } from "react-redux";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
 import { normalizedMoodsSelector } from "../../../selectors";
@@ -33,7 +33,9 @@ export default function MoodCloudForPeriod({ fromDate, toDate }: Props) {
 
   return (
     <Paper>
-      <h3>Mood cloud</h3>
+      <h3>
+        Mood cloud<SubHeading>Created from the mood tags you record</SubHeading>
+      </h3>
       <WordCloud
         aria-label="Word cloud displaying mood descriptions"
         words={words}

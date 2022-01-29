@@ -185,7 +185,7 @@ export default function Month({
         </>
       ) : (
         <Paper>
-          <p>No data for this month.</p>
+          <p>No mood data for this month.</p>
         </Paper>
       )}
     </Paper.Group>

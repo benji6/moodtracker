@@ -22,7 +22,7 @@ export default function MoodGradientForPeriod({ fromDate, toDate }: Props) {
   );
 
   let background = NO_DATA_COLOR;
-  let title = "No data for this period";
+  let title = "No mood data for this period";
 
   if (envelopingMoodIds.length > 1) {
     const firstTime = new Date(envelopingMoodIds[0]).getTime();
