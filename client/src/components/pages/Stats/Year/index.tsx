@@ -61,16 +61,16 @@ export default function Year({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const year = createDateFromLocalDateString(yearStr);
-  const prevYear = subYears(year, 1);
-  const nextYear = addYears(year, 1);
+  const date = createDateFromLocalDateString(yearStr);
+  const prevDate = subYears(date, 1);
+  const nextDate = addYears(date, 1);
 
-  const showPrevious = year > firstMoodDate;
-  const showNext = nextYear <= new Date();
+  const showPrevious = date > firstMoodDate;
+  const showNext = nextDate <= new Date();
 
-  const moodIdsInPeriod = getIdsInInterval(moods.allIds, year, nextYear);
+  const moodIdsInPeriod = getIdsInInterval(moods.allIds, date, nextDate);
 
-  const months = eachMonthOfInterval({ start: year, end: nextYear }).slice(
+  const months = eachMonthOfInterval({ start: date, end: nextDate }).slice(
     0,
     -1
   );
@@ -109,26 +109,26 @@ export default function Year({
   return (
     <Paper.Group>
       <Paper>
-        <h2>{yearFormatter.format(year)}</h2>
-        <MoodGradientForPeriod fromDate={year} toDate={nextYear} />
+        <h2>{yearFormatter.format(date)}</h2>
+        <MoodGradientForPeriod fromDate={date} toDate={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
-            <Link to={`../${formatIsoYearInLocalTimezone(prevYear)}`}>
+            <Link to={`../${formatIsoYearInLocalTimezone(prevDate)}`}>
               <Icon margin="end" name="left" />
-              {yearFormatter.format(prevYear)}
+              {yearFormatter.format(prevDate)}
             </Link>
           ) : (
             <span />
           )}
           {showNext && (
-            <Link to={`../${formatIsoYearInLocalTimezone(nextYear)}`}>
-              {yearFormatter.format(nextYear)}
+            <Link to={`../${formatIsoYearInLocalTimezone(nextDate)}`}>
+              {yearFormatter.format(nextDate)}
               <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForYear dates={[prevYear, year, nextYear]} />
+      <MoodSummaryForYear dates={[prevDate, date, nextDate]} />
       {moodIdsInPeriod.length ? (
         <>
           <Paper>
@@ -142,10 +142,10 @@ export default function Year({
             <h3>Months</h3>
             <MoodByMonthChart months={months} />
           </Paper>
-          <MoodByWeekdayForPeriod fromDate={year} toDate={nextYear} />
-          <MoodByHourForPeriod fromDate={year} toDate={nextYear} />
-          <MoodCloudForPeriod fromDate={year} toDate={nextYear} />
-          <MoodFrequencyForPeriod fromDate={year} toDate={nextYear} />
+          <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
+          <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
+          <MoodCloudForPeriod fromDate={date} toDate={nextDate} />
+          <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
         </>
       ) : (
         <Paper>

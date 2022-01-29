@@ -63,74 +63,74 @@ export default function Month({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const month = createDateFromLocalDateString(monthStr);
-  const prevMonth = subMonths(month, 1);
-  const nextMonth = addMonths(month, 1);
-  const nextMonthDateString = formatIsoDateInLocalTimezone(nextMonth);
+  const date = createDateFromLocalDateString(monthStr);
+  const prevDate = subMonths(date, 1);
+  const nextDate = addMonths(date, 1);
+  const nextMonthDateString = formatIsoDateInLocalTimezone(nextDate);
   const monthMinus7DaysDateString = formatIsoDateInLocalTimezone(
-    subDays(month, 7)
+    subDays(date, 7)
   );
 
-  const showPrevious = month > firstMoodDate;
-  const showNext = nextMonth <= new Date();
+  const showPrevious = date > firstMoodDate;
+  const showNext = nextDate <= new Date();
 
-  const moodIdsInMonth = getIdsInInterval(moods.allIds, month, nextMonth);
+  const moodIdsInMonth = getIdsInInterval(moods.allIds, date, nextDate);
 
-  const monthLength = differenceInCalendarDays(nextMonth, month);
+  const monthLength = differenceInCalendarDays(nextDate, date);
 
   const xLabels: [number, string][] = [];
 
   for (let i = 0; i < X_LABELS_COUNT; i++) {
-    const date = addDays(
-      month,
+    const d = addDays(
+      date,
       Math.round((i * monthLength) / (X_LABELS_COUNT - 1))
     );
-    xLabels.push([date.getTime(), dayMonthFormatter.format(date)]);
+    xLabels.push([d.getTime(), dayMonthFormatter.format(d)]);
   }
 
   return (
     <Paper.Group>
       <Paper>
         <h2>
-          {monthLongFormatter.format(month)}
+          {monthLongFormatter.format(date)}
           <SubHeading>
-            <Link to={`../../years/${formatIsoYearInLocalTimezone(month)}`}>
-              {yearFormatter.format(month)}
+            <Link to={`../../years/${formatIsoYearInLocalTimezone(date)}`}>
+              {yearFormatter.format(date)}
             </Link>
           </SubHeading>
         </h2>
-        <MoodGradientForPeriod fromDate={month} toDate={nextMonth} />
+        <MoodGradientForPeriod fromDate={date} toDate={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
-            <Link to={`../${formatIsoMonthInLocalTimezone(prevMonth)}`}>
+            <Link to={`../${formatIsoMonthInLocalTimezone(prevDate)}`}>
               <Icon margin="end" name="left" />
-              {monthLongFormatter.format(prevMonth)}
+              {monthLongFormatter.format(prevDate)}
             </Link>
           ) : (
             <span />
           )}
           {showNext && (
-            <Link to={`../${formatIsoMonthInLocalTimezone(nextMonth)}`}>
-              {monthLongFormatter.format(nextMonth)}
+            <Link to={`../${formatIsoMonthInLocalTimezone(nextDate)}`}>
+              {monthLongFormatter.format(nextDate)}
               <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForMonth dates={[prevMonth, month, nextMonth]} />
+      <MoodSummaryForMonth dates={[prevDate, date, nextDate]} />
       {moodIdsInMonth.length ? (
         <>
           <Paper>
             <h3>Mood chart</h3>
             <MoodChartForPeriod
-              fromDate={month}
-              toDate={nextMonth}
+              fromDate={date}
+              toDate={nextDate}
               xLabels={xLabels}
             />
           </Paper>
           <Paper>
             <h3>Calendar view</h3>
-            <MoodCalendarForMonth month={month} />
+            <MoodCalendarForMonth month={date} />
           </Paper>
           <Paper>
             <h3>Weeks</h3>
@@ -178,10 +178,10 @@ export default function Month({
               </tbody>
             </table>
           </Paper>
-          <MoodByWeekdayForPeriod fromDate={month} toDate={nextMonth} />
-          <MoodByHourForPeriod fromDate={month} toDate={nextMonth} />
-          <MoodCloudForPeriod fromDate={month} toDate={nextMonth} />
-          <MoodFrequencyForPeriod fromDate={month} toDate={nextMonth} />
+          <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
+          <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
+          <MoodCloudForPeriod fromDate={date} toDate={nextDate} />
+          <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
         </>
       ) : (
         <Paper>

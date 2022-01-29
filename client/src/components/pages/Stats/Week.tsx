@@ -51,39 +51,39 @@ export default function Week({
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const week = startOfWeek(
+  const date = startOfWeek(
     createDateFromLocalDateString(weekStr),
     WEEK_OPTIONS
   );
-  const nextWeek = addWeeks(week, 1);
-  const lastDayOfWeek = subDays(nextWeek, 1);
-  const prevWeek = subWeeks(week, 1);
+  const nextDate = addWeeks(date, 1);
+  const prevDate = subWeeks(date, 1);
+  const lastDayOfWeek = subDays(nextDate, 1);
 
-  const showPrevious = week > firstMoodDate;
-  const showNext = nextWeek <= new Date();
+  const showPrevious = date > firstMoodDate;
+  const showNext = nextDate <= new Date();
 
-  const moodIdsInWeek = getIdsInInterval(moods.allIds, week, nextWeek);
+  const moodIdsInWeek = getIdsInInterval(moods.allIds, date, nextDate);
 
   const xLabels: [number, string][] = [];
   for (let i = 0; i < TIME.daysPerWeek; i++) {
-    const date = addDays(week, i);
+    const d = addDays(date, i);
     xLabels.push([
-      (date.getTime() + addDays(date, 1).getTime()) / 2,
-      weekdayShortFormatter.format(date),
+      (d.getTime() + addDays(d, 1).getTime()) / 2,
+      weekdayShortFormatter.format(d),
     ]);
   }
 
   const xLines: number[] = [];
   for (let i = 0; i <= TIME.daysPerWeek; i++) {
-    const date = addDays(week, i);
-    xLines.push(date.getTime());
+    const d = addDays(date, i);
+    xLines.push(d.getTime());
   }
 
   return (
     <Paper.Group>
       <Paper>
         <h2>
-          {formatWeek(week)}
+          {formatWeek(date)}
           <SubHeading>
             <Link
               to={`../../months/${formatIsoMonthInLocalTimezone(
@@ -100,10 +100,10 @@ export default function Week({
             </Link>
           </SubHeading>
         </h2>
-        <MoodGradientForPeriod fromDate={week} toDate={nextWeek} />
+        <MoodGradientForPeriod fromDate={date} toDate={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
-            <Link to={`../${formatIsoDateInLocalTimezone(prevWeek)}`}>
+            <Link to={`../${formatIsoDateInLocalTimezone(prevDate)}`}>
               <Icon margin="end" name="left" />
               Previous week
             </Link>
@@ -111,28 +111,28 @@ export default function Week({
             <span />
           )}
           {showNext && (
-            <Link to={`../${formatIsoDateInLocalTimezone(nextWeek)}`}>
+            <Link to={`../${formatIsoDateInLocalTimezone(nextDate)}`}>
               Next week
               <Icon margin="start" name="right" />
             </Link>
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForWeek dates={[prevWeek, week, nextWeek]} />
+      <MoodSummaryForWeek dates={[prevDate, date, nextDate]} />
       {moodIdsInWeek.length ? (
         <>
           <Paper>
             <h3>Mood chart</h3>
-            <MoodChartForWeek week={week} />
+            <MoodChartForWeek week={date} />
           </Paper>
           <MoodByWeekdayForPeriod
             canDrillDown
-            fromDate={week}
-            toDate={nextWeek}
+            fromDate={date}
+            toDate={nextDate}
           />
-          <MoodByHourForPeriod fromDate={week} toDate={nextWeek} />
-          <MoodCloudForPeriod fromDate={week} toDate={nextWeek} />
-          <MoodFrequencyForPeriod fromDate={week} toDate={nextWeek} />
+          <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
+          <MoodCloudForPeriod fromDate={date} toDate={nextDate} />
+          <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
         </>
       ) : (
         <Paper>
