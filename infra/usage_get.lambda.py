@@ -15,6 +15,7 @@ cognito_client = boto3.client('cognito-idp')
 dynamodb = boto3.resource('dynamodb')
 cache_table = dynamodb.Table('moodtracker_global_cache')
 events_table = dynamodb.Table('moodtracker_events')
+settings_table = dynamodb.Table('moodtracker_settings')
 weekly_emails_table = dynamodb.Table('moodtracker_weekly_emails')
 
 def handler(event, context):
@@ -54,6 +55,8 @@ def handler(event, context):
   except Exception as e:
     print(e)
 
+  events_filter_expression = Attr('createdAt').gt(days_ago_60.isoformat())
+
   try:
     users_response = cognito_client.list_users(UserPoolId=USER_POOL_ID)
     users = users_response['Users']
@@ -65,6 +68,39 @@ def handler(event, context):
       )
       users += users_response['Users']
       user_pages += 1
+    
+    events_response = events_table.scan(
+      ExpressionAttributeNames={'#t': 'type'},
+      FilterExpression=events_filter_expression,
+      ProjectionExpression='createdAt,#t,userId',
+      ReturnConsumedCapacity='TOTAL',
+    )
+    events = events_response['Items']
+    consumed_capacity_units = events_response['ConsumedCapacity']['CapacityUnits']
+    while 'LastEvaluatedKey' in events_response:
+      events_response = events_table.scan(
+        ExclusiveStartKey=events_response['LastEvaluatedKey'],
+        ExpressionAttributeNames={'#t': 'type'},
+        FilterExpression=events_filter_expression,
+        ProjectionExpression='createdAt,#t,userId',
+        ReturnConsumedCapacity='TOTAL',
+      )
+      events += events_response['Items']
+      consumed_capacity_units += events_response['ConsumedCapacity']['CapacityUnits']
+
+    settings_response = settings_table.scan(
+      ReturnConsumedCapacity='TOTAL',
+    )
+    settings = settings_response['Items']
+    consumed_capacity_units += settings_response['ConsumedCapacity']['CapacityUnits']
+    while 'LastEvaluatedKey' in settings_response:
+      settings_response = settings_table.scan(
+        ExclusiveStartKey=settings_response['LastEvaluatedKey'],
+        ReturnConsumedCapacity='TOTAL',
+      )
+      settings += settings_response['Items']
+      consumed_capacity_units += settings_response['ConsumedCapacity']['CapacityUnits']
+
   except Exception as e:
     print(e)
     return {
@@ -76,36 +112,6 @@ def handler(event, context):
   for user in users:
     if user['Enabled'] and user['UserStatus'] == 'CONFIRMED':
       confirmed_users += 1
-
-  filter_expression = Attr('createdAt').gt(days_ago_60.isoformat())
-
-  try:
-    events_response = events_table.scan(
-      ExpressionAttributeNames={'#t': 'type'},
-      FilterExpression=filter_expression,
-      ProjectionExpression='createdAt,#t,userId',
-      ReturnConsumedCapacity='TOTAL',
-    )
-    events = events_response['Items']
-    consumed_capacity_units = events_response['ConsumedCapacity']['CapacityUnits']
-
-    while 'LastEvaluatedKey' in events_response:
-      events_response = events_table.scan(
-        ExclusiveStartKey=events_response['LastEvaluatedKey'],
-        ExpressionAttributeNames={'#t': 'type'},
-        FilterExpression=filter_expression,
-        ProjectionExpression='createdAt,#t,userId',
-        ReturnConsumedCapacity='TOTAL',
-      )
-      events += events_response['Items']
-      consumed_capacity_units += events_response['ConsumedCapacity']['CapacityUnits']
-  except Exception as e:
-    print(e)
-    return {
-      'body': json.dumps({'error': 'Internal server error'}),
-      'headers': HEADERS,
-      'statusCode': 500,
-    }
 
   user_ids_in_current_30_day_window = set()
   user_ids_in_previous_30_day_window = set()
@@ -124,6 +130,7 @@ def handler(event, context):
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
       'meditationMAUs': len(meditation_MAU_ids),
+      'usersWithLocation': sum(1 for setting in settings if setting['recordLocation']),
       'usersWithWeeklyEmails': weekly_emails_table.item_count,
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
       'DAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_1}),

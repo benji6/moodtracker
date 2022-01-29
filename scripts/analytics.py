@@ -10,7 +10,6 @@ events_table = dynamodb.Table('moodtracker_events')
 events_table_scan_response = events_table.scan(
   ExpressionAttributeNames={'#t': 'type'},
   ProjectionExpression='createdAt,#t,userId',
-  ReturnConsumedCapacity='TOTAL',
 )
 events = events_table_scan_response['Items']
 while 'LastEvaluatedKey' in events_table_scan_response:
@@ -18,7 +17,6 @@ while 'LastEvaluatedKey' in events_table_scan_response:
     ExclusiveStartKey=events_table_scan_response['LastEvaluatedKey'],
     ExpressionAttributeNames={'#t': 'type'},
     ProjectionExpression='createdAt,#t,userId',
-    ReturnConsumedCapacity='TOTAL',
   )
   events += events_table_scan_response['Items']
 

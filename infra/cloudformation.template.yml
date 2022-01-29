@@ -520,6 +520,9 @@ Resources:
               - Action: dynamodb:Scan
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn
+              - Action: dynamodb:Scan
+                Effect: Allow
+                Resource: !GetAtt DynamoSettingsTable.Arn
   LambdaWeeklyEmailsDelete:
     Type: AWS::Lambda::Function
     Properties:
