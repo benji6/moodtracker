@@ -141,10 +141,12 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
       {mood.location && (
         <Paper>
           <h3>Location</h3>
-          <LocationMap
-            latitude={mood.location.latitude}
-            longitude={mood.location.longitude}
-          />
+          <LocationMap>
+            <LocationMap.Marker
+              latitude={mood.location.latitude}
+              longitude={mood.location.longitude}
+            />
+          </LocationMap>
           <p className="center">
             <small>Latitude: {mood.location.latitude}</small> |{" "}
             <small>Longitude: {mood.location.longitude}</small>

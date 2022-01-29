@@ -97,10 +97,12 @@ export default function AddMood() {
       {geolocation && (
         <Paper>
           <h3>Location</h3>
-          <LocationMap
-            latitude={geolocation.latitude}
-            longitude={geolocation.longitude}
-          />
+          <LocationMap>
+            <LocationMap.Marker
+              latitude={geolocation.latitude}
+              longitude={geolocation.longitude}
+            />
+          </LocationMap>
           <p className="center">
             <small>Latitude: {geolocation.latitude}</small> |{" "}
             <small>Longitude: {geolocation.longitude}</small>
