@@ -37,6 +37,7 @@ import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
+import LocationsForPeriod from "../LocationsForPeriod";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -152,6 +153,7 @@ export default function Year({
           <p>No mood data for this year.</p>
         </Paper>
       )}
+      <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
 }

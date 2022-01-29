@@ -38,6 +38,7 @@ import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import LocationsForPeriod from "./LocationsForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -188,6 +189,7 @@ export default function Month({
           <p>No mood data for this month.</p>
         </Paper>
       )}
+      <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
 }

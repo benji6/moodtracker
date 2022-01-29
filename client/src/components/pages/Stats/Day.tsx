@@ -31,6 +31,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import MoodSummaryForDay from "./MoodSummaryForDay";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import { TIME } from "../../../constants";
+import LocationsForPeriod from "./LocationsForPeriod";
 
 const X_LABELS_COUNT = 6;
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -139,6 +140,7 @@ export default function Day({
           <p>No mood data for this day.</p>
         </Paper>
       )}
+      <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
 }

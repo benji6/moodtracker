@@ -31,6 +31,7 @@ import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import LocationsForPeriod from "./LocationsForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -141,6 +142,7 @@ export default function Week({
           </p>
         </Paper>
       )}
+      <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
 }
