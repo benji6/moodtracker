@@ -215,6 +215,10 @@ export default function About(_: RouteComponentProps) {
                   </td>
                   <td>{usage.meditationMAUs}</td>
                 </tr>
+                <tr>
+                  <td>Users who are recording their location</td>
+                  <td>{usage.usersWithLocation}</td>
+                </tr>
               </tbody>
             </table>
           </>

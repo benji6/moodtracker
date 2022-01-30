@@ -59,6 +59,7 @@ export interface Settings {
 export interface Usage {
   confirmedUsers: number;
   meditationMAUs: number;
+  usersWithLocation: number;
   usersWithWeeklyEmails: number;
   CRR: number;
   DAUs: number;
