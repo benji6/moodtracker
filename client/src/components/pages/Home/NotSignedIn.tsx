@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@reach/router";
 import { Button, Paper, WordCloud } from "eri";
 import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
+import LocationMap from "../../shared/LocationMap";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
@@ -63,8 +64,8 @@ export default function NotSignedIn() {
           words={WORD_CLOUD_PROPS}
         />
         <h3>Review on a daily, weekly, monthly or yearly basis</h3>
-        <p>Opt in to receive weekly email updates!</p>
-        <MoodSummary {...MOOD_SUMMARY_PROPS} />
+        <p>Opt in to receive weekly email updates.</p>
+        <MoodSummary {...MOOD_SUMMARY_PROPS} showMeditationStatsOverride />
         <h3>See how your mood fluctuates by day of the week</h3>
         <p>
           MoodTracker can analyze your data over time to give you insights about
@@ -85,6 +86,19 @@ export default function NotSignedIn() {
           time.
         </p>
         <MeditationTimerClock remainingSeconds={222} totalSeconds={600} />
+        <h3>
+          See where you were when you logged your mood or did your meditation
+        </h3>
+        <p>
+          This functionality is only available if you opt in to recording your
+          location. We have an easy to configure permissions system if you are
+          privacy conscious (see the <Link to="/about">about page</Link> for our
+          privacy policy).
+        </p>
+        <LocationMap>
+          <LocationMap.Marker latitude={48.8566} longitude={2.3522} />
+          <LocationMap.Marker latitude={40.7128} longitude={-74.006} />
+        </LocationMap>
         <h3>See how often you log moods</h3>
         <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
         <h3>And much more!</h3>
@@ -98,7 +112,7 @@ export default function NotSignedIn() {
             See how the moods you register before meditation differ from the
             ones you register after meditation
           </li>
-          <li>Discover new visualizations and features by signing up!</li>
+          <li>Discover more visualizations and features by signing up!</li>
         </ul>
       </Paper>
       <Paper>

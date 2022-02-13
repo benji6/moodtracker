@@ -21,12 +21,14 @@ interface Props {
   currentPeriod: PeriodData;
   periodType: "day" | "month" | "week" | "year";
   previousPeriod?: PeriodData;
+  showMeditationStatsOverride?: boolean;
 }
 
 export default function MoodSummary({
   currentPeriod,
   periodType,
   previousPeriod,
+  showMeditationStatsOverride = false,
 }: Props) {
   const showMeditationStats = useSelector(hasMeditationsSelector);
 
@@ -72,7 +74,7 @@ export default function MoodSummary({
         periodType={periodType}
         previousValue={previousPeriod?.total}
       />
-      {showMeditationStats && (
+      {(showMeditationStatsOverride || showMeditationStats) && (
         <MoodSummaryItem
           currentValue={
             currentPeriod.secondsMeditated /
