@@ -116,9 +116,11 @@ def handler(event, context):
   user_ids_in_current_30_day_window = set()
   user_ids_in_previous_30_day_window = set()
   meditation_MAU_ids = set()
+  events_in_last_30_days = 0
   for event in events:
     event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1])
     if event['createdAt'] > days_ago_30:
+      events_in_last_30_days += 1
       user_ids_in_current_30_day_window.add(event['userId'])
       if 'meditations' in event['type']:
         meditation_MAU_ids.add(event['userId'])
@@ -129,6 +131,7 @@ def handler(event, context):
   cache['data'] = {
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
+      'eventsInLast30Days': events_in_last_30_days,
       'meditationMAUs': len(meditation_MAU_ids),
       'usersWithLocation': sum(1 for setting in settings if setting['recordLocation']),
       'usersWithWeeklyEmails': weekly_emails_table.item_count,
