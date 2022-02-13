@@ -14,6 +14,7 @@ export default function LocationsForPeriod({ fromDate, toDate }: Props) {
   const events = useSelector(eventsSelector);
   const eventIdsInPeriod = getIdsInInterval(events.allIds, fromDate, toDate);
 
+  const coordinatesToRender = new Set();
   const locationsToRender: [string, DeviceGeolocation][] = [];
   for (const id of eventIdsInPeriod) {
     const event = events.byId[id];
@@ -24,14 +25,9 @@ export default function LocationsForPeriod({ fromDate, toDate }: Props) {
     )
       continue;
     const { location } = event.payload;
-    if (locationsToRender.length) {
-      const lastLocation = locationsToRender[locationsToRender.length - 1][1];
-      if (
-        location.latitude === lastLocation.latitude &&
-        location.longitude === lastLocation.longitude
-      )
-        continue;
-    }
+    const key = `${location.longitude},${location.latitude}`;
+    if (coordinatesToRender.has(key)) continue;
+    coordinatesToRender.add(key);
     locationsToRender.push([id, location]);
   }
 
