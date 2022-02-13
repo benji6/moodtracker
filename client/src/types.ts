@@ -58,6 +58,7 @@ export interface Settings {
 
 export interface Usage {
   confirmedUsers: number;
+  eventsInLast30Days: number;
   meditationMAUs: number;
   usersWithLocation: number;
   usersWithWeeklyEmails: number;

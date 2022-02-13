@@ -219,6 +219,10 @@ export default function About(_: RouteComponentProps) {
                   <td>Users who are recording their location</td>
                   <td>{usage.usersWithLocation}</td>
                 </tr>
+                <tr>
+                  <td>Total events recorded over the last 30 days</td>
+                  <td>{usage.eventsInLast30Days}</td>
+                </tr>
               </tbody>
             </table>
           </>
