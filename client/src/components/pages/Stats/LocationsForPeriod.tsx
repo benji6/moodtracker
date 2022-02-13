@@ -14,7 +14,7 @@ export default function LocationsForPeriod({ fromDate, toDate }: Props) {
   const events = useSelector(eventsSelector);
   const eventIdsInPeriod = getIdsInInterval(events.allIds, fromDate, toDate);
 
-  const locations: [string, DeviceGeolocation][] = [];
+  const locationsToRender: [string, DeviceGeolocation][] = [];
   for (const id of eventIdsInPeriod) {
     const event = events.byId[id];
     if (
@@ -23,10 +23,19 @@ export default function LocationsForPeriod({ fromDate, toDate }: Props) {
       !event.payload.location
     )
       continue;
-    locations.push([id, event.payload.location]);
+    const { location } = event.payload;
+    if (locationsToRender.length) {
+      const lastLocation = locationsToRender[locationsToRender.length - 1][1];
+      if (
+        location.latitude === lastLocation.latitude &&
+        location.longitude === lastLocation.longitude
+      )
+        continue;
+    }
+    locationsToRender.push([id, location]);
   }
 
-  if (!locations.length) return null;
+  if (!locationsToRender.length) return null;
 
   return (
     <Paper>
@@ -35,7 +44,7 @@ export default function LocationsForPeriod({ fromDate, toDate }: Props) {
         <SubHeading>Location of all moods and meditations</SubHeading>
       </h3>
       <LocationMap>
-        {locations.map(([id, location]) => (
+        {locationsToRender.map(([id, location]) => (
           <LocationMap.Marker
             key={id}
             latitude={location.latitude}
