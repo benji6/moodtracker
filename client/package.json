@@ -16,7 +16,7 @@
     "test:unit": "TZ=UTC jest src",
     "test-ci": "run-p test:audit test:fmt test:types test:unit"
   },
-  "browserslist": ">1%",
+  "browserslist": "cover 85%",
   "dependencies": {
     "@reach/router": "^1.3.3",
     "@reduxjs/toolkit": "^1.7.2",
