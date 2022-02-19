@@ -7,12 +7,26 @@ const SETTINGS_URI = `${API_URI}/settings`;
 const USAGE_URI = `${API_URI}/usage`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
+const fetchWithRetry: typeof fetch = async (
+  input: RequestInfo,
+  init?: RequestInit
+): Promise<Response> => {
+  let retriesLeft = 3;
+  let response = await fetch(input, init);
+  do {
+    if (response.status !== 429) break;
+    await new Promise((resolve) => setTimeout(resolve, 1e3));
+    response = await fetch(input, init);
+  } while (--retriesLeft);
+  return response;
+};
+
 const fetchWithAuth: typeof fetch = async (
   input: RequestInfo,
   init?: RequestInit
 ): Promise<Response> => {
   const idToken = await getIdToken();
-  return fetch(input, {
+  return fetchWithRetry(input, {
     ...init,
     headers: {
       ...init?.headers,
@@ -77,7 +91,7 @@ export const settingsSet = async (settings: Settings): Promise<void> => {
 };
 
 export const usageGet = async (): Promise<Usage> => {
-  const response = await fetch(USAGE_URI);
+  const response = await fetchWithRetry(USAGE_URI);
   if (!response.ok) throw Error(String(response.status));
   return response.json();
 };
