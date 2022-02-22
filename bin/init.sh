@@ -11,4 +11,4 @@ pushd client > /dev/null
 yarn
 popd > /dev/null
 
-echo "🍄 All dependencies installed! 🍄"
+echo "🍄 All dependencies installed! 🍄"

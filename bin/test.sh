@@ -11,4 +11,4 @@ pushd client > /dev/null
 yarn test
 popd > /dev/null
 
-echo "🍄 All tests pass! 🍄"
+echo "🍄 All tests pass! 🍄"

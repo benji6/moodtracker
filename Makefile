@@ -5,7 +5,7 @@ analytics:
 # Generates the CloudFormation file
 cloudformation:
 	@./bin/cloudformation.py
-	@echo "🍄 CloudFormation template built successfully! 🍄"
+	@echo "🍄 CloudFormation template built successfully! 🍄"
 
 # Deploy infrastructure
 deploy: test/cloudformation
@@ -30,7 +30,7 @@ init:
 # Updates the CloudFormation stack policy
 stack-policy:
 	@aws cloudformation set-stack-policy --stack-name moodtracker --stack-policy-body file://infra/stack-policy.json | cat
-	@echo "🍄 CloudFormation stack policy updated successfully! 🍄"
+	@echo "🍄 CloudFormation stack policy updated successfully! 🍄"
 
 # Run the project locally
 start:
@@ -46,7 +46,6 @@ test/ci:
 
 # Builds and validates the CloudFormation template
 test/cloudformation: cloudformation
-	@aws cloudformation validate-template --template-body file://infra/cloudformation.yml > /dev/null
-	@echo "🍄 CloudFormation template validated successfully! 🍄"
+	@./bin/test-cloudformation.sh
 
 .PHONY: analytics cloudformation deploy deploy/dry-run help init stack-policy start test test/ci test/cloudformation

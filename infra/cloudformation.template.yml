@@ -114,6 +114,7 @@ Resources:
       PathPart: usage
       RestApiId: !Ref ApiGateway
   ApiGatewayUsageGet:
+    # checkov:skip=CKV_AWS_59:This endpoint is intentionally open
     Type: AWS::ApiGateway::Method
     Properties:
       AuthorizationType: NONE
@@ -208,6 +209,8 @@ Resources:
       Domain: moodtracker
       UserPoolId: !Ref CognitoUserPool
   DynamoEventsTable:
+    # checkov:skip=CKV_AWS_28:TODO
+    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -234,6 +237,8 @@ Resources:
             ProjectionType: "ALL"
       TableName: moodtracker_events
   DynamoGlobalCacheTable:
+    # checkov:skip=CKV_AWS_28:TODO
+    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -248,6 +253,8 @@ Resources:
         AttributeName: expiresAt
         Enabled: true
   DynamoSettingsTable:
+    # checkov:skip=CKV_AWS_28:TODO
+    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -260,6 +267,8 @@ Resources:
       TableName: moodtracker_settings
   # Records all users that have signed up to weekly emails
   DynamoWeeklyEmailsTable:
+    # checkov:skip=CKV_AWS_28:TODO
+    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -649,6 +658,7 @@ Resources:
         ScanEnabled: true
       RuleSetName: default-rule-set
   SnsTopicEmails:
+    # checkov:skip=CKV_AWS_26:TODO
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
