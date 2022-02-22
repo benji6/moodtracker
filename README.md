@@ -13,19 +13,26 @@ The MoodTracker UI was built using a component library I made called [Eri](https
 
 ## Getting started
 
-### Install dependencies
+### Dependencies required on host machine
+
+- [Node.js](https://nodejs.org) (version specified in [.nvmrc](/client/.nvmrc))
+- [Yarn](https://classic.yarnpkg.com/en/docs/install) (latest version 1.x)
+- [Python](https://www.python.org) (latest version 3.x)
+- [Poetry](https://python-poetry.org/docs/) (latest version 1.x)
+
+### Install project dependencies
 
 ```sh
 make init
 ```
 
-### Run
+### Run application locally
 
 ```sh
 make start
 ```
 
-### Test
+### Test application locally
 
 You will need to be running the client locally on the default port for the end-to-end tests to pass and you will need credentials for a registered user on the platform that you can use to set the `MOODTRACKER_TEST_USER_EMAIL` and `MOODTRACKER_TEST_USER_PASSWORD` environment variables.
 

@@ -8,7 +8,15 @@ handle_error() {
 trap 'handle_error $LINENO $?' ERR
 
 pushd client > /dev/null
+echo "⏳ Installing Node.js dependencies with Yarn... ⏳"
 yarn
+echo "🍄 Node.js dependencies successfully installed! 🍄"
 popd > /dev/null
 
-echo "🍄 All dependencies installed! 🍄"
+pushd scripts > /dev/null
+echo "⏳ Installing Python dependencies with Poetry... ⏳"
+poetry install
+echo "🍄 Python dependencies successfully installed! 🍄"
+popd > /dev/null
+
+echo "🍄 All dependencies successfully installed! 🍄"
