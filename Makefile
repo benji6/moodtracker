@@ -27,6 +27,10 @@ help:
 init:
 	@./bin/init.sh
 
+# Install all Node.js dependencies
+init/ci:
+	@./bin/init-ci.sh
+
 # Updates the CloudFormation stack policy
 stack-policy:
 	@aws cloudformation set-stack-policy --stack-name moodtracker --stack-policy-body file://infra/stack-policy.json | cat
@@ -48,4 +52,4 @@ test/ci:
 test/cloudformation: cloudformation
 	@./bin/test-cloudformation.sh
 
-.PHONY: analytics cloudformation deploy deploy/dry-run help init stack-policy start test test/ci test/cloudformation
+.PHONY: analytics cloudformation deploy deploy/dry-run help init init/ci stack-policy start test test/ci test/cloudformation
