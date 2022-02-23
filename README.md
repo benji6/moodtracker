@@ -26,7 +26,7 @@ The MoodTracker UI was built using a component library I made called [Eri](https
 make init
 ```
 
-### Run application locally
+### Run frontend locally
 
 ```sh
 make start
