@@ -39,15 +39,15 @@ export const FIELDS = {
     name: "description",
     optional: true,
     pattern: PATTERNS.noPunctuation,
-    supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). These words will be used in your word clouds and as search terms.`,
+    supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). For example, "pensive" or "happy excited". These words will be used in your word clouds.`,
   },
   exploration: {
-    label: "Exploration",
+    label: "Mood journal",
     name: "exploration",
     optional: true,
     rows: 5,
     supportiveText:
-      "Use this space to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
+      "Use this space as a journal to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
   },
   mood: {
     label: "Mood",
