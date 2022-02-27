@@ -1,6 +1,13 @@
 import { useNavigate } from "@reach/router";
 import * as React from "react";
-import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
+import {
+  Button,
+  Paper,
+  RadioButton,
+  SubHeading,
+  TextArea,
+  TextField,
+} from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { Mood } from "../../types";
@@ -50,13 +57,23 @@ export default function AddMood() {
 
   useKeyboardSave(handleSubmit);
 
+  const currentHour = new Date().getHours();
+  const timeOfDay =
+    currentHour < 4
+      ? "evening"
+      : currentHour < 12
+      ? "morning"
+      : currentHour < 17
+      ? "afternoon"
+      : "evening";
+
   return (
     <Paper.Group data-test-id={TEST_IDS.addMoodPage}>
       <Paper>
-        <h2>Add mood</h2>
-      </Paper>
-      <Paper>
-        <h3>Details</h3>
+        <h2>
+          Add mood
+          <SubHeading>How are you feeling this {timeOfDay}?</SubHeading>
+        </h2>
         <form
           noValidate
           onSubmit={(e) => {

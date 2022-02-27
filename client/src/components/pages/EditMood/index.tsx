@@ -75,9 +75,6 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
     <Paper.Group>
       <Paper>
         <h2>Edit mood</h2>
-      </Paper>
-      <Paper>
-        <h3>Details</h3>
         <p>
           <small>Created: {dateTimeFormatter.format(new Date(id))}</small>
           {mood.updatedAt && (
