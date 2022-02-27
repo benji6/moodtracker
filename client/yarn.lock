@@ -1432,9 +1432,9 @@
     react-lifecycles-compat "^3.0.4"
 
 "@reduxjs/toolkit@^1.7.2":
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.7.2.tgz#b428aaef92582379464f9de698dbb71957eafb02"
-  integrity sha512-wwr3//Ar8ZhM9bS58O+HCIaMlR4Y6SNHfuszz9hKnQuFIKvwaL3Kmjo6fpDKUOjo4Lv54Yi299ed8rofCJ/Vjw==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.8.0.tgz#8ae875e481ed97e4a691aafa034f876bfd0413c4"
+  integrity sha512-cdfHWfcvLyhBUDicoFwG1u32JqvwKDxLxDd7zSmSoFw/RhYLOygIRtmaMjPRUUHmVmmAGAvquLLsKKU/677kSQ==
   dependencies:
     immer "^9.0.7"
     redux "^4.1.2"
@@ -2936,9 +2936,9 @@ entities@^3.0.1:
   integrity sha512-WiyBqoomrwMdFG1e0kqvASYfnlb0lp8M5o5Fw2OFq1hNZxxcNk8Ik0Xm7LxzBhuidnZB/UtBqVCgUz3kBOP51Q==
 
 eri@^37.0.0:
-  version "37.0.4"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-37.0.4.tgz#edebe0373d49069b4d23afd923bff5b14cd16725"
-  integrity sha512-tYMCXeBWKhbZ+1ojK5Gr5x5TGA153T3WVGsyVoDok1AMezS6tPA/r0IvN4KJmuzV04CR/46Nha5q7vqTx/jieA==
+  version "37.1.0"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-37.1.0.tgz#96bef6831ea1063fce873104b65cf32d8aaf81d5"
+  integrity sha512-xSiS/WpcsGnCXVkEpr0crP9sub6vmWCqZAUGkO5GlGd6CohYzdQS3ptXUlcNE391DQkg75kKEMeKuaSjsqB2zQ==
   dependencies:
     react-transition-group "^4.4.1"
 
