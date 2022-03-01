@@ -1843,10 +1843,10 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-amazon-cognito-identity-js@^5.2.6:
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-5.2.6.tgz#2fa57e965039d9e0a5990da1febbfe6a7a276cfd"
-  integrity sha512-gtYLuhwDy8Badp9q5JB2Ad4/tMFo5JtbjoldFtgd0YXyiMjop4B5f0V/uYw3zhRwk5weZ2LZjfe2XPwhNhEebg==
+amazon-cognito-identity-js@^5.2.7:
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/amazon-cognito-identity-js/-/amazon-cognito-identity-js-5.2.7.tgz#deba4526f740c04cd2af53904f48e8a68cc24290"
+  integrity sha512-4JGhmD/iSIIgg0DUZWE6j1al1rOa6lTL/antId37Ao3Uhy3mZqZC6TGQ6DMcX4d+QgAr/DeevJDupRoAOnbOyQ==
   dependencies:
     buffer "4.9.2"
     crypto-js "^4.1.1"
