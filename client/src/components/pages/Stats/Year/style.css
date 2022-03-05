@@ -1,5 +1,5 @@
 .m-year__calendar-button {
-  transition: background-color var(--time-0) var(--easing-standard);
+  transition-property: background-color;
 }
 .m-year__calendar-button:hover {
   background: var(--color-ground-less);

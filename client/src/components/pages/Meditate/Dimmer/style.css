@@ -7,7 +7,8 @@
   position: fixed;
   right: 0;
   top: 0;
-  transition: opacity var(--time-1) var(--easing-standard);
+  transition-property: opacity;
+  transition-duration: var(--time-1);
   z-index: 9; /* should be higher than any Eri z-index */
 }
 
