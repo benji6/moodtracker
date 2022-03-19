@@ -11,7 +11,7 @@ import {
 import { Paper } from "eri";
 import { TIME, WEEKDAY_LABELS_SHORT } from "../../../constants";
 import addDays from "date-fns/addDays";
-import { useNavigate } from "@reach/router";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   canDrillDown?: boolean;

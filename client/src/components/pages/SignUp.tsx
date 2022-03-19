@@ -1,6 +1,6 @@
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { SignUpPage } from "eri";
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router-dom";
 import { userPool } from "../../cognito";
 import { ERRORS } from "../../constants";
 
@@ -27,6 +27,8 @@ const signUp = ({
   });
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   return (
     <SignUpPage
       onSubmit={async ({ email, password, setSubmitError }) => {

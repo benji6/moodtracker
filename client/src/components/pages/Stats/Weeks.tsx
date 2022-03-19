@@ -6,13 +6,13 @@ import {
   createDateFromLocalDateString,
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
-import { Link } from "@reach/router";
 import { formatWeekWithYear, WEEK_OPTIONS } from "../../../dateTimeFormatters";
 import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import startOfWeek from "date-fns/startOfWeek";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import addWeeks from "date-fns/addWeeks";
+import { Link } from "react-router-dom";
 
 const MAX_WEEKS_PER_PAGE = 8;
 

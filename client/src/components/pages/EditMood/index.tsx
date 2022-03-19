@@ -1,4 +1,3 @@
-import { RouteComponentProps, Redirect, useNavigate } from "@reach/router";
 import * as React from "react";
 import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
 import MoodDeleteDialog from "./MoodDeleteDialog";
@@ -10,10 +9,13 @@ import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { dateTimeFormatter } from "../../../dateTimeFormatters";
 import LocationMap from "../../shared/LocationMap";
+import RedirectHome from "../RedirectHome";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
+export default function EditMood() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams();
   const moods = useSelector(normalizedMoodsSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [descriptionError, setDescriptionError] = React.useState<
@@ -67,9 +69,9 @@ export default function EditMood({ id }: RouteComponentProps<{ id: string }>) {
   };
   useKeyboardSave(handleSubmit);
 
-  if (!id) return <Redirect to="/404" />;
+  if (!id) return <RedirectHome />;
   const mood = moods.byId[id];
-  if (!mood) return <Redirect to="/404" />;
+  if (!mood) return <RedirectHome />;
 
   return (
     <Paper.Group>

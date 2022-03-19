@@ -1,7 +1,7 @@
 import { Button, Paper } from "eri";
-import { useNavigate } from "@reach/router";
 import WeeklyEmailNotifications from "./WeeklyEmailNotifications";
 import LocationToggle from "./LocationToggle";
+import { useNavigate } from "react-router-dom";
 
 export default function GetStartedCta() {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "@reach/router";
 import { SignInPage } from "eri";
 import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { createAuthenticatedUserAndSession } from "../../cognito";
 import { ERRORS } from "../../constants";
 import userSlice from "../../store/userSlice";

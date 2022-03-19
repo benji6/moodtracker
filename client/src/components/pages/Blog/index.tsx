@@ -1,4 +1,3 @@
-import { RouteComponentProps } from "@reach/router";
 import { Paper, Spinner, SubHeading } from "eri";
 import { marked } from "marked";
 import { useEffect, useState } from "react";
@@ -112,7 +111,7 @@ const BLOG_POSTS = {
   },
 } as const;
 
-export default function Blog(_: RouteComponentProps) {
+export default function Blog() {
   const [posts, setPosts] = useState<
     { __html: string; dateString: string; title: string }[]
   >([]);

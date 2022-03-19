@@ -7,8 +7,8 @@ import {
 } from "../../../selectors";
 import { unparse } from "papaparse";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
-import { useNavigate } from "@reach/router";
 import { Meditation, Mood } from "../../../types";
+import { useNavigate } from "react-router-dom";
 
 type DataType = "meditation" | "mood";
 type DenormalizedData = (Meditation | Mood)[];

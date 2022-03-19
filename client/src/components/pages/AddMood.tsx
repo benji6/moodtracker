@@ -1,4 +1,3 @@
-import { useNavigate } from "@reach/router";
 import * as React from "react";
 import {
   Button,
@@ -15,6 +14,7 @@ import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
 import LocationMap from "../shared/LocationMap";
+import { useNavigate } from "react-router-dom";
 
 export default function AddMood() {
   const navigate = useNavigate();

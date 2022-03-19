@@ -1,6 +1,6 @@
-import { useNavigate } from "@reach/router";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { deviceGeolocationSelector } from "../../../../selectors";
 import eventsSlice from "../../../../store/eventsSlice";
 import { Meditation } from "../../../../types";

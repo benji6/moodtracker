@@ -1,4 +1,3 @@
-import { Link } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import GetStartedCta from "../../shared/GetStartedCta";
 import Months from "./Months";
@@ -12,6 +11,7 @@ import { useSelector } from "react-redux";
 import Years from "./Years";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { TEST_IDS } from "../../../constants";
+import { Link } from "react-router-dom";
 
 export default function Overview() {
   const events = useSelector(eventsSelector);

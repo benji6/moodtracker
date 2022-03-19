@@ -1,13 +1,16 @@
 import "eri/dist/index.css";
+import { BrowserRouter } from "react-router-dom";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import store from "./store";
-import Router from "./components/Router";
+import Routes from "./components/Routes";
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router />
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  </BrowserRouter>,
   document.getElementById("root")
 );
 

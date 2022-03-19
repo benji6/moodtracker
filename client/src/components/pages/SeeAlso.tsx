@@ -1,7 +1,6 @@
-import { RouteComponentProps } from "@reach/router";
 import { Paper } from "eri";
 
-export default function SeeAlso(_: RouteComponentProps) {
+export default function SeeAlso() {
   return (
     <Paper.Group>
       <Paper>

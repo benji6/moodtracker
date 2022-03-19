@@ -12,12 +12,12 @@ export type DayAverages = [
   [string, number | undefined]
 ];
 
-interface IProps {
+interface Props {
   averages: DayAverages;
   onClick?(i: number): void;
 }
 
-export default function MoodByWeekdayChart({ averages, onClick }: IProps) {
+export default function MoodByWeekdayChart({ averages, onClick }: Props) {
   return (
     <Chart.BarChart
       aria-label="Chart displaying average mood by weekday"

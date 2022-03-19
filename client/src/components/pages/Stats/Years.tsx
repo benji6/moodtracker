@@ -7,11 +7,11 @@ import {
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
 import { yearFormatter } from "../../../dateTimeFormatters";
-import { Link } from "@reach/router";
 import { normalizedAveragesByYearSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import addYears from "date-fns/addYears";
+import { Link } from "react-router-dom";
 
 const MAX_YEARS_PER_PAGE = 8;
 

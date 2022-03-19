@@ -1,4 +1,3 @@
-import { navigate } from "@reach/router";
 import * as React from "react";
 import storage from "../../storage";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +12,10 @@ import {
 import eventsSlice from "../../store/eventsSlice";
 import appSlice from "../../store/appSlice";
 import settingsSlice from "../../store/settingsSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function useStorage() {
+  const navigate = useNavigate();
   const events = useSelector(eventsSelector);
   const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const settingsData = useSelector(settingsDataSelector);

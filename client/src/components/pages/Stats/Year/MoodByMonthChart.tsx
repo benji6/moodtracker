@@ -5,11 +5,11 @@ import { useSelector } from "react-redux";
 import { normalizedAveragesByMonthSelector } from "../../../../selectors";
 import { monthNarrowFormatter } from "../../../../dateTimeFormatters";
 
-interface IProps {
+interface Props {
   months: Date[];
 }
 
-export default function MoodByMonthChart({ months }: IProps) {
+export default function MoodByMonthChart({ months }: Props) {
   const normalizedAveragesByMonth = useSelector(
     normalizedAveragesByMonthSelector
   );

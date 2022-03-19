@@ -1,6 +1,6 @@
-import { useNavigate } from "@reach/router";
 import { Button, Paper, TextField } from "eri";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ERRORS,
   MEDITATION_SEARCH_PARAM_TIME_KEY,

@@ -1,4 +1,3 @@
-import { RouteComponentProps } from "@reach/router";
 import { Paper, Spinner } from "eri";
 import MoodList from "./MoodList";
 import GetStartedCta from "../../shared/GetStartedCta";
@@ -15,7 +14,7 @@ export interface HomeState {
   page: number;
 }
 
-export default function Home(_: RouteComponentProps) {
+export default function Home() {
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);

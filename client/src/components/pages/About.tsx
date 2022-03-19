@@ -1,13 +1,13 @@
-import { Link, RouteComponentProps } from "@reach/router";
 import { Paper, ShareButton, Spinner } from "eri";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { usageGet } from "../../api";
 import { MOODTRACKER_DESCRIPTION } from "../../constants";
 import { percentFormatter } from "../../numberFormatters";
 import { Usage } from "../../types";
 import Version from "../shared/Version";
 
-export default function About(_: RouteComponentProps) {
+export default function About() {
   const [usage, setUsage] = useState<Usage | undefined>();
   const [error, setError] = useState<
     "NETWORK_ERROR" | "SERVER_ERROR" | undefined

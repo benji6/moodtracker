@@ -1,6 +1,6 @@
 import { Dialog, Button } from "eri";
-import { useNavigate } from "@reach/router";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {

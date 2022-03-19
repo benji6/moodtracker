@@ -4,7 +4,7 @@ import { formatSecondsAsTime } from "../../../../../utils";
 import Dimmer from "../../Dimmer";
 import "./style.css";
 
-interface IProps {
+interface Props {
   dimmed: boolean;
   isPaused: boolean;
   onDim(): void;
@@ -24,7 +24,7 @@ const FreeMeditationPresentation = ({
   onPlay,
   onReveal,
   roundedSeconds,
-}: IProps) => {
+}: Props) => {
   return (
     <>
       <Paper.Group>

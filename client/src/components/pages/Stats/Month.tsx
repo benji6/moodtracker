@@ -1,4 +1,3 @@
-import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
@@ -39,21 +38,22 @@ import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import LocationsForPeriod from "./LocationsForPeriod";
+import RedirectHome from "../RedirectHome";
+import { Link, useParams } from "react-router-dom";
 
 const X_LABELS_COUNT = 5;
 
 const isoMonthRegex = /^\d{4}-\d{2}$/;
 
-export default function Month({
-  month: monthStr,
-}: RouteComponentProps<{ month: string }>) {
+export default function Month() {
+  const { month: monthStr } = useParams();
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const normalizedAveragesByWeek = useSelector(
     normalizedAveragesByWeekSelector
   );
 
-  if (!monthStr || !isoMonthRegex.test(monthStr)) return <Redirect to="/404" />;
+  if (!monthStr || !isoMonthRegex.test(monthStr)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (

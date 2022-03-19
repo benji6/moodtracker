@@ -1,5 +1,8 @@
-import { Redirect, RouteComponentProps } from "@reach/router";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function RedirectHome(_: RouteComponentProps) {
-  return <Redirect to="/" />;
+export default function RedirectHome() {
+  const navigate = useNavigate();
+  useEffect(() => navigate("/"));
+  return null;
 }

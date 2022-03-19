@@ -1,5 +1,5 @@
-import { useLocation, useNavigate } from "@reach/router";
 import { Fab, Icon } from "eri";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PATHS_TO_HIDE_ON = ["/add", "/edit", "/meditate"];
 

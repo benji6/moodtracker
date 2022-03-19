@@ -1,6 +1,6 @@
-import { Redirect, RouteComponentProps, useNavigate } from "@reach/router";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../constants";
 import { deviceGeolocationSelector } from "../../../../selectors";
 import eventsSlice from "../../../../store/eventsSlice";
@@ -12,13 +12,13 @@ import LogMeditationDialog from "./LogMeditationDialog";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 import { initialState, reducer } from "./reducer";
 
-export default function MeditationTimer({ location }: RouteComponentProps) {
+export default function MeditationTimer() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
 
   const geolocation = useSelector(deviceGeolocationSelector);
-  const searchParams = new URLSearchParams(location?.search);
   const timerDurationInSeconds = Number(
     searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY)
   );
@@ -128,8 +128,10 @@ export default function MeditationTimer({ location }: RouteComponentProps) {
     localState.timerState,
   ]);
 
-  if (!searchParams.has(MEDITATION_SEARCH_PARAM_TIME_KEY))
-    return <Redirect to="/meditate" />;
+  if (!searchParams.has(MEDITATION_SEARCH_PARAM_TIME_KEY)) {
+    navigate("/");
+    return null;
+  }
 
   return (
     <>

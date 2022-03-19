@@ -1,4 +1,3 @@
-import { Link, RouteComponentProps } from "@reach/router";
 import { Header, Nav as EriNav, QuickNav, Icon } from "eri";
 import * as React from "react";
 import Nav from "./Nav";
@@ -11,16 +10,17 @@ import AddMoodFab from "./AddMoodFab";
 import { TEST_IDS } from "../constants";
 import useSettings from "./hooks/useSettings";
 import useGeolocation from "./hooks/useGeolocation";
+import { Link } from "react-router-dom";
 
-// HACK - throws an exception if we don't assign this first
+// TODO - throws an exception if we don't assign this first
 // Have not figured out the underlying issue
 const QuickNavLink = QuickNav.Link;
 
-interface IProps extends RouteComponentProps {
+interface Props {
   children: React.ReactNode;
 }
 
-export default function App({ children }: IProps) {
+export default function App({ children }: Props) {
   useUser();
   useGeolocation();
   useEvents();

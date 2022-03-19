@@ -1,9 +1,3 @@
-import {
-  Link,
-  Redirect,
-  RouteComponentProps,
-  useNavigate,
-} from "@reach/router";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
@@ -38,12 +32,13 @@ import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
 import LocationsForPeriod from "../LocationsForPeriod";
+import RedirectHome from "../../RedirectHome";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const isoYearRegex = /^\d{4}$/;
 
-export default function Year({
-  year: yearStr,
-}: RouteComponentProps<{ year: string }>) {
+export default function Year() {
+  const { year: yearStr } = useParams();
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const navigate = useNavigate();
@@ -51,7 +46,7 @@ export default function Year({
     normalizedAveragesByMonthSelector
   );
 
-  if (!yearStr || !isoYearRegex.test(yearStr)) return <Redirect to="/404" />;
+  if (!yearStr || !isoYearRegex.test(yearStr)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (

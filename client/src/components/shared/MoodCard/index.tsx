@@ -1,6 +1,6 @@
-import { useNavigate } from "@reach/router";
 import { Card, SubHeading } from "eri";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../dateTimeFormatters";
 import { normalizedMoodsSelector } from "../../../selectors";

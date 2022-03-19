@@ -1,4 +1,3 @@
-import { Link, Redirect, RouteComponentProps } from "@reach/router";
 import addDays from "date-fns/addDays";
 import addHours from "date-fns/addHours";
 import subDays from "date-fns/subDays";
@@ -32,18 +31,19 @@ import MoodSummaryForDay from "./MoodSummaryForDay";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import { TIME } from "../../../constants";
 import LocationsForPeriod from "./LocationsForPeriod";
+import RedirectHome from "../RedirectHome";
+import { Link, useParams } from "react-router-dom";
 
 const X_LABELS_COUNT = 6;
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-export default function Day({
-  day: dateStr,
-}: RouteComponentProps<{ day: string }>) {
+export default function Day() {
+  const { day: dateStr } = useParams();
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const moodIdsByDate = useSelector(moodIdsByDateSelector);
 
-  if (!dateStr || !isoDateRegex.test(dateStr)) return <Redirect to="/404" />;
+  if (!dateStr || !isoDateRegex.test(dateStr)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (

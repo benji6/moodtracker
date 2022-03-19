@@ -7,11 +7,11 @@ import {
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
 import { monthYearFormatter } from "../../../dateTimeFormatters";
-import { Link } from "@reach/router";
 import { normalizedAveragesByMonthSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import addMonths from "date-fns/addMonths";
+import { Link } from "react-router-dom";
 
 const MAX_MONTHS_PER_PAGE = 12;
 
