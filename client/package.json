@@ -42,7 +42,7 @@
     "@types/jest": "^27.4.1",
     "@types/marked": "^4.0.2",
     "@types/papaparse": "^5.3.2",
-    "@types/react": "^17.0.39",
+    "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.5",
     "@types/react-redux": "^7.1.16",
     "@types/react-simple-maps": "^1.0.7",
