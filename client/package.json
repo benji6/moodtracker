@@ -59,7 +59,7 @@
     "parcel": "^2.3.1",
     "path-browserify": "^1.0.1",
     "prettier": "^2.3.0",
-    "puppeteer": "^13.3.1",
+    "puppeteer": "^13.5.2",
     "ts-jest": "^27.0.1",
     "typescript": "^4.6.3"
   }
