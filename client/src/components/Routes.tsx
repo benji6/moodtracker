@@ -44,83 +44,104 @@ export default function Routes() {
           element={<AuthedOnlyPage Component={EditMood} title="Edit mood" />}
           path="/edit/:id"
         />
-        <Route
-          element={<AuthedOnlyPage Component={Meditate} title="Meditate" />}
-          path="/meditate"
-        />
-        <Route
-          element={
-            <AuthedOnlyPage
-              Component={FreeMeditation}
-              title="Free meditation"
+
+        <Route path="/meditate">
+          <Route
+            element={<AuthedOnlyPage Component={Meditate} title="Meditate" />}
+            path=""
+          />
+          <Route
+            element={
+              <AuthedOnlyPage
+                Component={FreeMeditation}
+                title="Free meditation"
+              />
+            }
+            path="free"
+          />
+          <Route
+            element={
+              <AuthedOnlyPage
+                Component={MeditationTimer}
+                title="Meditation timer"
+              />
+            }
+            path="timer"
+          />
+        </Route>
+
+        <Route path="settings">
+          <Route
+            element={
+              <AuthedOnlyPage
+                Component={ChangePassword}
+                title="Change password"
+              />
+            }
+            path="change-password"
+          />
+          <Route
+            element={<AuthedOnlyPage Component={Export} title="Export data" />}
+            path="export"
+          />
+          <Route
+            element={<AuthedOnlyPage Component={Location} title="Location" />}
+            path="location"
+          />
+          <Route
+            element={
+              <AuthedOnlyPage Component={Notifications} title="Notifications" />
+            }
+            path="notifications"
+          />
+        </Route>
+
+        <Route path="/stats">
+          <Route
+            element={
+              <AuthedOnlyPage Component={Overview} title="Stats overview" />
+            }
+            path=""
+          />
+
+          <Route
+            element={
+              <AuthedOnlyPage Component={Explore} title="Explore stats" />
+            }
+            path="explore"
+          />
+          <Route
+            element={
+              <AuthedOnlyPage Component={Meditation} title="Meditation stats" />
+            }
+            path="meditation"
+          />
+
+          <Route path="days">
+            <Route
+              element={<AuthedOnlyPage Component={Day} title="Day stats" />}
+              path=":day"
             />
-          }
-          path="/meditate/free"
-        />
-        <Route
-          element={
-            <AuthedOnlyPage
-              Component={MeditationTimer}
-              title="Meditation timer"
+          </Route>
+          <Route path="weeks">
+            <Route
+              element={<AuthedOnlyPage Component={Week} title="Week stats" />}
+              path=":week"
             />
-          }
-          path="/meditate/timer"
-        />
-        <Route
-          element={
-            <AuthedOnlyPage
-              Component={ChangePassword}
-              title="Change password"
+          </Route>
+          <Route path="months">
+            <Route
+              element={<AuthedOnlyPage Component={Month} title="Month stats" />}
+              path=":month"
             />
-          }
-          path="/settings/change-password"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Export} title="Export data" />}
-          path="/settings/export"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Location} title="Location" />}
-          path="/settings/location"
-        />
-        <Route
-          element={
-            <AuthedOnlyPage Component={Notifications} title="Notifications" />
-          }
-          path="/settings/notifications"
-        />
-        <Route
-          element={
-            <AuthedOnlyPage Component={Overview} title="Stats overview" />
-          }
-          path="/stats"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Explore} title="Explore stats" />}
-          path="/stats/explore"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Day} title="Day stats" />}
-          path="/stats/days/:day"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Month} title="Month stats" />}
-          path="/stats/months/:month"
-        />
-        <Route
-          element={
-            <AuthedOnlyPage Component={Meditation} title="Meditation stats" />
-          }
-          path="/stats/meditation"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Week} title="Week stats" />}
-          path="/stats/weeks/:week"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={Year} title="Year stats" />}
-          path="/stats/years/:year"
-        />
+          </Route>
+          <Route path="years">
+            <Route
+              element={<AuthedOnlyPage Component={Year} title="Year stats" />}
+              path=":year"
+            />
+          </Route>
+        </Route>
 
         <Route
           element={<Page Component={About} title="About" />}

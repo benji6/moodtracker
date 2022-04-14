@@ -44,11 +44,11 @@ export default function Overview() {
         <ul>
           {hasMeditations && (
             <li>
-              <Link to="/stats/meditation">Meditation stats</Link>
+              <Link to="meditation">Meditation stats</Link>
             </li>
           )}
           <li>
-            <Link to="/stats/explore">Explore</Link>
+            <Link to="explore">Explore</Link>
           </li>
         </ul>
       </Paper>
