@@ -2508,9 +2508,9 @@ entities@^3.0.1:
   integrity sha512-WiyBqoomrwMdFG1e0kqvASYfnlb0lp8M5o5Fw2OFq1hNZxxcNk8Ik0Xm7LxzBhuidnZB/UtBqVCgUz3kBOP51Q==
 
 eri@^39.0.1:
-  version "39.0.1"
-  resolved "https://registry.yarnpkg.com/eri/-/eri-39.0.1.tgz#9e7890b0d7fed2970cf5cb0e4702ea0875bb3e58"
-  integrity sha512-Fhv0OQ6kUULX49ggxgl9o5Zo688XuqtSEmJF7lrSsFABnAGKl/VYlRqSo3VWdhNgAV18ElnF3m2gbqx40kApQg==
+  version "39.0.2"
+  resolved "https://registry.yarnpkg.com/eri/-/eri-39.0.2.tgz#b456d91400863c6e55de244add6c883e4c7742bd"
+  integrity sha512-SpzXEV4PdSW6exYMEAhm4WELTcPO5sYh7mIUIKPQPrZtYatAhagcjPpUzr3kfsbGQ4lD1K1+gyxhFsy6zGAX2w==
   dependencies:
     react-transition-group "^4.4.1"
 
