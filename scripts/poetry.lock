@@ -83,7 +83,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "bc-python-hcl2"
-version = "0.3.33"
+version = "0.3.39"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -187,7 +187,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.0.1021"
+version = "2.0.1102"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -198,7 +198,7 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-python-hcl2 = "0.3.33"
+bc-python-hcl2 = "0.3.39"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
@@ -221,7 +221,7 @@ networkx = "*"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
-pycep-parser = "0.3.3"
+pycep-parser = "0.3.4"
 pyyaml = ">=5.4.1"
 semantic-version = "*"
 tabulate = "*"
@@ -652,7 +652,7 @@ idna = ["idna (>=2.1)"]
 
 [[package]]
 name = "pycep-parser"
-version = "0.3.3"
+version = "0.3.4"
 description = "A Python based Bicep parser"
 category = "main"
 optional = false
@@ -959,7 +959,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "cb72cdb183728aa358a6e529ba30ae990b99bbf09382793cf81da86c1e2ae08f"
+content-hash = "773d889c2e21327600818d0a683964aaf3f4a314a793c3196d19e6670ac8a90e"
 
 [metadata.files]
 aiodns = [
@@ -1061,8 +1061,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.33.tar.gz", hash = "sha256:b5db30f607fae15187f6d456818659ab714d6b907924d84dde4eb0507ad4e736"},
-    {file = "bc_python_hcl2-0.3.33-py3-none-any.whl", hash = "sha256:a736cf67b950fc481f19fb30944263b2df4b64db1da382bbe3bac4a0771fb324"},
+    {file = "bc-python-hcl2-0.3.39.tar.gz", hash = "sha256:24c436b0b8009cc275ff49d1f0b80a6e93c1e378152ad0adad92abfd3e29d0ef"},
+    {file = "bc_python_hcl2-0.3.39-py3-none-any.whl", hash = "sha256:baa5491d0d1497a5c2f07ef2eea2f4a2f3bc1d730b3a7f96dd9bf92ce8c1b586"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1145,8 +1145,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.0.1021-py3-none-any.whl", hash = "sha256:3148d8088b4e0c5ce2c6911ad64c74fd014a187b40189cb6202fc099eaad8729"},
-    {file = "checkov-2.0.1021.tar.gz", hash = "sha256:51b91528711741b6c9c9956f6f6e8fc2bf1acc9796882a862f75f875425aa2d8"},
+    {file = "checkov-2.0.1102-py3-none-any.whl", hash = "sha256:a136473c88d339c601a8d71856a5aab3b7812a102e9bfdfac80d68c865fda908"},
+    {file = "checkov-2.0.1102.tar.gz", hash = "sha256:08b10a62616b63073b17ce48f8a4ba8d7293ba96eabefe405c83699658b3b948"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1469,8 +1469,8 @@ pycares = [
     {file = "pycares-4.1.2.tar.gz", hash = "sha256:03490be0e7b51a0c8073f877bec347eff31003f64f57d9518d419d9369452837"},
 ]
 pycep-parser = [
-    {file = "pycep-parser-0.3.3.tar.gz", hash = "sha256:b45bfef3410ddf77122ef7b618b5ab5d724f07696e48b2fc2703a649bec8277e"},
-    {file = "pycep_parser-0.3.3-py3-none-any.whl", hash = "sha256:f5523ed72891228b68fe8f8f5564b6a3113e76297d5373729b23ca0f1a58b6db"},
+    {file = "pycep-parser-0.3.4.tar.gz", hash = "sha256:97bb05d659b3a4e0a0c6deaae7b73790fc9490267d341a67ba45d1e31adb066b"},
+    {file = "pycep_parser-0.3.4-py3-none-any.whl", hash = "sha256:15cf7597a5c75a121e9fc9f8c108394af09c68ee1461a96522c95a987c646dd9"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
