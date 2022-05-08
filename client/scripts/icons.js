@@ -3,10 +3,11 @@ const fs = require("fs").promises;
 const path = require("path");
 const { SOURCE_PATH } = require("./constants");
 
-const iconsPath = path.join(SOURCE_PATH, "icons");
-const source = path.join(iconsPath, "icon.svg");
+const iconsDirPath = path.join(SOURCE_PATH, "icons");
+const iconPath = path.join(iconsDirPath, "icon.svg");
+const processedSvgPath = path.join(iconsDirPath, "icon-processed.svg");
 
-const configuration = {
+const faviconsConfig = {
   online: false,
   preferOnline: false,
   icons: {
@@ -21,22 +22,32 @@ const configuration = {
   },
 };
 
-favicons(source, configuration, (err, response) => {
-  if (err) throw err;
+(async () => {
+  const svg = await fs.readFile(iconPath, "utf-8");
 
-  response.images
-    .filter(({ name }) =>
-      [
-        "android-chrome-192x192.png",
-        "android-chrome-512x512.png",
-        "apple-touch-icon.png",
-      ].includes(name)
-    )
-    .map(({ contents, name }) => ({
-      contents,
-      name: name.replace("android-chrome", "icon"),
-    }))
-    .forEach(({ contents, name }) =>
-      fs.writeFile(path.join(iconsPath, name), contents)
-    );
-});
+  // `favicons` does not currently handle this filter
+  const processedSvg = svg.replace('filter="url(#shadow)"', "");
+
+  await fs.writeFile(processedSvgPath, processedSvg);
+
+  favicons(processedSvgPath, faviconsConfig, async (err, response) => {
+    await fs.unlink(processedSvgPath);
+    if (err) throw err;
+
+    response.images
+      .filter(({ name }) =>
+        [
+          "android-chrome-192x192.png",
+          "android-chrome-512x512.png",
+          "apple-touch-icon.png",
+        ].includes(name)
+      )
+      .map(({ contents, name }) => ({
+        contents,
+        name: name.replace("android-chrome", "icon"),
+      }))
+      .forEach(({ contents, name }) =>
+        fs.writeFile(path.join(iconsDirPath, name), contents)
+      );
+  });
+})();
