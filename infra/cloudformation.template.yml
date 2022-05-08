@@ -298,6 +298,7 @@ Resources:
       Handler: index.handler
       Role: !GetAtt LambdaWeeklyEmailsRole.Arn
       Runtime: python3.9
+      Timeout: 5
   LambdaWeeklyEmailsSendEventBusPermission:
     Type: AWS::Lambda::Permission
     Properties:

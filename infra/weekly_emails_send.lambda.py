@@ -100,14 +100,18 @@ def send_emails(scan_response):
       print(e)
 
 def handler(event, context):
+  print('Table scan')
   response = table.scan(ProjectionExpression=PROJECTION_EXPRESSION)
+  print('Send emails')
   send_emails(response)
   last_evaluated_key = response.get('LastEvaluatedKey')
 
   while last_evaluated_key:
+    print('Table scan')
     response = table.scan(
       ExclusiveStartKey=last_evaluated_key,
       ProjectionExpression=PROJECTION_EXPRESSION,
     )
+    print('Send emails')
     send_emails(response)
     last_evaluated_key = response.get('LastEvaluatedKey')
