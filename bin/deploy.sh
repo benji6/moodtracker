@@ -9,7 +9,7 @@ trap 'handle_error $LINENO $?' ERR
 
 echo "⏳ Creating change set... ⏳"
 
-changesetid=$(aws cloudformation create-change-set --capabilities CAPABILITY_IAM --change-set-name release-candidate --parameters ParameterKey="SnsEmailAddress",UsePreviousValue=true --stack-name moodtracker --template-body file://infra/cloudformation.yml | jq '.Id')
+changesetid=$(aws cloudformation create-change-set --capabilities CAPABILITY_IAM --change-set-name release-candidate --parameters ParameterKey="SnsEmailAddress",UsePreviousValue=true --stack-name moodtracker --tags Key=Application,Value=MoodTracker --template-body file://infra/cloudformation.yml | jq '.Id')
 
 echo "⏳ Waiting for change set creation to complete... ⏳"
 
