@@ -70,9 +70,9 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
               ? "var(--color-balance-less)"
               : moodToColor(datum.mood),
         };
-        const title =
+        const formattedMood =
           datum?.mood === undefined
-            ? "No data"
+            ? undefined
             : oneDecimalPlaceFormatter.format(datum.mood);
         const date = datum
           ? createDateFromLocalDateString(datum.dateString)
@@ -83,7 +83,7 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
             key={i}
             className="m-mood-calendar-for-month__day"
             style={style}
-            title={title}
+            title={formattedMood ?? "No data"}
           />
         ) : (
           <button
@@ -92,8 +92,9 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
             className="m-mood-calendar-for-month__day"
             onClick={() => navigate(`/stats/days/${datum.dateString}`)}
             style={style}
-            title={title}
-          />
+          >
+            {formattedMood}
+          </button>
         );
       })}
     </div>

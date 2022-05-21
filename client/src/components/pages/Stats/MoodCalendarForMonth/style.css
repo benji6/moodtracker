@@ -20,9 +20,16 @@
 .m-mood-calendar-for-month__day {
   animation: m-calendar-day-keyframes var(--time-1) var(--easing-standard)
     forwards;
+  color: var(--color-figure);
   height: var(--block-size);
   opacity: 0;
   transform: scale(0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .m-mood-calendar-for-month__day {
+    color: var(--color-ground);
+  }
 }
 
 @keyframes m-calendar-day-keyframes {
