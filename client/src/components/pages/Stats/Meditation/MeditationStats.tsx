@@ -41,8 +41,8 @@ export default function MeditationStats() {
           </>
         )}
       </p>
-      {Object.keys(filteredWordsAfter).length > MINIMUM_WORD_CLOUD_WORDS &&
-        Object.keys(filteredWordsBefore).length > MINIMUM_WORD_CLOUD_WORDS && (
+      {Object.keys(filteredWordsAfter).length >= MINIMUM_WORD_CLOUD_WORDS &&
+        Object.keys(filteredWordsBefore).length >= MINIMUM_WORD_CLOUD_WORDS && (
           <>
             <h3>Mood clouds</h3>
             <Toggle
