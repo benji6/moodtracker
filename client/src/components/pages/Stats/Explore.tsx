@@ -5,7 +5,6 @@ import { Paper, Spinner, DateField } from "eri";
 import {
   roundDateUp,
   roundDateDown,
-  isoDateFromIsoDateAndTime,
   formatIsoDateInLocalTimezone,
   getIdsInInterval,
   computeSecondsMeditatedInInterval,
@@ -103,7 +102,7 @@ export default function Explore() {
         <DateField
           label="From"
           max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
-          min={isoDateFromIsoDateAndTime(moods.allIds[0])}
+          min={formatIsoDateInLocalTimezone(new Date(moods.allIds[0]))}
           onChange={(e) => {
             const date = new Date(e.target.value);
             if (

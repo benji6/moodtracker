@@ -11,7 +11,6 @@ import {
   formatIsoDateInLocalTimezone,
   computeStandardDeviation,
   computeMean,
-  isoDateFromIsoDateAndTime,
   getWeekdayIndex,
   formatIsoYearInLocalTimezone,
   createDateFromLocalDateString,
@@ -827,11 +826,6 @@ describe("utils", () => {
     expect(getWeekdayIndex(new Date("2020-09-06T00:00:00"))).toBe(6);
     expect(getWeekdayIndex(new Date("2020-09-07T00:00:00"))).toBe(0);
     expect(getWeekdayIndex(new Date("2020-09-08T00:00:00"))).toBe(1);
-  });
-
-  test("isoDateFromIsoDateAndTime", () => {
-    expect(isoDateFromIsoDateAndTime("2020-09-01T00:00:00")).toBe("2020-09-01");
-    expect(isoDateFromIsoDateAndTime("2020-09-01T23:59:59")).toBe("2020-09-01");
   });
 
   test("mapRight", () => {

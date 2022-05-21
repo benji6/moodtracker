@@ -10,7 +10,7 @@ import {
 import * as React from "react";
 import {
   createDateFromLocalDateString,
-  isoDateFromIsoDateAndTime,
+  formatIsoDateInLocalTimezone,
   mapRight,
 } from "../../../utils";
 import {
@@ -42,7 +42,7 @@ const groupMoodIdsByDay = (
 
   for (let i = 0; i < moodIds.length; i++) {
     const id = moodIds[i];
-    const key = isoDateFromIsoDateAndTime(id);
+    const key = formatIsoDateInLocalTimezone(new Date(id));
     if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
     else moodsGroupedByDate[key] = [id];
   }

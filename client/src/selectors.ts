@@ -22,7 +22,6 @@ import {
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedTagsFromDescription,
-  isoDateFromIsoDateAndTime,
 } from "./utils";
 
 export const appIsStorageLoadingSelector = (state: RootState) =>
@@ -172,7 +171,7 @@ export const moodIdsByDateSelector = createSelector(
 
     for (let i = 0; i < allIds.length; i++) {
       const id = allIds[i];
-      const key = isoDateFromIsoDateAndTime(id);
+      const key = formatIsoDateInLocalTimezone(new Date(id));
       if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
       else moodsGroupedByDate[key] = [id];
     }

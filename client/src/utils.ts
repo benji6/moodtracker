@@ -223,9 +223,6 @@ export const getWeekdayIndex = (date: Date): 0 | 1 | 2 | 3 | 4 | 5 | 6 => {
     1) as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
 
-export const isoDateFromIsoDateAndTime = (dateString: string): string =>
-  dateString.slice(0, dateString.indexOf("T"));
-
 export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
   const ys = [];
   for (let i = xs.length - 1; i >= 0; i--) ys.push(f(xs[i]));
