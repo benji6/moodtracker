@@ -8,7 +8,7 @@ handle_error() {
 trap 'handle_error $LINENO $?' ERR
 
 pushd client > /dev/null
-yarn test
+npm t
 popd > /dev/null
 
 echo "🍄 All tests pass! 🍄"

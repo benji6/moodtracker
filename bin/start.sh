@@ -8,5 +8,5 @@ handle_error() {
 trap 'handle_error $LINENO $?' ERR
 
 pushd client > /dev/null
-yarn start
+npm start
 popd > /dev/null
