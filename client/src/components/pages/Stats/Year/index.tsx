@@ -19,7 +19,6 @@ import {
 import GetStartedCta from "../../../shared/GetStartedCta";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
-import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
 import subYears from "date-fns/subYears";
@@ -34,6 +33,7 @@ import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
 import LocationsForPeriod from "../LocationsForPeriod";
 import RedirectHome from "../../RedirectHome";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import MoodCloud from "../MoodCloud";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -140,7 +140,10 @@ export default function Year() {
           </Paper>
           <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
           <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
-          <MoodCloudForPeriod fromDate={date} toDate={nextDate} />
+          <MoodCloud
+            currentPeriod={{ fromDate: date, toDate: nextDate }}
+            previousPeriod={{ fromDate: prevDate, toDate: date }}
+          />
           <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
         </>
       ) : (

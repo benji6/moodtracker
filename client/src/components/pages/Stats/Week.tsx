@@ -20,7 +20,6 @@ import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
-import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import startOfWeek from "date-fns/startOfWeek";
 import addWeeks from "date-fns/addWeeks";
@@ -33,6 +32,7 @@ import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import LocationsForPeriod from "./LocationsForPeriod";
 import RedirectHome from "../RedirectHome";
 import { Link, useParams } from "react-router-dom";
+import MoodCloud from "./MoodCloud";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -132,7 +132,10 @@ export default function Week() {
             toDate={nextDate}
           />
           <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
-          <MoodCloudForPeriod fromDate={date} toDate={nextDate} />
+          <MoodCloud
+            currentPeriod={{ fromDate: date, toDate: nextDate }}
+            previousPeriod={{ fromDate: prevDate, toDate: date }}
+          />
           <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
         </>
       ) : (

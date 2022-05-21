@@ -23,7 +23,6 @@ import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForMonth from "./MoodSummaryForMonth";
-import MoodCloudForPeriod from "./MoodCloudForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "./MoodCalendarForMonth";
 import subMonths from "date-fns/subMonths";
@@ -40,6 +39,7 @@ import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import LocationsForPeriod from "./LocationsForPeriod";
 import RedirectHome from "../RedirectHome";
 import { Link, useParams } from "react-router-dom";
+import MoodCloud from "./MoodCloud";
 
 const X_LABELS_COUNT = 5;
 
@@ -181,7 +181,10 @@ export default function Month() {
           </Paper>
           <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
           <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
-          <MoodCloudForPeriod fromDate={date} toDate={nextDate} />
+          <MoodCloud
+            currentPeriod={{ fromDate: date, toDate: nextDate }}
+            previousPeriod={{ fromDate: prevDate, toDate: date }}
+          />
           <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
         </>
       ) : (
