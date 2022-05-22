@@ -55,7 +55,7 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
         Object.keys(filteredWords).length >= MINIMUM_WORD_CLOUD_WORDS && (
           <Toggle
             checked={filterOutPreviousPeriod}
-            label="Filter out moods from previous period"
+            label="Filter out moods from previous period to show what is different about this period"
             onChange={() =>
               setFilterOutPreviousPeriod(!filterOutPreviousPeriod)
             }

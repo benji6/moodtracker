@@ -5,6 +5,14 @@ import { dateFormatter } from "../../../dateTimeFormatters";
 import Version from "../../shared/Version";
 
 const BLOG_POSTS = {
+  "2022-05-22": {
+    imageUrls: [
+      new URL("2022-05-22/screenshot-1.png", import.meta.url),
+      new URL("2022-05-22/screenshot-2.png", import.meta.url),
+    ],
+    title: "Improvements to stats pages",
+    url: new URL("2022-05-22/index.md", import.meta.url),
+  },
   "2022-02-13": {
     imageUrls: [new URL("2022-02-13/screenshot.png", import.meta.url)],
     title: "New feature - location map",
