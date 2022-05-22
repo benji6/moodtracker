@@ -16,7 +16,7 @@
     "test:unit": "TZ=UTC jest src",
     "test-ci": "run-p test:audit test:fmt test:types test:unit"
   },
-  "browserslist": "cover 85%",
+  "browserslist": "cover 80%",
   "dependencies": {
     "@reduxjs/toolkit": "^1.7.2",
     "amazon-cognito-identity-js": "^5.2.6",
