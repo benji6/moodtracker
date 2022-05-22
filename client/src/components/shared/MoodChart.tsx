@@ -23,6 +23,8 @@ export default function MoodChart({
 }: Props) {
   const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
 
+  const yLines = yLabels.map(([y]) => y);
+
   return (
     <Chart.LineChart
       aria-label="Chart displaying mood against time"
@@ -32,7 +34,7 @@ export default function MoodChart({
       yAxisTitle="Mood"
     >
       <Chart.XGridLines lines={xLines} />
-      <Chart.YGridLines lines={yLabels.map(([y]) => y)} />
+      <Chart.YGridLines lines={yLines} />
       <Chart.PlotArea>
         {hidePoints ? (
           <>
@@ -52,7 +54,7 @@ export default function MoodChart({
         )}
       </Chart.PlotArea>
       <Chart.XAxis labels={xLabels} markers={xLines} />
-      <Chart.YAxis labels={yLabels} markers />
+      <Chart.YAxis labels={yLabels} markers={yLines} />
     </Chart.LineChart>
   );
 }

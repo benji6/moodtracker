@@ -16,6 +16,9 @@ export default function MoodByHourChart({ data }: Props) {
 
   const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
 
+  const xLines = xLabels.map(([x]) => x);
+  const yLines = yLabels.map(([y]) => y);
+
   return (
     <Chart.LineChart
       aria-label="Chart displaying average mood against hour of the day"
@@ -24,13 +27,13 @@ export default function MoodByHourChart({ data }: Props) {
       xAxisTitle="Hour of day"
       yAxisTitle="Mood"
     >
-      <Chart.XGridLines lines={xLabels.map(([x]) => x)} />
-      <Chart.YGridLines lines={yLabels.map(([y]) => y)} />
+      <Chart.XGridLines lines={xLines} />
+      <Chart.YGridLines lines={yLines} />
       <Chart.PlotArea>
         <Chart.Line data={data} thickness={2} />
       </Chart.PlotArea>
-      <Chart.XAxis labels={xLabels} markers />
-      <Chart.YAxis labels={yLabels} markers />
+      <Chart.XAxis labels={xLabels} markers={xLines} />
+      <Chart.YAxis labels={yLabels} markers={yLines} />
     </Chart.LineChart>
   );
 }

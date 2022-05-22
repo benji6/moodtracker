@@ -36,7 +36,7 @@ export default function MoodByWeekdayChart({ averages, onClick }: Props) {
       </Chart.PlotArea>
       <Chart.YAxis
         labels={MOOD_INTEGERS.map((mood) => [mood, String(mood)])}
-        markers
+        markers={MOOD_INTEGERS as number[]}
       />
     </Chart.BarChart>
   );
