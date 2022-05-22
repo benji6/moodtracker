@@ -659,7 +659,7 @@ Resources:
         ScanEnabled: true
       RuleSetName: default-rule-set
   SnsTopicEmails:
-    # checkov:skip=CKV_AWS_26:TODO
+    # checkov:skip=CKV_AWS_26:Encryption at rest is not deemed as necessary for this queue as it is for a noreply address and should not receive any email
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
