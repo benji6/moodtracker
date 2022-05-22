@@ -1,7 +1,6 @@
 .*ignore
 .*rc
 .parcel-cache
-*.lock
 *.mp3
 *.png
 *.svg
