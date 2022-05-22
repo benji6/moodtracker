@@ -209,7 +209,6 @@ Resources:
       Domain: moodtracker
       UserPoolId: !Ref CognitoUserPool
   DynamoEventsTable:
-    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -238,7 +237,6 @@ Resources:
         PointInTimeRecoveryEnabled: true
       TableName: moodtracker_events
   DynamoGlobalCacheTable:
-    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -255,7 +253,6 @@ Resources:
         AttributeName: expiresAt
         Enabled: true
   DynamoSettingsTable:
-    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -270,7 +267,6 @@ Resources:
       TableName: moodtracker_settings
   # Records all users that have signed up to weekly emails
   DynamoWeeklyEmailsTable:
-    # checkov:skip=CKV_AWS_119:TODO
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
