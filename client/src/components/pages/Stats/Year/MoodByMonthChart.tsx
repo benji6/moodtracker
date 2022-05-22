@@ -38,7 +38,7 @@ export default function MoodByMonthChart({ months }: Props) {
       </Chart.PlotArea>
       <Chart.YAxis
         labels={MOOD_INTEGERS.map((mood) => [mood, String(mood)])}
-        markers={MOOD_INTEGERS as number[]}
+        markers
       />
     </Chart.BarChart>
   );

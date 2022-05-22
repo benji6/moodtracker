@@ -31,7 +31,7 @@ export default function MoodFrequencyChart({ data }: Props) {
       <Chart.PlotArea>
         <Chart.Bars colorFromX={(x) => moodToColor(x * 10)} data={data} />
       </Chart.PlotArea>
-      <Chart.YAxis labels={yLabels} markers={yLabels.map(([y]) => y)} />
+      <Chart.YAxis labels={yLabels} markers />
     </Chart.BarChart>
   );
 }
