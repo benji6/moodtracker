@@ -31,7 +31,7 @@ import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
 import LocationsForPeriod from "../LocationsForPeriod";
-import RedirectHome from "../../RedirectHome";
+import RedirectHome from "../../../RedirectHome";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import MoodCloud from "../MoodCloud";
 

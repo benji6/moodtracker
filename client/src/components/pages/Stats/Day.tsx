@@ -31,7 +31,7 @@ import MoodSummaryForDay from "./MoodSummaryForDay";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import { TIME } from "../../../constants";
 import LocationsForPeriod from "./LocationsForPeriod";
-import RedirectHome from "../RedirectHome";
+import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 
 const X_LABELS_COUNT = 6;

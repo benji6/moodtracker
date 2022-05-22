@@ -9,7 +9,7 @@ import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { dateTimeFormatter } from "../../../dateTimeFormatters";
 import LocationMap from "../../shared/LocationMap";
-import RedirectHome from "../RedirectHome";
+import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditMood() {

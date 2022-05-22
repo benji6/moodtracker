@@ -1,7 +1,7 @@
 import { Paper } from "eri";
 import { useSelector } from "react-redux";
 import { normalizedMeditationsSelector } from "../../../../selectors";
-import RedirectHome from "../../RedirectHome";
+import RedirectHome from "../../../RedirectHome";
 import MeditationLog from "./MeditationLog";
 import MeditationStats from "./MeditationStats";
 

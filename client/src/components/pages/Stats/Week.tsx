@@ -30,7 +30,7 @@ import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import LocationsForPeriod from "./LocationsForPeriod";
-import RedirectHome from "../RedirectHome";
+import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { userIsSignedInSelector } from "../../selectors";
 import withStorageLoaded from "../hocs/withStorageLoaded";
-import RedirectHome from "../pages/RedirectHome";
+import RedirectHome from "../RedirectHome";
 import { Page } from "./Page";
 
 interface Props {
