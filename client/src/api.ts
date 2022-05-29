@@ -8,7 +8,7 @@ const USAGE_URI = `${API_URI}/usage`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
 const fetchWithRetry: typeof fetch = async (
-  input: RequestInfo,
+  input: RequestInfo | URL,
   init?: RequestInit
 ): Promise<Response> => {
   let retriesLeft = 3;
@@ -22,7 +22,7 @@ const fetchWithRetry: typeof fetch = async (
 };
 
 const fetchWithAuth: typeof fetch = async (
-  input: RequestInfo,
+  input: RequestInfo | URL,
   init?: RequestInit
 ): Promise<Response> => {
   const idToken = await getIdToken();
