@@ -83,7 +83,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "bc-python-hcl2"
-version = "0.3.39"
+version = "0.3.40"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -187,7 +187,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.0.1102"
+version = "2.0.1182"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -198,7 +198,7 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-python-hcl2 = "0.3.39"
+bc-python-hcl2 = "0.3.40"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
@@ -206,7 +206,7 @@ click = ">=8.0.0"
 cloudsplaining = ">=0.4.1"
 colorama = "*"
 configargparse = "*"
-cyclonedx-python-lib = ">=0.11.0,<1.0.0"
+cyclonedx-python-lib = ">=2.4.0"
 deep-merge = "*"
 detect-secrets = "*"
 docker = "*"
@@ -221,13 +221,13 @@ networkx = "*"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
-pycep-parser = "0.3.4"
+pycep-parser = "0.3.6"
 pyyaml = ">=5.4.1"
 semantic-version = "*"
 tabulate = "*"
 termcolor = "*"
 tqdm = "*"
-typing-extensions = "*"
+typing-extensions = ">=4.1.0"
 update-checker = "*"
 
 [package.extras]
@@ -309,7 +309,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "0.12.3"
+version = "2.4.0"
 description = "A library for producing CycloneDX SBOM (Software Bill of Materials) files."
 category = "main"
 optional = false
@@ -443,6 +443,21 @@ zipp = ">=0.5"
 docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 perf = ["ipython"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
+
+[[package]]
+name = "importlib-resources"
+version = "5.7.1"
+description = "Read resources from Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "jinja2"
@@ -652,15 +667,16 @@ idna = ["idna (>=2.1)"]
 
 [[package]]
 name = "pycep-parser"
-version = "0.3.4"
+version = "0.3.6"
 description = "A Python based Bicep parser"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
+importlib-resources = {version = ">=2.0.0", markers = "python_version < \"3.9\""}
 lark = ">=1.1.2"
-regex = ">=2022.3.15,<2023.0.0"
+regex = ">=2022.1.18"
 typing-extensions = ">=3.10.0"
 
 [[package]]
@@ -959,7 +975,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "773d889c2e21327600818d0a683964aaf3f4a314a793c3196d19e6670ac8a90e"
+content-hash = "9b8900b9d1665c99ab2cac56c08d3585eb7f7a3f5054115264bdac2444bdc69a"
 
 [metadata.files]
 aiodns = [
@@ -1061,8 +1077,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.39.tar.gz", hash = "sha256:24c436b0b8009cc275ff49d1f0b80a6e93c1e378152ad0adad92abfd3e29d0ef"},
-    {file = "bc_python_hcl2-0.3.39-py3-none-any.whl", hash = "sha256:baa5491d0d1497a5c2f07ef2eea2f4a2f3bc1d730b3a7f96dd9bf92ce8c1b586"},
+    {file = "bc-python-hcl2-0.3.40.tar.gz", hash = "sha256:e307b64f193b909d52ac26bcd9e409f4eb2ac93905ce870d8be186edc57e3807"},
+    {file = "bc_python_hcl2-0.3.40-py3-none-any.whl", hash = "sha256:0fabd53cf6fba125b59583ae64a74a4d928e09eee56145c9ef39cbeff5f804b7"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1145,8 +1161,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.0.1102-py3-none-any.whl", hash = "sha256:a136473c88d339c601a8d71856a5aab3b7812a102e9bfdfac80d68c865fda908"},
-    {file = "checkov-2.0.1102.tar.gz", hash = "sha256:08b10a62616b63073b17ce48f8a4ba8d7293ba96eabefe405c83699658b3b948"},
+    {file = "checkov-2.0.1182-py3-none-any.whl", hash = "sha256:d1a00d6b66924daba5d6b9dc18b3a7a0a8fc9d7e791314bccac6b164546a9eb8"},
+    {file = "checkov-2.0.1182.tar.gz", hash = "sha256:9724b495b7c28f9ae88ee69faeb9aaa5ec07792b28d1d7188b3ea0770eb3a44d"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1173,8 +1189,8 @@ contextlib2 = [
     {file = "contextlib2-21.6.0.tar.gz", hash = "sha256:ab1e2bfe1d01d968e1b7e8d9023bc51ef3509bba217bb730cee3827e1ee82869"},
 ]
 cyclonedx-python-lib = [
-    {file = "cyclonedx-python-lib-0.12.3.tar.gz", hash = "sha256:ea2d5393a3de4a347e9c99c6c59efe4e3f64da2fb48e80f3e350fee289fa8a73"},
-    {file = "cyclonedx_python_lib-0.12.3-py3-none-any.whl", hash = "sha256:ba7297148c0f3a72ed3395495080be86a344539084f9d4df9c0f3b466e4f6e54"},
+    {file = "cyclonedx-python-lib-2.4.0.tar.gz", hash = "sha256:35ef1dbff4aab8ef143552cecde4ef9050f805957519339991e488f80cab36e2"},
+    {file = "cyclonedx_python_lib-2.4.0-py3-none-any.whl", hash = "sha256:b3fad0f36d4d7474d2ce4ff54b8138926d33d1c61fc177c707771d611b6fd75d"},
 ]
 decorator = [
     {file = "decorator-5.1.1-py3-none-any.whl", hash = "sha256:b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"},
@@ -1275,6 +1291,10 @@ idna = [
 importlib-metadata = [
     {file = "importlib_metadata-4.11.1-py3-none-any.whl", hash = "sha256:e0bc84ff355328a4adfc5240c4f211e0ab386f80aa640d1b11f0618a1d282094"},
     {file = "importlib_metadata-4.11.1.tar.gz", hash = "sha256:175f4ee440a0317f6e8d81b7f8d4869f93316170a65ad2b007d2929186c8052c"},
+]
+importlib-resources = [
+    {file = "importlib_resources-5.7.1-py3-none-any.whl", hash = "sha256:e447dc01619b1e951286f3929be820029d48c75eb25d265c28b92a16548212b8"},
+    {file = "importlib_resources-5.7.1.tar.gz", hash = "sha256:b6062987dfc51f0fcb809187cffbd60f35df7acb4589091f154214af6d0d49d3"},
 ]
 jinja2 = [
     {file = "Jinja2-3.0.3-py3-none-any.whl", hash = "sha256:077ce6014f7b40d03b47d1f1ca4b0fc8328a692bd284016f806ed0eaca390ad8"},
@@ -1469,8 +1489,8 @@ pycares = [
     {file = "pycares-4.1.2.tar.gz", hash = "sha256:03490be0e7b51a0c8073f877bec347eff31003f64f57d9518d419d9369452837"},
 ]
 pycep-parser = [
-    {file = "pycep-parser-0.3.4.tar.gz", hash = "sha256:97bb05d659b3a4e0a0c6deaae7b73790fc9490267d341a67ba45d1e31adb066b"},
-    {file = "pycep_parser-0.3.4-py3-none-any.whl", hash = "sha256:15cf7597a5c75a121e9fc9f8c108394af09c68ee1461a96522c95a987c646dd9"},
+    {file = "pycep-parser-0.3.6.tar.gz", hash = "sha256:6518d9b90c31db4466d52570491b13231f093c975d49daa1a3570e80093fd997"},
+    {file = "pycep_parser-0.3.6-py3-none-any.whl", hash = "sha256:6e7601b4943fac39ecd1f7cf75fcfcfcbc9c9f2c8072e5fe0ee0b7269132e2a1"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
