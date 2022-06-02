@@ -1,14 +1,14 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "monthly"
+      interval: monthly
   - package-ecosystem: npm
-    directory: "/client"
+    directory: /client
     schedule:
       interval: monthly
   - package-ecosystem: pip
-    directory: "/scripts"
+    directory: /scripts
     schedule:
       interval: monthly
