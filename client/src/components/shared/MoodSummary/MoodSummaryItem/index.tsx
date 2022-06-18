@@ -24,16 +24,17 @@ export default function MoodSummaryItem({
 }: Props) {
   if (currentValue === undefined) return null;
 
+  const formattedCurrentValue = format(currentValue);
+  const formattedPreviousValue =
+    previousValue === undefined ? undefined : format(previousValue);
   const difference =
-    previousValue === undefined ? undefined : currentValue - previousValue;
-
-  const isDifferenceMaterial = difference
-    ? difference <= -0.05 || difference >= 0.05
-    : false;
+    formattedPreviousValue === undefined
+      ? undefined
+      : Number(formattedCurrentValue) - Number(formattedPreviousValue);
 
   let color = "var(--color-balance)";
   if (isMood) color = moodToColor(currentValue);
-  else if (displayTrendSentiment && isDifferenceMaterial && difference) {
+  else if (displayTrendSentiment && difference) {
     if (difference > 0) color = "var(--color-positive)";
     else color = "var(--color-negative)";
   }
@@ -44,7 +45,9 @@ export default function MoodSummaryItem({
         <div>
           <b>{heading}</b>
         </div>
-        <div className="m-mood-summary-item__value">{format(currentValue)}</div>
+        <div className="m-mood-summary-item__value">
+          {formattedCurrentValue}
+        </div>
         {isMood && (
           <div className="m-mood-summary-item__mood-bar">
             <MoodBar mood={currentValue} />
@@ -53,19 +56,19 @@ export default function MoodSummaryItem({
         {difference !== undefined && (
           <div className="m-mood-summary-item__trend">
             <small>
-              {!isDifferenceMaterial ? (
-                <Icon draw margin="end" name="minus" />
-              ) : difference < 0 ? (
+              {difference < 0 ? (
                 <span className={displayTrendSentiment ? "negative" : ""}>
                   <Icon draw margin="end" name="down" />
                 </span>
-              ) : (
+              ) : difference > 0 ? (
                 <span className={displayTrendSentiment ? "positive" : ""}>
                   <Icon draw margin="end" name="up" />
                 </span>
+              ) : (
+                <Icon draw margin="end" name="minus" />
               )}
-              {isDifferenceMaterial
-                ? `${format(Math.abs(difference))}
+              {difference
+                ? `${format(difference)}
                 ${difference < 0 ? "less" : "more"} than `
                 : "The same as "}
               previous {periodType}
