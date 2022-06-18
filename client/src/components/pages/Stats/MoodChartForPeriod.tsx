@@ -55,7 +55,7 @@ export default function MoodChartForPeriod({
   toDate,
   xAxisTitle,
   xLabels,
-  xLines = xLabels.map(([x]) => x),
+  xLines,
 }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
