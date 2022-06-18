@@ -74,12 +74,6 @@ export default function Week() {
     ]);
   }
 
-  const xLines: number[] = [];
-  for (let i = 0; i <= TIME.daysPerWeek; i++) {
-    const d = addDays(date, i);
-    xLines.push(d.getTime());
-  }
-
   return (
     <Paper.Group>
       <Paper>
