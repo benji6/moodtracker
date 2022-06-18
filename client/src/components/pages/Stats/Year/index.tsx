@@ -2,6 +2,7 @@ import { Icon, Paper, Spinner, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
   monthLongFormatter,
+  monthNarrowFormatter,
   yearFormatter,
 } from "../../../../dateTimeFormatters";
 import {
@@ -34,6 +35,8 @@ import LocationsForPeriod from "../LocationsForPeriod";
 import RedirectHome from "../../../RedirectHome";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import MoodCloud from "../MoodCloud";
+import MoodChartForPeriod from "../MoodChartForPeriod";
+import addMonths from "date-fns/addMonths";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -102,6 +105,7 @@ export default function Year() {
       </button>
     );
   }
+
   return (
     <Paper.Group>
       <Paper>
@@ -127,6 +131,24 @@ export default function Year() {
       <MoodSummaryForYear dates={[prevDate, date, nextDate]} />
       {moodIdsInPeriod.length ? (
         <>
+          <Paper>
+            <h3>Mood chart</h3>
+            <MoodChartForPeriod
+              fromDate={date}
+              toDate={nextDate}
+              hidePoints
+              xLabels={[...Array(12).keys()].map((n) => {
+                const d = addMonths(date, n);
+                return [
+                  (d.getTime() + addMonths(d, 1).getTime()) / 2,
+                  monthNarrowFormatter.format(d),
+                ];
+              })}
+              xLines={[...Array(13).keys()].map((n) =>
+                addMonths(date, n).getTime()
+              )}
+            />
+          </Paper>
           <Paper>
             <h3>
               Calendar view
