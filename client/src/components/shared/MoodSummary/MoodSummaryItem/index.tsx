@@ -75,7 +75,7 @@ export default function MoodSummaryItem({
                 <Icon draw margin="end" name="minus" />
               )}
               {difference
-                ? `${format(difference)}
+                ? `${format(Math.abs(difference))}
                 ${difference < 0 ? "less" : "more"} than `
                 : "The same as "}
               previous {periodType}
