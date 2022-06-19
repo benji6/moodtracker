@@ -40,6 +40,7 @@ import LocationsForPeriod from "./LocationsForPeriod";
 import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
+import isValid from "date-fns/isValid";
 
 const X_LABELS_COUNT = 5;
 
@@ -54,6 +55,8 @@ export default function Month() {
   );
 
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <RedirectHome />;
+  const date = createDateFromLocalDateString(monthStr);
+  if (!isValid(date)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
@@ -64,7 +67,6 @@ export default function Month() {
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const date = createDateFromLocalDateString(monthStr);
   const prevDate = subMonths(date, 1);
   const nextDate = addMonths(date, 1);
   const nextMonthDateString = formatIsoDateInLocalTimezone(nextDate);

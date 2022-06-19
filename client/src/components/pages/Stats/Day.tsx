@@ -33,6 +33,7 @@ import { TIME } from "../../../constants";
 import LocationsForPeriod from "./LocationsForPeriod";
 import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
+import isValid from "date-fns/isValid";
 
 const X_LABELS_COUNT = 6;
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -44,6 +45,8 @@ export default function Day() {
   const moodIdsByDate = useSelector(moodIdsByDateSelector);
 
   if (!dateStr || !isoDateRegex.test(dateStr)) return <RedirectHome />;
+  const date = createDateFromLocalDateString(dateStr);
+  if (!isValid(date)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
@@ -52,7 +55,6 @@ export default function Day() {
       </Paper.Group>
     );
 
-  const date = createDateFromLocalDateString(dateStr);
   const nextDate = addDays(date, 1);
   const prevDate = subDays(date, 1);
   const moodIds = moodIdsByDate[dateStr];

@@ -33,6 +33,7 @@ import LocationsForPeriod from "./LocationsForPeriod";
 import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
+import isValid from "date-fns/isValid";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -42,6 +43,11 @@ export default function Week() {
   const moods = useSelector(normalizedMoodsSelector);
 
   if (!weekStr || !isoDateRegex.test(weekStr)) return <RedirectHome />;
+  const date = startOfWeek(
+    createDateFromLocalDateString(weekStr),
+    WEEK_OPTIONS
+  );
+  if (!isValid(date)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
@@ -52,10 +58,6 @@ export default function Week() {
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const date = startOfWeek(
-    createDateFromLocalDateString(weekStr),
-    WEEK_OPTIONS
-  );
   const nextDate = addWeeks(date, 1);
   const prevDate = subWeeks(date, 1);
   const lastDayOfWeek = subDays(nextDate, 1);

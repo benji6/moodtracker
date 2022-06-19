@@ -37,6 +37,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import MoodCloud from "../MoodCloud";
 import MoodChartForPeriod from "../MoodChartForPeriod";
 import addMonths from "date-fns/addMonths";
+import isValid from "date-fns/isValid";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -50,6 +51,8 @@ export default function Year() {
   );
 
   if (!yearStr || !isoYearRegex.test(yearStr)) return <RedirectHome />;
+  const date = createDateFromLocalDateString(yearStr);
+  if (!isValid(date)) return <RedirectHome />;
   if (!events.hasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
@@ -60,7 +63,6 @@ export default function Year() {
 
   const firstMoodDate = new Date(moods.allIds[0]);
 
-  const date = createDateFromLocalDateString(yearStr);
   const prevDate = subYears(date, 1);
   const nextDate = addYears(date, 1);
 
