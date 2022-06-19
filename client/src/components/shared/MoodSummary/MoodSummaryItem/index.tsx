@@ -1,12 +1,16 @@
 import { Card, Icon } from "eri";
+import {
+  integerFormatter,
+  oneDecimalPlaceFormatter,
+} from "../../../../numberFormatters";
 import { moodToColor } from "../../../../utils";
 import MoodBar from "../../MoodBar";
 import "./style.css";
 
 interface Props {
   currentValue?: number;
+  decimalPlaces?: 0 | 1;
   displayTrendSentiment?: boolean;
-  format?(value: number): string;
   heading: string;
   isMood?: boolean;
   periodType: "day" | "month" | "week" | "year";
@@ -15,22 +19,23 @@ interface Props {
 
 export default function MoodSummaryItem({
   currentValue,
+  decimalPlaces = 0,
   displayTrendSentiment = false,
-  format = String,
   heading,
   isMood = false,
   periodType,
   previousValue,
 }: Props) {
   if (currentValue === undefined) return null;
-
-  const formattedCurrentValue = format(currentValue);
-  const formattedPreviousValue =
-    previousValue === undefined ? undefined : format(previousValue);
+  const round = (n: number): number =>
+    n ? Math.round((n + Number.EPSILON) * 10) / 10 : Math.round(n);
+  const roundedCurrentValue = round(currentValue);
+  const roundedPreviousValue =
+    previousValue === undefined ? undefined : round(previousValue);
   const difference =
-    formattedPreviousValue === undefined
+    roundedPreviousValue === undefined
       ? undefined
-      : Number(formattedCurrentValue) - Number(formattedPreviousValue);
+      : round(roundedCurrentValue - roundedPreviousValue);
 
   let color = "var(--color-balance)";
   if (isMood) color = moodToColor(currentValue);
@@ -39,15 +44,17 @@ export default function MoodSummaryItem({
     else color = "var(--color-negative)";
   }
 
+  const format = decimalPlaces
+    ? oneDecimalPlaceFormatter.format
+    : integerFormatter.format;
+
   return (
     <Card color={color}>
       <div className="m-mood-summary-item">
         <div>
           <b>{heading}</b>
         </div>
-        <div className="m-mood-summary-item__value">
-          {formattedCurrentValue}
-        </div>
+        <div className="m-mood-summary-item__value">{format(currentValue)}</div>
         {isMood && (
           <div className="m-mood-summary-item__mood-bar">
             <MoodBar mood={currentValue} />

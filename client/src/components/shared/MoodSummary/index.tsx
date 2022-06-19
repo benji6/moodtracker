@@ -1,9 +1,5 @@
 import "./style.css";
 import { useSelector } from "react-redux";
-import {
-  integerFormatter,
-  oneDecimalPlaceFormatter,
-} from "../../../numberFormatters";
 import { hasMeditationsSelector } from "../../../selectors";
 import MoodSummaryItem from "./MoodSummaryItem";
 import { TIME } from "../../../constants";
@@ -36,8 +32,8 @@ export default function MoodSummary({
     <div className="m-mood-summary">
       <MoodSummaryItem
         currentValue={currentPeriod.mean}
+        decimalPlaces={1}
         displayTrendSentiment
-        format={oneDecimalPlaceFormatter.format}
         heading="Average mood"
         isMood
         periodType={periodType}
@@ -61,7 +57,7 @@ export default function MoodSummary({
       />
       <MoodSummaryItem
         currentValue={currentPeriod.standardDeviation}
-        format={oneDecimalPlaceFormatter.format}
+        decimalPlaces={1}
         heading="Standard deviation"
         periodType={periodType}
         previousValue={previousPeriod?.standardDeviation}
@@ -69,7 +65,6 @@ export default function MoodSummary({
       <MoodSummaryItem
         currentValue={currentPeriod.total}
         displayTrendSentiment
-        format={integerFormatter.format}
         heading="Moods recorded"
         periodType={periodType}
         previousValue={previousPeriod?.total}
@@ -82,8 +77,8 @@ export default function MoodSummary({
               ? TIME.secondsPerHour
               : TIME.secondsPerMinute)
           }
+          decimalPlaces={1}
           displayTrendSentiment
-          format={oneDecimalPlaceFormatter.format}
           heading={`${
             currentPeriod.secondsMeditated >= TIME.secondsPerHour
               ? "Hours"
