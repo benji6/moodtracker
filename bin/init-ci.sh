@@ -9,7 +9,7 @@ trap 'handle_error $LINENO $?' ERR
 
 pushd client > /dev/null
 echo "⏳ Installing Node.js dependencies... ⏳"
-npm i
+npm i --legacy-peer-deps
 echo "🍄 Node.js dependencies successfully installed! 🍄"
 popd > /dev/null
 
