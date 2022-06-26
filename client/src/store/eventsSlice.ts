@@ -27,7 +27,7 @@ export type EventsStateToStore = Omit<
 const getLastEvent = (normalizedState: EventsState): AppEvent => {
   if (!normalizedState.allIds.length)
     throw Error("Error: `allIds` must have length > 0");
-  const lastId = normalizedState.allIds[normalizedState.allIds.length - 1];
+  const lastId = normalizedState.allIds.at(-1)!;
   return normalizedState.byId[lastId];
 };
 

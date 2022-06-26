@@ -201,10 +201,10 @@ const makeNormalizedAveragesByPeriodSelector = (
 
       const periods = eachPeriodOfInterval({
         start: new Date(moods.allIds[0]),
-        end: new Date(moods.allIds[moods.allIds.length - 1]),
+        end: new Date(moods.allIds.at(-1)!),
       });
 
-      const finalPeriod = addPeriods(periods[periods.length - 1], 1);
+      const finalPeriod = addPeriods(periods.at(-1)!, 1);
 
       if (moods.allIds.length === 1) {
         const id = createId(periods[0]);

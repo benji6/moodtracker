@@ -16,9 +16,7 @@ export const computeTrendlinePoints = (
 ): [number, number][] => {
   const period = (domain[1] - domain[0]) / TRENDLINE_POINTS_COUNT;
   const earliestMoodTime = new Date(moods.allIds[0]).getTime();
-  const latestMoodTime = new Date(
-    moods.allIds[moods.allIds.length - 1]
-  ).getTime();
+  const latestMoodTime = new Date(moods.allIds.at(-1)!).getTime();
 
   const trendlinePoints: [number, number][] = [];
 
