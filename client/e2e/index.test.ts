@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import puppeteer, { HandleFor } from "puppeteer";
 import { ERRORS, TEST_IDS } from "../src/constants";
 
 class URLS {
@@ -144,9 +144,9 @@ describe("e2e", () => {
         const errorMessage = await errors[0].evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.required);
 
-        const moodRadioButton = (await page.$<HTMLInputElement>(
+        const moodRadioButton = (await page.$(
           SELECTORS.addMoodRadioButton
-        ))!;
+        )) as HandleFor<HTMLInputElement>;
         await moodRadioButton.evaluate((el) => el.click());
 
         errors = await page.$$('[data-eri-id="field-error"]');
@@ -183,9 +183,9 @@ describe("e2e", () => {
         const errorMessage = await errors[0].evaluate((el) => el.textContent);
         expect(errorMessage).toBe(ERRORS.required);
 
-        const moodRadioButton = (await page.$<HTMLInputElement>(
+        const moodRadioButton = (await page.$(
           `${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`
-        ))!;
+        )) as HandleFor<HTMLInputElement>;
         await moodRadioButton.evaluate((el) => el.click());
 
         errors = await page.$$('[data-eri-id="field-error"]');
