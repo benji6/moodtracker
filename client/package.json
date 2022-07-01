@@ -35,7 +35,7 @@
     "react-simple-maps": "^2.3.0"
   },
   "devDependencies": {
-    "@parcel/packager-raw-url": "^2.5.0",
+    "@parcel/packager-raw-url": "^2.6.2",
     "@parcel/transformer-webmanifest": "^2.6.2",
     "@types/d3-interpolate": "^3.0.1",
     "@types/file-saver": "^2.0.1",
