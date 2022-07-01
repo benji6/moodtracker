@@ -18,7 +18,7 @@
   },
   "browserslist": "cover 80%",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.7.2",
+    "@reduxjs/toolkit": "^1.8.3",
     "amazon-cognito-identity-js": "^5.2.6",
     "d3-interpolate": "^3.0.1",
     "date-fns": "^2.28.0",
