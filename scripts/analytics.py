@@ -1,5 +1,6 @@
 import boto3
 from datetime import date
+import dateutil
 import json
 import operator
 from collections import defaultdict
@@ -49,17 +50,27 @@ def compute_breakdown(get_key):
 def get_iso_month_string(date_time_string):
   return date_time_string[0:7]
 
-events_count_by_user = defaultdict(int)
+events_by_user_id = defaultdict(list)
 for event in events:
-  events_count_by_user[event['userId']] += 1
+  events_by_user_id[event['userId']].append(event)
 
-number_of_events_against_number_of_users = defaultdict(int)
-for k,v in events_count_by_user.items():
-  number_of_events_against_number_of_users[v] += 1
+number_of_events_by_number_of_users = defaultdict(int)
+for k,v in events_by_user_id.items():
+  number_of_events_by_number_of_users[len(v)] += 1
+number_of_events_by_number_of_users = dict(sorted(number_of_events_by_number_of_users.items()))
 
-number_of_events_against_number_of_users = dict(sorted(number_of_events_against_number_of_users.items()))
+number_of_users_by_days_used = defaultdict(int)
+for k,v in events_by_user_id.items():
+  if len(v) == 1:
+    number_of_users_by_days_used[0] += 1
+  else:
+    t0 = dateutil.parser.isoparse(v[0]['createdAt'])
+    t1 = dateutil.parser.isoparse(v[-1]['createdAt'])
+    number_of_users_by_days_used[(t1 - t0).days] += 1
+number_of_users_by_days_used = dict(sorted(number_of_users_by_days_used.items()))
 
 print(json.dumps({
   'Breakdown by month': compute_breakdown(get_iso_month_string),
-  'Number of events created against number of users that have created that many events': number_of_events_against_number_of_users,
+  'Number of events created is the key and number of users is the value': number_of_events_by_number_of_users,
+  'Days used is the key and number of users is the value': number_of_users_by_days_used,
 }, indent=2))
