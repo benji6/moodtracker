@@ -131,8 +131,12 @@ describe("e2e", () => {
         await page.goto(URLS.add);
         await page.waitForSelector(SELECTORS.addMoodPage);
 
-        descriptionInput = (await page.$(SELECTORS.descriptionInput))!;
-        submitButton = (await page.$(SELECTORS.addMoodSubmitButton))!;
+        descriptionInput = ((await page.$(
+          SELECTORS.descriptionInput
+        )) as puppeteer.ElementHandle<HTMLInputElement>)!;
+        submitButton = ((await page.$(
+          SELECTORS.addMoodSubmitButton
+        )) as puppeteer.ElementHandle<HTMLButtonElement>)!;
       });
 
       test("mood field errors", async () => {
