@@ -3,31 +3,37 @@ from datetime import date
 import dateutil
 import json
 import operator
-from collections import defaultdict
+import statistics
+from collections import defaultdict, OrderedDict
 
 dynamodb = boto3.resource('dynamodb')
 events_table = dynamodb.Table('moodtracker_events')
 
 events_table_scan_response = events_table.scan(
   ExpressionAttributeNames={'#t': 'type'},
-  ProjectionExpression='createdAt,#t,userId',
+  ProjectionExpression='createdAt,payload,#t,userId',
 )
 events = events_table_scan_response['Items']
 while 'LastEvaluatedKey' in events_table_scan_response:
   events_table_scan_response = events_table.scan(
     ExclusiveStartKey=events_table_scan_response['LastEvaluatedKey'],
     ExpressionAttributeNames={'#t': 'type'},
-    ProjectionExpression='createdAt,#t,userId',
+    ProjectionExpression='createdAt,payload,#t,userId',
   )
   events += events_table_scan_response['Items']
 
 events.sort(key=operator.itemgetter('createdAt'))
 
-def date_from_js_iso(js_iso_string):
-  return date.fromisoformat(js_iso_string[:10])
-
+moods = OrderedDict()
 for event in events:
-  event['created_at_date'] = date_from_js_iso(event['createdAt'])
+  event['created_at_date'] = date.fromisoformat(event['createdAt'][:10])
+  if event['type'] == 'v1/moods/create':
+    moods[event['createdAt']] = event['payload']
+  if event['type'] == 'v1/moods/delete':
+    del moods[event['payload']]
+  if event['type'] == 'v1/moods/update':
+    moods[event['payload']['id']] = {**moods[event['payload']['id']], **event['payload']}
+    del moods[event['payload']['id']]['id']
 
 def compute_breakdown(get_key):
   results = {}
@@ -39,9 +45,15 @@ def compute_breakdown(get_key):
       stats['events'] += 1
       stats['userIds'].add(event['userId'])
     else:
-      results[key] = {'events': 1, 'userIds': {event['userId']}}
+      results[key] = {'events': 1, 'moods': [], 'userIds': {event['userId']}}
+
+  for k,v in moods.items():
+    stats = results.get(get_key(k))
+    stats['moods'].append(int(v['mood']))
 
   for k,v in results.items():
+    v['meanMood'] = statistics.mean(v['moods'])
+    del v['moods']
     v['users'] = len(v['userIds'])
     del v['userIds']
 
