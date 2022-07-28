@@ -24,9 +24,16 @@ while 'LastEvaluatedKey' in events_table_scan_response:
 
 events.sort(key=operator.itemgetter('createdAt'))
 
+meditations = OrderedDict()
 moods = OrderedDict()
 for event in events:
   event['created_at_date'] = date.fromisoformat(event['createdAt'][:10])
+
+  if event['type'] == 'v1/meditations/create':
+    meditations[event['createdAt']] = event['payload']
+  if event['type'] == 'v1/meditations/delete':
+    del meditations[event['payload']]
+
   if event['type'] == 'v1/moods/create':
     moods[event['createdAt']] = event['payload']
   if event['type'] == 'v1/moods/delete':
@@ -45,7 +52,16 @@ def compute_breakdown(get_key):
       stats['events'] += 1
       stats['userIds'].add(event['userId'])
     else:
-      results[key] = {'events': 1, 'moods': [], 'userIds': {event['userId']}}
+      results[key] = {
+        'events': 1,
+        'meditationSeconds': 0,
+        'moods': [],
+        'userIds': {event['userId']},
+      }
+
+  for k,v in meditations.items():
+    stats = results.get(get_key(k))
+    stats['meditationSeconds'] += int(v['seconds'])
 
   for k,v in moods.items():
     stats = results.get(get_key(k))
