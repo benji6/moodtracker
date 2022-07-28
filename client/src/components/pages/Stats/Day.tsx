@@ -10,7 +10,7 @@ import {
   monthLongFormatter,
   WEEK_OPTIONS,
   yearFormatter,
-} from "../../../dateTimeFormatters";
+} from "../../../formatters/dateTimeFormatters";
 import {
   eventsSelector,
   moodIdsByDateSelector,

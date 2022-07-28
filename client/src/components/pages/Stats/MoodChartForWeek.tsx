@@ -1,7 +1,7 @@
 import addDays from "date-fns/addDays";
 import addWeeks from "date-fns/addWeeks";
 import { TIME } from "../../../constants";
-import { weekdayShortFormatter } from "../../../dateTimeFormatters";
+import { weekdayShortFormatter } from "../../../formatters/dateTimeFormatters";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 
 interface Props {

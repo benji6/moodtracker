@@ -2,7 +2,7 @@ import { Card, Icon } from "eri";
 import {
   integerFormatter,
   oneDecimalPlaceFormatter,
-} from "../../../../numberFormatters";
+} from "../../../../formatters/numberFormatters";
 import { moodToColor } from "../../../../utils";
 import MoodBar from "../../MoodBar";
 import "./style.css";

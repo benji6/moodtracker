@@ -20,13 +20,11 @@ import { useSelector } from "react-redux";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { TIME } from "../../../constants";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
-import {
-  dayMonthFormatter,
-  formatDurationFromSeconds,
-} from "../../../dateTimeFormatters";
+import { dayMonthFormatter } from "../../../formatters/dateTimeFormatters";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;

@@ -12,7 +12,7 @@ import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
 import sub from "date-fns/sub";
 import { MEDITATION_STATS_HOURS_RANGE, TIME } from "./constants";
-import { WEEK_OPTIONS } from "./dateTimeFormatters";
+import { WEEK_OPTIONS } from "./formatters/dateTimeFormatters";
 import { RootState } from "./store";
 import { NormalizedMeditations, NormalizedMoods } from "./types";
 import {

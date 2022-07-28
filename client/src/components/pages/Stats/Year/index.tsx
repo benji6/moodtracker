@@ -4,7 +4,7 @@ import {
   monthLongFormatter,
   monthNarrowFormatter,
   yearFormatter,
-} from "../../../../dateTimeFormatters";
+} from "../../../../formatters/dateTimeFormatters";
 import {
   eventsSelector,
   normalizedMoodsSelector,
@@ -30,7 +30,7 @@ import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
-import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import LocationsForPeriod from "../LocationsForPeriod";
 import RedirectHome from "../../../RedirectHome";
 import { Link, useNavigate, useParams } from "react-router-dom";

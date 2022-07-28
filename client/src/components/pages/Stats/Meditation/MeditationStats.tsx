@@ -5,7 +5,7 @@ import {
   MEDITATION_STATS_HOURS_RANGE,
   MINIMUM_WORD_CLOUD_WORDS,
 } from "../../../../constants";
-import { twoDecimalPlacesFormatter } from "../../../../numberFormatters";
+import { twoDecimalPlacesFormatter } from "../../../../formatters/numberFormatters";
 import { meditationStatsSelector } from "../../../../selectors";
 
 export default function MeditationStats() {

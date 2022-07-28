@@ -1,7 +1,7 @@
 import "./style.css";
 import { Button, Card, Icon } from "eri";
 import { useSelector } from "react-redux";
-import { dateTimeFormatter } from "../../../../../../dateTimeFormatters";
+import { dateTimeFormatter } from "../../../../../../formatters/dateTimeFormatters";
 import { normalizedMeditationsSelector } from "../../../../../../selectors";
 import { formatSecondsAsTime } from "../../../../../../utils";
 

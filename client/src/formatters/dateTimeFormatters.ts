@@ -1,6 +1,4 @@
 import endOfWeek from "date-fns/endOfWeek";
-import formatDuration from "date-fns/formatDuration";
-import intervalToDuration from "date-fns/intervalToDuration";
 import startOfWeek from "date-fns/startOfWeek";
 
 export const WEEK_OPTIONS = { weekStartsOn: 1 } as const;
@@ -77,15 +75,6 @@ export const formatWeek = (week: Date): string =>
     startOfWeek(week, WEEK_OPTIONS),
     endOfWeek(week, WEEK_OPTIONS)
   );
-
-export const formatDurationFromSeconds = (seconds: number): string => {
-  const epoch = new Date(0);
-  const secondsAfterEpoch = new Date(seconds * 1000);
-  const durationString = formatDuration(
-    intervalToDuration({ start: epoch, end: secondsAfterEpoch })
-  );
-  return durationString || "N/A";
-};
 
 const formatRange = (dateA: Date, dateB: Date) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

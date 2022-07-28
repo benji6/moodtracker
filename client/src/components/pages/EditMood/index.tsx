@@ -7,7 +7,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { UpdateMood } from "../../../types";
 import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
-import { dateTimeFormatter } from "../../../dateTimeFormatters";
+import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import LocationMap from "../../shared/LocationMap";
 import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";

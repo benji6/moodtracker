@@ -2,7 +2,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import { Nav as EriNav, Button, Icon } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { WEEK_OPTIONS } from "../../dateTimeFormatters";
+import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
 import {
   hasMeditationsSelector,
   userEmailSelector,

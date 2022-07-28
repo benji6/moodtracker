@@ -1,7 +1,7 @@
 import { Button, Dialog } from "eri";
 import * as React from "react";
 import { TIME } from "../../../../constants";
-import { formatDurationFromSeconds } from "../../../../dateTimeFormatters";
+import formatDurationFromSeconds from "../../../../formatters/formatDurationFromSeconds";
 
 interface Props {
   onClose(): void;

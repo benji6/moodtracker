@@ -3,8 +3,8 @@ import getDaysInMonth from "date-fns/getDaysInMonth";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
-import { dateFormatter } from "../../../../dateTimeFormatters";
-import { oneDecimalPlaceFormatter } from "../../../../numberFormatters";
+import { dateFormatter } from "../../../../formatters/dateTimeFormatters";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import {
   normalizedAveragesByDaySelector,
   normalizedMoodsSelector,

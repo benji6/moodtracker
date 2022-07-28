@@ -1,7 +1,7 @@
 import { Paper, Spinner, SubHeading } from "eri";
 import { marked } from "marked";
 import { useEffect, useState } from "react";
-import { dateFormatter } from "../../../dateTimeFormatters";
+import { dateFormatter } from "../../../formatters/dateTimeFormatters";
 import Version from "../../shared/Version";
 
 const BLOG_POSTS = {

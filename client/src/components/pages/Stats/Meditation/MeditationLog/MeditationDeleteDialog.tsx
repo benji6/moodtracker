@@ -1,7 +1,7 @@
 import { Dialog, Button } from "eri";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../../../../store/eventsSlice";
-import { dateTimeFormatter } from "../../../../../dateTimeFormatters";
+import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 
 interface Props {
   id: string | undefined;

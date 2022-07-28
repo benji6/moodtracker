@@ -1,5 +1,5 @@
 import { BUILD_TIME } from "../../constants";
-import { dateFormatter } from "../../dateTimeFormatters";
+import { dateFormatter } from "../../formatters/dateTimeFormatters";
 
 export default function Version() {
   return (

@@ -2,7 +2,7 @@ import { Card, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TEST_IDS } from "../../../constants";
-import { timeFormatter } from "../../../dateTimeFormatters";
+import { timeFormatter } from "../../../formatters/dateTimeFormatters";
 import { normalizedMoodsSelector } from "../../../selectors";
 import { moodToColor } from "../../../utils";
 import "./style.css";

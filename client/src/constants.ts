@@ -1,10 +1,10 @@
 import addDays from "date-fns/addDays";
 import startOfWeek from "date-fns/startOfWeek";
 import {
+  WEEK_OPTIONS,
   weekdayNarrowFormatter,
   weekdayShortFormatter,
-  WEEK_OPTIONS,
-} from "./dateTimeFormatters";
+} from "./formatters/dateTimeFormatters";
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
 export const DESCRIPTION_MAX_LENGTH = 32;

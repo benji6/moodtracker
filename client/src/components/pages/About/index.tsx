@@ -1,11 +1,14 @@
 import { Paper, ShareButton, Spinner } from "eri";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { usageGet } from "../../api";
-import { MOODTRACKER_DESCRIPTION } from "../../constants";
-import { percentFormatter } from "../../numberFormatters";
-import { Usage } from "../../types";
-import Version from "../shared/Version";
+import { usageGet } from "../../../api";
+import { MOODTRACKER_DESCRIPTION } from "../../../constants";
+import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
+import { percentFormatter } from "../../../formatters/numberFormatters";
+import { Usage } from "../../../types";
+import MoodCell from "../../shared/MoodCell";
+import Version from "../../shared/Version";
+import UsageTable from "./UsageTable";
 
 export default function About() {
   const [usage, setUsage] = useState<Usage | undefined>();
@@ -173,58 +176,70 @@ export default function About() {
         ) : usage ? (
           <>
             <p>
-              In case you were interested in how many other people are using
+              In case you were interested in how other people are using
               MoodTracker you can see some anonymized usage data here. This gets
               automatically updated every day or so.
             </p>
-            <table>
-              <thead>
-                <tr>
-                  <th>Stat</th>
-                  <th>Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Users over the last 24 hours</td>
-                  <td>{usage.DAUs}</td>
-                </tr>
-                <tr>
-                  <td>Users over the last 7 days</td>
-                  <td>{usage.WAUs}</td>
-                </tr>
-                <tr>
-                  <td>Users over the last 30 days</td>
-                  <td>{usage.MAUs}</td>
-                </tr>
-                <tr>
-                  <td>Users who are signed up to weekly emails</td>
-                  <td>{usage.usersWithWeeklyEmails}</td>
-                </tr>
-                <tr>
-                  <td>Confirmed users</td>
-                  <td>{usage.confirmedUsers}</td>
-                </tr>
-                <tr>
-                  <td>Retention of users since a month ago</td>
-                  <td>{percentFormatter.format(usage.CRR)}</td>
-                </tr>
-                <tr>
-                  <td>
-                    Users who have logged a meditation over the last 30 days
-                  </td>
-                  <td>{usage.meditationMAUs}</td>
-                </tr>
-                <tr>
-                  <td>Users who are recording their location</td>
-                  <td>{usage.usersWithLocation}</td>
-                </tr>
-                <tr>
-                  <td>Total events recorded over the last 30 days</td>
-                  <td>{usage.eventsInLast30Days}</td>
-                </tr>
-              </tbody>
-            </table>
+            <h3>Active users &amp; retention</h3>
+            <UsageTable>
+              <tr>
+                <td>Users over the last 24 hours</td>
+                <td>{usage.DAUs}</td>
+              </tr>
+              <tr>
+                <td>Users over the last 7 days</td>
+                <td>{usage.WAUs}</td>
+              </tr>
+              <tr>
+                <td>Users over the last 30 days</td>
+                <td>{usage.MAUs}</td>
+              </tr>
+              <tr>
+                <td>Confirmed users</td>
+                <td>{usage.confirmedUsers}</td>
+              </tr>
+              <tr>
+                <td>Retention of users since a month ago</td>
+                <td>{percentFormatter.format(usage.CRR)}</td>
+              </tr>
+            </UsageTable>
+            <h3>General usage</h3>
+            <UsageTable>
+              <tr>
+                <td>Average mood for all users over the last 30 days</td>
+                <MoodCell mood={usage.meanMoodInLast30Days} />
+              </tr>
+              <tr>
+                <td>Total time meditated by all users</td>
+                <td>
+                  {formatDurationFromSeconds(
+                    usage.meditationSecondsInLast30Days
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Number of users who have logged a meditation over the last 30
+                  days
+                </td>
+                <td>{usage.meditationMAUs}</td>
+              </tr>
+              <tr>
+                <td>Total events recorded over the last 30 days</td>
+                <td>{usage.eventsInLast30Days}</td>
+              </tr>
+            </UsageTable>
+            <h3>Settings</h3>
+            <UsageTable>
+              <tr>
+                <td>Users who are signed up to weekly emails</td>
+                <td>{usage.usersWithWeeklyEmails}</td>
+              </tr>
+              <tr>
+                <td>Users who are recording their location</td>
+                <td>{usage.usersWithLocation}</td>
+              </tr>
+            </UsageTable>
           </>
         ) : (
           <p>

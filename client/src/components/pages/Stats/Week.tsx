@@ -7,7 +7,7 @@ import {
   weekdayShortFormatter,
   WEEK_OPTIONS,
   yearFormatter,
-} from "../../../dateTimeFormatters";
+} from "../../../formatters/dateTimeFormatters";
 import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
 import {
   createDateFromLocalDateString,

@@ -1,4 +1,4 @@
-import { oneDecimalPlaceFormatter } from "../../numberFormatters";
+import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import MoodBar from "./MoodBar";
 
 interface Props {

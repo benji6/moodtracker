@@ -6,7 +6,10 @@ import {
   createDateFromLocalDateString,
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
-import { formatWeekWithYear, WEEK_OPTIONS } from "../../../dateTimeFormatters";
+import {
+  formatWeekWithYear,
+  WEEK_OPTIONS,
+} from "../../../formatters/dateTimeFormatters";
 import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import startOfWeek from "date-fns/startOfWeek";

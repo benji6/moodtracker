@@ -7,7 +7,7 @@ import {
 } from "../../../../utils";
 import { useSelector } from "react-redux";
 import { normalizedAveragesByMonthSelector } from "../../../../selectors";
-import { monthNarrowFormatter } from "../../../../dateTimeFormatters";
+import { monthNarrowFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
