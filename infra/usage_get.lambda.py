@@ -1,8 +1,9 @@
 import boto3
-from boto3.dynamodb.conditions import Attr
-from datetime import datetime, timedelta
 import email
 import json
+import statistics
+from boto3.dynamodb.conditions import Attr
+from datetime import datetime, timedelta
 
 CACHE_KEY = 'usage'
 HEADERS = {'Content-Type': 'application/json'}
@@ -72,7 +73,7 @@ def handler(event, context):
     events_response = events_table.scan(
       ExpressionAttributeNames={'#t': 'type'},
       FilterExpression=events_filter_expression,
-      ProjectionExpression='createdAt,#t,userId',
+      ProjectionExpression='createdAt,payload,#t,userId',
       ReturnConsumedCapacity='TOTAL',
     )
     events = events_response['Items']
@@ -82,7 +83,7 @@ def handler(event, context):
         ExclusiveStartKey=events_response['LastEvaluatedKey'],
         ExpressionAttributeNames={'#t': 'type'},
         FilterExpression=events_filter_expression,
-        ProjectionExpression='createdAt,#t,userId',
+        ProjectionExpression='createdAt,payload,#t,userId',
         ReturnConsumedCapacity='TOTAL',
       )
       events += events_response['Items']
@@ -117,22 +118,45 @@ def handler(event, context):
   user_ids_in_previous_30_day_window = set()
   meditation_MAU_ids = set()
   events_in_last_30_days = 0
+  meditations = {}
+  moods = {}
   for event in events:
     event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1])
     if event['createdAt'] > days_ago_30:
       events_in_last_30_days += 1
       user_ids_in_current_30_day_window.add(event['userId'])
-      if 'meditations' in event['type']:
+
+      if event['type'] == 'v1/meditations/create':
         meditation_MAU_ids.add(event['userId'])
+        meditations[event['createdAt']] = event['payload']
+      if event['type'] == 'v1/meditations/delete':
+        meditations.pop(event['payload'], None)
+
+      if event['type'] == 'v1/moods/create':
+        moods[event['createdAt']] = event['payload']
+      if event['type'] == 'v1/moods/delete':
+        moods.pop(event['payload'], None)
+      if event['type'] == 'v1/moods/update':
+        if event['payload']['id'] in moods:
+          moods[event['payload']['id']] = {**moods[event['payload']['id']], **event['payload']}
+          del moods[event['createdAt']]['id']
+
+
     else:
       user_ids_in_previous_30_day_window.add(event['userId'])
+
+  meditation_seconds = 0
+  for k,v in meditations.items():
+    meditation_seconds += int(v['seconds'])
 
   cache['expires_at'] = round(now.timestamp() + SECONDS_PER_DAY)
   cache['data'] = {
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
       'eventsInLast30Days': events_in_last_30_days,
+      'meanMoodInLast30Days': float(statistics.mean([v['mood'] for v in moods.values()])),
       'meditationMAUs': len(meditation_MAU_ids),
+      'meditationSecondsInLast30Days': meditation_seconds,
       'usersWithLocation': sum(1 for setting in settings if setting['recordLocation']),
       'usersWithWeeklyEmails': weekly_emails_table.item_count,
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
