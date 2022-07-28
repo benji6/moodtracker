@@ -52,6 +52,15 @@ export default function useEvents() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(syncFromServer, [isStorageLoading, userEmail]);
   useInterval(syncFromServer, 6e4);
+  React.useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") syncFromServer();
+    };
+    window.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  });
 
   const syncToServer = (): void =>
     void (async () => {
