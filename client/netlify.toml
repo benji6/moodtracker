@@ -1,9 +1,6 @@
 [build]
   command = "npm run build"
   publish = "dist"
-# This is required for react-simple-maps
-[build.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
 [[headers]]
   for = "*"
   [headers.values]

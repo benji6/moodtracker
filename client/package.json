@@ -32,7 +32,7 @@
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.2.2",
-    "react-simple-maps": "^2.3.0"
+    "react-simple-maps": "^3.0.0"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.6.2",
