@@ -206,6 +206,10 @@ export default function About() {
             <h3>General usage</h3>
             <UsageTable>
               <tr>
+                <td>Average mood for all users over the last 7 days</td>
+                <MoodCell mood={usage.meanMoodInLast7Days} />
+              </tr>
+              <tr>
                 <td>Average mood for all users over the last 30 days</td>
                 <MoodCell mood={usage.meanMoodInLast30Days} />
               </tr>
