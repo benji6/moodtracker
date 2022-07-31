@@ -154,7 +154,8 @@ def handler(event, context):
     'body': json.dumps({
       'confirmedUsers': confirmed_users,
       'eventsInLast30Days': events_in_last_30_days,
-      'meanMoodInLast30Days': float(statistics.mean([v['mood'] for v in moods.values()])),
+      'meanMoodInLast30Days': round(float(statistics.mean([v['mood'] for v in moods.values()])), 1),
+      'meanMoodInLast7Days': round(float(statistics.mean([v['mood'] for k,v in moods.items() if k > days_ago_7])), 1),
       'meditationMAUs': len(meditation_MAU_ids),
       'meditationSecondsInLast30Days': meditation_seconds,
       'usersWithLocation': sum(1 for setting in settings if setting['recordLocation']),
