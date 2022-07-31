@@ -68,7 +68,7 @@ def compute_breakdown(get_key):
     stats['moods'].append(int(v['mood']))
 
   for k,v in results.items():
-    v['meanMood'] = statistics.mean(v['moods'])
+    v['meanMood'] = round(statistics.mean(v['moods']), 1)
     del v['moods']
     v['users'] = len(v['userIds'])
     del v['userIds']
