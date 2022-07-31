@@ -70,6 +70,8 @@ def compute_breakdown(get_key):
   for k,v in results.items():
     v['meanMood'] = round(statistics.mean(v['moods']), 1)
     del v['moods']
+    v['meditationMinutes'] = round(v['meditationSeconds'] / 60)
+    del v['meditationSeconds']
     v['users'] = len(v['userIds'])
     del v['userIds']
 
