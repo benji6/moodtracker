@@ -57,7 +57,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-test = ["coverage", "flake8", "pexpect", "wheel"]
+test = ["wheel", "pexpect", "flake8", "coverage"]
 
 [[package]]
 name = "async-timeout"
@@ -110,14 +110,14 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.24.21"
+version = "1.24.42"
 description = "The AWS SDK for Python"
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 
 [package.dependencies]
-botocore = ">=1.27.21,<1.28.0"
+botocore = ">=1.27.42,<1.28.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.6.0,<0.7.0"
 
@@ -126,7 +126,7 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.27.21"
+version = "1.27.42"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -257,8 +257,8 @@ python-versions = ">=3.6,<4"
 Click = ">=7.0,<9"
 
 [package.extras]
-docs = ["sphinx (>=2.3,<3)", "pallets-sphinx-themes", "m2r"]
-tests = ["coverage (<6)", "pytest", "pytest-cov", "coveralls"]
+tests = ["coveralls", "pytest-cov", "pytest", "coverage (<6)"]
+docs = ["m2r", "pallets-sphinx-themes", "sphinx (>=2.3,<3)"]
 
 [[package]]
 name = "cloudsplaining"
@@ -351,8 +351,8 @@ pyyaml = "*"
 requests = "*"
 
 [package.extras]
-gibberish = ["gibberish-detector"]
 word_list = ["pyahocorasick"]
+gibberish = ["gibberish-detector"]
 
 [[package]]
 name = "docker"
@@ -532,9 +532,9 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-atomic_cache = ["atomicwrites"]
-nearley = ["js2py"]
 regex = ["regex"]
+nearley = ["js2py"]
+atomic_cache = ["atomicwrites"]
 
 [[package]]
 name = "markdown"
@@ -945,9 +945,9 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-docs = ["Sphinx (>=3.4)", "sphinx-rtd-theme (>=0.5)"]
-optional = ["python-socks", "wsaccel"]
 test = ["websockets"]
+optional = ["wsaccel", "python-socks"]
+docs = ["sphinx-rtd-theme (>=0.5)", "Sphinx (>=3.4)"]
 
 [[package]]
 name = "yarl"
@@ -1086,12 +1086,12 @@ beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0.tar.gz", hash = "sha256:c23ad23c521d818955a4151a67d81580319d4bf548d3d49f4223ae041ff98891"},
 ]
 boto3 = [
-    {file = "boto3-1.24.21-py3-none-any.whl", hash = "sha256:abe5b44010e3f50c5e0243aa4fc2338f10e5a868413faa0d6ae79131d6b507b8"},
-    {file = "boto3-1.24.21.tar.gz", hash = "sha256:551e902b70ccf9f6a58e28bb409718a0403b021b17ff6d63ab0b9af5a122386e"},
+    {file = "boto3-1.24.42-py3-none-any.whl", hash = "sha256:aec404d06690a0ca806592efc6bbe30a9ac88fa2ad73b6d907f7794a8b3b1459"},
+    {file = "boto3-1.24.42.tar.gz", hash = "sha256:df3d6ef02304bd7c3711090936c092d5db735dda109decac1e236c3ef7fdb7af"},
 ]
 botocore = [
-    {file = "botocore-1.27.21-py3-none-any.whl", hash = "sha256:3bafa8e773d207c0ce02c63790a8820562e22d2e892abaf1eb90c343e995218a"},
-    {file = "botocore-1.27.21.tar.gz", hash = "sha256:b685ffc0ac170bf7de5fde931504eccd939f8545a9c9d10259245ca4c91101e5"},
+    {file = "botocore-1.27.42-py3-none-any.whl", hash = "sha256:f8e6c2f69a9d577fb9c69e4e74f49f4315a48decee0e7dc88b6e470772110884"},
+    {file = "botocore-1.27.42.tar.gz", hash = "sha256:38a180a6666c5a9b069a75ec3cf374ff2a64c3e90c9f24a916858bcdeb04456d"},
 ]
 cached-property = [
     {file = "cached-property-1.5.2.tar.gz", hash = "sha256:9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"},
