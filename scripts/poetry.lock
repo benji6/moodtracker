@@ -57,7 +57,7 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-test = ["coverage", "flake8", "pexpect", "wheel"]
+test = ["wheel", "pexpect", "flake8", "coverage"]
 
 [[package]]
 name = "async-timeout"
@@ -83,7 +83,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "bc-python-hcl2"
-version = "0.3.42"
+version = "0.3.44"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -188,7 +188,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.1.20"
+version = "2.1.83"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -199,7 +199,7 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-python-hcl2 = "0.3.42"
+bc-python-hcl2 = "0.3.44"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
@@ -207,7 +207,7 @@ click = ">=8.0.0"
 cloudsplaining = ">=0.4.1"
 colorama = "*"
 configargparse = "*"
-cyclonedx-python-lib = ">=2.4.0"
+cyclonedx-python-lib = ">=2.4.0,<3.0.0"
 deep-merge = "*"
 detect-secrets = "*"
 docker = "*"
@@ -223,6 +223,8 @@ packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
 pycep-parser = "0.3.7"
+pyston-lite = {version = "2.3.4.1", markers = "python_version == \"3.8\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
+pyston-lite-autoload = {version = "2.3.4.1", markers = "python_version == \"3.8\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
 pyyaml = ">=5.4.1"
 semantic-version = "*"
 tabulate = "*"
@@ -257,8 +259,8 @@ python-versions = ">=3.6,<4"
 Click = ">=7.0,<9"
 
 [package.extras]
-docs = ["sphinx (>=2.3,<3)", "pallets-sphinx-themes", "m2r"]
-tests = ["coverage (<6)", "pytest", "pytest-cov", "coveralls"]
+tests = ["coveralls", "pytest-cov", "pytest", "coverage (<6)"]
+docs = ["m2r", "pallets-sphinx-themes", "sphinx (>=2.3,<3)"]
 
 [[package]]
 name = "cloudsplaining"
@@ -351,8 +353,8 @@ pyyaml = "*"
 requests = "*"
 
 [package.extras]
-gibberish = ["gibberish-detector"]
 word_list = ["pyahocorasick"]
+gibberish = ["gibberish-detector"]
 
 [[package]]
 name = "docker"
@@ -532,9 +534,9 @@ optional = false
 python-versions = "*"
 
 [package.extras]
-atomic_cache = ["atomicwrites"]
-nearley = ["js2py"]
 regex = ["regex"]
+nearley = ["js2py"]
+atomic_cache = ["atomicwrites"]
 
 [[package]]
 name = "markdown"
@@ -717,6 +719,25 @@ description = "Persistent/Functional/Immutable data structures"
 category = "main"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "pyston-lite"
+version = "2.3.4.1"
+description = "A JIT for Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "pyston-lite-autoload"
+version = "2.3.4.1"
+description = "Automatically loads and enables pyston_lite"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pyston-lite = "2.3.4.1"
 
 [[package]]
 name = "python-dateutil"
@@ -945,9 +966,9 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-docs = ["Sphinx (>=3.4)", "sphinx-rtd-theme (>=0.5)"]
-optional = ["python-socks", "wsaccel"]
 test = ["websockets"]
+optional = ["wsaccel", "python-socks"]
+docs = ["sphinx-rtd-theme (>=0.5)", "Sphinx (>=3.4)"]
 
 [[package]]
 name = "yarl"
@@ -976,7 +997,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "626d913eacf985a85e7b1b6672e914edca88bfce6fe2626a33940c5643db32eb"
+content-hash = "d819f3d8824d5b4237398e0431fe955964e23212aba4a75ab0bf6872d525a557"
 
 [metadata.files]
 aiodns = [
@@ -1078,8 +1099,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.42.tar.gz", hash = "sha256:b383b6c6835a7d81c5053a3190ace0279363407e0ce43ecf729b2688066a47ff"},
-    {file = "bc_python_hcl2-0.3.42-py3-none-any.whl", hash = "sha256:ab9e851013561f537015725a2cc787091611c7f31bb900a03bd4ffc5e280054b"},
+    {file = "bc-python-hcl2-0.3.44.tar.gz", hash = "sha256:0bb7649c37e8378af05c8e7f621b0a5e87abb69414a6838aadb6d6e32557ae04"},
+    {file = "bc_python_hcl2-0.3.44-py3-none-any.whl", hash = "sha256:f9beb5d6b835413fb306a0f458098ca0bf74a79db5bc5af6fe97a405c6a3f8fa"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1162,8 +1183,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.1.20-py3-none-any.whl", hash = "sha256:de59e3e92167ed8afed987c42bd0fe91395461a196dea16c9547e2b12a02977b"},
-    {file = "checkov-2.1.20.tar.gz", hash = "sha256:eb8f3adfffd8c287b9bfcbe66ad7c2a7bc4dc4c2a0fd12c8b93140949022be6d"},
+    {file = "checkov-2.1.83-py3-none-any.whl", hash = "sha256:2c883e85e65c645cbbe7351960ad49041c7684d505104cd5f9e8599e6203def5"},
+    {file = "checkov-2.1.83.tar.gz", hash = "sha256:539ddade0a0492a4dd6dee24f00baefe7f8397e31bf86a40f188e512f9fd1470"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1527,6 +1548,16 @@ pyrsistent = [
     {file = "pyrsistent-0.18.1-cp39-cp39-win32.whl", hash = "sha256:1b34eedd6812bf4d33814fca1b66005805d3640ce53140ab8bbb1e2651b0d9bc"},
     {file = "pyrsistent-0.18.1-cp39-cp39-win_amd64.whl", hash = "sha256:e24a828f57e0c337c8d8bb9f6b12f09dfdf0273da25fda9e314f0b684b415a07"},
     {file = "pyrsistent-0.18.1.tar.gz", hash = "sha256:d4d61f8b993a7255ba714df3aca52700f8125289f84f704cf80916517c46eb96"},
+]
+pyston-lite = [
+    {file = "pyston_lite-2.3.4.1-cp38-cp38-macosx_10_16_x86_64.whl", hash = "sha256:29d514cce605928f078a54882b5f4356e0eb7daac794c774e77e70801dddc308"},
+    {file = "pyston_lite-2.3.4.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:34601966f3b4792fb36b6a80a94a9cc46afa7d51fa6278b4f4b1eec8676a4aec"},
+    {file = "pyston_lite-2.3.4.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:557e8355d586a3a7d518f9d122991f273eaab2d0c9229d5feffc9dbbebe3760a"},
+    {file = "pyston_lite-2.3.4.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:15329a7f4b67c8706daf4e4d355cdaba6d37a35b3806ccb77a02a62d3adda57c"},
+]
+pyston-lite-autoload = [
+    {file = "pyston_lite_autoload-2.3.4.1-py3-none-any.whl", hash = "sha256:c231317e56a40e9d9b1b9f2ac3627845953fb8e92f49c1ce40d4d616dbacdaf6"},
+    {file = "pyston_lite_autoload-2.3.4.1.tar.gz", hash = "sha256:d2b74f4a1e34ef84ac1974f1eb84133e57171d2f96e96bd0cab574ae1d5fdbcf"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
