@@ -6,6 +6,18 @@ import operator
 import statistics
 from collections import defaultdict, OrderedDict
 
+cognito_paginator = boto3.client('cognito-idp').get_paginator('list_users')
+cognito_response_iterator = cognito_paginator.paginate(
+  UserPoolId='us-east-1_rdB8iu5X4',
+  AttributesToGet=['email_verified'],
+)
+users_by_creation_month = defaultdict(lambda: defaultdict(int))
+
+for r in cognito_response_iterator:
+  for u in r['Users']:
+    key = 'verified' if u['Attributes'][0]['Value'] == 'true' else 'unverified'
+    users_by_creation_month[u['UserCreateDate'].date().isoformat()[:7]][key] += 1
+
 dynamodb = boto3.resource('dynamodb')
 events_table = dynamodb.Table('moodtracker_events')
 
@@ -72,6 +84,8 @@ def compute_breakdown(get_key):
     del v['moods']
     v['meditationMinutes'] = round(v['meditationSeconds'] / 60)
     del v['meditationSeconds']
+    v['newVerifiedUsers'] = users_by_creation_month[k]['verified']
+    v['newUnverifiedUsers'] = users_by_creation_month[k]['unverified']
     v['users'] = len(v['userIds'])
     del v['userIds']
 
