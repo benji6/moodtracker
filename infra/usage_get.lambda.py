@@ -12,7 +12,6 @@ USER_POOL_ID = 'us-east-1_rdB8iu5X4'
 
 cache = {}
 
-cognito_client = boto3.client('cognito-idp')
 dynamodb = boto3.resource('dynamodb')
 cache_table = dynamodb.Table('moodtracker_global_cache')
 events_table = dynamodb.Table('moodtracker_events')
@@ -29,14 +28,12 @@ def handler(event, context):
   confirmed_users = 0
   db_cache_hit = False
   memory_cache_hit = False
-  user_pages=0
 
   def log():
     print({
       'consumedCapacityUnits': consumed_capacity_units,
       'dbCacheHit': db_cache_hit,
       'memoryCacheHit': memory_cache_hit,
-      'userPages': user_pages,
     })
 
   if 'expires_at' in cache and now.timestamp() <= cache['expires_at']:
@@ -59,16 +56,10 @@ def handler(event, context):
   events_filter_expression = Attr('createdAt').gt(days_ago_60.isoformat())
 
   try:
-    users_response = cognito_client.list_users(UserPoolId=USER_POOL_ID)
-    users = users_response['Users']
-    user_pages = 1
-    while 'PaginationToken' in users_response:
-      users_response = cognito_client.list_users(
-        PaginationToken=users_response['PaginationToken'],
-        UserPoolId=USER_POOL_ID,
-      )
-      users += users_response['Users']
-      user_pages += 1
+    users = boto3.client('cognito-idp').get_paginator('list_users').paginate(
+      UserPoolId=USER_POOL_ID,
+      AttributesToGet=[],
+    ).build_full_result()['Users']
     
     events_response = events_table.scan(
       ExpressionAttributeNames={'#t': 'type'},
