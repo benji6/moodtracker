@@ -3,7 +3,7 @@ import email
 import json
 import statistics
 from boto3.dynamodb.conditions import Attr
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 CACHE_KEY = 'usage'
 HEADERS = {'Content-Type': 'application/json'}
@@ -19,13 +19,12 @@ settings_table = dynamodb.Table('moodtracker_settings')
 weekly_emails_table = dynamodb.Table('moodtracker_weekly_emails')
 
 def handler(event, context):
-  now = datetime.now()
+  now = datetime.now(timezone.utc)
   days_ago_1 = now - timedelta(1)
   days_ago_7 = now - timedelta(7)
   days_ago_30 = now - timedelta(30)
   days_ago_60 = now - timedelta(60)
   consumed_capacity_units = 0
-  confirmed_users = 0
   db_cache_hit = False
   memory_cache_hit = False
 
@@ -101,10 +100,7 @@ def handler(event, context):
       'statusCode': 500,
     }
 
-  for user in users:
-    if user['Enabled'] and user['UserStatus'] == 'CONFIRMED':
-      confirmed_users += 1
-
+  confirmed_users = [u for u in users if u['Enabled'] and u['UserStatus'] == 'CONFIRMED']
   user_ids_in_current_30_day_window = set()
   user_ids_in_previous_30_day_window = set()
   meditation_MAU_ids = set()
@@ -112,7 +108,7 @@ def handler(event, context):
   meditations = {}
   moods = {}
   for event in events:
-    event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1])
+    event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1]).replace(tzinfo=timezone.utc)
     if event['createdAt'] > days_ago_30:
       events_in_last_30_days += 1
       user_ids_in_current_30_day_window.add(event['userId'])
@@ -143,12 +139,13 @@ def handler(event, context):
   cache['expires_at'] = round(now.timestamp() + SECONDS_PER_DAY)
   cache['data'] = {
     'body': json.dumps({
-      'confirmedUsers': confirmed_users,
+      'confirmedUsers': len(confirmed_users),
       'eventsInLast30Days': events_in_last_30_days,
       'meanMoodInLast30Days': round(float(statistics.mean([v['mood'] for v in moods.values()])), 1),
       'meanMoodInLast7Days': round(float(statistics.mean([v['mood'] for k,v in moods.items() if k > days_ago_7])), 1),
       'meditationMAUs': len(meditation_MAU_ids),
       'meditationSecondsInLast30Days': meditation_seconds,
+      'newUsersInLast30Days': len([u for u in confirmed_users if u['UserCreateDate'] > days_ago_30]),
       'usersWithLocation': sum(1 for setting in settings if setting['recordLocation']),
       'usersWithWeeklyEmails': weekly_emails_table.item_count,
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
