@@ -9,6 +9,11 @@ Outputs:
   CognitoUserPoolId:
     Value: !Ref CognitoUserPool
 Parameters:
+  LambdaReservedConcurrentExecutions:
+    Default: 10
+    Description: ReservedConcurrentExecutions is shared across all lambdas and based on number of users
+    NoEcho: true
+    Type: Number
   SesNoreplyArn:
     Default: arn:aws:ses:us-east-1:315965384508:identity/noreply@moodtracker.link
     Description: ARN for the MoodTracker noreply email address
@@ -296,6 +301,7 @@ Resources:
           {{{weekly_emails_send.lambda.py}}}
       FunctionName: MoodTrackerWeeklyEmailsSend
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsRole.Arn
       Runtime: python3.9
       Timeout: 5
@@ -340,6 +346,7 @@ Resources:
           {{{events_get.lambda.py}}}
       FunctionName: MoodTrackerEventsGet
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaEventsGetRole.Arn
       Runtime: python3.9
   LambdaEventsGetPermission:
@@ -379,6 +386,7 @@ Resources:
           {{{events_post.lambda.py}}}
       FunctionName: MoodTrackerEventsPost
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaEventsPostRole.Arn
       Runtime: python3.9
   LambdaEventsPostPermission:
@@ -416,6 +424,7 @@ Resources:
           {{{settings_get.lambda.py}}}
       FunctionName: MoodTrackerSettingsGet
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaSettingsGetRole.Arn
       Runtime: python3.9
   LambdaSettingsGetPermission:
@@ -453,6 +462,7 @@ Resources:
           {{{settings_put.lambda.py}}}
       FunctionName: MoodTrackerSettingsPut
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaSettingsPutRole.Arn
       Runtime: python3.9
   LambdaSettingsPutPermission:
@@ -490,6 +500,7 @@ Resources:
           {{{usage_get.lambda.py}}}
       FunctionName: MoodTrackerUsageGet
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaUsageGetRole.Arn
       Runtime: python3.9
   LambdaUsageGetPermission:
@@ -542,6 +553,7 @@ Resources:
           {{{weekly_emails_delete.lambda.py}}}
       FunctionName: MoodTrackerWeeklyEmailsDelete
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsDeleteRole.Arn
       Runtime: python3.9
   LambdaWeeklyEmailsDeletePermission:
@@ -579,6 +591,7 @@ Resources:
           {{{weekly_emails_get.lambda.py}}}
       FunctionName: MoodTrackerWeeklyEmailsGet
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsGetRole.Arn
       Runtime: python3.9
   LambdaWeeklyEmailsGetPermission:
@@ -616,6 +629,7 @@ Resources:
           {{{weekly_emails_post.lambda.py}}}
       FunctionName: MoodTrackerWeeklyEmailsPost
       Handler: index.handler
+      ReservedConcurrentExecutions: !Ref LambdaReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsPostRole.Arn
       Runtime: python3.9
   LambdaWeeklyEmailsPostPermission:
