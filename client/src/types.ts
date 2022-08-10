@@ -63,6 +63,7 @@ export interface Usage {
   meanMoodInLast30Days: number;
   meditationMAUs: number;
   meditationSecondsInLast30Days: number;
+  newUsersInLast30Days: number;
   usersWithLocation: number;
   usersWithWeeklyEmails: number;
   CRR: number;

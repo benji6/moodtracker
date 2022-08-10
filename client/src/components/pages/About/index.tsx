@@ -195,6 +195,10 @@ export default function About() {
                 <td>{usage.MAUs}</td>
               </tr>
               <tr>
+                <td>New users over the last 30 days</td>
+                <td>{usage.newUsersInLast30Days}</td>
+              </tr>
+              <tr>
                 <td>Confirmed users</td>
                 <td>{usage.confirmedUsers}</td>
               </tr>
