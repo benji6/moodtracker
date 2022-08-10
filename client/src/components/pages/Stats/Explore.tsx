@@ -25,6 +25,7 @@ import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
+import LocationsForPeriod from "./LocationsForPeriod";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -143,6 +144,7 @@ export default function Explore() {
               <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
               <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
               <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <LocationsForPeriod fromDate={dateFrom} toDate={dateTo} />
             </>
           ) : (
             <Paper>
