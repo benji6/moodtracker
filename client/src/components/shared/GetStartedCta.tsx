@@ -9,11 +9,6 @@ export default function GetStartedCta() {
   return (
     <Paper>
       <h2>Welcome to MoodTracker!</h2>
-      <h3>Notification settings</h3>
-      <p>
-        Opt in to receive an email update every Monday morning with your own
-        personal weekly mood report!
-      </p>
       <WeeklyEmailNotifications />
       <h3>Location settings</h3>
       <p>

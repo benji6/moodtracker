@@ -6,10 +6,6 @@ export default function Notifications() {
     <Paper.Group>
       <Paper>
         <h2>Notifications</h2>
-        <p>
-          Opt in to receive an email update every Monday morning with your own
-          personal weekly mood report!
-        </p>
         <WeeklyEmailNotifications />
       </Paper>
     </Paper.Group>

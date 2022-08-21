@@ -27,37 +27,44 @@ export default function WeeklyEmailNotifications() {
   );
 
   return (
-    <Toggle
-      checked={isWeeklyEmailsEnabled}
-      disabled={isUpdating}
-      error={error ? ERRORS.network : undefined}
-      onChange={async () => {
-        setIsUpdating(true);
-        if (error) setError(false);
-        try {
-          if (isWeeklyEmailsEnabled) {
-            await weeklyEmailsDisable();
-            setIsWeeklyEmailsEnabled(false);
-          } else {
-            await weeklyEmailsEnable();
-            setIsWeeklyEmailsEnabled(true);
+    <>
+      <h3>Weekly email updates</h3>
+      <p>
+        Opt in to receive an email update every Monday morning with your own
+        personal weekly mood report!
+      </p>
+      <Toggle
+        checked={isWeeklyEmailsEnabled}
+        disabled={isUpdating}
+        error={error ? ERRORS.network : undefined}
+        onChange={async () => {
+          setIsUpdating(true);
+          if (error) setError(false);
+          try {
+            if (isWeeklyEmailsEnabled) {
+              await weeklyEmailsDisable();
+              setIsWeeklyEmailsEnabled(false);
+            } else {
+              await weeklyEmailsEnable();
+              setIsWeeklyEmailsEnabled(true);
+            }
+          } catch {
+            setError(true);
           }
-        } catch {
-          setError(true);
+          setIsUpdating(false);
+        }}
+        label={
+          isUpdating || isWeeklyEmailsEnabled === undefined ? (
+            <span>
+              <Spinner inline />
+            </span>
+          ) : (
+            `Weekly email notifications ${
+              isWeeklyEmailsEnabled ? "en" : "dis"
+            }abled`
+          )
         }
-        setIsUpdating(false);
-      }}
-      label={
-        isUpdating || isWeeklyEmailsEnabled === undefined ? (
-          <span>
-            <Spinner inline />
-          </span>
-        ) : (
-          `Weekly email notifications ${
-            isWeeklyEmailsEnabled ? "en" : "dis"
-          }abled`
-        )
-      }
-    />
+      />
+    </>
   );
 }
