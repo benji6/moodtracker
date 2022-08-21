@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { join as pathJoin } from "path";
+import { PERIODIC_BACKGROUND_SYNC_DAILY_NOTIFICATION_TAG } from "./constants";
 
 const CACHE_NAME = "v1";
 const CACHE_LIST = (process.env.CACHE_LIST as string).split(",");
@@ -50,5 +51,28 @@ sw.onfetch = (event: any) => {
         return cachedResponse;
       }
     })()
+  );
+};
+
+sw.onperiodicsync = (event: any) => {
+  if (event.tag !== PERIODIC_BACKGROUND_SYNC_DAILY_NOTIFICATION_TAG) return;
+  (sw.registration as ServiceWorkerRegistration).showNotification(
+    "MoodTracker daily notification",
+    {
+      icon: String(new URL("icons/icon-192x192.png", import.meta.url)),
+      lang: "en",
+      body: "Remember to log your mood today!",
+    }
+  );
+};
+
+sw.onnotificationclick = (event: any) => {
+  event.notification.close();
+  event.waitUntil(
+    sw.clients.matchAll().then((clientList: any) => {
+      for (const client of clientList)
+        if (new URL(client.url).pathname === "/add") return client.focus();
+      return sw.clients.openWindow("/add");
+    })
   );
 };
