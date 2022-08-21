@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </StrictMode>
 );
 
-if (process.env.NODE_ENV === "production" && navigator.serviceWorker)
+if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator)
   navigator.serviceWorker.register(
     new URL("service-worker.ts", import.meta.url),
     { type: "module" }
