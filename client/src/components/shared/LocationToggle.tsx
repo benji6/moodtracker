@@ -8,20 +8,26 @@ export default function LocationToggle() {
   const dispatch = useDispatch();
 
   return (
-    <Toggle
-      checked={locationEnabled}
-      onChange={async () => {
-        dispatch(
-          settingsSlice.actions.setLocationRecording(
-            locationEnabled ? false : true
-          )
-        );
-      }}
-      label={
-        locationEnabled
-          ? "Storing location against events you record"
-          : "Not recording location"
-      }
-    />
+    <>
+      <p>
+        Opt in to record your location against all your events so you can see
+        where you were when you look back through your history.
+      </p>
+      <Toggle
+        checked={locationEnabled}
+        onChange={async () => {
+          dispatch(
+            settingsSlice.actions.setLocationRecording(
+              locationEnabled ? false : true
+            )
+          );
+        }}
+        label={
+          locationEnabled
+            ? "Storing location against events you record"
+            : "Not recording location"
+        }
+      />
+    </>
   );
 }

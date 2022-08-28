@@ -11,10 +11,6 @@ export default function GetStartedCta() {
       <h2>Welcome to MoodTracker!</h2>
       <WeeklyEmailNotifications />
       <h3>Location settings</h3>
-      <p>
-        Opt in to record your location against all your events so you can see
-        where you were when you look back through your history.
-      </p>
       <LocationToggle />
       <h3>Get started adding moods</h3>
       <Button.Group>
