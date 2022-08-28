@@ -1,4 +1,5 @@
 import { Paper } from "eri";
+import DailyNotifications from "../../shared/DailyNotifications";
 import WeeklyEmailNotifications from "../../shared/WeeklyEmailNotifications";
 
 export default function Notifications() {
@@ -7,6 +8,7 @@ export default function Notifications() {
       <Paper>
         <h2>Notifications</h2>
         <WeeklyEmailNotifications />
+        <DailyNotifications />
       </Paper>
     </Paper.Group>
   );

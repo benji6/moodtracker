@@ -60,6 +60,7 @@ export const FIELDS = {
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,
+  secondsPerDay: 86400,
   secondsPerHour: 3600,
   secondsPerMinute: 60,
 } as const;
