@@ -1,18 +1,78 @@
 .m-dimmer {
+  align-items: center;
   background: black;
   bottom: 0;
+  display: flex;
+  justify-content: center;
   left: 0;
   opacity: 0;
   pointer-events: none;
   position: fixed;
   right: 0;
   top: 0;
-  transition-property: opacity;
   transition-duration: var(--time-1);
+  transition-property: opacity;
   z-index: 9; /* should be higher than any Eri z-index */
 }
 
 .m-dimmer--enabled {
   opacity: 1;
   pointer-events: auto;
+}
+
+.m-dimmer__text {
+  animation: m-dimmer-text-pulse calc(var(--text-display-time) / 4)
+    var(--easing-accelerate) infinite;
+  color: var(--color-highlight-default);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 0 0 0.75em, 0 0 1.5em;
+  user-select: none;
+}
+.m-dimmer__text-container {
+  --text-display-time: 8s;
+
+  animation: m-dimmer-text-fade var(--text-display-time)
+      var(--easing-accelerate) forwards,
+    m-dimmer-text-bounce calc(var(--text-display-time) / 4)
+      var(--easing-accelerate) infinite;
+  text-align: center;
+}
+
+@keyframes m-dimmer-text-pulse {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes m-dimmer-text-bounce {
+  0% {
+    scale: 0.99;
+  }
+  50% {
+    scale: 1;
+  }
+  100% {
+    scale: 0.99;
+  }
+}
+
+@keyframes m-dimmer-text-fade {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

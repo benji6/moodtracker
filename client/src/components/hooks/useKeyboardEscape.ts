@@ -14,9 +14,18 @@ export default function useKeyboardEscape(callback: () => void) {
         savedCallback.current();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    // When the escape key is pressed in fullscreen mode
+    // it is not captured by the keydown handler
+    const handleExitFullscreen = () => {
+      if (!document.fullscreenElement) savedCallback.current();
+    };
+    document.addEventListener("fullscreenchange", handleExitFullscreen);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("fullscreenchange", handleExitFullscreen);
+    };
   }, []);
 }
