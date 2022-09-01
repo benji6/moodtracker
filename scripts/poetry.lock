@@ -83,7 +83,7 @@ tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy"
 
 [[package]]
 name = "bc-python-hcl2"
-version = "0.3.44"
+version = "0.3.45"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -188,7 +188,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.1.83"
+version = "2.1.176"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -199,7 +199,7 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-python-hcl2 = "0.3.44"
+bc-python-hcl2 = "0.3.45"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
@@ -222,10 +222,11 @@ networkx = "*"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
-pycep-parser = "0.3.7"
-pyston-lite = {version = "2.3.4.1", markers = "python_version == \"3.8\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
-pyston-lite-autoload = {version = "2.3.4.1", markers = "python_version == \"3.8\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
+pycep-parser = "0.3.9"
+pyston-lite = {version = "2.3.4.2", markers = "python_version == \"3.8\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
+pyston-lite-autoload = {version = "2.3.4.2", markers = "python_version == \"3.8\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
 pyyaml = ">=5.4.1"
+schema = "*"
 semantic-version = "*"
 tabulate = "*"
 termcolor = "*"
@@ -670,7 +671,7 @@ idna = ["idna (>=2.1)"]
 
 [[package]]
 name = "pycep-parser"
-version = "0.3.7"
+version = "0.3.9"
 description = "A Python based Bicep parser"
 category = "main"
 optional = false
@@ -722,7 +723,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "pyston-lite"
-version = "2.3.4.1"
+version = "2.3.4.2"
 description = "A JIT for Python"
 category = "main"
 optional = false
@@ -730,14 +731,14 @@ python-versions = "*"
 
 [[package]]
 name = "pyston-lite-autoload"
-version = "2.3.4.1"
+version = "2.3.4.2"
 description = "Automatically loads and enables pyston_lite"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-pyston-lite = "2.3.4.1"
+pyston-lite = "2.3.4.2"
 
 [[package]]
 name = "python-dateutil"
@@ -997,7 +998,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "d819f3d8824d5b4237398e0431fe955964e23212aba4a75ab0bf6872d525a557"
+content-hash = "f9309f2d5275d02f215c6d316df0a90c69142d9e297196e13d313e2eb3b15d79"
 
 [metadata.files]
 aiodns = [
@@ -1099,8 +1100,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.44.tar.gz", hash = "sha256:0bb7649c37e8378af05c8e7f621b0a5e87abb69414a6838aadb6d6e32557ae04"},
-    {file = "bc_python_hcl2-0.3.44-py3-none-any.whl", hash = "sha256:f9beb5d6b835413fb306a0f458098ca0bf74a79db5bc5af6fe97a405c6a3f8fa"},
+    {file = "bc-python-hcl2-0.3.45.tar.gz", hash = "sha256:3a650deb0a6c54ff7f092f89904862ac3069d4ca9e037a04714efb4f99c9f465"},
+    {file = "bc_python_hcl2-0.3.45-py3-none-any.whl", hash = "sha256:1f8949cd48b14d44d66d49271d582a7c03a54ce59a16f25042b47430a7c54915"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1183,8 +1184,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.1.83-py3-none-any.whl", hash = "sha256:2c883e85e65c645cbbe7351960ad49041c7684d505104cd5f9e8599e6203def5"},
-    {file = "checkov-2.1.83.tar.gz", hash = "sha256:539ddade0a0492a4dd6dee24f00baefe7f8397e31bf86a40f188e512f9fd1470"},
+    {file = "checkov-2.1.176-py3-none-any.whl", hash = "sha256:cf26fa30995593b8bee4a0c728b1c86e2ea2030c3d10507d1b0910a5fcd93635"},
+    {file = "checkov-2.1.176.tar.gz", hash = "sha256:9496ed9108be370a957862fe73e99fe4275893a66a9a3686a4064a9218ec5d54"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1511,8 +1512,8 @@ pycares = [
     {file = "pycares-4.2.0.tar.gz", hash = "sha256:b286649597791cd53072b2f3383cc38fc14a8ab016b78cb04bdcaa6ecce3b8ce"},
 ]
 pycep-parser = [
-    {file = "pycep-parser-0.3.7.tar.gz", hash = "sha256:f835e11bd3947fb3eb5b944860b85781d96f7559b246f02ee9ab1ce37aa8c183"},
-    {file = "pycep_parser-0.3.7-py3-none-any.whl", hash = "sha256:dc819773c5cf740e1cdb13e20f00f91cf23a978f55507a630dfbdef4b0518bbb"},
+    {file = "pycep-parser-0.3.9.tar.gz", hash = "sha256:6d3d1e18b497ec5db0d9b133a634f12f6431f6c61aff1d2fe83cfdf306b7d200"},
+    {file = "pycep_parser-0.3.9-py3-none-any.whl", hash = "sha256:ab5841f1766483941690291c1d2cdf16a14da377c5c1d4f4e7f1300a4e2ff88e"},
 ]
 pycparser = [
     {file = "pycparser-2.21-py2.py3-none-any.whl", hash = "sha256:8ee45429555515e1f6b185e78100aea234072576aa43ab53aefcae078162fca9"},
@@ -1550,14 +1551,14 @@ pyrsistent = [
     {file = "pyrsistent-0.18.1.tar.gz", hash = "sha256:d4d61f8b993a7255ba714df3aca52700f8125289f84f704cf80916517c46eb96"},
 ]
 pyston-lite = [
-    {file = "pyston_lite-2.3.4.1-cp38-cp38-macosx_10_16_x86_64.whl", hash = "sha256:29d514cce605928f078a54882b5f4356e0eb7daac794c774e77e70801dddc308"},
-    {file = "pyston_lite-2.3.4.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:34601966f3b4792fb36b6a80a94a9cc46afa7d51fa6278b4f4b1eec8676a4aec"},
-    {file = "pyston_lite-2.3.4.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:557e8355d586a3a7d518f9d122991f273eaab2d0c9229d5feffc9dbbebe3760a"},
-    {file = "pyston_lite-2.3.4.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:15329a7f4b67c8706daf4e4d355cdaba6d37a35b3806ccb77a02a62d3adda57c"},
+    {file = "pyston_lite-2.3.4.2-cp38-cp38-macosx_10_16_x86_64.whl", hash = "sha256:83e9938da93b179ffbfa1c2918996a5b8c9c2afc946a5a77e9aafa7f4a58fdb9"},
+    {file = "pyston_lite-2.3.4.2-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:779326dfb7c9e16245fb0a519e5e8c6505ab7df2390e341339a66bc5d127d45d"},
+    {file = "pyston_lite-2.3.4.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5164ce937691bfa6324fc03545e2e25deccb6d203e823062c316b7a7a1631a21"},
+    {file = "pyston_lite-2.3.4.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:29114626ec46f841620ff03692835d101b239f129b763b1a0b528528f67c1264"},
 ]
 pyston-lite-autoload = [
-    {file = "pyston_lite_autoload-2.3.4.1-py3-none-any.whl", hash = "sha256:c231317e56a40e9d9b1b9f2ac3627845953fb8e92f49c1ce40d4d616dbacdaf6"},
-    {file = "pyston_lite_autoload-2.3.4.1.tar.gz", hash = "sha256:d2b74f4a1e34ef84ac1974f1eb84133e57171d2f96e96bd0cab574ae1d5fdbcf"},
+    {file = "pyston_lite_autoload-2.3.4.2-py3-none-any.whl", hash = "sha256:dacf0a6e4fa7679f92196a555f8d01dd4108ecaa7ab6e8facc2a10bc5a168ef5"},
+    {file = "pyston_lite_autoload-2.3.4.2.tar.gz", hash = "sha256:40e35fd560fdb2c2764f3f8138f16f87f4215e3b2fd80015c5de31a0ce777b4e"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
