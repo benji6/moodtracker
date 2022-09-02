@@ -73,7 +73,7 @@ describe("e2e", () => {
   describe("when the user is signed in", () => {
     beforeAll(async () => {
       const signInLink = (await page.waitForSelector(SELECTORS.signInLink))!;
-      await page.waitForTimeout(TRANSITION_TIME);
+      await new Promise((resolve) => setTimeout(resolve, TRANSITION_TIME));
       await tapAndNavigate(signInLink);
 
       const emailInput = (await page.waitForSelector('[type="email"]'))!;
@@ -95,13 +95,11 @@ describe("e2e", () => {
       const signOutButton = (await page.waitForSelector(
         SELECTORS.signOutButton
       ))!;
-      await page.waitForTimeout(TRANSITION_TIME);
       await signOutButton.tap();
       const signOutConfirmButton = (await page.waitForSelector(
         SELECTORS.signOutConfirmButton
       ))!;
       await tapAndNavigate(signOutConfirmButton);
-      await page.waitForTimeout(TRANSITION_TIME);
 
       expect(await page.$(SELECTORS.signInLink)).toBeTruthy();
     });
@@ -229,7 +227,7 @@ describe("e2e", () => {
         ))!;
         tapAndNavigate(button);
         await page.waitForSelector(SELECTORS.meditatePage);
-        await page.waitForTimeout(TRANSITION_TIME);
+        await new Promise((resolve) => setTimeout(resolve, TRANSITION_TIME));
 
         expect(page.url()).toBe(`${URLS.meditationTimer}?t=600`);
       });
@@ -273,7 +271,6 @@ describe("e2e", () => {
         expect(error).toBeNull();
 
         await page.waitForSelector(SELECTORS.meditationTimerPage);
-        await page.waitForTimeout(TRANSITION_TIME);
 
         expect(page.url()).toBe(`${URLS.meditationTimer}?t=3600`);
       });

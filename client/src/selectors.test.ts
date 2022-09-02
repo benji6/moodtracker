@@ -1025,6 +1025,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 4 },
               },
+
               "2020-06-11T00:00:00.000Z": {
                 createdAt: "2020-06-11T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1090,6 +1091,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 3 },
               },
+
               "2020-04-09T00:00:00.000Z": {
                 createdAt: "2020-04-09T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1207,6 +1209,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 4 },
               },
+
               "2020-07-27T01:00:00.000Z": {
                 createdAt: "2020-07-27T01:00:00.000Z",
                 type: "v1/moods/create",
@@ -1277,6 +1280,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 3 },
               },
+
               "2020-07-27T03:00:00.000Z": {
                 createdAt: "2020-07-27T03:00:00.000Z",
                 type: "v1/moods/create",
@@ -1386,6 +1390,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 4 },
               },
+
               "2020-07-10T00:00:00.000Z": {
                 createdAt: "2020-07-10T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1451,6 +1456,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 3 },
               },
+
               "2020-07-05T00:00:00.000Z": {
                 createdAt: "2020-07-05T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1579,6 +1585,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 3 },
               },
+
               "2020-07-28T00:00:00.000Z": {
                 createdAt: "2020-07-28T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1651,6 +1658,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 4 },
               },
+
               "2020-07-25T00:00:00.000Z": {
                 createdAt: "2020-07-25T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1776,6 +1784,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 3 },
               },
+
               "2021-07-28T00:00:00.000Z": {
                 createdAt: "2020-07-28T00:00:00.000Z",
                 type: "v1/moods/create",
@@ -1834,6 +1843,7 @@ describe("selectors", () => {
                 type: "v1/moods/create",
                 payload: { mood: 4 },
               },
+
               "2022-07-25T00:00:00.000Z": {
                 createdAt: "2022-07-25T00:00:00.000Z",
                 type: "v1/moods/create",
