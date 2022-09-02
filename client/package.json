@@ -48,7 +48,7 @@
     "@types/react-simple-maps": "^1.0.7",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.36.1",
-    "eslint": "^8.14.0",
+    "eslint": "^8.23.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react": "^7.30.1",
