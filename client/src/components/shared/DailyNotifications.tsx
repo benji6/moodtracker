@@ -5,7 +5,6 @@ import {
   PERIODIC_BACKGROUND_SYNC_DAILY_NOTIFICATION_TAG,
   TIME,
 } from "../../constants";
-import useInterval from "../hooks/useInterval";
 import usePermissionState from "../hooks/usePermissionState";
 
 export default function DailyNotifications() {
@@ -17,19 +16,6 @@ export default function DailyNotifications() {
     "periodic-background-sync" as any
   );
   const notificationPermissionState = usePermissionState("notifications");
-  const [tags, setTags] = useState<string[]>([]);
-
-  useInterval(
-    () =>
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      navigator.serviceWorker.ready.then((registration: any) => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        registration.periodicSync.getTags().then((tags: any) => {
-          setTags(tags);
-        });
-      }),
-    1e3
-  );
 
   return (
     <>
@@ -116,11 +102,6 @@ export default function DailyNotifications() {
           browser if you&apos;d like to use this feature.
         </p>
       )}
-      <p>
-        <small>
-          Developer debug info (please ignore this): {JSON.stringify(tags)}
-        </small>
-      </p>
     </>
   );
 }
