@@ -29,7 +29,6 @@ export default function useStorage() {
   // handle user sign out
   if (lastUserId.current && !userId) {
     storage.deleteEvents(lastUserId.current);
-    storage.deleteSettings(lastUserId.current);
     navigate("/");
   }
 

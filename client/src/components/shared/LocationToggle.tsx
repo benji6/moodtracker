@@ -33,7 +33,7 @@ export default function LocationToggle() {
           locationEnabled
             ? permissionState === "granted"
               ? "Storing location against events you record"
-              : "Settings saved, but not recording location"
+              : "Settings saved to device, but not recording location"
             : "Not recording location"
         }
       />

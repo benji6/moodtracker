@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { userIsSignedInSelector } from "../selectors";
 import AddMoodFab from "./AddMoodFab";
 import { TEST_IDS } from "../constants";
-import useSettings from "./hooks/useSettings";
 import useGeolocation from "./hooks/useGeolocation";
 import { Link } from "react-router-dom";
 
@@ -20,7 +19,6 @@ export default function App({ children }: Props) {
   useUser();
   useGeolocation();
   useEvents();
-  useSettings();
   useStorage();
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isNavOpen, setIsNavOpen] = React.useState(false);

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createAuthenticatedUserAndSession } from "../../cognito";
 import { ERRORS } from "../../constants";
+import appSlice from "../../store/appSlice";
 import userSlice from "../../store/userSlice";
 
 // The properties declared here are by no means exhaustive
@@ -24,6 +25,7 @@ export default function SignIn() {
           const { email: tokenEmail, sub: id } = cognitoUserSession.getIdToken()
             .payload as TokenPayload;
           dispatch(userSlice.actions.set({ email: tokenEmail, id }));
+          dispatch(appSlice.actions.newSignIn());
           navigate("/");
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {

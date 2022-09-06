@@ -8,6 +8,7 @@ import {
   userIsSignedInSelector,
 } from "../../../selectors";
 import NotSignedIn from "./NotSignedIn";
+import DeviceSetupDialog from "./DeviceSetupDialog";
 
 export interface HomeState {
   dayCount: number | undefined;
@@ -32,6 +33,7 @@ export default function Home() {
       ) : (
         <Spinner />
       )}
+      <DeviceSetupDialog />
     </Paper.Group>
   );
 }

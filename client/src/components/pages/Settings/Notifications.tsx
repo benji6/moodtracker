@@ -8,6 +8,7 @@ export default function Notifications() {
       <Paper>
         <h2>Notifications</h2>
         <WeeklyEmailNotifications />
+        <h3>Daily notifications</h3>
         <DailyNotifications />
       </Paper>
     </Paper.Group>

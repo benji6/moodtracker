@@ -19,8 +19,6 @@ export default {
     set(makeEventsKey(userId), events),
 
   // settings
-  deleteSettings: (userId: string): Promise<void> =>
-    del(makeSettingsKey(userId)),
   getSettings: (userId: string): Promise<Settings | undefined> =>
     get<Settings | undefined>(makeSettingsKey(userId)),
   setSettings: (userId: string, settings: Settings): Promise<void> =>
