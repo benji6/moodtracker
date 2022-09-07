@@ -218,7 +218,7 @@ export default function About() {
                 <MoodCell mood={usage.meanMoodInLast30Days} />
               </tr>
               <tr>
-                <td>Total time meditated by all users</td>
+                <td>Total time meditated by all users over the last 30 days</td>
                 <td>
                   {formatDurationFromSeconds(
                     usage.meditationSecondsInLast30Days
