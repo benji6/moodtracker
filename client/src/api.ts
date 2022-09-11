@@ -1,9 +1,8 @@
 import { getIdToken } from "./cognito";
-import { AppEvent, Settings, Usage } from "./types";
+import { AppEvent, Usage } from "./types";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
-const SETTINGS_URI = `${API_URI}/settings`;
 const USAGE_URI = `${API_URI}/usage`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
@@ -72,20 +71,6 @@ export const weeklyEmailsDisable = async (): Promise<void> => {
 export const weeklyEmailsEnable = async (): Promise<void> => {
   const response = await fetchWithAuth(WEEKLY_EMAILS_URI, {
     method: "POST",
-  });
-  if (!response.ok) throw Error(String(response.status));
-};
-
-export const settingsGet = async (): Promise<Settings | undefined> => {
-  const response = await fetchWithAuth(SETTINGS_URI);
-  if (response.status === 404) return undefined;
-  if (!response.ok) throw Error(String(response.status));
-  return response.json();
-};
-export const settingsSet = async (settings: Settings): Promise<void> => {
-  const response = await fetchWithAuth(SETTINGS_URI, {
-    method: "PUT",
-    body: JSON.stringify(settings),
   });
   if (!response.ok) throw Error(String(response.status));
 };
