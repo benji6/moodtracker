@@ -26,6 +26,7 @@ import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
 import LocationsForPeriod from "./LocationsForPeriod";
+import addMinutes from "date-fns/addMinutes";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -103,12 +104,15 @@ export default function Explore() {
           max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
           min={formatIsoDateInLocalTimezone(new Date(moods.allIds[0]))}
           onChange={(e) => {
-            const date = new Date(e.target.value);
+            let date = new Date(e.target.value);
+            const timezoneOffset = date.getTimezoneOffset();
+            if (timezoneOffset)
+              date = addMinutes(date, date.getTimezoneOffset());
             if (
               date < roundDateDown(dateTo) &&
               date >= roundDateDown(new Date(moods.allIds[0]))
             )
-              setDateFrom(new Date(e.target.value));
+              setDateFrom(date);
           }}
           value={formatIsoDateInLocalTimezone(dateFrom)}
         />
@@ -117,9 +121,11 @@ export default function Explore() {
           max={formatIsoDateInLocalTimezone(maxDate)}
           min={formatIsoDateInLocalTimezone(addDays(dateFrom, 1))}
           onChange={(e) => {
-            const date = new Date(e.target.value);
-            if (date > dateFrom && date <= maxDate)
-              setDateTo(new Date(e.target.value));
+            let date = new Date(e.target.value);
+            const timezoneOffset = date.getTimezoneOffset();
+            if (timezoneOffset)
+              date = addMinutes(date, date.getTimezoneOffset());
+            if (date > dateFrom && date <= maxDate) setDateTo(date);
           }}
           value={formatIsoDateInLocalTimezone(dateTo)}
         />

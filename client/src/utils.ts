@@ -1,5 +1,5 @@
 import { interpolateHcl } from "d3-interpolate";
-import add from "date-fns/add";
+import addDays from "date-fns/addDays";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { MOOD_RANGE, TIME } from "./constants";
@@ -254,7 +254,7 @@ export const roundDateUp = (date: Date): Date => {
   const roundedDownDate = roundDateDown(date);
   return Number(roundedDownDate) === Number(date)
     ? date
-    : add(roundedDownDate, { days: 1 });
+    : addDays(roundedDownDate, 1);
 };
 
 export const trapeziumArea = (a: number, b: number, h: number): number =>
