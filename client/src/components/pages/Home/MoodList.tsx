@@ -12,6 +12,8 @@ import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   mapRight,
+  roundDateDown,
+  roundDateUp,
 } from "../../../utils";
 import {
   moodIdsByDateSelector,
@@ -32,6 +34,7 @@ import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
 import MoodCard from "../../shared/MoodCard";
 import addDays from "date-fns/addDays";
 import { Link } from "react-router-dom";
+import DateRangeSelector from "../../shared/DateRangeSelector";
 
 const DAYS_PER_PAGE = 7;
 
@@ -103,6 +106,11 @@ export default function MoodList() {
   const normalizedDescriptionWords = useSelector(
     normalizedDescriptionWordsSelector
   );
+  const dateNow = new Date();
+  const [dateTo, setDateTo] = React.useState(roundDateUp(dateNow));
+  const [dateFrom, setDateFrom] = React.useState(
+    roundDateDown(new Date(moods.allIds[0]))
+  );
 
   const filterDescriptions = localState.filterDescription
     .trim()
@@ -116,21 +124,21 @@ export default function MoodList() {
 
   const filterFeatureAvailable = moods.allIds.length >= 5;
 
-  const shouldFilter = Boolean(
-    filterFeatureAvailable &&
-      (localState.filterMood !== undefined ||
-        filterDescriptions.length ||
-        normalizedFilterExploration)
-  );
+  const shouldFilter = localState.shouldShowFilter && filterFeatureAvailable;
 
   const filteredMoodIds = shouldFilter
     ? moods.allIds.filter((id) => {
         const mood = moods.byId[id];
+
         if (
           localState.filterMood !== undefined &&
           mood.mood !== localState.filterMood
         )
           return false;
+
+        const date = new Date(id);
+        if (date < dateFrom || date > dateTo) return false;
+
         if (filterDescriptions.length) {
           const normalizedMoodDescription = mood.description?.toLowerCase();
           if (
@@ -140,6 +148,7 @@ export default function MoodList() {
           )
             return false;
         }
+
         if (
           normalizedFilterExploration &&
           !mood.exploration?.toLowerCase().includes(normalizedFilterExploration)
@@ -188,6 +197,12 @@ export default function MoodList() {
             />
             {localState.shouldShowFilter && (
               <div className="slide-in">
+                <DateRangeSelector
+                  dateFrom={dateFrom}
+                  dateTo={dateTo}
+                  setDateFrom={setDateFrom}
+                  setDateTo={setDateTo}
+                />
                 <Select
                   label={FIELDS.mood.label}
                   onChange={(e) =>
