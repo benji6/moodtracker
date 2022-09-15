@@ -50,7 +50,9 @@ Resources:
       - ApiGatewayWeeklyEmailsPost
     Properties:
       RestApiId: !Ref ApiGateway
-      # `prod` stage has been manually created with default method throttling
+      StageDescription:
+        ThrottlingBurstLimit: 5
+        ThrottlingRateLimit: 1
       StageName: prod
   ApiGatewayEventsResource:
     Type: AWS::ApiGateway::Resource

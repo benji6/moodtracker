@@ -26,7 +26,11 @@
       "Action": ["Update:Modify"],
       "Condition": {
         "StringEquals": {
-          "ResourceType": ["AWS::Events::Rule", "AWS::IAM::Role"]
+          "ResourceType": [
+            "AWS::ApiGateway::Deployment",
+            "AWS::Events::Rule",
+            "AWS::IAM::Role"
+          ]
         }
       },
       "Effect": "Allow",
