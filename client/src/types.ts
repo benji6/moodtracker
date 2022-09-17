@@ -64,7 +64,6 @@ export interface Usage {
   meditationMAUs: number;
   meditationSecondsInLast30Days: number;
   newUsersInLast30Days: number;
-  usersWithLocation: number;
   usersWithWeeklyEmails: number;
   CRR: number;
   DAUs: number;

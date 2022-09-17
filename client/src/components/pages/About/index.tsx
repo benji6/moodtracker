@@ -243,10 +243,6 @@ export default function About() {
                 <td>Users who are signed up to weekly emails</td>
                 <td>{usage.usersWithWeeklyEmails}</td>
               </tr>
-              <tr>
-                <td>Users who are recording their location</td>
-                <td>{usage.usersWithLocation}</td>
-              </tr>
             </UsageTable>
           </>
         ) : (
