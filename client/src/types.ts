@@ -38,18 +38,18 @@ export interface UpdateMood {
   mood?: number;
 }
 
-type MoodEvent<Type extends string, Payload> = {
+type PayloadEvent<Type extends string, Payload> = {
   createdAt: string;
   payload: Payload;
   type: Type;
 };
 
 export type AppEvent =
-  | MoodEvent<"v1/meditations/create", Meditation>
-  | MoodEvent<"v1/meditations/delete", string>
-  | MoodEvent<"v1/moods/create", Mood>
-  | MoodEvent<"v1/moods/delete", string>
-  | MoodEvent<"v1/moods/update", UpdateMood>;
+  | PayloadEvent<"v1/meditations/create", Meditation>
+  | PayloadEvent<"v1/meditations/delete", string>
+  | PayloadEvent<"v1/moods/create", Mood>
+  | PayloadEvent<"v1/moods/delete", string>
+  | PayloadEvent<"v1/moods/update", UpdateMood>;
 
 export interface Settings {
   updatedAt: string;
