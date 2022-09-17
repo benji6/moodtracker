@@ -28,6 +28,10 @@ Resources:
     Type: AWS::ApiGateway::RestApi
     Properties:
       Name: MoodTrackerApi
+  ApiGatewayAccount:
+    Type: AWS::ApiGateway::Account
+    Properties:
+      CloudWatchRoleArn: !GetAtt ApiGatewayCloudWatchRole.Arn
   ApiGatewayAuthorizer:
     Type: AWS::ApiGateway::Authorizer
     Properties:
@@ -37,6 +41,18 @@ Resources:
         - !GetAtt CognitoUserPool.Arn
       RestApiId: !Ref ApiGateway
       Type: COGNITO_USER_POOLS
+  ApiGatewayCloudWatchRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs
   ApiGatewayDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
@@ -51,6 +67,8 @@ Resources:
     Properties:
       RestApiId: !Ref ApiGateway
       StageDescription:
+        DataTraceEnabled: true
+        LoggingLevel: ERROR
         ThrottlingBurstLimit: 5
         ThrottlingRateLimit: 1
       StageName: prod
