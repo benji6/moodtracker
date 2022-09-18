@@ -50,15 +50,16 @@ def handler(event, context):
         last_server_created_at = event['serverCreatedAt']
       del event['serverCreatedAt']
       payload = event['payload']
-      if 'location' in payload:
-        payload['location'] = {
-          k: float(v) if isinstance(v, Decimal) else v for k,v in payload['location'].items()
-        }
-      if 'mood' in payload:
-        payload['mood'] = float(payload['mood'])
-      elif 'seconds' in payload:
-        payload['seconds'] = int(payload['seconds'])
-
+      if isinstance(payload, dict):
+        if 'location' in payload:
+          payload['location'] = {
+            k: float(v) if isinstance(v, Decimal) else v for k,v in payload['location'].items()
+          }
+        if 'seconds' in payload:
+          payload['seconds'] = int(payload['seconds'])
+        for k,v in payload.items():
+          if isinstance(v, Decimal):
+            payload[k] = float(v)
     return {
       'body': json.dumps({
         'events': events,
