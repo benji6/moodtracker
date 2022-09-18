@@ -50,7 +50,7 @@ export interface UpdateWeight {
 }
 
 type EventTypeVersions = "v1";
-type EventTypeCategories = "meditations" | "moods" | "weights";
+export type EventTypeCategories = "meditations" | "moods" | "weights";
 type EventTypeOperations = "create" | "update" | "delete";
 type EventType =
   `${EventTypeVersions}/${EventTypeCategories}/${EventTypeOperations}`;

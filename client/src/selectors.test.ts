@@ -14,6 +14,7 @@ import {
   meditationStatsSelector,
   normalizedWeightsSelector,
   hasWeightsSelector,
+  denormalizedWeightsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -657,6 +658,90 @@ describe("selectors", () => {
         {
           createdAt: "2020-10-10T08:03:00.000Z",
           mood: 7,
+        },
+      ]);
+    });
+  });
+
+  describe("denormalizedWeightsSelector", () => {
+    test("when there are no events", () => {
+      expect(denormalizedWeightsSelector(initialState)).toEqual([]);
+    });
+
+    test("with a single create event", () => {
+      expect(
+        denormalizedWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 50 },
+              },
+            },
+          },
+        })
+      ).toEqual([{ createdAt: "2020-10-10T08:00:00.000Z", value: 50 }]);
+    });
+
+    test("with a delete event", () => {
+      expect(
+        denormalizedWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z", "2020-10-10T08:02:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 50 },
+              },
+              "2020-10-10T08:02:00.000Z": {
+                createdAt: "2020-10-10T08:02:00.000Z",
+                type: "v1/weights/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+            },
+          },
+        })
+      ).toEqual([]);
+    });
+
+    test("with an update event", () => {
+      expect(
+        denormalizedWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:01:00.000Z", "2020-10-10T08:04:00.000Z"],
+            byId: {
+              "2020-10-10T08:01:00.000Z": {
+                createdAt: "2020-10-10T08:01:00.000Z",
+                type: "v1/weights/create",
+                payload: {
+                  value: 80,
+                },
+              },
+              "2020-10-10T08:04:00.000Z": {
+                createdAt: "2020-10-10T08:04:00.000Z",
+                type: "v1/weights/update",
+                payload: {
+                  id: "2020-10-10T08:01:00.000Z",
+                  value: 70,
+                },
+              },
+            },
+          },
+        })
+      ).toEqual([
+        {
+          createdAt: "2020-10-10T08:01:00.000Z",
+          updatedAt: "2020-10-10T08:04:00.000Z",
+          value: 70,
         },
       ]);
     });

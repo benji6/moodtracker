@@ -149,9 +149,12 @@ export const denormalizedMeditationsSelector = createSelector(
   normalizedMeditationsSelector,
   ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
 );
-
 export const denormalizedMoodsSelector = createSelector(
   normalizedMoodsSelector,
+  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
+);
+export const denormalizedWeightsSelector = createSelector(
+  normalizedWeightsSelector,
   ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
 );
 
