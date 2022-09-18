@@ -31,6 +31,8 @@ import RedirectHome from "./RedirectHome";
 import Meditation from "./pages/Stats/Meditation";
 import FreeMeditation from "./pages/Meditate/FreeMeditation";
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
+import AddWeight from "./pages/AddWeight";
+import Weight from "./pages/Stats/Weight";
 
 export default function Routes() {
   return (
@@ -67,6 +69,19 @@ export default function Routes() {
               />
             }
             path="timer"
+          />
+        </Route>
+
+        <Route path="/weight">
+          <Route
+            element={
+              <AuthedOnlyPage Component={AddWeight} title="Add weight" />
+            }
+            path="add"
+          />
+          <Route
+            element={<AuthedOnlyPage Component={Weight} title="Weight stats" />}
+            path="stats"
           />
         </Route>
 

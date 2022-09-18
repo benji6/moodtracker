@@ -25,6 +25,8 @@ export const ERRORS = {
   integer: "Please type a valid whole number",
   network: "Something went wrong, check your internet connection and try again",
   specialCharacters: "This field must not contain any special characters",
+  rangeOverflow: "Value is too big, please input something smaller",
+  rangeUnderflow: "Value is too small, please input something bigger",
   required: "Required",
 } as const;
 
@@ -54,6 +56,15 @@ export const FIELDS = {
   mood: {
     label: "Mood",
     name: "mood",
+  },
+  weight: {
+    label: "Weight (kg)",
+    max: 650,
+    min: 0,
+    name: "weight",
+    step: 0.1,
+    supportiveText: "The best time to weigh yourself is after you wake up",
+    type: "number",
   },
 } as const;
 

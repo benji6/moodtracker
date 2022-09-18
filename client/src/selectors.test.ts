@@ -12,14 +12,57 @@ import {
   denormalizedMeditationsSelector,
   hasMeditationsSelector,
   meditationStatsSelector,
+  normalizedWeightsSelector,
+  hasWeightsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
 describe("selectors", () => {
   let initialState: RootState;
+  let stateWithOnlyCreateEvents: RootState;
 
   beforeAll(() => {
     initialState = store.getState();
+    stateWithOnlyCreateEvents = {
+      ...initialState,
+      events: {
+        ...initialState.events,
+        allIds: [
+          "2020-10-10T08:00:00.000Z",
+          "2020-10-11T08:00:00.000Z",
+          "2020-10-12T08:00:00.000Z",
+          "2022-09-18T09:00:00.000Z",
+          "2022-09-18T12:00:00.000Z",
+        ],
+        byId: {
+          "2020-10-10T08:00:00.000Z": {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            type: "v1/meditations/create",
+            payload: { seconds: 60 },
+          },
+          "2020-10-11T08:00:00.000Z": {
+            createdAt: "2020-10-11T08:00:00.000Z",
+            type: "v1/moods/create",
+            payload: { mood: 5 },
+          },
+          "2020-10-12T08:00:00.000Z": {
+            createdAt: "2020-10-12T08:00:00.000Z",
+            type: "v1/meditations/create",
+            payload: { seconds: 120 },
+          },
+          "2022-09-18T09:00:00.000Z": {
+            createdAt: "2022-09-18T09:00:00.000Z",
+            type: "v1/moods/create",
+            payload: { mood: 7 },
+          },
+          "2022-09-18T12:00:00.000Z": {
+            createdAt: "2022-09-18T12:00:00.000Z",
+            type: "v1/weights/create",
+            payload: { value: 70 },
+          },
+        },
+      },
+    };
   });
 
   describe("normalizedMeditationsSelector", () => {
@@ -52,37 +95,8 @@ describe("selectors", () => {
       });
     });
 
-    test("with two meditation create events and a mood create event", () => {
-      expect(
-        normalizedMeditationsSelector({
-          ...initialState,
-          events: {
-            ...initialState.events,
-            allIds: [
-              "2020-10-10T08:00:00.000Z",
-              "2020-10-11T08:00:00.000Z",
-              "2020-10-12T08:00:00.000Z",
-            ],
-            byId: {
-              "2020-10-10T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-              "2020-10-11T08:00:00.000Z": {
-                createdAt: "2020-10-11T08:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { mood: 5 },
-              },
-              "2020-10-12T08:00:00.000Z": {
-                createdAt: "2020-10-12T08:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 120 },
-              },
-            },
-          },
-        })
-      ).toEqual({
+    test("with a selection of create events", () => {
+      expect(normalizedMeditationsSelector(stateWithOnlyCreateEvents)).toEqual({
         allIds: ["2020-10-10T08:00:00.000Z", "2020-10-12T08:00:00.000Z"],
         byId: {
           "2020-10-10T08:00:00.000Z": { seconds: 60 },
@@ -158,41 +172,12 @@ describe("selectors", () => {
       });
     });
 
-    test("with two create events and a meditation create event", () => {
-      expect(
-        normalizedMoodsSelector({
-          ...initialState,
-          events: {
-            ...initialState.events,
-            allIds: [
-              "2020-10-10T08:00:00.000Z",
-              "2020-10-11T08:00:00.000Z",
-              "2020-10-12T08:00:00.000Z",
-            ],
-            byId: {
-              "2020-10-10T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { mood: 5 },
-              },
-              "2020-10-11T08:00:00.000Z": {
-                createdAt: "2020-10-11T08:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-              "2020-10-12T08:00:00.000Z": {
-                createdAt: "2020-10-12T08:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { mood: 7 },
-              },
-            },
-          },
-        })
-      ).toEqual({
-        allIds: ["2020-10-10T08:00:00.000Z", "2020-10-12T08:00:00.000Z"],
+    test("with a selection of create events", () => {
+      expect(normalizedMoodsSelector(stateWithOnlyCreateEvents)).toEqual({
+        allIds: ["2020-10-11T08:00:00.000Z", "2022-09-18T09:00:00.000Z"],
         byId: {
-          "2020-10-10T08:00:00.000Z": { mood: 5 },
-          "2020-10-12T08:00:00.000Z": { mood: 7 },
+          "2020-10-11T08:00:00.000Z": { mood: 5 },
+          "2022-09-18T09:00:00.000Z": { mood: 7 },
         },
       });
     });
@@ -346,6 +331,99 @@ describe("selectors", () => {
           },
           "2020-10-10T08:03:00.000Z": { mood: 7 },
         },
+      });
+    });
+  });
+
+  describe("normalizedWeightsSelector", () => {
+    test("when there are no events", () => {
+      expect(normalizedWeightsSelector(initialState)).toEqual({
+        allIds: [],
+        byId: {},
+      });
+    });
+
+    test("with a selection of create events", () => {
+      expect(normalizedWeightsSelector(stateWithOnlyCreateEvents)).toEqual({
+        allIds: ["2022-09-18T12:00:00.000Z"],
+        byId: {
+          "2022-09-18T12:00:00.000Z": { value: 70 },
+        },
+      });
+    });
+
+    test("update", () => {
+      expect(
+        normalizedWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:01:00.000Z", "2020-10-10T08:04:00.000Z"],
+            byId: {
+              "2020-10-10T08:01:00.000Z": {
+                createdAt: "2020-10-10T08:01:00.000Z",
+                type: "v1/weights/create",
+                payload: {
+                  location: { accuracy: 1, latitude: 2, longitude: 3 },
+                  value: 70,
+                },
+              },
+              "2020-10-10T08:04:00.000Z": {
+                createdAt: "2020-10-10T08:04:00.000Z",
+                type: "v1/weights/update",
+                payload: {
+                  id: "2020-10-10T08:01:00.000Z",
+                  value: 80,
+                },
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:01:00.000Z"],
+        byId: {
+          "2020-10-10T08:01:00.000Z": {
+            location: { accuracy: 1, latitude: 2, longitude: 3 },
+            updatedAt: "2020-10-10T08:04:00.000Z",
+            value: 80,
+          },
+        },
+      });
+    });
+
+    test("with a delete event", () => {
+      expect(
+        normalizedWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: [
+              "2020-10-10T08:00:00.000Z",
+              "2020-10-10T08:01:00.000Z",
+              "2020-10-10T08:02:00.000Z",
+            ],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 60 },
+              },
+              "2020-10-10T08:01:00.000Z": {
+                createdAt: "2020-10-10T08:01:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 70 },
+              },
+              "2020-10-10T08:02:00.000Z": {
+                createdAt: "2020-10-10T08:02:00.000Z",
+                type: "v1/weights/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+            },
+          },
+        })
+      ).toEqual({
+        allIds: ["2020-10-10T08:01:00.000Z"],
+        byId: { "2020-10-10T08:01:00.000Z": { value: 70 } },
       });
     });
   });
@@ -658,6 +736,78 @@ describe("selectors", () => {
           },
         })
       ).toBe(true);
+    });
+  });
+
+  describe("hasWeightsSelector", () => {
+    test("when there are no events", () => {
+      expect(hasWeightsSelector(initialState)).toBe(false);
+    });
+
+    test("when there are events but no meditation events", () => {
+      expect(
+        hasWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 6 },
+              },
+            },
+          },
+        })
+      ).toBe(false);
+    });
+
+    test("with a single create event", () => {
+      expect(
+        hasWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 70 },
+              },
+            },
+          },
+        })
+      ).toBe(true);
+    });
+
+    test("with a deleted event", () => {
+      expect(
+        hasWeightsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 70 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-11T08:00:00.000Z",
+                type: "v1/weights/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+            },
+          },
+        })
+      ).toBe(false);
+    });
+
+    test("with a selection of create events", () => {
+      expect(hasWeightsSelector(stateWithOnlyCreateEvents)).toBe(true);
     });
   });
 

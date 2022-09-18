@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
 import {
   hasMeditationsSelector,
+  hasWeightsSelector,
   userEmailSelector,
   userIsSignedInSelector,
 } from "../../selectors";
@@ -26,6 +27,7 @@ interface Props {
 
 export default function Nav({ handleNavClose, open }: Props) {
   const hasMeditations = useSelector(hasMeditationsSelector);
+  const hasWeights = useSelector(hasWeightsSelector);
   const userEmail = useSelector(userEmailSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -77,6 +79,10 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <Icon margin="end" name="plus" />
                 Add mood
               </EriNav.Link>
+              <EriNav.Link onClick={handleNavClose} to="/weight/add">
+                <Icon margin="end" name="plus" />
+                Add weight
+              </EriNav.Link>
               <EriNav.Link onClick={handleNavClose} to="/meditate">
                 <Icon margin="end" name="bell" />
                 Meditate
@@ -127,6 +133,12 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <EriNav.Link onClick={handleNavClose} to="/stats/meditation">
                     <Icon margin="end" name="chart" />
                     Meditation
+                  </EriNav.Link>
+                )}
+                {hasWeights && (
+                  <EriNav.Link onClick={handleNavClose} to="/weight/stats">
+                    <Icon margin="end" name="chart" />
+                    Weight
                   </EriNav.Link>
                 )}
                 <EriNav.Link onClick={handleNavClose} to="/stats/explore">

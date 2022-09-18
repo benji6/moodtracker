@@ -14,7 +14,14 @@ import sub from "date-fns/sub";
 import { MEDITATION_STATS_HOURS_RANGE, TIME } from "./constants";
 import { WEEK_OPTIONS } from "./formatters/dateTimeFormatters";
 import { RootState } from "./store";
-import { NormalizedMeditations, NormalizedMoods } from "./types";
+import {
+  AppCreateEvent,
+  AppUpdateEvent,
+  EventTypeTuple,
+  NormalizedMeditations,
+  NormalizedMoods,
+  NormalizedWeights,
+} from "./types";
 import {
   computeAverageMoodInInterval,
   computeMean,
@@ -50,24 +57,41 @@ export const userLoadingSelector = (state: RootState) => state.user.loading;
 
 const trackedCategoriesSelector = createSelector(
   eventsSelector,
-  (events): { meditations: NormalizedMeditations; moods: NormalizedMoods } => {
-    const meditations: NormalizedMeditations = { allIds: [], byId: {} };
-    const moods: NormalizedMoods = { allIds: [], byId: {} };
+  (
+    events
+  ): {
+    meditations: NormalizedMeditations;
+    moods: NormalizedMoods;
+    weights: NormalizedWeights;
+  } => {
+    const normalizedCategories: {
+      meditations: NormalizedMeditations;
+      moods: NormalizedMoods;
+      weights: NormalizedWeights;
+    } = {
+      meditations: { allIds: [], byId: {} },
+      moods: { allIds: [], byId: {} },
+      weights: { allIds: [], byId: {} },
+    };
 
     for (const id of events.allIds) {
       const event = events.byId[id];
+      const [_, category, operation] = event.type.split("/") as EventTypeTuple;
+      const normalizedCategory = normalizedCategories[category];
 
-      switch (event.type) {
-        case "v1/meditations/create":
-          meditations.allIds.push(event.createdAt);
-          meditations.byId[event.createdAt] = event.payload;
+      switch (operation) {
+        case "create":
+          normalizedCategory.allIds.push(event.createdAt);
+          normalizedCategory.byId[event.createdAt] = (
+            event as AppCreateEvent
+          ).payload;
           break;
-        case "v1/meditations/delete": {
+        case "delete": {
           let index: undefined | number;
-          let i = meditations.allIds.length;
+          let i = normalizedCategory.allIds.length;
 
           while (i--)
-            if (meditations.allIds[i] === event.payload) {
+            if (normalizedCategory.allIds[i] === event.payload) {
               index = i;
               break;
             }
@@ -75,61 +99,34 @@ const trackedCategoriesSelector = createSelector(
           if (index === undefined) {
             // eslint-disable-next-line no-console
             console.error(
-              `Delete event error - could not find meditation to delete: ${JSON.stringify(
+              `Delete event error - could not find event to delete: ${JSON.stringify(
                 event
               )}`
             );
             break;
           }
 
-          meditations.allIds.splice(index, 1);
-          delete meditations.byId[event.payload];
+          normalizedCategory.allIds.splice(index, 1);
+          delete normalizedCategory.byId[event.payload as string];
           break;
         }
-        case "v1/moods/create":
-          moods.allIds.push(event.createdAt);
-          moods.byId[event.createdAt] = event.payload;
-          break;
-        case "v1/moods/delete": {
-          let index: undefined | number;
-          let i = moods.allIds.length;
-
-          while (i--)
-            if (moods.allIds[i] === event.payload) {
-              index = i;
-              break;
-            }
-
-          if (index === undefined) {
-            // eslint-disable-next-line no-console
-            console.error(
-              `Delete event error - could not find mood to delete: ${JSON.stringify(
-                event
-              )}`
-            );
-            break;
-          }
-
-          moods.allIds.splice(index, 1);
-          delete moods.byId[event.payload];
-          break;
-        }
-        case "v1/moods/update": {
-          const currentMood = moods.byId[event.payload.id];
-          const { id: _, ...serverMood } = event.payload;
+        case "update": {
+          const { payload } = event as AppUpdateEvent;
+          const currentData = normalizedCategory.byId[payload.id];
+          const { id: _, ...rest } = payload;
 
           // for reasons that are beyond my energy to investigate there is
-          // a runtime error if you try to update the mood object directly
-          moods.byId[event.payload.id] = {
-            ...currentMood,
-            ...serverMood,
+          // a runtime error if you try to update the data object directly
+          normalizedCategory.byId[payload.id] = {
+            ...currentData,
+            ...rest,
             updatedAt: event.createdAt,
           };
         }
       }
     }
 
-    return { meditations, moods };
+    return normalizedCategories;
   }
 );
 
@@ -141,6 +138,11 @@ export const normalizedMeditationsSelector = createSelector(
 export const normalizedMoodsSelector = createSelector(
   trackedCategoriesSelector,
   ({ moods }): NormalizedMoods => moods
+);
+
+export const normalizedWeightsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ weights }): NormalizedWeights => weights
 );
 
 export const denormalizedMeditationsSelector = createSelector(
@@ -155,6 +157,10 @@ export const denormalizedMoodsSelector = createSelector(
 
 export const hasMeditationsSelector = createSelector(
   normalizedMeditationsSelector,
+  ({ allIds }) => Boolean(allIds.length)
+);
+export const hasWeightsSelector = createSelector(
+  normalizedWeightsSelector,
   ({ allIds }) => Boolean(allIds.length)
 );
 
