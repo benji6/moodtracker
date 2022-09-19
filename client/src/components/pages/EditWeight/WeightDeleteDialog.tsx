@@ -1,31 +1,24 @@
 import { Dialog, Button } from "eri";
 import { useDispatch } from "react-redux";
-import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../store/eventsSlice";
+import { useNavigate } from "react-router-dom";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
-  id: string | undefined;
-  open: boolean;
+  id: string;
   onClose(): void;
+  open: boolean;
 }
 
 export default function WeightDeleteDialog({ id, onClose, open }: Props) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (
-    <Dialog onClose={onClose} open={open} title="Delete log?">
-      {id && <p>{dateTimeFormatter.format(new Date(id))}</p>}
+    <Dialog onClose={onClose} open={open} title="Delete weight?">
       <Button.Group>
         <Button
           danger
           onClick={() => {
-            if (!id) {
-              // eslint-disable-next-line no-console
-              console.error(
-                "Dialog button was pressed while dialog was closed"
-              );
-              return;
-            }
             dispatch(
               eventsSlice.actions.add({
                 type: "v1/weights/delete",
@@ -33,7 +26,7 @@ export default function WeightDeleteDialog({ id, onClose, open }: Props) {
                 payload: id,
               })
             );
-            onClose();
+            navigate("/weight/stats");
           }}
         >
           Delete

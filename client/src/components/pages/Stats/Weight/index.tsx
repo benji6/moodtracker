@@ -5,14 +5,11 @@ import { normalizedWeightsSelector } from "../../../../selectors";
 import { mapRight } from "../../../../utils";
 import RedirectHome from "../../../RedirectHome";
 import WeightCard from "./WeightCard";
-import WeightDeleteDialog from "./WeightDeleteDialog";
 
 const MAX_ITEMS_PER_PAGE = 10;
 
 export default function Weight() {
   const weights = useSelector(normalizedWeightsSelector);
-  const [dialogId, setDialogId] = useState<undefined | string>();
-  const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(weights.allIds.length / MAX_ITEMS_PER_PAGE);
@@ -30,22 +27,10 @@ export default function Weight() {
         <h3>Log</h3>
         <Card.Group>
           {mapRight(weights.allIds.slice(startIndex, endIndex), (id) => (
-            <WeightCard
-              key={id}
-              id={id}
-              onDelete={() => {
-                setDialogId(id);
-                setIsOpen(true);
-              }}
-            />
+            <WeightCard key={id} id={id} />
           ))}
         </Card.Group>
         <Pagination onChange={setPage} page={page} pageCount={pageCount} />
-        <WeightDeleteDialog
-          id={dialogId}
-          onClose={() => setIsOpen(false)}
-          open={isOpen}
-        />
       </Paper>
     </Paper.Group>
   );

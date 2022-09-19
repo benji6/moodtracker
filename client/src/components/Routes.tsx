@@ -33,6 +33,7 @@ import FreeMeditation from "./pages/Meditate/FreeMeditation";
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
 import AddWeight from "./pages/AddWeight";
 import Weight from "./pages/Stats/Weight";
+import EditWeight from "./pages/EditWeight";
 
 export default function Routes() {
   return (
@@ -78,6 +79,12 @@ export default function Routes() {
               <AuthedOnlyPage Component={AddWeight} title="Add weight" />
             }
             path="add"
+          />
+          <Route
+            element={
+              <AuthedOnlyPage Component={EditWeight} title="Edit weight" />
+            }
+            path="edit/:id"
           />
           <Route
             element={<AuthedOnlyPage Component={Weight} title="Weight stats" />}
