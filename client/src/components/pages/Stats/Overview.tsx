@@ -5,6 +5,7 @@ import Weeks from "./Weeks";
 import {
   eventsSelector,
   hasMeditationsSelector,
+  hasWeightsSelector,
   normalizedMoodsSelector,
 } from "../../../selectors";
 import { useSelector } from "react-redux";
@@ -17,6 +18,7 @@ export default function Overview() {
   const events = useSelector(eventsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const hasMeditations = useSelector(hasMeditationsSelector);
+  const hasWeights = useSelector(hasWeightsSelector);
 
   if (!moods.allIds.length)
     return (
@@ -45,6 +47,11 @@ export default function Overview() {
           {hasMeditations && (
             <li>
               <Link to="meditation">Meditation stats</Link>
+            </li>
+          )}
+          {hasWeights && (
+            <li>
+              <Link to="/weight/stats">Weight stats</Link>
             </li>
           )}
           <li>
