@@ -44,7 +44,7 @@ export default function AddWeight() {
         payload,
       })
     );
-    navigate("/");
+    navigate("/weight/stats");
   };
 
   useKeyboardSave(handleSubmit);

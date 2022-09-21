@@ -74,6 +74,7 @@ export default function Routes() {
         </Route>
 
         <Route path="/weight">
+          <Route element={<RedirectHome />} path="" />
           <Route
             element={
               <AuthedOnlyPage Component={AddWeight} title="Add weight" />
