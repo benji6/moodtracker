@@ -27,7 +27,7 @@ multidict = ">=4.5,<7.0"
 yarl = ">=1.0,<2.0"
 
 [package.extras]
-speedups = ["aiodns", "brotli", "cchardet"]
+speedups = ["Brotli", "aiodns", "cchardet"]
 
 [[package]]
 name = "aiomultiprocess"
@@ -82,8 +82,24 @@ tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympl
 tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six"]
 
 [[package]]
+name = "bc-detect-secrets"
+version = "1.3.3"
+description = "Tool for detecting secrets in the codebase"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+pyyaml = "*"
+requests = "*"
+
+[package.extras]
+gibberish = ["gibberish-detector"]
+word_list = ["pyahocorasick"]
+
+[[package]]
 name = "bc-python-hcl2"
-version = "0.3.45"
+version = "0.3.47"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -188,7 +204,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.1.176"
+version = "2.1.242"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -199,26 +215,27 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-python-hcl2 = "0.3.45"
+bc-detect-secrets = "1.3.3"
+bc-python-hcl2 = "0.3.47"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
 click = ">=8.0.0"
-cloudsplaining = ">=0.4.1"
+cloudsplaining = ">=0.4.3"
 colorama = "*"
 configargparse = "*"
 cyclonedx-python-lib = ">=2.4.0,<3.0.0"
 deep-merge = "*"
-detect-secrets = "*"
 docker = "*"
 dockerfile-parse = "*"
 dpath = ">=1.5.0,<2"
-GitPython = "*"
+gitpython = "*"
+importlib-metadata = ">=0.12"
 jmespath = "*"
 jsonpath-ng = "*"
-jsonschema = ">=3.0,<4.0"
+jsonschema = ">=3.0.2,<4.0.0"
 junit-xml = ">=1.9"
-networkx = "*"
+networkx = "<2.7"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
@@ -260,7 +277,7 @@ python-versions = ">=3.6,<4"
 Click = ">=7.0,<9"
 
 [package.extras]
-docs = ["m2r", "pallets-sphinx-themes", "sphinx (>=2.3,<3)"]
+docs = ["Pallets-Sphinx-Themes", "m2r", "sphinx (>=2.3,<3)"]
 tests = ["coverage (<6)", "coveralls", "pytest", "pytest-cov"]
 
 [[package]]
@@ -300,8 +317,8 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
-test = ["mock", "pytest", "pyyaml"]
-yaml = ["pyyaml"]
+test = ["PyYAML", "mock", "pytest"]
+yaml = ["PyYAML"]
 
 [[package]]
 name = "contextlib2"
@@ -321,6 +338,7 @@ python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
 packageurl-python = ">=0.9"
+setuptools = ">=47.0.0"
 toml = ">=0.10.0,<0.11.0"
 types-setuptools = ">=57.0.0"
 types-toml = ">=0.10.0,<0.11.0"
@@ -340,22 +358,6 @@ description = "A simple utility for merging python dictionaries."
 category = "main"
 optional = false
 python-versions = "*"
-
-[[package]]
-name = "detect-secrets"
-version = "1.2.0"
-description = "Tool for detecting secrets in the codebase"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pyyaml = "*"
-requests = "*"
-
-[package.extras]
-gibberish = ["gibberish-detector"]
-word_list = ["pyahocorasick"]
 
 [[package]]
 name = "docker"
@@ -509,6 +511,7 @@ python-versions = "*"
 [package.dependencies]
 attrs = ">=17.4.0"
 pyrsistent = ">=0.14.0"
+setuptools = "*"
 six = ">=1.11.0"
 
 [package.extras]
@@ -827,8 +830,21 @@ optional = false
 python-versions = ">=2.7"
 
 [package.extras]
-dev = ["Django (>=1.11)", "check-manifest", "colorama (<=0.4.1)", "coverage", "flake8", "nose2", "readme-renderer (<25.0)", "tox", "wheel", "zest.releaser"]
-doc = ["sphinx", "sphinx-rtd-theme"]
+dev = ["Django (>=1.11)", "check-manifest", "colorama (<=0.4.1)", "coverage", "flake8", "nose2", "readme-renderer (<25.0)", "tox", "wheel", "zest.releaser[recommended]"]
+doc = ["Sphinx", "sphinx-rtd-theme"]
+
+[[package]]
+name = "setuptools"
+version = "65.4.1"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "mock", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
 name = "six"
@@ -998,7 +1014,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f9309f2d5275d02f215c6d316df0a90c69142d9e297196e13d313e2eb3b15d79"
+content-hash = "d69f2c93a5cd7ac873fb928081c2229638e84071e6b76e88e4fca23823917c11"
 
 [metadata.files]
 aiodns = [
@@ -1099,9 +1115,13 @@ attrs = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
+bc-detect-secrets = [
+    {file = "bc-detect-secrets-1.3.3.tar.gz", hash = "sha256:cef18ea07d145b6822ad8f56d96f2bf5c8d3fe45015cdbe46d1e1eade57ee4ac"},
+    {file = "bc_detect_secrets-1.3.3-py3-none-any.whl", hash = "sha256:e2b179bda2b3f3367c428850b852c90d2b4647c83646885f1788aa61cd15edba"},
+]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.45.tar.gz", hash = "sha256:3a650deb0a6c54ff7f092f89904862ac3069d4ca9e037a04714efb4f99c9f465"},
-    {file = "bc_python_hcl2-0.3.45-py3-none-any.whl", hash = "sha256:1f8949cd48b14d44d66d49271d582a7c03a54ce59a16f25042b47430a7c54915"},
+    {file = "bc-python-hcl2-0.3.47.tar.gz", hash = "sha256:178bc09fa1d1bcd35cfb865f182cd479fd786cd9b14c80b010d99a39edcc6877"},
+    {file = "bc_python_hcl2-0.3.47-py3-none-any.whl", hash = "sha256:5a8358731d34f8202130b3875f0da40c94395a942da2ee0a7170614be9a62f40"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1184,8 +1204,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.1.176-py3-none-any.whl", hash = "sha256:cf26fa30995593b8bee4a0c728b1c86e2ea2030c3d10507d1b0910a5fcd93635"},
-    {file = "checkov-2.1.176.tar.gz", hash = "sha256:9496ed9108be370a957862fe73e99fe4275893a66a9a3686a4064a9218ec5d54"},
+    {file = "checkov-2.1.242-py3-none-any.whl", hash = "sha256:df64e6273a0469234905aea95dad12f2ba9ccf598db526cbfb840d2303d63372"},
+    {file = "checkov-2.1.242.tar.gz", hash = "sha256:0a28da535c9bb98041a9c5f0bb4ae57b3d339827d4853328189ac2ee5d7d1861"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1222,10 +1242,6 @@ decorator = [
 deep-merge = [
     {file = "deep_merge-0.0.4-py3-none-any.whl", hash = "sha256:8056b4b43c6dfddf5c7b1feb3a09f1ab1cbd74e8382e43736ea8c5619e8e5a4e"},
     {file = "deep_merge-0.0.4.tar.gz", hash = "sha256:b54415f90934c42e334114e2864cb4d4e7335b34ad396e35ad8610c96065a47e"},
-]
-detect-secrets = [
-    {file = "detect_secrets-1.2.0-py3-none-any.whl", hash = "sha256:51a8fc5d89340ba6d0c688049fc3381a2f24c6fbaf2f542e15f5b873b95bafe3"},
-    {file = "detect_secrets-1.2.0.tar.gz", hash = "sha256:c160e897b3d0e81bf9cf0f6cc2e5e6434fa609a159f9a2849fcae0a08b4e2a30"},
 ]
 docker = [
     {file = "docker-4.2.2-py2.py3-none-any.whl", hash = "sha256:03a46400c4080cb6f7aa997f881ddd84fef855499ece219d75fbdb53289c17ab"},
@@ -1584,6 +1600,13 @@ pyyaml = [
     {file = "PyYAML-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:f84fbc98b019fef2ee9a1cb3ce93e3187a6df0b2538a651bfb890254ba9f90b5"},
     {file = "PyYAML-6.0-cp310-cp310-win32.whl", hash = "sha256:2cd5df3de48857ed0544b34e2d40e9fac445930039f3cfe4bcc592a1f836d513"},
     {file = "PyYAML-6.0-cp310-cp310-win_amd64.whl", hash = "sha256:daf496c58a8c52083df09b80c860005194014c3698698d1a57cbcfa182142a3a"},
+    {file = "PyYAML-6.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:d4b0ba9512519522b118090257be113b9468d804b19d63c71dbcf4a48fa32358"},
+    {file = "PyYAML-6.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:81957921f441d50af23654aa6c5e5eaf9b06aba7f0a19c18a538dc7ef291c5a1"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:afa17f5bc4d1b10afd4466fd3a44dc0e245382deca5b3c353d8b757f9e3ecb8d"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:dbad0e9d368bb989f4515da330b88a057617d16b6a8245084f1b05400f24609f"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:432557aa2c09802be39460360ddffd48156e30721f5e8d917f01d31694216782"},
+    {file = "PyYAML-6.0-cp311-cp311-win32.whl", hash = "sha256:bfaef573a63ba8923503d27530362590ff4f576c626d86a9fed95822a8255fd7"},
+    {file = "PyYAML-6.0-cp311-cp311-win_amd64.whl", hash = "sha256:01b45c0191e6d66c470b6cf1b9531a771a83c1c4208272ead47a3ae4f2f603bf"},
     {file = "PyYAML-6.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:897b80890765f037df3403d22bab41627ca8811ae55e9a722fd0392850ec4d86"},
     {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:50602afada6d6cbfad699b0c7bb50d5ccffa7e46a3d738092afddc1f9758427f"},
     {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:48c346915c114f5fdb3ead70312bd042a953a8ce5c7106d5bfb1a5254e47da92"},
@@ -1702,6 +1725,10 @@ schema = [
 semantic-version = [
     {file = "semantic_version-2.9.0-py2.py3-none-any.whl", hash = "sha256:db2504ab37902dd2c9876ece53567aa43a5b2a417fbe188097b2048fff46da3d"},
     {file = "semantic_version-2.9.0.tar.gz", hash = "sha256:abf54873553e5e07a6fd4d5f653b781f5ae41297a493666b59dcf214006a12b2"},
+]
+setuptools = [
+    {file = "setuptools-65.4.1-py3-none-any.whl", hash = "sha256:1b6bdc6161661409c5f21508763dc63ab20a9ac2f8ba20029aaaa7fdb9118012"},
+    {file = "setuptools-65.4.1.tar.gz", hash = "sha256:3050e338e5871e70c72983072fe34f6032ae1cdeeeb67338199c2f74e083a80e"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
