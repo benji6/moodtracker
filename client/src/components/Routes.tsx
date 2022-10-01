@@ -48,7 +48,7 @@ export default function Routes() {
           path="/edit/:id"
         />
 
-        <Route path="/meditate">
+        <Route path="/meditation">
           <Route
             element={<AuthedOnlyPage Component={Meditate} title="Meditate" />}
             path=""
@@ -61,6 +61,12 @@ export default function Routes() {
               />
             }
             path="free"
+          />
+          <Route
+            element={
+              <AuthedOnlyPage Component={Meditation} title="Meditation stats" />
+            }
+            path="stats"
           />
           <Route
             element={
@@ -132,12 +138,6 @@ export default function Routes() {
               <AuthedOnlyPage Component={Explore} title="Explore stats" />
             }
             path="explore"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage Component={Meditation} title="Meditation stats" />
-            }
-            path="meditation"
           />
 
           <Route path="days">

@@ -30,7 +30,7 @@ export default function FreeMeditation() {
         payload,
       })
     );
-    navigate("/meditate");
+    navigate("/meditation");
   }, [dispatch, geolocation, navigate, roundedSecondsElapsed]);
   const onPause = React.useCallback(() => {
     noSleep.disable();

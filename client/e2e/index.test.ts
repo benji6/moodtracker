@@ -6,8 +6,8 @@ class URLS {
 
   static readonly add = `${URLS.origin}/add`;
   static readonly home = `${URLS.origin}/`;
-  static readonly meditate = `${URLS.origin}/meditate`;
-  static readonly meditationTimer = `${URLS.meditate}/timer`;
+  static readonly meditation = `${URLS.origin}/meditation`;
+  static readonly meditationTimer = `${URLS.meditation}/timer`;
   static readonly resetPassowrd = `${URLS.origin}/reset-password`;
   static readonly statsOverview = `${URLS.origin}/stats`;
 }
@@ -217,7 +217,7 @@ describe("e2e", () => {
 
     describe("meditation", () => {
       beforeEach(async () => {
-        await page.goto(URLS.meditate);
+        await page.goto(URLS.meditation);
         await page.waitForSelector(SELECTORS.meditatePage);
       });
 

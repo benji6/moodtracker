@@ -83,7 +83,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <Icon margin="end" name="plus" />
                 Add weight
               </EriNav.Link>
-              <EriNav.Link onClick={handleNavClose} to="/meditate">
+              <EriNav.Link onClick={handleNavClose} to="/meditation">
                 <Icon margin="end" name="bell" />
                 Meditate
               </EriNav.Link>
@@ -130,7 +130,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                   This year
                 </EriNav.Link>
                 {hasMeditations && (
-                  <EriNav.Link onClick={handleNavClose} to="/stats/meditation">
+                  <EriNav.Link onClick={handleNavClose} to="/meditation/stats">
                     <Icon margin="end" name="chart" />
                     Meditation
                   </EriNav.Link>

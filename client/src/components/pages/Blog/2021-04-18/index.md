@@ -1,4 +1,4 @@
-We've added a meditation timer to the app. If you're signed in you can check it out [here](/meditate). You can choose from preset times or set your own custom time. You can also pause the timer and dim the screen if you don't want to be disturbed.
+We've added a meditation timer to the app. If you're signed in you can check it out [here](/meditation). You can choose from preset times or set your own custom time. You can also pause the timer and dim the screen if you don't want to be disturbed.
 
 ![Screenshot demonstrating the new meditation timer](screenshot.png "Screenshot demonstrating the new meditation timer")
 

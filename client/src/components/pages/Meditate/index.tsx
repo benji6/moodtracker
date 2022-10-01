@@ -19,7 +19,7 @@ export default function Meditate() {
 
   const navigateToTimer = (minutes: number): void =>
     void navigate(
-      `/meditate/timer?${MEDITATION_SEARCH_PARAM_TIME_KEY}=${
+      `/meditation/timer?${MEDITATION_SEARCH_PARAM_TIME_KEY}=${
         minutes * TIME.secondsPerMinute
       }`
     );
@@ -59,7 +59,7 @@ export default function Meditate() {
         <h3>Free meditation</h3>
         <p>Meditate for however long you like</p>
         <Button.Group>
-          <Button onClick={() => navigate("/meditate/free")} type="button">
+          <Button onClick={() => navigate("/meditation/free")} type="button">
             Start
           </Button>
         </Button.Group>

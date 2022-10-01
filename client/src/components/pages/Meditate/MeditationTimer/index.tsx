@@ -33,7 +33,7 @@ export default function MeditationTimer() {
     []
   );
   const onDontLog = React.useCallback(() => {
-    navigate("/meditate");
+    navigate("/meditation");
   }, [navigate]);
   const onPause = React.useCallback(() => {
     noSleep.disable();

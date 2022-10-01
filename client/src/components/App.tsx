@@ -45,7 +45,7 @@ export default function App({ children }: Props) {
           <QuickNav.Link aria-label="Statistics" to="/stats">
             <Icon name="chart" size="3" />
           </QuickNav.Link>
-          <QuickNav.Link aria-label="Meditate" to="/meditate">
+          <QuickNav.Link aria-label="Meditate" to="/meditation">
             <Icon name="bell" size="3" />
           </QuickNav.Link>
           <QuickNav.Link aria-label="Add new mood" to="/add">

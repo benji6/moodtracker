@@ -2,4 +2,4 @@ Up until now you've have to choose a time at the beginning of your meditation se
 
 ![Screenshot of the free meditation feature](screenshot.png "Screenshot of the free meditation feature")
 
-If you're logged in you can find this option on the [meditate page](/meditate). You can still log these meditations and see all the associated stats. We hope you find this new feature useful!
+If you're logged in you can find this option on the [meditate page](/meditation). You can still log these meditations and see all the associated stats. We hope you find this new feature useful!
