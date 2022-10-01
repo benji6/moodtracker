@@ -82,8 +82,24 @@ tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympl
 tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six"]
 
 [[package]]
+name = "bc-detect-secrets"
+version = "1.3.3"
+description = "Tool for detecting secrets in the codebase"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+pyyaml = "*"
+requests = "*"
+
+[package.extras]
+gibberish = ["gibberish-detector"]
+word_list = ["pyahocorasick"]
+
+[[package]]
 name = "bc-python-hcl2"
-version = "0.3.45"
+version = "0.3.47"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -188,7 +204,7 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.1.176"
+version = "2.1.242"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -199,26 +215,27 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-python-hcl2 = "0.3.45"
+bc-detect-secrets = "1.3.3"
+bc-python-hcl2 = "0.3.47"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
 click = ">=8.0.0"
-cloudsplaining = ">=0.4.1"
+cloudsplaining = ">=0.4.3"
 colorama = "*"
 configargparse = "*"
 cyclonedx-python-lib = ">=2.4.0,<3.0.0"
 deep-merge = "*"
-detect-secrets = "*"
 docker = "*"
 dockerfile-parse = "*"
 dpath = ">=1.5.0,<2"
-GitPython = "*"
+gitpython = "*"
+importlib-metadata = ">=0.12"
 jmespath = "*"
 jsonpath-ng = "*"
-jsonschema = ">=3.0,<4.0"
+jsonschema = ">=3.0.2,<4.0.0"
 junit-xml = ">=1.9"
-networkx = "*"
+networkx = "<2.7"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
@@ -341,22 +358,6 @@ description = "A simple utility for merging python dictionaries."
 category = "main"
 optional = false
 python-versions = "*"
-
-[[package]]
-name = "detect-secrets"
-version = "1.2.0"
-description = "Tool for detecting secrets in the codebase"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pyyaml = "*"
-requests = "*"
-
-[package.extras]
-gibberish = ["gibberish-detector"]
-word_list = ["pyahocorasick"]
 
 [[package]]
 name = "docker"
@@ -1013,7 +1014,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f9309f2d5275d02f215c6d316df0a90c69142d9e297196e13d313e2eb3b15d79"
+content-hash = "d69f2c93a5cd7ac873fb928081c2229638e84071e6b76e88e4fca23823917c11"
 
 [metadata.files]
 aiodns = [
@@ -1114,9 +1115,13 @@ attrs = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
+bc-detect-secrets = [
+    {file = "bc-detect-secrets-1.3.3.tar.gz", hash = "sha256:cef18ea07d145b6822ad8f56d96f2bf5c8d3fe45015cdbe46d1e1eade57ee4ac"},
+    {file = "bc_detect_secrets-1.3.3-py3-none-any.whl", hash = "sha256:e2b179bda2b3f3367c428850b852c90d2b4647c83646885f1788aa61cd15edba"},
+]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.45.tar.gz", hash = "sha256:3a650deb0a6c54ff7f092f89904862ac3069d4ca9e037a04714efb4f99c9f465"},
-    {file = "bc_python_hcl2-0.3.45-py3-none-any.whl", hash = "sha256:1f8949cd48b14d44d66d49271d582a7c03a54ce59a16f25042b47430a7c54915"},
+    {file = "bc-python-hcl2-0.3.47.tar.gz", hash = "sha256:178bc09fa1d1bcd35cfb865f182cd479fd786cd9b14c80b010d99a39edcc6877"},
+    {file = "bc_python_hcl2-0.3.47-py3-none-any.whl", hash = "sha256:5a8358731d34f8202130b3875f0da40c94395a942da2ee0a7170614be9a62f40"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1199,8 +1204,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.1.176-py3-none-any.whl", hash = "sha256:cf26fa30995593b8bee4a0c728b1c86e2ea2030c3d10507d1b0910a5fcd93635"},
-    {file = "checkov-2.1.176.tar.gz", hash = "sha256:9496ed9108be370a957862fe73e99fe4275893a66a9a3686a4064a9218ec5d54"},
+    {file = "checkov-2.1.242-py3-none-any.whl", hash = "sha256:df64e6273a0469234905aea95dad12f2ba9ccf598db526cbfb840d2303d63372"},
+    {file = "checkov-2.1.242.tar.gz", hash = "sha256:0a28da535c9bb98041a9c5f0bb4ae57b3d339827d4853328189ac2ee5d7d1861"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1237,10 +1242,6 @@ decorator = [
 deep-merge = [
     {file = "deep_merge-0.0.4-py3-none-any.whl", hash = "sha256:8056b4b43c6dfddf5c7b1feb3a09f1ab1cbd74e8382e43736ea8c5619e8e5a4e"},
     {file = "deep_merge-0.0.4.tar.gz", hash = "sha256:b54415f90934c42e334114e2864cb4d4e7335b34ad396e35ad8610c96065a47e"},
-]
-detect-secrets = [
-    {file = "detect_secrets-1.2.0-py3-none-any.whl", hash = "sha256:51a8fc5d89340ba6d0c688049fc3381a2f24c6fbaf2f542e15f5b873b95bafe3"},
-    {file = "detect_secrets-1.2.0.tar.gz", hash = "sha256:c160e897b3d0e81bf9cf0f6cc2e5e6434fa609a159f9a2849fcae0a08b4e2a30"},
 ]
 docker = [
     {file = "docker-4.2.2-py2.py3-none-any.whl", hash = "sha256:03a46400c4080cb6f7aa997f881ddd84fef855499ece219d75fbdb53289c17ab"},
