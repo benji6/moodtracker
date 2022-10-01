@@ -38,7 +38,7 @@ const BLOG_POSTS = {
   },
   "2021-07-17": {
     imageUrls: [new URL("2021-07-17/screenshot.png", import.meta.url)],
-    title: "New feature - free meditation",
+    title: "New feature - open-ended meditation",
     url: new URL("2021-07-17/index.md", import.meta.url),
   },
   "2021-07-15": {

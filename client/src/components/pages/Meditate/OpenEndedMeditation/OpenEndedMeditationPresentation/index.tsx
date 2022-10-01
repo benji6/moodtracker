@@ -15,7 +15,7 @@ interface Props {
   roundedSeconds: number;
 }
 
-const FreeMeditationPresentation = ({
+const OpenEndedMeditationPresentation = ({
   dimmed,
   isPaused,
   onDim,
@@ -29,8 +29,8 @@ const FreeMeditationPresentation = ({
     <>
       <Paper.Group>
         <Paper>
-          <h2>Free meditation</h2>
-          <p className="center m-free-meditation__clock">
+          <h2>Open-ended meditation</h2>
+          <p className="center m-open-ended-meditation__clock">
             {formatSecondsAsTime(roundedSeconds)}
           </p>
           <Button.Group>
@@ -66,4 +66,4 @@ const FreeMeditationPresentation = ({
   );
 };
 
-export default React.memo(FreeMeditationPresentation);
+export default React.memo(OpenEndedMeditationPresentation);

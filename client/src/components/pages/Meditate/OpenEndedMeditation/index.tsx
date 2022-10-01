@@ -6,9 +6,9 @@ import eventsSlice from "../../../../store/eventsSlice";
 import { Meditation } from "../../../../types";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
 import { noSleep } from "../nosleep";
-import FreeMeditationPresentation from "./FreeMeditationPresentation";
+import OpenEndedMeditationPresentation from "./OpenEndedMeditationPresentation";
 
-export default function FreeMeditation() {
+export default function OpenEndedMeditation() {
   const [secondsElapsed, setSecondsElapsed] = React.useState(0);
   const [isDimmerEnabled, setIsDimmerEnabled] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(false);
@@ -63,7 +63,7 @@ export default function FreeMeditation() {
   }, [isPaused, setSecondsElapsed]);
 
   return (
-    <FreeMeditationPresentation
+    <OpenEndedMeditationPresentation
       dimmed={isDimmerEnabled}
       isPaused={isPaused}
       onDim={onDim}

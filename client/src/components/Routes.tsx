@@ -29,7 +29,7 @@ import Day from "./pages/Stats/Day";
 import { Page } from "./shared/Page";
 import RedirectHome from "./RedirectHome";
 import Meditation from "./pages/Stats/Meditation";
-import FreeMeditation from "./pages/Meditate/FreeMeditation";
+import OpenEndedMeditation from "./pages/Meditate/OpenEndedMeditation";
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
 import AddWeight from "./pages/AddWeight";
 import Weight from "./pages/Stats/Weight";
@@ -56,11 +56,11 @@ export default function Routes() {
           <Route
             element={
               <AuthedOnlyPage
-                Component={FreeMeditation}
-                title="Free meditation"
+                Component={OpenEndedMeditation}
+                title="Open-ended meditation"
               />
             }
-            path="free"
+            path="open-ended"
           />
           <Route
             element={

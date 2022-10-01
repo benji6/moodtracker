@@ -56,10 +56,13 @@ export default function Meditate() {
         </div>
       </Paper>
       <Paper>
-        <h3>Free meditation</h3>
+        <h3>Open-ended meditation</h3>
         <p>Meditate for however long you like</p>
         <Button.Group>
-          <Button onClick={() => navigate("/meditation/free")} type="button">
+          <Button
+            onClick={() => navigate("/meditation/open-ended")}
+            type="button"
+          >
             Start
           </Button>
         </Button.Group>
