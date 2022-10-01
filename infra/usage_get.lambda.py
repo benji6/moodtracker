@@ -93,6 +93,7 @@ def handler(event, context):
   events_in_last_30_days = 0
   meditations = {}
   moods = {}
+  weight_MAU_ids = set()
   for event in events:
     event['createdAt'] = datetime.fromisoformat(event['createdAt'][:-1]).replace(tzinfo=timezone.utc)
     if event['createdAt'] > days_ago_30:
@@ -102,14 +103,17 @@ def handler(event, context):
       if event['type'] == 'v1/meditations/create':
         meditation_MAU_ids.add(event['userId'])
         meditations[event['createdAt']] = event['payload']
-      if event['type'] == 'v1/meditations/delete':
+      elif event['type'] == 'v1/meditations/delete':
         meditations.pop(event['payload'], None)
 
-      if event['type'] == 'v1/moods/create':
+      elif event['type'] == 'v1/weights/create':
+        weight_MAU_ids.add(event['userId'])
+
+      elif event['type'] == 'v1/moods/create':
         moods[event['createdAt']] = event['payload']
-      if event['type'] == 'v1/moods/delete':
+      elif event['type'] == 'v1/moods/delete':
         moods.pop(event['payload'], None)
-      if event['type'] == 'v1/moods/update':
+      elif event['type'] == 'v1/moods/update':
         if event['payload']['id'] in moods:
           moods[event['payload']['id']] = {**moods[event['payload']['id']], **event['payload']}
           del moods[event['createdAt']]['id']
@@ -133,6 +137,7 @@ def handler(event, context):
       'meditationSecondsInLast30Days': meditation_seconds,
       'newUsersInLast30Days': len([u for u in confirmed_users if u['UserCreateDate'] > days_ago_30]),
       'usersWithWeeklyEmails': weekly_emails_table.item_count,
+      'weightMAUs': len(weight_MAU_ids),
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
       'DAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_1}),
       'MAUs': len(user_ids_in_current_30_day_window),

@@ -97,6 +97,7 @@ export interface Usage {
   meditationSecondsInLast30Days: number;
   newUsersInLast30Days: number;
   usersWithWeeklyEmails: number;
+  weightMAUs: number;
   CRR: number;
   DAUs: number;
   MAUs: number;

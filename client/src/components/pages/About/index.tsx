@@ -233,6 +233,12 @@ export default function About() {
                 <td>{usage.meditationMAUs}</td>
               </tr>
               <tr>
+                <td>
+                  Number of users who have logged a weight over the last 30 days
+                </td>
+                <td>{usage.weightMAUs}</td>
+              </tr>
+              <tr>
                 <td>Total events recorded over the last 30 days</td>
                 <td>{usage.eventsInLast30Days}</td>
               </tr>
