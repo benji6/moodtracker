@@ -101,7 +101,8 @@ export const computeSecondsMeditatedInInterval = (
   return sum;
 };
 
-export const computeStandardDeviation = (xs: number[]): number => {
+export const computeStandardDeviation = (xs: number[]): number | undefined => {
+  if (!xs.length) return;
   if (xs.length <= 1) return 0;
 
   // mean is only undefined when xs.length is 0

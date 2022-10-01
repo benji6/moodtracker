@@ -8,7 +8,7 @@ interface PeriodData {
   best?: number;
   mean?: number;
   secondsMeditated: number;
-  standardDeviation: number;
+  standardDeviation?: number;
   total: number;
   worst?: number;
 }

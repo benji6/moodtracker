@@ -517,8 +517,8 @@ describe("utils", () => {
   });
 
   describe("computeStandardDeviation", () => {
-    it("returns 0 when the array is empty", () => {
-      expect(computeStandardDeviation([])).toBe(0);
+    it("returns undefined when the array is empty", () => {
+      expect(computeStandardDeviation([])).toBeUndefined();
     });
 
     it("returns 0 when the array contains a single item", () => {
