@@ -1270,12 +1270,12 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-06-10",
             "2020-06-11",
           ],
-          "byId": Object {
+          "byId": {
             "2020-06-10": 5.5,
             "2020-06-11": 7,
           },
@@ -1336,15 +1336,15 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-04-05",
             "2020-04-06",
             "2020-04-07",
             "2020-04-08",
             "2020-04-09",
           ],
-          "byId": Object {
+          "byId": {
             "2020-04-05": 3.75,
             "2020-04-06": 5.25,
             "2020-04-07": 6.75,
@@ -1454,12 +1454,12 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-07-27T00:00:00.000Z",
             "2020-07-27T01:00:00.000Z",
           ],
-          "byId": Object {
+          "byId": {
             "2020-07-27T00:00:00.000Z": 5.5,
             "2020-07-27T01:00:00.000Z": 7,
           },
@@ -1525,14 +1525,14 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-07-27T00:00:00.000Z",
             "2020-07-27T01:00:00.000Z",
             "2020-07-27T02:00:00.000Z",
             "2020-07-27T03:00:00.000Z",
           ],
-          "byId": Object {
+          "byId": {
             "2020-07-27T00:00:00.000Z": 4,
             "2020-07-27T01:00:00.000Z": 6,
             "2020-07-27T02:00:00.000Z": 8,
@@ -1635,12 +1635,12 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-06-01",
             "2020-07-01",
           ],
-          "byId": Object {
+          "byId": {
             "2020-06-01": 5.05,
             "2020-07-01": 6.550000000000001,
           },
@@ -1701,14 +1701,14 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-04-01",
             "2020-05-01",
             "2020-06-01",
             "2020-07-01",
           ],
-          "byId": Object {
+          "byId": {
             "2020-04-01": 3.857142857142857,
             "2020-05-01": 5.736263736263737,
             "2020-06-01": 7.747252747252748,
@@ -1830,12 +1830,12 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-07-20",
             "2020-07-27",
           ],
-          "byId": Object {
+          "byId": {
             "2020-07-20": 4,
             "2020-07-27": 5.5,
           },
@@ -1903,14 +1903,14 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-06-29",
             "2020-07-06",
             "2020-07-13",
             "2020-07-20",
           ],
-          "byId": Object {
+          "byId": {
             "2020-06-29": 4.050000000000001,
             "2020-07-06": 4.449999999999999,
             "2020-07-13": 5.15,
@@ -2029,11 +2029,11 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-01-01",
           ],
-          "byId": Object {
+          "byId": {
             "2020-01-01": 4.5,
           },
         }
@@ -2088,13 +2088,13 @@ describe("selectors", () => {
           },
         })
       ).toMatchInlineSnapshot(`
-        Object {
-          "allIds": Array [
+        {
+          "allIds": [
             "2020-01-01",
             "2021-01-01",
             "2022-01-01",
           ],
-          "byId": Object {
+          "byId": {
             "2020-01-01": 4.24,
             "2021-01-01": 4.966666666666667,
             "2022-01-01": 5.726666666666667,
