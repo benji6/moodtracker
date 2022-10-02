@@ -83,6 +83,7 @@ export const TEST_IDS = (() => {
     "addMoodRadioButton",
     "addMoodSubmitButton",
     "descriptionInput",
+    "deviceSpecificSettingsDialog",
     "meditatePage",
     "meditationCustomTimeInput",
     "meditationPresetTimeButton",
