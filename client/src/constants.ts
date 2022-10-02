@@ -62,7 +62,7 @@ export const FIELDS = {
     max: 650,
     min: 0,
     name: "weight",
-    style: { width: "6rem" },
+    style: { width: "6em" },
     step: 0.1,
     supportiveText: "The best time to weigh yourself is after you wake up",
     type: "number",
