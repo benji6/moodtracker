@@ -15,6 +15,7 @@ interface Props {
   isMood?: boolean;
   periodType: "day" | "month" | "week" | "year";
   previousValue?: number;
+  units?: "kg";
 }
 
 export default function MoodSummaryItem({
@@ -25,6 +26,7 @@ export default function MoodSummaryItem({
   isMood = false,
   periodType,
   previousValue,
+  units,
 }: Props) {
   if (currentValue === undefined) return null;
   const round = (n: number): number =>
@@ -54,7 +56,10 @@ export default function MoodSummaryItem({
         <div>
           <b>{heading}</b>
         </div>
-        <div className="m-mood-summary-item__value">{format(currentValue)}</div>
+        <div className="m-mood-summary-item__value">
+          {format(currentValue)}
+          {units}
+        </div>
         {isMood && (
           <div className="m-mood-summary-item__mood-bar">
             <MoodBar mood={currentValue} />
@@ -75,7 +80,7 @@ export default function MoodSummaryItem({
                 <Icon draw margin="end" name="minus" />
               )}
               {difference
-                ? `${format(Math.abs(difference))}
+                ? `${format(Math.abs(difference))}${units ?? ""}
                 ${difference < 0 ? "less" : "more"} than `
                 : "The same as "}
               previous {periodType}

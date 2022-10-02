@@ -7,6 +7,7 @@ import { TIME } from "../../../constants";
 interface PeriodData {
   best?: number;
   mean?: number;
+  meanWeight?: number;
   secondsMeditated: number;
   standardDeviation?: number;
   total: number;
@@ -56,18 +57,26 @@ export default function MoodSummary({
         previousValue={previousPeriod?.worst}
       />
       <MoodSummaryItem
-        currentValue={currentPeriod.standardDeviation}
-        decimalPlaces={1}
-        heading="Standard deviation"
-        periodType={periodType}
-        previousValue={previousPeriod?.standardDeviation}
-      />
-      <MoodSummaryItem
         currentValue={currentPeriod.total}
         displayTrendSentiment
         heading="Moods recorded"
         periodType={periodType}
         previousValue={previousPeriod?.total}
+      />
+      <MoodSummaryItem
+        currentValue={currentPeriod.standardDeviation}
+        decimalPlaces={1}
+        heading="Mood standard deviation"
+        periodType={periodType}
+        previousValue={previousPeriod?.standardDeviation}
+      />
+      <MoodSummaryItem
+        currentValue={currentPeriod.meanWeight}
+        decimalPlaces={1}
+        heading="Average weight"
+        periodType={periodType}
+        previousValue={previousPeriod?.meanWeight}
+        units="kg"
       />
       {(showMeditationStatsOverride || showMeditationStats) && (
         <MoodSummaryItem

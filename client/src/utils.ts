@@ -3,7 +3,14 @@ import addDays from "date-fns/addDays";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { MOOD_RANGE, TIME } from "./constants";
-import { NormalizedMeditations, NormalizedMoods } from "./types";
+import {
+  Meditation,
+  Mood,
+  NormalizedMeditations,
+  NormalizedMoods,
+  NormalizedTrackedCategory,
+  Weight,
+} from "./types";
 
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
@@ -95,9 +102,13 @@ export const computeSecondsMeditatedInInterval = (
   d0: Date,
   d1: Date
 ): number => {
-  const ids = getIdsInInterval(meditations.allIds, d0, d1);
+  const denormalizedMeditations = getDenormalizedDataInInterval(
+    meditations,
+    d0,
+    d1
+  );
   let sum = 0;
-  for (let i = 0; i < ids.length; i++) sum += meditations.byId[ids[i]].seconds;
+  for (const meditation of denormalizedMeditations) sum += meditation.seconds;
   return sum;
 };
 
@@ -187,6 +198,17 @@ export const getIdsInInterval = (
   }
 
   return idsInInterval;
+};
+
+export const getDenormalizedDataInInterval = <
+  Category extends Meditation | Mood | Weight
+>(
+  normalizedData: NormalizedTrackedCategory<Category>,
+  fromDate: Date,
+  toDate: Date
+): Category[] => {
+  const ids = getIdsInInterval(normalizedData.allIds, fromDate, toDate);
+  return ids.map((id) => normalizedData.byId[id]);
 };
 
 export const formatIsoDateInLocalTimezone = (date: Date): string =>

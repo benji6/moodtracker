@@ -9,7 +9,7 @@ import {
   Weight,
 } from "../../../../types";
 
-type DenormalizedData = (Meditation | Mood | Weight)[];
+type DenormalizedTrackedCatergories = Meditation[] | Mood[] | Weight[];
 
 const createFilename = (
   dataType: EventTypeCategories,
@@ -25,7 +25,7 @@ interface FlattenedDatum {
 
 const downloadCsv = (
   dataType: EventTypeCategories,
-  denormalizedData: DenormalizedData
+  denormalizedData: DenormalizedTrackedCatergories
 ) => {
   const columns: Set<string> = new Set();
   const flattenedDenormalizedData: FlattenedDatum[] = [];
@@ -59,7 +59,7 @@ const downloadCsv = (
 
 const downloadJson = (
   dataType: EventTypeCategories,
-  denormalizedData: DenormalizedData
+  denormalizedData: DenormalizedTrackedCatergories
 ) => {
   saveAs(
     new Blob([JSON.stringify(denormalizedData)], {
@@ -71,7 +71,7 @@ const downloadJson = (
 
 interface Props {
   category: EventTypeCategories;
-  denormalizedData: DenormalizedData;
+  denormalizedData: DenormalizedTrackedCatergories;
 }
 
 export default function ExportControls({ category, denormalizedData }: Props) {

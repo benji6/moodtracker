@@ -3,12 +3,14 @@ import { useSelector } from "react-redux";
 import {
   normalizedMeditationsSelector,
   normalizedMoodsSelector,
+  normalizedWeightsSelector,
 } from "../../../selectors";
 import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
-  getIdsInInterval,
   computeSecondsMeditatedInInterval,
+  computeMean,
+  getDenormalizedDataInInterval,
 } from "../../../utils";
 import MoodSummary from "../../shared/MoodSummary";
 
@@ -30,15 +32,27 @@ export default function MoodSummaryForPeriod({
 }: Props) {
   const meditations = useSelector(normalizedMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
+  const normalizedWeights = useSelector(normalizedWeightsSelector);
+
+  const weightsInPeriod = getDenormalizedDataInInterval(
+    normalizedWeights,
+    date1,
+    date2
+  ).map(({ value }) => value);
+  const weightsInPreviousPeriod = getDenormalizedDataInInterval(
+    normalizedWeights,
+    date0,
+    date1
+  ).map(({ value }) => value);
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;
 
-  const moodValues = getIdsInInterval(moods.allIds, date1, date2).map(
-    (id) => moods.byId[id].mood
+  const moodValues = getDenormalizedDataInInterval(moods, date1, date2).map(
+    ({ mood }) => mood
   );
-  const prevMoodValues = getIdsInInterval(moods.allIds, date0, date1).map(
-    (id) => moods.byId[id].mood
+  const prevMoodValues = getDenormalizedDataInInterval(moods, date0, date1).map(
+    ({ mood }) => mood
   );
 
   return (
@@ -48,6 +62,7 @@ export default function MoodSummaryForPeriod({
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: normalizedAverages.byId[formatIsoDateInLocalTimezone(date1)],
+          meanWeight: computeMean(weightsInPeriod),
           secondsMeditated: computeSecondsMeditatedInInterval(
             meditations,
             date1,
@@ -67,6 +82,7 @@ export default function MoodSummaryForPeriod({
                 mean: normalizedAverages.byId[
                   formatIsoDateInLocalTimezone(date0)
                 ],
+                meanWeight: computeMean(weightsInPreviousPeriod),
                 secondsMeditated: computeSecondsMeditatedInInterval(
                   meditations,
                   date0,

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../../constants";
 import { normalizedMoodsSelector } from "../../selectors";
 import {
-  getIdsInInterval,
+  getDenormalizedDataInInterval,
   getNormalizedTagsFromDescription,
 } from "../../utils";
 
@@ -11,16 +11,15 @@ export default function useMoodCloudWords(
   toDate: Date
 ): { [word: string]: number } | undefined {
   const moods = useSelector(normalizedMoodsSelector);
-  const moodIdsInCurrentPeriod = getIdsInInterval(
-    moods.allIds,
+  const denormalizedMoodsInCurrentPeriod = getDenormalizedDataInInterval(
+    moods,
     fromDate,
     toDate
   );
 
   const words: { [word: string]: number } = {};
 
-  for (const id of moodIdsInCurrentPeriod) {
-    const { description } = moods.byId[id];
+  for (const { description } of denormalizedMoodsInCurrentPeriod) {
     const normalizedDescriptionWords = description
       ? getNormalizedTagsFromDescription(description)
       : [];

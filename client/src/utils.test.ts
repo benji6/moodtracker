@@ -19,6 +19,7 @@ import {
   computeSecondsMeditatedInInterval,
   counter,
   formatSecondsAsTime,
+  getDenormalizedDataInInterval,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -743,6 +744,90 @@ describe("utils", () => {
           new Date("2020-09-03T00:00:00")
         )
       ).toEqual(["2020-09-02T00:00:00", "2020-09-03T00:00:00"]);
+    });
+  });
+
+  describe("getDenormalizedDataInInterval", () => {
+    it("throws an error when the fromDate is after the toDate", () => {
+      expect(() =>
+        getDenormalizedDataInInterval(
+          { allIds: [], byId: {} },
+          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00")
+        )
+      ).not.toThrow();
+      expect(() =>
+        getDenormalizedDataInInterval(
+          { allIds: [], byId: {} },
+          new Date("2020-09-01T00:00:01"),
+          new Date("2020-09-01T00:00:00")
+        )
+      ).toThrow(Error("`fromDate` should not be after `toDate`"));
+    });
+
+    it("returns an empty array when there are no mood IDs provided", () => {
+      expect(
+        getDenormalizedDataInInterval(
+          { allIds: [], byId: {} },
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual([]);
+    });
+
+    it("returns an empty array when there are no moods within the interval", () => {
+      expect(
+        getDenormalizedDataInInterval(
+          {
+            allIds: ["2020-09-01T23:59:59", "2020-09-03T00:00:01"],
+            byId: {
+              "2020-09-01T23:59:59": { value: 60 },
+              "2020-09-03T00:00:01": { value: 70 },
+            },
+          },
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual([]);
+    });
+
+    it("returns all moods when all moods are within the interval", () => {
+      expect(
+        getDenormalizedDataInInterval(
+          {
+            allIds: ["2020-09-02T00:00:00", "2020-09-03T00:00:00"],
+            byId: {
+              "2020-09-02T00:00:00": { value: 60 },
+              "2020-09-03T00:00:00": { value: 70 },
+            },
+          },
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual([{ value: 60 }, { value: 70 }]);
+    });
+
+    it("only returns moods that are within the interval", () => {
+      expect(
+        getDenormalizedDataInInterval(
+          {
+            allIds: [
+              "2020-09-01T23:59:59",
+              "2020-09-02T00:00:00",
+              "2020-09-03T00:00:00",
+              "2020-09-03T00:00:01",
+            ],
+            byId: {
+              "2020-09-01T23:59:59": { value: 60 },
+              "2020-09-02T00:00:00": { value: 65 },
+              "2020-09-03T00:00:00": { value: 70 },
+              "2020-09-03T00:00:01": { value: 75 },
+            },
+          },
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00")
+        )
+      ).toEqual([{ value: 65 }, { value: 70 }]);
     });
   });
 

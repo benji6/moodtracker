@@ -5,7 +5,7 @@ export type FluxStandardAction<
   ? { type: Type }
   : { payload: Payload; type: Type };
 
-type NormalizedTrackedCategory<TrackedCategory> = {
+export type NormalizedTrackedCategory<TrackedCategory> = {
   allIds: string[];
   byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
 };
