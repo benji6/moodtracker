@@ -41,6 +41,7 @@ import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
 import isValid from "date-fns/isValid";
+import WeightChartForPeriod from "./WeightChartForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -194,6 +195,11 @@ export default function Month() {
           <p>No mood data for this month.</p>
         </Paper>
       )}
+      <WeightChartForPeriod
+        fromDate={date}
+        toDate={nextDate}
+        xLabels={xLabels}
+      />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );

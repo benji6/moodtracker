@@ -38,6 +38,7 @@ import MoodCloud from "../MoodCloud";
 import MoodChartForPeriod from "../MoodChartForPeriod";
 import addMonths from "date-fns/addMonths";
 import isValid from "date-fns/isValid";
+import WeightChartForPeriod from "../WeightChartForPeriod";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -108,6 +109,16 @@ export default function Year() {
     );
   }
 
+  const xLabels: [number, string][] = [...Array(12).keys()].map((n) => {
+    const d = addMonths(date, n);
+    return [
+      (d.getTime() + addMonths(d, 1).getTime()) / 2,
+      monthNarrowFormatter.format(d),
+    ];
+  });
+
+  const xLines = [...Array(13).keys()].map((n) => addMonths(date, n).getTime());
+
   return (
     <Paper.Group>
       <Paper>
@@ -139,16 +150,8 @@ export default function Year() {
               fromDate={date}
               toDate={nextDate}
               hidePoints
-              xLabels={[...Array(12).keys()].map((n) => {
-                const d = addMonths(date, n);
-                return [
-                  (d.getTime() + addMonths(d, 1).getTime()) / 2,
-                  monthNarrowFormatter.format(d),
-                ];
-              })}
-              xLines={[...Array(13).keys()].map((n) =>
-                addMonths(date, n).getTime()
-              )}
+              xLabels={xLabels}
+              xLines={xLines}
             />
           </Paper>
           <Paper>
@@ -175,6 +178,12 @@ export default function Year() {
           <p>No mood data for this year.</p>
         </Paper>
       )}
+      <WeightChartForPeriod
+        fromDate={date}
+        toDate={nextDate}
+        xLabels={xLabels}
+        xLines={xLines}
+      />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );

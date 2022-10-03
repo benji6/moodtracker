@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../../selectors";
-import { getEnvelopingMoodIds, moodToColor } from "../../../../utils";
+import { getEnvelopingCategoryIds, moodToColor } from "../../../../utils";
 import "./style.css";
 
 interface Props {
@@ -15,7 +15,7 @@ export default function MoodGradientForPeriod({ fromDate, toDate }: Props) {
   const fromTime = fromDate.getTime();
   const toTime = toDate.getTime();
   const timeInterval = toTime - fromTime;
-  const envelopingMoodIds = getEnvelopingMoodIds(
+  const envelopingMoodIds = getEnvelopingCategoryIds(
     moods.allIds,
     fromDate,
     toDate

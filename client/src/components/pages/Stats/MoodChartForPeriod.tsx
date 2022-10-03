@@ -3,7 +3,7 @@ import { normalizedMoodsSelector } from "../../../selectors";
 import { NormalizedMoods } from "../../../types";
 import {
   computeAverageMoodInInterval,
-  getEnvelopingMoodIds,
+  getEnvelopingCategoryIds,
 } from "../../../utils";
 import MoodChart from "../../shared/MoodChart";
 
@@ -57,7 +57,7 @@ export default function MoodChartForPeriod({
 }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
-  const envelopingMoodIds = getEnvelopingMoodIds(
+  const envelopingMoodIds = getEnvelopingCategoryIds(
     moods.allIds,
     fromDate,
     toDate

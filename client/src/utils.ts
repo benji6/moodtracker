@@ -46,7 +46,11 @@ export const computeAverageMoodInInterval = (
 
   let area = 0;
 
-  const relevantMoodIds = getEnvelopingMoodIds(moods.allIds, fromDate, toDate);
+  const relevantMoodIds = getEnvelopingCategoryIds(
+    moods.allIds,
+    fromDate,
+    toDate
+  );
 
   for (let j = 1; j < relevantMoodIds.length; j++) {
     const id0 = relevantMoodIds[j - 1];
@@ -149,7 +153,7 @@ export const getNormalizedTagsFromDescription = (
 // hard to name, but will return all moods within
 // date range and if they exist will also include
 // first mood before range and first mood after range
-export const getEnvelopingMoodIds = (
+export const getEnvelopingCategoryIds = (
   ids: NormalizedMoods["allIds"],
   fromDate: Date,
   toDate: Date

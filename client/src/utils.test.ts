@@ -1,5 +1,5 @@
 import {
-  getEnvelopingMoodIds,
+  getEnvelopingCategoryIds,
   moodToColor,
   trapeziumArea,
   mapRight,
@@ -537,17 +537,17 @@ describe("utils", () => {
     });
   });
 
-  describe("getEnvelopingMoodIds", () => {
+  describe("getEnvelopingCategoryIds", () => {
     it("throws an error when the fromDate is after the toDate", () => {
       expect(() =>
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           [],
           new Date("2020-09-01T00:00:00"),
           new Date("2020-09-01T00:00:00")
         )
       ).not.toThrow();
       expect(() =>
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           [],
           new Date("2020-09-01T00:00:01"),
           new Date("2020-09-01T00:00:00")
@@ -562,7 +562,7 @@ describe("utils", () => {
         "2020-10-06T00:00:00",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-09-01T00:00:00"),
           new Date("2020-09-02T00:00:00")
@@ -577,7 +577,7 @@ describe("utils", () => {
         "2020-10-06T00:00:00",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-11-01T00:00:00"),
           new Date("2020-11-02T00:00:00")
@@ -592,7 +592,7 @@ describe("utils", () => {
         "2020-10-06T00:00:00",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-10-01T00:00:00"),
           new Date("2020-10-31T00:00:00")
@@ -607,7 +607,7 @@ describe("utils", () => {
         "2020-10-06T00:00:00",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-10-04T00:00:00"),
           new Date("2020-10-06T00:00:00")
@@ -623,7 +623,7 @@ describe("utils", () => {
         "2020-10-05T00:00:00.000Z",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-10-04T00:00:02.000Z"),
           new Date("2020-10-06T00:00:00.000Z")
@@ -644,7 +644,7 @@ describe("utils", () => {
         "2020-10-06T00:00:02.000Z",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-10-04T00:00:00.000Z"),
           new Date("2020-10-06T00:00:00.000Z")
@@ -668,7 +668,7 @@ describe("utils", () => {
         "2020-10-06T00:00:02.000Z",
       ];
       expect(
-        getEnvelopingMoodIds(
+        getEnvelopingCategoryIds(
           allIds,
           new Date("2020-10-04T00:00:02.000Z"),
           new Date("2020-10-06T00:00:00.000Z")

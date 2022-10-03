@@ -17,7 +17,6 @@ import {
   getIdsInInterval,
 } from "../../../utils";
 import GetStartedCta from "../../shared/GetStartedCta";
-import MoodChartForWeek from "./MoodChartForWeek";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
@@ -34,6 +33,8 @@ import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
 import isValid from "date-fns/isValid";
+import WeightChartForPeriod from "./WeightChartForPeriod";
+import MoodChartForPeriod from "./MoodChartForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -75,6 +76,10 @@ export default function Week() {
       weekdayShortFormatter.format(d),
     ]);
   }
+
+  const xLines: number[] = [];
+  for (let i = 0; i <= TIME.daysPerWeek; i++)
+    xLines.push(addDays(date, i).getTime());
 
   return (
     <Paper.Group>
@@ -120,7 +125,12 @@ export default function Week() {
         <>
           <Paper>
             <h3>Mood chart</h3>
-            <MoodChartForWeek week={date} />
+            <MoodChartForPeriod
+              fromDate={date}
+              toDate={nextDate}
+              xLabels={xLabels}
+              xLines={xLines}
+            />
           </Paper>
           <MoodByWeekdayForPeriod
             canDrillDown
@@ -141,6 +151,12 @@ export default function Week() {
           </p>
         </Paper>
       )}
+      <WeightChartForPeriod
+        fromDate={date}
+        toDate={nextDate}
+        xLabels={xLabels}
+        xLines={xLines}
+      />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
