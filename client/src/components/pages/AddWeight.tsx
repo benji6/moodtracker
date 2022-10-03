@@ -50,7 +50,7 @@ export default function AddWeight() {
   useKeyboardSave(handleSubmit);
 
   return (
-    <Paper.Group data-test-id={TEST_IDS.addMoodPage}>
+    <Paper.Group data-test-id={TEST_IDS.weightAddPage}>
       <Paper>
         <h2>Add weight</h2>
         <form
@@ -63,7 +63,9 @@ export default function AddWeight() {
         >
           <TextField {...FIELDS.weight} error={error} />
           <Button.Group>
-            <Button data-test-id={TEST_IDS.addMoodSubmitButton}>Submit</Button>
+            <Button data-test-id={TEST_IDS.weightAddSubmitButton}>
+              Submit
+            </Button>
           </Button.Group>
         </form>
       </Paper>

@@ -100,11 +100,7 @@ export default function AddMood() {
               </RadioButton>
             ))}
           </RadioButton.Group>
-          <TextField
-            {...FIELDS.description}
-            data-test-id={TEST_IDS.descriptionInput}
-            error={descriptionError}
-          />
+          <TextField {...FIELDS.description} error={descriptionError} />
           <TextArea {...FIELDS.exploration} />
           <Button.Group>
             <Button data-test-id={TEST_IDS.addMoodSubmitButton}>Submit</Button>

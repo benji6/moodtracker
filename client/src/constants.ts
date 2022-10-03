@@ -35,40 +35,6 @@ export const PATTERNS = {
     "[^‒–—―|$&~=\\/⁄@+*!?({[\\]})<>‹›«».;:^‘’“”'\",،、`·•†‡°″¡¿※#№÷×%‰−‱¶′‴§_‖¦]*",
 } as const;
 
-export const FIELDS = {
-  description: {
-    autoComplete: "on",
-    label: "Mood tags",
-    maxLength: DESCRIPTION_MAX_LENGTH,
-    name: "description",
-    optional: true,
-    pattern: PATTERNS.noPunctuation,
-    supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). For example, "pensive" or "happy excited". These words will be used in your word clouds.`,
-  },
-  exploration: {
-    label: "Mood journal",
-    name: "exploration",
-    optional: true,
-    rows: 5,
-    supportiveText:
-      "Use this space as a journal to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
-  },
-  mood: {
-    label: "Mood",
-    name: "mood",
-  },
-  weight: {
-    label: "Weight (kg)",
-    max: 650,
-    min: 0,
-    name: "weight",
-    style: { width: "6em" },
-    step: 0.1,
-    supportiveText: "The best time to weigh yourself is after you wake up",
-    type: "number",
-  },
-} as const;
-
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,
@@ -97,6 +63,11 @@ export const TEST_IDS = (() => {
     "signOutButton",
     "signOutConfirmButton",
     "statsOverviewPage",
+    "weightAddPage",
+    "weightAddSubmitButton",
+    "weightCardTime",
+    "weightCardValue",
+    "weightValueInput",
   ] as const;
   const testIds = {} as {
     [k in typeof keys[number]]: typeof keys[number];
@@ -104,6 +75,42 @@ export const TEST_IDS = (() => {
   for (const key of keys) testIds[key] = key;
   return testIds;
 })();
+
+export const FIELDS = {
+  description: {
+    autoComplete: "on",
+    "data-test-id": TEST_IDS.descriptionInput,
+    label: "Mood tags",
+    maxLength: DESCRIPTION_MAX_LENGTH,
+    name: "description",
+    optional: true,
+    pattern: PATTERNS.noPunctuation,
+    supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). For example, "pensive" or "happy excited". These words will be used in your word clouds.`,
+  },
+  exploration: {
+    label: "Mood journal",
+    name: "exploration",
+    optional: true,
+    rows: 5,
+    supportiveText:
+      "Use this space as a journal to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
+  },
+  mood: {
+    label: "Mood",
+    name: "mood",
+  },
+  weight: {
+    "data-test-id": TEST_IDS.weightValueInput,
+    label: "Weight (kg)",
+    max: 650,
+    min: 0,
+    name: "weight",
+    style: { width: "6em" },
+    step: 0.1,
+    supportiveText: "The best time to weigh yourself is after you wake up",
+    type: "number",
+  },
+} as const;
 
 const now = Date.now();
 const startOfWeekDate = startOfWeek(now, WEEK_OPTIONS);

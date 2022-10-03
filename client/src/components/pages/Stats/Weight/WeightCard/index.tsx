@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { normalizedWeightsSelector } from "../../../../../selectors";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
+import { TEST_IDS } from "../../../../../constants";
 
 interface Props {
   id: string;
@@ -13,15 +14,21 @@ export default function WeightCard({ id }: Props) {
   const weights = useSelector(normalizedWeightsSelector);
   const weight = weights.byId[id];
   const navigate = useNavigate();
+  const date = new Date(id);
 
   return (
     <Card onClick={() => navigate(`/weight/edit/${id}`)}>
       <div className="m-weight-card">
         <div className="center">
-          <b>{weight.value}kg</b>
+          <b data-test-id={TEST_IDS.weightCardValue}>{weight.value}kg</b>
         </div>
         <div>
-          <small>{dateTimeFormatter.format(new Date(id))}</small>
+          <small
+            data-test-id={TEST_IDS.weightCardTime}
+            data-time={Math.round(date.getTime() / 1e3)}
+          >
+            {dateTimeFormatter.format(new Date(id))}
+          </small>
         </div>
         <div>
           {weight.location && (
