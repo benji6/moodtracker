@@ -9,5 +9,5 @@ module.exports = {
       "<rootDir>/node_modules/d3-interpolate/dist/d3-interpolate.js",
   },
   preset: "ts-jest",
-  testTimeout: 3e4,
+  testTimeout: 1e4,
 };

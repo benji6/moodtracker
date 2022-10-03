@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import { ROOT_DOCUMENT_TITLE, SELECTORS, URLS } from "./constants";
 import { createAndSetUpBrowser, createAndSetUpPage } from "./utils";
 
-describe("unauthed e2e tests", () => {
+describe("unauthed", () => {
   let browser: puppeteer.Browser;
   let page: puppeteer.Page;
 

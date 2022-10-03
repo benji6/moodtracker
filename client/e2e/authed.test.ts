@@ -9,7 +9,7 @@ const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 const waitForTransitionToComplete = (): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, 300));
 
-describe("authed e2e tests", () => {
+describe("authed", () => {
   let browser: puppeteer.Browser;
   let page: puppeteer.Page;
 
