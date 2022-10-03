@@ -14,7 +14,6 @@ export const createAndSetUpPage = async (
 ): Promise<puppeteer.Page> => {
   const page = await browser.newPage();
   page.setDefaultTimeout(3e3);
-  page.setDefaultNavigationTimeout(1e3);
   await page.goto(URLS.origin);
   expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
   return page;
