@@ -29,6 +29,10 @@
       "url": "/add"
     },
     {
+      "name": "Add weight",
+      "url": "/weight/add"
+    },
+    {
       "name": "Meditate",
       "url": "/meditation"
     },
