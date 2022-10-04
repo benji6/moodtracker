@@ -25,6 +25,7 @@ import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
 import LocationsForPeriod from "./LocationsForPeriod";
 import DateRangeSelector from "../../shared/DateRangeSelector";
+import WeightChartForPeriod from "./WeightChartForPeriod";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -144,6 +145,11 @@ export default function Explore() {
               </p>
             </Paper>
           )}
+          <WeightChartForPeriod
+            fromDate={dateFrom}
+            toDate={dateTo}
+            xLabels={createXLabels(domain, dateNow.getTime())}
+          />
         </>
       )}
     </Paper.Group>
