@@ -37,7 +37,7 @@ export default function LocationsForPeriod({ fromDate, toDate }: Props) {
     <Paper>
       <h3>
         Location
-        <SubHeading>Location of all moods and meditations</SubHeading>
+        <SubHeading>Location of all data you have tracked</SubHeading>
       </h3>
       <LocationMap>
         {locationsToRender.map(([id, location]) => (
