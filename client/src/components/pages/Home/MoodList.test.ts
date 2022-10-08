@@ -18,11 +18,11 @@ describe("MoodList", () => {
 
     test("filterExploration/set", () => {
       expect(
-        reducer(createState({ filterExploration: "foo", page: 3 }), {
+        reducer(createState({ searchString: "foo", page: 3 }), {
           payload: "bar",
-          type: "filterExploration/set",
+          type: "searchString/set",
         })
-      ).toEqual(createState({ filterExploration: "bar", page: 0 }));
+      ).toEqual(createState({ searchString: "bar", page: 0 }));
     });
 
     test("filterMood/clear", () => {
@@ -57,7 +57,7 @@ describe("MoodList", () => {
       beforeEach(() => {
         state = {
           filterDescription: "foo",
-          filterExploration: "bar",
+          searchString: "bar",
           filterMood: 5,
           page: 3,
           shouldShowFilter: true,

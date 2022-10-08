@@ -7,6 +7,7 @@ import {
   ComboBox,
   Card,
 } from "eri";
+import Fuse from "fuse.js";
 import * as React from "react";
 import {
   createDateFromLocalDateString,
@@ -16,6 +17,7 @@ import {
   roundDateUp,
 } from "../../../utils";
 import {
+  denormalizedMoodsSelector,
   moodIdsByDateSelector,
   normalizedDescriptionWordsSelector,
   normalizedMoodsSelector,
@@ -55,25 +57,25 @@ const groupMoodIdsByDay = (
 
 type Action =
   | FluxStandardAction<"filterDescription/set", string>
-  | FluxStandardAction<"filterExploration/set", string>
   | FluxStandardAction<"filterMood/clear">
   | FluxStandardAction<"filterMood/set", number>
   | FluxStandardAction<"page/set", number>
+  | FluxStandardAction<"searchString/set", string>
   | FluxStandardAction<"shouldShowFilter/set", boolean>;
 
 export interface State {
   filterDescription: string;
-  filterExploration: string;
   filterMood: number | undefined;
   page: number;
+  searchString: string;
   shouldShowFilter: boolean;
 }
 
 export const initialState: State = {
   filterDescription: "",
-  filterExploration: "",
   filterMood: undefined,
   page: 0,
+  searchString: "",
   shouldShowFilter: false,
 };
 
@@ -81,14 +83,14 @@ export const reducer = (state: State, action: Action) => {
   switch (action.type) {
     case "filterDescription/set":
       return { ...state, filterDescription: action.payload, page: 0 };
-    case "filterExploration/set":
-      return { ...state, filterExploration: action.payload, page: 0 };
     case "filterMood/clear":
       return { ...state, filterMood: undefined, page: 0 };
     case "filterMood/set":
       return { ...state, filterMood: action.payload, page: 0 };
     case "page/set":
       return { ...state, page: action.payload };
+    case "searchString/set":
+      return { ...state, searchString: action.payload, page: 0 };
     case "shouldShowFilter/set":
       if (action.payload)
         return {
@@ -101,6 +103,7 @@ export const reducer = (state: State, action: Action) => {
 
 export default function MoodList() {
   const moods = useSelector(normalizedMoodsSelector);
+  const denormalizedMoods = useSelector(denormalizedMoodsSelector);
   const moodIdsByDate = useSelector(moodIdsByDateSelector);
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
   const normalizedDescriptionWords = useSelector(
@@ -118,47 +121,48 @@ export default function MoodList() {
     .split(/\s+/)
     .filter(Boolean);
 
-  const normalizedFilterExploration = localState.filterExploration
-    .trim()
-    .toLowerCase();
-
   const filterFeatureAvailable = moods.allIds.length >= 5;
 
-  const shouldFilter = localState.shouldShowFilter && filterFeatureAvailable;
+  let filteredMoodIds = moods.allIds;
+  if (localState.shouldShowFilter) {
+    let filteredMoods = denormalizedMoods.filter((mood) => {
+      if (
+        localState.filterMood !== undefined &&
+        mood.mood !== localState.filterMood
+      )
+        return false;
 
-  const filteredMoodIds = shouldFilter
-    ? moods.allIds.filter((id) => {
-        const mood = moods.byId[id];
+      const date = new Date(mood.createdAt);
+      if (date < dateFrom || date > dateTo) return false;
 
+      if (filterDescriptions.length) {
+        const normalizedMoodDescription = mood.description?.toLowerCase();
         if (
-          localState.filterMood !== undefined &&
-          mood.mood !== localState.filterMood
-        )
-          return false;
-
-        const date = new Date(id);
-        if (date < dateFrom || date > dateTo) return false;
-
-        if (filterDescriptions.length) {
-          const normalizedMoodDescription = mood.description?.toLowerCase();
-          if (
-            !filterDescriptions.every((description) =>
-              normalizedMoodDescription?.includes(description)
-            )
+          !filterDescriptions.every((description) =>
+            normalizedMoodDescription?.includes(description)
           )
-            return false;
-        }
-
-        if (
-          normalizedFilterExploration &&
-          !mood.exploration?.toLowerCase().includes(normalizedFilterExploration)
         )
           return false;
-        return true;
-      })
-    : moods.allIds;
+      }
 
-  const filteredMoodsGroupedByDay = shouldFilter
+      return true;
+    });
+    if (localState.searchString) {
+      const fuse = new Fuse(filteredMoods, {
+        distance: Infinity,
+        includeScore: true,
+        keys: [{ name: "description", weight: 2 }, "exploration"],
+        shouldSort: false,
+        threshold: 0.25,
+      });
+
+      const result = fuse.search(localState.searchString);
+      filteredMoods = result.map(({ item }) => item);
+    }
+    filteredMoodIds = filteredMoods.map(({ createdAt }) => createdAt);
+  }
+
+  const filteredMoodsGroupedByDay = localState.shouldShowFilter
     ? groupMoodIdsByDay(filteredMoodIds)
     : Object.entries(moodIdsByDate);
 
@@ -197,11 +201,31 @@ export default function MoodList() {
             />
             {localState.shouldShowFilter && (
               <div className="slide-in">
-                <DateRangeSelector
-                  dateFrom={dateFrom}
-                  dateTo={dateTo}
-                  setDateFrom={setDateFrom}
-                  setDateTo={setDateTo}
+                <TextField
+                  label="Search"
+                  supportiveText="Fuzzy search across mood tags and journal entries"
+                  onChange={(e) =>
+                    localDispatch({
+                      payload: e.target.value,
+                      type: "searchString/set",
+                    })
+                  }
+                  required={false}
+                  value={localState.searchString}
+                />
+                <ComboBox
+                  label={FIELDS.description.label}
+                  supportiveText="Search for a specific mood tag"
+                  maxLength={DESCRIPTION_MAX_LENGTH}
+                  onChange={(e) =>
+                    localDispatch({
+                      payload: e.target.value,
+                      type: "filterDescription/set",
+                    })
+                  }
+                  options={normalizedDescriptionWords}
+                  required={false}
+                  value={localState.filterDescription}
                 />
                 <Select
                   label={FIELDS.mood.label}
@@ -221,6 +245,7 @@ export default function MoodList() {
                       ? ""
                       : localState.filterMood
                   }
+                  supportiveText="Search for a specific mood value"
                 >
                   <option value="">Any mood</option>
                   {MOOD_INTEGERS.map((mood) => (
@@ -229,29 +254,11 @@ export default function MoodList() {
                     </option>
                   ))}
                 </Select>
-                <ComboBox
-                  label={FIELDS.description.label}
-                  maxLength={DESCRIPTION_MAX_LENGTH}
-                  onChange={(e) =>
-                    localDispatch({
-                      payload: e.target.value,
-                      type: "filterDescription/set",
-                    })
-                  }
-                  options={normalizedDescriptionWords}
-                  required={false}
-                  value={localState.filterDescription}
-                />
-                <TextField
-                  label={FIELDS.exploration.label}
-                  onChange={(e) =>
-                    localDispatch({
-                      payload: e.target.value,
-                      type: "filterExploration/set",
-                    })
-                  }
-                  required={false}
-                  value={localState.filterExploration}
+                <DateRangeSelector
+                  dateFrom={dateFrom}
+                  dateTo={dateTo}
+                  setDateFrom={setDateFrom}
+                  setDateTo={setDateTo}
                 />
                 <table>
                   <thead>
