@@ -23,7 +23,8 @@ export default function useGeolocation() {
           // meters
           accuracy: Math.round(accuracy),
 
-          // Should be accurate to around a meter https://en.wikipedia.org/wiki/Decimal_degrees#Precision
+          // Should be accurate to around 10 meters https://en.wikipedia.org/wiki/Decimal_degrees#Precision
+          // This should be sufficient given the accuracy value is typically in excess of that
           latitude: Number(latitude.toFixed(4)),
           longitude: Number(longitude.toFixed(4)),
         };
