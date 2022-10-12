@@ -3,7 +3,6 @@ from datetime import date
 import dateutil
 import json
 import operator
-import statistics
 from collections import defaultdict, OrderedDict
 
 users = boto3.client('cognito-idp').get_paginator('list_users').paginate(
@@ -33,23 +32,22 @@ while 'LastEvaluatedKey' in events_table_scan_response:
 
 events.sort(key=operator.itemgetter('createdAt'))
 
-meditations = OrderedDict()
-moods = OrderedDict()
+categories = {
+  'meditations': OrderedDict(),
+  'moods': OrderedDict(),
+  'weights': OrderedDict(),
+}
 for event in events:
   event['created_at_date'] = date.fromisoformat(event['createdAt'][:10])
+  _,category,operation = event['type'].split('/')
 
-  if event['type'] == 'v1/meditations/create':
-    meditations[event['createdAt']] = event['payload']
-  if event['type'] == 'v1/meditations/delete':
-    del meditations[event['payload']]
-
-  if event['type'] == 'v1/moods/create':
-    moods[event['createdAt']] = event['payload']
-  if event['type'] == 'v1/moods/delete':
-    del moods[event['payload']]
-  if event['type'] == 'v1/moods/update':
-    moods[event['payload']['id']] = {**moods[event['payload']['id']], **event['payload']}
-    del moods[event['payload']['id']]['id']
+  if operation == 'create':
+    categories[category][event['createdAt']] = event['payload']
+  if operation == 'delete':
+    del categories[category][event['payload']]
+  if operation == 'update':
+    categories[category][event['payload']['id']] = {**categories[category][event['payload']['id']], **event['payload']}
+    del categories[category][event['payload']['id']]['id']
 
 def compute_breakdown(get_key):
   results = {}
@@ -63,28 +61,45 @@ def compute_breakdown(get_key):
     else:
       results[key] = {
         'events': 1,
-        'meditationSeconds': 0,
+        'meditations': [],
         'moods': [],
+        'weights': [],
         'userIds': {event['userId']},
       }
 
-  for k,v in meditations.items():
+  for k,v in categories['meditations'].items():
     stats = results.get(get_key(k))
-    stats['meditationSeconds'] += int(v['seconds'])
+    stats['meditations'].append(int(v['seconds']))
 
-  for k,v in moods.items():
+  for k,v in categories['moods'].items():
     stats = results.get(get_key(k))
     stats['moods'].append(int(v['mood']))
 
+  for k,v in categories['weights'].items():
+    stats = results.get(get_key(k))
+    stats['weights'].append(int(v['value']))
+
   for k,v in results.items():
-    v['meanMood'] = round(statistics.mean(v['moods']), 1)
+    event_counts = {}
+    event_counts['meditations'] = len(v['meditations'])
+    event_counts['moods'] = len(v['moods'])
+    event_counts['weights'] = len(v['weights'])
+    event_counts['total'] = v['events']
+    v['eventCounts'] = event_counts
+
+    users = {}
+    users['activeUserCount'] = len(v['userIds'])
+    users['newConfirmedUsers'] = users_by_creation_month[k]['confirmed']
+    users['newUnconfirmedUsers'] = users_by_creation_month[k]['unconfirmed']
+    v['users'] = users
+
+    v['meditationMinutes'] = round(sum(v['meditations']) / 60)
+
+    del v['events']
+    del v['meditations']
     del v['moods']
-    v['meditationMinutes'] = round(v['meditationSeconds'] / 60)
-    del v['meditationSeconds']
-    v['newConfirmedUsers'] = users_by_creation_month[k]['confirmed']
-    v['newUnconfirmedUsers'] = users_by_creation_month[k]['unconfirmed']
-    v['users'] = len(v['userIds'])
     del v['userIds']
+    del v['weights']
 
   return results
 
