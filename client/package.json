@@ -22,7 +22,7 @@
     "amazon-cognito-identity-js": "^5.2.6",
     "d3-interpolate": "^3.0.1",
     "date-fns": "^2.29.2",
-    "eri": "^40.0.0",
+    "eri": "^41.0.0",
     "file-saver": "^2.0.5",
     "fuse.js": "^6.6.2",
     "idb-keyval": "^6.2.0",
