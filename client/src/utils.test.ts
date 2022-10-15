@@ -20,10 +20,20 @@ import {
   counter,
   formatSecondsAsTime,
   getDenormalizedDataInInterval,
+  capitalizeFirstLetter,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
 describe("utils", () => {
+  test("capitalizeFirstLetter", () => {
+    expect(capitalizeFirstLetter("")).toBe("");
+    expect(capitalizeFirstLetter("a")).toBe("A");
+    expect(capitalizeFirstLetter("A")).toBe("A");
+    expect(capitalizeFirstLetter("foo")).toBe("Foo");
+    expect(capitalizeFirstLetter("fooBar")).toBe("Foobar");
+    expect(capitalizeFirstLetter("Foo Bar Baz")).toBe("Foo bar baz");
+  });
+
   describe("computeAverageMoodInInterval", () => {
     describe("when the fromDate is after the toDate", () => {
       it("returns undefined", () => {

@@ -12,6 +12,9 @@ import {
   Weight,
 } from "./types";
 
+export const capitalizeFirstLetter = (s: string): string =>
+  s && `${s[0].toUpperCase()}${s.toLowerCase().slice(1)}`;
+
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
   fromDate: Date,
@@ -145,7 +148,7 @@ export const getNormalizedTagsFromDescription = (
   const descriptions: string[] = [];
   for (const word of description.split(/\s+/)) {
     if (!word) continue;
-    descriptions.push(`${word[0].toUpperCase()}${word.toLowerCase().slice(1)}`);
+    descriptions.push(capitalizeFirstLetter(word));
   }
   return descriptions;
 };
