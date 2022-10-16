@@ -18,7 +18,7 @@ import App from "./App";
 import Blog from "./pages/Blog";
 import Year from "./pages/Stats/Year";
 import Export from "./pages/Settings/Export";
-import Location from "./pages/Settings/Location";
+import LocationSettings from "./pages/Settings/LocationSettings";
 import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
@@ -114,7 +114,9 @@ export default function Routes() {
             path="export"
           />
           <Route
-            element={<AuthedOnlyPage Component={Location} title="Location" />}
+            element={
+              <AuthedOnlyPage Component={LocationSettings} title="Location" />
+            }
             path="location"
           />
           <Route
