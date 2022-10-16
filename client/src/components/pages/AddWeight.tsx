@@ -6,7 +6,7 @@ import { Weight } from "../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
-import LocationMap from "../shared/LocationMap";
+import Location from "../shared/Location";
 import { useNavigate } from "react-router-dom";
 
 export default function AddWeight() {
@@ -70,19 +70,10 @@ export default function AddWeight() {
         </form>
       </Paper>
       {geolocation && (
-        <Paper>
-          <h3>Location</h3>
-          <LocationMap>
-            <LocationMap.Marker
-              latitude={geolocation.latitude}
-              longitude={geolocation.longitude}
-            />
-          </LocationMap>
-          <p className="center">
-            <small>Latitude: {geolocation.latitude}</small> |{" "}
-            <small>Longitude: {geolocation.longitude}</small>
-          </p>
-        </Paper>
+        <Location
+          latitude={geolocation.latitude}
+          longitude={geolocation.longitude}
+        />
       )}
     </Paper.Group>
   );

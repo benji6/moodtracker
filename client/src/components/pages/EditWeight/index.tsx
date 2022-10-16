@@ -7,7 +7,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { ERRORS, FIELDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
-import LocationMap from "../../shared/LocationMap";
+import Location from "../../shared/Location";
 import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -110,19 +110,10 @@ export default function EditWeight() {
         />
       </Paper>
       {weight.location && (
-        <Paper>
-          <h3>Location</h3>
-          <LocationMap>
-            <LocationMap.Marker
-              latitude={weight.location.latitude}
-              longitude={weight.location.longitude}
-            />
-          </LocationMap>
-          <p className="center">
-            <small>Latitude: {weight.location.latitude}</small> |{" "}
-            <small>Longitude: {weight.location.longitude}</small>
-          </p>
-        </Paper>
+        <Location
+          latitude={weight.location.latitude}
+          longitude={weight.location.longitude}
+        />
       )}
     </Paper.Group>
   );
