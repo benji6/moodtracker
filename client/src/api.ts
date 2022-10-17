@@ -6,6 +6,20 @@ const EVENTS_URI = `${API_URI}/events`;
 const USAGE_URI = `${API_URI}/usage`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
+const fetchWithAuth: typeof fetch = async (
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Promise<Response> => {
+  const idToken = await getIdToken();
+  return fetch(input, {
+    ...init,
+    headers: {
+      ...init?.headers,
+      Authorization: `Bearer ${idToken.getJwtToken()}`,
+    },
+  });
+};
+
 const fetchWithRetry: typeof fetch = async (
   input: RequestInfo | URL,
   init?: RequestInit
@@ -20,7 +34,7 @@ const fetchWithRetry: typeof fetch = async (
   return response;
 };
 
-const fetchWithAuth: typeof fetch = async (
+const fetchWithAuthAndRetry: typeof fetch = async (
   input: RequestInfo | URL,
   init?: RequestInit
 ): Promise<Response> => {
@@ -41,14 +55,14 @@ export const eventsGet = async (
   hasNextPage: boolean;
   nextCursor: string;
 }> => {
-  const response = await fetchWithAuth(
+  const response = await fetchWithAuthAndRetry(
     cursor ? `${EVENTS_URI}/?cursor=${encodeURIComponent(cursor)}` : EVENTS_URI
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
 };
 export const eventsPost = async (events: AppEvent[]): Promise<void> => {
-  const response = await fetchWithAuth(EVENTS_URI, {
+  const response = await fetchWithAuthAndRetry(EVENTS_URI, {
     body: JSON.stringify(events),
     headers: { "Content-Type": "application/json" },
     method: "POST",
@@ -56,6 +70,7 @@ export const eventsPost = async (events: AppEvent[]): Promise<void> => {
   if (!response.ok) throw Error(String(response.status));
 };
 
+// Below are used with react-query which handles retries
 export const weeklyEmailsGet = async (): Promise<boolean> => {
   const response = await fetchWithAuth(WEEKLY_EMAILS_URI);
   if (response.status === 404) return false;

@@ -1,5 +1,6 @@
 import { Spinner, Toggle } from "eri";
-import * as React from "react";
+import { useMutation, useQuery } from "react-query";
+import { queryClient } from "../..";
 import {
   weeklyEmailsDisable,
   weeklyEmailsEnable,
@@ -8,22 +9,22 @@ import {
 import { ERRORS } from "../../constants";
 
 export default function WeeklyEmailNotifications() {
-  const [isUpdating, setIsUpdating] = React.useState(false);
-  const [isWeeklyEmailsEnabled, setIsWeeklyEmailsEnabled] = React.useState<
-    boolean | undefined
-  >();
-  const [error, setError] = React.useState(false);
-  React.useEffect(
-    () =>
-      void (async () => {
-        try {
-          const enabled = await weeklyEmailsGet();
-          setIsWeeklyEmailsEnabled(enabled);
-        } catch {
-          setError(true);
-        }
-      })(),
-    []
+  const { data, isError, isLoading } = useQuery(
+    "weekly-emails",
+    weeklyEmailsGet
+  );
+
+  const mutation = useMutation(
+    (isEnabled: boolean) =>
+      isEnabled ? weeklyEmailsDisable() : weeklyEmailsEnable(),
+    {
+      onSuccess: () => {
+        queryClient.setQueryData<typeof data>(
+          "weekly-emails",
+          (isEnabled) => !isEnabled
+        );
+      },
+    }
   );
 
   return (
@@ -34,34 +35,17 @@ export default function WeeklyEmailNotifications() {
         personal weekly mood report!
       </p>
       <Toggle
-        checked={isWeeklyEmailsEnabled}
-        disabled={isUpdating}
-        error={error ? ERRORS.network : undefined}
-        onChange={async () => {
-          setIsUpdating(true);
-          if (error) setError(false);
-          try {
-            if (isWeeklyEmailsEnabled) {
-              await weeklyEmailsDisable();
-              setIsWeeklyEmailsEnabled(false);
-            } else {
-              await weeklyEmailsEnable();
-              setIsWeeklyEmailsEnabled(true);
-            }
-          } catch {
-            setError(true);
-          }
-          setIsUpdating(false);
-        }}
+        checked={data}
+        disabled={mutation.isLoading || isLoading}
+        error={mutation.isError || isError ? ERRORS.network : undefined}
+        onChange={() => mutation.mutate(Boolean(data))}
         label={
-          isUpdating || isWeeklyEmailsEnabled === undefined ? (
+          mutation.isLoading || isLoading ? (
             <span>
               <Spinner inline />
             </span>
           ) : (
-            `Weekly email notifications ${
-              isWeeklyEmailsEnabled ? "en" : "dis"
-            }abled`
+            `Weekly email notifications ${data ? "en" : "dis"}abled`
           )
         }
       />
