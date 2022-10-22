@@ -29,7 +29,8 @@
           "ResourceType": [
             "AWS::ApiGateway::Deployment",
             "AWS::Events::Rule",
-            "AWS::IAM::Role"
+            "AWS::IAM::Role",
+            "AWS::SNS::Topic"
           ]
         }
       },

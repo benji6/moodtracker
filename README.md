@@ -43,7 +43,7 @@ make test
 
 #### Backend and infrastructure
 
-Majority of the infrastructure is managed with AWS CloudFormation (a few things that aren't well supported have been done manually).
+Majority of the infrastructure is managed with AWS CloudFormation (secrets and a few things that aren't well supported have been done manually).
 
 ```sh
 make deploy

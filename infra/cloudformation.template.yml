@@ -19,10 +19,6 @@ Parameters:
     Description: ARN for the MoodTracker noreply email address
     NoEcho: true
     Type: String
-  SnsEmailAddress:
-    Description: This is an email address for SNS to forward to
-    NoEcho: true
-    Type: String
 Resources:
   ApiGateway:
     Type: AWS::ApiGateway::RestApi
@@ -573,6 +569,6 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       Subscription:
-        - Endpoint: !Ref SnsEmailAddress
+        - Endpoint: "{{resolve:secretsmanager:MoodTrackerSecrets:SecretString:SnsEmailAddress}}"
           Protocol: EMAIL
       TopicName: moodtracker-emails
