@@ -73,12 +73,14 @@ export default function EditMood() {
   const mood = moods.byId[id];
   if (!mood) return <RedirectHome />;
 
+  const moodCreatedDate = new Date(id);
+
   return (
     <Paper.Group>
       <Paper>
         <h2>Edit mood</h2>
         <p>
-          <small>Created: {dateTimeFormatter.format(new Date(id))}</small>
+          <small>Created: {dateTimeFormatter.format(moodCreatedDate)}</small>
           {mood.updatedAt && (
             <>
               <br />
@@ -139,6 +141,7 @@ export default function EditMood() {
       </Paper>
       {mood.location && (
         <Location
+          date={moodCreatedDate}
           latitude={mood.location.latitude}
           longitude={mood.location.longitude}
         />

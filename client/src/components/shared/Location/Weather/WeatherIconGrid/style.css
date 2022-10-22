@@ -1,0 +1,13 @@
+.m-weather-icon-grid {
+  display: grid;
+  gap: var(--space-2);
+
+  /* min col size based on "Thunderstorm" currently being the longest `main` property
+  https://openweathermap.org/weather-conditions#Icon-list */
+  grid-template-columns: repeat(auto-fit, minmax(9em, 1fr));
+  justify-content: center;
+}
+
+.m-weather-icon-grid > *:first-child:last-child {
+  margin: auto;
+}

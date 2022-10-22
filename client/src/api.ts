@@ -1,9 +1,11 @@
 import { getIdToken } from "./cognito";
-import { AppEvent, Usage } from "./types";
+import { TIME } from "./constants";
+import { AppEvent, Usage, WeatherApiResponse } from "./types";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
 const USAGE_URI = `${API_URI}/usage`;
+const WEATHER_URI = `${API_URI}/weather`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
 const fetchWithAuth: typeof fetch = async (
@@ -46,6 +48,33 @@ const fetchWithAuthAndRetry: typeof fetch = async (
       Authorization: `Bearer ${idToken.getJwtToken()}`,
     },
   });
+};
+
+const getUnixTimestampRoundedToNearestHourAndInPast = (date: Date) => {
+  const roundedTime =
+    Math.round(date.getTime() / 1e3 / TIME.secondsPerHour) *
+    TIME.secondsPerHour;
+  return (
+    roundedTime - (roundedTime > Date.now() / 1e3 ? TIME.secondsPerHour : 0)
+  );
+};
+
+export const fetchWeather = async ({
+  queryKey: [_, { date, latitude, longitude }],
+}: {
+  queryKey: Readonly<
+    ["weather", { date: Date; latitude: number; longitude: number }]
+  >;
+}): Promise<WeatherApiResponse> => {
+  // Rounding latitude and longitude to 1 decimal place is required by the API and gives a resolution of about 10km (https://en.wikipedia.org/wiki/Decimal_degrees#Precision). More detail in API code
+  const response = await fetchWithAuth(
+    `${WEATHER_URI}?lat=${latitude.toFixed(1)}&lon=${longitude.toFixed(1)}&t=${
+      // Date is rounded to the nearest hour, although finer resolution is likely available from many stations. The rounding should increase feasibility of caching on the backend
+      getUnixTimestampRoundedToNearestHourAndInPast(date)
+    }`
+  );
+  if (!response.ok) throw Error(String(response.status));
+  return response.json();
 };
 
 export const eventsGet = async (

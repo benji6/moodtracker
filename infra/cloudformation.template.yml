@@ -55,6 +55,7 @@ Resources:
       - ApiGatewayEventsGet
       - ApiGatewayEventsPost
       - ApiGatewayUsageGet
+      - ApiGatewayWeatherGet
       - ApiGatewayWeeklyEmailsDelete
       - ApiGatewayWeeklyEmailsGet
       - ApiGatewayWeeklyEmailsPost
@@ -113,6 +114,24 @@ Resources:
         Type: AWS_PROXY
         Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaUsageGet.Arn}/invocations"
       ResourceId: !Ref ApiGatewayUsageResource
+      RestApiId: !Ref ApiGateway
+  ApiGatewayWeatherResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGateway.RootResourceId
+      PathPart: weather
+      RestApiId: !Ref ApiGateway
+  ApiGatewayWeatherGet:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiGatewayAuthorizer
+      HttpMethod: GET
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaWeatherGet.Arn}/invocations"
+      ResourceId: !Ref ApiGatewayWeatherResource
       RestApiId: !Ref ApiGateway
   ApiGatewayWeeklyEmailsResource:
     Type: AWS::ApiGateway::Resource
@@ -437,6 +456,42 @@ Resources:
               - Action: dynamodb:Scan
                 Effect: Allow
                 Resource: !GetAtt DynamoEventsTable.Arn
+  LambdaWeatherGet:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          {{{weather_get.lambda.py}}}
+      # checkov:skip=CKV_AWS_173:Default AWS encryption of environment variables is deemed sufficient. Likelihood of OpenWeather API key being compromised is very low. Impact is also very low because API is rate-limited and key can easily be revoked
+      Environment:
+        Variables:
+          OPENWEATHER_API_KEY: "{{resolve:secretsmanager:MoodTrackerSecrets:SecretString:OpenWeatherApiKey}}"
+      FunctionName: MoodTrackerWeatherGet
+      Handler: index.handler
+      ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
+      Role: !GetAtt LambdaWeatherGetRole.Arn
+      Runtime: python3.9
+      # consider timeout in python request if you change this timeout
+      Timeout: 12
+  LambdaWeatherGetPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt LambdaWeatherGet.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGateway}/*/*"
+  LambdaWeatherGetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
   LambdaWeeklyEmailsDelete:
     Type: AWS::Lambda::Function
     Properties:

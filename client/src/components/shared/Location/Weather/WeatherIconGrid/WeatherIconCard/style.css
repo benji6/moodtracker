@@ -1,0 +1,8 @@
+.m-weather-icon-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-weather-icon-card__img {
+  align-self: center;
+}

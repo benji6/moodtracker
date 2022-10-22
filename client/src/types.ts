@@ -103,3 +103,39 @@ export interface Usage {
   MAUs: number;
   WAUs: number;
 }
+
+// It appears basically everything could be optional "If you do not see some of the parameters in your API response it means that these weather phenomena are just not happened for the time of measurement for the city or location chosen. Only really measured or calculated data is displayed in API response."
+export interface WeatherApiResponse {
+  // Docs seem to indicated data array only ever has 1 value in it.
+  // Probably this is for compatibility with previous API versions
+  data: [
+    {
+      clouds: number;
+      dew_point: number;
+      dt: number;
+      feels_like: number;
+      humidity: number;
+      pressure: number;
+      rain?: number;
+      snow?: number;
+      sunrise: number;
+      sunset: number;
+      temp: number;
+      uvi?: number;
+      visibility: number;
+      weather: {
+        description: string;
+        icon: string;
+        id: number;
+        main: string;
+      }[];
+      wind_deg: number;
+      wind_gust?: number;
+      wind_speed: number;
+    }
+  ];
+  lat: number;
+  lon: number;
+  timezone: string;
+  timezone_offset: number;
+}
