@@ -24,7 +24,7 @@ export const MOODTRACKER_DESCRIPTION =
 export const ERRORS = {
   integer: "Please type a valid whole number",
   network:
-    "Something went wrong. This feature requires an internet connection, please check your connection and try again",
+    "Something went wrong. This feature requires an internet connection, please check your connection and try again. If the problem persists it may be an issue on our side",
   specialCharacters: "This field must not contain any special characters",
   rangeOverflow: "Value is too big, please input something smaller",
   rangeUnderflow: "Value is too small, please input something bigger",
