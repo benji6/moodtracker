@@ -74,6 +74,17 @@ export default function About() {
           Check out <Link to="/blog">our blog</Link> for major feature
           announcements.
         </p>
+        <p>
+          Check out the{" "}
+          <a
+            href="https://github.com/benji6/moodtracker/commits/master"
+            rel="noopener"
+            target="_blank"
+          >
+            commit log
+          </a>{" "}
+          for an overview of all source code changes.
+        </p>
         <ShareButton />
       </Paper>
       <Paper>
