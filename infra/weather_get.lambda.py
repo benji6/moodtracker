@@ -87,7 +87,7 @@ def handler(event, context):
     'body': body,
     'headers': {
       **HEADERS,
-      'Cache-Control': 'immutable,max-age=604800',
+      'Cache-Control': 'immutable,max-age=2419200',
     },
     'statusCode': 200,
   }
