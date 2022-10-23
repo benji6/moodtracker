@@ -109,6 +109,7 @@ export default function AddMood() {
       </Paper>
       {geolocation && (
         <Location
+          date={new Date()}
           latitude={geolocation.latitude}
           longitude={geolocation.longitude}
         />

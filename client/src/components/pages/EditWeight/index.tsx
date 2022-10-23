@@ -60,12 +60,14 @@ export default function EditWeight() {
   const weight = weights.byId[id];
   if (!weight) return <RedirectHome />;
 
+  const createdDate = new Date(id);
+
   return (
     <Paper.Group>
       <Paper>
         <h2>Edit weight</h2>
         <p>
-          <small>Created: {dateTimeFormatter.format(new Date(id))}</small>
+          <small>Created: {dateTimeFormatter.format(createdDate)}</small>
           {weight.updatedAt && (
             <>
               <br />
@@ -111,6 +113,7 @@ export default function EditWeight() {
       </Paper>
       {weight.location && (
         <Location
+          date={createdDate}
           latitude={weight.location.latitude}
           longitude={weight.location.longitude}
         />

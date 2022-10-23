@@ -3,7 +3,7 @@ import LocationMap from "../LocationMap";
 import Weather from "./Weather";
 
 interface Props {
-  date?: Date;
+  date: Date;
   latitude: number;
   longitude: number;
 }

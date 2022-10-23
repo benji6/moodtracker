@@ -71,6 +71,7 @@ export default function AddWeight() {
       </Paper>
       {geolocation && (
         <Location
+          date={new Date()}
           latitude={geolocation.latitude}
           longitude={geolocation.longitude}
         />
