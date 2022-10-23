@@ -92,11 +92,31 @@ export default function Weather({ date, latitude, longitude }: Props) {
                   return (
                     <tr key={k}>
                       <td>
-                        {k === "uvi"
-                          ? "UV index"
-                          : capitalizeFirstLetter(k.replaceAll("_", " "))}
+                        {k === "dew_point" ? (
+                          <>
+                            Dew point
+                            <small>
+                              <div>
+                                The temperature to which air must be cooled to
+                                become saturated with water vapor
+                              </div>
+                            </small>
+                          </>
+                        ) : k === "uvi" ? (
+                          <>
+                            Ultraviolet index
+                            <small>
+                              <div>
+                                The strength of sunburn-producing ultraviolet
+                                radiation
+                              </div>
+                            </small>
+                          </>
+                        ) : (
+                          capitalizeFirstLetter(k.replaceAll("_", " "))
+                        )}
                       </td>
-                      <td>{displayValue}</td>
+                      <td className="nowrap">{displayValue}</td>
                     </tr>
                   );
                 })}
