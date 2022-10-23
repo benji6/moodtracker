@@ -44,6 +44,12 @@ export default function NotSignedIn() {
             .
           </small>
         </p>
+        <p>
+          <small>
+            You will need to have an account and be signed in before you can
+            start using the app offline.
+          </small>
+        </p>
       </Paper>
       <Paper>
         <h2>Features</h2>
