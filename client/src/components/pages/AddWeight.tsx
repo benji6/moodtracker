@@ -16,6 +16,11 @@ export default function AddWeight() {
   const geolocation = useSelector(deviceGeolocationSelector);
   const formRef = React.useRef<HTMLFormElement>(null);
 
+  // We keep this value frozen to limit weather API requests.
+  // Assumption is that no one will spend such a long time on this
+  // component that the date will materially change.
+  const dateRef = React.useRef(new Date());
+
   const handleSubmit = () => {
     const formEl = formRef.current!;
     const inputEl: HTMLInputElement = formEl[FIELDS.weight.name];
@@ -71,7 +76,7 @@ export default function AddWeight() {
       </Paper>
       {geolocation && (
         <Location
-          date={new Date()}
+          date={dateRef.current}
           latitude={geolocation.latitude}
           longitude={geolocation.longitude}
         />
