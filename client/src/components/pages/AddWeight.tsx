@@ -3,11 +3,12 @@ import { Button, Paper, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { Weight } from "../../types";
-import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
+import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
 import Location from "../shared/Location";
 import { useNavigate } from "react-router-dom";
+import useInterval from "../hooks/useInterval";
 
 export default function AddWeight() {
   const navigate = useNavigate();
@@ -15,11 +16,11 @@ export default function AddWeight() {
   const [error, setError] = React.useState<string | undefined>();
   const geolocation = useSelector(deviceGeolocationSelector);
   const formRef = React.useRef<HTMLFormElement>(null);
+  const [date, setDate] = React.useState(new Date());
 
-  // We keep this value frozen to limit weather API requests.
-  // Assumption is that no one will spend such a long time on this
-  // component that the date will materially change.
-  const dateRef = React.useRef(new Date());
+  useInterval(() => {
+    setDate(new Date());
+  }, TIME.secondsPerHour * 1e3);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
@@ -76,7 +77,7 @@ export default function AddWeight() {
       </Paper>
       {geolocation && (
         <Location
-          date={dateRef.current}
+          date={date}
           latitude={geolocation.latitude}
           longitude={geolocation.longitude}
         />
