@@ -21,6 +21,8 @@ interface Props {
   longitude: number;
 }
 
+type Entries<T> = [keyof T, T[keyof T]][];
+
 const kelvinToCelciusString = (n: number): string =>
   celciusFormatter.format(n - 273.15);
 
@@ -51,7 +53,9 @@ export default function Weather({ date, latitude, longitude }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {Object.entries(weatherData).map(([k, v]) => {
+                {(
+                  Object.entries(weatherData) as Entries<typeof weatherData>
+                ).map(([k, v]) => {
                   if (k === "dt") return null;
 
                   // This removes the `weather` property
@@ -121,6 +125,11 @@ export default function Weather({ date, latitude, longitude }: Props) {
                     case "pressure":
                       displayValue = `${integerFormatter.format(v)} hPa`;
                       break;
+                    case "rain":
+                    case "snow":
+                      // I haven't seen the actual API data and don't know what precision this number has
+                      displayValue = `${integerFormatter.format(v)} mm/hour`;
+                      break;
                     case "sunrise":
                     case "sunset":
                       displayValue = timeFormatter.format(new Date(v * 1e3));
@@ -132,6 +141,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
                       displayValue = integerDegreeFormatter.format(v);
                       break;
                     case "wind_speed":
+                    case "wind_gust":
                       displayValue = `${twoDecimalPlacesFormatter.format(
                         v
                       )} m/s`;
