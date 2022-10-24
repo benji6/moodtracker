@@ -20,12 +20,12 @@ describe("authed", () => {
 
   test("user can sign out and sign back in", async () => {
     const navButton = (await page.$(SELECTORS.navButton))!;
-    await navButton.tap();
+    await navButton.evaluate((el) => (el as HTMLButtonElement).click());
     const signOutButton = (await page.waitForSelector(
       SELECTORS.signOutButton
     ))!;
     await waitForTransitionToComplete();
-    await signOutButton.tap();
+    await signOutButton.evaluate((el) => (el as HTMLButtonElement).click());
     const signOutConfirmButton = (await page.waitForSelector(
       SELECTORS.signOutConfirmButton
     ))!;

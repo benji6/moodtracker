@@ -43,6 +43,6 @@ export const signIn = async (page: puppeteer.Page): Promise<void> => {
 
   await page.waitForSelector(SELECTORS.deviceSpecificSettingsDialog);
   const closeButton = (await page.$(".close-button"))!;
-  await closeButton.tap();
+  await closeButton.evaluate((el) => (el as HTMLButtonElement).click());
   await page.waitForSelector(SELECTORS.moodList);
 };
