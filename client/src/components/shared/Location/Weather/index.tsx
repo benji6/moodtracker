@@ -1,4 +1,5 @@
 import { Paper, Spinner } from "eri";
+import { ReactNode } from "react";
 import { useQuery } from "react-query";
 import { fetchWeather } from "../../../../api";
 import { ERRORS } from "../../../../constants";
@@ -58,8 +59,55 @@ export default function Weather({ date, latitude, longitude }: Props) {
                   // It relies on all other properties being numbers (currently true)
                   if (typeof v !== "number") return;
 
-                  let displayValue: number | string = v;
+                  let displayKey: ReactNode;
+                  switch (k) {
+                    case "dew_point":
+                      displayKey = (
+                        <>
+                          Dew point
+                          <small>
+                            <div>
+                              The temperature to which air must be cooled to
+                              become saturated with water vapor
+                            </div>
+                          </small>
+                        </>
+                      );
+                      break;
+                    case "pressure":
+                      displayKey = (
+                        <>
+                          Pressure
+                          <small>
+                            <div>
+                              Typical sea-level air pressure is about 1013 hPa
+                              &amp; 1 hPa is equal to 1 millibar.
+                            </div>
+                          </small>
+                        </>
+                      );
+                      break;
+                    case "uvi":
+                      displayKey = (
+                        <>
+                          Ultraviolet index
+                          <small>
+                            <div>
+                              The strength of sunburn-producing ultraviolet
+                              radiation
+                            </div>
+                          </small>
+                        </>
+                      );
+                      break;
 
+                    default:
+                      displayKey = capitalizeFirstLetter(
+                        k.replaceAll("_", " ")
+                      );
+                  }
+
+                  let displayValue: number | string = v;
                   switch (k) {
                     case "clouds":
                     case "humidity":
@@ -91,31 +139,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
 
                   return (
                     <tr key={k}>
-                      <td>
-                        {k === "dew_point" ? (
-                          <>
-                            Dew point
-                            <small>
-                              <div>
-                                The temperature to which air must be cooled to
-                                become saturated with water vapor
-                              </div>
-                            </small>
-                          </>
-                        ) : k === "uvi" ? (
-                          <>
-                            Ultraviolet index
-                            <small>
-                              <div>
-                                The strength of sunburn-producing ultraviolet
-                                radiation
-                              </div>
-                            </small>
-                          </>
-                        ) : (
-                          capitalizeFirstLetter(k.replaceAll("_", " "))
-                        )}
-                      </td>
+                      <td>{displayKey}</td>
                       <td className="nowrap">{displayValue}</td>
                     </tr>
                   );
