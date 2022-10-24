@@ -44,7 +44,13 @@ export default function Weather({ date, latitude, longitude }: Props) {
       ) : (
         weatherData && (
           <>
-            <WeatherIconGrid weatherIconsData={weatherData.weather} />
+            <WeatherIconGrid
+              daytime={
+                date >= new Date(weatherData.sunrise * 1e3) &&
+                date < new Date(weatherData.sunset * 1e3)
+              }
+              weatherIconsData={weatherData.weather}
+            />
             <table>
               <thead>
                 <tr>

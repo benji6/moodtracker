@@ -29,7 +29,10 @@ export const createPageAndSignIn = async (
 
 export const signIn = async (page: puppeteer.Page): Promise<void> => {
   const signInLink = (await page.waitForSelector(SELECTORS.signInLink))!;
-  await Promise.all([page.waitForNavigation(), signInLink.tap()]);
+  await Promise.all([
+    page.waitForNavigation(),
+    signInLink.evaluate((el) => (el as HTMLButtonElement).click()),
+  ]);
 
   const emailInput = (await page.waitForSelector('[type="email"]'))!;
   await emailInput.type(TEST_USER_EMAIL);

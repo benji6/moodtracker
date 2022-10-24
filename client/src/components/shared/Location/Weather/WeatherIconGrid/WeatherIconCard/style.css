@@ -1,8 +1,9 @@
 .m-weather-icon-card {
   display: flex;
   flex-direction: column;
+  gap: var(--space-0);
 }
 
-.m-weather-icon-card__img {
+.m-weather-icon-card :nth-child(2) {
   align-self: center;
 }
