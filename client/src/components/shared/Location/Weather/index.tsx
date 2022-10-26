@@ -1,5 +1,4 @@
-import { Paper, Spinner } from "eri";
-import { ReactNode } from "react";
+import { Icon, Paper, Spinner } from "eri";
 import { useQuery } from "react-query";
 import { fetchWeather } from "../../../../api";
 import { ERRORS } from "../../../../constants";
@@ -69,52 +68,38 @@ export default function Weather({ date, latitude, longitude }: Props) {
                   // It relies on all other properties being numbers (currently true)
                   if (typeof v !== "number") return;
 
-                  let displayKey: ReactNode;
+                  const name =
+                    k === "uvi"
+                      ? "Ultraviolet index"
+                      : capitalizeFirstLetter(k.replaceAll("_", " "));
+
+                  let iconName: React.ComponentProps<typeof Icon>["name"];
+                  if (k === "sunrise" || k === "sunset") iconName = k;
+                  else if (k === "clouds") iconName = "cloud";
+                  else if (k === "dew_point") iconName = "droplet";
+                  else if (k === "feels_like") iconName = "thermometer";
+                  else if (k === "humidity") iconName = "droplet";
+                  else if (k === "temp") iconName = "thermometer";
+                  else if (k === "uvi") iconName = "sun";
+                  else if (k === "visibility") iconName = "eye";
+                  else if (k === "wind_deg") iconName = "compass";
+                  else if (k === "wind_gust") iconName = "wind";
+                  else if (k === "wind_speed") iconName = "wind";
+                  else iconName = "chart";
+
+                  let supportiveText: string | undefined = undefined;
                   switch (k) {
                     case "dew_point":
-                      displayKey = (
-                        <>
-                          Dew point
-                          <small>
-                            <div>
-                              The temperature to which air must be cooled to
-                              become saturated with water vapor
-                            </div>
-                          </small>
-                        </>
-                      );
+                      supportiveText =
+                        "The temperature to which air must be cooled to become saturated with water vapor";
                       break;
                     case "pressure":
-                      displayKey = (
-                        <>
-                          Pressure
-                          <small>
-                            <div>
-                              Typical sea-level air pressure is about 1013 hPa
-                              &amp; 1 hPa is equal to 1 millibar.
-                            </div>
-                          </small>
-                        </>
-                      );
+                      supportiveText =
+                        "Typical sea-level air pressure is about 1013 hPa & 1 hPa is equal to 1 millibar";
                       break;
                     case "uvi":
-                      displayKey = (
-                        <>
-                          Ultraviolet index
-                          <small>
-                            <div>
-                              The strength of sunburn-producing ultraviolet
-                              radiation
-                            </div>
-                          </small>
-                        </>
-                      );
-                      break;
-
-                    default:
-                      displayKey = capitalizeFirstLetter(
-                        k.replaceAll("_", " ")
-                      );
+                      supportiveText =
+                        "The strength of sunburn-producing ultraviolet radiation";
                   }
 
                   let displayValue: number | string = v;
@@ -155,7 +140,15 @@ export default function Weather({ date, latitude, longitude }: Props) {
 
                   return (
                     <tr key={k}>
-                      <td>{displayKey}</td>
+                      <td>
+                        <Icon margin="end" name={iconName} />
+                        {name}
+                        {supportiveText && (
+                          <small>
+                            <div>{supportiveText}</div>
+                          </small>
+                        )}
+                      </td>
                       <td className="nowrap">{displayValue}</td>
                     </tr>
                   );
