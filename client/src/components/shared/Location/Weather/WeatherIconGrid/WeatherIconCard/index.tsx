@@ -21,7 +21,9 @@ export default function WeatherIconCard({
   else if (id < 600) iconName = "rain";
   else if (id < 700) iconName = "snow";
   else if (id < 800) iconName = "menu";
-  else if (id < 802) iconName = daytime ? "sun" : "moon";
+  else if (id === 800) iconName = daytime ? "sun" : "moon";
+  else if (id < 803)
+    iconName = daytime ? "partly-cloudy-day" : "partly-cloudy-night";
   else iconName = "cloud";
 
   return (
