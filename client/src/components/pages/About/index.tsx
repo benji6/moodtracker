@@ -191,76 +191,89 @@ export default function About() {
               MoodTracker you can see some anonymized usage data here. This gets
               automatically updated every day or so.
             </p>
-            <h3>Active users &amp; retention</h3>
-            <UsageTable>
-              <tr>
-                <td>Users over the last 24 hours</td>
-                <td>{usage.DAUs}</td>
-              </tr>
-              <tr>
-                <td>Users over the last 7 days</td>
-                <td>{usage.WAUs}</td>
-              </tr>
-              <tr>
-                <td>Users over the last 30 days</td>
-                <td>{usage.MAUs}</td>
-              </tr>
-              <tr>
-                <td>New users over the last 30 days</td>
-                <td>{usage.newUsersInLast30Days}</td>
-              </tr>
-              <tr>
-                <td>Confirmed users</td>
-                <td>{usage.confirmedUsers}</td>
-              </tr>
-              <tr>
-                <td>Retention of users since a month ago</td>
-                <td>{percentFormatter.format(usage.CRR)}</td>
-              </tr>
-            </UsageTable>
+            <h3>Active users</h3>
+            <UsageTable
+              data={[
+                ["Users over the last 24 hours", usage.DAUs],
+                ["Users over the last 7 days", usage.WAUs],
+                ["Users over the last 30 days", usage.MAUs],
+                ["Confirmed users", usage.confirmedUsers],
+                ["New users over the last 30 days", usage.newUsersInLast30Days],
+              ]}
+            />
+            <h3>Retention funnel</h3>
+            <p>
+              Stats on people who have tracked something in MoodTracker within
+              the last 30 days.
+            </p>
+            <UsageTable
+              data={[
+                [
+                  "People who joined less than 30 days ago",
+                  usage.MAUFunnel["<7 days"] +
+                    usage.MAUFunnel[">=7 & <30 days"],
+                ],
+                [
+                  "People who joined between 30 and 90 days ago",
+                  usage.MAUFunnel[">=30 & <60 days"] +
+                    usage.MAUFunnel[">=60 & <90 days"],
+                ],
+                [
+                  "People who joined between 90 and 365 days ago",
+                  usage.MAUFunnel[">=90 & <365 days"],
+                ],
+                [
+                  "People who joined over a year ago",
+                  usage.MAUFunnel[">=365 days"],
+                ],
+                [
+                  "Retention of users since a month ago",
+                  percentFormatter.format(usage.CRR),
+                ],
+              ]}
+            />
             <h3>General usage</h3>
-            <UsageTable>
-              <tr>
-                <td>Average mood for all users over the last 7 days</td>
-                <MoodCell mood={usage.meanMoodInLast7Days} />
-              </tr>
-              <tr>
-                <td>Average mood for all users over the last 30 days</td>
-                <MoodCell mood={usage.meanMoodInLast30Days} />
-              </tr>
-              <tr>
-                <td>Total time meditated by all users over the last 30 days</td>
-                <td>
-                  {formatDurationFromSeconds(
+            <UsageTable
+              data={[
+                [
+                  "Average mood for all users over the last 7 days",
+                  // eslint-disable-next-line react/jsx-key
+                  <MoodCell mood={usage.meanMoodInLast7Days} />,
+                ],
+                [
+                  "Average mood for all users over the last 30 days",
+                  // eslint-disable-next-line react/jsx-key
+                  <MoodCell mood={usage.meanMoodInLast30Days} />,
+                ],
+                [
+                  "Total time meditated by all users over the last 30 days",
+                  formatDurationFromSeconds(
                     usage.meditationSecondsInLast30Days
-                  )}
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Number of users who have logged a meditation over the last 30
-                  days
-                </td>
-                <td>{usage.meditationMAUs}</td>
-              </tr>
-              <tr>
-                <td>
-                  Number of users who have logged a weight over the last 30 days
-                </td>
-                <td>{usage.weightMAUs}</td>
-              </tr>
-              <tr>
-                <td>Total events recorded over the last 30 days</td>
-                <td>{usage.eventsInLast30Days}</td>
-              </tr>
-            </UsageTable>
+                  ),
+                ],
+                [
+                  "Number of users who have logged a meditation over the last 30 days",
+                  formatDurationFromSeconds(usage.meditationMAUs),
+                ],
+                [
+                  "Number of users who have logged a weight over the last 30 days",
+                  usage.weightMAUs,
+                ],
+                [
+                  "Total events recorded over the last 30 days",
+                  usage.eventsInLast30Days,
+                ],
+              ]}
+            />
             <h3>Settings</h3>
-            <UsageTable>
-              <tr>
-                <td>Users who are signed up to weekly emails</td>
-                <td>{usage.usersWithWeeklyEmails}</td>
-              </tr>
-            </UsageTable>
+            <UsageTable
+              data={[
+                [
+                  "Users who are signed up to weekly emails",
+                  usage.usersWithWeeklyEmails,
+                ],
+              ]}
+            />
           </>
         ) : (
           <p>

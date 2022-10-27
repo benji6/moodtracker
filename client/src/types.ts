@@ -101,6 +101,14 @@ export interface Usage {
   CRR: number;
   DAUs: number;
   MAUs: number;
+  MAUFunnel: {
+    "<7 days": number;
+    ">=7 & <30 days": number;
+    ">=30 & <60 days": number;
+    ">=60 & <90 days": number;
+    ">=90 & <365 days": number;
+    ">=365 days": number;
+  };
   WAUs: number;
 }
 

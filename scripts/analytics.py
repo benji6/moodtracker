@@ -1,6 +1,5 @@
 import boto3
 from datetime import date
-import dateutil
 import json
 import operator
 from collections import defaultdict, OrderedDict
@@ -110,23 +109,4 @@ events_by_user_id = defaultdict(list)
 for event in events:
   events_by_user_id[event['userId']].append(event)
 
-number_of_events_by_number_of_users = defaultdict(int)
-for k,v in events_by_user_id.items():
-  number_of_events_by_number_of_users[len(v)] += 1
-number_of_events_by_number_of_users = dict(sorted(number_of_events_by_number_of_users.items()))
-
-number_of_users_by_days_used = defaultdict(int)
-for k,v in events_by_user_id.items():
-  if len(v) == 1:
-    number_of_users_by_days_used[0] += 1
-  else:
-    t0 = dateutil.parser.isoparse(v[0]['createdAt'])
-    t1 = dateutil.parser.isoparse(v[-1]['createdAt'])
-    number_of_users_by_days_used[(t1 - t0).days] += 1
-number_of_users_by_days_used = dict(sorted(number_of_users_by_days_used.items()))
-
-print(json.dumps({
-  'Breakdown by month': compute_breakdown(get_iso_month_string),
-  'Number of events created is the key and number of users is the value': number_of_events_by_number_of_users,
-  'Days used is the key and number of users is the value': number_of_users_by_days_used,
-}, indent=2))
+print(json.dumps(compute_breakdown(get_iso_month_string), indent=2))

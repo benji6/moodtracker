@@ -23,6 +23,8 @@ def handler(event, context):
   days_ago_7 = now - timedelta(7)
   days_ago_30 = now - timedelta(30)
   days_ago_60 = now - timedelta(60)
+  days_ago_90 = now - timedelta(90)
+  days_ago_365 = now - timedelta(365)
   consumed_capacity_units = 0
   db_cache_hit = False
   memory_cache_hit = False
@@ -87,6 +89,7 @@ def handler(event, context):
     }
 
   confirmed_users = [u for u in users if u['Enabled'] and u['UserStatus'] == 'CONFIRMED']
+  users_by_id = {u['Username']: u for u in users}
   user_ids_in_current_30_day_window = set()
   user_ids_in_previous_30_day_window = set()
   meditation_MAU_ids = set()
@@ -117,14 +120,35 @@ def handler(event, context):
         if event['payload']['id'] in moods:
           moods[event['payload']['id']] = {**moods[event['payload']['id']], **event['payload']}
           del moods[event['createdAt']]['id']
-
-
     else:
       user_ids_in_previous_30_day_window.add(event['userId'])
 
   meditation_seconds = 0
   for k,v in meditations.items():
     meditation_seconds += int(v['seconds'])
+
+  mau_funnel = {
+    '<7 days': 0,
+    '>=7 & <30 days': 0,
+    '>=30 & <60 days': 0,
+    '>=60 & <90 days': 0,
+    '>=90 & <365 days': 0,
+    '>=365 days': 0,
+  }
+  for id in user_ids_in_current_30_day_window:
+    create_date = users_by_id[id]['UserCreateDate']
+    if create_date > days_ago_7:
+      mau_funnel['<7 days'] += 1
+    elif create_date > days_ago_30:
+      mau_funnel['>=7 & <30 days'] += 1
+    elif create_date > days_ago_60:
+      mau_funnel['>=30 & <60 days'] += 1
+    elif create_date > days_ago_90:
+      mau_funnel['>=60 & <90 days'] += 1
+    elif create_date > days_ago_365:
+      mau_funnel['>=90 & <365 days'] += 1
+    else:
+      mau_funnel['>=365 days'] += 1
 
   cache['expires_at'] = round(now.timestamp() + SECONDS_PER_DAY)
   cache['data'] = {
@@ -141,6 +165,7 @@ def handler(event, context):
       'CRR': round(1 - len(user_ids_in_previous_30_day_window - user_ids_in_current_30_day_window) / len(user_ids_in_previous_30_day_window), 3),
       'DAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_1}),
       'MAUs': len(user_ids_in_current_30_day_window),
+      'MAUFunnel': mau_funnel,
       'WAUs': len({event['userId'] for event in events if event['createdAt'] > days_ago_7}),
     }),
     'headers': {
