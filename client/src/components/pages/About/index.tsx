@@ -30,6 +30,9 @@ export default function About() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const formatRetentionFunnelPercentage = (n: number): string =>
+    usage ? percentFormatter.format(usage.MAUs ? n / usage.MAUs : 0) : "";
+
   return (
     <Paper.Group>
       <Paper>
@@ -192,39 +195,53 @@ export default function About() {
               automatically updated every day or so.
             </p>
             <h3>Active users</h3>
+            <p>
+              Confirmed users are users who have confirmed their email address.
+            </p>
             <UsageTable
               data={[
                 ["Users over the last 24 hours", usage.DAUs],
                 ["Users over the last 7 days", usage.WAUs],
                 ["Users over the last 30 days", usage.MAUs],
                 ["Confirmed users", usage.confirmedUsers],
-                ["New users over the last 30 days", usage.newUsersInLast30Days],
+                [
+                  "New confirmed users over the last 30 days",
+                  usage.newUsersInLast30Days,
+                ],
               ]}
             />
-            <h3>Retention funnel</h3>
+            <h3>Retention</h3>
             <p>
-              Stats on people who have tracked something in MoodTracker within
+              Active users are users who have tracked at least one thing over
               the last 30 days.
             </p>
             <UsageTable
               data={[
                 [
-                  "People who joined less than 30 days ago",
-                  usage.MAUFunnel["<7 days"] +
-                    usage.MAUFunnel[">=7 & <30 days"],
+                  "Active users who joined less than 30 days ago",
+                  formatRetentionFunnelPercentage(
+                    usage.MAUFunnel["<7 days"] +
+                      usage.MAUFunnel[">=7 & <30 days"]
+                  ),
                 ],
                 [
-                  "People who joined between 30 and 90 days ago",
-                  usage.MAUFunnel[">=30 & <60 days"] +
-                    usage.MAUFunnel[">=60 & <90 days"],
+                  "Active users who joined between 30 and 90 days ago",
+                  formatRetentionFunnelPercentage(
+                    usage.MAUFunnel[">=30 & <60 days"] +
+                      usage.MAUFunnel[">=60 & <90 days"]
+                  ),
                 ],
                 [
-                  "People who joined between 90 and 365 days ago",
-                  usage.MAUFunnel[">=90 & <365 days"],
+                  "Active users who joined between 90 and 365 days ago",
+                  formatRetentionFunnelPercentage(
+                    usage.MAUFunnel[">=90 & <365 days"]
+                  ),
                 ],
                 [
-                  "People who joined over a year ago",
-                  usage.MAUFunnel[">=365 days"],
+                  "Active users who joined over a year ago",
+                  formatRetentionFunnelPercentage(
+                    usage.MAUFunnel[">=365 days"]
+                  ),
                 ],
                 [
                   "Retention of users since a month ago",
