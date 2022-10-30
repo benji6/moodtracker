@@ -18,6 +18,7 @@ export default function EditWeight() {
   const { id } = useParams();
   const weights = useSelector(normalizedWeightsSelector);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [showNoUpdateError, setShowNoUpdateError] = React.useState(false);
 
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -41,17 +42,16 @@ export default function EditWeight() {
 
     const valueNumber = Number(value);
 
-    if (valueNumber !== weight.value) {
-      dispatch(
-        eventsSlice.actions.add({
-          type: "v1/weights/update",
-          createdAt: new Date().toISOString(),
-          // The user is redirected if `id` is not defined
-          payload: { id: id!, value: valueNumber },
-        })
-      );
-    }
+    if (valueNumber === weight.value) return setShowNoUpdateError(true);
 
+    dispatch(
+      eventsSlice.actions.add({
+        type: "v1/weights/update",
+        createdAt: new Date().toISOString(),
+        // The user is redirected if `id` is not defined
+        payload: { id: id!, value: valueNumber },
+      })
+    );
     navigate("/weight/stats");
   };
   useKeyboardSave(handleSubmit);
@@ -91,6 +91,9 @@ export default function EditWeight() {
             defaultValue={weight.value}
             error={error}
           />
+          {showNoUpdateError && (
+            <p className="center negative">{ERRORS.noChanges}</p>
+          )}
           <Button.Group>
             <Button>Update</Button>
             <Button danger onClick={() => setIsDialogOpen(true)} type="button">

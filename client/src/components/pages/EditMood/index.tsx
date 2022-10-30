@@ -21,6 +21,7 @@ export default function EditMood() {
   const [descriptionError, setDescriptionError] = React.useState<
     string | undefined
   >();
+  const [showNoUpdateError, setShowNoUpdateError] = React.useState(false);
 
   const formRef = React.useRef<HTMLFormElement>(null);
 
@@ -57,14 +58,15 @@ export default function EditMood() {
       shouldUpdate = true;
     }
 
-    if (shouldUpdate)
-      dispatch(
-        eventsSlice.actions.add({
-          type: "v1/moods/update",
-          createdAt: new Date().toISOString(),
-          payload,
-        })
-      );
+    if (!shouldUpdate) return setShowNoUpdateError(true);
+
+    dispatch(
+      eventsSlice.actions.add({
+        type: "v1/moods/update",
+        createdAt: new Date().toISOString(),
+        payload,
+      })
+    );
     navigate("/");
   };
   useKeyboardSave(handleSubmit);
@@ -119,6 +121,9 @@ export default function EditMood() {
             error={descriptionError}
           />
           <TextArea {...FIELDS.exploration} defaultValue={mood.exploration} />
+          {showNoUpdateError && (
+            <p className="center negative">{ERRORS.noChanges}</p>
+          )}
           <Button.Group>
             <Button>Update</Button>
             <Button danger onClick={() => setIsDialogOpen(true)} type="button">
