@@ -26,7 +26,7 @@
     "file-saver": "^2.0.5",
     "fuse.js": "^6.6.2",
     "idb-keyval": "^6.2.0",
-    "marked": "^4.1.0",
+    "marked": "^4.2.0",
     "nosleep.js": "^0.12.0",
     "papaparse": "^5.3.1",
     "react": "^18.1.0",
