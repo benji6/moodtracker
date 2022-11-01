@@ -8,7 +8,7 @@
     Referrer-Policy = "no-referrer-when-downgrade"
     X-Content-Type-Options = "nosniff"
 [[headers]]
-  for = "*.(css|md|png|svg)"
+  for = "*.(avif|css|md|png|svg)"
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
 [[headers]]
