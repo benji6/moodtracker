@@ -10,6 +10,9 @@ import MoodCell from "../../shared/MoodCell";
 import Version from "../../shared/Version";
 import UsageTable from "./UsageTable";
 
+const GH_USER_URL = "https://github.com/benji6";
+const REPO_URL = `${GH_USER_URL}/moodtracker`;
+
 export default function About() {
   const [usage, setUsage] = useState<Usage | undefined>();
   const [error, setError] = useState<
@@ -41,20 +44,12 @@ export default function About() {
         <h3>Open source</h3>
         <p>
           You can find the source code{" "}
-          <a
-            href="https://github.com/benji6/moodtracker"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={REPO_URL} rel="noopener" target="_blank">
             here
           </a>{" "}
           and if you have any ideas 💡, feedback 🗣️ or bugs 🐛 you can raise
           them{" "}
-          <a
-            href="https://github.com/benji6/moodtracker/issues"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={`${REPO_URL}/issues`} rel="noopener" target="_blank">
             here
           </a>
           .
@@ -62,11 +57,7 @@ export default function About() {
         <p>
           The UI was put together using an open source component library I built
           called{" "}
-          <a
-            href="https://github.com/benji6/eri"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={`${GH_USER_URL}/eri`} rel="noopener" target="_blank">
             Eri
           </a>
           .
@@ -79,11 +70,7 @@ export default function About() {
         </p>
         <p>
           Check out the{" "}
-          <a
-            href="https://github.com/benji6/moodtracker/commits/master"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={`${REPO_URL}/commits/master`} rel="noopener" target="_blank">
             commit log
           </a>{" "}
           for an overview of all source code changes.
@@ -114,11 +101,7 @@ export default function About() {
         <h3>Tl;dr</h3>
         <p>
           This project is{" "}
-          <a
-            href="https://github.com/benji6/moodtracker"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={REPO_URL} rel="noopener" target="_blank">
             open source
           </a>{" "}
           so we are totally transparent about how we store your data securely.
@@ -141,11 +124,7 @@ export default function About() {
           We may update this policy in the future if regulations or practices
           change. Because the project is open source you can view the history of
           this policy{" "}
-          <a
-            href="https://github.com/benji6/moodtracker"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={REPO_URL} rel="noopener" target="_blank">
             on GitHub
           </a>
           . We will announce any significant policy changes on{" "}
@@ -155,11 +134,7 @@ export default function About() {
         <p>
           If you have any questions or feedback on this policy then please feel
           free to{" "}
-          <a
-            href="https://github.com/benji6/moodtracker/issues"
-            rel="noopener"
-            target="_blank"
-          >
+          <a href={`${REPO_URL}/issues`} rel="noopener" target="_blank">
             raise an issue on GitHub
           </a>
           .
@@ -172,11 +147,7 @@ export default function About() {
             <p className="negative">
               Error fetching the latest usage statistics. Something has gone
               wrong on our side, if the problem persists feel free to{" "}
-              <a
-                href="https://github.com/benji6/moodtracker/issues"
-                rel="noopener"
-                target="_blank"
-              >
+              <a href={`${REPO_URL}/issues`} rel="noopener" target="_blank">
                 raise an issue on GitHub
               </a>
               .
@@ -322,11 +293,7 @@ export default function About() {
           </li>
           <li>
             A lot of open source software projects (
-            <a
-              href="https://github.com/benji6/moodtracker"
-              rel="noopener"
-              target="_blank"
-            >
+            <a href={REPO_URL} rel="noopener" target="_blank">
               see GitHub for details
             </a>
             )
