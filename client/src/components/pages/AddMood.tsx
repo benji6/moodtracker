@@ -10,12 +10,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
 import { Mood } from "../../types";
-import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../constants";
+import { ERRORS, FIELDS, TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
-import Location from "../shared/Location";
 import { useNavigate } from "react-router-dom";
-import useInterval from "../hooks/useInterval";
+import LiveLocation from "../shared/LiveLocation";
 
 export default function AddMood() {
   const navigate = useNavigate();
@@ -26,11 +25,6 @@ export default function AddMood() {
   >();
   const geolocation = useSelector(deviceGeolocationSelector);
   const formRef = React.useRef<HTMLFormElement>(null);
-  const [date, setDate] = React.useState(new Date());
-
-  useInterval(() => {
-    setDate(new Date());
-  }, TIME.secondsPerHour * 1e3);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
@@ -113,13 +107,7 @@ export default function AddMood() {
           </Button.Group>
         </form>
       </Paper>
-      {geolocation && (
-        <Location
-          date={date}
-          latitude={geolocation.latitude}
-          longitude={geolocation.longitude}
-        />
-      )}
+      <LiveLocation />
     </Paper.Group>
   );
 }

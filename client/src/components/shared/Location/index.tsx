@@ -11,9 +11,7 @@ interface Props {
 export default function Location({ date, latitude, longitude }: Props) {
   return (
     <>
-      {date && (
-        <Weather date={date} latitude={latitude} longitude={longitude} />
-      )}
+      <Weather date={date} latitude={latitude} longitude={longitude} />
       <Paper>
         <h3>Location</h3>
         <LocationMap>
