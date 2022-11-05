@@ -2,16 +2,18 @@ import { Paper, ShareButton, Spinner } from "eri";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { usageGet } from "../../../api";
-import { MOODTRACKER_DESCRIPTION } from "../../../constants";
+import {
+  GH_USER_URL,
+  MOODTRACKER_DESCRIPTION,
+  REPO_ISSUES_URL,
+  REPO_URL,
+} from "../../../constants";
 import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
 import { percentFormatter } from "../../../formatters/numberFormatters";
 import { Usage } from "../../../types";
 import MoodCell from "../../shared/MoodCell";
 import Version from "../../shared/Version";
 import UsageTable from "./UsageTable";
-
-const GH_USER_URL = "https://github.com/benji6";
-const REPO_URL = `${GH_USER_URL}/moodtracker`;
 
 export default function About() {
   const [usage, setUsage] = useState<Usage | undefined>();
@@ -49,7 +51,7 @@ export default function About() {
           </a>{" "}
           and if you have any ideas 💡, feedback 🗣️ or bugs 🐛 you can raise
           them{" "}
-          <a href={`${REPO_URL}/issues`} rel="noopener" target="_blank">
+          <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
             here
           </a>
           .
@@ -134,7 +136,7 @@ export default function About() {
         <p>
           If you have any questions or feedback on this policy then please feel
           free to{" "}
-          <a href={`${REPO_URL}/issues`} rel="noopener" target="_blank">
+          <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
             raise an issue on GitHub
           </a>
           .
@@ -147,7 +149,7 @@ export default function About() {
             <p className="negative">
               Error fetching the latest usage statistics. Something has gone
               wrong on our side, if the problem persists feel free to{" "}
-              <a href={`${REPO_URL}/issues`} rel="noopener" target="_blank">
+              <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
                 raise an issue on GitHub
               </a>
               .

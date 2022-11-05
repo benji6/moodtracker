@@ -16,6 +16,10 @@ export const MOOD_INTEGERS = [
   ...Array(MOOD_RANGE[1] - MOOD_RANGE[0] + 1).keys(),
 ] as const;
 
+export const GH_USER_URL = "https://github.com/benji6";
+export const REPO_URL = `${GH_USER_URL}/moodtracker`;
+export const REPO_ISSUES_URL = `${REPO_URL}/issues`;
+
 export const MOODTRACKER_DESCRIPTION =
   "MoodTracker is a free and open source web app app that aims to help you understand yourself better. Track your emotional landscape, keep a mood journal, time your meditations, keep a meditation log and gain new insights into yourself. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!";
 
@@ -24,6 +28,15 @@ export const ERRORS = {
   network:
     "Something went wrong. This feature requires an internet connection, please check your connection and try again. If the problem persists it may be an issue on our side",
   noChanges: "No changes have been made, please make an update then try again",
+  server: (
+    <>
+      Something went wrong. This looks like a problem on our side. We will look
+      into it. Please try again later. If the problem persists then{" "}
+      <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
+        raise an issue on GitHub
+      </a>
+    </>
+  ),
   specialCharacters: "This field must not contain any special characters",
   rangeOverflow: "Value is too big, please input something smaller",
   rangeUnderflow: "Value is too small, please input something bigger",
