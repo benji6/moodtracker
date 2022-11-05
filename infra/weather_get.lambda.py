@@ -14,9 +14,9 @@ def is_valid_coord(s):
     # Rounding latitude and longitude to 1 decimal place gives a resolution of about 10km (https://en.wikipedia.org/wiki/Decimal_degrees#Precision).
     # According to https://www.metoffice.gov.uk/weather/guides/observations/uk-observations-network "The average separation of stations in this network is about 40 km enabling the weather associated with the typical low pressure and frontal systems that cross the UK to be recorded. Some weather features occur on smaller scales (for example thunderstorms) and may evade the surface network altogether. For the detection of these satellites and weather radars play an important role."
     # So 10km should be a high enough resolution for weather accuracy, but also low enough for caching to have potential (may become backed by a DB in future)
-    if '.' in s and len(s) - s.index('.') > 2:
-      return False
-    return True
+    if '.' in s and len(s) - s.index('.') == 2:
+      return True
+    return False
   except ValueError:
     return False
 
@@ -29,14 +29,14 @@ def handler(event, context):
   errors = []
 
   if not is_valid_coord(lat):
-    errors.append('`lat` query string parameter is invalid: Ensure it is a number with no more than 1 decimal place')
+    errors.append('`lat` query string parameter is invalid: Ensure it is a number with 1 decimal place')
   lat_float = float(lat)
   if lat_float < -90 or lat_float > 90:
     errors.append('`lat` is not between -90 and 90')
 
   if not is_valid_coord(lon):
-    errors.append('`lon` query string parameter is invalid: Ensure it is a number with no more than 1 decimal place')
-  lon_float = float(lat)
+    errors.append('`lon` query string parameter is invalid: Ensure it is a number with 1 decimal place')
+  lon_float = float(lon)
   if lon_float < -180 or lon_float > 180:
     errors.append('`lon` is not between -180 and 180')
 
