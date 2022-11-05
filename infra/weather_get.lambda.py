@@ -1,10 +1,26 @@
+import boto3
 import os
 import json
 import time
+from datetime import datetime, timezone
+from decimal import Decimal
+from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 APP_ID = region = os.environ['OPENWEATHER_API_KEY']
 HEADERS = {'Content-Type': 'application/json'}
+HEADERS_WITH_CACHE_CONTROL = {
+  **HEADERS,
+  'Cache-Control': 'immutable,max-age=2419200',
+}
+
+class DecimalEncoder(json.JSONEncoder):
+  def default(self, o):
+    if isinstance(o, Decimal):
+      return float(o)
+    return super(DecimalEncoder, self).default(o)
+
+table = boto3.resource('dynamodb').Table('moodtracker_weather')
 
 def is_valid_coord(s):
   if s.lower() == 'nan':
@@ -54,22 +70,40 @@ def handler(event, context):
       'statusCode': 400,
     }
 
+  cache_key = {
+    'coordinates': f'{lat}:{lon}',
+    'timestamp': int(t),
+  }
+
+  try:
+    item = table.get_item(Key=cache_key).get('Item')
+    if item:
+      print('Cache hit')
+      return {
+        'body': json.dumps(item['data'], cls=DecimalEncoder),
+        'headers': HEADERS_WITH_CACHE_CONTROL,
+        'statusCode': 200,
+      }
+  except Exception as e:
+    print(e)
+
+  print('Cache miss')
+
   url = f'https://api.openweathermap.org/data/3.0/onecall/timemachine?lat={lat}&lon={lon}&dt={t}&appid={APP_ID}'
 
   try:
     # consider lambda timeout if you change this timeout
     with urlopen(url, timeout=10) as response:
       body = response.read()
-
-  except HTTPError as error:
-    print('Upstream error:', HTTPError)
+  except HTTPError as e:
+    print('Upstream error:', e)
     return {
       'body': json.dumps({'errors': ['Upstream API HTTP error']}),
       'headers': HEADERS,
       'statusCode': 502,
     }
-  except URLError as error:
-    print('Upstream error:', URLError)
+  except URLError as e:
+    print('Upstream error:', e)
     return {
       'body': json.dumps({'errors': ['Upstream API URL error']}),
       'headers': HEADERS,
@@ -83,11 +117,17 @@ def handler(event, context):
       'statusCode': 504,
     }
 
+  try:
+    table.put_item(Item={
+      **cache_key,
+      'createdAt': datetime.now(timezone.utc).isoformat(),
+      'data': json.loads(body, parse_float=Decimal),
+    })
+  except Exception as e:
+    print(e)
+
   return {
     'body': body,
-    'headers': {
-      **HEADERS,
-      'Cache-Control': 'immutable,max-age=2419200',
-    },
+    'headers': HEADERS_WITH_CACHE_CONTROL,
     'statusCode': 200,
   }

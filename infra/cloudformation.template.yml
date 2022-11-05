@@ -11,7 +11,7 @@ Outputs:
 Parameters:
   ApiReservedConcurrentExecutions:
     Default: 10
-    Description: ReservedConcurrentExecutions is shared across all API lambdas (other lambdas may have their own values) and based on number of users
+    Description: This is used as the default value for most lambdas and is based on the number of active users. Some lambdas have different limits because their usage patterns are different
     NoEcho: true
     Type: Number
   SesNoreplyArn:
@@ -64,8 +64,8 @@ Resources:
       StageDescription:
         DataTraceEnabled: true
         LoggingLevel: ERROR
-        ThrottlingBurstLimit: 5
-        ThrottlingRateLimit: 1
+        ThrottlingBurstLimit: 50
+        ThrottlingRateLimit: 2
       StageName: prod
   ApiGatewayEventsResource:
     Type: AWS::ApiGateway::Resource
@@ -259,6 +259,23 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: expiresAt
         Enabled: true
+  DynamoWeatherTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: coordinates
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: N
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: coordinates
+          KeyType: HASH
+        - AttributeName: timestamp
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      TableName: moodtracker_weather
   # Records all users that have signed up to weekly emails
   DynamoWeeklyEmailsTable:
     Type: AWS::DynamoDB::Table
@@ -466,7 +483,7 @@ Resources:
           OPENWEATHER_API_KEY: "{{resolve:secretsmanager:MoodTrackerSecrets:SecretString:OpenWeatherApiKey}}"
       FunctionName: MoodTrackerWeatherGet
       Handler: index.handler
-      ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
+      ReservedConcurrentExecutions: 50
       Role: !GetAtt LambdaWeatherGetRole.Arn
       Runtime: python3.9
       # consider timeout in python request if you change this timeout
@@ -490,6 +507,16 @@ Resources:
               Service: lambda.amazonaws.com
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: moodtracker_lambda_weather_get_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                Effect: Allow
+                Resource: !GetAtt DynamoWeatherTable.Arn
   LambdaWeeklyEmailsDelete:
     Type: AWS::Lambda::Function
     Properties:
