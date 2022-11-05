@@ -245,6 +245,7 @@ Resources:
         PointInTimeRecoveryEnabled: true
       TableName: moodtracker_events
   DynamoGlobalCacheTable:
+    # checkov:skip=CKV_AWS_28:This table is used as a simple cache so backup and recovery is unnecessary
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -254,8 +255,6 @@ Resources:
       KeySchema:
         - AttributeName: key
           KeyType: HASH
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
       TableName: moodtracker_global_cache
       TimeToLiveSpecification:
         AttributeName: expiresAt
@@ -447,10 +446,9 @@ Resources:
               - Action: dynamodb:DescribeTable
                 Effect: Allow
                 Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
-              - Action: dynamodb:GetItem
-                Effect: Allow
-                Resource: !GetAtt DynamoGlobalCacheTable.Arn
-              - Action: dynamodb:PutItem
+              - Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
                 Effect: Allow
                 Resource: !GetAtt DynamoGlobalCacheTable.Arn
               - Action: dynamodb:Scan
