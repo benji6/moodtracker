@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { TEST_IDS } from "../../../constants";
 import { appShowNewSignInUiSelector } from "../../../selectors";
 import appSlice from "../../../store/appSlice";
-import DailyNotifications from "../../shared/DailyNotifications";
 import LocationToggle from "../../shared/LocationToggle";
 
 export default function DeviceSetupDialog() {
@@ -19,8 +18,6 @@ export default function DeviceSetupDialog() {
     >
       <h4 style={{ marginTop: 0 }}>Location settings</h4>
       <LocationToggle />
-      <h4>Daily notifications</h4>
-      <DailyNotifications />
     </Dialog>
   );
 }
