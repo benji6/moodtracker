@@ -1,6 +1,16 @@
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import LocationMarker from "./LocationMarker";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { feature } from "topojson-client";
+import { LOCATION_MAP_HEIGHT, LOCATION_MAP_WIDTH } from "./constants";
 import worldTopoJson from "./world-topojson.json";
+import Marker from "./Marker";
+import { path } from "./utils";
+
+const features: any[] = (
+  feature(
+    worldTopoJson as any,
+    worldTopoJson.objects.ne_110m_admin_0_countries as any
+  ) as any
+).features;
 
 interface Props {
   children: React.ReactNode;
@@ -8,31 +18,23 @@ interface Props {
 
 export default function LocationMap({ children }: Props) {
   return (
-    <ComposableMap
-      projectionConfig={{ scale: 147 }}
+    <svg
       style={{ marginBlock: "-11%" }}
+      viewBox={`0 0 ${LOCATION_MAP_WIDTH} ${LOCATION_MAP_HEIGHT}`}
     >
-      <Geographies geography={worldTopoJson}>
-        {({ geographies }) =>
-          geographies.map((geo) => (
-            <Geography
-              fill="var(--color-balance-less)"
-              geography={geo}
-              key={geo.rsmKey}
-              stroke="var(--color-balance-more)"
-              style={{
-                default: { outline: 0 },
-                hover: { outline: 0 },
-                pressed: { outline: 0 },
-              }}
-              tabIndex={undefined}
-            />
-          ))
-        }
-      </Geographies>
+      <g>
+        {features.map((d, i) => (
+          <path
+            d={path(d) ?? undefined}
+            fill="var(--color-balance-less)"
+            key={`geo-${i}`}
+            stroke="var(--color-balance-more)"
+          />
+        ))}
+      </g>
       {children}
-    </ComposableMap>
+    </svg>
   );
 }
 
-LocationMap.Marker = LocationMarker;
+LocationMap.Marker = Marker;
