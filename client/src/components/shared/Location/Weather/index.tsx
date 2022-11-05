@@ -4,7 +4,7 @@ import { fetchWeather } from "../../../../api";
 import { ERRORS } from "../../../../constants";
 import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
 import {
-  celciusFormatter,
+  formatKelvinToCelcius,
   integerDegreeFormatter,
   integerFormatter,
   integerMeterFormatter,
@@ -21,9 +21,6 @@ interface Props {
 }
 
 type Entries<T> = [keyof T, T[keyof T]][];
-
-const kelvinToCelciusString = (n: number): string =>
-  celciusFormatter.format(n - 273.15);
 
 export default function Weather({ date, latitude, longitude }: Props) {
   const { data, isError, isLoading } = useQuery(
@@ -111,7 +108,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
                     case "dew_point":
                     case "feels_like":
                     case "temp":
-                      displayValue = kelvinToCelciusString(v);
+                      displayValue = formatKelvinToCelcius(v);
                       break;
                     case "pressure":
                       displayValue = `${integerFormatter.format(v)} hPa`;

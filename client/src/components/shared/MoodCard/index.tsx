@@ -5,6 +5,7 @@ import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../formatters/dateTimeFormatters";
 import { normalizedMoodsSelector } from "../../../selectors";
 import { moodToColor } from "../../../utils";
+import MoodCardWeather from "./MoodCardWeather";
 import "./style.css";
 
 interface Props {
@@ -59,6 +60,13 @@ export default function MoodCard({ id }: Props) {
           <p className="m-mood-card__exploration pre-line">
             <small>{exploration}</small>
           </p>
+        )}
+        {location && (
+          <MoodCardWeather
+            date={date}
+            latitude={location.latitude}
+            longitude={location.longitude}
+          />
         )}
       </div>
     </Card>

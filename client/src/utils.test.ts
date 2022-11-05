@@ -21,6 +21,7 @@ import {
   formatSecondsAsTime,
   getDenormalizedDataInInterval,
   capitalizeFirstLetter,
+  getWeatherIconAndColor,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
@@ -839,6 +840,17 @@ describe("utils", () => {
         )
       ).toEqual([{ value: 65 }, { value: 70 }]);
     });
+  });
+
+  test.each(
+    [
+      200, 232, 300, 321, 500, 531, 600, 622, 701, 762, 771, 781, 800, 801, 802,
+      803, 804,
+    ].flatMap((weatherId) =>
+      [true, false].map((isDaytime) => ({ isDaytime, weatherId }))
+    )
+  )("getWeatherIconAndColor(%p)", (x) => {
+    expect(getWeatherIconAndColor(x)).toMatchSnapshot();
   });
 
   test("getNormalizedDescriptionWordsFromMood", () => {

@@ -2,6 +2,7 @@ import { interpolateHcl } from "d3-interpolate";
 import addDays from "date-fns/addDays";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
+import { Icon } from "eri";
 import { MOOD_RANGE, TIME } from "./constants";
 import {
   Meditation,
@@ -216,6 +217,55 @@ export const getDenormalizedDataInInterval = <
 ): Category[] => {
   const ids = getIdsInInterval(normalizedData.allIds, fromDate, toDate);
   return ids.map((id) => normalizedData.byId[id]);
+};
+
+export const getWeatherIconAndColor = ({
+  isDaytime,
+  weatherId,
+}: {
+  isDaytime: boolean;
+  weatherId: number;
+}): {
+  weatherColor: string;
+  iconName: React.ComponentProps<typeof Icon>["name"];
+} => {
+  let iconName: React.ComponentProps<typeof Icon>["name"] = "cloud";
+  let weatherColor = "var(--color-balance-more)";
+
+  if (weatherId) {
+    if (weatherId < 300) {
+      iconName = "lightning";
+      weatherColor = "var(--color-figure-more)";
+    } else if (weatherId < 400) {
+      iconName = "drizzle";
+      weatherColor = "steelblue";
+    } else if (weatherId < 600) {
+      iconName = "rain";
+      weatherColor = "blue";
+    } else if (weatherId < 700) iconName = "snow";
+    else if (weatherId === 771 || weatherId === 781) {
+      iconName = "wind";
+      weatherColor = "var(--color-figure-more)";
+    } else if (weatherId < 800) iconName = "menu";
+    else if (weatherId === 800) {
+      if (isDaytime) {
+        iconName = "sun";
+        weatherColor = "orange";
+      } else {
+        iconName = "moon";
+        weatherColor = "rebeccapurple";
+      }
+    } else if (weatherId < 803) {
+      if (isDaytime) {
+        iconName = "partly-cloudy-day";
+        weatherColor = "orange";
+      } else {
+        iconName = "partly-cloudy-night";
+        weatherColor = "rebeccapurple";
+      }
+    }
+  }
+  return { iconName, weatherColor };
 };
 
 export const formatIsoDateInLocalTimezone = (date: Date): string =>

@@ -8,6 +8,6 @@
   justify-content: center;
 }
 
-.m-weather-icon-grid > *:first-child:last-child {
+.m-weather-icon-grid > :first-child:last-child {
   margin: auto;
 }

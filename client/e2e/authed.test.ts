@@ -29,7 +29,10 @@ describe("authed", () => {
     const signOutConfirmButton = (await page.waitForSelector(
       SELECTORS.signOutConfirmButton
     ))!;
-    await Promise.all([page.waitForNavigation(), signOutConfirmButton.tap()]);
+    await Promise.all([
+      page.waitForNavigation(),
+      signOutConfirmButton.evaluate((el) => (el as HTMLButtonElement).click()),
+    ]);
     expect(await page.$(SELECTORS.signInLink)).toBeTruthy();
 
     await waitForTransitionToComplete();

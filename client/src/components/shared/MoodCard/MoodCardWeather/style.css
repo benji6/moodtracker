@@ -1,0 +1,8 @@
+.m-mood-card-weather {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-0);
+  gap: var(--space-0);
+  grid-column-start: 3;
+}

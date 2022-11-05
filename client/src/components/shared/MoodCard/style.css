@@ -2,10 +2,15 @@
   align-items: center;
   column-gap: var(--space-1);
   display: grid;
-  grid-template-columns: 5em 1fr;
+  grid-auto-columns: 5em 1fr auto;
+}
+
+.m-mood-card > :first-child:last-child {
+  grid-column-end: span 3;
 }
 
 .m-mood-card__exploration {
+  grid-column-start: 2;
   line-height: 1;
 }
 

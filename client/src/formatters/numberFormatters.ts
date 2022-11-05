@@ -1,9 +1,12 @@
-export const celciusFormatter = Intl.NumberFormat(undefined, {
+const celciusFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
   style: "unit",
   unit: "celsius",
 });
+
+export const formatKelvinToCelcius = (n: number): string =>
+  celciusFormatter.format(n - 273.15);
 
 export const integerFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0,

@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 200}) 1`] = `
+{
+  "iconName": "lightning",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 232}) 1`] = `
+{
+  "iconName": "lightning",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 300}) 1`] = `
+{
+  "iconName": "drizzle",
+  "weatherColor": "steelblue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 321}) 1`] = `
+{
+  "iconName": "drizzle",
+  "weatherColor": "steelblue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 500}) 1`] = `
+{
+  "iconName": "rain",
+  "weatherColor": "blue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 531}) 1`] = `
+{
+  "iconName": "rain",
+  "weatherColor": "blue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 600}) 1`] = `
+{
+  "iconName": "snow",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 622}) 1`] = `
+{
+  "iconName": "snow",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 701}) 1`] = `
+{
+  "iconName": "menu",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 762}) 1`] = `
+{
+  "iconName": "menu",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 771}) 1`] = `
+{
+  "iconName": "wind",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 781}) 1`] = `
+{
+  "iconName": "wind",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 800}) 1`] = `
+{
+  "iconName": "moon",
+  "weatherColor": "rebeccapurple",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 801}) 1`] = `
+{
+  "iconName": "partly-cloudy-night",
+  "weatherColor": "rebeccapurple",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 802}) 1`] = `
+{
+  "iconName": "partly-cloudy-night",
+  "weatherColor": "rebeccapurple",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 803}) 1`] = `
+{
+  "iconName": "cloud",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 804}) 1`] = `
+{
+  "iconName": "cloud",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 200}) 1`] = `
+{
+  "iconName": "lightning",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 232}) 1`] = `
+{
+  "iconName": "lightning",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 300}) 1`] = `
+{
+  "iconName": "drizzle",
+  "weatherColor": "steelblue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 321}) 1`] = `
+{
+  "iconName": "drizzle",
+  "weatherColor": "steelblue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 500}) 1`] = `
+{
+  "iconName": "rain",
+  "weatherColor": "blue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 531}) 1`] = `
+{
+  "iconName": "rain",
+  "weatherColor": "blue",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 600}) 1`] = `
+{
+  "iconName": "snow",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 622}) 1`] = `
+{
+  "iconName": "snow",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 701}) 1`] = `
+{
+  "iconName": "menu",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 762}) 1`] = `
+{
+  "iconName": "menu",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 771}) 1`] = `
+{
+  "iconName": "wind",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 781}) 1`] = `
+{
+  "iconName": "wind",
+  "weatherColor": "var(--color-figure-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 800}) 1`] = `
+{
+  "iconName": "sun",
+  "weatherColor": "orange",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 801}) 1`] = `
+{
+  "iconName": "partly-cloudy-day",
+  "weatherColor": "orange",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 802}) 1`] = `
+{
+  "iconName": "partly-cloudy-day",
+  "weatherColor": "orange",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 803}) 1`] = `
+{
+  "iconName": "cloud",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
+
+exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 804}) 1`] = `
+{
+  "iconName": "cloud",
+  "weatherColor": "var(--color-balance-more)",
+}
+`;
