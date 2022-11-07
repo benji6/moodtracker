@@ -13,6 +13,7 @@ import eachYearOfInterval from "date-fns/eachYearOfInterval";
 import sub from "date-fns/sub";
 import { MEDITATION_STATS_HOURS_RANGE, TIME } from "./constants";
 import { WEEK_OPTIONS } from "./formatters/dateTimeFormatters";
+import { captureException } from "./sentry";
 import { RootState } from "./store";
 import {
   AppCreateEvent,
@@ -97,11 +98,12 @@ const trackedCategoriesSelector = createSelector(
             }
 
           if (index === undefined) {
-            // eslint-disable-next-line no-console
-            console.error(
-              `Delete event error - could not find event to delete: ${JSON.stringify(
-                event
-              )}`
+            captureException(
+              Error(
+                `Delete event error - could not find event to delete: ${JSON.stringify(
+                  event
+                )}`
+              )
             );
             break;
           }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../constants";
 import { deviceGeolocationSelector } from "../../../../selectors";
+import { captureException } from "../../../../sentry";
 import eventsSlice from "../../../../store/eventsSlice";
 import { Meditation } from "../../../../types";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
@@ -68,9 +69,10 @@ export default function MeditationTimer() {
     if (localState.timeFinished)
       createdAt = localState.timeFinished.toISOString();
     else {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "Problem logging meditation: Expected finish time to be defined, falling back to log time instead"
+      captureException(
+        Error(
+          "Problem logging meditation: Expected finish time to be defined, falling back to log time instead"
+        )
       );
       createdAt = new Date().toISOString();
     }

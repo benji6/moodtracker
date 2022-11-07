@@ -115,6 +115,13 @@ export default function About() {
           means we take your email address when you sign up and we collect all
           the data you submit while using the app.
         </p>
+        <p>
+          We also collect data on errors and crashes that we send to a{" "}
+          <a href="https://sentry.io" rel="noopener" target="_blank">
+            3rd party development tool
+          </a>
+          . This typically does not include any user data.
+        </p>
         <h3>Information we do not collect</h3>
         <p>
           We do not collect any data that is unnecessary for running the app, we

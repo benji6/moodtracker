@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import "./sentry";
 import { join as pathJoin } from "path";
 
 const CACHE_NAME = "v1";

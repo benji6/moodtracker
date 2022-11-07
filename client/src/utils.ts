@@ -4,6 +4,7 @@ import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { Icon } from "eri";
 import { MOOD_RANGE, TIME } from "./constants";
+import { captureException } from "./sentry";
 import {
   Meditation,
   Mood,
@@ -22,8 +23,7 @@ export const computeAverageMoodInInterval = (
   toDate: Date
 ): number | undefined => {
   if (!moods.allIds.length) {
-    // eslint-disable-next-line no-console
-    console.warn("No moods");
+    captureException(Error("No moods"));
     return;
   }
 
@@ -34,8 +34,7 @@ export const computeAverageMoodInInterval = (
   const d1 = toDate.getTime();
 
   if (d1 < d0) {
-    // eslint-disable-next-line no-console
-    console.warn("fromDate must be equal to or before toDate");
+    captureException(Error("fromDate must be equal to or before toDate"));
     return;
   }
   if (d0 > latestMoodTime || d1 < earliestMoodTime) return;

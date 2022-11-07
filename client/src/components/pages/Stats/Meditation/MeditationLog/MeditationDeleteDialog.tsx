@@ -2,6 +2,7 @@ import { Dialog, Button } from "eri";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../../../../store/eventsSlice";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
+import { captureException } from "../../../../../sentry";
 
 interface Props {
   id: string | undefined;
@@ -20,9 +21,8 @@ export default function MeditationDeleteDialog({ id, onClose, open }: Props) {
           danger
           onClick={() => {
             if (!id) {
-              // eslint-disable-next-line no-console
-              console.error(
-                "Dialog button was pressed while dialog was closed"
+              captureException(
+                Error("Dialog button was pressed while dialog was closed")
               );
               return;
             }

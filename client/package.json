@@ -19,6 +19,7 @@
   "browserslist": "cover 80%",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
+    "@sentry/browser": "^7.17.4",
     "amazon-cognito-identity-js": "^5.2.6",
     "d3-geo": "^3.0.1",
     "d3-interpolate": "^3.0.1",
