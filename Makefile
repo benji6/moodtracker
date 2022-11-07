@@ -3,17 +3,26 @@ analytics:
 	@./bin/analytics.sh
 
 # Generates the CloudFormation file
-cloudformation:
+infra/cloudformation.yml: infra/cloudformation.template.yml
 	@./bin/cloudformation.py
 	@echo "🍄 CloudFormation template built successfully! 🍄"
 
+# Uploads CloudFormation file to S3
+cloudformation/upload: infra/cloudformation.yml
+	@aws s3 cp --quiet infra/cloudformation.yml s3://moodtracker-cloudformation
+	@echo "🍄 CloudFormation template uploaded to S3 successfully! 🍄"
+
+# Builds and validates the CloudFormation template
+cloudformation/test: infra/cloudformation.yml
+	@./bin/test-cloudformation.sh
+
 # Deploy infrastructure
-deploy: test/cloudformation
+deploy: cloudformation/test cloudformation/upload
 	@./bin/deploy.sh
 
 # Deployment dry run to view potential changes
-deploy/dry-run: test/cloudformation
-	@aws cloudformation deploy --capabilities CAPABILITY_IAM --no-execute-changeset --stack-name moodtracker --template-file infra/cloudformation.yml
+deploy/dry-run: cloudformation/test cloudformation/upload
+	@aws cloudformation deploy --capabilities CAPABILITY_IAM --no-execute-changeset --s3-bucket moodtracker-cloudformation --stack-name moodtracker --template-file infra/cloudformation.yml
 
 # Print this help message
 help:
@@ -41,15 +50,11 @@ start:
 	@./bin/start.sh
 
 # Run all tests
-test: test/cloudformation
+test: cloudformation/test
 	@./bin/test.sh
 
 # Runs all CI tests (CloudFormation checks and e2e tests not yet supported)
 test/ci:
 	@./bin/test-ci.sh
 
-# Builds and validates the CloudFormation template
-test/cloudformation: cloudformation
-	@./bin/test-cloudformation.sh
-
-.PHONY: analytics cloudformation deploy deploy/dry-run help init init/ci stack-policy start test test/ci test/cloudformation
+.PHONY: analytics cloudformation/test cloudformation/upload deploy deploy/dry-run help init init/ci stack-policy start test test/ci

@@ -175,6 +175,21 @@ Resources:
         Uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaWeeklyEmailsPost.Arn}/invocations"
       ResourceId: !Ref ApiGatewayWeeklyEmailsResource
       RestApiId: !Ref ApiGateway
+  CloudFormationS3Bucket:
+    # checkov:skip=CKV_AWS_18:Adds unnecessary complexity and objects stored in this bucket are not sensistive (they are derived from this open source template)
+    # checkov:skip=CKV_AWS_21:Unnecessary because template is stored in version control and S3 object can be rebuilt trivially
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      BucketName: moodtracker-cloudformation
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
