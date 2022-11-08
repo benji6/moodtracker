@@ -58,7 +58,6 @@ export default function MoodSummary({
       />
       <MoodSummaryItem
         currentValue={currentPeriod.total}
-        displayTrendSentiment
         heading="Moods recorded"
         periodType={periodType}
         previousValue={previousPeriod?.total}
@@ -87,7 +86,6 @@ export default function MoodSummary({
               : TIME.secondsPerMinute)
           }
           decimalPlaces={1}
-          displayTrendSentiment
           heading={`${
             currentPeriod.secondsMeditated >= TIME.secondsPerHour
               ? "Hours"
