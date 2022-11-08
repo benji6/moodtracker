@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { normalizedWeightsSelector } from "../../../selectors";
 import { getEnvelopingCategoryIds } from "../../../utils";
 
-const roundDownToNearest50 = (n: number) => Math.floor(n / 50) * 50;
-const roundUpToNearest50 = (n: number) => Math.ceil(n / 50) * 50;
+const roundDownToNearest10 = (n: number) => Math.floor(n / 10) * 10;
+const roundUpToNearest10 = (n: number) => Math.ceil(n / 10) * 10;
 
 interface Props {
   fromDate: Date;
@@ -32,8 +32,8 @@ export default function WeightChartForPeriod({
   const envelopingValues = envelopingIds.map((id) => weights.byId[id].value);
 
   const range: [number, number] = [
-    roundDownToNearest50(Math.min(...envelopingValues)),
-    roundUpToNearest50(Math.max(...envelopingValues)),
+    roundDownToNearest10(Math.min(...envelopingValues)),
+    roundUpToNearest10(Math.max(...envelopingValues)),
   ];
 
   const data: [number, number][] = envelopingIds.map((id) => {
@@ -42,7 +42,7 @@ export default function WeightChartForPeriod({
   });
 
   const yLabels: [number, string][] = [...Array(11).keys()].map((n) => {
-    const y = Math.round((n / 10) * range[1]);
+    const y = Math.round((n / 10) * (range[1] - range[0]) + range[0]);
     return [y, String(y)];
   });
 
