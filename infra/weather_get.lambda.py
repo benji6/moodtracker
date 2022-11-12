@@ -12,7 +12,7 @@ APP_ID = region = os.environ["OPENWEATHER_API_KEY"]
 HEADERS = {"Content-Type": "application/json"}
 HEADERS_WITH_CACHE_CONTROL = {
     **HEADERS,
-    "Cache-Control": "immutable,max-age=2419200",
+    "Cache-Control": "immutable,max-age=31536000",
 }
 
 
