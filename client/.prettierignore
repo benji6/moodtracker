@@ -1,8 +1,2 @@
-.*ignore
-.*rc
 .parcel-cache
-*.mp3
-*.png
-*.svg
-*.toml
 dist
