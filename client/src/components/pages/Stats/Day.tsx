@@ -35,6 +35,7 @@ import RedirectHome from "../../RedirectHome";
 import { Link, useParams } from "react-router-dom";
 import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "./WeightChartForPeriod";
+import WeatherForPeriod from "./WeatherForPeriod";
 
 const X_LABELS_COUNT = 6;
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -134,6 +135,7 @@ export default function Day() {
         toDate={nextDate}
         xLabels={xLabels}
       />
+      <WeatherForPeriod fromDate={date} toDate={nextDate} />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
       {moodIds ? (
         <Paper>

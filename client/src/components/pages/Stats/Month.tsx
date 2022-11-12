@@ -42,6 +42,7 @@ import { Link, useParams } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
 import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "./WeightChartForPeriod";
+import WeatherForPeriod from "./WeatherForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -200,6 +201,7 @@ export default function Month() {
         toDate={nextDate}
         xLabels={xLabels}
       />
+      <WeatherForPeriod fromDate={date} toDate={nextDate} />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );

@@ -35,6 +35,7 @@ import MoodCloud from "./MoodCloud";
 import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
+import WeatherForPeriod from "./WeatherForPeriod";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -157,6 +158,7 @@ export default function Week() {
         xLabels={xLabels}
         xLines={xLines}
       />
+      <WeatherForPeriod fromDate={date} toDate={nextDate} />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
