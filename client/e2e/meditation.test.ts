@@ -1,10 +1,11 @@
 import puppeteer from "puppeteer";
 import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
-import { createAndSetUpBrowser, createPageAndSignIn } from "./utils";
-
-const waitForTransitionToComplete = (): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, 300));
+import {
+  createAndSetUpBrowser,
+  createPageAndSignIn,
+  waitForTransitionToComplete,
+} from "./utils";
 
 describe("meditation", () => {
   let browser: puppeteer.Browser;

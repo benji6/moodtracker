@@ -36,6 +36,8 @@ export const signIn = async (page: puppeteer.Page): Promise<void> => {
     signInLink.evaluate((el) => el.click()),
   ]);
 
+  await waitForTransitionToComplete();
+
   const emailInput = (await page.waitForSelector(
     '[type="email"]'
   )) as ElementHandle<HTMLInputElement>;
@@ -62,3 +64,6 @@ export const signIn = async (page: puppeteer.Page): Promise<void> => {
   await closeButton.evaluate((el) => el.click());
   await page.waitForSelector(SELECTORS.moodList);
 };
+
+export const waitForTransitionToComplete = (): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, 300));

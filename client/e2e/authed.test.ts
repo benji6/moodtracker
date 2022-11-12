@@ -1,9 +1,11 @@
 import puppeteer from "puppeteer";
 import { ROOT_DOCUMENT_TITLE, SELECTORS, URLS } from "./constants";
-import { createAndSetUpBrowser, createPageAndSignIn, signIn } from "./utils";
-
-const waitForTransitionToComplete = (): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, 300));
+import {
+  createAndSetUpBrowser,
+  createPageAndSignIn,
+  signIn,
+  waitForTransitionToComplete,
+} from "./utils";
 
 describe("authed", () => {
   let browser: puppeteer.Browser;
