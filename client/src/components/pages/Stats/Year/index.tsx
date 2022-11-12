@@ -39,6 +39,7 @@ import MoodChartForPeriod from "../MoodChartForPeriod";
 import addMonths from "date-fns/addMonths";
 import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "../WeightChartForPeriod";
+import WeatherForPeriod from "../WeatherForPeriod";
 
 const isoYearRegex = /^\d{4}$/;
 
@@ -184,6 +185,7 @@ export default function Year() {
         xLabels={xLabels}
         xLines={xLines}
       />
+      <WeatherForPeriod fromDate={date} toDate={nextDate} />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );
