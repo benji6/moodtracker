@@ -97,11 +97,18 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
           {locationByIdEntries.length > 1 ? "s" : ""} recorded for this period
         </SubHeading>
       </h3>
-      <div className="weather-for-period__icons">
-        {iconParams.map(({ iconName, key, weatherColor }) => (
-          <Icon color={weatherColor} key={key} name={iconName} />
-        ))}
-      </div>
+      {iconParams.length && (
+        <div
+          className="weather-for-period__icons"
+          style={{
+            fontSize: `${4 - Math.min((3.2 * iconParams.length) / 64, 3.2)}em`,
+          }}
+        >
+          {iconParams.map(({ iconName, key, weatherColor }) => (
+            <Icon color={weatherColor} key={key} name={iconName} />
+          ))}
+        </div>
+      )}
       {loadingCount || errorCount ? (
         <p>
           <small>

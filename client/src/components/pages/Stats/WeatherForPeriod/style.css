@@ -1,6 +1,12 @@
 .weather-for-period__icons {
+  --icon-size: 1em;
+
+  align-content: center;
   display: grid;
   gap: var(--space-0);
-  grid-template-columns: repeat(auto-fit, minmax(1em, 1fr));
-  justify-items: center;
+  grid-auto-rows: var(--icon-size);
+  grid-template-columns: repeat(auto-fit, var(--icon-size));
+  justify-content: center;
+  margin-block: var(--space-0);
+  place-items: center;
 }
