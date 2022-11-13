@@ -105,19 +105,24 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
       {loadingCount || errorCount ? (
         <p>
           <small>
-            <Spinner inline margin="end" />
-            Fetching weather data (may require an internet connection)...{" "}
-            {integerPercentFormatter.format(
-              successCount / locationByIdEntries.length
-            )}
-            {Boolean(errorCount) && (
+            {Boolean(loadingCount) && (
               <>
-                <br />
-                <span className="negative">
-                  Could not fetch weather for {errorCount} location
-                  {errorCount > 1 ? "s" : ""}, please try again later
-                </span>
+                <Spinner inline margin="end" />
+                Fetching weather data (may require an internet connection)...{" "}
+                {integerPercentFormatter.format(
+                  successCount / locationByIdEntries.length
+                )}
               </>
+            )}
+            {Boolean(errorCount && loadingCount) && <br />}
+            {Boolean(errorCount) && (
+              <span className="negative">
+                Could not fetch weather for{" "}
+                {integerPercentFormatter.format(
+                  errorCount / locationByIdEntries.length
+                )}{" "}
+                of locations, please try again later
+              </span>
             )}
           </small>
         </p>
