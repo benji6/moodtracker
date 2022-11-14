@@ -153,7 +153,17 @@ export const getNormalizedTagsFromDescription = (
   return descriptions;
 };
 
-// hard to name, but will return all moods within
+const bisectLeft = (xs: string[], x: string, lo = 0) => {
+  let hi = xs.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (xs[mid] < x) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+};
+
+// Hard to name, but will return all moods within
 // date range and if they exist will also include
 // first mood before range and first mood after range
 export const getEnvelopingCategoryIds = (
@@ -172,20 +182,12 @@ export const getEnvelopingCategoryIds = (
   const fromIso = fromDate.toISOString();
   const toIso = toDate.toISOString();
 
-  let i = 0;
-  for (; i < ids.length; i++) if (ids[i] >= fromIso) break;
-
-  const envelopingMoodIds: NormalizedMoods["allIds"] = [];
-
-  if (i > 0) envelopingMoodIds.push(ids[i - 1]);
-
-  for (; i < ids.length; i++) {
-    const id = ids[i];
-    envelopingMoodIds.push(id);
-    if (id > toIso) break;
-  }
-
-  return envelopingMoodIds;
+  const i = bisectLeft(ids, fromIso);
+  const j = bisectLeft(ids, toIso, i);
+  return ids.slice(
+    Math.max(i - 1, 0),
+    Math.min(j + 2 - Number(i === j), ids.length + 1)
+  );
 };
 
 export const getIdsInInterval = (
