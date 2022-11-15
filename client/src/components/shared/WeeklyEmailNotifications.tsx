@@ -1,5 +1,5 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner, Toggle } from "eri";
-import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../..";
 import {
   weeklyEmailsDisable,
@@ -10,7 +10,7 @@ import { ERRORS } from "../../constants";
 
 export default function WeeklyEmailNotifications() {
   const { data, isError, isLoading } = useQuery(
-    "weekly-emails",
+    ["weekly-emails"],
     weeklyEmailsGet
   );
 
@@ -20,7 +20,7 @@ export default function WeeklyEmailNotifications() {
     {
       onSuccess: () => {
         queryClient.setQueryData<typeof data>(
-          "weekly-emails",
+          ["weekly-emails"],
           (isEnabled) => !isEnabled
         );
       },

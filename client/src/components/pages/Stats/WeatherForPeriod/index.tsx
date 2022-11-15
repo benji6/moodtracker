@@ -1,12 +1,18 @@
+import { useQueries } from "@tanstack/react-query";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
-import { useQueries } from "react-query";
 import { useSelector } from "react-redux";
 import { fetchWeather } from "../../../../api";
+import { WEATHER_QUERY_OPTIONS } from "../../../../constants";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 import { eventsSelector } from "../../../../selectors";
 import { DeviceGeolocation, WeatherApiResponse } from "../../../../types";
 import { getIdsInInterval, getWeatherIconAndColor } from "../../../../utils";
 import "./style.css";
+
+type QueryKey = [
+  "weather",
+  { date: Date; latitude: number; longitude: number }
+];
 
 interface Props {
   fromDate: Date;
@@ -28,12 +34,19 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
       locationByIdEntries.push([id, event.payload.location]);
   }
 
-  const results = useQueries(
-    locationByIdEntries.reduce(
-      (queries: Parameters<typeof useQueries>[0], [id, location]) => {
+  const results = useQueries({
+    queries: locationByIdEntries.reduce(
+      (
+        queries: {
+          queryFn: typeof fetchWeather;
+          queryKey: QueryKey;
+        }[],
+        [id, location]
+      ) => {
         return [
           ...queries,
           {
+            ...WEATHER_QUERY_OPTIONS,
             queryKey: [
               "weather",
               {
@@ -41,14 +54,14 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
                 latitude: location.latitude,
                 longitude: location.longitude,
               },
-            ] as const,
+            ] as QueryKey,
             queryFn: fetchWeather,
           },
         ];
       },
       []
-    )
-  );
+    ),
+  });
 
   if (!locationByIdEntries.length) return null;
 

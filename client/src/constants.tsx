@@ -54,6 +54,7 @@ export const TIME = {
   secondsPerDay: 86400,
   secondsPerHour: 3600,
   secondsPerMinute: 60,
+  secondsPerYear: 31536000,
 } as const;
 
 export const TEST_IDS = (() => {
@@ -123,6 +124,12 @@ export const FIELDS = {
     supportiveText: "The best time to weigh yourself is after you wake up",
     type: "number",
   },
+} as const;
+
+export const WEATHER_QUERY_OPTIONS = {
+  cacheTime: Infinity,
+  networkMode: "offlineFirst",
+  staleTime: TIME.secondsPerYear * 1e3,
 } as const;
 
 const now = Date.now();
