@@ -22,10 +22,48 @@ import {
   getDenormalizedDataInInterval,
   capitalizeFirstLetter,
   getWeatherIconAndColor,
+  bisectLeft,
 } from "./utils";
 import { MOOD_RANGE } from "./constants";
 
 describe("utils", () => {
+  test("bisectLeft", () => {
+    expect(bisectLeft([], "2020")).toBe(0);
+    expect(bisectLeft(["2019"], "2020")).toBe(1);
+    expect(bisectLeft(["2020"], "2020")).toBe(0);
+    expect(bisectLeft(["2021"], "2020")).toBe(0);
+
+    const testArray = [
+      "2015",
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025",
+    ];
+
+    expect(bisectLeft(testArray, "2014")).toBe(0);
+    expect(bisectLeft(testArray, "2015")).toBe(0);
+    expect(bisectLeft(testArray, "2020")).toBe(5);
+    expect(bisectLeft(testArray, "2025")).toBe(10);
+    expect(bisectLeft(testArray, "2026")).toBe(11);
+    expect(bisectLeft(testArray, "2027")).toBe(11);
+
+    expect(bisectLeft(testArray, "2014", 1)).toBe(1);
+    expect(bisectLeft(testArray, "2015", 2)).toBe(2);
+    expect(bisectLeft(testArray, "2020", 100)).toBe(100);
+    expect(bisectLeft(testArray, "2025", 100)).toBe(100);
+    expect(bisectLeft(testArray, "2026", 100)).toBe(100);
+    expect(bisectLeft(testArray, "2027", 100)).toBe(100);
+    expect(bisectLeft(testArray, "2020", 4)).toBe(5);
+    expect(bisectLeft(testArray, "2020", 5)).toBe(5);
+  });
+
   test("capitalizeFirstLetter", () => {
     expect(capitalizeFirstLetter("")).toBe("");
     expect(capitalizeFirstLetter("a")).toBe("A");
@@ -725,7 +763,7 @@ describe("utils", () => {
     it("returns an empty array when there are no moods within the interval", () => {
       expect(
         getIdsInInterval(
-          ["2020-09-01T23:59:59", "2020-09-03T00:00:01"],
+          ["2020-09-01T23:59:59Z", "2020-09-03T00:00:01Z"],
           new Date("2020-09-02T00:00:00"),
           new Date("2020-09-03T00:00:00")
         )
@@ -735,26 +773,26 @@ describe("utils", () => {
     it("returns all moods when all moods are within the interval", () => {
       expect(
         getIdsInInterval(
-          ["2020-09-02T00:00:00", "2020-09-03T00:00:00"],
+          ["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"],
           new Date("2020-09-02T00:00:00"),
           new Date("2020-09-03T00:00:00")
         )
-      ).toEqual(["2020-09-02T00:00:00", "2020-09-03T00:00:00"]);
+      ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
     });
 
     it("only returns moods that are within the interval", () => {
       expect(
         getIdsInInterval(
           [
-            "2020-09-01T23:59:59",
-            "2020-09-02T00:00:00",
-            "2020-09-03T00:00:00",
-            "2020-09-03T00:00:01",
+            "2020-09-01T23:59:59Z",
+            "2020-09-02T00:00:00Z",
+            "2020-09-03T00:00:00Z",
+            "2020-09-03T00:00:01Z",
           ],
           new Date("2020-09-02T00:00:00"),
           new Date("2020-09-03T00:00:00")
         )
-      ).toEqual(["2020-09-02T00:00:00", "2020-09-03T00:00:00"]);
+      ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
     });
   });
 
@@ -790,10 +828,10 @@ describe("utils", () => {
       expect(
         getDenormalizedDataInInterval(
           {
-            allIds: ["2020-09-01T23:59:59", "2020-09-03T00:00:01"],
+            allIds: ["2020-09-01T23:59:59Z", "2020-09-03T00:00:01Z"],
             byId: {
-              "2020-09-01T23:59:59": { value: 60 },
-              "2020-09-03T00:00:01": { value: 70 },
+              "2020-09-01T23:59:59Z": { value: 60 },
+              "2020-09-03T00:00:01Z": { value: 70 },
             },
           },
           new Date("2020-09-02T00:00:00"),
@@ -806,10 +844,10 @@ describe("utils", () => {
       expect(
         getDenormalizedDataInInterval(
           {
-            allIds: ["2020-09-02T00:00:00", "2020-09-03T00:00:00"],
+            allIds: ["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"],
             byId: {
-              "2020-09-02T00:00:00": { value: 60 },
-              "2020-09-03T00:00:00": { value: 70 },
+              "2020-09-02T00:00:00Z": { value: 60 },
+              "2020-09-03T00:00:00Z": { value: 70 },
             },
           },
           new Date("2020-09-02T00:00:00"),
@@ -823,16 +861,16 @@ describe("utils", () => {
         getDenormalizedDataInInterval(
           {
             allIds: [
-              "2020-09-01T23:59:59",
-              "2020-09-02T00:00:00",
-              "2020-09-03T00:00:00",
-              "2020-09-03T00:00:01",
+              "2020-09-01T23:59:59Z",
+              "2020-09-02T00:00:00Z",
+              "2020-09-03T00:00:00Z",
+              "2020-09-03T00:00:01Z",
             ],
             byId: {
-              "2020-09-01T23:59:59": { value: 60 },
-              "2020-09-02T00:00:00": { value: 65 },
-              "2020-09-03T00:00:00": { value: 70 },
-              "2020-09-03T00:00:01": { value: 75 },
+              "2020-09-01T23:59:59Z": { value: 60 },
+              "2020-09-02T00:00:00Z": { value: 65 },
+              "2020-09-03T00:00:00Z": { value: 70 },
+              "2020-09-03T00:00:01Z": { value: 75 },
             },
           },
           new Date("2020-09-02T00:00:00"),

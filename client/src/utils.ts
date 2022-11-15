@@ -14,6 +14,16 @@ import {
   Weight,
 } from "./types";
 
+export const bisectLeft = (xs: string[], x: string, lo = 0) => {
+  let hi = xs.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (xs[mid] < x) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+};
+
 export const capitalizeFirstLetter = (s: string): string =>
   s && `${s[0].toUpperCase()}${s.toLowerCase().slice(1)}`;
 
@@ -153,16 +163,6 @@ export const getNormalizedTagsFromDescription = (
   return descriptions;
 };
 
-const bisectLeft = (xs: string[], x: string, lo = 0) => {
-  let hi = xs.length;
-  while (lo < hi) {
-    const mid = (lo + hi) >> 1;
-    if (xs[mid] < x) lo = mid + 1;
-    else hi = mid;
-  }
-  return lo;
-};
-
 // Hard to name, but will return all moods within
 // date range and if they exist will also include
 // first mood before range and first mood after range
@@ -196,17 +196,12 @@ export const getIdsInInterval = (
   toDate: Date
 ): typeof ids => {
   if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
-
-  const idsInInterval: typeof ids = [];
-
-  for (const id of ids) {
-    const date = new Date(id);
-    if (date < fromDate) continue;
-    if (date > toDate) break;
-    idsInInterval.push(id);
-  }
-
-  return idsInInterval;
+  const fromIso = fromDate.toISOString();
+  const toIso = toDate.toISOString();
+  const i = bisectLeft(ids, fromIso);
+  const j = bisectLeft(ids, toIso, i);
+  if (toIso < ids[i]) return [];
+  return ids.slice(i, j + 1);
 };
 
 export const getDenormalizedDataInInterval = <
