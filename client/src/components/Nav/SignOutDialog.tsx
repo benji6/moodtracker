@@ -1,6 +1,7 @@
 import { Dialog, Button } from "eri";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { queryClient } from "../..";
 import { userPool } from "../../cognito";
 import { TEST_IDS } from "../../constants";
 import { eventsSelector } from "../../selectors";
@@ -22,6 +23,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
     if (currentUser) currentUser.signOut();
     onClose();
     for (const slice of slicesToClearOnLogout) dispatch(slice.actions.clear());
+    queryClient.clear();
     setIsLoading(false);
   };
 
