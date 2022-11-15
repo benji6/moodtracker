@@ -64,7 +64,7 @@ Resources:
       StageDescription:
         DataTraceEnabled: true
         LoggingLevel: ERROR
-        ThrottlingBurstLimit: 1024
+        ThrottlingBurstLimit: 2048
         ThrottlingRateLimit: 2
       StageName: prod
   ApiGatewayEventsResource:
