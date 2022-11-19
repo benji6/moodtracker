@@ -1,43 +1,15 @@
-import { Paper, ShareButton, Spinner } from "eri";
-import { useEffect, useState } from "react";
+import { Paper, ShareButton } from "eri";
 import { Link } from "react-router-dom";
-import { usageGet } from "../../../api";
 import {
   GH_USER_URL,
   MOODTRACKER_DESCRIPTION,
   REPO_ISSUES_URL,
   REPO_URL,
 } from "../../../constants";
-import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
-import { percentFormatter } from "../../../formatters/numberFormatters";
-import { Usage } from "../../../types";
-import MoodCell from "../../shared/MoodCell";
 import Version from "../../shared/Version";
-import UsageTable from "./UsageTable";
+import Usage from "./Usage";
 
 export default function About() {
-  const [usage, setUsage] = useState<Usage | undefined>();
-  const [error, setError] = useState<
-    "NETWORK_ERROR" | "SERVER_ERROR" | undefined
-  >();
-
-  useEffect(() => {
-    usageGet().then(
-      (usage) => {
-        setUsage(usage);
-        if (error) setError(undefined);
-      },
-      (e: Error) => {
-        setError(e.message === "500" ? "SERVER_ERROR" : "NETWORK_ERROR");
-      }
-    );
-    // Run only once on mount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const formatRetentionFunnelPercentage = (n: number): string =>
-    usage ? percentFormatter.format(usage.MAUs ? n / usage.MAUs : 0) : "";
-
   return (
     <Paper.Group>
       <Paper>
@@ -149,136 +121,7 @@ export default function About() {
           .
         </p>
       </Paper>
-      <Paper>
-        <h2>Usage</h2>
-        {error ? (
-          error === "SERVER_ERROR" ? (
-            <p className="negative">
-              Error fetching the latest usage statistics. Something has gone
-              wrong on our side, if the problem persists feel free to{" "}
-              <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
-                raise an issue on GitHub
-              </a>
-              .
-            </p>
-          ) : (
-            <p className="negative">
-              Error fetching the latest usage statistics. You need an internet
-              connection to fetch this data, please check and try refreshing.
-            </p>
-          )
-        ) : usage ? (
-          <>
-            <p>
-              In case you were interested in how other people are using
-              MoodTracker you can see some anonymized usage data here. This gets
-              automatically updated every day or so.
-            </p>
-            <h3>Active users</h3>
-            <p>
-              Confirmed users are users who have confirmed their email address.
-            </p>
-            <UsageTable
-              data={[
-                ["Users over the last 24 hours", usage.DAUs],
-                ["Users over the last 7 days", usage.WAUs],
-                ["Users over the last 30 days", usage.MAUs],
-                ["Confirmed users", usage.confirmedUsers],
-                [
-                  "New confirmed users over the last 30 days",
-                  usage.newUsersInLast30Days,
-                ],
-              ]}
-            />
-            <h3>Retention</h3>
-            <p>
-              Active users are users who have tracked at least one thing over
-              the last 30 days.
-            </p>
-            <UsageTable
-              data={[
-                [
-                  "Active users who joined less than 30 days ago",
-                  formatRetentionFunnelPercentage(
-                    usage.MAUFunnel["<7 days"] +
-                      usage.MAUFunnel[">=7 & <30 days"]
-                  ),
-                ],
-                [
-                  "Active users who joined between 30 and 90 days ago",
-                  formatRetentionFunnelPercentage(
-                    usage.MAUFunnel[">=30 & <60 days"] +
-                      usage.MAUFunnel[">=60 & <90 days"]
-                  ),
-                ],
-                [
-                  "Active users who joined between 90 and 365 days ago",
-                  formatRetentionFunnelPercentage(
-                    usage.MAUFunnel[">=90 & <365 days"]
-                  ),
-                ],
-                [
-                  "Active users who joined over a year ago",
-                  formatRetentionFunnelPercentage(
-                    usage.MAUFunnel[">=365 days"]
-                  ),
-                ],
-                [
-                  "Retention of users since a month ago",
-                  percentFormatter.format(usage.CRR),
-                ],
-              ]}
-            />
-            <h3>General usage</h3>
-            <UsageTable
-              data={[
-                [
-                  "Average mood for all users over the last 7 days",
-                  // eslint-disable-next-line react/jsx-key
-                  <MoodCell mood={usage.meanMoodInLast7Days} />,
-                ],
-                [
-                  "Average mood for all users over the last 30 days",
-                  // eslint-disable-next-line react/jsx-key
-                  <MoodCell mood={usage.meanMoodInLast30Days} />,
-                ],
-                [
-                  "Total time meditated by all users over the last 30 days",
-                  formatDurationFromSeconds(
-                    usage.meditationSecondsInLast30Days
-                  ),
-                ],
-                [
-                  "Number of users who have logged a meditation over the last 30 days",
-                  formatDurationFromSeconds(usage.meditationMAUs),
-                ],
-                [
-                  "Number of users who have logged a weight over the last 30 days",
-                  usage.weightMAUs,
-                ],
-                [
-                  "Total events recorded over the last 30 days",
-                  usage.eventsInLast30Days,
-                ],
-              ]}
-            />
-            <h3>Settings</h3>
-            <UsageTable
-              data={[
-                [
-                  "Users who are signed up to weekly emails",
-                  usage.usersWithWeeklyEmails,
-                ],
-              ]}
-            />
-          </>
-        ) : (
-          <p>
-            <Spinner inline margin="end" />
-            Fetching the latest stats...
-          </p>
-        )}
-      </Paper>
+      <Usage />
       <Paper>
         <h2>Acknowledgements</h2>
         <ul>
