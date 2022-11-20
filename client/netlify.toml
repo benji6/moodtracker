@@ -4,7 +4,7 @@
 [[headers]]
   for = "*"
   [headers.values]
-    Content-Security-Policy = "frame-ancestors 'none';report-uri https://o4504114345017344.ingest.sentry.io/api/4504114369527808/security/?sentry_key=7fc7812ff3d6482ba2113d6fc90177fa"
+    Content-Security-Policy = "default-src 'self';connect-src 'self' https://o4504114345017344.ingest.sentry.io/api/4504114369527808/envelope/;frame-ancestors 'none';report-uri https://o4504114345017344.ingest.sentry.io/api/4504114369527808/security/?sentry_key=7fc7812ff3d6482ba2113d6fc90177fa"
     X-Content-Type-Options = "nosniff"
 [[headers]]
   for = "*.(avif|css|md|png|svg|woff2)"
