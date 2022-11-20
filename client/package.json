@@ -20,7 +20,9 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
     "@sentry/browser": "^7.17.4",
+    "@tanstack/query-async-storage-persister": "^4.15.1",
     "@tanstack/react-query": "^4.16.1",
+    "@tanstack/react-query-persist-client": "^4.16.1",
     "amazon-cognito-identity-js": "^5.2.6",
     "d3-geo": "^3.0.1",
     "d3-interpolate": "^3.0.1",

@@ -3,12 +3,13 @@ import { EventsStateToStore } from "./store/eventsSlice";
 import { UserDetails } from "./store/userSlice";
 import { Settings } from "./types";
 
-const USER_KEY = "moodtracker:user";
+const APPLICATION_NAME = "moodtracker";
+const USER_KEY = `${APPLICATION_NAME}:user`;
 
 const makeEventsKey = (userId: string): string =>
-  `moodtracker:${userId}:events`;
+  `${APPLICATION_NAME}:${userId}:events`;
 const makeSettingsKey = (userId: string): string =>
-  `moodtracker:${userId}:settings`;
+  `${APPLICATION_NAME}:${userId}:settings`;
 
 export default {
   // events
