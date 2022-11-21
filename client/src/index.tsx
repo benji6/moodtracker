@@ -61,11 +61,3 @@ if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator)
     new URL("service-worker.ts", import.meta.url),
     { type: "module" }
   );
-
-// TODO delete this around 2023-01-01
-window.requestIdleCallback(async () => {
-  const registration = await navigator.serviceWorker.ready;
-  if ("periodicSync" in registration) {
-    (registration as any).periodicSync.unregister("daily-notification");
-  }
-});
