@@ -1,0 +1,8 @@
+{
+  "compress": {
+    "global_defs": {
+      "__SENTRY_BROWSER_BUNDLE__": "false",
+      "__SENTRY_DEBUG__": "false"
+    }
+  }
+}
