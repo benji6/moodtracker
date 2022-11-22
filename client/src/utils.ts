@@ -3,7 +3,7 @@ import addDays from "date-fns/addDays";
 import getDay from "date-fns/getDay";
 import set from "date-fns/set";
 import { Icon } from "eri";
-import { MOOD_RANGE, TIME } from "./constants";
+import { MOOD_EXTENT, TIME } from "./constants";
 import { captureException } from "./sentry";
 import {
   Meditation,
@@ -55,7 +55,7 @@ export const computeAverageMoodInInterval = (
 
   const maxArea =
     (Math.min(d1, latestMoodTime) - Math.max(d0, earliestMoodTime)) *
-    (MOOD_RANGE[1] - MOOD_RANGE[0]);
+    MOOD_EXTENT;
 
   let area = 0;
 
@@ -104,7 +104,7 @@ export const computeAverageMoodInInterval = (
     area += trapeziumArea(mood0, mood1, t1 - t0);
   }
 
-  return (area / maxArea) * (MOOD_RANGE[1] - MOOD_RANGE[0]);
+  return (area / maxArea) * MOOD_EXTENT;
 };
 
 export const computeMean = (xs: number[]): number | undefined => {

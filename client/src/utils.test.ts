@@ -24,7 +24,7 @@ import {
   getWeatherIconAndColor,
   bisectLeft,
 } from "./utils";
-import { MOOD_RANGE } from "./constants";
+import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 
 describe("utils", () => {
   test("bisectLeft", () => {
@@ -990,7 +990,7 @@ describe("utils", () => {
       `"rgb(48, 255, 32)"`
     );
     expect(
-      moodToColor(MOOD_RANGE[0] + (MOOD_RANGE[1] - MOOD_RANGE[0]) / Math.PI)
+      moodToColor(MOOD_RANGE[0] + MOOD_EXTENT / Math.PI)
     ).toMatchInlineSnapshot(`"rgb(0, 181, 250)"`);
   });
 

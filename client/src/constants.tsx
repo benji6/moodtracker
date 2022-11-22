@@ -12,9 +12,8 @@ export const MEDITATION_SEARCH_PARAM_TIME_KEY = "t";
 export const MEDITATION_STATS_HOURS_RANGE = 4;
 export const MINIMUM_WORD_CLOUD_WORDS = 5;
 export const MOOD_RANGE: [number, number] = [0, 10];
-export const MOOD_INTEGERS = [
-  ...Array(MOOD_RANGE[1] - MOOD_RANGE[0] + 1).keys(),
-] as const;
+export const MOOD_EXTENT = (MOOD_RANGE[1] - MOOD_RANGE[0]) as 10;
+export const MOOD_INTEGERS = [...Array(MOOD_EXTENT + 1).keys()] as const;
 
 export const GH_USER_URL = "https://github.com/benji6";
 export const REPO_URL = `${GH_USER_URL}/moodtracker`;
