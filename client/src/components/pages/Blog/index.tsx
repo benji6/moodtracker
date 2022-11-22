@@ -155,8 +155,20 @@ export default function Blog() {
         <p>Welcome to the MoodTracker blog!</p>
         <p>
           This space is for announcing interesting new features and
-          developments. Less exciting stuff like bugfixes, performance
-          improvements and minor UI changes won&apos;t get a mention here.
+          developments.
+        </p>
+        <p>
+          Less exciting stuff like bugfixes, performance improvements and minor
+          UI changes won&apos;t get a mention here (if you&apos;re interested
+          though you can see a{" "}
+          <a
+            href="https://github.com/benji6/moodtracker/commits/master"
+            rel="noopener"
+            target="blank"
+          >
+            full technical changelog on GitHub
+          </a>
+          ).
         </p>
         <Version />
       </Paper>
