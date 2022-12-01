@@ -83,7 +83,7 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy"
 
 [[package]]
 name = "bc-detect-secrets"
-version = "1.3.13"
+version = "1.3.14"
 description = "Tool for detecting secrets in the codebase"
 category = "main"
 optional = false
@@ -204,7 +204,7 @@ unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.2.15"
+version = "2.2.106"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -215,7 +215,7 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-detect-secrets = "1.3.13"
+bc-detect-secrets = "1.3.14"
 bc-python-hcl2 = "0.3.47"
 boto3 = ">=1.17"
 cachetools = "*"
@@ -244,10 +244,11 @@ pycep-parser = "0.3.9"
 pyston = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
 pyston-autoload = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\""}
 pyyaml = ">=5.4.1"
+requests = ">=2.26.0"
 schema = "*"
 semantic-version = "*"
 tabulate = "*"
-termcolor = "<=2.0.1"
+termcolor = "*"
 tqdm = "*"
 typing-extensions = ">=4.1.0"
 update-checker = "*"
@@ -1015,7 +1016,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b06fafeb5adf9aed6c3de3d190484882e7f63927a863856fd33246edc35dd7c7"
+content-hash = "53de0dad59458e7f5442d27bf4ac8d1c06c0b0d97de28f3ecbe93e92f3c95e47"
 
 [metadata.files]
 aiodns = [
@@ -1117,8 +1118,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 bc-detect-secrets = [
-    {file = "bc-detect-secrets-1.3.13.tar.gz", hash = "sha256:1bb506f383fc7246f03e7952d8735a455351bb07ebf24bb14e6aff5ecf937e21"},
-    {file = "bc_detect_secrets-1.3.13-py3-none-any.whl", hash = "sha256:0a4e0e263644b1541d522239916af7f94eb2ee3b9f38a9a5e4feefcef38b1e00"},
+    {file = "bc-detect-secrets-1.3.14.tar.gz", hash = "sha256:cabe8a69358f8cd85e84232c81a6557934d72c9538cef566e7a886f397021e35"},
+    {file = "bc_detect_secrets-1.3.14-py3-none-any.whl", hash = "sha256:18537d13ed88ccbdd71e1e715bc2c91475a2f7b7875864adf6a9ed44df52c6bb"},
 ]
 bc-python-hcl2 = [
     {file = "bc-python-hcl2-0.3.47.tar.gz", hash = "sha256:178bc09fa1d1bcd35cfb865f182cd479fd786cd9b14c80b010d99a39edcc6877"},
@@ -1205,8 +1206,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.2.15-py3-none-any.whl", hash = "sha256:2183c461179632af66561d52c1eabb4eeecbbe4eed54bd3f15342f8fabca2db7"},
-    {file = "checkov-2.2.15.tar.gz", hash = "sha256:e4d52a095fbed0c7413db06449fc2c645b94a03f5daf527ee680282a45a12d64"},
+    {file = "checkov-2.2.106-py3-none-any.whl", hash = "sha256:ad55942d9e1fe16a10ca07e3af3f3600d1c1b9605b556c921e4fa63c52156d5b"},
+    {file = "checkov-2.2.106.tar.gz", hash = "sha256:d8ff9d95afacf6c3664e34e72f56afb81d2f08c43a2051601d610594dbb0f55a"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
