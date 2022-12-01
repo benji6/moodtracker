@@ -50,7 +50,7 @@
     "@types/marked": "^4.0.6",
     "@types/papaparse": "^5.3.5",
     "@types/react": "^18.0.18",
-    "@types/react-dom": "^18.0.3",
+    "@types/react-dom": "^18.0.9",
     "@types/react-redux": "^7.1.16",
     "@types/topojson-client": "^3.1.1",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
