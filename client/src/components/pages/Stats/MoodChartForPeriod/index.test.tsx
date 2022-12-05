@@ -1,4 +1,4 @@
-import { computeTrendlinePoints } from "./MoodChartForPeriod";
+import computeTrendlinePoints from "./computeTrendlinePoints";
 
 describe("MoodChartForPeriod", () => {
   test("computeTrendlinePoints", () => {

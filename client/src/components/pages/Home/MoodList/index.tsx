@@ -15,28 +15,28 @@ import {
   mapRight,
   roundDateDown,
   roundDateUp,
-} from "../../../utils";
+} from "../../../../utils";
 import {
   denormalizedMoodsSelector,
   moodIdsByDateSelector,
   normalizedDescriptionWordsSelector,
   normalizedMoodsSelector,
-} from "../../../selectors";
+} from "../../../../selectors";
 import { useSelector } from "react-redux";
 import {
   DESCRIPTION_MAX_LENGTH,
   FIELDS,
   MOOD_INTEGERS,
   TEST_IDS,
-} from "../../../constants";
-import OptionalMoodCell from "./OptionalMoodCell";
-import { FluxStandardAction } from "../../../types";
-import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
-import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
-import MoodCard from "../../shared/MoodCard";
+} from "../../../../constants";
+import OptionalMoodCell from "../OptionalMoodCell";
+import MoodGradientForPeriod from "../../Stats/MoodGradientForPeriod";
+import { dateWeekdayFormatter } from "../../../../formatters/dateTimeFormatters";
+import MoodCard from "../../../shared/MoodCard";
 import addDays from "date-fns/addDays";
 import { Link } from "react-router-dom";
-import DateRangeSelector from "../../shared/DateRangeSelector";
+import DateRangeSelector from "../../../shared/DateRangeSelector";
+import { initialState, reducer } from "./moodListReducer";
 
 const DAYS_PER_PAGE = 7;
 
@@ -53,52 +53,6 @@ const groupMoodIdsByDay = (
   }
 
   return Object.entries(moodsGroupedByDate);
-};
-
-type Action =
-  | FluxStandardAction<"filterDescription/set", string>
-  | FluxStandardAction<"filterMood/clear">
-  | FluxStandardAction<"filterMood/set", number>
-  | FluxStandardAction<"page/set", number>
-  | FluxStandardAction<"searchString/set", string>
-  | FluxStandardAction<"shouldShowFilter/set", boolean>;
-
-export interface State {
-  filterDescription: string;
-  filterMood: number | undefined;
-  page: number;
-  searchString: string;
-  shouldShowFilter: boolean;
-}
-
-export const initialState: State = {
-  filterDescription: "",
-  filterMood: undefined,
-  page: 0,
-  searchString: "",
-  shouldShowFilter: false,
-};
-
-export const reducer = (state: State, action: Action) => {
-  switch (action.type) {
-    case "filterDescription/set":
-      return { ...state, filterDescription: action.payload, page: 0 };
-    case "filterMood/clear":
-      return { ...state, filterMood: undefined, page: 0 };
-    case "filterMood/set":
-      return { ...state, filterMood: action.payload, page: 0 };
-    case "page/set":
-      return { ...state, page: action.payload };
-    case "searchString/set":
-      return { ...state, searchString: action.payload, page: 0 };
-    case "shouldShowFilter/set":
-      if (action.payload)
-        return {
-          ...state,
-          shouldShowFilter: action.payload,
-        };
-      return { ...initialState };
-  }
 };
 
 export default function MoodList() {

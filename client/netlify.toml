@@ -12,7 +12,7 @@
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
 [[headers]]
-  for = "index.*.js"
+  for = "index.*.js|wordCloudWorker.*.js"
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
 [[redirects]]
