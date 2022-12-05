@@ -8,7 +8,7 @@ import eventsSlice from "../../../../store/eventsSlice";
 import { Meditation } from "../../../../types";
 import useKeyboardEscape from "../../../hooks/useKeyboardEscape";
 import { noSleep } from "../nosleep";
-import bell from "./bell";
+import useBell from "./useBell";
 import LogMeditationDialog from "./LogMeditationDialog";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 import { initialState, reducer } from "./reducer";
@@ -18,6 +18,7 @@ export default function MeditationTimer() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
+  const bell = useBell();
 
   const geolocation = useSelector(deviceGeolocationSelector);
   const timerDurationInSeconds = Number(
@@ -99,10 +100,10 @@ export default function MeditationTimer() {
   React.useEffect(() => {
     noSleep.enable();
     return () => {
-      bell.stop();
+      bell?.stop();
       noSleep.disable();
     };
-  }, []);
+  }, [bell]);
 
   React.useEffect(() => {
     let abort = false;
@@ -120,11 +121,12 @@ export default function MeditationTimer() {
         return localDispatch({ payload: t, type: "remainingTime/set" });
 
       localDispatch({ payload: new Date(), type: "timeFinished/set" });
-      bell.start();
+      bell?.start();
       noSleep.disable();
     });
     return () => void (abort = true);
   }, [
+    bell,
     localState.isDimmerEnabled,
     timerDurationInSeconds,
     localState.timerState,
