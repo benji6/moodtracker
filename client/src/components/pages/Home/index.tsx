@@ -3,7 +3,7 @@ import MoodList from "./MoodList";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { useSelector } from "react-redux";
 import {
-  eventsSelector,
+  eventsHasLoadedFromServerSelector,
   normalizedMoodsSelector,
   userIsSignedInSelector,
 } from "../../../selectors";
@@ -16,7 +16,9 @@ export interface HomeState {
 }
 
 export default function Home() {
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const moods = useSelector(normalizedMoodsSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);
 
@@ -24,7 +26,7 @@ export default function Home() {
 
   return (
     <Paper.Group>
-      {events.hasLoadedFromServer ? (
+      {eventsHasLoadedFromServer ? (
         moods.allIds.length ? (
           <MoodList />
         ) : (

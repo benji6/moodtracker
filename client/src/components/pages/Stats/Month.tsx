@@ -9,8 +9,8 @@ import {
 } from "../../../formatters/dateTimeFormatters";
 import {
   normalizedAveragesByWeekSelector,
-  eventsSelector,
   normalizedMoodsSelector,
+  eventsHasLoadedFromServerSelector,
 } from "../../../selectors";
 import {
   createDateFromLocalDateString,
@@ -50,7 +50,9 @@ const isoMonthRegex = /^\d{4}-\d{2}$/;
 
 export default function Month() {
   const { month: monthStr } = useParams();
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const moods = useSelector(normalizedMoodsSelector);
   const normalizedAveragesByWeek = useSelector(
     normalizedAveragesByWeekSelector
@@ -59,7 +61,7 @@ export default function Month() {
   if (!monthStr || !isoMonthRegex.test(monthStr)) return <RedirectHome />;
   const date = createDateFromLocalDateString(monthStr);
   if (!isValid(date)) return <RedirectHome />;
-  if (!events.hasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>

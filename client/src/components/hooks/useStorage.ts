@@ -3,7 +3,11 @@ import storage from "../../storage";
 import { useDispatch, useSelector } from "react-redux";
 import {
   appIsStorageLoadingSelector,
-  eventsSelector,
+  eventsAllIdsSelector,
+  eventsByIdSelector,
+  eventsHasLoadedFromServerSelector,
+  eventsIdsToSyncSelector,
+  eventsNextCursorSelector,
   settingsDataSelector,
   userEmailSelector,
   userIdSelector,
@@ -16,7 +20,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function useStorage() {
   const navigate = useNavigate();
-  const events = useSelector(eventsSelector);
+  const eventsAllIds = useSelector(eventsAllIdsSelector);
+  const eventsById = useSelector(eventsByIdSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
+  const eventsIdsToSync = useSelector(eventsIdsToSyncSelector);
+  const eventsNextCursor = useSelector(eventsNextCursorSelector);
   const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const settingsData = useSelector(settingsDataSelector);
   const userEmail = useSelector(userEmailSelector);
@@ -62,14 +72,22 @@ export default function useStorage() {
   // save events & settings
   React.useEffect(() => {
     if (isStorageLoading || !userId) return;
-    const { allIds, byId, hasLoadedFromServer, idsToSync, nextCursor } = events;
     storage.setEvents(userId, {
-      allIds,
-      byId,
-      hasLoadedFromServer,
-      idsToSync,
-      nextCursor,
+      allIds: eventsAllIds,
+      byId: eventsById,
+      hasLoadedFromServer: eventsHasLoadedFromServer,
+      idsToSync: eventsIdsToSync,
+      nextCursor: eventsNextCursor,
     });
     if (settingsData) storage.setSettings(userId, settingsData);
-  }, [isStorageLoading, settingsData, userId, events]);
+  }, [
+    eventsAllIds,
+    eventsById,
+    eventsHasLoadedFromServer,
+    eventsIdsToSync,
+    eventsNextCursor,
+    isStorageLoading,
+    settingsData,
+    userId,
+  ]);
 }

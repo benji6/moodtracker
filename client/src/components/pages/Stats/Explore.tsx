@@ -9,7 +9,7 @@ import {
 } from "../../../utils";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import {
-  eventsSelector,
+  eventsHasLoadedFromServerSelector,
   hasMeditationsSelector,
   normalizedMeditationsSelector,
   normalizedMoodsSelector,
@@ -71,12 +71,14 @@ export default function Explore() {
     roundDateDown(subDays(dateNow, TIME.daysPerWeek))
   );
   const [dateTo, setDateTo] = React.useState(roundDateUp(dateNow));
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const meditations = useSelector(normalizedMeditationsSelector);
   const showMeditationStats = useSelector(hasMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
 
-  if (!events.hasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>

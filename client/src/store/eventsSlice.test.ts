@@ -1,5 +1,4 @@
 import store, { RootState } from ".";
-import { eventsSelector } from "../selectors";
 import eventsSlice, { createInitialState } from "./eventsSlice";
 
 describe("eventsSlice", () => {
@@ -31,7 +30,7 @@ describe("eventsSlice", () => {
   });
 
   test("initial state", () => {
-    expect(eventsSelector(store.getState())).toEqual(initialState);
+    expect(store.getState().events).toEqual(initialState);
   });
 
   describe("actions", () => {
@@ -48,7 +47,7 @@ describe("eventsSlice", () => {
             payload: { mood: 7 },
           })
         );
-        expect(eventsSelector(store.getState())).toEqual({
+        expect(store.getState().events).toEqual({
           ...initialState,
           allIds: ["2020-05-07T19:53:00.000Z"],
           byId: {
@@ -90,7 +89,7 @@ describe("eventsSlice", () => {
               payload: "2020-05-07T19:39:00.000Z",
             })
           );
-          expect(eventsSelector(store.getState())).toEqual({
+          expect(store.getState().events).toEqual({
             ...initialState,
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:34:00.000Z"],
             byId: {
@@ -119,7 +118,7 @@ describe("eventsSlice", () => {
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
             })
           );
-          expect(eventsSelector(store.getState())).toEqual({
+          expect(store.getState().events).toEqual({
             ...initialState,
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T20:34:00.000Z"],
             byId: {
@@ -169,7 +168,7 @@ describe("eventsSlice", () => {
               payload: { mood: 4 },
             })
           );
-          expect(eventsSelector(store.getState())).toEqual({
+          expect(store.getState().events).toEqual({
             ...initialState,
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T19:39:00.001Z"],
             byId: {
@@ -198,7 +197,7 @@ describe("eventsSlice", () => {
               payload: "2020-05-07T19:39:00.000Z",
             })
           );
-          expect(eventsSelector(store.getState())).toEqual({
+          expect(store.getState().events).toEqual({
             ...initialState,
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T19:39:00.001Z"],
             byId: {
@@ -227,7 +226,7 @@ describe("eventsSlice", () => {
               payload: { id: "2020-05-07T19:39:00.000Z", mood: 7 },
             })
           );
-          expect(eventsSelector(store.getState())).toEqual({
+          expect(store.getState().events).toEqual({
             ...initialState,
             allIds: ["2020-05-07T19:39:00.000Z", "2020-05-07T19:39:00.001Z"],
             byId: {
@@ -252,14 +251,14 @@ describe("eventsSlice", () => {
 
     test("clear", () => {
       store.dispatch(eventsSlice.actions.loadFromStorage(stateWithEvents));
-      expect(eventsSelector(store.getState())).toEqual(stateWithEvents);
+      expect(store.getState().events).toEqual(stateWithEvents);
       store.dispatch(eventsSlice.actions.clear());
-      expect(eventsSelector(store.getState())).toEqual(initialState);
+      expect(store.getState().events).toEqual(initialState);
     });
 
     test("loadFromStorage", () => {
       store.dispatch(eventsSlice.actions.loadFromStorage(stateWithEvents));
-      expect(eventsSelector(store.getState())).toEqual(stateWithEvents);
+      expect(store.getState().events).toEqual(stateWithEvents);
     });
 
     test("syncFromServerStart", () => {
@@ -270,17 +269,17 @@ describe("eventsSlice", () => {
       };
       store.dispatch(eventsSlice.actions.loadFromStorage(stateWithEvents));
       store.dispatch(eventsSlice.actions.syncFromServerStart());
-      expect(eventsSelector(store.getState())).toEqual(expectedState);
+      expect(store.getState().events).toEqual(expectedState);
       store.dispatch(eventsSlice.actions.syncFromServerError());
       store.dispatch(eventsSlice.actions.syncFromServerStart());
-      expect(eventsSelector(store.getState())).toEqual(expectedState);
+      expect(store.getState().events).toEqual(expectedState);
     });
 
     test("syncFromServerError", () => {
       store.dispatch(eventsSlice.actions.loadFromStorage(stateWithEvents));
       store.dispatch(eventsSlice.actions.syncFromServerStart());
       store.dispatch(eventsSlice.actions.syncFromServerError());
-      expect(eventsSelector(store.getState())).toEqual({
+      expect(store.getState().events).toEqual({
         ...stateWithEvents,
         isSyncingFromServer: false,
         syncFromServerError: true,
@@ -295,7 +294,7 @@ describe("eventsSlice", () => {
             events: [],
           })
         );
-        expect(eventsSelector(store.getState())).toEqual({
+        expect(store.getState().events).toEqual({
           ...initialState,
           hasLoadedFromServer: true,
           nextCursor: "cursor-789",
@@ -310,7 +309,7 @@ describe("eventsSlice", () => {
             events: [],
           })
         );
-        expect(eventsSelector(store.getState())).toEqual({
+        expect(store.getState().events).toEqual({
           ...stateWithEvents,
           nextCursor: "cursor-789",
         });
@@ -339,7 +338,7 @@ describe("eventsSlice", () => {
             ],
           })
         );
-        expect(eventsSelector(store.getState())).toEqual({
+        expect(store.getState().events).toEqual({
           ...initialState,
           allIds: [
             "2020-05-07T19:53:00.000Z",
@@ -393,7 +392,7 @@ describe("eventsSlice", () => {
             ],
           })
         );
-        expect(eventsSelector(store.getState())).toEqual({
+        expect(store.getState().events).toEqual({
           ...initialState,
           allIds: [
             "2020-05-07T19:35:00.000Z",
@@ -444,17 +443,17 @@ describe("eventsSlice", () => {
       };
       store.dispatch(eventsSlice.actions.loadFromStorage(stateWithEvents));
       store.dispatch(eventsSlice.actions.syncToServerStart());
-      expect(eventsSelector(store.getState())).toEqual(expectedState);
+      expect(store.getState().events).toEqual(expectedState);
       store.dispatch(eventsSlice.actions.syncToServerError());
       store.dispatch(eventsSlice.actions.syncToServerStart());
-      expect(eventsSelector(store.getState())).toEqual(expectedState);
+      expect(store.getState().events).toEqual(expectedState);
     });
 
     test("syncToServerError", () => {
       store.dispatch(eventsSlice.actions.loadFromStorage(stateWithEvents));
       store.dispatch(eventsSlice.actions.syncToServerStart());
       store.dispatch(eventsSlice.actions.syncToServerError());
-      expect(eventsSelector(store.getState())).toEqual({
+      expect(store.getState().events).toEqual({
         ...stateWithEvents,
         isSyncingToServer: false,
         syncToServerError: true,
@@ -467,7 +466,7 @@ describe("eventsSlice", () => {
       store.dispatch(eventsSlice.actions.syncToServerError());
       store.dispatch(eventsSlice.actions.syncToServerStart());
       store.dispatch(eventsSlice.actions.syncToServerSuccess());
-      expect(eventsSelector(store.getState())).toEqual({
+      expect(store.getState().events).toEqual({
         ...stateWithEvents,
         idsToSync: [],
         isSyncingToServer: false,

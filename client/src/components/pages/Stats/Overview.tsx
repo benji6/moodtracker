@@ -3,7 +3,7 @@ import GetStartedCta from "../../shared/GetStartedCta";
 import Months from "./Months";
 import Weeks from "./Weeks";
 import {
-  eventsSelector,
+  eventsHasLoadedFromServerSelector,
   hasMeditationsSelector,
   hasWeightsSelector,
   normalizedMoodsSelector,
@@ -15,7 +15,9 @@ import { TEST_IDS } from "../../../constants";
 import { Link } from "react-router-dom";
 
 export default function Overview() {
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const moods = useSelector(normalizedMoodsSelector);
   const hasMeditations = useSelector(hasMeditationsSelector);
   const hasWeights = useSelector(hasWeightsSelector);
@@ -27,7 +29,7 @@ export default function Overview() {
       </Paper.Group>
     );
 
-  if (!events.hasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
 
   return (
     <Paper.Group data-test-id={TEST_IDS.statsOverviewPage}>

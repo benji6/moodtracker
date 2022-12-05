@@ -8,7 +8,10 @@ import {
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
-import { eventsSelector, normalizedMoodsSelector } from "../../../selectors";
+import {
+  eventsHasLoadedFromServerSelector,
+  normalizedMoodsSelector,
+} from "../../../selectors";
 import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
@@ -41,7 +44,9 @@ const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function Week() {
   const { week: weekStr } = useParams();
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const moods = useSelector(normalizedMoodsSelector);
 
   if (!weekStr || !isoDateRegex.test(weekStr)) return <RedirectHome />;
@@ -50,7 +55,7 @@ export default function Week() {
     WEEK_OPTIONS
   );
   if (!isValid(date)) return <RedirectHome />;
-  if (!events.hasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>

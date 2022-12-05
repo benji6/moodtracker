@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { fetchWeather } from "../../../../api";
 import { WEATHER_QUERY_OPTIONS } from "../../../../constants";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
-import { eventsSelector } from "../../../../selectors";
+import {
+  eventsAllIdsSelector,
+  eventsByIdSelector,
+} from "../../../../selectors";
 import { DeviceGeolocation, WeatherApiResponse } from "../../../../types";
 import { getIdsInInterval, getWeatherIconAndColor } from "../../../../utils";
 import "./style.css";
@@ -20,12 +23,13 @@ interface Props {
 }
 
 export default function WeatherForPeriod({ fromDate, toDate }: Props) {
-  const events = useSelector(eventsSelector);
-  const eventIdsInPeriod = getIdsInInterval(events.allIds, fromDate, toDate);
+  const eventsAllIds = useSelector(eventsAllIdsSelector);
+  const eventsById = useSelector(eventsByIdSelector);
+  const eventIdsInPeriod = getIdsInInterval(eventsAllIds, fromDate, toDate);
 
   const locationByIdEntries: [string, DeviceGeolocation][] = [];
   for (const id of eventIdsInPeriod) {
-    const event = events.byId[id];
+    const event = eventsById[id];
     if (
       typeof event.payload !== "string" &&
       "location" in event.payload &&

@@ -12,7 +12,7 @@ import {
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
 import {
-  eventsSelector,
+  eventsHasLoadedFromServerSelector,
   moodIdsByDateSelector,
   normalizedMoodsSelector,
 } from "../../../selectors";
@@ -42,14 +42,16 @@ const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function Day() {
   const { day: dateStr } = useParams();
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const moods = useSelector(normalizedMoodsSelector);
   const moodIdsByDate = useSelector(moodIdsByDateSelector);
 
   if (!dateStr || !isoDateRegex.test(dateStr)) return <RedirectHome />;
   const date = createDateFromLocalDateString(dateStr);
   if (!isValid(date)) return <RedirectHome />;
-  if (!events.hasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>

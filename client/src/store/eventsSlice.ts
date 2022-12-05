@@ -92,11 +92,12 @@ export default createSlice({
       state.hasLoadedFromServer = true;
       state.nextCursor = action.payload.cursor;
       if (!action.payload.events.length) return;
-      for (const event of action.payload.events)
-        state.byId[event.createdAt] = event;
       const serverEventIds = action.payload.events.map(
         (event) => event.createdAt
       );
+      if (serverEventIds.every((id) => id in state.byId)) return;
+      for (const event of action.payload.events)
+        state.byId[event.createdAt] = event;
       state.allIds = (
         state.allIds.length
           ? [...new Set([...state.allIds, ...serverEventIds])]

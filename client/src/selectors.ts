@@ -38,15 +38,22 @@ export const appShowNewSignInUiSelector = (state: RootState) =>
   state.app.showNewSignInUi;
 export const deviceGeolocationSelector = (state: RootState) =>
   state.device.geolocation;
+export const eventsAllIdsSelector = (state: RootState) => state.events.allIds;
+export const eventsByIdSelector = (state: RootState) => state.events.byId;
+export const eventsHasLoadedFromServerSelector = (state: RootState) =>
+  state.events.hasLoadedFromServer;
+export const eventsIdsToSyncSelector = (state: RootState) =>
+  state.events.idsToSync;
 export const eventsIsSyncingFromServerSelector = (state: RootState) =>
   state.events.isSyncingFromServer;
 export const eventsIsSyncingToServerSelector = (state: RootState) =>
   state.events.isSyncingToServer;
+export const eventsNextCursorSelector = (state: RootState) =>
+  state.events.nextCursor;
 export const eventsSyncFromServerErrorSelector = (state: RootState) =>
   state.events.syncFromServerError;
 export const eventsSyncToServerErrorSelector = (state: RootState) =>
   state.events.syncToServerError;
-export const eventsSelector = (state: RootState) => state.events;
 export const settingsDataSelector = (state: RootState) => state.settings.data;
 export const settingsRecordLocationSelector = (state: RootState) =>
   state.settings.data?.recordLocation;
@@ -57,9 +64,11 @@ export const userIsSignedInSelector = (state: RootState) =>
 export const userLoadingSelector = (state: RootState) => state.user.loading;
 
 const trackedCategoriesSelector = createSelector(
-  eventsSelector,
+  eventsAllIdsSelector,
+  eventsByIdSelector,
   (
-    events
+    allIds,
+    byId
   ): {
     meditations: NormalizedMeditations;
     moods: NormalizedMoods;
@@ -75,8 +84,8 @@ const trackedCategoriesSelector = createSelector(
       weights: { allIds: [], byId: {} },
     };
 
-    for (const id of events.allIds) {
-      const event = events.byId[id];
+    for (const id of allIds) {
+      const event = byId[id];
       const [_, category, operation] = event.type.split("/") as EventTypeTuple;
       const normalizedCategory = normalizedCategories[category];
 

@@ -1,6 +1,6 @@
 import { Paper, SubHeading } from "eri";
 import { useSelector } from "react-redux";
-import { eventsSelector } from "../../../selectors";
+import { eventsAllIdsSelector, eventsByIdSelector } from "../../../selectors";
 import { DeviceGeolocation } from "../../../types";
 import { getIdsInInterval } from "../../../utils";
 import LocationMap from "../../shared/LocationMap";
@@ -11,13 +11,14 @@ interface Props {
 }
 
 export default function LocationsForPeriod({ fromDate, toDate }: Props) {
-  const events = useSelector(eventsSelector);
-  const eventIdsInPeriod = getIdsInInterval(events.allIds, fromDate, toDate);
+  const eventsAllIds = useSelector(eventsAllIdsSelector);
+  const eventsById = useSelector(eventsByIdSelector);
+  const eventIdsInPeriod = getIdsInInterval(eventsAllIds, fromDate, toDate);
 
   const coordinatesToRender = new Set();
   const locationsToRender: [string, DeviceGeolocation][] = [];
   for (const id of eventIdsInPeriod) {
-    const event = events.byId[id];
+    const event = eventsById[id];
     if (
       typeof event.payload === "string" ||
       !("location" in event.payload) ||

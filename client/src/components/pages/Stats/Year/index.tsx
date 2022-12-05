@@ -6,9 +6,9 @@ import {
   yearFormatter,
 } from "../../../../formatters/dateTimeFormatters";
 import {
-  eventsSelector,
   normalizedMoodsSelector,
   normalizedAveragesByMonthSelector,
+  eventsHasLoadedFromServerSelector,
 } from "../../../../selectors";
 import {
   createDateFromLocalDateString,
@@ -45,7 +45,9 @@ const isoYearRegex = /^\d{4}$/;
 
 export default function Year() {
   const { year: yearStr } = useParams();
-  const events = useSelector(eventsSelector);
+  const eventsHasLoadedFromServer = useSelector(
+    eventsHasLoadedFromServerSelector
+  );
   const moods = useSelector(normalizedMoodsSelector);
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
@@ -55,7 +57,7 @@ export default function Year() {
   if (!yearStr || !isoYearRegex.test(yearStr)) return <RedirectHome />;
   const date = createDateFromLocalDateString(yearStr);
   if (!isValid(date)) return <RedirectHome />;
-  if (!events.hasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>

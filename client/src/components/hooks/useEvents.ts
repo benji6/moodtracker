@@ -4,16 +4,20 @@ import { eventsGet, eventsPost } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   appIsStorageLoadingSelector,
+  eventsByIdSelector,
+  eventsIdsToSyncSelector,
   eventsIsSyncingFromServerSelector,
   eventsIsSyncingToServerSelector,
-  eventsSelector,
+  eventsNextCursorSelector,
   userEmailSelector,
   userIsSignedInSelector,
 } from "../../selectors";
 import eventsSlice from "../../store/eventsSlice";
 
 export default function useEvents() {
-  const events = useSelector(eventsSelector);
+  const eventsById = useSelector(eventsByIdSelector);
+  const eventsIdsToSync = useSelector(eventsIdsToSyncSelector);
+  const eventsNextCursor = useSelector(eventsNextCursorSelector);
   const isStorageLoading = useSelector(appIsStorageLoadingSelector);
   const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
   const isSyncingToServer = useSelector(eventsIsSyncingToServerSelector);
@@ -25,7 +29,7 @@ export default function useEvents() {
     void (async (): Promise<void> => {
       if (!userIsSignedIn || isSyncingFromServer || isStorageLoading) return;
       try {
-        let cursor = events.nextCursor;
+        let cursor = eventsNextCursor;
         let isPaginating = true;
         while (isPaginating) {
           dispatch(eventsSlice.actions.syncFromServerStart());
@@ -68,22 +72,18 @@ export default function useEvents() {
         !userIsSignedIn ||
         isSyncingToServer ||
         isStorageLoading ||
-        !events.idsToSync.length
+        !eventsIdsToSync.length
       )
         return;
       dispatch(eventsSlice.actions.syncToServerStart());
       try {
-        await eventsPost(events.idsToSync.map((id) => events.byId[id]));
+        await eventsPost(eventsIdsToSync.map((id) => eventsById[id]));
         dispatch(eventsSlice.actions.syncToServerSuccess());
       } catch {
         dispatch(eventsSlice.actions.syncToServerError());
       }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(syncToServer, [
-    events.idsToSync,
-    isStorageLoading,
-    userEmail,
-  ]);
+  React.useEffect(syncToServer, [eventsIdsToSync, isStorageLoading, userEmail]);
   useInterval(syncToServer, 1e4);
 }

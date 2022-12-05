@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { queryClient } from "../..";
 import { userPool } from "../../cognito";
 import { TEST_IDS } from "../../constants";
-import { eventsSelector } from "../../selectors";
+import { eventsIdsToSyncSelector } from "../../selectors";
 import { slicesToClearOnLogout } from "../../store";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function SignOutDialog({ onClose, open }: Props) {
-  const events = useSelector(eventsSelector);
+  const idsToSync = useSelector(eventsIdsToSyncSelector);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -34,7 +34,7 @@ export default function SignOutDialog({ onClose, open }: Props) {
       open={open}
       title="Sign out?"
     >
-      {events.idsToSync.length ? (
+      {idsToSync.length ? (
         <p>
           <strong>
             WARNING: some of your data has not yet been synced to the server and
