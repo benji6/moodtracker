@@ -11,7 +11,6 @@ interface Props {
 export default function Location({ date, latitude, longitude }: Props) {
   return (
     <>
-      <Weather date={date} latitude={latitude} longitude={longitude} />
       <Paper>
         <h3>Location</h3>
         <LocationMap>
@@ -22,6 +21,7 @@ export default function Location({ date, latitude, longitude }: Props) {
           <small>Longitude: {longitude}</small>
         </p>
       </Paper>
+      <Weather date={date} latitude={latitude} longitude={longitude} />
     </>
   );
 }

@@ -29,11 +29,11 @@ export default function LiveLocation() {
   ) : (
     <>
       <Paper>
-        <h3>Weather</h3>
+        <h3>Location</h3>
         <Spinner />
       </Paper>
       <Paper>
-        <h3>Location</h3>
+        <h3>Weather</h3>
         <Spinner />
       </Paper>
     </>
