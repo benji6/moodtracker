@@ -1,5 +1,6 @@
 import { useQueries } from "@tanstack/react-query";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
+import { ComponentProps, CSSProperties, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { fetchWeather } from "../../../../api";
 import { WEATHER_QUERY_OPTIONS } from "../../../../constants";
@@ -9,7 +10,11 @@ import {
   eventsByIdSelector,
 } from "../../../../selectors";
 import { DeviceGeolocation, WeatherApiResponse } from "../../../../types";
-import { getIdsInInterval, getWeatherIconAndColor } from "../../../../utils";
+import {
+  getIdsInInterval,
+  getWeatherIconAndColor,
+  roundUpToNearest10,
+} from "../../../../utils";
 import "./style.css";
 
 type QueryKey = [
@@ -69,15 +74,13 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
 
   if (!locationByIdEntries.length) return null;
 
-  const iconParams: {
-    iconName: React.ComponentProps<typeof Icon>["name"];
-    key: string;
-    weatherColor: string;
-  }[] = [];
-
   let errorCount = 0;
   let loadingCount = 0;
   let successCount = 0;
+
+  const chartData: {
+    [nameAndColor: string]: number;
+  } = {};
 
   for (let i = 0; i < results.length; i++) {
     const result = results[i];
@@ -93,17 +96,38 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
     const isDaytime =
       date >= new Date(weatherData.sunrise * 1e3) &&
       date < new Date(weatherData.sunset * 1e3);
-
     for (let j = 0; j < weatherData.weather.length; j++) {
-      iconParams.push({
-        ...getWeatherIconAndColor({
-          isDaytime,
-          weatherId: weatherData.weather[j].id,
-        }),
-        key: `${id}:${j}`,
+      const { iconName, weatherColor } = getWeatherIconAndColor({
+        isDaytime,
+        weatherId: weatherData.weather[j].id,
       });
+      const { main } = weatherData.weather[j];
+      const key = `${main}:${iconName}:${weatherColor}`;
+      chartData[key] = key in chartData ? chartData[key] + 1 : 1;
     }
   }
+
+  const maxCount = Math.max(...Object.values(chartData));
+  const range: [number, number] = [0, roundUpToNearest10(maxCount)];
+
+  const yLabels: number[] =
+    range[1] <= 10
+      ? [...Array(range[1] + 1).keys()]
+      : [...Array(11).keys()].map((n) => Math.round((n / 10) * range[1]));
+
+  const dataToRender = Object.entries(chartData)
+    .map(([key, count]) => {
+      const [main, iconName, weatherColor] = key.split(":") as [
+        string,
+        ComponentProps<typeof Icon>["name"],
+        string
+      ];
+      return { count, iconName, key, main, weatherColor };
+    })
+    .sort((a, b) => {
+      const countDifference = b.count - a.count;
+      return countDifference || a.main.localeCompare(b.main);
+    });
 
   return (
     <Paper>
@@ -114,16 +138,66 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
           {locationByIdEntries.length > 1 ? "s" : ""} recorded for this period
         </SubHeading>
       </h3>
-      {iconParams.length && (
+      {dataToRender.length && (
         <div
-          className="weather-for-period__icons"
-          style={{
-            fontSize: `${4 - Math.min((3.2 * iconParams.length) / 64, 3.2)}em`,
-          }}
+          className="column-chart"
+          aria-label="Chart displaying the frequency at which different weather types were recorded"
+          style={
+            {
+              "--column-count": dataToRender.length,
+              "--y-label-count": yLabels.length,
+            } as CSSProperties
+          }
         >
-          {iconParams.map(({ iconName, key, weatherColor }) => (
-            <Icon color={weatherColor} key={key} name={iconName} />
-          ))}
+          <div className="y-title fade-in">Count</div>
+          <div className="x-title fade-in">Weather</div>
+          <div className="x-label" />
+          <div
+            className="y-axis"
+            style={{ "--label-count": yLabels.length } as CSSProperties}
+          >
+            {yLabels.map((yLabel, i) => (
+              <div
+                className="y-label fade-in"
+                key={yLabel}
+                style={{ "--y-label-number": i } as CSSProperties}
+              >
+                {yLabel}
+              </div>
+            ))}
+          </div>
+          <div className="x-label" />
+          {dataToRender.map(
+            ({ count, key, iconName, main, weatherColor }, i) => {
+              const title = `${main}: ${count}`;
+              return (
+                <Fragment key={key}>
+                  <div
+                    className="column"
+                    title={title}
+                    style={
+                      {
+                        color: weatherColor,
+                        "--column-height": `${(100 * count) / range[1]}%`,
+                        "--column-number": i,
+                      } as CSSProperties
+                    }
+                  />
+                  <div
+                    className="x-label"
+                    style={
+                      {
+                        "--x-label-number": i,
+                      } as CSSProperties
+                    }
+                    title={title}
+                  >
+                    <Icon color={weatherColor} draw name={iconName} />
+                  </div>
+                </Fragment>
+              );
+            }
+          )}
         </div>
       )}
       {loadingCount || errorCount ? (

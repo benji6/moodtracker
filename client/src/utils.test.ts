@@ -23,6 +23,7 @@ import {
   capitalizeFirstLetter,
   getWeatherIconAndColor,
   bisectLeft,
+  roundUpToNearest10,
 } from "./utils";
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 
@@ -1016,6 +1017,17 @@ describe("utils", () => {
     expect(roundDateUp(new Date("2020-09-07T23:59:59.999"))).toEqual(
       new Date("2020-09-08T00:00:00.000")
     );
+  });
+
+  test("roundUpToNearest10", () => {
+    expect(roundUpToNearest10(0)).toBe(0);
+    expect(roundUpToNearest10(0.1)).toBe(10);
+    expect(roundUpToNearest10(9.9)).toBe(10);
+    expect(roundUpToNearest10(10)).toBe(10);
+    expect(roundUpToNearest10(10.1)).toBe(20);
+    expect(roundUpToNearest10(-0.1)).toBe(-0);
+    expect(roundUpToNearest10(-9.9)).toBe(-0);
+    expect(roundUpToNearest10(-10)).toBe(-10);
   });
 
   test("trapeziumArea", () => {

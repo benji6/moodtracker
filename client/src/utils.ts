@@ -333,5 +333,7 @@ export const roundDateUp = (date: Date): Date => {
     : addDays(roundedDownDate, 1);
 };
 
+export const roundUpToNearest10 = (n: number) => Math.ceil(n / 10) * 10;
+
 export const trapeziumArea = (a: number, b: number, h: number): number =>
   ((a + b) / 2) * h;

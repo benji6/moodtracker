@@ -1,10 +1,9 @@
 import { Chart, Paper } from "eri";
 import { useSelector } from "react-redux";
 import { normalizedWeightsSelector } from "../../../selectors";
-import { getEnvelopingCategoryIds } from "../../../utils";
+import { getEnvelopingCategoryIds, roundUpToNearest10 } from "../../../utils";
 
 const roundDownToNearest10 = (n: number) => Math.floor(n / 10) * 10;
-const roundUpToNearest10 = (n: number) => Math.ceil(n / 10) * 10;
 
 interface Props {
   fromDate: Date;
