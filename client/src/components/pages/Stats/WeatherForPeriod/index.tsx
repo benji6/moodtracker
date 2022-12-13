@@ -91,14 +91,9 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
     if (!data) continue;
     successCount++;
     const [weatherData] = data.data;
-    const [id] = locationByIdEntries[i];
-    const date = new Date(id);
-    const isDaytime =
-      date >= new Date(weatherData.sunrise * 1e3) &&
-      date < new Date(weatherData.sunset * 1e3);
     for (let j = 0; j < weatherData.weather.length; j++) {
       const { iconName, weatherColor } = getWeatherIconAndColor({
-        isDaytime,
+        isDaytime: true,
         weatherId: weatherData.weather[j].id,
       });
       const { main } = weatherData.weather[j];
@@ -142,19 +137,14 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
         <div
           className="column-chart"
           aria-label="Chart displaying the frequency at which different weather types were recorded"
-          style={
-            {
-              "--column-count": dataToRender.length,
-              "--y-label-count": yLabels.length,
-            } as CSSProperties
-          }
+          style={{ "--column-count": dataToRender.length } as CSSProperties}
         >
           <div className="y-title fade-in">Count</div>
           <div className="x-title fade-in">Weather</div>
           <div className="x-label" />
           <div
             className="y-axis"
-            style={{ "--label-count": yLabels.length } as CSSProperties}
+            style={{ "--y-label-count": yLabels.length } as CSSProperties}
           >
             {yLabels.map((yLabel, i) => (
               <div
@@ -193,6 +183,7 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
                     title={title}
                   >
                     <Icon color={weatherColor} draw name={iconName} />
+                    {main}
                   </div>
                 </Fragment>
               );

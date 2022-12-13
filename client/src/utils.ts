@@ -237,7 +237,7 @@ export const getWeatherIconAndColor = ({
       weatherColor = "steelblue";
     } else if (weatherId < 600) {
       iconName = "rain";
-      weatherColor = "blue";
+      weatherColor = "#30f";
     } else if (weatherId < 700) iconName = "snow";
     else if (weatherId === 771 || weatherId === 781) {
       iconName = "wind";

@@ -31,14 +31,14 @@ exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 321}) 1`
 exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 500}) 1`] = `
 {
   "iconName": "rain",
-  "weatherColor": "blue",
+  "weatherColor": "#30f",
 }
 `;
 
 exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 531}) 1`] = `
 {
   "iconName": "rain",
-  "weatherColor": "blue",
+  "weatherColor": "#30f",
 }
 `;
 
@@ -150,14 +150,14 @@ exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 321}) 1`]
 exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 500}) 1`] = `
 {
   "iconName": "rain",
-  "weatherColor": "blue",
+  "weatherColor": "#30f",
 }
 `;
 
 exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 531}) 1`] = `
 {
   "iconName": "rain",
-  "weatherColor": "blue",
+  "weatherColor": "#30f",
 }
 `;
 
