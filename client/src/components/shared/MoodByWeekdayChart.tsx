@@ -1,6 +1,6 @@
-import { Chart } from "eri";
-import { MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
+import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import { moodToColor } from "../../utils";
+import ColumnChart from "./ColumnChart";
 
 export type DayAverages = [
   [string, number | undefined],
@@ -19,25 +19,22 @@ interface Props {
 
 export default function MoodByWeekdayChart({ averages, onClick }: Props) {
   return (
-    <Chart.BarChart
+    <ColumnChart
       aria-label="Chart displaying average mood by weekday"
-      range={MOOD_RANGE}
+      data={averages.map(([day, averageMood]) => ({
+        color: averageMood === undefined ? undefined : moodToColor(averageMood),
+        key: day,
+        label: day,
+        title:
+          averageMood === undefined
+            ? undefined
+            : `Average mood: ${oneDecimalPlaceFormatter.format(averageMood)}`,
+        y: averageMood,
+      }))}
+      onBarClick={onClick}
+      rotateXLabels
       xAxisTitle="Weekday"
-      xLabels={averages.map(([day]) => day)}
       yAxisTitle="Average mood"
-    >
-      <Chart.YGridLines lines={MOOD_INTEGERS as number[]} />
-      <Chart.PlotArea>
-        <Chart.Bars
-          colorFromY={moodToColor}
-          data={averages.map(([, averageMood]) => averageMood)}
-          onClick={onClick}
-        />
-      </Chart.PlotArea>
-      <Chart.YAxis
-        labels={MOOD_INTEGERS.map((mood) => [mood, String(mood)])}
-        markers
-      />
-    </Chart.BarChart>
+    />
   );
 }

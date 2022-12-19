@@ -1,21 +1,14 @@
 import { useQueries } from "@tanstack/react-query";
 import { Icon, Paper, Spinner, SubHeading } from "eri";
-import { ComponentProps, CSSProperties, Fragment } from "react";
+import { ComponentProps } from "react";
 import { useSelector } from "react-redux";
-import { fetchWeather } from "../../../../api";
-import { WEATHER_QUERY_OPTIONS } from "../../../../constants";
-import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
-import {
-  eventsAllIdsSelector,
-  eventsByIdSelector,
-} from "../../../../selectors";
-import { DeviceGeolocation, WeatherApiResponse } from "../../../../types";
-import {
-  getIdsInInterval,
-  getWeatherIconAndColor,
-  roundUpToNearest10,
-} from "../../../../utils";
-import "./style.css";
+import { fetchWeather } from "../../../api";
+import { WEATHER_QUERY_OPTIONS } from "../../../constants";
+import { integerPercentFormatter } from "../../../formatters/numberFormatters";
+import { eventsAllIdsSelector, eventsByIdSelector } from "../../../selectors";
+import { DeviceGeolocation } from "../../../types";
+import { getIdsInInterval, getWeatherIconAndColor } from "../../../utils";
+import ColumnChart from "../../shared/ColumnChart";
 
 type QueryKey = [
   "weather",
@@ -85,8 +78,7 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
   for (const result of results) {
     if (result.isError) errorCount++;
     else if (result.isLoading) loadingCount++;
-    // TODO react-query types might be fixed one day
-    const data = result.data as WeatherApiResponse | undefined;
+    const data = result.data;
     if (!data) continue;
     successCount++;
     const [weatherData] = data.data;
@@ -101,26 +93,31 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
     }
   }
 
-  const maxCount = Math.max(...Object.values(chartData));
-  const range: [number, number] = [0, roundUpToNearest10(maxCount)];
-
-  const yLabels: number[] =
-    range[1] <= 10
-      ? [...Array(range[1] + 1).keys()]
-      : [...Array(11).keys()].map((n) => Math.round((n / 10) * range[1]));
-
   const dataToRender = Object.entries(chartData)
     .map(([key, count]) => {
-      const [main, iconName, weatherColor] = key.split(":") as [
+      const [main, iconName, color] = key.split(":") as [
         string,
         ComponentProps<typeof Icon>["name"],
         string
       ];
-      return { count, iconName, key, main, weatherColor };
+      return {
+        color,
+        iconName,
+        key,
+        label: (
+          <>
+            <Icon color={color} draw name={iconName} />
+            {main}
+          </>
+        ),
+        main,
+        title: `${main}: ${count}`,
+        y: count,
+      };
     })
     .sort((a, b) => {
-      const countDifference = b.count - a.count;
-      return countDifference || a.main.localeCompare(b.main);
+      const yDifference = b.y - a.y;
+      return yDifference || a.main.localeCompare(b.main);
     });
 
   return (
@@ -133,67 +130,13 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
         </SubHeading>
       </h3>
       {dataToRender.length && (
-        <div
-          className="column-chart"
+        <ColumnChart
           aria-label="Chart displaying the frequency at which different weather types were recorded"
-          style={{ "--column-count": dataToRender.length } as CSSProperties}
-        >
-          <div className="grid-lines">
-            {yLabels.slice(1).map((x) => (
-              <div key={x} />
-            ))}
-          </div>
-          <div className="y-title fade-in">Count</div>
-          <div className="x-title fade-in">Weather</div>
-          <div className="x-label" />
-          <div
-            className="y-axis"
-            style={{ "--y-label-count": yLabels.length } as CSSProperties}
-          >
-            {yLabels.map((yLabel, i) => (
-              <div
-                className="y-label fade-in"
-                key={yLabel}
-                style={{ "--y-label-number": i } as CSSProperties}
-              >
-                {yLabel}
-              </div>
-            ))}
-          </div>
-          <div className="x-label" />
-          {dataToRender.map(
-            ({ count, key, iconName, main, weatherColor }, i) => {
-              const title = `${main}: ${count}`;
-              return (
-                <Fragment key={key}>
-                  <div
-                    className="column"
-                    title={title}
-                    style={
-                      {
-                        color: weatherColor,
-                        "--column-height": `${(100 * count) / range[1]}%`,
-                        "--column-number": i,
-                      } as CSSProperties
-                    }
-                  />
-                  <div
-                    className="x-label"
-                    style={
-                      {
-                        "--x-label-number": i,
-                      } as CSSProperties
-                    }
-                    title={title}
-                  >
-                    <Icon color={weatherColor} draw name={iconName} />
-                    {main}
-                  </div>
-                </Fragment>
-              );
-            }
-          )}
-        </div>
+          data={dataToRender}
+          rotateXLabels
+          xAxisTitle="Weather"
+          yAxisTitle="Count"
+        />
       )}
       {loadingCount || errorCount ? (
         <p>

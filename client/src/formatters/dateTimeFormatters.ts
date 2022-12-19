@@ -40,6 +40,9 @@ export const monthLongFormatter = Intl.DateTimeFormat(undefined, {
 export const monthNarrowFormatter = Intl.DateTimeFormat(undefined, {
   month: "narrow",
 });
+export const monthShortFormatter = Intl.DateTimeFormat(undefined, {
+  month: "short",
+});
 
 export const monthYearFormatter = Intl.DateTimeFormat(undefined, {
   month: "long",
