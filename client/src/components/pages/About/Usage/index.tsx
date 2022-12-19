@@ -59,7 +59,7 @@ export default function Usage() {
             data={[
               ["Users over the last 24 hours", data.DAUs],
               ["Users over the last 7 days", data.WAUs],
-              ["Users over the last 30 days", data.MAUs],
+              ["Users over the last 30 days (active users)", data.MAUs],
               ["Confirmed users", data.confirmedUsers],
               [
                 "New confirmed users over the last 30 days",
@@ -121,6 +121,10 @@ export default function Usage() {
               [
                 "Active users who have logged a weight over the last 30 days",
                 formatAsPercentageOfMaus(data.weightMAUs),
+              ],
+              [
+                "Active users who have logged their location over the last 30 days",
+                formatAsPercentageOfMaus(data.locationMAUs),
               ],
               [
                 "Total events recorded over the last 30 days",

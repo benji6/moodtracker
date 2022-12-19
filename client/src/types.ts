@@ -90,17 +90,10 @@ export interface Settings {
 
 export interface Usage {
   confirmedUsers: number;
-  eventsInLast30Days: number;
-  meanMoodInLast7Days: number;
-  meanMoodInLast30Days: number;
-  meditationMAUs: number;
-  meditationSecondsInLast30Days: number;
-  newUsersInLast30Days: number;
-  usersWithWeeklyEmails: number;
-  weightMAUs: number;
   CRR: number;
   DAUs: number;
-  MAUs: number;
+  eventsInLast30Days: number;
+  locationMAUs: number;
   MAUFunnel: {
     "<7 days": number;
     ">=7 & <30 days": number;
@@ -109,7 +102,15 @@ export interface Usage {
     ">=90 & <365 days": number;
     ">=365 days": number;
   };
+  MAUs: number;
+  meanMoodInLast30Days: number;
+  meanMoodInLast7Days: number;
+  meditationMAUs: number;
+  meditationSecondsInLast30Days: number;
+  newUsersInLast30Days: number;
+  usersWithWeeklyEmails: number;
   WAUs: number;
+  weightMAUs: number;
 }
 
 // It appears basically everything could be optional "If you do not see some of the parameters in your API response it means that these weather phenomena are just not happened for the time of measurement for the city or location chosen. Only really measured or calculated data is displayed in API response."

@@ -103,12 +103,13 @@ def handler(event, context):
         u for u in users if u["Enabled"] and u["UserStatus"] == "CONFIRMED"
     ]
     users_by_id = {u["Username"]: u for u in users}
-    user_ids_in_current_30_day_window = set()
-    user_ids_in_previous_30_day_window = set()
-    meditation_MAU_ids = set()
     events_in_last_30_days = 0
+    location_MAU_ids = set()
+    meditation_MAU_ids = set()
     meditations = {}
     moods = {}
+    user_ids_in_current_30_day_window = set()
+    user_ids_in_previous_30_day_window = set()
     weight_MAU_ids = set()
     for event in events:
         event["createdAt"] = datetime.fromisoformat(event["createdAt"][:-1]).replace(
@@ -117,6 +118,9 @@ def handler(event, context):
         if event["createdAt"] > days_ago_30:
             events_in_last_30_days += 1
             user_ids_in_current_30_day_window.add(event["userId"])
+
+            if "location" in event["payload"]:
+                location_MAU_ids.add(event["userId"])
 
             if event["type"] == "v1/meditations/create":
                 meditation_MAU_ids.add(event["userId"])
@@ -174,6 +178,7 @@ def handler(event, context):
             {
                 "confirmedUsers": len(confirmed_users),
                 "eventsInLast30Days": events_in_last_30_days,
+                "locationMAUs": len(location_MAU_ids),
                 "meanMoodInLast30Days": round(
                     float(statistics.mean([v["mood"] for v in moods.values()])), 1
                 ),

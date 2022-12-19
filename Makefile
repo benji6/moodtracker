@@ -3,7 +3,7 @@ analytics:
 	@./bin/analytics.sh
 
 # Generates the CloudFormation file
-infra/cloudformation.yml: infra/cloudformation.template.yml
+infra/cloudformation.yml: infra/cloudformation.template.yml infra/*.py
 	@./bin/cloudformation.py
 	@echo "🍄 CloudFormation template built successfully! 🍄"
 
