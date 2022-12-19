@@ -1,4 +1,7 @@
 .column-chart {
+  --axis-border: var(--color-figure) var(--border-width-1) solid;
+  --grid-border: var(--border-width-0) var(--color-balance-less) dotted;
+
   display: grid;
   grid-template-columns: 1em min-content;
   grid-template-rows: 1fr auto auto;
@@ -9,8 +12,10 @@
 }
 
 .column {
-  border-bottom: var(--color-figure) var(--border-width-1) solid;
+  border-bottom: var(--axis-border);
+  border-right: var(--grid-border);
   box-sizing: border-box;
+  grid-column-start: calc(var(--column-number) + 3);
   grid-row: 1;
   position: relative;
 }
@@ -32,8 +37,19 @@
   top: calc(100% - var(--column-height));
   transform-origin: bottom;
 }
-.column:not(.column ~ .column) {
-  border-left: var(--color-figure) var(--border-width-1) solid;
+
+.grid-lines {
+  border-bottom: var(--axis-border);
+  border-left: var(--axis-border);
+  display: flex;
+  flex-direction: column;
+  grid-column-end: span var(--column-count);
+  grid-column-start: 3;
+  grid-row-start: 1;
+}
+.grid-lines > * {
+  border-top: var(--grid-border);
+  flex-grow: 1;
 }
 
 .x-label {

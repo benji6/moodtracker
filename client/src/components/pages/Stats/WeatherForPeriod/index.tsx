@@ -82,8 +82,7 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
     [nameAndColor: string]: number;
   } = {};
 
-  for (let i = 0; i < results.length; i++) {
-    const result = results[i];
+  for (const result of results) {
     if (result.isError) errorCount++;
     else if (result.isLoading) loadingCount++;
     // TODO react-query types might be fixed one day
@@ -139,6 +138,11 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
           aria-label="Chart displaying the frequency at which different weather types were recorded"
           style={{ "--column-count": dataToRender.length } as CSSProperties}
         >
+          <div className="grid-lines">
+            {yLabels.slice(1).map((x) => (
+              <div key={x} />
+            ))}
+          </div>
           <div className="y-title fade-in">Count</div>
           <div className="x-title fade-in">Weather</div>
           <div className="x-label" />
