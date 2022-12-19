@@ -14,7 +14,7 @@ export default function MoodFrequencyChart({ data }: Props) {
         color: moodToColor(i),
         key: i,
         label: String(i),
-        title: integerFormatter.format(count),
+        title: `Count: ${integerFormatter.format(count)}`,
         y: count,
       }))}
       xAxisTitle="Mood"
