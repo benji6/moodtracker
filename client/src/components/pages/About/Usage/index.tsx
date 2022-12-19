@@ -13,7 +13,7 @@ export default function Usage() {
     networkMode: "offlineFirst",
   });
 
-  const formatRetentionFunnelPercentage = (n: number): string =>
+  const formatAsPercentageOfMaus = (n: number): string =>
     data ? percentFormatter.format(data.MAUs ? n / data.MAUs : 0) : "";
 
   return (
@@ -47,6 +47,10 @@ export default function Usage() {
             MoodTracker you can see some anonymized usage data here. This gets
             automatically updated every day or so.
           </p>
+          <p>
+            In the below statistics, active users are defined as users who have
+            tracked at least one thing over the last 30 days.
+          </p>
           <h3>Active users</h3>
           <p>
             Confirmed users are users who have confirmed their email address.
@@ -64,34 +68,28 @@ export default function Usage() {
             ]}
           />
           <h3>Retention</h3>
-          <p>
-            Active users are users who have tracked at least one thing over the
-            last 30 days.
-          </p>
           <UsageTable
             data={[
               [
                 "Active users who joined less than 30 days ago",
-                formatRetentionFunnelPercentage(
+                formatAsPercentageOfMaus(
                   data.MAUFunnel["<7 days"] + data.MAUFunnel[">=7 & <30 days"]
                 ),
               ],
               [
                 "Active users who joined between 30 and 90 days ago",
-                formatRetentionFunnelPercentage(
+                formatAsPercentageOfMaus(
                   data.MAUFunnel[">=30 & <60 days"] +
                     data.MAUFunnel[">=60 & <90 days"]
                 ),
               ],
               [
                 "Active users who joined between 90 and 365 days ago",
-                formatRetentionFunnelPercentage(
-                  data.MAUFunnel[">=90 & <365 days"]
-                ),
+                formatAsPercentageOfMaus(data.MAUFunnel[">=90 & <365 days"]),
               ],
               [
                 "Active users who joined over a year ago",
-                formatRetentionFunnelPercentage(data.MAUFunnel[">=365 days"]),
+                formatAsPercentageOfMaus(data.MAUFunnel[">=365 days"]),
               ],
               [
                 "Retention of users since a month ago",
@@ -117,12 +115,12 @@ export default function Usage() {
                 formatDurationFromSeconds(data.meditationSecondsInLast30Days),
               ],
               [
-                "Number of users who have logged a meditation over the last 30 days",
-                data.meditationMAUs,
+                "Active users who have logged a meditation over the last 30 days",
+                formatAsPercentageOfMaus(data.meditationMAUs),
               ],
               [
-                "Number of users who have logged a weight over the last 30 days",
-                data.weightMAUs,
+                "Active users who have logged a weight over the last 30 days",
+                formatAsPercentageOfMaus(data.weightMAUs),
               ],
               [
                 "Total events recorded over the last 30 days",
