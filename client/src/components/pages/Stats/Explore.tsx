@@ -26,6 +26,7 @@ import formatDurationFromSeconds from "../../../formatters/formatDurationFromSec
 import LocationsForPeriod from "./LocationsForPeriod";
 import DateRangeSelector from "../../shared/DateRangeSelector";
 import WeightChartForPeriod from "./WeightChartForPeriod";
+import WeatherForPeriod from "./WeatherForPeriod";
 
 const MILLISECONDS_IN_A_DAY = 86400000;
 const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
@@ -126,6 +127,7 @@ export default function Explore() {
               <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
               <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
               <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <WeatherForPeriod fromDate={dateFrom} toDate={dateTo} />
               <LocationsForPeriod fromDate={dateFrom} toDate={dateTo} />
             </>
           ) : (
