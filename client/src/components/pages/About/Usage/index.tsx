@@ -118,7 +118,7 @@ export default function Usage() {
               ],
               [
                 "Number of users who have logged a meditation over the last 30 days",
-                formatDurationFromSeconds(data.meditationMAUs),
+                data.meditationMAUs,
               ],
               [
                 "Number of users who have logged a weight over the last 30 days",
