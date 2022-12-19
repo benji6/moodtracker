@@ -37,32 +37,18 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
   }
 
   const results = useQueries({
-    queries: locationByIdEntries.reduce(
-      (
-        queries: {
-          queryFn: typeof fetchWeather;
-          queryKey: QueryKey;
-        }[],
-        [id, location]
-      ) => {
-        return [
-          ...queries,
-          {
-            ...WEATHER_QUERY_OPTIONS,
-            queryKey: [
-              "weather",
-              {
-                date: new Date(id),
-                latitude: location.latitude,
-                longitude: location.longitude,
-              },
-            ] as QueryKey,
-            queryFn: fetchWeather,
-          },
-        ];
-      },
-      []
-    ),
+    queries: locationByIdEntries.map(([id, location]) => ({
+      ...WEATHER_QUERY_OPTIONS,
+      queryKey: [
+        "weather",
+        {
+          date: new Date(id),
+          latitude: location.latitude,
+          longitude: location.longitude,
+        },
+      ] as QueryKey,
+      queryFn: fetchWeather,
+    })),
   });
 
   if (!locationByIdEntries.length) return null;
