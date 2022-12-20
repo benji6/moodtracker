@@ -12,6 +12,9 @@
 }
 
 .column-chart__column {
+  animation-duration: var(--time-2);
+  animation-fill-mode: forwards;
+  animation-name: column-chart__grow-column-y;
   border-bottom: var(--axis-border);
   border-right: var(--grid-border);
   box-sizing: border-box;
@@ -19,14 +22,12 @@
   grid-row: 1;
   pointer-events: none;
   position: relative;
+  transform-origin: bottom;
 }
 .column-chart__column::after {
   animation-delay: calc(
     var(--column-number) / max((var(--column-count) - 1), 1) * var(--time-2)
   );
-  animation-duration: var(--time-2);
-  animation-fill-mode: forwards;
-  animation-name: column-chart__grow-column-y;
   background: currentColor;
   bottom: 0;
   content: "";
@@ -35,9 +36,10 @@
   pointer-events: auto;
   position: absolute;
   right: 10%;
-  scale: 0;
-  top: calc(100% - var(--column-height));
+  scale: 100% var(--column-height);
+  top: 0;
   transform-origin: bottom;
+  transition: scale var(--time-1);
 }
 .column-chart__column--clickable {
   transition-property: filter;
