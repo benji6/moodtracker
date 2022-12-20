@@ -1,11 +1,11 @@
-import puppeteer, { HandleFor } from "puppeteer";
+import { Browser, ElementHandle, HandleFor, Page } from "puppeteer";
 import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
 import { createAndSetUpBrowser, createPageAndSignIn } from "./utils";
 
 describe("mood", () => {
-  let browser: puppeteer.Browser;
-  let page: puppeteer.Page;
+  let browser: Browser;
+  let page: Page;
 
   beforeAll(async () => {
     browser = await createAndSetUpBrowser();
@@ -17,8 +17,8 @@ describe("mood", () => {
   });
 
   describe("adding a mood", () => {
-    let descriptionInput: puppeteer.ElementHandle<HTMLInputElement>;
-    let submitButton: puppeteer.ElementHandle<HTMLButtonElement>;
+    let descriptionInput: ElementHandle<HTMLInputElement>;
+    let submitButton: ElementHandle<HTMLButtonElement>;
 
     beforeEach(async () => {
       await page.goto(URLS.add);
@@ -26,10 +26,10 @@ describe("mood", () => {
 
       descriptionInput = ((await page.$(
         SELECTORS.descriptionInput
-      )) as puppeteer.ElementHandle<HTMLInputElement>)!;
+      )) as ElementHandle<HTMLInputElement>)!;
       submitButton = ((await page.$(
         SELECTORS.addMoodSubmitButton
-      )) as puppeteer.ElementHandle<HTMLButtonElement>)!;
+      )) as ElementHandle<HTMLButtonElement>)!;
     });
 
     test("mood field errors", async () => {

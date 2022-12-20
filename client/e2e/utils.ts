@@ -1,17 +1,15 @@
-import puppeteer, { ElementHandle } from "puppeteer";
+import { Browser, ElementHandle, launch, Page } from "puppeteer";
 import { ROOT_DOCUMENT_TITLE, SELECTORS, URLS } from "./constants";
 
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
 const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
 
-export const createAndSetUpBrowser = (): Promise<puppeteer.Browser> =>
-  puppeteer.launch({
+export const createAndSetUpBrowser = (): Promise<Browser> =>
+  launch({
     defaultViewport: { height: 640, width: 360 },
   });
 
-export const createAndSetUpPage = async (
-  browser: puppeteer.Browser
-): Promise<puppeteer.Page> => {
+export const createAndSetUpPage = async (browser: Browser): Promise<Page> => {
   const page = await browser.newPage();
   page.setDefaultTimeout(3e3);
   await page.goto(URLS.origin);
@@ -19,15 +17,13 @@ export const createAndSetUpPage = async (
   return page;
 };
 
-export const createPageAndSignIn = async (
-  browser: puppeteer.Browser
-): Promise<puppeteer.Page> => {
+export const createPageAndSignIn = async (browser: Browser): Promise<Page> => {
   const page = await createAndSetUpPage(browser);
   await signIn(page);
   return page;
 };
 
-export const signIn = async (page: puppeteer.Page): Promise<void> => {
+export const signIn = async (page: Page): Promise<void> => {
   const signInLink = (await page.waitForSelector(
     SELECTORS.signInLink
   )) as ElementHandle<HTMLInputElement>;

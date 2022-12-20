@@ -1,11 +1,11 @@
-import puppeteer from "puppeteer";
+import { Browser, Page, ElementHandle } from "puppeteer";
 import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
 import { createAndSetUpBrowser, createPageAndSignIn } from "./utils";
 
 describe("weight", () => {
-  let browser: puppeteer.Browser;
-  let page: puppeteer.Page;
+  let browser: Browser;
+  let page: Page;
 
   beforeAll(async () => {
     browser = await createAndSetUpBrowser();
@@ -17,8 +17,8 @@ describe("weight", () => {
   });
 
   describe("adding a weight", () => {
-    let input: puppeteer.ElementHandle<HTMLInputElement>;
-    let submitButton: puppeteer.ElementHandle<HTMLButtonElement>;
+    let input: ElementHandle<HTMLInputElement>;
+    let submitButton: ElementHandle<HTMLButtonElement>;
 
     beforeEach(async () => {
       await page.goto(URLS.weightAdd);
@@ -26,10 +26,10 @@ describe("weight", () => {
 
       input = ((await page.$(
         SELECTORS.weightValueInput
-      )) as puppeteer.ElementHandle<HTMLInputElement>)!;
+      )) as ElementHandle<HTMLInputElement>)!;
       submitButton = ((await page.$(
         SELECTORS.weightAddSubmitButton
-      )) as puppeteer.ElementHandle<HTMLButtonElement>)!;
+      )) as ElementHandle<HTMLButtonElement>)!;
     });
 
     test("no value", async () => {

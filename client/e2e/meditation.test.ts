@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
 import {
@@ -8,8 +8,8 @@ import {
 } from "./utils";
 
 describe("meditation", () => {
-  let browser: puppeteer.Browser;
-  let page: puppeteer.Page;
+  let browser: Browser;
+  let page: Page;
 
   beforeAll(async () => {
     browser = await createAndSetUpBrowser();

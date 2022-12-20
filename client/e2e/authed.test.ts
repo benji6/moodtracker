@@ -1,4 +1,4 @@
-import puppeteer from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import { ROOT_DOCUMENT_TITLE, SELECTORS, URLS } from "./constants";
 import {
   createAndSetUpBrowser,
@@ -8,8 +8,8 @@ import {
 } from "./utils";
 
 describe("authed", () => {
-  let browser: puppeteer.Browser;
-  let page: puppeteer.Page;
+  let browser: Browser;
+  let page: Page;
 
   beforeAll(async () => {
     browser = await createAndSetUpBrowser();
