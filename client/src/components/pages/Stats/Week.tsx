@@ -163,7 +163,12 @@ export default function Week() {
         xLabels={xLabels}
         xLines={xLines}
       />
-      <WeatherForPeriod fromDate={date} toDate={nextDate} />
+      <WeatherForPeriod
+        fromDate={date}
+        toDate={nextDate}
+        xLabels={xLabels}
+        xLines={xLines}
+      />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );

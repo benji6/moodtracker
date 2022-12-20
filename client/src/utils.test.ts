@@ -24,6 +24,8 @@ import {
   getWeatherIconAndColor,
   bisectLeft,
   roundUpToNearest10,
+  convertKelvinToCelcius,
+  roundDownToNearest10,
 } from "./utils";
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 
@@ -327,6 +329,13 @@ describe("utils", () => {
     expect(computeMean([5])).toBe(5);
     expect(computeMean([1, 5])).toBe(3);
     expect(computeMean([1, 2, 3, 4, 5, 6, 7])).toBe(4);
+  });
+
+  test("convertKelvinToCelsius", () => {
+    expect(convertKelvinToCelcius(0)).toMatchInlineSnapshot(`-273.15`);
+    expect(convertKelvinToCelcius(0.01)).toMatchInlineSnapshot(`-273.14`);
+    expect(convertKelvinToCelcius(1)).toMatchInlineSnapshot(`-272.15`);
+    expect(convertKelvinToCelcius(10)).toMatchInlineSnapshot(`-263.15`);
   });
 
   test("counter", () => {
@@ -1017,6 +1026,18 @@ describe("utils", () => {
     expect(roundDateUp(new Date("2020-09-07T23:59:59.999"))).toEqual(
       new Date("2020-09-08T00:00:00.000")
     );
+  });
+
+  test("roundDownToNearest10", () => {
+    expect(roundDownToNearest10(0)).toBe(0);
+    expect(roundDownToNearest10(0.1)).toBe(0);
+    expect(roundDownToNearest10(9.9)).toBe(0);
+    expect(roundDownToNearest10(10)).toBe(10);
+    expect(roundDownToNearest10(10.1)).toBe(10);
+    expect(roundDownToNearest10(-0.1)).toBe(-10);
+    expect(roundDownToNearest10(-9.9)).toBe(-10);
+    expect(roundDownToNearest10(-10)).toBe(-10);
+    expect(roundDownToNearest10(-10.1)).toBe(-20);
   });
 
   test("roundUpToNearest10", () => {

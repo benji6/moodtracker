@@ -94,6 +94,7 @@ export default function Explore() {
     dateTo
   );
   const moodIdsInPeriod = getIdsInInterval(moods.allIds, dateFrom, dateTo);
+  const xLabels = createXLabels(domain, dateNow.getTime());
 
   return (
     <Paper.Group>
@@ -121,13 +122,17 @@ export default function Explore() {
                   fromDate={dateFrom}
                   hidePoints
                   toDate={dateTo}
-                  xLabels={createXLabels(domain, dateNow.getTime())}
+                  xLabels={xLabels}
                 />
               </Paper>
               <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
               <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
               <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
-              <WeatherForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <WeatherForPeriod
+                fromDate={dateFrom}
+                toDate={dateTo}
+                xLabels={xLabels}
+              />
               <LocationsForPeriod fromDate={dateFrom} toDate={dateTo} />
             </>
           ) : (

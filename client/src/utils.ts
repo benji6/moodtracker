@@ -140,6 +140,9 @@ export const computeStandardDeviation = (xs: number[]): number | undefined => {
   return Math.sqrt(sumOfSquaredDifferences / (xs.length - 1));
 };
 
+export const convertKelvinToCelcius = (kelvin: number): number =>
+  kelvin - 273.15;
+
 export const counter = (xs: string[]): { [word: string]: number } => {
   const count: { [word: string]: number } = {};
   for (const x of xs) {
@@ -333,6 +336,7 @@ export const roundDateUp = (date: Date): Date => {
     : addDays(roundedDownDate, 1);
 };
 
+export const roundDownToNearest10 = (n: number) => Math.floor(n / 10) * 10;
 export const roundUpToNearest10 = (n: number) => Math.ceil(n / 10) * 10;
 
 export const trapeziumArea = (a: number, b: number, h: number): number =>

@@ -1,10 +1,11 @@
 import { useQueries } from "@tanstack/react-query";
-import { Icon, Paper, Spinner, SubHeading } from "eri";
+import { Chart, Icon, Paper, Spinner, SubHeading } from "eri";
 import { ComponentProps } from "react";
 import { useSelector } from "react-redux";
 import { fetchWeather } from "../../../api";
 import { WEATHER_QUERY_OPTIONS } from "../../../constants";
 import {
+  integerFormatter,
   integerPercentFormatter,
   oneDecimalPlaceFormatter,
 } from "../../../formatters/numberFormatters";
@@ -15,9 +16,12 @@ import {
 } from "../../../selectors";
 import { DeviceGeolocation } from "../../../types";
 import {
+  convertKelvinToCelcius,
   getIdsInInterval,
   getWeatherIconAndColor,
   moodToColor,
+  roundDownToNearest10,
+  roundUpToNearest10,
 } from "../../../utils";
 import ColumnChart from "../../shared/ColumnChart";
 
@@ -29,9 +33,16 @@ type QueryKey = [
 interface Props {
   fromDate: Date;
   toDate: Date;
+  xLabels: [number, string][];
+  xLines?: number[];
 }
 
-export default function WeatherForPeriod({ fromDate, toDate }: Props) {
+export default function WeatherForPeriod({
+  fromDate,
+  toDate,
+  xLabels,
+  xLines,
+}: Props) {
   const eventsAllIds = useSelector(eventsAllIdsSelector);
   const eventsById = useSelector(eventsByIdSelector);
   const normalizedMoods = useSelector(normalizedMoodsSelector);
@@ -48,7 +59,7 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
       locationByIdEntries.push([id, event.payload.location]);
   }
 
-  const results = useQueries({
+  const weatherResults = useQueries({
     queries: locationByIdEntries.map(([id, location]) => ({
       ...WEATHER_QUERY_OPTIONS,
       queryKey: [
@@ -77,14 +88,20 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
     };
   } = {};
 
-  for (let i = 0; i < results.length; i++) {
-    const result = results[i];
+  const temperatureChartData: [number, number][] = [];
+  for (let i = 0; i < weatherResults.length; i++) {
+    const result = weatherResults[i];
     if (result.isError) errorCount++;
     else if (result.isLoading) loadingCount++;
     const data = result.data;
     if (!data) continue;
     successCount++;
     const [weatherData] = data.data;
+    const eventId = locationByIdEntries[i][0];
+    temperatureChartData.push([
+      new Date(eventId).getTime(),
+      convertKelvinToCelcius(weatherData.temp),
+    ]);
     for (let j = 0; j < weatherData.weather.length; j++) {
       const { iconName, weatherColor } = getWeatherIconAndColor({
         isDaytime: true,
@@ -92,7 +109,6 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
       });
       const { main } = weatherData.weather[j];
       const key = `${main}:${iconName}:${weatherColor}`;
-      const eventId = locationByIdEntries[i][0];
       const mood =
         eventId in normalizedMoods.byId
           ? normalizedMoods.byId[eventId]
@@ -171,6 +187,31 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
       return yDifference || a.main.localeCompare(b.main);
     });
 
+  const temperatures = temperatureChartData.map(
+    ([_, temperature]) => temperature
+  );
+
+  const temperatureChartRange: [number, number] = [
+    roundDownToNearest10(Math.min(...temperatures)),
+    roundUpToNearest10(Math.max(...temperatures)),
+  ];
+  const temperatureChartYLabels: [number, string][] = [...Array(11).keys()].map(
+    (n) => {
+      const y = Math.round(
+        (n / 10) * (temperatureChartRange[1] - temperatureChartRange[0]) +
+          temperatureChartRange[0]
+      );
+      return [y, integerFormatter.format(y)];
+    }
+  );
+
+  const temperatureChartVariation: "small" | "medium" | "large" =
+    temperatureChartData.length >= 128
+      ? "large"
+      : temperatureChartData.length >= 48
+      ? "medium"
+      : "small";
+
   return (
     <Paper>
       <h3>
@@ -202,6 +243,33 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
             xAxisTitle="Weather"
             yAxisTitle="Average mood"
           />
+        </>
+      )}
+      {temperatureChartData.length && (
+        <>
+          <h3>Temperature chart</h3>
+          <Chart.LineChart
+            aria-label="Chart displaying temperature against time"
+            domain={[fromDate.getTime(), toDate.getTime()]}
+            range={temperatureChartRange}
+            yAxisTitle="Temperature (°C)"
+          >
+            <Chart.XGridLines lines={xLines ?? xLabels.map(([n]) => n)} />
+            <Chart.YGridLines lines={temperatureChartYLabels.map(([y]) => y)} />
+            <Chart.PlotArea>
+              <Chart.Line
+                data={temperatureChartData}
+                thickness={
+                  temperatureChartVariation === "medium" ? 2 : undefined
+                }
+              />
+              {temperatureChartVariation === "small" && (
+                <Chart.Points data={temperatureChartData} />
+              )}
+            </Chart.PlotArea>
+            <Chart.XAxis labels={xLabels} markers={xLines ?? true} />
+            <Chart.YAxis labels={temperatureChartYLabels} markers />
+          </Chart.LineChart>
         </>
       )}
       {loadingCount || errorCount ? (

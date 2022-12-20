@@ -1,9 +1,12 @@
 import { Chart, Paper } from "eri";
 import { useSelector } from "react-redux";
+import { integerFormatter } from "../../../formatters/numberFormatters";
 import { normalizedWeightsSelector } from "../../../selectors";
-import { getEnvelopingCategoryIds, roundUpToNearest10 } from "../../../utils";
-
-const roundDownToNearest10 = (n: number) => Math.floor(n / 10) * 10;
+import {
+  getEnvelopingCategoryIds,
+  roundDownToNearest10,
+  roundUpToNearest10,
+} from "../../../utils";
 
 interface Props {
   fromDate: Date;
@@ -42,7 +45,7 @@ export default function WeightChartForPeriod({
 
   const yLabels: [number, string][] = [...Array(11).keys()].map((n) => {
     const y = Math.round((n / 10) * (range[1] - range[0]) + range[0]);
-    return [y, String(y)];
+    return [y, integerFormatter.format(y)];
   });
 
   const showManyPointsVariation = data.length >= 48;

@@ -203,7 +203,7 @@ export default function Month() {
         toDate={nextDate}
         xLabels={xLabels}
       />
-      <WeatherForPeriod fromDate={date} toDate={nextDate} />
+      <WeatherForPeriod fromDate={date} toDate={nextDate} xLabels={xLabels} />
       <LocationsForPeriod fromDate={date} toDate={nextDate} />
     </Paper.Group>
   );

@@ -1,3 +1,5 @@
+import { convertKelvinToCelcius } from "../utils";
+
 const celciusFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,
@@ -5,8 +7,8 @@ const celciusFormatter = Intl.NumberFormat(undefined, {
   unit: "celsius",
 });
 
-export const formatKelvinToCelcius = (n: number): string =>
-  celciusFormatter.format(n - 273.15);
+export const formatKelvinToCelcius = (kelvin: number): string =>
+  celciusFormatter.format(convertKelvinToCelcius(kelvin));
 
 export const integerFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0,
