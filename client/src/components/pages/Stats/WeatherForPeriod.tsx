@@ -143,6 +143,7 @@ export default function WeatherForPeriod({ fromDate, toDate }: Props) {
     });
 
   const meanMoodChartData = Object.entries(chartData)
+    .filter(([_, { moodCount }]) => moodCount)
     .map(([key, { moodCount, sumOfMoods }]) => {
       const [main, iconName, color] = key.split(":") as [
         string,
