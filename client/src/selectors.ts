@@ -63,6 +63,18 @@ export const userIsSignedInSelector = (state: RootState) =>
   Boolean(state.user.email);
 export const userLoadingSelector = (state: RootState) => state.user.loading;
 
+export const eventsAllIdsWithLocationSelector = createSelector(
+  eventsAllIdsSelector,
+  eventsByIdSelector,
+  (allIds, byId) =>
+    allIds.filter((id) => {
+      const { payload } = byId[id];
+      return (
+        typeof payload !== "string" && "location" in payload && payload.location
+      );
+    })
+);
+
 const trackedCategoriesSelector = createSelector(
   eventsAllIdsSelector,
   eventsByIdSelector,

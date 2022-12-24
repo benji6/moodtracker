@@ -1,4 +1,4 @@
-import { FluxStandardAction } from "../../../../types";
+import { FluxStandardAction } from "../../../../typeUtilities";
 
 type Action =
   | FluxStandardAction<"filterDescription/set", string>

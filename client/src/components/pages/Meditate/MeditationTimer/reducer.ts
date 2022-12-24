@@ -1,4 +1,4 @@
-import { FluxStandardAction } from "../../../../types";
+import { FluxStandardAction } from "../../../../typeUtilities";
 
 export type TimerState = "FINISHED" | "PAUSED" | "TIMING";
 

@@ -10,19 +10,18 @@ import {
   oneDecimalPlaceFormatter,
 } from "../../../formatters/numberFormatters";
 import {
-  eventsAllIdsSelector,
   eventsByIdSelector,
   normalizedMoodsSelector,
 } from "../../../selectors";
-import { DeviceGeolocation } from "../../../types";
+import { AppEventWithLocation } from "../../../types";
 import {
   convertKelvinToCelcius,
-  getIdsInInterval,
   getWeatherIconAndColor,
   moodToColor,
   roundDownToNearest10,
   roundUpToNearest10,
 } from "../../../utils";
+import useEventIdsWithLocationInPeriod from "../../hooks/useEventIdsWithLocationInPeriod";
 import ColumnChart from "../../shared/ColumnChart";
 
 type QueryKey = [
@@ -43,38 +42,32 @@ export default function WeatherForPeriod({
   xLabels,
   xLines,
 }: Props) {
-  const eventsAllIds = useSelector(eventsAllIdsSelector);
   const eventsById = useSelector(eventsByIdSelector);
   const normalizedMoods = useSelector(normalizedMoodsSelector);
-  const eventIdsInPeriod = getIdsInInterval(eventsAllIds, fromDate, toDate);
-
-  const locationByIdEntries: [string, DeviceGeolocation][] = [];
-  for (const id of eventIdsInPeriod) {
-    const event = eventsById[id];
-    if (
-      typeof event.payload !== "string" &&
-      "location" in event.payload &&
-      event.payload.location
-    )
-      locationByIdEntries.push([id, event.payload.location]);
-  }
+  const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
+    fromDate,
+    toDate
+  );
 
   const weatherResults = useQueries({
-    queries: locationByIdEntries.map(([id, location]) => ({
-      ...WEATHER_QUERY_OPTIONS,
-      queryKey: [
-        "weather",
-        {
-          date: new Date(id),
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-      ] as QueryKey,
-      queryFn: fetchWeather,
-    })),
+    queries: eventIdsWithLocationInPeriod.map((id) => {
+      const { location } = (eventsById[id] as AppEventWithLocation).payload;
+      return {
+        ...WEATHER_QUERY_OPTIONS,
+        queryKey: [
+          "weather",
+          {
+            date: new Date(id),
+            latitude: location.latitude,
+            longitude: location.longitude,
+          },
+        ] as QueryKey,
+        queryFn: fetchWeather,
+      };
+    }),
   });
 
-  if (!locationByIdEntries.length) return null;
+  if (!eventIdsWithLocationInPeriod.length) return null;
 
   let errorCount = 0;
   let loadingCount = 0;
@@ -97,7 +90,7 @@ export default function WeatherForPeriod({
     if (!data) continue;
     successCount++;
     const [weatherData] = data.data;
-    const eventId = locationByIdEntries[i][0];
+    const eventId = eventIdsWithLocationInPeriod[i];
     temperatureChartData.push([
       new Date(eventId).getTime(),
       convertKelvinToCelcius(weatherData.temp),
@@ -217,8 +210,9 @@ export default function WeatherForPeriod({
       <h3>
         Weather
         <SubHeading>
-          {locationByIdEntries.length} location
-          {locationByIdEntries.length > 1 ? "s" : ""} recorded for this period
+          {eventIdsWithLocationInPeriod.length} location
+          {eventIdsWithLocationInPeriod.length > 1 ? "s" : ""} recorded for this
+          period
         </SubHeading>
       </h3>
       {frequencyChartData.length && (
@@ -280,7 +274,7 @@ export default function WeatherForPeriod({
                 <Spinner inline margin="end" />
                 Fetching weather data (may require an internet connection)...{" "}
                 {integerPercentFormatter.format(
-                  successCount / locationByIdEntries.length
+                  successCount / eventIdsWithLocationInPeriod.length
                 )}
               </>
             )}
@@ -289,7 +283,7 @@ export default function WeatherForPeriod({
               <span className="negative">
                 Could not fetch weather for{" "}
                 {integerPercentFormatter.format(
-                  errorCount / locationByIdEntries.length
+                  errorCount / eventIdsWithLocationInPeriod.length
                 )}{" "}
                 of locations, please try again later
               </span>

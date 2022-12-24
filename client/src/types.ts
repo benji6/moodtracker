@@ -1,9 +1,4 @@
-export type FluxStandardAction<
-  Type extends string,
-  Payload = undefined
-> = Payload extends undefined
-  ? { type: Type }
-  : { payload: Payload; type: Type };
+import { RequireProperties } from "./typeUtilities";
 
 export type NormalizedTrackedCategory<TrackedCategory> = {
   allIds: string[];
@@ -71,6 +66,13 @@ export type AppCreateEvent =
   | PayloadEvent<"v1/meditations/create", Meditation>
   | PayloadEvent<"v1/moods/create", Mood>
   | PayloadEvent<"v1/weights/create", Weight>;
+export type AppEventWithLocation =
+  | PayloadEvent<
+      "v1/meditations/create",
+      RequireProperties<Meditation, "location">
+    >
+  | PayloadEvent<"v1/moods/create", RequireProperties<Mood, "location">>
+  | PayloadEvent<"v1/weights/create", RequireProperties<Weight, "location">>;
 
 export type AppUpdateEvent =
   | PayloadEvent<"v1/moods/update", UpdateMood>

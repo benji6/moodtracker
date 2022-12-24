@@ -1,8 +1,7 @@
 import { CSSProperties, Fragment, HTMLAttributes, Key, ReactNode } from "react";
+import { Optional } from "../../../typeUtilities";
 import { roundUpToNearest10 } from "../../../utils";
 import "./style.css";
-
-type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 interface ColumnWithdata {
   y: number;
