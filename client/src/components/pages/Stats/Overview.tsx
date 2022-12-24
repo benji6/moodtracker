@@ -48,7 +48,7 @@ export default function Overview() {
         <ul>
           {hasMeditations && (
             <li>
-              <Link to="meditation">Meditation stats</Link>
+              <Link to="/meditation/stats">Meditation stats</Link>
             </li>
           )}
           {hasWeights && (
