@@ -1,33 +1,16 @@
-import { useQueries } from "@tanstack/react-query";
-import { Chart, Icon, Paper, Spinner, SubHeading } from "eri";
+import { Icon, Paper, Spinner, SubHeading } from "eri";
 import { ComponentProps } from "react";
 import { useSelector } from "react-redux";
-import { fetchWeather } from "../../../api";
-import { WEATHER_QUERY_OPTIONS } from "../../../constants";
 import {
-  integerFormatter,
   integerPercentFormatter,
   oneDecimalPlaceFormatter,
-} from "../../../formatters/numberFormatters";
-import {
-  eventsByIdSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
-import { AppEventWithLocation } from "../../../types";
-import {
-  convertKelvinToCelcius,
-  getWeatherIconAndColor,
-  moodToColor,
-  roundDownToNearest10,
-  roundUpToNearest10,
-} from "../../../utils";
-import useEventIdsWithLocationInPeriod from "../../hooks/useEventIdsWithLocationInPeriod";
-import ColumnChart from "../../shared/ColumnChart";
-
-type QueryKey = [
-  "weather",
-  { date: Date; latitude: number; longitude: number }
-];
+} from "../../../../formatters/numberFormatters";
+import { normalizedMoodsSelector } from "../../../../selectors";
+import { getWeatherIconAndColor, moodToColor } from "../../../../utils";
+import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
+import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import ColumnChart from "../../../shared/ColumnChart";
+import TemperatureChart from "./TemperatureChart";
 
 interface Props {
   fromDate: Date;
@@ -42,30 +25,12 @@ export default function WeatherForPeriod({
   xLabels,
   xLines,
 }: Props) {
-  const eventsById = useSelector(eventsByIdSelector);
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     fromDate,
     toDate
   );
-
-  const weatherResults = useQueries({
-    queries: eventIdsWithLocationInPeriod.map((id) => {
-      const { location } = (eventsById[id] as AppEventWithLocation).payload;
-      return {
-        ...WEATHER_QUERY_OPTIONS,
-        queryKey: [
-          "weather",
-          {
-            date: new Date(id),
-            latitude: location.latitude,
-            longitude: location.longitude,
-          },
-        ] as QueryKey,
-        queryFn: fetchWeather,
-      };
-    }),
-  });
+  const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 
   if (!eventIdsWithLocationInPeriod.length) return null;
 
@@ -81,20 +46,15 @@ export default function WeatherForPeriod({
     };
   } = {};
 
-  const temperatureChartData: [number, number][] = [];
   for (let i = 0; i < weatherResults.length; i++) {
     const result = weatherResults[i];
     if (result.isError) errorCount++;
     else if (result.isLoading) loadingCount++;
-    const data = result.data;
+    const { data } = result;
     if (!data) continue;
     successCount++;
     const [weatherData] = data.data;
     const eventId = eventIdsWithLocationInPeriod[i];
-    temperatureChartData.push([
-      new Date(eventId).getTime(),
-      convertKelvinToCelcius(weatherData.temp),
-    ]);
     for (let j = 0; j < weatherData.weather.length; j++) {
       const { iconName, weatherColor } = getWeatherIconAndColor({
         isDaytime: true,
@@ -180,31 +140,6 @@ export default function WeatherForPeriod({
       return yDifference || a.main.localeCompare(b.main);
     });
 
-  const temperatures = temperatureChartData.map(
-    ([_, temperature]) => temperature
-  );
-
-  const temperatureChartRange: [number, number] = [
-    roundDownToNearest10(Math.min(...temperatures)),
-    roundUpToNearest10(Math.max(...temperatures)),
-  ];
-  const temperatureChartYLabels: [number, string][] = [...Array(11).keys()].map(
-    (n) => {
-      const y = Math.round(
-        (n / 10) * (temperatureChartRange[1] - temperatureChartRange[0]) +
-          temperatureChartRange[0]
-      );
-      return [y, integerFormatter.format(y)];
-    }
-  );
-
-  const temperatureChartVariation: "small" | "medium" | "large" =
-    temperatureChartData.length >= 128
-      ? "large"
-      : temperatureChartData.length >= 48
-      ? "medium"
-      : "small";
-
   return (
     <Paper>
       <h3>
@@ -239,33 +174,12 @@ export default function WeatherForPeriod({
           />
         </>
       )}
-      {temperatureChartData.length && (
-        <>
-          <h3>Temperature chart</h3>
-          <Chart.LineChart
-            aria-label="Chart displaying temperature against time"
-            domain={[fromDate.getTime(), toDate.getTime()]}
-            range={temperatureChartRange}
-            yAxisTitle="Temperature (°C)"
-          >
-            <Chart.XGridLines lines={xLines ?? xLabels.map(([n]) => n)} />
-            <Chart.YGridLines lines={temperatureChartYLabels.map(([y]) => y)} />
-            <Chart.PlotArea>
-              <Chart.Line
-                data={temperatureChartData}
-                thickness={
-                  temperatureChartVariation === "medium" ? 2 : undefined
-                }
-              />
-              {temperatureChartVariation === "small" && (
-                <Chart.Points data={temperatureChartData} />
-              )}
-            </Chart.PlotArea>
-            <Chart.XAxis labels={xLabels} markers={xLines ?? true} />
-            <Chart.YAxis labels={temperatureChartYLabels} markers />
-          </Chart.LineChart>
-        </>
-      )}
+      <TemperatureChart
+        fromDate={fromDate}
+        toDate={toDate}
+        xLabels={xLabels}
+        xLines={xLines}
+      />
       {loadingCount || errorCount ? (
         <p>
           <small>
