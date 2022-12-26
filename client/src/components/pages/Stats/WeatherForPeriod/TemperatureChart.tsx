@@ -1,10 +1,6 @@
 import { Chart } from "eri";
 import { integerFormatter } from "../../../../formatters/numberFormatters";
-import {
-  convertKelvinToCelcius,
-  roundDownToNearest10,
-  roundUpToNearest10,
-} from "../../../../utils";
+import { convertKelvinToCelcius, createChartRange } from "../../../../utils";
 import useEnvelopingEventIdsWithLocation from "../../../hooks/useEnvelopingEventIdsWithLocation";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 
@@ -44,10 +40,7 @@ export default function TemperatureChart({
   }
   if (!temperatureChartData.length) return null;
 
-  const temperatureChartRange: [number, number] = [
-    roundDownToNearest10(Math.min(...temperatures)),
-    roundUpToNearest10(Math.max(...temperatures)),
-  ];
+  const temperatureChartRange = createChartRange(temperatures);
   const temperatureChartYLabels: [number, string][] = [...Array(11).keys()].map(
     (n) => {
       const y = Math.round(

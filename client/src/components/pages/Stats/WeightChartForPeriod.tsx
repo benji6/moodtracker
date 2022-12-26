@@ -2,11 +2,7 @@ import { Chart, Paper } from "eri";
 import { useSelector } from "react-redux";
 import { integerFormatter } from "../../../formatters/numberFormatters";
 import { normalizedWeightsSelector } from "../../../selectors";
-import {
-  getEnvelopingIds,
-  roundDownToNearest10,
-  roundUpToNearest10,
-} from "../../../utils";
+import { createChartRange, getEnvelopingIds } from "../../../utils";
 
 interface Props {
   fromDate: Date;
@@ -29,10 +25,7 @@ export default function WeightChartForPeriod({
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
   const envelopingValues = envelopingIds.map((id) => weights.byId[id].value);
 
-  const range: [number, number] = [
-    roundDownToNearest10(Math.min(...envelopingValues)),
-    roundUpToNearest10(Math.max(...envelopingValues)),
-  ];
+  const range = createChartRange(envelopingValues);
 
   const data: [number, number][] = envelopingIds.map((id) => {
     const weight = weights.byId[id];

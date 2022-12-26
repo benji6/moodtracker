@@ -148,6 +148,23 @@ export const counter = (xs: string[]): { [word: string]: number } => {
   return count;
 };
 
+export const createChartRange = (values: number[]): [number, number] => {
+  const { length } = values;
+  if (length < 2)
+    throw Error(
+      `\`createChartRange\` requires at least 2 values but received ${length}`
+    );
+  const range: [number, number] = [
+    roundDownToNearest10(Math.min(...values)),
+    roundUpToNearest10(Math.max(...values)),
+  ];
+  if (range[0] === range[1]) {
+    range[0] -= 10;
+    range[1] += 10;
+  }
+  return range;
+};
+
 export const createDateFromLocalDateString = (dateString: string) =>
   new Date(`${dateString}T00:00:00`);
 

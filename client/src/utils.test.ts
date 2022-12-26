@@ -26,6 +26,7 @@ import {
   roundUpToNearest10,
   convertKelvinToCelcius,
   roundDownToNearest10,
+  createChartRange,
 } from "./utils";
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 
@@ -346,6 +347,27 @@ describe("utils", () => {
       baz: 1,
       foo: 3,
     });
+  });
+
+  test("createChartRange", () => {
+    expect(() => createChartRange([])).toThrowError(
+      Error("`createChartRange` requires at least 2 values but received 0")
+    );
+    expect(() => createChartRange([0])).toThrowError(
+      "`createChartRange` requires at least 2 values but received 1"
+    );
+    expect(createChartRange([0, 0])).toEqual([-10, 10]);
+    expect(createChartRange([0, 0.1])).toEqual([0, 10]);
+    expect(createChartRange([0.1, 0.1])).toEqual([0, 10]);
+    expect(createChartRange([0.1, 9.9])).toEqual([0, 10]);
+    expect(createChartRange([0, 10])).toEqual([0, 10]);
+    expect(createChartRange([0, 10.1])).toEqual([0, 20]);
+    expect(createChartRange([8, 1, 2, 10, 4, 5, 6, 9, 0, 7, 3])).toEqual([
+      0, 10,
+    ]);
+    expect(createChartRange([8, 1, 2, 10, 4, 5, 6, 9, -0.1, 7, 3])).toEqual([
+      -10, 10,
+    ]);
   });
 
   describe("computeSecondsMeditatedInInterval", () => {
