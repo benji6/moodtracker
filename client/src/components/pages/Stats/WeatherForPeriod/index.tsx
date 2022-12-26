@@ -168,6 +168,7 @@ export default function WeatherForPeriod({
           <ColumnChart
             aria-label="Chart displaying average mood for different weather types"
             data={meanMoodChartData}
+            maxRange={10}
             rotateXLabels
             xAxisTitle="Weather"
             yAxisTitle="Average mood"

@@ -31,6 +31,7 @@ export default function MoodByWeekdayChart({ averages, onClick }: Props) {
             : `Average mood: ${oneDecimalPlaceFormatter.format(averageMood)}`,
         y: averageMood,
       }))}
+      maxRange={10}
       onBarClick={onClick}
       rotateXLabels
       xAxisTitle="Weekday"

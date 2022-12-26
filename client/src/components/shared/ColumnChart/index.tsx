@@ -15,6 +15,7 @@ type ColumnWithoutData = Optional<ColumnWithdata, "y" | "color">;
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   data: (ColumnWithoutData | ColumnWithdata)[];
+  maxRange?: number;
   onBarClick?(xIndex: number): void;
   rotateXLabels?: boolean;
   xAxisTitle: string;
@@ -23,6 +24,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export default function ColumnChart({
   data,
+  maxRange,
   onBarClick,
   rotateXLabels = false,
   xAxisTitle: xTitle,
@@ -31,10 +33,13 @@ export default function ColumnChart({
 }: Props) {
   if (!data.length) return null;
 
-  const maxY = Math.max(
-    ...data.filter(({ y }) => y !== undefined).map(({ y }) => y as number)
-  );
-  const range: [number, number] = [0, roundUpToNearest10(maxY)];
+  let range: [number, number];
+  if (maxRange === undefined) {
+    const maxY = Math.max(
+      ...data.filter(({ y }) => y !== undefined).map(({ y }) => y as number)
+    );
+    range = [0, maxY < 5 ? 5 : roundUpToNearest10(maxY)];
+  } else range = [0, maxRange];
   const yLabels: number[] =
     range[1] <= 10
       ? [...Array(range[1] + 1).keys()]

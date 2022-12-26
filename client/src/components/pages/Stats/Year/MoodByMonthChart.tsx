@@ -39,6 +39,7 @@ export default function MoodByMonthChart({ months }: Props) {
           y: averageMood,
         };
       })}
+      maxRange={10}
       onBarClick={(i) =>
         navigate(`/stats/months/${formatIsoMonthInLocalTimezone(months[i])}`)
       }
