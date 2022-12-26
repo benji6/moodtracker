@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../../selectors";
-import { getEnvelopingCategoryIds } from "../../../../utils";
+import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import MoodChart from "../../../shared/MoodChart";
 import computeTrendlinePoints from "./computeTrendlinePoints";
 
@@ -23,11 +23,7 @@ export default function MoodChartForPeriod({
 }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
-  const envelopingMoodIds = getEnvelopingCategoryIds(
-    moods.allIds,
-    fromDate,
-    toDate
-  );
+  const envelopingMoodIds = useEnvelopingMoodIds(fromDate, toDate);
   const data: [number, number][] = envelopingMoodIds.map((id) => {
     const mood = moods.byId[id];
     return [new Date(id).getTime(), mood.mood];

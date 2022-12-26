@@ -6,8 +6,6 @@ export default function useEventIdsWithLocationInPeriod(
   fromDate: Date,
   toDate: Date
 ): string[] {
-  const eventsAllIdsWithLocation = useSelector(
-    eventsAllIdsWithLocationSelector
-  );
-  return getIdsInInterval(eventsAllIdsWithLocation, fromDate, toDate);
+  const ids = useSelector(eventsAllIdsWithLocationSelector);
+  return getIdsInInterval(ids, fromDate, toDate);
 }

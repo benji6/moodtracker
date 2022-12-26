@@ -145,25 +145,25 @@ export default function Routes() {
           <Route path="days">
             <Route
               element={<AuthedOnlyPage Component={Day} title="Day stats" />}
-              path=":day"
+              path=":date"
             />
           </Route>
           <Route path="weeks">
             <Route
               element={<AuthedOnlyPage Component={Week} title="Week stats" />}
-              path=":week"
+              path=":date"
             />
           </Route>
           <Route path="months">
             <Route
               element={<AuthedOnlyPage Component={Month} title="Month stats" />}
-              path=":month"
+              path=":date"
             />
           </Route>
           <Route path="years">
             <Route
               element={<AuthedOnlyPage Component={Year} title="Year stats" />}
-              path=":year"
+              path=":date"
             />
           </Route>
         </Route>

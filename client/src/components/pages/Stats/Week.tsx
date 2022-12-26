@@ -1,5 +1,4 @@
-import { Icon, Paper, Spinner, SubHeading } from "eri";
-import { useSelector } from "react-redux";
+import { Icon, Paper, SubHeading } from "eri";
 import { TIME } from "../../../constants";
 import {
   formatWeek,
@@ -9,70 +8,41 @@ import {
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
 import {
-  eventsHasLoadedFromServerSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
-import {
-  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  getIdsInInterval,
 } from "../../../utils";
-import GetStartedCta from "../../shared/GetStartedCta";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
-import startOfWeek from "date-fns/startOfWeek";
-import addWeeks from "date-fns/addWeeks";
-import subWeeks from "date-fns/subWeeks";
 import addDays from "date-fns/addDays";
 import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import LocationsForPeriod from "./LocationsForPeriod";
-import RedirectHome from "../../RedirectHome";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
-import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
+import withStatsPage from "../../hocs/withStatsPage";
+import startOfWeek from "date-fns/startOfWeek";
+import addWeeks from "date-fns/addWeeks";
+import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 
-const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+interface Props {
+  date: Date;
+  nextDate: Date;
+  prevDate: Date;
+  showNext: boolean;
+  showPrevious: boolean;
+}
 
-export default function Week() {
-  const { week: weekStr } = useParams();
-  const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
-  );
-  const moods = useSelector(normalizedMoodsSelector);
+function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
+  const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
 
-  if (!weekStr || !isoDateRegex.test(weekStr)) return <RedirectHome />;
-  const date = startOfWeek(
-    createDateFromLocalDateString(weekStr),
-    WEEK_OPTIONS
-  );
-  if (!isValid(date)) return <RedirectHome />;
-  if (!eventsHasLoadedFromServer) return <Spinner />;
-  if (!moods.allIds.length)
-    return (
-      <Paper.Group>
-        <GetStartedCta />
-      </Paper.Group>
-    );
-
-  const firstMoodDate = new Date(moods.allIds[0]);
-
-  const nextDate = addWeeks(date, 1);
-  const prevDate = subWeeks(date, 1);
   const lastDayOfWeek = subDays(nextDate, 1);
-
-  const showPrevious = date > firstMoodDate;
-  const showNext = nextDate <= new Date();
-
-  const moodIdsInWeek = getIdsInInterval(moods.allIds, date, nextDate);
 
   const xLabels: [number, string][] = [];
   for (let i = 0; i < TIME.daysPerWeek; i++) {
@@ -127,7 +97,7 @@ export default function Week() {
         </PrevNextControls>
       </Paper>
       <MoodSummaryForWeek dates={[prevDate, date, nextDate]} />
-      {moodIdsInWeek.length ? (
+      {moodIdsInPeriod.length ? (
         <>
           <Paper>
             <h3>Mood chart</h3>
@@ -173,3 +143,9 @@ export default function Week() {
     </Paper.Group>
   );
 }
+
+export default withStatsPage({
+  addPeriod: addWeeks,
+  adjustDate: (date) => startOfWeek(date, WEEK_OPTIONS),
+  Component: Week,
+});

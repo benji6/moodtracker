@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { integerFormatter } from "../../../formatters/numberFormatters";
 import { normalizedWeightsSelector } from "../../../selectors";
 import {
-  getEnvelopingCategoryIds,
+  getEnvelopingIds,
   roundDownToNearest10,
   roundUpToNearest10,
 } from "../../../utils";
@@ -22,11 +22,7 @@ export default function WeightChartForPeriod({
   xLines,
 }: Props) {
   const weights = useSelector(normalizedWeightsSelector);
-  const envelopingIds = getEnvelopingCategoryIds(
-    weights.allIds,
-    fromDate,
-    toDate
-  );
+  const envelopingIds = getEnvelopingIds(weights.allIds, fromDate, toDate);
 
   if (envelopingIds.length < 2) return null;
 

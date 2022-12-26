@@ -1,4 +1,4 @@
-import { Icon, Paper, Spinner, SubHeading } from "eri";
+import { Icon, Paper, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
   dayMonthFormatter,
@@ -7,25 +7,18 @@ import {
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
-import {
-  normalizedAveragesByWeekSelector,
-  normalizedMoodsSelector,
-  eventsHasLoadedFromServerSelector,
-} from "../../../selectors";
+import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  getIdsInInterval,
 } from "../../../utils";
-import GetStartedCta from "../../shared/GetStartedCta";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForMonth from "./MoodSummaryForMonth";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "./MoodCalendarForMonth";
-import subMonths from "date-fns/subMonths";
 import addMonths from "date-fns/addMonths";
 import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
 import addDays from "date-fns/addDays";
@@ -37,56 +30,37 @@ import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import LocationsForPeriod from "./LocationsForPeriod";
-import RedirectHome from "../../RedirectHome";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MoodCloud from "./MoodCloud";
-import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
+import withStatsPage from "../../hocs/withStatsPage";
+import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 
 const X_LABELS_COUNT = 5;
 
-const isoMonthRegex = /^\d{4}-\d{2}$/;
+interface Props {
+  date: Date;
+  nextDate: Date;
+  prevDate: Date;
+  showNext: boolean;
+  showPrevious: boolean;
+}
 
-export default function Month() {
-  const { month: monthStr } = useParams();
-  const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
-  );
-  const moods = useSelector(normalizedMoodsSelector);
+function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
+  const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
   const normalizedAveragesByWeek = useSelector(
     normalizedAveragesByWeekSelector
   );
 
-  if (!monthStr || !isoMonthRegex.test(monthStr)) return <RedirectHome />;
-  const date = createDateFromLocalDateString(monthStr);
-  if (!isValid(date)) return <RedirectHome />;
-  if (!eventsHasLoadedFromServer) return <Spinner />;
-  if (!moods.allIds.length)
-    return (
-      <Paper.Group>
-        <GetStartedCta />
-      </Paper.Group>
-    );
-
-  const firstMoodDate = new Date(moods.allIds[0]);
-
-  const prevDate = subMonths(date, 1);
-  const nextDate = addMonths(date, 1);
   const nextMonthDateString = formatIsoDateInLocalTimezone(nextDate);
   const monthMinus7DaysDateString = formatIsoDateInLocalTimezone(
     subDays(date, 7)
   );
 
-  const showPrevious = date > firstMoodDate;
-  const showNext = nextDate <= new Date();
-
-  const moodIdsInMonth = getIdsInInterval(moods.allIds, date, nextDate);
-
   const monthLength = differenceInCalendarDays(nextDate, date);
 
   const xLabels: [number, string][] = [];
-
   for (let i = 0; i < X_LABELS_COUNT; i++) {
     const d = addDays(
       date,
@@ -125,7 +99,7 @@ export default function Month() {
         </PrevNextControls>
       </Paper>
       <MoodSummaryForMonth dates={[prevDate, date, nextDate]} />
-      {moodIdsInMonth.length ? (
+      {moodIdsInPeriod.length ? (
         <>
           <Paper>
             <h3>Mood chart</h3>
@@ -208,3 +182,9 @@ export default function Month() {
     </Paper.Group>
   );
 }
+
+export default withStatsPage({
+  addPeriod: addMonths,
+  dateRegex: /^\d{4}-\d{2}$/,
+  Component: Month,
+});

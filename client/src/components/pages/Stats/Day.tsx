@@ -1,7 +1,5 @@
-import addDays from "date-fns/addDays";
 import addHours from "date-fns/addHours";
-import subDays from "date-fns/subDays";
-import { Card, Icon, Paper, Spinner, SubHeading } from "eri";
+import { Card, Icon, Paper, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
   dateWeekdayFormatter,
@@ -11,18 +9,12 @@ import {
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
+import { moodIdsByDateSelector } from "../../../selectors";
 import {
-  eventsHasLoadedFromServerSelector,
-  moodIdsByDateSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
-import {
-  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
 } from "../../../utils";
-import GetStartedCta from "../../shared/GetStartedCta";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodCard from "../../shared/MoodCard";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
@@ -31,46 +23,29 @@ import MoodSummaryForDay from "./MoodSummaryForDay";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import { TIME } from "../../../constants";
 import LocationsForPeriod from "./LocationsForPeriod";
-import RedirectHome from "../../RedirectHome";
-import { Link, useParams } from "react-router-dom";
-import isValid from "date-fns/isValid";
+import { Link } from "react-router-dom";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
+import withStatsPage from "../../hocs/withStatsPage";
+import addDays from "date-fns/addDays";
 
 const X_LABELS_COUNT = 6;
-const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-export default function Day() {
-  const { day: dateStr } = useParams();
-  const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
-  );
-  const moods = useSelector(normalizedMoodsSelector);
+interface Props {
+  date: Date;
+  nextDate: Date;
+  prevDate: Date;
+  showNext: boolean;
+  showPrevious: boolean;
+}
+
+function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsByDate = useSelector(moodIdsByDateSelector);
 
-  if (!dateStr || !isoDateRegex.test(dateStr)) return <RedirectHome />;
-  const date = createDateFromLocalDateString(dateStr);
-  if (!isValid(date)) return <RedirectHome />;
-  if (!eventsHasLoadedFromServer) return <Spinner />;
-  if (!moods.allIds.length)
-    return (
-      <Paper.Group>
-        <GetStartedCta />
-      </Paper.Group>
-    );
-
-  const nextDate = addDays(date, 1);
-  const prevDate = subDays(date, 1);
-  const moodIds = moodIdsByDate[dateStr];
-
-  const firstMoodDate = new Date(moods.allIds[0]);
-  const showPrevious = date > firstMoodDate;
-  const showNext = nextDate <= new Date();
-
+  const moodIds = moodIdsByDate[formatIsoDateInLocalTimezone(date)];
   const startOfWeekDate = startOfWeek(date, WEEK_OPTIONS);
 
   const xLabels: [number, string][] = [];
-
   for (let i = 0; i < X_LABELS_COUNT; i++) {
     const d = addHours(
       date,
@@ -156,3 +131,5 @@ export default function Day() {
     </Paper.Group>
   );
 }
+
+export default withStatsPage({ addPeriod: addDays, Component: Day });

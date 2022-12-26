@@ -1,28 +1,20 @@
-import { Icon, Paper, Spinner, SubHeading } from "eri";
+import { Icon, Paper, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
   monthLongFormatter,
   monthNarrowFormatter,
   yearFormatter,
 } from "../../../../formatters/dateTimeFormatters";
+import { normalizedAveragesByMonthSelector } from "../../../../selectors";
 import {
-  normalizedMoodsSelector,
-  normalizedAveragesByMonthSelector,
-  eventsHasLoadedFromServerSelector,
-} from "../../../../selectors";
-import {
-  createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
-  getIdsInInterval,
 } from "../../../../utils";
-import GetStartedCta from "../../../shared/GetStartedCta";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
-import subYears from "date-fns/subYears";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import MoodByMonthChart from "./MoodByMonthChart";
@@ -32,48 +24,29 @@ import PrevNextControls from "../../../shared/PrevNextControls";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import LocationsForPeriod from "../LocationsForPeriod";
-import RedirectHome from "../../../RedirectHome";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MoodCloud from "../MoodCloud";
 import MoodChartForPeriod from "../MoodChartForPeriod";
 import addMonths from "date-fns/addMonths";
-import isValid from "date-fns/isValid";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import WeatherForPeriod from "../WeatherForPeriod";
+import withStatsPage from "../../../hocs/withStatsPage";
+import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 
-const isoYearRegex = /^\d{4}$/;
+interface Props {
+  date: Date;
+  nextDate: Date;
+  prevDate: Date;
+  showNext: boolean;
+  showPrevious: boolean;
+}
 
-export default function Year() {
-  const { year: yearStr } = useParams();
-  const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
-  );
-  const moods = useSelector(normalizedMoodsSelector);
+function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
+  const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
     normalizedAveragesByMonthSelector
   );
-
-  if (!yearStr || !isoYearRegex.test(yearStr)) return <RedirectHome />;
-  const date = createDateFromLocalDateString(yearStr);
-  if (!isValid(date)) return <RedirectHome />;
-  if (!eventsHasLoadedFromServer) return <Spinner />;
-  if (!moods.allIds.length)
-    return (
-      <Paper.Group>
-        <GetStartedCta />
-      </Paper.Group>
-    );
-
-  const firstMoodDate = new Date(moods.allIds[0]);
-
-  const prevDate = subYears(date, 1);
-  const nextDate = addYears(date, 1);
-
-  const showPrevious = date > firstMoodDate;
-  const showNext = nextDate <= new Date();
-
-  const moodIdsInPeriod = getIdsInInterval(moods.allIds, date, nextDate);
 
   const months = eachMonthOfInterval({ start: date, end: nextDate }).slice(
     0,
@@ -81,7 +54,6 @@ export default function Year() {
   );
 
   const calendars = [];
-
   for (const month of months) {
     const monthString = monthLongFormatter.format(month);
     const averageMood =
@@ -197,3 +169,9 @@ export default function Year() {
     </Paper.Group>
   );
 }
+
+export default withStatsPage({
+  addPeriod: addYears,
+  Component: Year,
+  dateRegex: /^\d{4}$/,
+});

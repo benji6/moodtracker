@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../../selectors";
-import { getEnvelopingCategoryIds, moodToColor } from "../../../../utils";
+import { moodToColor } from "../../../../utils";
+import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import "./style.css";
 
 interface Props {
@@ -15,11 +16,7 @@ export default function MoodGradientForPeriod({ fromDate, toDate }: Props) {
   const fromTime = fromDate.getTime();
   const toTime = toDate.getTime();
   const timeInterval = toTime - fromTime;
-  const envelopingMoodIds = getEnvelopingCategoryIds(
-    moods.allIds,
-    fromDate,
-    toDate
-  );
+  const envelopingMoodIds = useEnvelopingMoodIds(fromDate, toDate);
 
   let background = NO_DATA_COLOR;
   let title = "No mood data for this period";
