@@ -2,6 +2,7 @@ import { Paper, Spinner, SubHeading } from "eri";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import MoodByTemperatureChart from "./MoodByTemperatureChart";
 import MoodByWeatherChart from "./MoodByWeatherChart";
 import TemperatureChart from "./TemperatureChart";
 import WeatherFrequencyChart from "./WeatherFrequencyChart";
@@ -40,6 +41,33 @@ export default function WeatherForPeriod({
     successCount++;
   }
 
+  const loadingEl =
+    loadingCount || errorCount ? (
+      <p>
+        <small>
+          {Boolean(loadingCount) && (
+            <>
+              <Spinner inline margin="end" />
+              Fetching weather data (may require an internet connection)...{" "}
+              {integerPercentFormatter.format(
+                successCount / eventIdsWithLocationInPeriod.length
+              )}
+            </>
+          )}
+          {Boolean(errorCount && loadingCount) && <br />}
+          {Boolean(errorCount) && (
+            <span className="negative">
+              Could not fetch weather for{" "}
+              {integerPercentFormatter.format(
+                errorCount / eventIdsWithLocationInPeriod.length
+              )}{" "}
+              of locations, please try again later
+            </span>
+          )}
+        </small>
+      </p>
+    ) : null;
+
   return (
     <Paper>
       <h3>
@@ -50,39 +78,20 @@ export default function WeatherForPeriod({
           period
         </SubHeading>
       </h3>
+      {loadingEl}
       <WeatherFrequencyChart fromDate={fromDate} toDate={toDate} />
+      {loadingEl}
       <MoodByWeatherChart fromDate={fromDate} toDate={toDate} />
+      {loadingEl}
+      <MoodByTemperatureChart fromDate={fromDate} toDate={toDate} />
+      {loadingEl}
       <TemperatureChart
         fromDate={fromDate}
         toDate={toDate}
         xLabels={xLabels}
         xLines={xLines}
       />
-      {loadingCount || errorCount ? (
-        <p>
-          <small>
-            {Boolean(loadingCount) && (
-              <>
-                <Spinner inline margin="end" />
-                Fetching weather data (may require an internet connection)...{" "}
-                {integerPercentFormatter.format(
-                  successCount / eventIdsWithLocationInPeriod.length
-                )}
-              </>
-            )}
-            {Boolean(errorCount && loadingCount) && <br />}
-            {Boolean(errorCount) && (
-              <span className="negative">
-                Could not fetch weather for{" "}
-                {integerPercentFormatter.format(
-                  errorCount / eventIdsWithLocationInPeriod.length
-                )}{" "}
-                of locations, please try again later
-              </span>
-            )}
-          </small>
-        </p>
-      ) : null}
+      {loadingEl}
     </Paper>
   );
 }
