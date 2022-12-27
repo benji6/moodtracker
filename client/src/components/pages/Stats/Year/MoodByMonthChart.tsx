@@ -9,6 +9,7 @@ import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import ColumnChart from "../../../shared/ColumnChart";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import { MOOD_EXTENT } from "../../../../constants";
 
 interface Props {
   months: Date[];
@@ -39,7 +40,7 @@ export default function MoodByMonthChart({ months }: Props) {
           y: averageMood,
         };
       })}
-      maxRange={10}
+      maxRange={MOOD_EXTENT}
       onBarClick={(i) =>
         navigate(`/stats/months/${formatIsoMonthInLocalTimezone(months[i])}`)
       }

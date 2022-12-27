@@ -163,6 +163,15 @@ export const normalizedMoodsSelector = createSelector(
   ({ moods }): NormalizedMoods => moods
 );
 
+export const moodIdsWithLocationSelector = createSelector(
+  normalizedMoodsSelector,
+  ({ allIds, byId }): string[] =>
+    allIds.filter((id) => {
+      const mood = byId[id];
+      return "location" in mood && mood.location;
+    })
+);
+
 export const normalizedWeightsSelector = createSelector(
   trackedCategoriesSelector,
   ({ weights }): NormalizedWeights => weights

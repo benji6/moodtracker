@@ -1,16 +1,10 @@
-import { Icon, Paper, Spinner, SubHeading } from "eri";
-import { ComponentProps } from "react";
-import { useSelector } from "react-redux";
-import {
-  integerPercentFormatter,
-  oneDecimalPlaceFormatter,
-} from "../../../../formatters/numberFormatters";
-import { normalizedMoodsSelector } from "../../../../selectors";
-import { getWeatherIconAndColor, moodToColor } from "../../../../utils";
+import { Paper, Spinner, SubHeading } from "eri";
+import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
-import ColumnChart from "../../../shared/ColumnChart";
+import MoodByWeatherChart from "./MoodByWeatherChart";
 import TemperatureChart from "./TemperatureChart";
+import WeatherFrequencyChart from "./WeatherFrequencyChart";
 
 interface Props {
   fromDate: Date;
@@ -25,7 +19,6 @@ export default function WeatherForPeriod({
   xLabels,
   xLines,
 }: Props) {
-  const normalizedMoods = useSelector(normalizedMoodsSelector);
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     fromDate,
     toDate
@@ -38,14 +31,6 @@ export default function WeatherForPeriod({
   let loadingCount = 0;
   let successCount = 0;
 
-  const chartData: {
-    [nameAndColor: string]: {
-      locationEventCount: number;
-      moodCount: number;
-      sumOfMoods: number;
-    };
-  } = {};
-
   for (let i = 0; i < weatherResults.length; i++) {
     const result = weatherResults[i];
     if (result.isError) errorCount++;
@@ -53,92 +38,7 @@ export default function WeatherForPeriod({
     const { data } = result;
     if (!data) continue;
     successCount++;
-    const [weatherData] = data.data;
-    const eventId = eventIdsWithLocationInPeriod[i];
-    for (let j = 0; j < weatherData.weather.length; j++) {
-      const { iconName, weatherColor } = getWeatherIconAndColor({
-        isDaytime: true,
-        weatherId: weatherData.weather[j].id,
-      });
-      const { main } = weatherData.weather[j];
-      const key = `${main}:${iconName}:${weatherColor}`;
-      const mood =
-        eventId in normalizedMoods.byId
-          ? normalizedMoods.byId[eventId]
-          : undefined;
-
-      const moodToAddToSum = mood ? mood.mood : 0;
-      const addToMoodCount = Number(mood !== undefined);
-      chartData[key] =
-        key in chartData
-          ? {
-              locationEventCount: chartData[key].locationEventCount + 1,
-              moodCount: chartData[key].moodCount + addToMoodCount,
-              sumOfMoods: chartData[key].sumOfMoods + moodToAddToSum,
-            }
-          : {
-              locationEventCount: 1,
-              moodCount: addToMoodCount,
-              sumOfMoods: moodToAddToSum,
-            };
-    }
   }
-
-  const frequencyChartData = Object.entries(chartData)
-    .map(([key, { locationEventCount }]) => {
-      const [main, iconName, color] = key.split(":") as [
-        string,
-        ComponentProps<typeof Icon>["name"],
-        string
-      ];
-      return {
-        color,
-        iconName,
-        key,
-        label: (
-          <>
-            <Icon color={color} draw name={iconName} />
-            {main}
-          </>
-        ),
-        main,
-        title: `${main}: ${locationEventCount}`,
-        y: locationEventCount,
-      };
-    })
-    .sort((a, b) => {
-      const yDifference = b.y - a.y;
-      return yDifference || a.main.localeCompare(b.main);
-    });
-
-  const meanMoodChartData = Object.entries(chartData)
-    .filter(([_, { moodCount }]) => moodCount)
-    .map(([key, { moodCount, sumOfMoods }]) => {
-      const [main, iconName, color] = key.split(":") as [
-        string,
-        ComponentProps<typeof Icon>["name"],
-        string
-      ];
-      const meanMood = sumOfMoods / moodCount;
-      return {
-        color: moodToColor(meanMood),
-        iconName,
-        key,
-        label: (
-          <>
-            <Icon color={color} draw name={iconName} />
-            {main}
-          </>
-        ),
-        main,
-        title: `${main}: ${oneDecimalPlaceFormatter.format(meanMood)}`,
-        y: meanMood,
-      };
-    })
-    .sort((a, b) => {
-      const yDifference = b.y - a.y;
-      return yDifference || a.main.localeCompare(b.main);
-    });
 
   return (
     <Paper>
@@ -150,31 +50,8 @@ export default function WeatherForPeriod({
           period
         </SubHeading>
       </h3>
-      {frequencyChartData.length && (
-        <>
-          <h4>Weather frequency</h4>
-          <ColumnChart
-            aria-label="Chart displaying the frequency at which different weather types were recorded"
-            data={frequencyChartData}
-            rotateXLabels
-            xAxisTitle="Weather"
-            yAxisTitle="Count"
-          />
-        </>
-      )}
-      {meanMoodChartData.length && (
-        <>
-          <h4>Average mood by weather</h4>
-          <ColumnChart
-            aria-label="Chart displaying average mood for different weather types"
-            data={meanMoodChartData}
-            maxRange={10}
-            rotateXLabels
-            xAxisTitle="Weather"
-            yAxisTitle="Average mood"
-          />
-        </>
-      )}
+      <WeatherFrequencyChart fromDate={fromDate} toDate={toDate} />
+      <MoodByWeatherChart fromDate={fromDate} toDate={toDate} />
       <TemperatureChart
         fromDate={fromDate}
         toDate={toDate}

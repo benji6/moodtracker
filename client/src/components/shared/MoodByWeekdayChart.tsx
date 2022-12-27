@@ -1,3 +1,4 @@
+import { MOOD_EXTENT } from "../../constants";
 import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import { moodToColor } from "../../utils";
 import ColumnChart from "./ColumnChart";
@@ -31,7 +32,7 @@ export default function MoodByWeekdayChart({ averages, onClick }: Props) {
             : `Average mood: ${oneDecimalPlaceFormatter.format(averageMood)}`,
         y: averageMood,
       }))}
-      maxRange={10}
+      maxRange={MOOD_EXTENT}
       onBarClick={onClick}
       rotateXLabels
       xAxisTitle="Weekday"

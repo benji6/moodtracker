@@ -26,35 +26,30 @@ export default function TemperatureChart({
   if (!envelopingEventIdsWithLocation.length) return null;
 
   const temperatures: number[] = [];
-  const temperatureChartData: [number, number][] = [];
+  const chartData: [number, number][] = [];
   for (let i = 0; i < weatherResults.length; i++) {
     const result = weatherResults[i];
     const { data } = result;
     if (!data) continue;
     const celcius = convertKelvinToCelcius(data.data[0].temp);
     temperatures.push(celcius);
-    temperatureChartData.push([
+    chartData.push([
       new Date(envelopingEventIdsWithLocation[i]).getTime(),
       celcius,
     ]);
   }
-  if (!temperatureChartData.length) return null;
+  if (!chartData.length) return null;
 
-  const temperatureChartRange = createChartRange(temperatures);
-  const temperatureChartYLabels: [number, string][] = [...Array(11).keys()].map(
-    (n) => {
-      const y = Math.round(
-        (n / 10) * (temperatureChartRange[1] - temperatureChartRange[0]) +
-          temperatureChartRange[0]
-      );
-      return [y, integerFormatter.format(y)];
-    }
-  );
+  const range = createChartRange(temperatures);
+  const yLabels: [number, string][] = [...Array(11).keys()].map((n) => {
+    const y = Math.round((n / 10) * (range[1] - range[0]) + range[0]);
+    return [y, integerFormatter.format(y)];
+  });
 
-  const temperatureChartVariation: "small" | "medium" | "large" =
-    temperatureChartData.length >= 128
+  const chartVariation: "small" | "medium" | "large" =
+    chartData.length >= 128
       ? "large"
-      : temperatureChartData.length >= 48
+      : chartData.length >= 48
       ? "medium"
       : "small";
 
@@ -64,22 +59,21 @@ export default function TemperatureChart({
       <Chart.LineChart
         aria-label="Chart displaying temperature against time"
         domain={[fromDate.getTime(), toDate.getTime()]}
-        range={temperatureChartRange}
+        range={range}
+        xAxisTitle="Month"
         yAxisTitle="Temperature (°C)"
       >
         <Chart.XGridLines lines={xLines ?? xLabels.map(([n]) => n)} />
-        <Chart.YGridLines lines={temperatureChartYLabels.map(([y]) => y)} />
+        <Chart.YGridLines lines={yLabels.map(([y]) => y)} />
         <Chart.PlotArea>
           <Chart.Line
-            data={temperatureChartData}
-            thickness={temperatureChartVariation === "medium" ? 2 : undefined}
+            data={chartData}
+            thickness={chartVariation === "medium" ? 2 : undefined}
           />
-          {temperatureChartVariation === "small" && (
-            <Chart.Points data={temperatureChartData} />
-          )}
+          {chartVariation === "small" && <Chart.Points data={chartData} />}
         </Chart.PlotArea>
         <Chart.XAxis labels={xLabels} markers={xLines ?? true} />
-        <Chart.YAxis labels={temperatureChartYLabels} markers />
+        <Chart.YAxis labels={yLabels} markers />
       </Chart.LineChart>
     </>
   );
