@@ -21,7 +21,7 @@ import {
   formatSecondsAsTime,
   getDenormalizedDataInInterval,
   capitalizeFirstLetter,
-  getWeatherIconAndColor,
+  getWeatherDisplayData,
   bisectLeft,
   roundUpToNearest10,
   convertKelvinToCelcius,
@@ -919,8 +919,8 @@ describe("utils", () => {
     ].flatMap((weatherId) =>
       [true, false].map((isDaytime) => ({ isDaytime, weatherId }))
     )
-  )("getWeatherIconAndColor(%p)", (x) => {
-    expect(getWeatherIconAndColor(x)).toMatchSnapshot();
+  )("getWeatherDisplayData(%p)", (x) => {
+    expect(getWeatherDisplayData(x)).toMatchSnapshot();
   });
 
   test("getNormalizedDescriptionWordsFromMood", () => {

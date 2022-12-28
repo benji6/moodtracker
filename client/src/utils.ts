@@ -231,35 +231,49 @@ export const getDenormalizedDataInInterval = <
   return ids.map((id) => normalizedData.byId[id]);
 };
 
-export const getWeatherIconAndColor = ({
+export const getWeatherDisplayData = ({
   isDaytime,
   weatherId,
 }: {
   isDaytime: boolean;
   weatherId: number;
 }): {
-  weatherColor: string;
   iconName: React.ComponentProps<typeof Icon>["name"];
+  label: string;
+  weatherColor: string;
 } => {
   let iconName: React.ComponentProps<typeof Icon>["name"] = "cloud";
+  let label = "Clouds";
   let weatherColor = "var(--color-balance-more)";
 
   if (weatherId) {
     if (weatherId < 300) {
       iconName = "lightning";
+      label = "Thunderstorm";
       weatherColor = "var(--color-figure-more)";
     } else if (weatherId < 400) {
       iconName = "drizzle";
+      label = "Drizzle";
       weatherColor = "steelblue";
     } else if (weatherId < 600) {
       iconName = "rain";
+      label = "Rain";
       weatherColor = "#30f";
-    } else if (weatherId < 700) iconName = "snow";
-    else if (weatherId === 771 || weatherId === 781) {
+    } else if (weatherId < 700) {
+      iconName = "snow";
+      label = "Snow";
+    } else if (weatherId === 771) {
       iconName = "wind";
+      label = "Squall";
       weatherColor = "var(--color-figure-more)";
-    } else if (weatherId < 800) iconName = "menu";
-    else if (weatherId === 800) {
+    } else if (weatherId === 781) {
+      iconName = "wind";
+      label = "Tornado";
+      weatherColor = "var(--color-figure-more)";
+    } else if (weatherId < 800) {
+      label = "Fog/Haze/Dust";
+      iconName = "menu";
+    } else if (weatherId === 800) {
       if (isDaytime) {
         iconName = "sun";
         weatherColor = "orange";
@@ -267,6 +281,7 @@ export const getWeatherIconAndColor = ({
         iconName = "moon";
         weatherColor = "rebeccapurple";
       }
+      label = "Clear";
     } else if (weatherId < 803) {
       if (isDaytime) {
         iconName = "partly-cloudy-day";
@@ -275,9 +290,10 @@ export const getWeatherIconAndColor = ({
         iconName = "partly-cloudy-night";
         weatherColor = "rebeccapurple";
       }
+      label = "Partly cloudy";
     }
   }
-  return { iconName, weatherColor };
+  return { iconName, label, weatherColor };
 };
 
 export const formatIsoDateInLocalTimezone = (date: Date): string =>

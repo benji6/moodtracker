@@ -5,8 +5,8 @@
   display: grid;
   grid-template-columns: 1em min-content;
   grid-template-rows: 1fr auto auto;
-  height: 18em;
   margin-block: var(--space-3);
+  min-height: 18em;
   row-gap: var(--space-1);
   user-select: none;
 }
@@ -71,6 +71,7 @@
   gap: var(--space-0);
   grid-row: 2;
   justify-self: center;
+  white-space: nowrap;
 }
 .column-chart__x-label--rotate {
   writing-mode: vertical-lr;

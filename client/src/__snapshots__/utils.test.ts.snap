@@ -1,239 +1,273 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 200}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 200}) 1`] = `
 {
   "iconName": "lightning",
+  "label": "Thunderstorm",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 232}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 232}) 1`] = `
 {
   "iconName": "lightning",
+  "label": "Thunderstorm",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 300}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 300}) 1`] = `
 {
   "iconName": "drizzle",
+  "label": "Drizzle",
   "weatherColor": "steelblue",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 321}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 321}) 1`] = `
 {
   "iconName": "drizzle",
+  "label": "Drizzle",
   "weatherColor": "steelblue",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 500}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 500}) 1`] = `
 {
   "iconName": "rain",
+  "label": "Rain",
   "weatherColor": "#30f",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 531}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 531}) 1`] = `
 {
   "iconName": "rain",
+  "label": "Rain",
   "weatherColor": "#30f",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 600}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 600}) 1`] = `
 {
   "iconName": "snow",
+  "label": "Snow",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 622}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 622}) 1`] = `
 {
   "iconName": "snow",
+  "label": "Snow",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 701}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 701}) 1`] = `
 {
   "iconName": "menu",
+  "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 762}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 762}) 1`] = `
 {
   "iconName": "menu",
+  "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 771}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 771}) 1`] = `
 {
   "iconName": "wind",
+  "label": "Squall",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 781}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 781}) 1`] = `
 {
   "iconName": "wind",
+  "label": "Tornado",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 800}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 800}) 1`] = `
 {
   "iconName": "moon",
+  "label": "Clear",
   "weatherColor": "rebeccapurple",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 801}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 801}) 1`] = `
 {
   "iconName": "partly-cloudy-night",
+  "label": "Partly cloudy",
   "weatherColor": "rebeccapurple",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 802}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 802}) 1`] = `
 {
   "iconName": "partly-cloudy-night",
+  "label": "Partly cloudy",
   "weatherColor": "rebeccapurple",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 803}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 803}) 1`] = `
 {
   "iconName": "cloud",
+  "label": "Clouds",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": false, "weatherId": 804}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 804}) 1`] = `
 {
   "iconName": "cloud",
+  "label": "Clouds",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 200}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 200}) 1`] = `
 {
   "iconName": "lightning",
+  "label": "Thunderstorm",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 232}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 232}) 1`] = `
 {
   "iconName": "lightning",
+  "label": "Thunderstorm",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 300}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 300}) 1`] = `
 {
   "iconName": "drizzle",
+  "label": "Drizzle",
   "weatherColor": "steelblue",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 321}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 321}) 1`] = `
 {
   "iconName": "drizzle",
+  "label": "Drizzle",
   "weatherColor": "steelblue",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 500}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 500}) 1`] = `
 {
   "iconName": "rain",
+  "label": "Rain",
   "weatherColor": "#30f",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 531}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 531}) 1`] = `
 {
   "iconName": "rain",
+  "label": "Rain",
   "weatherColor": "#30f",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 600}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 600}) 1`] = `
 {
   "iconName": "snow",
+  "label": "Snow",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 622}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 622}) 1`] = `
 {
   "iconName": "snow",
+  "label": "Snow",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 701}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 701}) 1`] = `
 {
   "iconName": "menu",
+  "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 762}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 762}) 1`] = `
 {
   "iconName": "menu",
+  "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 771}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 771}) 1`] = `
 {
   "iconName": "wind",
+  "label": "Squall",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 781}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 781}) 1`] = `
 {
   "iconName": "wind",
+  "label": "Tornado",
   "weatherColor": "var(--color-figure-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 800}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 800}) 1`] = `
 {
   "iconName": "sun",
+  "label": "Clear",
   "weatherColor": "orange",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 801}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 801}) 1`] = `
 {
   "iconName": "partly-cloudy-day",
+  "label": "Partly cloudy",
   "weatherColor": "orange",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 802}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 802}) 1`] = `
 {
   "iconName": "partly-cloudy-day",
+  "label": "Partly cloudy",
   "weatherColor": "orange",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 803}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 803}) 1`] = `
 {
   "iconName": "cloud",
+  "label": "Clouds",
   "weatherColor": "var(--color-balance-more)",
 }
 `;
 
-exports[`utils getWeatherIconAndColor({"isDaytime": true, "weatherId": 804}) 1`] = `
+exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 804}) 1`] = `
 {
   "iconName": "cloud",
+  "label": "Clouds",
   "weatherColor": "var(--color-balance-more)",
 }
 `;

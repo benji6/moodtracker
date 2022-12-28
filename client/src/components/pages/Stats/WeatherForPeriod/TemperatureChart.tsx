@@ -55,7 +55,7 @@ export default function TemperatureChart({
 
   return (
     <>
-      <h3>Temperature chart</h3>
+      <h4>Temperature chart</h4>
       <Chart.LineChart
         aria-label="Chart displaying temperature against time"
         domain={[fromDate.getTime(), toDate.getTime()]}

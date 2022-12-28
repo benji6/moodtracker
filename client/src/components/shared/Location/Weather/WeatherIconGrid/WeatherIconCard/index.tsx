@@ -1,7 +1,7 @@
 import { Card, Icon } from "eri";
 import {
   capitalizeFirstLetter,
-  getWeatherIconAndColor,
+  getWeatherDisplayData,
 } from "../../../../../../utils";
 import "./style.css";
 
@@ -18,7 +18,7 @@ export default function WeatherIconCard({
   id,
   main,
 }: Props) {
-  const { iconName, weatherColor } = getWeatherIconAndColor({
+  const { iconName, weatherColor } = getWeatherDisplayData({
     isDaytime: daytime,
     weatherId: id,
   });

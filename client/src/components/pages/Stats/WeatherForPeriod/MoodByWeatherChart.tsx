@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { MOOD_EXTENT } from "../../../../constants";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { normalizedMoodsSelector } from "../../../../selectors";
-import { getWeatherIconAndColor, moodToColor } from "../../../../utils";
+import { getWeatherDisplayData, moodToColor } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 import ColumnChart from "../../../shared/ColumnChart";
@@ -37,12 +37,12 @@ export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
     if (!data) continue;
     const [weatherData] = data.data;
     const { mood } = normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
-    for (const { id: weatherId, main } of weatherData.weather) {
-      const { iconName, weatherColor } = getWeatherIconAndColor({
+    for (const { id: weatherId } of weatherData.weather) {
+      const { iconName, label, weatherColor } = getWeatherDisplayData({
         isDaytime: true,
         weatherId,
       });
-      const key = `${main}:${iconName}:${weatherColor}`;
+      const key = `${label}:${iconName}:${weatherColor}`;
       chartData[key] =
         key in chartData
           ? {
@@ -55,7 +55,7 @@ export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
 
   const meanMoodChartData = Object.entries(chartData)
     .map(([key, { moodCount, sumOfMoods }]) => {
-      const [main, iconName, color] = key.split(":") as [
+      const [label, iconName, color] = key.split(":") as [
         string,
         ComponentProps<typeof Icon>["name"],
         string
@@ -67,11 +67,11 @@ export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
         label: (
           <>
             <Icon color={color} draw name={iconName} />
-            {main}
+            {label}
           </>
         ),
-        main,
-        title: `${main} (average of ${moodCount} mood${
+        text: label,
+        title: `${label} (average of ${moodCount} mood${
           moodCount > 1 ? "s" : ""
         }): ${oneDecimalPlaceFormatter.format(meanMood)}`,
         y: meanMood,
@@ -79,7 +79,7 @@ export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
     })
     .sort((a, b) => {
       const yDifference = b.y - a.y;
-      return yDifference || a.main.localeCompare(b.main);
+      return yDifference || a.text.localeCompare(b.text);
     });
 
   if (!meanMoodChartData.length) return null;

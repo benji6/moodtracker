@@ -3,7 +3,7 @@ import { Icon, Spinner } from "eri";
 import { fetchWeather } from "../../../../api";
 import { WEATHER_QUERY_OPTIONS } from "../../../../constants";
 import { formatKelvinToCelcius } from "../../../../formatters/numberFormatters";
-import { getWeatherIconAndColor } from "../../../../utils";
+import { getWeatherDisplayData } from "../../../../utils";
 import "./style.css";
 
 interface Props {
@@ -31,7 +31,7 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
   const weatherData = data!.data[0];
   const weatherIconData = weatherData?.weather[0];
 
-  const { iconName, weatherColor } = getWeatherIconAndColor({
+  const { iconName, weatherColor } = getWeatherDisplayData({
     isDaytime:
       date >= new Date(weatherData.sunrise * 1e3) &&
       date < new Date(weatherData.sunset * 1e3),

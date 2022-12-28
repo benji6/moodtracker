@@ -1,6 +1,6 @@
 import { Icon } from "eri";
 import { ComponentProps } from "react";
-import { getWeatherIconAndColor } from "../../../../utils";
+import { getWeatherDisplayData } from "../../../../utils";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 import ColumnChart from "../../../shared/ColumnChart";
@@ -23,19 +23,19 @@ export default function WeatherFrequencyChart({ fromDate, toDate }: Props) {
   for (const { data } of weatherResults) {
     if (!data) continue;
     const [weatherData] = data.data;
-    for (const { id: weatherId, main } of weatherData.weather) {
-      const { iconName, weatherColor } = getWeatherIconAndColor({
+    for (const { id: weatherId } of weatherData.weather) {
+      const { iconName, label, weatherColor } = getWeatherDisplayData({
         isDaytime: true,
         weatherId,
       });
-      const key = `${main}:${iconName}:${weatherColor}`;
+      const key = `${label}:${iconName}:${weatherColor}`;
       chartData[key] = key in chartData ? chartData[key] + 1 : 1;
     }
   }
 
   const frequencyChartData = Object.entries(chartData)
     .map(([key, count]) => {
-      const [main, iconName, color] = key.split(":") as [
+      const [label, iconName, color] = key.split(":") as [
         string,
         ComponentProps<typeof Icon>["name"],
         string
@@ -46,17 +46,17 @@ export default function WeatherFrequencyChart({ fromDate, toDate }: Props) {
         label: (
           <>
             <Icon color={color} draw name={iconName} />
-            {main}
+            {label}
           </>
         ),
-        main,
-        title: `${main}: ${count}`,
+        text: label,
+        title: `${label}: ${count}`,
         y: count,
       };
     })
     .sort((a, b) => {
       const yDifference = b.y - a.y;
-      return yDifference || a.main.localeCompare(b.main);
+      return yDifference || a.text.localeCompare(b.text);
     });
 
   if (!frequencyChartData.length) return null;
