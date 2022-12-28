@@ -1,20 +1,19 @@
-import { Chart } from "eri";
 import { useSelector } from "react-redux";
-import { MOOD_INTEGERS, MOOD_RANGE } from "../../../../constants";
-import { integerFormatter } from "../../../../formatters/numberFormatters";
 import { normalizedMoodsSelector } from "../../../../selectors";
 import { convertKelvinToCelcius } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
-
-const X_LABELS_COUNT = 11;
+import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
 
 interface Props {
   fromDate: Date;
   toDate: Date;
 }
 
-export default function MoodByTemperatureChart({ fromDate, toDate }: Props) {
+export default function MoodByTemperatureForPeriod({
+  fromDate,
+  toDate,
+}: Props) {
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     fromDate,
@@ -76,38 +75,10 @@ export default function MoodByTemperatureChart({ fromDate, toDate }: Props) {
     })
     .sort(([a], [b]) => a - b);
 
-  const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
-
-  const domain: [number, number] = [
-    Math.floor(coarseGrainedDataToRender[0][0]),
-    Math.ceil(coarseGrainedDataToRender.at(-1)![0]),
-  ];
-  const domainExtent = domain[1] - domain[0];
-  const xLabels: [number, string][] = [];
-  for (let i = 0; i < X_LABELS_COUNT; i++) {
-    const x = Math.round(domain[0] + (domainExtent * i) / (X_LABELS_COUNT - 1));
-    xLabels.push([x, integerFormatter.format(x)]);
-  }
-
   return (
-    <>
-      <h4>Average mood by temperature</h4>
-      <Chart.LineChart
-        aria-label="Chart displaying average mood by temperature"
-        domain={domain}
-        range={MOOD_RANGE}
-        xAxisTitle="Temperature (°C)"
-        yAxisTitle="Mood"
-      >
-        <Chart.XGridLines lines={xLabels.map(([n]) => n)} />
-        <Chart.YGridLines lines={yLabels.map(([y]) => y)} />
-        <Chart.PlotArea>
-          <Chart.Line data={fineGrainedDataToRender} thickness={0} />
-          <Chart.Line data={coarseGrainedDataToRender} thickness={2} />
-        </Chart.PlotArea>
-        <Chart.XAxis labels={xLabels} markers />
-        <Chart.YAxis labels={yLabels} markers />
-      </Chart.LineChart>
-    </>
+    <MoodByTemperatureChart
+      coarseGrainedData={coarseGrainedDataToRender}
+      fineGrainedData={fineGrainedDataToRender}
+    />
   );
 }

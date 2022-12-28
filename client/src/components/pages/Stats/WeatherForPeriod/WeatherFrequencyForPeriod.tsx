@@ -10,7 +10,7 @@ interface Props {
   toDate: Date;
 }
 
-export default function WeatherFrequencyChart({ fromDate, toDate }: Props) {
+export default function WeatherFrequencyForPeriod({ fromDate, toDate }: Props) {
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     fromDate,
     toDate

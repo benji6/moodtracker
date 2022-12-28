@@ -2,10 +2,10 @@ import { Paper, Spinner, SubHeading } from "eri";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
-import MoodByTemperatureChart from "./MoodByTemperatureChart";
-import MoodByWeatherChart from "./MoodByWeatherChart";
-import TemperatureChart from "./TemperatureChart";
-import WeatherFrequencyChart from "./WeatherFrequencyChart";
+import MoodByTemperatureForPeriod from "./MoodByTemperatureForPeriod";
+import MoodByWeatherForPeriod from "./MoodByWeatherForPeriod";
+import TemperatureForPeriod from "./TemperatureForPeriod";
+import WeatherFrequencyForPeriod from "./WeatherFrequencyForPeriod";
 
 interface Props {
   fromDate: Date;
@@ -79,13 +79,13 @@ export default function WeatherForPeriod({
         </SubHeading>
       </h3>
       {loadingEl}
-      <WeatherFrequencyChart fromDate={fromDate} toDate={toDate} />
+      <WeatherFrequencyForPeriod fromDate={fromDate} toDate={toDate} />
       {loadingEl}
-      <MoodByWeatherChart fromDate={fromDate} toDate={toDate} />
+      <MoodByWeatherForPeriod fromDate={fromDate} toDate={toDate} />
       {loadingEl}
-      <MoodByTemperatureChart fromDate={fromDate} toDate={toDate} />
+      <MoodByTemperatureForPeriod fromDate={fromDate} toDate={toDate} />
       {loadingEl}
-      <TemperatureChart
+      <TemperatureForPeriod
         fromDate={fromDate}
         toDate={toDate}
         xLabels={xLabels}

@@ -11,7 +11,7 @@ interface Props {
   xLines?: number[];
 }
 
-export default function TemperatureChart({
+export default function TemperatureForPeriod({
   fromDate,
   toDate,
   xLabels,

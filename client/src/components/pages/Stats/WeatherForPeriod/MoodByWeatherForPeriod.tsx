@@ -1,20 +1,19 @@
 import { Icon } from "eri";
 import { ComponentProps } from "react";
 import { useSelector } from "react-redux";
-import { MOOD_EXTENT } from "../../../../constants";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { normalizedMoodsSelector } from "../../../../selectors";
 import { getWeatherDisplayData, moodToColor } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
-import ColumnChart from "../../../shared/ColumnChart";
+import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
 
 interface Props {
   fromDate: Date;
   toDate: Date;
 }
 
-export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
+export default function MoodByWeatherForPeriod({ fromDate, toDate }: Props) {
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     fromDate,
@@ -53,7 +52,7 @@ export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
     }
   }
 
-  const meanMoodChartData = Object.entries(chartData)
+  const data = Object.entries(chartData)
     .map(([key, { moodCount, sumOfMoods }]) => {
       const [label, iconName, color] = key.split(":") as [
         string,
@@ -82,19 +81,7 @@ export default function MoodByWeatherChart({ fromDate, toDate }: Props) {
       return yDifference || a.text.localeCompare(b.text);
     });
 
-  if (!meanMoodChartData.length) return null;
+  if (!data.length) return null;
 
-  return (
-    <>
-      <h4>Average mood by weather</h4>
-      <ColumnChart
-        aria-label="Chart displaying average mood for different weather types"
-        data={meanMoodChartData}
-        maxRange={MOOD_EXTENT}
-        rotateXLabels
-        xAxisTitle="Weather"
-        yAxisTitle="Average mood"
-      />
-    </>
-  );
+  return <MoodByWeatherChart data={data} />;
 }
