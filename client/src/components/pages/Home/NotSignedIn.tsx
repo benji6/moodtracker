@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
 import LocationMap from "../../shared/LocationMap";
 import MoodByHourChart from "../../shared/MoodByHourChart";
+import MoodByTemperatureChart from "../../shared/MoodByTemperatureChart";
+import MoodByWeatherChart from "../../shared/MoodByWeatherChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
@@ -11,6 +13,8 @@ import MeditationTimerClock from "../Meditate/MeditationTimer/MeditationTimerPre
 import {
   LINE_CHART_PROPS,
   MOOD_BY_HOUR_PROPS,
+  MOOD_BY_TEMPERATURE_PROPS,
+  MOOD_BY_WEATHER_PROPS,
   MOOD_BY_WEEKDAY_PROPS,
   MOOD_FREQUENCY_PROPS,
   MOOD_SUMMARY_PROPS,
@@ -85,6 +89,14 @@ export default function NotSignedIn() {
           understand yourself better 😌
         </p>
         <MoodByHourChart {...MOOD_BY_HOUR_PROPS} />
+        <h3>See how the weather affects your mood</h3>
+        <p>
+          This functionality is only available if you opt in to recording your
+          location. MoodTracker then figures out the weather based on where you
+          were when you logged your mood.
+        </p>
+        <MoodByWeatherChart {...MOOD_BY_WEATHER_PROPS} />
+        <MoodByTemperatureChart {...MOOD_BY_TEMPERATURE_PROPS} />
         <h3>Meditate</h3>
         <p>
           MoodTracker has a built in meditation timer and meditation log so you

@@ -1,8 +1,6 @@
 import { normalizedAveragesByDaySelector } from "../../../selectors";
 import { useSelector } from "react-redux";
-import MoodByWeekdayChart, {
-  DayAverages,
-} from "../../shared/MoodByWeekdayChart";
+import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import {
   computeMean,
   formatIsoDateInLocalTimezone,
@@ -12,6 +10,7 @@ import { Paper } from "eri";
 import { TIME, WEEKDAY_LABELS_SHORT } from "../../../constants";
 import addDays from "date-fns/addDays";
 import { useNavigate } from "react-router-dom";
+import { ComponentProps } from "react";
 
 interface Props {
   canDrillDown?: boolean;
@@ -46,7 +45,7 @@ export default function MoodByWeekdayForPeriod({
   const averages = moodsByWeekdayIndex.map((moodsForWeekday, i) => [
     WEEKDAY_LABELS_SHORT[i],
     moodsForWeekday && computeMean(moodsForWeekday),
-  ]) as DayAverages;
+  ]) as ComponentProps<typeof MoodByWeekdayChart>["averages"];
 
   return (
     <Paper>

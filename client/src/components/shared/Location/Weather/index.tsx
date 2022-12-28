@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Icon, Paper, Spinner } from "eri";
+import { ComponentProps } from "react";
 import { fetchWeather } from "../../../../api";
 import { ERRORS, WEATHER_QUERY_OPTIONS } from "../../../../constants";
 import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
@@ -80,7 +81,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
                       ? "Ultraviolet index"
                       : capitalizeFirstLetter(k.replaceAll("_", " "));
 
-                  let iconName: React.ComponentProps<typeof Icon>["name"];
+                  let iconName: ComponentProps<typeof Icon>["name"];
                   if (k === "sunrise" || k === "sunset") iconName = k;
                   else if (k === "clouds") iconName = "cloud";
                   else if (k === "dew_point") iconName = "droplet";

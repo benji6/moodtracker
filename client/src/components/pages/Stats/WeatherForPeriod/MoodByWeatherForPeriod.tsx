@@ -54,31 +54,27 @@ export default function MoodByWeatherForPeriod({ fromDate, toDate }: Props) {
 
   const data = Object.entries(chartData)
     .map(([key, { moodCount, sumOfMoods }]) => {
-      const [label, iconName, color] = key.split(":") as [
+      const [label, iconName, weatherColor] = key.split(":") as [
         string,
         ComponentProps<typeof Icon>["name"],
         string
       ];
       const meanMood = sumOfMoods / moodCount;
       return {
-        color: moodToColor(meanMood),
+        iconName,
         key,
-        label: (
-          <>
-            <Icon color={color} draw name={iconName} />
-            {label}
-          </>
-        ),
-        text: label,
+        moodColor: moodToColor(meanMood),
         title: `${label} (average of ${moodCount} mood${
           moodCount > 1 ? "s" : ""
         }): ${oneDecimalPlaceFormatter.format(meanMood)}`,
+        labelText: label,
+        weatherColor,
         y: meanMood,
       };
     })
     .sort((a, b) => {
       const yDifference = b.y - a.y;
-      return yDifference || a.text.localeCompare(b.text);
+      return yDifference || a.labelText.localeCompare(b.labelText);
     });
 
   if (!data.length) return null;

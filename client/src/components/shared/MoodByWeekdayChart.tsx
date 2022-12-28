@@ -3,18 +3,16 @@ import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import { moodToColor } from "../../utils";
 import ColumnChart from "./ColumnChart";
 
-export type DayAverages = [
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined],
-  [string, number | undefined]
-];
-
 interface Props {
-  averages: DayAverages;
+  averages: [
+    [string, number | undefined],
+    [string, number | undefined],
+    [string, number | undefined],
+    [string, number | undefined],
+    [string, number | undefined],
+    [string, number | undefined],
+    [string, number | undefined]
+  ];
   onClick?(i: number): void;
 }
 
