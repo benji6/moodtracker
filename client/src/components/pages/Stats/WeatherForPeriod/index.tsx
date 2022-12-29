@@ -2,6 +2,7 @@ import { Paper, Spinner, SubHeading } from "eri";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByTemperatureForPeriod from "./MoodByTemperatureForPeriod";
 import MoodByWeatherForPeriod from "./MoodByWeatherForPeriod";
 import TemperatureForPeriod from "./TemperatureForPeriod";
@@ -76,13 +77,23 @@ export default function WeatherForPeriod({
           {eventIdsWithLocationInPeriod.length} location
           {eventIdsWithLocationInPeriod.length > 1 ? "s" : ""} recorded for this
           period
+          {eventIdsWithLocationInPeriod.length <
+            MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && (
+            <>
+              {" "}
+              (some weather charts will not be visible unless you have at least{" "}
+              {MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS} locations)
+            </>
+          )}
         </SubHeading>
       </h3>
       {loadingEl}
       <WeatherFrequencyForPeriod fromDate={fromDate} toDate={toDate} />
-      {loadingEl}
+      {eventIdsWithLocationInPeriod.length <
+        MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && <>{loadingEl}</>}
       <MoodByWeatherForPeriod fromDate={fromDate} toDate={toDate} />
-      {loadingEl}
+      {eventIdsWithLocationInPeriod.length <
+        MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && <>{loadingEl}</>}
       <MoodByTemperatureForPeriod fromDate={fromDate} toDate={toDate} />
       {loadingEl}
       <TemperatureForPeriod

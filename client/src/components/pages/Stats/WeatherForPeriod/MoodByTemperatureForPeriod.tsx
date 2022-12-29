@@ -4,6 +4,7 @@ import { convertKelvinToCelcius } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
+import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 
 interface Props {
   fromDate: Date;
@@ -21,7 +22,10 @@ export default function MoodByTemperatureForPeriod({
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 
-  if (!moodIdsWithLocationInPeriod.length) return null;
+  if (
+    moodIdsWithLocationInPeriod.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS
+  )
+    return null;
 
   const fineGrainedData: {
     [celcius: string]: {
@@ -59,16 +63,24 @@ export default function MoodByTemperatureForPeriod({
         : { moodCount: 1, sumOfMoods: mood };
   }
 
-  const fineGrainedDataToRender = Object.entries(fineGrainedData)
+  const fineGrainedDataEntries = Object.entries(fineGrainedData);
+  if (fineGrainedDataEntries.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS)
+    return null;
+  const coarseGrainedDataEntries = Object.entries(coarseGrainedData);
+  if (
+    coarseGrainedDataEntries.length <
+    MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS / 2
+  )
+    return null;
+
+  const fineGrainedDataToRender = fineGrainedDataEntries
     .map(([key, { moodCount, sumOfMoods }]): [number, number] => {
       const meanMood = sumOfMoods / moodCount;
       return [Number(key), meanMood];
     })
     .sort(([a], [b]) => a - b);
 
-  if (!fineGrainedDataToRender.length) return null;
-
-  const coarseGrainedDataToRender = Object.entries(coarseGrainedData)
+  const coarseGrainedDataToRender = coarseGrainedDataEntries
     .map(([key, { moodCount, sumOfMoods }]): [number, number] => {
       const meanMood = sumOfMoods / moodCount;
       return [Number(key), meanMood];

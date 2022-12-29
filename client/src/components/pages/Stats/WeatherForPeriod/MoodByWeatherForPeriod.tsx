@@ -7,6 +7,7 @@ import { getWeatherDisplayData, moodToColor } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
+import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 
 interface Props {
   fromDate: Date;
@@ -21,7 +22,10 @@ export default function MoodByWeatherForPeriod({ fromDate, toDate }: Props) {
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 
-  if (!moodIdsWithLocationInPeriod.length) return null;
+  if (
+    moodIdsWithLocationInPeriod.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS
+  )
+    return null;
 
   const chartData: {
     [nameAndColor: string]: {
