@@ -14,14 +14,7 @@ users = (
     )
     .build_full_result()["Users"]
 )
-users_by_creation_month = defaultdict(lambda: defaultdict(int))
-for u in users:
-    key = (
-        "confirmed"
-        if u["Enabled"] and u["UserStatus"] == "CONFIRMED"
-        else "unconfirmed"
-    )
-    users_by_creation_month[u["UserCreateDate"].date().isoformat()[:7]][key] += 1
+
 
 dynamodb = boto3.resource("dynamodb")
 events_table = dynamodb.Table("moodtracker_events")
@@ -65,6 +58,14 @@ for event in events:
 def compute_breakdown(get_key):
     results = {}
 
+    users_by_date = defaultdict(lambda: defaultdict(int))
+    for u in users:
+        key = (
+            "confirmed"
+            if u["Enabled"] and u["UserStatus"] == "CONFIRMED"
+            else "unconfirmed"
+        )
+        users_by_date[get_key(u["UserCreateDate"].date().isoformat())][key] += 1
     for event in events:
         key = get_key(event["createdAt"])
         stats = results.get(key)
@@ -100,11 +101,10 @@ def compute_breakdown(get_key):
         event_counts["total"] = v["events"]
         v["eventCounts"] = event_counts
 
-        users = {}
-        users["activeUserCount"] = len(v["userIds"])
-        users["newConfirmedUsers"] = users_by_creation_month[k]["confirmed"]
-        users["newUnconfirmedUsers"] = users_by_creation_month[k]["unconfirmed"]
-        v["users"] = users
+        v["users"] = {}
+        v["users"]["activeUserCount"] = len(v["userIds"])
+        v["users"]["newConfirmedUsers"] = users_by_date[k]["confirmed"]
+        v["users"]["newUnconfirmedUsers"] = users_by_date[k]["unconfirmed"]
 
         v["meditationMinutes"] = round(sum(v["meditations"]) / 60)
 
@@ -121,8 +121,17 @@ def get_iso_month_string(date_time_string):
     return date_time_string[0:7]
 
 
+def get_iso_year_string(date_time_string):
+    return date_time_string[0:4]
+
+
 events_by_user_id = defaultdict(list)
 for event in events:
     events_by_user_id[event["userId"]].append(event)
 
-print(json.dumps(compute_breakdown(get_iso_month_string), indent=2))
+print(
+    "Breakdown by month:", json.dumps(compute_breakdown(get_iso_month_string), indent=2)
+)
+print(
+    "Breakdown by year:", json.dumps(compute_breakdown(get_iso_year_string), indent=2)
+)
