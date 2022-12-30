@@ -50,6 +50,7 @@ export const PATTERNS = {
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,
+  millisecondsPerDay: 86400000,
   secondsPerDay: 86400,
   secondsPerHour: 3600,
   secondsPerMinute: 60,

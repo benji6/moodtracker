@@ -27,9 +27,10 @@ import LocationsForPeriod from "./LocationsForPeriod";
 import DateRangeSelector from "../../shared/DateRangeSelector";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
+import addDays from "date-fns/addDays";
+import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 
-const MILLISECONDS_IN_A_DAY = 86400000;
-const MILLISECONDS_IN_HALF_A_DAY = MILLISECONDS_IN_A_DAY / 2;
+const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 const X_LABELS_COUNT = 4; // must be at least 2
 
 const convertDateToLabel = (date: Date): [number, string] => [
@@ -71,13 +72,18 @@ export default function Explore() {
   const [dateFrom, setDateFrom] = React.useState(
     roundDateDown(subDays(dateNow, TIME.daysPerWeek))
   );
-  const [dateTo, setDateTo] = React.useState(roundDateUp(dateNow));
+  const [displayDateTo, setDisplayDateTo] = React.useState(
+    roundDateDown(dateNow)
+  );
   const eventsHasLoadedFromServer = useSelector(
     eventsHasLoadedFromServerSelector
   );
   const meditations = useSelector(normalizedMeditationsSelector);
   const showMeditationStats = useSelector(hasMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
+
+  const dateTo = addDays(displayDateTo, 1);
+  const moodIdsInPeriod = useMoodIdsInPeriod(dateFrom, dateTo);
 
   if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
@@ -93,8 +99,13 @@ export default function Explore() {
     dateFrom,
     dateTo
   );
-  const moodIdsInPeriod = getIdsInInterval(moods.allIds, dateFrom, dateTo);
   const xLabels = createXLabels(domain, dateNow.getTime());
+
+  const secondsMeditatedInInterval = computeSecondsMeditatedInInterval(
+    meditations,
+    dateFrom,
+    dateTo
+  );
 
   return (
     <Paper.Group>
@@ -103,9 +114,9 @@ export default function Explore() {
         <MoodGradientForPeriod fromDate={dateFrom} toDate={dateTo} />
         <DateRangeSelector
           dateFrom={dateFrom}
-          dateTo={dateTo}
+          dateTo={displayDateTo}
           setDateFrom={setDateFrom}
-          setDateTo={setDateTo}
+          setDateTo={setDisplayDateTo}
         />
       </Paper>
       {!meditationIdsInPeriod.length && !moodIdsInPeriod.length ? (
@@ -144,13 +155,9 @@ export default function Explore() {
             <Paper>
               <h3>Time meditated</h3>
               <p>
-                {formatDurationFromSeconds(
-                  computeSecondsMeditatedInInterval(
-                    meditations,
-                    dateFrom,
-                    dateTo
-                  )
-                )}
+                {secondsMeditatedInInterval
+                  ? formatDurationFromSeconds(secondsMeditatedInInterval)
+                  : "No meditations in this period"}
               </p>
             </Paper>
           )}

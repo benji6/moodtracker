@@ -1,4 +1,3 @@
-import addDays from "date-fns/addDays";
 import addMinutes from "date-fns/addMinutes";
 import subDays from "date-fns/subDays";
 import { DateField } from "eri";
@@ -47,12 +46,12 @@ export default function DateRangeSelector({
       <DateField
         label="To"
         max={formatIsoDateInLocalTimezone(maxDate)}
-        min={formatIsoDateInLocalTimezone(addDays(dateFrom, 1))}
+        min={formatIsoDateInLocalTimezone(dateFrom)}
         onChange={(e) => {
           let date = new Date(e.target.value);
           const timezoneOffset = date.getTimezoneOffset();
           if (timezoneOffset) date = addMinutes(date, date.getTimezoneOffset());
-          if (date > dateFrom && date <= maxDate) setDateTo(date);
+          if (date >= dateFrom && date <= maxDate) setDateTo(date);
         }}
         value={formatIsoDateInLocalTimezone(dateTo)}
       />
