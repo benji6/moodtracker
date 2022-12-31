@@ -1,6 +1,5 @@
-import * as React from "react";
 import subDays from "date-fns/subDays";
-import { Paper, Spinner } from "eri";
+import { Paper, Select, Spinner } from "eri";
 import {
   roundDateUp,
   roundDateDown,
@@ -29,6 +28,8 @@ import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
 import addDays from "date-fns/addDays";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import { useReducer } from "react";
+import { FluxStandardAction } from "../../../typeUtilities";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 const X_LABELS_COUNT = 4; // must be at least 2
@@ -67,23 +68,123 @@ const createXLabels = (
   return labels;
 };
 
+const DATE_RANGE_OPTIONS = [
+  "Today",
+  "Last 7 days",
+  "Last 30 days",
+  "Last 90 days",
+  "Last half year",
+  "Last year",
+  "All time",
+  "Custom",
+] as const;
+type DateRangeString = typeof DATE_RANGE_OPTIONS[number];
+
+type Action =
+  | FluxStandardAction<"dateFrom/set", Date>
+  | FluxStandardAction<"dateRange/set", DateRangeString>
+  | FluxStandardAction<"displayDateTo/set", Date>;
+
+interface State {
+  dateFrom: Date;
+  dateRange: DateRangeString;
+  displayDateTo: Date;
+}
+
 export default function Explore() {
   const dateNow = new Date();
-  const [dateFrom, setDateFrom] = React.useState(
-    roundDateDown(subDays(dateNow, TIME.daysPerWeek))
+  const moods = useSelector(normalizedMoodsSelector);
+  const firstMoodDateRoundedDown = roundDateDown(new Date(moods.allIds[0]));
+  const dateToToday = roundDateDown(dateNow);
+
+  const calculateDateFrom = (days: number) => {
+    const dateFrom = subDays(dateToToday, days - 1);
+    return dateFrom < firstMoodDateRoundedDown
+      ? firstMoodDateRoundedDown
+      : dateFrom;
+  };
+
+  const initialState: State = {
+    dateRange: `Last ${TIME.daysPerWeek} days`,
+    dateFrom: calculateDateFrom(TIME.daysPerWeek),
+    displayDateTo: dateToToday,
+  };
+
+  const [localState, localDispatch] = useReducer(
+    (state: State, action: Action): State => {
+      switch (action.type) {
+        case "dateFrom/set":
+          return {
+            ...state,
+            dateFrom: action.payload,
+            dateRange: "Custom",
+          };
+        case "displayDateTo/set":
+          return {
+            ...state,
+            dateRange: "Custom",
+            displayDateTo: action.payload,
+          };
+        case "dateRange/set":
+          switch (action.payload) {
+            case "All time":
+              return {
+                dateRange: action.payload,
+                dateFrom: firstMoodDateRoundedDown,
+                displayDateTo: dateToToday,
+              };
+            case "Custom":
+              return { ...state, dateRange: action.payload };
+            case "Last 7 days":
+              return {
+                dateRange: action.payload,
+                dateFrom: calculateDateFrom(TIME.daysPerWeek),
+                displayDateTo: dateToToday,
+              };
+            case "Last 30 days":
+              return {
+                dateRange: action.payload,
+                dateFrom: calculateDateFrom(30),
+                displayDateTo: dateToToday,
+              };
+            case "Last 90 days":
+              return {
+                dateRange: action.payload,
+                dateFrom: calculateDateFrom(90),
+                displayDateTo: dateToToday,
+              };
+            case "Last half year":
+              return {
+                dateRange: action.payload,
+                dateFrom: calculateDateFrom(183),
+                displayDateTo: dateToToday,
+              };
+            case "Last year":
+              return {
+                dateRange: action.payload,
+                dateFrom: calculateDateFrom(365),
+                displayDateTo: dateToToday,
+              };
+            case "Today":
+              return {
+                dateRange: action.payload,
+                dateFrom: dateToToday,
+                displayDateTo: dateToToday,
+              };
+          }
+      }
+    },
+    initialState
   );
-  const [displayDateTo, setDisplayDateTo] = React.useState(
-    roundDateDown(dateNow)
-  );
+
   const eventsHasLoadedFromServer = useSelector(
     eventsHasLoadedFromServerSelector
   );
   const meditations = useSelector(normalizedMeditationsSelector);
   const showMeditationStats = useSelector(hasMeditationsSelector);
-  const moods = useSelector(normalizedMoodsSelector);
 
-  const dateTo = addDays(displayDateTo, 1);
-  const moodIdsInPeriod = useMoodIdsInPeriod(dateFrom, dateTo);
+  const dateTo = addDays(localState.displayDateTo, 1);
+  const moodIdsInPeriod = useMoodIdsInPeriod(localState.dateFrom, dateTo);
 
   if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
@@ -93,17 +194,20 @@ export default function Explore() {
       </Paper.Group>
     );
 
-  const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
+  const domain: [number, number] = [
+    localState.dateFrom.getTime(),
+    dateTo.getTime(),
+  ];
   const meditationIdsInPeriod = getIdsInInterval(
     meditations.allIds,
-    dateFrom,
+    localState.dateFrom,
     dateTo
   );
   const xLabels = createXLabels(domain, dateNow.getTime());
 
   const secondsMeditatedInInterval = computeSecondsMeditatedInInterval(
     meditations,
-    dateFrom,
+    localState.dateFrom,
     dateTo
   );
 
@@ -111,12 +215,32 @@ export default function Explore() {
     <Paper.Group>
       <Paper>
         <h2>Explore</h2>
-        <MoodGradientForPeriod fromDate={dateFrom} toDate={dateTo} />
+        <MoodGradientForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
+        <Select
+          label="Date range"
+          onChange={(e) =>
+            localDispatch({
+              payload: e.target.value as DateRangeString,
+              type: "dateRange/set",
+            })
+          }
+          value={localState.dateRange}
+        >
+          {DATE_RANGE_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </Select>
         <DateRangeSelector
-          dateFrom={dateFrom}
-          dateTo={displayDateTo}
-          setDateFrom={setDateFrom}
-          setDateTo={setDisplayDateTo}
+          dateFrom={localState.dateFrom}
+          dateTo={localState.displayDateTo}
+          setDateFrom={(payload) =>
+            localDispatch({ payload, type: "dateFrom/set" })
+          }
+          setDateTo={(payload) =>
+            localDispatch({ payload, type: "displayDateTo/set" })
+          }
         />
       </Paper>
       {!meditationIdsInPeriod.length && !moodIdsInPeriod.length ? (
@@ -130,21 +254,33 @@ export default function Explore() {
               <Paper>
                 <h3>Mood chart</h3>
                 <MoodChartForPeriod
-                  fromDate={dateFrom}
+                  fromDate={localState.dateFrom}
                   hidePoints
                   toDate={dateTo}
                   xLabels={xLabels}
                 />
               </Paper>
-              <MoodByWeekdayForPeriod fromDate={dateFrom} toDate={dateTo} />
-              <MoodByHourForPeriod fromDate={dateFrom} toDate={dateTo} />
-              <MoodFrequencyForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <MoodByWeekdayForPeriod
+                fromDate={localState.dateFrom}
+                toDate={dateTo}
+              />
+              <MoodByHourForPeriod
+                fromDate={localState.dateFrom}
+                toDate={dateTo}
+              />
+              <MoodFrequencyForPeriod
+                fromDate={localState.dateFrom}
+                toDate={dateTo}
+              />
               <WeatherForPeriod
-                fromDate={dateFrom}
+                fromDate={localState.dateFrom}
                 toDate={dateTo}
                 xLabels={xLabels}
               />
-              <LocationsForPeriod fromDate={dateFrom} toDate={dateTo} />
+              <LocationsForPeriod
+                fromDate={localState.dateFrom}
+                toDate={dateTo}
+              />
             </>
           ) : (
             <Paper>
@@ -162,7 +298,7 @@ export default function Explore() {
             </Paper>
           )}
           <WeightChartForPeriod
-            fromDate={dateFrom}
+            fromDate={localState.dateFrom}
             toDate={dateTo}
             xLabels={createXLabels(domain, dateNow.getTime())}
           />
