@@ -1,8 +1,6 @@
 import { Paper } from "eri";
-import { useSelector } from "react-redux";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../../constants";
-import { normalizedMoodsSelector } from "../../../selectors";
-import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 
 interface Props {
@@ -11,15 +9,13 @@ interface Props {
 }
 
 export default function MoodFrequencyForPeriod({ fromDate, toDate }: Props) {
-  const moods = useSelector(normalizedMoodsSelector);
-  const moodIdsInPeriod = useMoodIdsInPeriod(fromDate, toDate);
+  const moodsInPeriod = useMoodsInPeriod(fromDate, toDate);
 
-  const moodValues = moodIdsInPeriod.map((id) => moods.byId[id].mood);
   const moodCounter = new Map(MOOD_INTEGERS.map((n) => [MOOD_RANGE[0] + n, 0]));
 
-  for (const moodValue of moodValues) {
+  for (const { mood } of moodsInPeriod) {
     // handle old data stored in decimal format
-    const rounded = Math.round(moodValue);
+    const rounded = Math.round(mood);
     moodCounter.set(rounded, moodCounter.get(rounded)! + 1);
   }
 

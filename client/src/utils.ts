@@ -5,14 +5,7 @@ import set from "date-fns/set";
 import { Icon } from "eri";
 import { MOOD_EXTENT, TIME } from "./constants";
 import { captureException } from "./sentry";
-import {
-  Meditation,
-  Mood,
-  NormalizedMeditations,
-  NormalizedMoods,
-  NormalizedTrackedCategory,
-  Weight,
-} from "./types";
+import { NormalizedMeditations, NormalizedMoods } from "./types";
 
 export const bisectLeft = (xs: string[], x: string, lo = 0) => {
   let hi = xs.length;
@@ -111,17 +104,12 @@ export const computeMean = (xs: number[]): number | undefined => {
 };
 
 export const computeSecondsMeditatedInInterval = (
-  meditations: NormalizedMeditations,
+  { allIds, byId }: NormalizedMeditations,
   d0: Date,
   d1: Date
 ): number => {
-  const denormalizedMeditations = getDenormalizedDataInInterval(
-    meditations,
-    d0,
-    d1
-  );
   let sum = 0;
-  for (const meditation of denormalizedMeditations) sum += meditation.seconds;
+  for (const id of getIdsInInterval(allIds, d0, d1)) sum += byId[id].seconds;
   return sum;
 };
 
@@ -218,17 +206,6 @@ export const getIdsInInterval = (
   const j = bisectLeft(ids, toIso, i);
   if (toIso < ids[i]) return [];
   return ids.slice(i, j + 1);
-};
-
-export const getDenormalizedDataInInterval = <
-  Category extends Meditation | Mood | Weight
->(
-  normalizedData: NormalizedTrackedCategory<Category>,
-  fromDate: Date,
-  toDate: Date
-): Category[] => {
-  const ids = getIdsInInterval(normalizedData.allIds, fromDate, toDate);
-  return ids.map((id) => normalizedData.byId[id]);
 };
 
 export const getWeatherDisplayData = ({

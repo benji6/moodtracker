@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { normalizedAveragesByWeekSelector } from "../../../selectors";
-import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import MoodSummaryForCalendarPeriod from "./MoodSummaryForCalendarPeriod";
 
 interface Props {
   dates: [Date, Date, Date];
@@ -10,7 +10,7 @@ export default function MoodSummaryForWeek(props: Props) {
   const normalizedAverages = useSelector(normalizedAveragesByWeekSelector);
 
   return (
-    <MoodSummaryForPeriod
+    <MoodSummaryForCalendarPeriod
       {...props}
       normalizedAverages={normalizedAverages}
       periodType="week"

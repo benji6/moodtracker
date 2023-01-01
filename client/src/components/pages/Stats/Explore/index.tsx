@@ -1,35 +1,29 @@
 import subDays from "date-fns/subDays";
 import { Paper, Select, Spinner } from "eri";
-import {
-  roundDateUp,
-  roundDateDown,
-  getIdsInInterval,
-  computeSecondsMeditatedInInterval,
-} from "../../../utils";
-import MoodChartForPeriod from "./MoodChartForPeriod";
+import { roundDateUp, roundDateDown } from "../../../../utils";
+import MoodChartForPeriod from "../MoodChartForPeriod";
 import {
   eventsHasLoadedFromServerSelector,
-  hasMeditationsSelector,
-  normalizedMeditationsSelector,
   normalizedMoodsSelector,
-} from "../../../selectors";
+} from "../../../../selectors";
 import { useSelector } from "react-redux";
-import GetStartedCta from "../../shared/GetStartedCta";
-import { TIME } from "../../../constants";
-import MoodByHourForPeriod from "./MoodByHourForPeriod";
-import { dayMonthFormatter } from "../../../formatters/dateTimeFormatters";
-import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
-import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
-import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import formatDurationFromSeconds from "../../../formatters/formatDurationFromSeconds";
-import LocationsForPeriod from "./LocationsForPeriod";
-import DateRangeSelector from "../../shared/DateRangeSelector";
-import WeightChartForPeriod from "./WeightChartForPeriod";
-import WeatherForPeriod from "./WeatherForPeriod";
+import GetStartedCta from "../../../shared/GetStartedCta";
+import { TIME } from "../../../../constants";
+import MoodByHourForPeriod from "../MoodByHourForPeriod";
+import { dayMonthFormatter } from "../../../../formatters/dateTimeFormatters";
+import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
+import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
+import MoodGradientForPeriod from "../MoodGradientForPeriod";
+import LocationsForPeriod from "../LocationsForPeriod";
+import DateRangeSelector from "../../../shared/DateRangeSelector";
+import WeightChartForPeriod from "../WeightChartForPeriod";
+import WeatherForPeriod from "../WeatherForPeriod";
 import addDays from "date-fns/addDays";
-import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 import { useReducer } from "react";
-import { FluxStandardAction } from "../../../typeUtilities";
+import { FluxStandardAction } from "../../../../typeUtilities";
+import MoodCloudForPeriod from "../MoodCloudForPeriod";
+import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 const X_LABELS_COUNT = 4; // must be at least 2
@@ -180,8 +174,6 @@ export default function Explore() {
   const eventsHasLoadedFromServer = useSelector(
     eventsHasLoadedFromServerSelector
   );
-  const meditations = useSelector(normalizedMeditationsSelector);
-  const showMeditationStats = useSelector(hasMeditationsSelector);
 
   const dateTo = addDays(localState.displayDateTo, 1);
   const moodIdsInPeriod = useMoodIdsInPeriod(localState.dateFrom, dateTo);
@@ -198,18 +190,7 @@ export default function Explore() {
     localState.dateFrom.getTime(),
     dateTo.getTime(),
   ];
-  const meditationIdsInPeriod = getIdsInInterval(
-    meditations.allIds,
-    localState.dateFrom,
-    dateTo
-  );
   const xLabels = createXLabels(domain, dateNow.getTime());
-
-  const secondsMeditatedInInterval = computeSecondsMeditatedInInterval(
-    meditations,
-    localState.dateFrom,
-    dateTo
-  );
 
   return (
     <Paper.Group>
@@ -243,64 +224,41 @@ export default function Explore() {
           }
         />
       </Paper>
-      {!meditationIdsInPeriod.length && !moodIdsInPeriod.length ? (
-        <Paper>
-          <p>No data for the selected period</p>
-        </Paper>
-      ) : (
+      <MoodSummaryForPeriod
+        fromDate={localState.dateFrom}
+        toDate={localState.displayDateTo}
+      />
+      {moodIdsInPeriod.length ? (
         <>
-          {moodIdsInPeriod.length ? (
-            <>
-              <MoodChartForPeriod
-                fromDate={localState.dateFrom}
-                hidePoints
-                toDate={dateTo}
-                xLabels={xLabels}
-              />
-              <MoodByWeekdayForPeriod
-                fromDate={localState.dateFrom}
-                toDate={dateTo}
-              />
-              <MoodByHourForPeriod
-                fromDate={localState.dateFrom}
-                toDate={dateTo}
-              />
-              <MoodFrequencyForPeriod
-                fromDate={localState.dateFrom}
-                toDate={dateTo}
-              />
-              <WeatherForPeriod
-                fromDate={localState.dateFrom}
-                toDate={dateTo}
-                xLabels={xLabels}
-              />
-              <LocationsForPeriod
-                fromDate={localState.dateFrom}
-                toDate={dateTo}
-              />
-            </>
-          ) : (
-            <Paper>
-              <p>No mood data for the selected period</p>
-            </Paper>
-          )}
-          {showMeditationStats && (
-            <Paper>
-              <h3>Time meditated</h3>
-              <p>
-                {secondsMeditatedInInterval
-                  ? formatDurationFromSeconds(secondsMeditatedInInterval)
-                  : "No meditations in this period"}
-              </p>
-            </Paper>
-          )}
-          <WeightChartForPeriod
+          <MoodChartForPeriod
+            fromDate={localState.dateFrom}
+            hidePoints
+            toDate={dateTo}
+            xLabels={xLabels}
+          />
+          <MoodByWeekdayForPeriod
             fromDate={localState.dateFrom}
             toDate={dateTo}
-            xLabels={createXLabels(domain, dateNow.getTime())}
+          />
+          <MoodByHourForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
+          <MoodCloudForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
+          <MoodFrequencyForPeriod
+            fromDate={localState.dateFrom}
+            toDate={dateTo}
+          />
+          <WeatherForPeriod
+            fromDate={localState.dateFrom}
+            toDate={dateTo}
+            xLabels={xLabels}
           />
         </>
-      )}
+      ) : null}
+      <WeightChartForPeriod
+        fromDate={localState.dateFrom}
+        toDate={dateTo}
+        xLabels={createXLabels(domain, dateNow.getTime())}
+      />
+      <LocationsForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
     </Paper.Group>
   );
 }

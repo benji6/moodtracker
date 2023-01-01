@@ -16,7 +16,7 @@ interface PeriodData {
 
 interface Props {
   currentPeriod: PeriodData;
-  periodType: "day" | "month" | "week" | "year";
+  periodType?: "day" | "month" | "week" | "year";
   previousPeriod?: PeriodData;
   showMeditationStatsOverride?: boolean;
 }

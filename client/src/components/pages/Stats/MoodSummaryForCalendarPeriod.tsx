@@ -3,15 +3,15 @@ import { useSelector } from "react-redux";
 import {
   normalizedMeditationsSelector,
   normalizedMoodsSelector,
-  normalizedWeightsSelector,
 } from "../../../selectors";
 import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
   computeSecondsMeditatedInInterval,
   computeMean,
-  getDenormalizedDataInInterval,
 } from "../../../utils";
+import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
+import useWeightsInPeriod from "../../hooks/useWeightsInPeriod";
 import MoodSummary from "../../shared/MoodSummary";
 
 interface Props {
@@ -25,35 +25,25 @@ interface Props {
   periodType: "day" | "month" | "week" | "year";
 }
 
-export default function MoodSummaryForPeriod({
+export default function MoodSummaryForCalendarPeriod({
   dates: [date0, date1, date2],
   normalizedAverages,
   periodType,
 }: Props) {
   const meditations = useSelector(normalizedMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
-  const normalizedWeights = useSelector(normalizedWeightsSelector);
-
-  const weightsInPeriod = getDenormalizedDataInInterval(
-    normalizedWeights,
-    date1,
-    date2
-  ).map(({ value }) => value);
-  const weightsInPreviousPeriod = getDenormalizedDataInInterval(
-    normalizedWeights,
-    date0,
-    date1
-  ).map(({ value }) => value);
+  const weightsInPeriod = useWeightsInPeriod(date1, date2).map(
+    ({ value }) => value
+  );
+  const weightsInPreviousPeriod = useWeightsInPeriod(date0, date1).map(
+    ({ value }) => value
+  );
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;
 
-  const moodValues = getDenormalizedDataInInterval(moods, date1, date2).map(
-    ({ mood }) => mood
-  );
-  const prevMoodValues = getDenormalizedDataInInterval(moods, date0, date1).map(
-    ({ mood }) => mood
-  );
+  const moodValues = useMoodsInPeriod(date1, date2).map(({ mood }) => mood);
+  const prevMoodValues = useMoodsInPeriod(date0, date1).map(({ mood }) => mood);
 
   return (
     <Paper>

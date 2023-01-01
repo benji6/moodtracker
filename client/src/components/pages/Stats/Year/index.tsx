@@ -17,7 +17,7 @@ import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
 import addYears from "date-fns/addYears";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
-import MoodByMonthChart from "./MoodByMonthChart";
+import MoodByMonthForPeriod from "./MoodByMonthForPeriod";
 import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import PrevNextControls from "../../../shared/PrevNextControls";
@@ -133,10 +133,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             </h3>
             <div className="m-year__calendar-grid">{calendars}</div>
           </Paper>
-          <Paper>
-            <h3>Months</h3>
-            <MoodByMonthChart months={months} />
-          </Paper>
+          <MoodByMonthForPeriod fromDate={date} toDate={nextDate} />
           <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
           <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
           <MoodCloud
@@ -150,13 +147,13 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           <p>No mood data for this year.</p>
         </Paper>
       )}
-      <WeightChartForPeriod
+      <WeatherForPeriod
         fromDate={date}
         toDate={nextDate}
         xLabels={xLabels}
         xLines={xLines}
       />
-      <WeatherForPeriod
+      <WeightChartForPeriod
         fromDate={date}
         toDate={nextDate}
         xLabels={xLabels}

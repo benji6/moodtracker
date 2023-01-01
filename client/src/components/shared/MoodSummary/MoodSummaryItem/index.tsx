@@ -13,7 +13,7 @@ interface Props {
   displayTrendSentiment?: boolean;
   heading: string;
   isMood?: boolean;
-  periodType: "day" | "month" | "week" | "year";
+  periodType?: "day" | "month" | "week" | "year";
   previousValue?: number;
   units?: "kg";
 }
@@ -83,7 +83,7 @@ export default function MoodSummaryItem({
                 ? `${format(Math.abs(difference))}${units ?? ""}
                 ${difference < 0 ? "less" : "more"} than `
                 : "The same as "}
-              previous {periodType}
+              previous {` ${periodType}`}
             </small>
           </div>
         )}
