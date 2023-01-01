@@ -99,15 +99,12 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       <MoodSummaryForWeek dates={[prevDate, date, nextDate]} />
       {moodIdsInPeriod.length ? (
         <>
-          <Paper>
-            <h3>Mood chart</h3>
-            <MoodChartForPeriod
-              fromDate={date}
-              toDate={nextDate}
-              xLabels={xLabels}
-              xLines={xLines}
-            />
-          </Paper>
+          <MoodChartForPeriod
+            fromDate={date}
+            toDate={nextDate}
+            xLabels={xLabels}
+            xLines={xLines}
+          />
           <MoodByWeekdayForPeriod
             canDrillDown
             fromDate={date}

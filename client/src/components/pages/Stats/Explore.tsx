@@ -251,15 +251,12 @@ export default function Explore() {
         <>
           {moodIdsInPeriod.length ? (
             <>
-              <Paper>
-                <h3>Mood chart</h3>
-                <MoodChartForPeriod
-                  fromDate={localState.dateFrom}
-                  hidePoints
-                  toDate={dateTo}
-                  xLabels={xLabels}
-                />
-              </Paper>
+              <MoodChartForPeriod
+                fromDate={localState.dateFrom}
+                hidePoints
+                toDate={dateTo}
+                xLabels={xLabels}
+              />
               <MoodByWeekdayForPeriod
                 fromDate={localState.dateFrom}
                 toDate={dateTo}

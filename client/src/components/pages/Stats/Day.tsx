@@ -97,15 +97,12 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       </Paper>
       <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
       {moodIds && (
-        <Paper>
-          <h3>Mood chart</h3>
-          <MoodChartForPeriod
-            fromDate={date}
-            toDate={nextDate}
-            xAxisTitle="Time"
-            xLabels={xLabels}
-          />
-        </Paper>
+        <MoodChartForPeriod
+          fromDate={date}
+          toDate={nextDate}
+          xAxisTitle="Time"
+          xLabels={xLabels}
+        />
       )}
       <WeightChartForPeriod
         fromDate={date}

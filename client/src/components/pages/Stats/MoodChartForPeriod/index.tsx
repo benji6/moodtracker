@@ -1,3 +1,4 @@
+import { Paper } from "eri";
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../../selectors";
 import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
@@ -24,23 +25,29 @@ export default function MoodChartForPeriod({
   const moods = useSelector(normalizedMoodsSelector);
   const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
   const envelopingMoodIds = useEnvelopingMoodIds(fromDate, toDate);
+
+  if (envelopingMoodIds.length < 2) return null;
+
   const data: [number, number][] = envelopingMoodIds.map((id) => {
     const mood = moods.byId[id];
     return [new Date(id).getTime(), mood.mood];
   });
 
   return (
-    <MoodChart
-      data={data}
-      domain={domain}
-      hidePoints={hidePoints}
-      trendlinePoints={computeTrendlinePoints(
-        { ...moods, allIds: envelopingMoodIds },
-        domain
-      )}
-      xAxisTitle={xAxisTitle}
-      xLabels={xLabels}
-      xLines={xLines}
-    />
+    <Paper>
+      <h3>Mood chart</h3>
+      <MoodChart
+        data={data}
+        domain={domain}
+        hidePoints={hidePoints}
+        trendlinePoints={computeTrendlinePoints(
+          { ...moods, allIds: envelopingMoodIds },
+          domain
+        )}
+        xAxisTitle={xAxisTitle}
+        xLabels={xLabels}
+        xLines={xLines}
+      />
+    </Paper>
   );
 }

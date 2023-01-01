@@ -101,14 +101,11 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       <MoodSummaryForMonth dates={[prevDate, date, nextDate]} />
       {moodIdsInPeriod.length ? (
         <>
-          <Paper>
-            <h3>Mood chart</h3>
-            <MoodChartForPeriod
-              fromDate={date}
-              toDate={nextDate}
-              xLabels={xLabels}
-            />
-          </Paper>
+          <MoodChartForPeriod
+            fromDate={date}
+            toDate={nextDate}
+            xLabels={xLabels}
+          />
           <Paper>
             <h3>Calendar view</h3>
             <MoodCalendarForMonth month={date} />
