@@ -83,7 +83,7 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy"
 
 [[package]]
 name = "bc-detect-secrets"
-version = "1.3.14"
+version = "1.4.7"
 description = "Tool for detecting secrets in the codebase"
 category = "main"
 optional = false
@@ -98,8 +98,20 @@ gibberish = ["gibberish-detector"]
 word-list = ["pyahocorasick"]
 
 [[package]]
+name = "bc-jsonpath-ng"
+version = "1.5.8"
+description = "A final implementation of JSONPath for Python that aims to be standard compliant, including arithmetic and binary comparison operators and providing clear AST for metaprogramming."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+decorator = "*"
+ply = "*"
+
+[[package]]
 name = "bc-python-hcl2"
-version = "0.3.47"
+version = "0.3.51"
 description = "A parser for HCL2"
 category = "main"
 optional = false
@@ -204,7 +216,7 @@ unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.2.106"
+version = "2.2.221"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
@@ -215,8 +227,9 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-detect-secrets = "1.3.14"
-bc-python-hcl2 = "0.3.47"
+bc-detect-secrets = "1.4.7"
+bc-jsonpath-ng = "1.5.8"
+bc-python-hcl2 = "0.3.51"
 boto3 = ">=1.17"
 cachetools = "*"
 charset-normalizer = "*"
@@ -232,7 +245,6 @@ dpath = ">=1.5.0,<2"
 gitpython = "*"
 importlib-metadata = ">=0.12"
 jmespath = "*"
-jsonpath-ng = "*"
 jsonschema = ">=3.0.2,<4.0.0"
 junit-xml = ">=1.9"
 networkx = "<2.7"
@@ -488,19 +500,6 @@ description = "JSON Matching Expressions"
 category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
-
-[[package]]
-name = "jsonpath-ng"
-version = "1.5.3"
-description = "A final implementation of JSONPath for Python that aims to be standard compliant, including arithmetic and binary comparison operators and providing clear AST for metaprogramming."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-decorator = "*"
-ply = "*"
-six = "*"
 
 [[package]]
 name = "jsonschema"
@@ -1016,7 +1015,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "53de0dad59458e7f5442d27bf4ac8d1c06c0b0d97de28f3ecbe93e92f3c95e47"
+content-hash = "6338b6caa065172120af4c5c096164312ffe58cbdf1ceee3ceddbe2d879a8d83"
 
 [metadata.files]
 aiodns = [
@@ -1118,12 +1117,16 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 bc-detect-secrets = [
-    {file = "bc-detect-secrets-1.3.14.tar.gz", hash = "sha256:cabe8a69358f8cd85e84232c81a6557934d72c9538cef566e7a886f397021e35"},
-    {file = "bc_detect_secrets-1.3.14-py3-none-any.whl", hash = "sha256:18537d13ed88ccbdd71e1e715bc2c91475a2f7b7875864adf6a9ed44df52c6bb"},
+    {file = "bc-detect-secrets-1.4.7.tar.gz", hash = "sha256:623dcf96015f6190337fe4f4109442fef276d79e480b02ec10d3fe4ef6ce95a5"},
+    {file = "bc_detect_secrets-1.4.7-py3-none-any.whl", hash = "sha256:c356b51ed38d0087a550bbf6900e5b168c6b9ec478bfaae0a684a4b9131980a9"},
+]
+bc-jsonpath-ng = [
+    {file = "bc-jsonpath-ng-1.5.8.tar.gz", hash = "sha256:c79388a3bfd00b52d8dd6cd600b637c377c9fca22faa7d30bbbc38cca9b06ee2"},
+    {file = "bc_jsonpath_ng-1.5.8-py3-none-any.whl", hash = "sha256:f9ead127f02cbae3fec7442d2e2eae8e104b3362f872f9d687991b74831ec2b9"},
 ]
 bc-python-hcl2 = [
-    {file = "bc-python-hcl2-0.3.47.tar.gz", hash = "sha256:178bc09fa1d1bcd35cfb865f182cd479fd786cd9b14c80b010d99a39edcc6877"},
-    {file = "bc_python_hcl2-0.3.47-py3-none-any.whl", hash = "sha256:5a8358731d34f8202130b3875f0da40c94395a942da2ee0a7170614be9a62f40"},
+    {file = "bc-python-hcl2-0.3.51.tar.gz", hash = "sha256:15bfecbae882ead998dd9300737237a14e40dfd8c973e5c7de7b4c92040a010f"},
+    {file = "bc_python_hcl2-0.3.51-py3-none-any.whl", hash = "sha256:ab72880dd58689a4ee9a47f229788311a2b4d607fe034a819a40a63dab432644"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1206,8 +1209,8 @@ charset-normalizer = [
     {file = "charset_normalizer-2.0.12-py3-none-any.whl", hash = "sha256:6881edbebdb17b39b4eaaa821b438bf6eddffb4468cf344f09f89def34a8b1df"},
 ]
 checkov = [
-    {file = "checkov-2.2.106-py3-none-any.whl", hash = "sha256:ad55942d9e1fe16a10ca07e3af3f3600d1c1b9605b556c921e4fa63c52156d5b"},
-    {file = "checkov-2.2.106.tar.gz", hash = "sha256:d8ff9d95afacf6c3664e34e72f56afb81d2f08c43a2051601d610594dbb0f55a"},
+    {file = "checkov-2.2.221-py3-none-any.whl", hash = "sha256:fd9c7241b9d8c6a2fb3a3730538f24b31b7df8e23d82514c9bde84e1552b8515"},
+    {file = "checkov-2.2.221.tar.gz", hash = "sha256:eb98559c28eb979a430d940a0ab9b9aeda3411f10ebc68e0ae49caf9be8fe102"},
 ]
 click = [
     {file = "click-8.0.4-py3-none-any.whl", hash = "sha256:6a7a62563bbfabfda3a38f3023a1db4a35978c0abd76f6c9605ecd6554d6d9b1"},
@@ -1344,11 +1347,6 @@ jinja2 = [
 jmespath = [
     {file = "jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f"},
     {file = "jmespath-0.10.0.tar.gz", hash = "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"},
-]
-jsonpath-ng = [
-    {file = "jsonpath-ng-1.5.3.tar.gz", hash = "sha256:a273b182a82c1256daab86a313b937059261b5c5f8c4fa3fc38b882b344dd567"},
-    {file = "jsonpath_ng-1.5.3-py2-none-any.whl", hash = "sha256:f75b95dbecb8a0f3b86fd2ead21c2b022c3f5770957492b9b6196ecccfeb10aa"},
-    {file = "jsonpath_ng-1.5.3-py3-none-any.whl", hash = "sha256:292a93569d74029ba75ac2dc3d3630fc0e17b2df26119a165fa1d498ca47bf65"},
 ]
 jsonschema = [
     {file = "jsonschema-3.2.0-py2.py3-none-any.whl", hash = "sha256:4e5b3cf8216f577bee9ce139cbe72eca3ea4f292ec60928ff24758ce626cd163"},
