@@ -8,4 +8,4 @@ I've also added a summary panel (like you get on all the other stats pages):
 
 And lastly, I've refined the selection of charts on the page.
 
-I hope this makes it even easier to review the data you collect with MoodTracker.
+I hope this makes it even easier to review the things you track in MoodTracker.
