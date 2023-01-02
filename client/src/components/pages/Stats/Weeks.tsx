@@ -62,8 +62,8 @@ export default function Weeks() {
                   </td>
                   <td>
                     <MoodGradientForPeriod
-                      fromDate={week}
-                      toDate={addWeeks(week, 1)}
+                      dateFrom={week}
+                      dateTo={addWeeks(week, 1)}
                     />
                   </td>
                   <MoodCell mood={normalizedAveragesByWeek.byId[dateString]!} />

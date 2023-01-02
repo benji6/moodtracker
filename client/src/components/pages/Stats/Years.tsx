@@ -54,8 +54,8 @@ export default function Years() {
                   </td>
                   <td>
                     <MoodGradientForPeriod
-                      fromDate={year}
-                      toDate={addYears(year, 1)}
+                      dateFrom={year}
+                      dateTo={addYears(year, 1)}
                     />
                   </td>
                   <MoodCell mood={normalizedAveragesByYear.byId[dateString]!} />

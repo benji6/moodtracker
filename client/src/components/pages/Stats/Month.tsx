@@ -80,7 +80,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             </Link>
           </SubHeading>
         </h2>
-        <MoodGradientForPeriod fromDate={date} toDate={nextDate} />
+        <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoMonthInLocalTimezone(prevDate)}`}>
@@ -102,8 +102,8 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
-            fromDate={date}
-            toDate={nextDate}
+            dateFrom={date}
+            dateTo={nextDate}
             xLabels={xLabels}
           />
           <Paper>
@@ -143,8 +143,8 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
                         </td>
                         <td>
                           <MoodGradientForPeriod
-                            fromDate={week}
-                            toDate={addWeeks(week, 1)}
+                            dateFrom={week}
+                            dateTo={addWeeks(week, 1)}
                           />
                         </td>
                         <MoodCell
@@ -156,13 +156,13 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
               </tbody>
             </table>
           </Paper>
-          <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
-          <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
+          <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodCloud
-            currentPeriod={{ fromDate: date, toDate: nextDate }}
-            previousPeriod={{ fromDate: prevDate, toDate: date }}
+            currentPeriod={{ dateFrom: date, dateTo: nextDate }}
+            previousPeriod={{ dateFrom: prevDate, dateTo: date }}
           />
-          <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
+          <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
         </>
       ) : (
         <Paper>
@@ -170,12 +170,12 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </Paper>
       )}
       <WeightChartForPeriod
-        fromDate={date}
-        toDate={nextDate}
+        dateFrom={date}
+        dateTo={nextDate}
         xLabels={xLabels}
       />
-      <WeatherForPeriod fromDate={date} toDate={nextDate} xLabels={xLabels} />
-      <LocationsForPeriod fromDate={date} toDate={nextDate} />
+      <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
+      <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
     </Paper.Group>
   );
 }

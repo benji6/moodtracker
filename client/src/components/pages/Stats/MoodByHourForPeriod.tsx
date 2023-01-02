@@ -7,11 +7,11 @@ import addHours from "date-fns/addHours";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function MoodByHourForPeriod({ fromDate, toDate }: Props) {
+export default function MoodByHourForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedAveragesByHour = useSelector(
     normalizedAveragesByHourSelector
   );
@@ -19,7 +19,7 @@ export default function MoodByHourForPeriod({ fromDate, toDate }: Props) {
     ...Array(TIME.daysPerWeek),
   ];
 
-  for (let t0 = fromDate; t0 < toDate; t0 = addHours(t0, 1)) {
+  for (let t0 = dateFrom; t0 < dateTo; t0 = addHours(t0, 1)) {
     const mood =
       normalizedAveragesByHour.byId[formatIsoDateHourInLocalTimezone(t0)];
     if (mood === undefined) continue;

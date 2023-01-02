@@ -6,15 +6,15 @@ import useEventIdsWithLocationInPeriod from "../../hooks/useEventIdsWithLocation
 import LocationMap from "../../shared/LocationMap";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function LocationsForPeriod({ fromDate, toDate }: Props) {
+export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
   const eventsById = useSelector(eventsByIdSelector);
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
-    fromDate,
-    toDate
+    dateFrom,
+    dateTo
   );
 
   const coordinatesToRender = new Set();

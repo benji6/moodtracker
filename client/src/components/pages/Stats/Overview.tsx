@@ -36,8 +36,8 @@ export default function Overview() {
       <Paper>
         <h2>Overview</h2>
         <MoodGradientForPeriod
-          fromDate={new Date(moods.allIds[0])}
-          toDate={new Date(moods.allIds.at(-1)!)}
+          dateFrom={new Date(moods.allIds[0])}
+          dateTo={new Date(moods.allIds.at(-1)!)}
         />
       </Paper>
       <Weeks />

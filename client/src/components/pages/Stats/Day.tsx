@@ -77,7 +77,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             </Link>
           </SubHeading>
         </h2>
-        <MoodGradientForPeriod fromDate={date} toDate={nextDate} />
+        <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoDateInLocalTimezone(prevDate)}`}>
@@ -98,19 +98,19 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
       {moodIds && (
         <MoodChartForPeriod
-          fromDate={date}
-          toDate={nextDate}
+          dateFrom={date}
+          dateTo={nextDate}
           xAxisTitle="Time"
           xLabels={xLabels}
         />
       )}
       <WeightChartForPeriod
-        fromDate={date}
-        toDate={nextDate}
+        dateFrom={date}
+        dateTo={nextDate}
         xLabels={xLabels}
       />
-      <WeatherForPeriod fromDate={date} toDate={nextDate} xLabels={xLabels} />
-      <LocationsForPeriod fromDate={date} toDate={nextDate} />
+      <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
+      <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
       {moodIds ? (
         <Paper>
           <h3>Moods</h3>

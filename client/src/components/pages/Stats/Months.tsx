@@ -54,8 +54,8 @@ export default function Months() {
                   </td>
                   <td>
                     <MoodGradientForPeriod
-                      fromDate={month}
-                      toDate={addMonths(month, 1)}
+                      dateFrom={month}
+                      dateTo={addMonths(month, 1)}
                     />
                   </td>
                   <MoodCell

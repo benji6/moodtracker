@@ -14,14 +14,14 @@ import { ComponentProps } from "react";
 
 interface Props {
   canDrillDown?: boolean;
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
 export default function MoodByWeekdayForPeriod({
   canDrillDown,
-  fromDate,
-  toDate,
+  dateFrom,
+  dateTo,
 }: Props) {
   const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function MoodByWeekdayForPeriod({
   ];
   const dateStrings: string[] = [];
 
-  for (let t0 = fromDate; t0 < toDate; t0 = addDays(t0, 1)) {
+  for (let t0 = dateFrom; t0 < dateTo; t0 = addDays(t0, 1)) {
     const dateString = formatIsoDateInLocalTimezone(t0);
     dateStrings.push(dateString);
     const mood = normalizedAveragesByDay.byId[dateString];

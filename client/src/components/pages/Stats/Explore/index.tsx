@@ -196,7 +196,7 @@ export default function Explore() {
     <Paper.Group>
       <Paper>
         <h2>Explore</h2>
-        <MoodGradientForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
+        <MoodGradientForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
         <Select
           label="Date range"
           onChange={(e) =>
@@ -225,40 +225,40 @@ export default function Explore() {
         />
       </Paper>
       <MoodSummaryForPeriod
-        fromDate={localState.dateFrom}
-        toDate={localState.displayDateTo}
+        dateFrom={localState.dateFrom}
+        dateTo={localState.displayDateTo}
       />
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
-            fromDate={localState.dateFrom}
+            dateFrom={localState.dateFrom}
             hidePoints
-            toDate={dateTo}
+            dateTo={dateTo}
             xLabels={xLabels}
           />
           <MoodByWeekdayForPeriod
-            fromDate={localState.dateFrom}
-            toDate={dateTo}
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
           />
-          <MoodByHourForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
-          <MoodCloudForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
+          <MoodByHourForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+          <MoodCloudForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
           <MoodFrequencyForPeriod
-            fromDate={localState.dateFrom}
-            toDate={dateTo}
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
           />
           <WeatherForPeriod
-            fromDate={localState.dateFrom}
-            toDate={dateTo}
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
             xLabels={xLabels}
           />
         </>
       ) : null}
       <WeightChartForPeriod
-        fromDate={localState.dateFrom}
-        toDate={dateTo}
+        dateFrom={localState.dateFrom}
+        dateTo={dateTo}
         xLabels={createXLabels(domain, dateNow.getTime())}
       />
-      <LocationsForPeriod fromDate={localState.dateFrom} toDate={dateTo} />
+      <LocationsForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
     </Paper.Group>
   );
 }

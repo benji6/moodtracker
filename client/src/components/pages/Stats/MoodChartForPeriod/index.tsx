@@ -6,25 +6,25 @@ import MoodChart from "../../../shared/MoodChart";
 import computeTrendlinePoints from "./computeTrendlinePoints";
 
 interface Props {
-  fromDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
   hidePoints?: boolean;
-  toDate: Date;
   xAxisTitle?: string;
   xLabels: [number, string][];
   xLines?: number[];
 }
 
 export default function MoodChartForPeriod({
-  fromDate,
+  dateFrom,
+  dateTo,
   hidePoints = false,
-  toDate,
   xAxisTitle,
   xLabels,
   xLines,
 }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
-  const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
-  const envelopingMoodIds = useEnvelopingMoodIds(fromDate, toDate);
+  const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
+  const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
 
   if (envelopingMoodIds.length < 2) return null;
 

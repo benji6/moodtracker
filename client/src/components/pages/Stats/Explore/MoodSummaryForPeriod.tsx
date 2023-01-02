@@ -11,20 +11,20 @@ import useWeightsInPeriod from "../../../hooks/useWeightsInPeriod";
 import MoodSummary from "../../../shared/MoodSummary";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function MoodSummaryForPeriod({ fromDate, toDate }: Props) {
+export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const meditations = useSelector(normalizedMeditationsSelector);
-  const moodValues = useMoodsInPeriod(fromDate, toDate).map(({ mood }) => mood);
-  const weightsInPeriod = useWeightsInPeriod(fromDate, toDate).map(
+  const moodValues = useMoodsInPeriod(dateFrom, dateTo).map(({ mood }) => mood);
+  const weightsInPeriod = useWeightsInPeriod(dateFrom, dateTo).map(
     ({ value }) => value
   );
   const secondsMeditated = computeSecondsMeditatedInInterval(
     meditations,
-    fromDate,
-    toDate
+    dateFrom,
+    dateTo
   );
 
   return (

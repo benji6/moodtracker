@@ -5,18 +5,18 @@ import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import "./style.css";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
 const NO_DATA_COLOR = "var(--color-balance)";
 
-export default function MoodGradientForPeriod({ fromDate, toDate }: Props) {
+export default function MoodGradientForPeriod({ dateFrom, dateTo }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
-  const fromTime = fromDate.getTime();
-  const toTime = toDate.getTime();
+  const fromTime = dateFrom.getTime();
+  const toTime = dateTo.getTime();
   const timeInterval = toTime - fromTime;
-  const envelopingMoodIds = useEnvelopingMoodIds(fromDate, toDate);
+  const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
 
   if (envelopingMoodIds.length < 2) return null;
 

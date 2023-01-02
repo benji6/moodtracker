@@ -3,12 +3,12 @@ import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
 import useMoodCloudWords from "../../hooks/useMoodCloudWords";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function MoodCloudForPeriod({ fromDate, toDate }: Props) {
-  const currentPeriodWords = useMoodCloudWords(fromDate, toDate);
+export default function MoodCloudForPeriod({ dateFrom, dateTo }: Props) {
+  const currentPeriodWords = useMoodCloudWords(dateFrom, dateTo);
 
   if (
     !currentPeriodWords ||

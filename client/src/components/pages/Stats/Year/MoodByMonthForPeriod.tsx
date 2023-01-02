@@ -14,17 +14,17 @@ import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import { Paper } from "eri";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function MoodByMonthForPeriod({ fromDate, toDate }: Props) {
+export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedAveragesByMonth = useSelector(
     normalizedAveragesByMonthSelector
   );
   const navigate = useNavigate();
 
-  const months = eachMonthOfInterval({ start: fromDate, end: toDate }).slice(
+  const months = eachMonthOfInterval({ start: dateFrom, end: dateTo }).slice(
     0,
     -1
   );

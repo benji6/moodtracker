@@ -22,8 +22,8 @@ export const capitalizeFirstLetter = (s: string): string =>
 
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
-  fromDate: Date,
-  toDate: Date
+  dateFrom: Date,
+  dateTo: Date
 ): number | undefined => {
   if (!moods.allIds.length) {
     captureException(Error("No moods"));
@@ -33,18 +33,18 @@ export const computeAverageMoodInInterval = (
   const earliestMoodTime = new Date(moods.allIds[0]).getTime();
   const latestMoodTime = new Date(moods.allIds.at(-1)!).getTime();
 
-  const d0 = fromDate.getTime();
-  const d1 = toDate.getTime();
+  const d0 = dateFrom.getTime();
+  const d1 = dateTo.getTime();
 
   if (d1 < d0) {
-    captureException(Error("fromDate must be equal to or before toDate"));
+    captureException(Error("`dateFrom` must be equal to or before `dateTo`"));
     return;
   }
   if (d0 > latestMoodTime || d1 < earliestMoodTime) return;
 
   if (moods.allIds.length === 1) return moods.byId[moods.allIds[0]].mood;
-  if (d1 === earliestMoodTime) return moods.byId[toDate.toISOString()].mood;
-  if (d0 === latestMoodTime) return moods.byId[fromDate.toISOString()].mood;
+  if (d1 === earliestMoodTime) return moods.byId[dateTo.toISOString()].mood;
+  if (d0 === latestMoodTime) return moods.byId[dateFrom.toISOString()].mood;
 
   const maxArea =
     (Math.min(d1, latestMoodTime) - Math.max(d0, earliestMoodTime)) *
@@ -52,7 +52,7 @@ export const computeAverageMoodInInterval = (
 
   let area = 0;
 
-  const relevantMoodIds = getEnvelopingIds(moods.allIds, fromDate, toDate);
+  const relevantMoodIds = getEnvelopingIds(moods.allIds, dateFrom, dateTo);
 
   for (let j = 1; j < relevantMoodIds.length; j++) {
     const id0 = relevantMoodIds[j - 1];
@@ -172,10 +172,10 @@ export const getNormalizedTagsFromDescription = (
 // first mood before range and first mood after range
 export const getEnvelopingIds = (
   ids: NormalizedMoods["allIds"],
-  fromDate: Date,
-  toDate: Date
+  dateFrom: Date,
+  dateTo: Date
 ): NormalizedMoods["allIds"] => {
-  if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
+  if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
 
   // We use these ISO-8601 strings to do string comparison of dates.
   // This is a very hot code path and testing indicates that this
@@ -183,8 +183,8 @@ export const getEnvelopingIds = (
   // and comparing in date object format or in number format.
   // A limitation is that the format of all IDs must be derived
   // from `toISOString` otherwise this may not function as expected.
-  const fromIso = fromDate.toISOString();
-  const toIso = toDate.toISOString();
+  const fromIso = dateFrom.toISOString();
+  const toIso = dateTo.toISOString();
 
   const i = bisectLeft(ids, fromIso);
   const j = bisectLeft(ids, toIso, i);
@@ -196,12 +196,12 @@ export const getEnvelopingIds = (
 
 export const getIdsInInterval = (
   ids: string[],
-  fromDate: Date,
-  toDate: Date
+  dateFrom: Date,
+  dateTo: Date
 ): typeof ids => {
-  if (fromDate > toDate) throw Error("`fromDate` should not be after `toDate`");
-  const fromIso = fromDate.toISOString();
-  const toIso = toDate.toISOString();
+  if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
+  const fromIso = dateFrom.toISOString();
+  const toIso = dateTo.toISOString();
   const i = bisectLeft(ids, fromIso);
   const j = bisectLeft(ids, toIso, i);
   if (toIso < ids[i]) return [];

@@ -253,8 +253,8 @@ export default function MoodList() {
                   </Link>
                 </h3>
                 <MoodGradientForPeriod
-                  fromDate={day}
-                  toDate={addDays(day, 1)}
+                  dateFrom={day}
+                  dateTo={addDays(day, 1)}
                 />
                 <Card.Group>
                   {mapRight(ids!, (id) => (

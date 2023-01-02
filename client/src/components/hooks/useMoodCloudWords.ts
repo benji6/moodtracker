@@ -3,10 +3,10 @@ import { getNormalizedTagsFromDescription } from "../../utils";
 import useMoodsInPeriod from "./useMoodsInPeriod";
 
 export default function useMoodCloudWords(
-  fromDate: Date,
-  toDate: Date
+  dateFrom: Date,
+  dateTo: Date
 ): { [word: string]: number } | undefined {
-  const moodsInPeriod = useMoodsInPeriod(fromDate, toDate);
+  const moodsInPeriod = useMoodsInPeriod(dateFrom, dateTo);
 
   const words: { [word: string]: number } = {};
   for (const { description } of moodsInPeriod) {

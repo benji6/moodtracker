@@ -5,21 +5,21 @@ import useEnvelopingEventIdsWithLocation from "../../../hooks/useEnvelopingEvent
 import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
   xLabels: [number, string][];
   xLines?: number[];
 }
 
 export default function TemperatureForPeriod({
-  fromDate,
-  toDate,
+  dateFrom,
+  dateTo,
   xLabels,
   xLines,
 }: Props) {
   const envelopingEventIdsWithLocation = useEnvelopingEventIdsWithLocation(
-    fromDate,
-    toDate
+    dateFrom,
+    dateTo
   );
   const weatherResults = useWeatherQueries(envelopingEventIdsWithLocation);
 
@@ -58,7 +58,7 @@ export default function TemperatureForPeriod({
       <h4>Temperature chart</h4>
       <Chart.LineChart
         aria-label="Chart displaying temperature against time"
-        domain={[fromDate.getTime(), toDate.getTime()]}
+        domain={[dateFrom.getTime(), dateTo.getTime()]}
         range={range}
         xAxisTitle="Month"
         yAxisTitle="Temperature (°C)"

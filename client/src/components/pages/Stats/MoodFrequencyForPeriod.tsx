@@ -4,12 +4,12 @@ import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function MoodFrequencyForPeriod({ fromDate, toDate }: Props) {
-  const moodsInPeriod = useMoodsInPeriod(fromDate, toDate);
+export default function MoodFrequencyForPeriod({ dateFrom, dateTo }: Props) {
+  const moodsInPeriod = useMoodsInPeriod(dateFrom, dateTo);
 
   const moodCounter = new Map(MOOD_INTEGERS.map((n) => [MOOD_RANGE[0] + n, 0]));
 

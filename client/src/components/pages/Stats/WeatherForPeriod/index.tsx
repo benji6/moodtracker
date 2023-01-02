@@ -9,21 +9,21 @@ import TemperatureForPeriod from "./TemperatureForPeriod";
 import WeatherFrequencyForPeriod from "./WeatherFrequencyForPeriod";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
   xLabels: [number, string][];
   xLines?: number[];
 }
 
 export default function WeatherForPeriod({
-  fromDate,
-  toDate,
+  dateFrom,
+  dateTo,
   xLabels,
   xLines,
 }: Props) {
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
-    fromDate,
-    toDate
+    dateFrom,
+    dateTo
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 
@@ -88,17 +88,17 @@ export default function WeatherForPeriod({
         </SubHeading>
       </h3>
       {loadingEl}
-      <WeatherFrequencyForPeriod fromDate={fromDate} toDate={toDate} />
+      <WeatherFrequencyForPeriod dateFrom={dateFrom} dateTo={dateTo} />
       {eventIdsWithLocationInPeriod.length <
         MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && <>{loadingEl}</>}
-      <MoodByWeatherForPeriod fromDate={fromDate} toDate={toDate} />
+      <MoodByWeatherForPeriod dateFrom={dateFrom} dateTo={dateTo} />
       {eventIdsWithLocationInPeriod.length <
         MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && <>{loadingEl}</>}
-      <MoodByTemperatureForPeriod fromDate={fromDate} toDate={toDate} />
+      <MoodByTemperatureForPeriod dateFrom={dateFrom} dateTo={dateTo} />
       {loadingEl}
       <TemperatureForPeriod
-        fromDate={fromDate}
-        toDate={toDate}
+        dateFrom={dateFrom}
+        dateTo={dateTo}
         xLabels={xLabels}
         xLines={xLines}
       />

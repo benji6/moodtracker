@@ -3,9 +3,9 @@ import { moodIdsWithLocationSelector } from "../../selectors";
 import { getIdsInInterval } from "../../utils";
 
 export default function useMoodIdsWithLocationInPeriod(
-  fromDate: Date,
-  toDate: Date
+  dateFrom: Date,
+  dateTo: Date
 ): string[] {
   const ids = useSelector(moodIdsWithLocationSelector);
-  return getIdsInInterval(ids, fromDate, toDate);
+  return getIdsInInterval(ids, dateFrom, dateTo);
 }

@@ -5,24 +5,24 @@ import useMoodCloudWords from "../../hooks/useMoodCloudWords";
 
 interface Props {
   currentPeriod: {
-    fromDate: Date;
-    toDate: Date;
+    dateFrom: Date;
+    dateTo: Date;
   };
   previousPeriod: {
-    fromDate: Date;
-    toDate: Date;
+    dateFrom: Date;
+    dateTo: Date;
   };
 }
 
 export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
   const [filterOutPreviousPeriod, setFilterOutPreviousPeriod] = useState(false);
   const currentPeriodWords = useMoodCloudWords(
-    currentPeriod.fromDate,
-    currentPeriod.toDate
+    currentPeriod.dateFrom,
+    currentPeriod.dateTo
   );
   const previousPeriodWords = useMoodCloudWords(
-    previousPeriod.fromDate,
-    previousPeriod.toDate
+    previousPeriod.dateFrom,
+    previousPeriod.dateTo
   );
 
   if (

@@ -3,9 +3,9 @@ import { eventsAllIdsWithLocationSelector } from "../../selectors";
 import { getEnvelopingIds } from "../../utils";
 
 export default function useEnvelopingEventIdsWithLocation(
-  fromDate: Date,
-  toDate: Date
+  dateFrom: Date,
+  dateTo: Date
 ): string[] {
   const ids = useSelector(eventsAllIdsWithLocationSelector);
-  return getEnvelopingIds(ids, fromDate, toDate);
+  return getEnvelopingIds(ids, dateFrom, dateTo);
 }

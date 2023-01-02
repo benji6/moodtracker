@@ -6,14 +6,14 @@ import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
 import ColumnChart from "../../../shared/ColumnChart";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
-export default function WeatherFrequencyForPeriod({ fromDate, toDate }: Props) {
+export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
-    fromDate,
-    toDate
+    dateFrom,
+    dateTo
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 

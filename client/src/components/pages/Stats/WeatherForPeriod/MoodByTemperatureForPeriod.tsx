@@ -7,18 +7,18 @@ import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
 }
 
 export default function MoodByTemperatureForPeriod({
-  fromDate,
-  toDate,
+  dateFrom,
+  dateTo,
 }: Props) {
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
-    fromDate,
-    toDate
+    dateFrom,
+    dateTo
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 

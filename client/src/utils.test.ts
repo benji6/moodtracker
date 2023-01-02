@@ -77,7 +77,7 @@ describe("utils", () => {
   });
 
   describe("computeAverageMoodInInterval", () => {
-    describe("when the fromDate is after the toDate", () => {
+    describe("when the dateFrom is after the dateTo", () => {
       it("returns undefined", () => {
         expect(
           computeAverageMoodInInterval(
@@ -370,7 +370,7 @@ describe("utils", () => {
   });
 
   describe("computeSecondsMeditatedInInterval", () => {
-    describe("when the fromDate is after the toDate", () => {
+    describe("when the dateFrom is after the dateTo", () => {
       it("throws an error", () => {
         expect(() =>
           computeSecondsMeditatedInInterval(
@@ -381,7 +381,7 @@ describe("utils", () => {
             new Date("2020-07-31T00:00:00.000Z"),
             new Date("2020-07-30T00:00:00.000Z")
           )
-        ).toThrow(Error("`fromDate` should not be after `toDate`"));
+        ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
       });
     });
 
@@ -618,7 +618,7 @@ describe("utils", () => {
   });
 
   describe("getEnvelopingIds", () => {
-    it("throws an error when the fromDate is after the toDate", () => {
+    it("throws an error when the dateFrom is after the dateTo", () => {
       expect(() =>
         getEnvelopingIds(
           [],
@@ -632,7 +632,7 @@ describe("utils", () => {
           new Date("2020-09-01T00:00:01"),
           new Date("2020-09-01T00:00:00")
         )
-      ).toThrow(Error("`fromDate` should not be after `toDate`"));
+      ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
 
     it("returns the first ID when the range is before the mood ID range", () => {
@@ -764,7 +764,7 @@ describe("utils", () => {
   });
 
   describe("getIdsInInterval", () => {
-    it("throws an error when the fromDate is after the toDate", () => {
+    it("throws an error when the dateFrom is after the dateTo", () => {
       expect(() =>
         getIdsInInterval(
           [],
@@ -778,7 +778,7 @@ describe("utils", () => {
           new Date("2020-09-01T00:00:01"),
           new Date("2020-09-01T00:00:00")
         )
-      ).toThrow(Error("`fromDate` should not be after `toDate`"));
+      ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
 
     it("returns an empty array when there are no mood IDs provided", () => {

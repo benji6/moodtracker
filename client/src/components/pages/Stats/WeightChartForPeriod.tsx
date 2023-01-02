@@ -5,24 +5,24 @@ import { normalizedWeightsSelector } from "../../../selectors";
 import { createChartRange, getEnvelopingIds } from "../../../utils";
 
 interface Props {
-  fromDate: Date;
-  toDate: Date;
+  dateFrom: Date;
+  dateTo: Date;
   xLabels: [number, string][];
   xLines?: number[];
 }
 
 export default function WeightChartForPeriod({
-  fromDate,
-  toDate,
+  dateFrom,
+  dateTo,
   xLabels,
   xLines,
 }: Props) {
   const weights = useSelector(normalizedWeightsSelector);
-  const envelopingIds = getEnvelopingIds(weights.allIds, fromDate, toDate);
+  const envelopingIds = getEnvelopingIds(weights.allIds, dateFrom, dateTo);
 
   if (envelopingIds.length < 2) return null;
 
-  const domain: [number, number] = [fromDate.getTime(), toDate.getTime()];
+  const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
   const envelopingValues = envelopingIds.map((id) => weights.byId[id].value);
 
   const range = createChartRange(envelopingValues);

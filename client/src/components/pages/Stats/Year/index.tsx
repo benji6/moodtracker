@@ -98,7 +98,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
     <Paper.Group>
       <Paper>
         <h2>{yearFormatter.format(date)}</h2>
-        <MoodGradientForPeriod fromDate={date} toDate={nextDate} />
+        <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
             <Link to={`../${formatIsoYearInLocalTimezone(prevDate)}`}>
@@ -120,8 +120,8 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
-            fromDate={date}
-            toDate={nextDate}
+            dateFrom={date}
+            dateTo={nextDate}
             hidePoints
             xLabels={xLabels}
             xLines={xLines}
@@ -133,14 +133,14 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             </h3>
             <div className="m-year__calendar-grid">{calendars}</div>
           </Paper>
-          <MoodByMonthForPeriod fromDate={date} toDate={nextDate} />
-          <MoodByWeekdayForPeriod fromDate={date} toDate={nextDate} />
-          <MoodByHourForPeriod fromDate={date} toDate={nextDate} />
+          <MoodByMonthForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodCloud
-            currentPeriod={{ fromDate: date, toDate: nextDate }}
-            previousPeriod={{ fromDate: prevDate, toDate: date }}
+            currentPeriod={{ dateFrom: date, dateTo: nextDate }}
+            previousPeriod={{ dateFrom: prevDate, dateTo: date }}
           />
-          <MoodFrequencyForPeriod fromDate={date} toDate={nextDate} />
+          <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
         </>
       ) : (
         <Paper>
@@ -148,18 +148,18 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </Paper>
       )}
       <WeatherForPeriod
-        fromDate={date}
-        toDate={nextDate}
+        dateFrom={date}
+        dateTo={nextDate}
         xLabels={xLabels}
         xLines={xLines}
       />
       <WeightChartForPeriod
-        fromDate={date}
-        toDate={nextDate}
+        dateFrom={date}
+        dateTo={nextDate}
         xLabels={xLabels}
         xLines={xLines}
       />
-      <LocationsForPeriod fromDate={date} toDate={nextDate} />
+      <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
     </Paper.Group>
   );
 }
