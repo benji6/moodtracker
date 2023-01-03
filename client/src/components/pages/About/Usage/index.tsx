@@ -1,10 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Paper, Spinner } from "eri";
 import { usageGet } from "../../../../api";
-import { REPO_ISSUES_URL } from "../../../../constants";
+import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
 import formatDurationFromSeconds from "../../../../formatters/formatDurationFromSeconds";
-import { percentFormatter } from "../../../../formatters/numberFormatters";
+import {
+  integerFormatter,
+  percentFormatter,
+} from "../../../../formatters/numberFormatters";
 import { Usage } from "../../../../types";
+import ColumnChart from "../../../shared/ColumnChart";
 import MoodCell from "../../../shared/MoodCell";
 import UsageTable from "./UsageTable";
 
@@ -63,7 +67,7 @@ export default function Usage() {
               ["Confirmed users", data.confirmedUsers],
               [
                 "New confirmed users over the last 30 days",
-                data.newUsersInLast30Days,
+                data.last30Days.newUsers,
               ],
             ]}
           />
@@ -108,11 +112,11 @@ export default function Usage() {
               [
                 "Average mood for all users over the last 30 days",
                 // eslint-disable-next-line react/jsx-key
-                <MoodCell mood={data.meanMoodInLast30Days} />,
+                <MoodCell mood={data.last30Days.meanMood} />,
               ],
               [
                 "Total time meditated by all users over the last 30 days",
-                formatDurationFromSeconds(data.meditationSecondsInLast30Days),
+                formatDurationFromSeconds(data.last30Days.meditationSeconds),
               ],
               [
                 "Active users who have logged a meditation over the last 30 days",
@@ -128,9 +132,27 @@ export default function Usage() {
               ],
               [
                 "Total events recorded over the last 30 days",
-                data.eventsInLast30Days,
+                data.last30Days.count,
               ],
             ]}
+          />
+          <h3>Events by weekday</h3>
+          <p>Based on the last 28 days.</p>
+          <ColumnChart
+            data={Object.entries(data.last28Days.eventCountByWeekday).map(
+              ([k, y]) => {
+                const label = WEEKDAY_LABELS_SHORT[Number(k)];
+                return {
+                  y,
+                  label,
+                  key: k,
+                  title: `${label}: ${integerFormatter.format(y)}`,
+                };
+              }
+            )}
+            rotateXLabels
+            xAxisTitle="Weekday"
+            yAxisTitle="Total events"
           />
           <h3>Settings</h3>
           <UsageTable

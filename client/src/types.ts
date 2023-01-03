@@ -94,7 +94,23 @@ export interface Usage {
   confirmedUsers: number;
   CRR: number;
   DAUs: number;
-  eventsInLast30Days: number;
+  last28Days: {
+    eventCountByWeekday: {
+      0: number;
+      1: number;
+      2: number;
+      3: number;
+      4: number;
+      5: number;
+      6: number;
+    };
+  };
+  last30Days: {
+    count: number;
+    meanMood: number;
+    meditationSeconds: number;
+    newUsers: number;
+  };
   locationMAUs: number;
   MAUFunnel: {
     "<7 days": number;
@@ -105,11 +121,8 @@ export interface Usage {
     ">=365 days": number;
   };
   MAUs: number;
-  meanMoodInLast30Days: number;
   meanMoodInLast7Days: number;
   meditationMAUs: number;
-  meditationSecondsInLast30Days: number;
-  newUsersInLast30Days: number;
   usersWithWeeklyEmails: number;
   WAUs: number;
   weightMAUs: number;

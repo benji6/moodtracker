@@ -1,6 +1,7 @@
 import email
 import json
 import statistics
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
 import boto3
@@ -23,6 +24,7 @@ def handler(event, context):
     now = datetime.now(timezone.utc)
     days_ago_1 = now - timedelta(1)
     days_ago_7 = now - timedelta(7)
+    days_ago_28 = now - timedelta(28)
     days_ago_30 = now - timedelta(30)
     days_ago_60 = now - timedelta(60)
     days_ago_90 = now - timedelta(90)
@@ -103,6 +105,7 @@ def handler(event, context):
         u for u in users if u["Enabled"] and u["UserStatus"] == "CONFIRMED"
     ]
     users_by_id = {u["Username"]: u for u in users}
+    event_count_by_weekday = defaultdict(int)
     events_in_last_30_days = 0
     location_MAU_ids = set()
     meditation_MAU_ids = set()
@@ -118,6 +121,9 @@ def handler(event, context):
         if event["createdAt"] > days_ago_30:
             events_in_last_30_days += 1
             user_ids_in_current_30_day_window.add(event["userId"])
+
+            if event["createdAt"] > days_ago_28:
+                event_count_by_weekday[event["createdAt"].weekday()] += 1
 
             if "location" in event["payload"]:
                 location_MAU_ids.add(event["userId"])
@@ -177,11 +183,24 @@ def handler(event, context):
         "body": json.dumps(
             {
                 "confirmedUsers": len(confirmed_users),
-                "eventsInLast30Days": events_in_last_30_days,
+                "last28Days": {
+                    "eventCountByWeekday": event_count_by_weekday,
+                },
+                "last30Days": {
+                    "eventCount": events_in_last_30_days,
+                    "meanMood": round(
+                        float(statistics.mean([v["mood"] for v in moods.values()])), 1
+                    ),
+                    "meditationSeconds": meditation_seconds,
+                    "newUsers": len(
+                        [
+                            u
+                            for u in confirmed_users
+                            if u["UserCreateDate"] > days_ago_30
+                        ]
+                    ),
+                },
                 "locationMAUs": len(location_MAU_ids),
-                "meanMoodInLast30Days": round(
-                    float(statistics.mean([v["mood"] for v in moods.values()])), 1
-                ),
                 "meanMoodInLast7Days": round(
                     float(
                         statistics.mean(
@@ -191,10 +210,6 @@ def handler(event, context):
                     1,
                 ),
                 "meditationMAUs": len(meditation_MAU_ids),
-                "meditationSecondsInLast30Days": meditation_seconds,
-                "newUsersInLast30Days": len(
-                    [u for u in confirmed_users if u["UserCreateDate"] > days_ago_30]
-                ),
                 "usersWithWeeklyEmails": weekly_emails_table.item_count,
                 "weightMAUs": len(weight_MAU_ids),
                 "CRR": round(

@@ -5,13 +5,13 @@ import "./style.css";
 
 interface ColumnWithdata {
   y: number;
-  color: string;
+  color?: string;
   label: ReactNode;
   key: Key;
   title?: string;
 }
 
-type ColumnWithoutData = Optional<ColumnWithdata, "y" | "color">;
+type ColumnWithoutData = Optional<ColumnWithdata, "y">;
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   data: (ColumnWithoutData | ColumnWithdata)[];
@@ -74,7 +74,7 @@ export default function ColumnChart({
         ))}
       </div>
       <div className="column-chart__x-label" />
-      {data.map(({ key, y, title, label, color }, i) => {
+      {data.map(({ color, key, label, title, y }, i) => {
         return (
           <Fragment key={key}>
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions*/}
@@ -86,7 +86,7 @@ export default function ColumnChart({
               title={title}
               style={
                 {
-                  color: color ?? "transparent",
+                  color: color ?? "var(--color-theme)",
                   "--column-height":
                     y === undefined ? 0 : `${(100 * y) / range[1]}%`,
                   "--column-number": i,
