@@ -136,24 +136,28 @@ export default function Usage() {
               ],
             ]}
           />
-          <h3>Events by weekday</h3>
-          <p>Based on the last 28 days.</p>
-          <ColumnChart
-            data={Object.entries(data.last28Days.eventCountByWeekday).map(
-              ([k, y]) => {
-                const label = WEEKDAY_LABELS_SHORT[Number(k)];
-                return {
-                  y,
-                  label,
-                  key: k,
-                  title: `${label}: ${integerFormatter.format(y)}`,
-                };
-              }
-            )}
-            rotateXLabels
-            xAxisTitle="Weekday"
-            yAxisTitle="Total events"
-          />
+          {data?.last28Days?.eventCountByWeekday && (
+            <>
+              <h3>Events by weekday</h3>
+              <p>Based on the last 28 days.</p>
+              <ColumnChart
+                data={Object.entries(data.last28Days.eventCountByWeekday).map(
+                  ([k, y]) => {
+                    const label = WEEKDAY_LABELS_SHORT[Number(k)];
+                    return {
+                      y,
+                      label,
+                      key: k,
+                      title: `${label}: ${integerFormatter.format(y)}`,
+                    };
+                  }
+                )}
+                rotateXLabels
+                xAxisTitle="Weekday"
+                yAxisTitle="Total events"
+              />
+            </>
+          )}
           <h3>Settings</h3>
           <UsageTable
             data={[
