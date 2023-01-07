@@ -38,7 +38,7 @@ export default function TemperatureForPeriod({
       celcius,
     ]);
   }
-  if (!chartData.length) return null;
+  if (chartData.length < 2) return null;
 
   const range = createChartRange(temperatures);
   const yLabels: [number, string][] = [...Array(11).keys()].map((n) => {
