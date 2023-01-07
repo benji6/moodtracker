@@ -106,7 +106,7 @@ export interface Usage {
     };
   };
   last30Days: {
-    count: number;
+    eventCount: number;
     meanMood: number;
     meditationSeconds: number;
     newUsers: number;

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import { Paper, Spinner } from "eri";
+import { Paper, Spinner, SubHeading } from "eri";
 import { usageGet } from "../../../../api";
 import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
 import formatDurationFromSeconds from "../../../../formatters/formatDurationFromSeconds";
@@ -68,25 +68,26 @@ export default function Usage() {
             In the below statistics, active users are defined as users who have
             tracked at least one thing over the last 30 days.
           </p>
-          <h3>Active users</h3>
-          <p>
-            Confirmed users are users who have confirmed their email address.
-          </p>
-          <UsageTable
-            data={[
-              ["Users over the last 24 hours", data.usage.DAUs],
-              ["Users over the last 7 days", data.usage.WAUs],
-              ["Users over the last 30 days (active users)", data.usage.MAUs],
-              ["Confirmed users", data.usage.confirmedUsers],
+          <h3>Users by period last active</h3>
+          <ColumnChart
+            data={(
               [
-                "New confirmed users over the last 30 days",
-                data.usage.last30Days.newUsers,
-              ],
-              [
-                "Retention of users since a month ago",
-                percentFormatter.format(data.usage.CRR),
-              ],
-            ]}
+                { key: "DAUs", label: "Within last 24 hours" },
+                { key: "WAUs", label: "Within last 7 days" },
+                {
+                  key: "MAUs",
+                  label: "Within last 30 days",
+                },
+              ] as const
+            ).map(({ key, label }) => ({
+              label,
+              key,
+              y: data.usage[key],
+              title: `${data.usage[key]} user${data.usage[key] > 1 ? "s" : ""}`,
+            }))}
+            rotateXLabels
+            xAxisTitle="Last active"
+            yAxisTitle="User count"
           />
           <h3>Active users by join date</h3>
           <ColumnChart
@@ -100,7 +101,31 @@ export default function Usage() {
             xAxisTitle="Join date"
             yAxisTitle="Active user count"
           />
-          <h3>General usage</h3>
+          {data?.usage?.last28Days?.eventCountByWeekday && (
+            <>
+              <h3>
+                Events by weekday
+                <SubHeading>Based on the last 28 days</SubHeading>
+              </h3>
+              <ColumnChart
+                data={Object.entries(
+                  data.usage.last28Days.eventCountByWeekday
+                ).map(([k, y]) => {
+                  const label = WEEKDAY_LABELS_SHORT[Number(k)];
+                  return {
+                    y,
+                    label,
+                    key: k,
+                    title: `${label}: ${integerFormatter.format(y)}`,
+                  };
+                })}
+                rotateXLabels
+                xAxisTitle="Weekday"
+                yAxisTitle="Total events"
+              />
+            </>
+          )}
+          <h3>Miscellaneous usage stats</h3>
           <UsageTable
             data={[
               [
@@ -120,6 +145,31 @@ export default function Usage() {
                 ),
               ],
               [
+                "Total events recorded over the last 30 days",
+                data.usage.last30Days.eventCount,
+              ],
+            ]}
+          />
+          <h3>Miscellaneous user stats</h3>
+          <p>
+            Confirmed users are users who have confirmed their email address.
+          </p>
+          <UsageTable
+            data={[
+              [
+                "New confirmed users over the last 30 days",
+                data.usage.last30Days.newUsers,
+              ],
+              [
+                "Retention of users since a month ago",
+                percentFormatter.format(data.usage.CRR),
+              ],
+              [
+                "Users who are signed up to weekly emails",
+                data.usage.usersWithWeeklyEmails,
+              ],
+              ["Total confirmed users", data.usage.confirmedUsers],
+              [
                 "Active users who have logged a meditation over the last 30 days",
                 formatAsPercentageOfMaus(data.usage.meditationMAUs),
               ],
@@ -130,41 +180,6 @@ export default function Usage() {
               [
                 "Active users who have logged their location over the last 30 days",
                 formatAsPercentageOfMaus(data.usage.locationMAUs),
-              ],
-              [
-                "Total events recorded over the last 30 days",
-                data.usage.last30Days.count,
-              ],
-            ]}
-          />
-          {data?.usage?.last28Days?.eventCountByWeekday && (
-            <>
-              <h3>Events by weekday</h3>
-              <p>Based on the last 28 days.</p>
-              <ColumnChart
-                data={Object.entries(
-                  data.usage.last28Days.eventCountByWeekday
-                ).map(([k, y]) => {
-                  const label = WEEKDAY_LABELS_SHORT[Number(k)];
-                  return {
-                    y,
-                    label,
-                    key: k,
-                    title: `${label}: ${integerFormatter.format(y)}`,
-                  };
-                })}
-                rotateXLabels
-                xAxisTitle="Weekday"
-                yAxisTitle="Total events"
-              />
-            </>
-          )}
-          <h3>Settings</h3>
-          <UsageTable
-            data={[
-              [
-                "Users who are signed up to weekly emails",
-                data.usage.usersWithWeeklyEmails,
               ],
             ]}
           />
