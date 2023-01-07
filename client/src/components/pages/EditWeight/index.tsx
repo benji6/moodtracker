@@ -10,6 +10,7 @@ import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import Location from "../../shared/Location";
 import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 export default function EditWeight() {
   const navigate = useNavigate();
@@ -61,19 +62,23 @@ export default function EditWeight() {
   if (!weight) return <RedirectHome />;
 
   const createdDate = new Date(id);
+  const updatedDate = weight.updatedAt ? new Date(weight.updatedAt) : undefined;
 
   return (
     <Paper.Group>
       <Paper>
         <h2>Edit weight</h2>
         <p>
-          <small>Created: {dateTimeFormatter.format(createdDate)}</small>
-          {weight.updatedAt && (
+          <small>
+            Created: {dateTimeFormatter.format(createdDate)} (
+            {formatDistanceToNow(createdDate)} ago)
+          </small>
+          {updatedDate && (
             <>
               <br />
               <small>
-                Last updated:{" "}
-                {dateTimeFormatter.format(new Date(weight.updatedAt))}
+                Last updated: {dateTimeFormatter.format(updatedDate)} (
+                {formatDistanceToNow(updatedDate)} ago)
               </small>
             </>
           )}

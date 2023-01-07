@@ -11,6 +11,7 @@ import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import Location from "../../shared/Location";
 import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 export default function EditMood() {
   const navigate = useNavigate();
@@ -76,19 +77,23 @@ export default function EditMood() {
   if (!mood) return <RedirectHome />;
 
   const createdDate = new Date(id);
+  const updatedDate = mood.updatedAt ? new Date(mood.updatedAt) : undefined;
 
   return (
     <Paper.Group>
       <Paper>
         <h2>Edit mood</h2>
         <p>
-          <small>Created: {dateTimeFormatter.format(createdDate)}</small>
-          {mood.updatedAt && (
+          <small>
+            Created: {dateTimeFormatter.format(createdDate)} (
+            {formatDistanceToNow(createdDate)} ago)
+          </small>
+          {updatedDate && (
             <>
               <br />
               <small>
-                Last updated:{" "}
-                {dateTimeFormatter.format(new Date(mood.updatedAt))}
+                Last updated: {dateTimeFormatter.format(updatedDate)} (
+                {formatDistanceToNow(updatedDate)} ago)
               </small>
             </>
           )}
