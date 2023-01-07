@@ -57,7 +57,7 @@ export default function ColumnChart({
         ))}
       </div>
       <div className="column-chart__y-title fade-in nowrap">{yTitle}</div>
-      <div className="column-chart__x-title fade-in">{xTitle}</div>
+      <div className="column-chart__x-title fade-in nowrap">{xTitle}</div>
       <div className="column-chart__x-label" />
       <div
         className="column-chart__y-axis"
