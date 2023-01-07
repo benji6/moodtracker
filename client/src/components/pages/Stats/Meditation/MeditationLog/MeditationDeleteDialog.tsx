@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import eventsSlice from "../../../../../store/eventsSlice";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 import { captureException } from "../../../../../sentry";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 interface Props {
   id: string | undefined;
@@ -15,7 +16,12 @@ export default function MeditationDeleteDialog({ id, onClose, open }: Props) {
 
   return (
     <Dialog onClose={onClose} open={open} title="Delete log?">
-      {id && <p>{dateTimeFormatter.format(new Date(id))}</p>}
+      {id && (
+        <p>
+          {dateTimeFormatter.format(new Date(id))} (
+          {formatDistanceToNow(new Date(id))} ago)
+        </p>
+      )}
       <Button.Group>
         <Button
           danger
