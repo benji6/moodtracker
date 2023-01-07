@@ -23,6 +23,15 @@ export default function Usage() {
       ? percentFormatter.format(data.usage.MAUs ? n / data.usage.MAUs : 0)
       : "";
 
+  const usersByJoinDateColumnChartData = [
+    { label: "Less than 7 days ago", key: "<7 days" },
+    { label: "Between 7 and 30 days ago", key: ">=7 & <30 days" },
+    { label: "Between 30 and 60 days ago", key: ">=30 & <60 days" },
+    { label: "Between 60 and 90 days ago", key: ">=60 & <90 days" },
+    { label: "Between 90 and 365 days ago", key: ">=90 & <365 days" },
+    { label: "More than a year ago", key: ">=365 days" },
+  ] as const;
+
   return (
     <Paper>
       <h2>Usage</h2>
@@ -73,40 +82,23 @@ export default function Usage() {
                 "New confirmed users over the last 30 days",
                 data.usage.last30Days.newUsers,
               ],
-            ]}
-          />
-          <h3>Retention</h3>
-          <UsageTable
-            data={[
-              [
-                "Active users who joined less than 30 days ago",
-                formatAsPercentageOfMaus(
-                  data.usage.MAUFunnel["<7 days"] +
-                    data.usage.MAUFunnel[">=7 & <30 days"]
-                ),
-              ],
-              [
-                "Active users who joined between 30 and 90 days ago",
-                formatAsPercentageOfMaus(
-                  data.usage.MAUFunnel[">=30 & <60 days"] +
-                    data.usage.MAUFunnel[">=60 & <90 days"]
-                ),
-              ],
-              [
-                "Active users who joined between 90 and 365 days ago",
-                formatAsPercentageOfMaus(
-                  data.usage.MAUFunnel[">=90 & <365 days"]
-                ),
-              ],
-              [
-                "Active users who joined over a year ago",
-                formatAsPercentageOfMaus(data.usage.MAUFunnel[">=365 days"]),
-              ],
               [
                 "Retention of users since a month ago",
                 percentFormatter.format(data.usage.CRR),
               ],
             ]}
+          />
+          <h3>Active users by join date</h3>
+          <ColumnChart
+            data={usersByJoinDateColumnChartData.map(({ key, label }) => ({
+              label,
+              key,
+              y: data.usage.MAUFunnel[key],
+              title: formatAsPercentageOfMaus(data.usage.MAUFunnel[key]),
+            }))}
+            rotateXLabels
+            xAxisTitle="Join date"
+            yAxisTitle="Active user count"
           />
           <h3>General usage</h3>
           <UsageTable
