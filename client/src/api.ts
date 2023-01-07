@@ -119,8 +119,12 @@ export const weeklyEmailsEnable = async (): Promise<void> => {
   if (!response.ok) throw Error(String(response.status));
 };
 
-export const usageGet = async (): Promise<Usage> => {
+export const usageGet = async (): Promise<{ expires: Date; usage: Usage }> => {
   const response = await fetchWithRetry(USAGE_URI);
   if (!response.ok) throw Error(String(response.status));
-  return response.json();
+  const usage = await response.json();
+  return {
+    expires: new Date(response.headers.get("expires")!),
+    usage,
+  };
 };

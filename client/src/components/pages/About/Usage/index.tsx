@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { Paper, Spinner } from "eri";
 import { usageGet } from "../../../../api";
 import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
@@ -18,7 +19,9 @@ export default function Usage() {
   });
 
   const formatAsPercentageOfMaus = (n: number): string =>
-    data ? percentFormatter.format(data.MAUs ? n / data.MAUs : 0) : "";
+    data
+      ? percentFormatter.format(data.usage.MAUs ? n / data.usage.MAUs : 0)
+      : "";
 
   return (
     <Paper>
@@ -49,7 +52,8 @@ export default function Usage() {
           <p>
             In case you were interested in how other people are using
             MoodTracker you can see some anonymized usage data here. This gets
-            automatically updated every day or so.
+            automatically updated every day or so and was last updated{" "}
+            {formatDistanceToNow(data.expires)} ago.
           </p>
           <p>
             In the below statistics, active users are defined as users who have
@@ -61,13 +65,13 @@ export default function Usage() {
           </p>
           <UsageTable
             data={[
-              ["Users over the last 24 hours", data.DAUs],
-              ["Users over the last 7 days", data.WAUs],
-              ["Users over the last 30 days (active users)", data.MAUs],
-              ["Confirmed users", data.confirmedUsers],
+              ["Users over the last 24 hours", data.usage.DAUs],
+              ["Users over the last 7 days", data.usage.WAUs],
+              ["Users over the last 30 days (active users)", data.usage.MAUs],
+              ["Confirmed users", data.usage.confirmedUsers],
               [
                 "New confirmed users over the last 30 days",
-                data.last30Days.newUsers,
+                data.usage.last30Days.newUsers,
               ],
             ]}
           />
@@ -77,27 +81,30 @@ export default function Usage() {
               [
                 "Active users who joined less than 30 days ago",
                 formatAsPercentageOfMaus(
-                  data.MAUFunnel["<7 days"] + data.MAUFunnel[">=7 & <30 days"]
+                  data.usage.MAUFunnel["<7 days"] +
+                    data.usage.MAUFunnel[">=7 & <30 days"]
                 ),
               ],
               [
                 "Active users who joined between 30 and 90 days ago",
                 formatAsPercentageOfMaus(
-                  data.MAUFunnel[">=30 & <60 days"] +
-                    data.MAUFunnel[">=60 & <90 days"]
+                  data.usage.MAUFunnel[">=30 & <60 days"] +
+                    data.usage.MAUFunnel[">=60 & <90 days"]
                 ),
               ],
               [
                 "Active users who joined between 90 and 365 days ago",
-                formatAsPercentageOfMaus(data.MAUFunnel[">=90 & <365 days"]),
+                formatAsPercentageOfMaus(
+                  data.usage.MAUFunnel[">=90 & <365 days"]
+                ),
               ],
               [
                 "Active users who joined over a year ago",
-                formatAsPercentageOfMaus(data.MAUFunnel[">=365 days"]),
+                formatAsPercentageOfMaus(data.usage.MAUFunnel[">=365 days"]),
               ],
               [
                 "Retention of users since a month ago",
-                percentFormatter.format(data.CRR),
+                percentFormatter.format(data.usage.CRR),
               ],
             ]}
           />
@@ -107,51 +114,53 @@ export default function Usage() {
               [
                 "Average mood for all users over the last 7 days",
                 // eslint-disable-next-line react/jsx-key
-                <MoodCell mood={data.meanMoodInLast7Days} />,
+                <MoodCell mood={data.usage.meanMoodInLast7Days} />,
               ],
               [
                 "Average mood for all users over the last 30 days",
                 // eslint-disable-next-line react/jsx-key
-                <MoodCell mood={data.last30Days.meanMood} />,
+                <MoodCell mood={data.usage.last30Days.meanMood} />,
               ],
               [
                 "Total time meditated by all users over the last 30 days",
-                formatDurationFromSeconds(data.last30Days.meditationSeconds),
+                formatDurationFromSeconds(
+                  data.usage.last30Days.meditationSeconds
+                ),
               ],
               [
                 "Active users who have logged a meditation over the last 30 days",
-                formatAsPercentageOfMaus(data.meditationMAUs),
+                formatAsPercentageOfMaus(data.usage.meditationMAUs),
               ],
               [
                 "Active users who have logged a weight over the last 30 days",
-                formatAsPercentageOfMaus(data.weightMAUs),
+                formatAsPercentageOfMaus(data.usage.weightMAUs),
               ],
               [
                 "Active users who have logged their location over the last 30 days",
-                formatAsPercentageOfMaus(data.locationMAUs),
+                formatAsPercentageOfMaus(data.usage.locationMAUs),
               ],
               [
                 "Total events recorded over the last 30 days",
-                data.last30Days.count,
+                data.usage.last30Days.count,
               ],
             ]}
           />
-          {data?.last28Days?.eventCountByWeekday && (
+          {data?.usage?.last28Days?.eventCountByWeekday && (
             <>
               <h3>Events by weekday</h3>
               <p>Based on the last 28 days.</p>
               <ColumnChart
-                data={Object.entries(data.last28Days.eventCountByWeekday).map(
-                  ([k, y]) => {
-                    const label = WEEKDAY_LABELS_SHORT[Number(k)];
-                    return {
-                      y,
-                      label,
-                      key: k,
-                      title: `${label}: ${integerFormatter.format(y)}`,
-                    };
-                  }
-                )}
+                data={Object.entries(
+                  data.usage.last28Days.eventCountByWeekday
+                ).map(([k, y]) => {
+                  const label = WEEKDAY_LABELS_SHORT[Number(k)];
+                  return {
+                    y,
+                    label,
+                    key: k,
+                    title: `${label}: ${integerFormatter.format(y)}`,
+                  };
+                })}
                 rotateXLabels
                 xAxisTitle="Weekday"
                 yAxisTitle="Total events"
@@ -163,7 +172,7 @@ export default function Usage() {
             data={[
               [
                 "Users who are signed up to weekly emails",
-                data.usersWithWeeklyEmails,
+                data.usage.usersWithWeeklyEmails,
               ],
             ]}
           />
