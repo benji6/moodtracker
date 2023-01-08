@@ -108,14 +108,15 @@ export default function Usage() {
           {data?.usage?.last28Days?.eventCountByWeekday && (
             <>
               <h3>
-                Events by weekday
+                Average number of events by weekday
                 <SubHeading>Based on the last 28 days</SubHeading>
               </h3>
               <ColumnChart
                 data={Object.entries(
                   data.usage.last28Days.eventCountByWeekday
-                ).map(([k, y]) => {
+                ).map(([k, count]) => {
                   const label = WEEKDAY_LABELS_SHORT[Number(k)];
+                  const y = Math.round(count / 4);
                   return {
                     y,
                     label,
