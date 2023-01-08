@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import subDays from "date-fns/subDays";
 import { Paper, Spinner, SubHeading } from "eri";
 import { usageGet } from "../../../../api";
 import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
@@ -65,7 +66,7 @@ export default function Usage() {
             In case you were interested in how other people are using
             MoodTracker you can see some anonymized usage data here. This gets
             automatically updated every day or so and was last updated{" "}
-            {formatDistanceToNow(data.expires)} ago.
+            {formatDistanceToNow(subDays(data.expires, 1))} ago.
           </p>
           <p>
             In the below statistics, active users are defined as users who have
