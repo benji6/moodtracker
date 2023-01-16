@@ -26,5 +26,9 @@ export default createSlice({
       ...action.payload,
       loading: false,
     }),
+    setEmail: (state, action: PayloadAction<string>): UserState => ({
+      ...state,
+      email: action.payload,
+    }),
   },
 });

@@ -19,6 +19,7 @@
       { "argsIgnorePattern": "^_$", "varsIgnorePattern": "^_$" }
     ],
     "jsx-a11y/accessible-emoji": 0,
+    "jsx-a11y/no-autofocus": 0,
     "no-console": 2,
     "no-constant-condition": 0,
     "no-empty": [2, { "allowEmptyCatch": true }],

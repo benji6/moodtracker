@@ -26,9 +26,7 @@ export default function ResendVerification() {
               setSubmitError(ERRORS.network);
               break;
             default:
-              setSubmitError(
-                "Something went wrong, check the data you have entered and try again"
-              );
+              setSubmitError(ERRORS.generic);
           }
         }
       }}

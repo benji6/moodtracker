@@ -30,9 +30,7 @@ export default function ChangePassword() {
                     setSubmitError(ERRORS.network);
                     break;
                   default:
-                    setSubmitError(
-                      "Something went wrong, check the data you have entered and try again"
-                    );
+                    setSubmitError(ERRORS.generic);
                 }
                 return reject(JSON.stringify(e));
               }
@@ -48,9 +46,7 @@ export default function ChangePassword() {
               setSubmitError("Current password is incorrect, please try again");
               break;
             default:
-              setSubmitError(
-                "Something went wrong, check the data you have entered and try again"
-              );
+              setSubmitError(ERRORS.generic);
           }
           throw Error(JSON.stringify(e));
         }

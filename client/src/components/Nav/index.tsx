@@ -165,6 +165,10 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <Icon margin="end" name="location" />
                   Location
                 </EriNav.Link>
+                <EriNav.Link onClick={handleNavClose} to="/settings/export">
+                  <Icon margin="end" name="download" />
+                  Export data
+                </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to="/settings/change-password"
@@ -172,9 +176,12 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <Icon margin="end" name="lock" />
                   Change password
                 </EriNav.Link>
-                <EriNav.Link onClick={handleNavClose} to="/settings/export">
-                  <Icon margin="end" name="download" />
-                  Export data
+                <EriNav.Link
+                  onClick={handleNavClose}
+                  to="/settings/change-email"
+                >
+                  <Icon margin="end" name="at-sign" />
+                  Change email
                 </EriNav.Link>
               </EriNav.SubList>
             </>

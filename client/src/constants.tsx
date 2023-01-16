@@ -23,9 +23,11 @@ export const MOODTRACKER_DESCRIPTION =
   "MoodTracker is a free and open source web app app that aims to help you understand yourself better. Track your emotional landscape, keep a mood journal, time your meditations, keep a meditation log and gain new insights into yourself. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!";
 
 export const ERRORS = {
+  generic:
+    "Something went wrong, check the data you have entered and try again",
   integer: "Please type a valid whole number",
   network:
-    "Something went wrong. This feature requires an internet connection, please check your connection and try again. If the problem persists it may be an issue on our side",
+    "Something went wrong. This feature requires an internet connection, please check your connection and try again. If the problem persists it may be an issue on our side.",
   noChanges: "No changes have been made, please make an update then try again",
   server: (
     <>

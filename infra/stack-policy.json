@@ -4,18 +4,11 @@
       "Action": ["Update:*"],
       "Condition": {
         "StringEquals": {
-          "ResourceType": ["AWS::Lambda::Function", "AWS::Lambda::Permission"]
-        }
-      },
-      "Effect": "Allow",
-      "Principal": "*",
-      "Resource": "*"
-    },
-    {
-      "Action": ["Update:Delete", "Update:Modify"],
-      "Condition": {
-        "StringEquals": {
-          "ResourceType": ["AWS::ApiGateway::Method"]
+          "ResourceType": [
+            "AWS::ApiGateway::Method",
+            "AWS::Lambda::Function",
+            "AWS::Lambda::Permission"
+          ]
         }
       },
       "Effect": "Allow",
@@ -27,7 +20,11 @@
       "Condition": {
         "StringEquals": {
           "ResourceType": [
+            "AWS::ApiGateway::Authorizer",
             "AWS::ApiGateway::Deployment",
+            "AWS::Cognito::UserPool",
+            "AWS::Cognito::UserPoolClient",
+            "AWS::Cognito::UserPoolDomain",
             "AWS::Events::Rule",
             "AWS::IAM::Role",
             "AWS::SNS::Topic"

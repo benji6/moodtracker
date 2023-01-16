@@ -48,9 +48,7 @@ export default function SignUp() {
               setSubmitError("Username already exists, try signing in instead");
               break;
             default:
-              setSubmitError(
-                "Something went wrong, check the data you have entered and try again"
-              );
+              setSubmitError(ERRORS.generic);
           }
         }
       }}

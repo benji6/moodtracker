@@ -45,9 +45,7 @@ export default function SignIn() {
             case "NotAuthorizedException":
               return setSubmitError("Incorrect email/password");
             default:
-              setSubmitError(
-                "Something went wrong, check the data you have entered and try again"
-              );
+              setSubmitError(ERRORS.generic);
           }
         }
       }}

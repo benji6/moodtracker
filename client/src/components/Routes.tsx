@@ -34,6 +34,8 @@ import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
 import AddWeight from "./pages/AddWeight";
 import Weight from "./pages/Stats/Weight";
 import EditWeight from "./pages/EditWeight";
+import ChangeEmail from "./pages/Settings/ChangeEmail";
+import VerifyNewEmail from "./pages/Settings/VerifyNewEmail";
 
 export default function Routes() {
   return (
@@ -100,6 +102,21 @@ export default function Routes() {
         </Route>
 
         <Route path="settings">
+          <Route
+            element={
+              <AuthedOnlyPage Component={ChangeEmail} title="Change email" />
+            }
+            path="change-email"
+          />
+          <Route
+            element={
+              <AuthedOnlyPage
+                Component={VerifyNewEmail}
+                title="Verify new email address"
+              />
+            }
+            path="verify-new-email"
+          />
           <Route
             element={
               <AuthedOnlyPage

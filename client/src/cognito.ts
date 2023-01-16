@@ -2,6 +2,7 @@ import {
   AuthenticationDetails,
   CognitoIdToken,
   CognitoUser,
+  CognitoUserAttribute,
   CognitoUserPool,
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
@@ -24,6 +25,39 @@ const authenticateUser = ({
       onSuccess: resolve,
     });
   });
+
+const getCurrentUser = (): CognitoUser => {
+  const currentUser = userPool.getCurrentUser();
+  if (currentUser) return currentUser;
+  throw Error("No current user");
+};
+
+const getSession = (user: CognitoUser): Promise<CognitoUserSession> =>
+  new Promise((resolve, reject) => {
+    user.getSession((error: Error | null, session: CognitoUserSession) => {
+      if (error) return reject(error);
+      resolve(session);
+    });
+  });
+
+export const changeEmail = async (newEmailAddress: string): Promise<void> => {
+  const currentUser = getCurrentUser();
+  await getSession(currentUser);
+  return new Promise((resolve, reject) => {
+    currentUser.updateAttributes(
+      [
+        new CognitoUserAttribute({
+          Name: "email",
+          Value: newEmailAddress,
+        }),
+      ],
+      (error) => {
+        if (error) return reject(error);
+        resolve();
+      }
+    );
+  });
+};
 
 export const createAuthenticatedUserAndSession = async (
   email: string,
@@ -49,16 +83,40 @@ export const createCognitoUser = (email: string): CognitoUser =>
 
 export const getIdToken = (): Promise<CognitoIdToken> =>
   new Promise((resolve, reject) => {
-    const currentUser = userPool.getCurrentUser();
-    if (!currentUser) return reject(Error("No current user"));
-    currentUser.getSession(
-      (err: Error | void, session: CognitoUserSession | null) => {
-        if (!err) return resolve(session!.getIdToken());
-        if (err.message === "User does not exist.") {
+    const currentUser = getCurrentUser();
+    getSession(currentUser).then(
+      (session) => resolve(session.getIdToken()),
+      (error) => {
+        if (error.message === "User does not exist.") {
           currentUser.signOut();
           return reject(Error("No current user"));
         }
-        reject(err);
+        reject(error);
       }
     );
   });
+
+export const refreshSession = async (): Promise<CognitoUserSession> => {
+  const currentUser = getCurrentUser();
+  const session = await getSession(currentUser);
+  const refreshToken = session.getRefreshToken();
+  return new Promise((resolve, reject) =>
+    currentUser.refreshSession(refreshToken, (error, session) => {
+      if (error) return reject(error);
+      resolve(session);
+    })
+  );
+};
+
+export const verifyNewEmail = async (
+  verificationCode: string
+): Promise<void> => {
+  const currentUser = getCurrentUser();
+  await getSession(currentUser);
+  return new Promise((resolve, reject) => {
+    currentUser.verifyAttribute("email", verificationCode, {
+      onSuccess: () => resolve(),
+      onFailure: reject,
+    });
+  });
+};

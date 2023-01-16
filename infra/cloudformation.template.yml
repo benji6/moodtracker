@@ -210,6 +210,9 @@ Resources:
           RequireNumbers: true
           RequireSymbols: false
           RequireUppercase: true
+      UserAttributeUpdateSettings:
+        AttributesRequireVerificationBeforeUpdate:
+          - email
       UsernameAttributes:
         - email
       UsernameConfiguration:
