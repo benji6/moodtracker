@@ -89,10 +89,10 @@ export default function WeatherForPeriod({
       </h3>
       {loadingEl}
       <WeatherFrequencyForPeriod dateFrom={dateFrom} dateTo={dateTo} />
-      {eventIdsWithLocationInPeriod.length <
+      {eventIdsWithLocationInPeriod.length >=
         MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && <>{loadingEl}</>}
       <MoodByWeatherForPeriod dateFrom={dateFrom} dateTo={dateTo} />
-      {eventIdsWithLocationInPeriod.length <
+      {eventIdsWithLocationInPeriod.length >=
         MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && <>{loadingEl}</>}
       <MoodByTemperatureForPeriod dateFrom={dateFrom} dateTo={dateTo} />
       {loadingEl}
