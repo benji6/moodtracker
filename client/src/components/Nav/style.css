@@ -17,13 +17,21 @@
 }
 
 .m-profile {
-  align-items: center;
   display: grid;
   grid-column-gap: var(--space-2);
   grid-template-columns: 2.5em 1fr;
 }
 
-.m-profile__text-container {
-  display: flex;
-  flex-direction: column;
+.m-profile > .m-icon {
+  grid-row-end: span 2;
+}
+
+.m-profile__email {
+  font-size: var(--font-size-0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m-profile__state {
+  align-self: flex-end;
 }

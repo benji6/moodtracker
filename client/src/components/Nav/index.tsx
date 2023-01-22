@@ -45,12 +45,10 @@ export default function Nav({ handleNavClose, open }: Props) {
           <div className="m-nav__header">
             <div className="m-profile">
               <MoodTrackerIcon className="br-max bs-0" />
-              <div className="m-profile__text-container">
-                <b>Signed in</b>
-                <small>
-                  <em>{userEmail}</em>
-                </small>
-              </div>
+              <b className="m-profile__state">Signed in</b>
+              <em className="m-profile__email" title={userEmail}>
+                {userEmail}
+              </em>
             </div>
             <div className="m-nav__sign-out center">
               <Button
