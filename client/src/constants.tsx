@@ -86,7 +86,7 @@ export const TEST_IDS = (() => {
     "weightValueInput",
   ] as const;
   const testIds = {} as {
-    [k in typeof keys[number]]: typeof keys[number];
+    [k in (typeof keys)[number]]: (typeof keys)[number];
   };
   for (const key of keys) testIds[key] = key;
   return testIds;

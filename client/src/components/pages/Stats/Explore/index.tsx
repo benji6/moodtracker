@@ -72,7 +72,7 @@ const DATE_RANGE_OPTIONS = [
   "All time",
   "Custom",
 ] as const;
-type DateRangeString = typeof DATE_RANGE_OPTIONS[number];
+type DateRangeString = (typeof DATE_RANGE_OPTIONS)[number];
 
 type Action =
   | FluxStandardAction<"dateFrom/set", Date>
