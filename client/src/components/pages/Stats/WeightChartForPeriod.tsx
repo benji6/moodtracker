@@ -37,7 +37,8 @@ export default function WeightChartForPeriod({
     return [y, integerFormatter.format(y)];
   });
 
-  const showManyPointsVariation = data.length >= 48;
+  const chartVariation: "small" | "medium" | "large" =
+    data.length >= 128 ? "large" : data.length >= 48 ? "medium" : "small";
 
   return (
     <Paper>
@@ -53,9 +54,9 @@ export default function WeightChartForPeriod({
         <Chart.PlotArea>
           <Chart.Line
             data={data}
-            thickness={showManyPointsVariation ? 2 : undefined}
+            thickness={chartVariation === "medium" ? 2 : undefined}
           />
-          {!showManyPointsVariation && <Chart.Points data={data} />}
+          {chartVariation === "small" && <Chart.Points data={data} />}
         </Chart.PlotArea>
         <Chart.XAxis labels={xLabels} markers={xLines ?? true} />
         <Chart.YAxis labels={yLabels} markers />
