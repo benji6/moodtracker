@@ -313,7 +313,7 @@ export const mapRight = <A, B>(xs: A[], f: (x: A) => B): B[] => {
 };
 
 const getColorNegative = interpolateHcl("#1747f0", "#00e0e0");
-const getColorPositive = interpolateHcl("#00e0e0", "#30ff20");
+const getColorPositive = interpolateHcl("#00e0e0", "#10ff00");
 const getColor = (n: number) =>
   n < 0.5 ? getColorNegative(n * 2) : getColorPositive((n - 0.5) * 2);
 

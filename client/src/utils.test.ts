@@ -934,7 +934,7 @@ describe("utils", () => {
       moodToColor(MOOD_RANGE[0] + (MOOD_RANGE[1] + MOOD_RANGE[0]) / 2)
     ).toMatchInlineSnapshot(`"rgb(0, 224, 224)"`);
     expect(moodToColor(MOOD_RANGE[1])).toMatchInlineSnapshot(
-      `"rgb(48, 255, 32)"`
+      `"rgb(16, 255, 0)"`
     );
     expect(
       moodToColor(MOOD_RANGE[0] + MOOD_EXTENT / Math.PI)

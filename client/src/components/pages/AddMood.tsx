@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
   Button,
   Paper,
@@ -15,16 +14,17 @@ import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
 import { useNavigate } from "react-router-dom";
 import LiveLocation from "../shared/LiveLocation";
+import { useRef, useState } from "react";
 
 export default function AddMood() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [moodError, setMoodError] = React.useState<string | undefined>();
-  const [descriptionError, setDescriptionError] = React.useState<
+  const [moodError, setMoodError] = useState<string | undefined>();
+  const [descriptionError, setDescriptionError] = useState<
     string | undefined
   >();
   const geolocation = useSelector(deviceGeolocationSelector);
-  const formRef = React.useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;

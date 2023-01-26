@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
 import MoodDeleteDialog from "./MoodDeleteDialog";
 import { normalizedMoodsSelector } from "../../../selectors";
@@ -12,19 +11,20 @@ import Location from "../../shared/Location";
 import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useRef, useState } from "react";
 
 export default function EditMood() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
   const moods = useSelector(normalizedMoodsSelector);
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [descriptionError, setDescriptionError] = React.useState<
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [descriptionError, setDescriptionError] = useState<
     string | undefined
   >();
-  const [showNoUpdateError, setShowNoUpdateError] = React.useState(false);
+  const [showNoUpdateError, setShowNoUpdateError] = useState(false);
 
-  const formRef = React.useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
