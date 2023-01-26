@@ -12,9 +12,12 @@ import RedirectHome from "../../RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { useRef, useState } from "react";
+import useDarkMode from "../../hooks/useDarkMode";
+import { moodToColor } from "../../../utils";
 
 export default function EditMood() {
   const navigate = useNavigate();
+  const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const { id } = useParams();
   const moods = useSelector(normalizedMoodsSelector);
@@ -109,6 +112,7 @@ export default function EditMood() {
           <RadioButton.Group label={FIELDS.mood.label}>
             {[...Array(11)].map((_, i) => (
               <RadioButton
+                color={darkMode ? moodToColor(i) : undefined}
                 // There is old data where mood is a float between 0 and 10
                 // We handle that by rounding for this input control
                 defaultChecked={Math.round(mood.mood) === i}

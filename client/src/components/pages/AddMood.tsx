@@ -14,10 +14,13 @@ import useKeyboardSave from "../hooks/useKeyboardSave";
 import { deviceGeolocationSelector } from "../../selectors";
 import { useNavigate } from "react-router-dom";
 import LiveLocation from "../shared/LiveLocation";
+import { moodToColor } from "../../utils";
 import { useRef, useState } from "react";
+import useDarkMode from "../hooks/useDarkMode";
 
 export default function AddMood() {
   const navigate = useNavigate();
+  const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = useState<string | undefined>();
   const [descriptionError, setDescriptionError] = useState<
@@ -91,6 +94,7 @@ export default function AddMood() {
           >
             {[...Array(11)].map((_, i) => (
               <RadioButton
+                color={darkMode ? moodToColor(i) : undefined}
                 data-test-id={TEST_IDS.addMoodRadioButton}
                 key={i}
                 name={FIELDS.mood.name}
