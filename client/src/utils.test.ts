@@ -355,17 +355,19 @@ describe("utils", () => {
     expect(() => createChartRange([0])).toThrowError(
       "`createChartRange` requires at least 2 values but received 1"
     );
-    expect(createChartRange([0, 0])).toEqual([-10, 10]);
-    expect(createChartRange([0, 0.1])).toEqual([0, 10]);
-    expect(createChartRange([0.1, 0.1])).toEqual([0, 10]);
+    expect(createChartRange([0, 0])).toEqual([-5, 5]);
+    expect(createChartRange([0.1, 0.1])).toEqual([-5, 5]);
+    expect(createChartRange([0.49, 0.49])).toEqual([-5, 5]);
+    expect(createChartRange([0.5, 0.5])).toEqual([-4, 6]);
+    expect(createChartRange([0, 0.1])).toEqual([-5, 5]);
     expect(createChartRange([0.1, 9.9])).toEqual([0, 10]);
-    expect(createChartRange([0, 10])).toEqual([0, 10]);
-    expect(createChartRange([0, 10.1])).toEqual([0, 20]);
-    expect(createChartRange([8, 1, 2, 10, 4, 5, 6, 9, 0, 7, 3])).toEqual([
-      0, 10,
+    expect(createChartRange([0, 10])).toEqual([-5, 15]);
+    expect(createChartRange([0, 10.1])).toEqual([-5, 15]);
+    expect(createChartRange([8, 1, 2, 9.9, 4, 5, 6, 9, 0, 7, 3])).toEqual([
+      -0, 10,
     ]);
-    expect(createChartRange([8, 1, 2, 10, 4, 5, 6, 9, -0.1, 7, 3])).toEqual([
-      -10, 10,
+    expect(createChartRange([8, 1, 2, 10, 4, 5, 6, 9, 0, 7, 3])).toEqual([
+      -5, 15,
     ]);
   });
 

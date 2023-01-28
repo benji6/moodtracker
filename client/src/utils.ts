@@ -142,15 +142,11 @@ export const createChartRange = (values: number[]): [number, number] => {
     throw Error(
       `\`createChartRange\` requires at least 2 values but received ${length}`
     );
-  const range: [number, number] = [
-    roundDownToNearest10(Math.min(...values)),
-    roundUpToNearest10(Math.max(...values)),
-  ];
-  if (range[0] === range[1]) {
-    range[0] -= 10;
-    range[1] += 10;
-  }
-  return range;
+
+  const maxValue = Math.max(...values);
+  const minValue = Math.min(...values);
+  const adjustment = (10 - ((maxValue - minValue) % 10)) / 2;
+  return [Math.round(minValue - adjustment), Math.round(maxValue + adjustment)];
 };
 
 export const createDateFromLocalDateString = (dateString: string) =>
