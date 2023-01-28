@@ -64,7 +64,7 @@ Resources:
       StageDescription:
         DataTraceEnabled: true
         LoggingLevel: ERROR
-        ThrottlingBurstLimit: 2048
+        ThrottlingBurstLimit: 4096
         ThrottlingRateLimit: 2
       StageName: prod
   ApiGatewayEventsResource:
@@ -501,7 +501,7 @@ Resources:
           OPENWEATHER_API_KEY: "{{resolve:secretsmanager:MoodTrackerSecrets:SecretString:OpenWeatherApiKey}}"
       FunctionName: MoodTrackerWeatherGet
       Handler: index.handler
-      ReservedConcurrentExecutions: 128
+      ReservedConcurrentExecutions: 512
       Role: !GetAtt LambdaWeatherGetRole.Arn
       Runtime: python3.9
       # consider timeout in python request if you change this timeout
