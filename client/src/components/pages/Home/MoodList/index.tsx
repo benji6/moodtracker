@@ -165,6 +165,7 @@ export default function MoodList() {
                     })
                   }
                   required={false}
+                  type="search"
                   value={localState.searchString}
                 />
                 <ComboBox
@@ -179,6 +180,7 @@ export default function MoodList() {
                   }
                   options={normalizedDescriptionWords}
                   required={false}
+                  type="search"
                   value={localState.filterDescription}
                 />
                 <Select
