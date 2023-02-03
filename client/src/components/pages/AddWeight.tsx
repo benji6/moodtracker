@@ -19,7 +19,7 @@ export default function AddWeight() {
   const handleSubmit = () => {
     const formEl = formRef.current!;
     const inputEl: HTMLInputElement = formEl[FIELDS.weight.name];
-    const { value } = inputEl;
+    const { valueAsNumber } = inputEl;
 
     if (inputEl.validity.valueMissing) {
       setError(ERRORS.required);
@@ -34,7 +34,7 @@ export default function AddWeight() {
       return;
     }
 
-    const payload: Weight = { value: Number(value) };
+    const payload: Weight = { value: valueAsNumber };
     if (geolocation) payload.location = geolocation;
 
     dispatch(

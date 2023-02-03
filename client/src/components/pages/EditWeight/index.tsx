@@ -26,7 +26,7 @@ export default function EditWeight() {
   const handleSubmit = () => {
     const formEl = formRef.current!;
     const inputEl: HTMLInputElement = formEl[FIELDS.weight.name];
-    const { value } = inputEl;
+    const { valueAsNumber } = inputEl;
 
     if (inputEl.validity.valueMissing) {
       setError(ERRORS.required);
@@ -41,16 +41,14 @@ export default function EditWeight() {
       return;
     }
 
-    const valueNumber = Number(value);
-
-    if (valueNumber === weight.value) return setShowNoUpdateError(true);
+    if (valueAsNumber === weight.value) return setShowNoUpdateError(true);
 
     dispatch(
       eventsSlice.actions.add({
         type: "v1/weights/update",
         createdAt: new Date().toISOString(),
         // The user is redirected if `id` is not defined
-        payload: { id: id!, value: valueNumber },
+        payload: { id: id!, value: valueAsNumber },
       })
     );
     navigate("/weight/stats");

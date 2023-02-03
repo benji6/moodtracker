@@ -32,7 +32,8 @@ export default function DateRangeSelector({
         max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
         min={formatIsoDateInLocalTimezone(new Date(moods.allIds[0]))}
         onChange={(e) => {
-          let date = new Date(e.target.value);
+          let { valueAsDate: date } = e.target;
+          if (!date) return;
           const timezoneOffset = date.getTimezoneOffset();
           if (timezoneOffset) date = addMinutes(date, date.getTimezoneOffset());
           if (
@@ -48,7 +49,8 @@ export default function DateRangeSelector({
         max={formatIsoDateInLocalTimezone(maxDate)}
         min={formatIsoDateInLocalTimezone(dateFrom)}
         onChange={(e) => {
-          let date = new Date(e.target.value);
+          let { valueAsDate: date } = e.target;
+          if (!date) return;
           const timezoneOffset = date.getTimezoneOffset();
           if (timezoneOffset) date = addMinutes(date, date.getTimezoneOffset());
           if (date >= dateFrom && date <= maxDate) setDateTo(date);
