@@ -72,6 +72,15 @@ def handler(event, context):
             .build_full_result()["Users"]
         )
 
+        users_by_month = defaultdict(lambda: {"confirmed": 0, "unconfirmed": 0})
+        for u in users:
+            key = (
+                "confirmed"
+                if u["Enabled"] and u["UserStatus"] == "CONFIRMED"
+                else "unconfirmed"
+            )
+            users_by_month[u["UserCreateDate"].date().isoformat()[0:7]][key] += 1
+
         events_response = events_table.scan(
             ExpressionAttributeNames={"#t": "type"},
             FilterExpression=events_filter_expression,
@@ -182,6 +191,7 @@ def handler(event, context):
     cache["data"] = {
         "body": json.dumps(
             {
+                "byMonth": {k: {"users": v} for k, v in users_by_month.items()},
                 "confirmedUsers": len(confirmed_users),
                 "last28Days": {
                     "eventCountByWeekday": event_count_by_weekday,

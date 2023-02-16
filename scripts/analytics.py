@@ -58,14 +58,6 @@ for event in events:
 def compute_breakdown(get_key):
     results = {}
 
-    users_by_date = defaultdict(lambda: defaultdict(int))
-    for u in users:
-        key = (
-            "confirmed"
-            if u["Enabled"] and u["UserStatus"] == "CONFIRMED"
-            else "unconfirmed"
-        )
-        users_by_date[get_key(u["UserCreateDate"].date().isoformat())][key] += 1
     for event in events:
         key = get_key(event["createdAt"])
         stats = results.get(key)
@@ -103,8 +95,6 @@ def compute_breakdown(get_key):
 
         v["users"] = {}
         v["users"]["activeUserCount"] = len(v["userIds"])
-        v["users"]["newConfirmedUsers"] = users_by_date[k]["confirmed"]
-        v["users"]["newUnconfirmedUsers"] = users_by_date[k]["unconfirmed"]
 
         v["meditationMinutes"] = round(sum(v["meditations"]) / 60)
 
