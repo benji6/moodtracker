@@ -91,6 +91,9 @@ export interface Settings {
 }
 
 export interface Usage {
+  byMonth: {
+    [month: string]: { users: { confirmed: number; unconfirmed: number } };
+  };
   confirmedUsers: number;
   CRR: number;
   DAUs: number;

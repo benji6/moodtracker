@@ -49,6 +49,11 @@ export const monthYearFormatter = Intl.DateTimeFormat(undefined, {
   year: "numeric",
 });
 
+export const monthYearShortFormatter = Intl.DateTimeFormat(undefined, {
+  month: "short",
+  year: "2-digit",
+});
+
 export const timeFormatter = Intl.DateTimeFormat(undefined, {
   hour: "numeric",
   minute: "numeric",
