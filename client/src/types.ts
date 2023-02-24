@@ -91,13 +91,13 @@ export interface Settings {
 }
 
 export interface Usage {
-  byMonth: {
+  byMonth?: {
     [month: string]: { users: { confirmed: number; unconfirmed: number } };
   };
   confirmedUsers: number;
   CRR: number;
   DAUs: number;
-  last28Days: {
+  last28Days?: {
     eventCountByWeekday: {
       0: number;
       1: number;

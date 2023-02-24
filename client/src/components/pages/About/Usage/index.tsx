@@ -106,55 +106,59 @@ export default function Usage() {
             xAxisTitle="Join date"
             yAxisTitle="Active user count"
           />
-          <h3>New users</h3>
-          <h4>Confirmed users</h4>
-          <p>
-            Confirmed users are users who create an account and confirm their
-            email address.
-          </p>
-          <ColumnChart
-            data={Object.entries(data.usage.byMonth)
-              .map(([k, v]) => {
-                const y = v.users.confirmed;
-                return {
-                  key: k,
-                  label: monthYearShortFormatter.format(new Date(k)),
-                  y,
-                  title: `${k}: ${integerFormatter.format(
-                    y
-                  )} new confirmed user${y === 1 ? "" : "s"}`,
-                };
-              })
-              .sort((a, b) => a.key.localeCompare(b.key))
-              .slice(-12)}
-            rotateXLabels
-            xAxisTitle="Month"
-            yAxisTitle="New confirmed users"
-          />
-          <h4>Unconfirmed users</h4>
-          <p>
-            Unconfirmed users are users who create an account but do not confirm
-            their email address. They cannot use MoodTracker.
-          </p>
-          <ColumnChart
-            data={Object.entries(data.usage.byMonth)
-              .map(([k, v]) => {
-                const y = v.users.unconfirmed;
-                return {
-                  key: k,
-                  label: monthYearShortFormatter.format(new Date(k)),
-                  y,
-                  title: `${k}: ${integerFormatter.format(
-                    y
-                  )} new unconfirmed user${y === 1 ? "" : "s"}`,
-                };
-              })
-              .sort((a, b) => a.key.localeCompare(b.key))
-              .slice(-12)}
-            rotateXLabels
-            xAxisTitle="Month"
-            yAxisTitle="New unconfirmed users"
-          />
+          {data.usage.byMonth && (
+            <>
+              <h3>New users</h3>
+              <h4>Confirmed users</h4>
+              <p>
+                Confirmed users are users who create an account and confirm
+                their email address.
+              </p>
+              <ColumnChart
+                data={Object.entries(data.usage.byMonth)
+                  .map(([k, v]) => {
+                    const y = v.users.confirmed;
+                    return {
+                      key: k,
+                      label: monthYearShortFormatter.format(new Date(k)),
+                      y,
+                      title: `${k}: ${integerFormatter.format(
+                        y
+                      )} new confirmed user${y === 1 ? "" : "s"}`,
+                    };
+                  })
+                  .sort((a, b) => a.key.localeCompare(b.key))
+                  .slice(-12)}
+                rotateXLabels
+                xAxisTitle="Month"
+                yAxisTitle="New confirmed users"
+              />
+              <h4>Unconfirmed users</h4>
+              <p>
+                Unconfirmed users are users who create an account but do not
+                confirm their email address. They cannot use MoodTracker.
+              </p>
+              <ColumnChart
+                data={Object.entries(data.usage.byMonth)
+                  .map(([k, v]) => {
+                    const y = v.users.unconfirmed;
+                    return {
+                      key: k,
+                      label: monthYearShortFormatter.format(new Date(k)),
+                      y,
+                      title: `${k}: ${integerFormatter.format(
+                        y
+                      )} new unconfirmed user${y === 1 ? "" : "s"}`,
+                    };
+                  })
+                  .sort((a, b) => a.key.localeCompare(b.key))
+                  .slice(-12)}
+                rotateXLabels
+                xAxisTitle="Month"
+                yAxisTitle="New unconfirmed users"
+              />
+            </>
+          )}
           {data?.usage?.last28Days?.eventCountByWeekday && (
             <>
               <h3>
