@@ -67,7 +67,7 @@ export default function Usage() {
             In case you were interested in how other people are using
             MoodTracker you can see some anonymized usage data here. This gets
             automatically updated every day or so and was last updated{" "}
-            {formatDistanceToNow(subDays(data.expires, 1))} ago.
+            <b>{formatDistanceToNow(subDays(data.expires, 1))} ago</b>.
           </p>
           <p>
             In the below statistics, active users are defined as users who have
