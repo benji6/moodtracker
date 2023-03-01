@@ -183,19 +183,20 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy"
 
 [[package]]
 name = "bc-detect-secrets"
-version = "1.4.9"
+version = "1.4.13"
 description = "Tool for detecting secrets in the codebase"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "bc-detect-secrets-1.4.9.tar.gz", hash = "sha256:445aa0b1b90c51cf289c71171f37775593fff416e3bba27956ef7279f1005106"},
-    {file = "bc_detect_secrets-1.4.9-py3-none-any.whl", hash = "sha256:68a3c4fb8608935d9e2bee78e0cae25282ba69c039cde4e19e5207b343cc03fb"},
+    {file = "bc-detect-secrets-1.4.13.tar.gz", hash = "sha256:166a3da9ad228824e11793e7eca0a1ee8b2846997d3887a3ebbe0289cf247b3d"},
+    {file = "bc_detect_secrets-1.4.13-py3-none-any.whl", hash = "sha256:380dfe2c4a724aef6814351f93a7c59a86ae73351fa34c2f4f0ad0980f21af98"},
 ]
 
 [package.dependencies]
 pyyaml = "*"
 requests = "*"
+unidiff = "*"
 
 [package.extras]
 gibberish = ["gibberish-detector"]
@@ -203,14 +204,14 @@ word-list = ["pyahocorasick"]
 
 [[package]]
 name = "bc-jsonpath-ng"
-version = "1.5.8"
+version = "1.5.9"
 description = "A final implementation of JSONPath for Python that aims to be standard compliant, including arithmetic and binary comparison operators and providing clear AST for metaprogramming."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "bc-jsonpath-ng-1.5.8.tar.gz", hash = "sha256:c79388a3bfd00b52d8dd6cd600b637c377c9fca22faa7d30bbbc38cca9b06ee2"},
-    {file = "bc_jsonpath_ng-1.5.8-py3-none-any.whl", hash = "sha256:f9ead127f02cbae3fec7442d2e2eae8e104b3362f872f9d687991b74831ec2b9"},
+    {file = "bc-jsonpath-ng-1.5.9.tar.gz", hash = "sha256:5e72d78887521469f8a52966f6f0664ec3d59dcb2cebf85b8131867a241c84ec"},
+    {file = "bc_jsonpath_ng-1.5.9-py3-none-any.whl", hash = "sha256:51c3ba65884654ec7be91288b23e1b65bd0b5188acdc51bc80ecfc365a54b77c"},
 ]
 
 [package.dependencies]
@@ -408,14 +409,14 @@ unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.2.320"
+version = "2.3.50"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "checkov-2.2.320-py3-none-any.whl", hash = "sha256:cbcb4827c0bd8c857e7ee3377455d52520ab28c691128574eaf31715ac035788"},
-    {file = "checkov-2.2.320.tar.gz", hash = "sha256:87b5e7c00da4389a84b328627f13aa89c7748e83eb18b510ac864ecb1d647821"},
+    {file = "checkov-2.3.50-py3-none-any.whl", hash = "sha256:796473c5fcbbfe1ef5a3ecd3d3e6a3724e0da7d5b8e87bcf8e41ec8581cabd67"},
+    {file = "checkov-2.3.50.tar.gz", hash = "sha256:7519c5fbce914274ee02b79bb6129c474dd0ea300dd34a6ac5326ee0ab293f77"},
 ]
 
 [package.dependencies]
@@ -423,8 +424,8 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-detect-secrets = "1.4.9"
-bc-jsonpath-ng = "1.5.8"
+bc-detect-secrets = "1.4.13"
+bc-jsonpath-ng = "1.5.9"
 bc-python-hcl2 = "0.3.51"
 boto3 = ">=1.17"
 cachetools = "*"
@@ -1810,6 +1811,18 @@ files = [
 ]
 
 [[package]]
+name = "unidiff"
+version = "0.7.4"
+description = "Unified diff parsing/metadata extraction library."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "unidiff-0.7.4-py2.py3-none-any.whl", hash = "sha256:688622add422f84a873498cc4ff9bf50da5ea6c23dea908f19d2190fa39a8e39"},
+    {file = "unidiff-0.7.4.tar.gz", hash = "sha256:2bbcbc986e1fb97f04b1d7b864aa6002ab02f4d8a996bf03aa6e5a81447d1fc5"},
+]
+
+[[package]]
 name = "update-checker"
 version = "0.18.0"
 description = "A python module that will check for package updates."
@@ -1980,4 +1993,4 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "66882f8b04acc703f584937cc11ce1671e2e53636bdb41d45571bdda3cb2106b"
+content-hash = "4e7582b458ce12bb08ceee8fe96bb7d22022f5751d7443cc95295aa06950c628"
