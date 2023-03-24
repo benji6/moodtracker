@@ -106,8 +106,8 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 800}) 1`]
 
 exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 801}) 1`] = `
 {
-  "iconName": "partly-cloudy-night",
-  "label": "Partly cloudy",
+  "iconName": "moon",
+  "label": "Clear",
   "weatherColor": "rebeccapurple",
 }
 `;
@@ -242,8 +242,8 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 800}) 1`] 
 
 exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 801}) 1`] = `
 {
-  "iconName": "partly-cloudy-day",
-  "label": "Partly cloudy",
+  "iconName": "sun",
+  "label": "Clear",
   "weatherColor": "orange",
 }
 `;

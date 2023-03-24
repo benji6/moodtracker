@@ -246,7 +246,7 @@ export const getWeatherDisplayData = ({
     } else if (weatherId < 800) {
       label = "Fog/Haze/Dust";
       iconName = "menu";
-    } else if (weatherId === 800) {
+    } else if (weatherId < 802) {
       if (isDaytime) {
         iconName = "sun";
         weatherColor = "orange";
