@@ -36,6 +36,7 @@ import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
 import withStatsPage from "../../hocs/withStatsPage";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -175,6 +176,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         xLabels={xLabels}
       />
       <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
+      <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
     </Paper.Group>
   );

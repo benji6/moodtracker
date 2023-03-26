@@ -4,8 +4,6 @@ import Months from "./Months";
 import Weeks from "./Weeks";
 import {
   eventsHasLoadedFromServerSelector,
-  hasMeditationsSelector,
-  hasWeightsSelector,
   normalizedMoodsSelector,
 } from "../../../selectors";
 import { useSelector } from "react-redux";
@@ -19,8 +17,6 @@ export default function Overview() {
     eventsHasLoadedFromServerSelector
   );
   const moods = useSelector(normalizedMoodsSelector);
-  const hasMeditations = useSelector(hasMeditationsSelector);
-  const hasWeights = useSelector(hasWeightsSelector);
 
   if (!moods.allIds.length)
     return (
@@ -44,22 +40,9 @@ export default function Overview() {
       <Months />
       <Years />
       <Paper>
-        <h2>More</h2>
-        <ul>
-          {hasMeditations && (
-            <li>
-              <Link to="/meditation/stats">Meditation stats</Link>
-            </li>
-          )}
-          {hasWeights && (
-            <li>
-              <Link to="/weight/stats">Weight stats</Link>
-            </li>
-          )}
-          <li>
-            <Link to="explore">Explore</Link>
-          </li>
-        </ul>
+        <h2 className="center">
+          <Link to="explore">Explore</Link>
+        </h2>
       </Paper>
     </Paper.Group>
   );

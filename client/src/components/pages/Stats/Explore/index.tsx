@@ -24,6 +24,7 @@ import { useReducer } from "react";
 import { FluxStandardAction } from "../../../../typeUtilities";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 const X_LABELS_COUNT = 4; // must be at least 2
@@ -257,6 +258,10 @@ export default function Explore() {
         dateFrom={localState.dateFrom}
         dateTo={dateTo}
         xLabels={createXLabels(domain, dateNow.getTime())}
+      />
+      <MeditationImpactForPeriod
+        dateFrom={localState.dateFrom}
+        dateTo={dateTo}
       />
       <LocationsForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
     </Paper.Group>

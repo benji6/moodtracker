@@ -86,7 +86,7 @@ describe("weight", () => {
 
       await submitButton.evaluate((el) => el.click());
 
-      expect(page.url()).toBe(URLS.weightStats);
+      expect(page.url()).toBe(URLS.weightLog);
 
       const weightCardValue = await page.waitForSelector(
         SELECTORS.weightCardValue

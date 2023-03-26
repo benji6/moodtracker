@@ -11,10 +11,10 @@ import {
   normalizedMeditationsSelector,
   denormalizedMeditationsSelector,
   hasMeditationsSelector,
-  meditationStatsSelector,
   normalizedWeightsSelector,
   hasWeightsSelector,
   denormalizedWeightsSelector,
+  hasMoodsSelector,
 } from "./selectors";
 import store, { RootState } from "./store";
 
@@ -747,6 +747,78 @@ describe("selectors", () => {
     });
   });
 
+  describe("hasMoodsSelector", () => {
+    test("when there are no events", () => {
+      expect(hasMoodsSelector(initialState)).toBe(false);
+    });
+
+    test("when there are events but no mood events", () => {
+      expect(
+        hasMoodsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 60 },
+              },
+            },
+          },
+        })
+      ).toBe(false);
+    });
+
+    test("with a single create event", () => {
+      expect(
+        hasMoodsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+            },
+          },
+        })
+      ).toBe(true);
+    });
+
+    test("with a deleted event", () => {
+      expect(
+        hasMoodsSelector({
+          ...initialState,
+          events: {
+            ...initialState.events,
+            allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
+            byId: {
+              "2020-10-10T08:00:00.000Z": {
+                createdAt: "2020-10-10T08:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+              "2020-10-11T08:00:00.000Z": {
+                createdAt: "2020-10-11T08:00:00.000Z",
+                type: "v1/moods/delete",
+                payload: "2020-10-10T08:00:00.000Z",
+              },
+            },
+          },
+        })
+      ).toBe(false);
+    });
+
+    test("with a selection of create events", () => {
+      expect(hasWeightsSelector(stateWithOnlyCreateEvents)).toBe(true);
+    });
+  });
+
   describe("hasMeditationsSelector", () => {
     test("when there are no events", () => {
       expect(hasMeditationsSelector(initialState)).toBe(false);
@@ -1007,173 +1079,6 @@ describe("selectors", () => {
       ).toEqual({
         "2020-10-10": ["2020-10-10T07:00:00.000Z", "2020-10-10T08:00:00.000Z"],
         "2020-10-13": ["2020-10-13T08:00:00.000Z"],
-      });
-    });
-  });
-
-  describe("meditationStatsSelector", () => {
-    test("with no meditations and no moods", () => {
-      expect(meditationStatsSelector(initialState)).toEqual({
-        averageMoodChangeAfterMeditation: undefined,
-        filteredWordsAfter: {},
-        filteredWordsBefore: {},
-        wordsAfter: {},
-        wordsBefore: {},
-      });
-    });
-
-    test("with no meditations and 1 mood", () => {
-      expect(
-        meditationStatsSelector({
-          ...initialState,
-          events: {
-            ...initialState.events,
-            allIds: ["2020-10-10T08:00:00.000Z"],
-            byId: {
-              "2020-10-10T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { mood: 5 },
-              },
-            },
-          },
-        })
-      ).toEqual({
-        averageMoodChangeAfterMeditation: undefined,
-        filteredWordsAfter: {},
-        filteredWordsBefore: {},
-        wordsAfter: {},
-        wordsBefore: {},
-      });
-    });
-
-    test("with 1 meditation and no moods", () => {
-      expect(
-        meditationStatsSelector({
-          ...initialState,
-          events: {
-            ...initialState.events,
-            allIds: ["2020-10-10T08:00:00.000Z"],
-            byId: {
-              "2020-10-10T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-            },
-          },
-        })
-      ).toEqual({
-        averageMoodChangeAfterMeditation: undefined,
-        filteredWordsAfter: {},
-        filteredWordsBefore: {},
-        wordsAfter: {},
-        wordsBefore: {},
-      });
-    });
-
-    test("with 1 meditation and 2 moods", () => {
-      expect(
-        meditationStatsSelector({
-          ...initialState,
-          events: {
-            ...initialState.events,
-            allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
-            byId: {
-              "2020-10-10T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-              "2020-10-11T08:00:00.000Z": {
-                createdAt: "2020-10-10T08:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { mood: 5 },
-              },
-            },
-          },
-        })
-      ).toEqual({
-        averageMoodChangeAfterMeditation: undefined,
-        filteredWordsAfter: {},
-        filteredWordsBefore: {},
-        wordsAfter: {},
-        wordsBefore: {},
-      });
-    });
-
-    test("handles a complex example correctly", () => {
-      expect(
-        meditationStatsSelector({
-          ...initialState,
-          events: {
-            ...initialState.events,
-            allIds: [
-              "2020-01-01T11:00:00.000Z",
-              "2020-01-01T12:00:00.000Z",
-              "2020-01-01T13:00:00.000Z",
-              "2020-01-02T11:00:00.000Z",
-              "2020-01-02T12:00:00.000Z",
-              "2020-01-02T13:00:00.000Z",
-              "2020-01-03T11:00:00.000Z",
-              "2020-01-03T12:00:00.000Z",
-              "2020-01-03T13:00:00.000Z",
-            ],
-            byId: {
-              "2020-01-01T11:00:00.000Z": {
-                createdAt: "2020-01-01T11:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { description: "Foo bar baz beforeOnly", mood: 4 },
-              },
-              "2020-01-01T12:00:00.000Z": {
-                createdAt: "2020-01-01T12:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-              "2020-01-01T13:00:00.000Z": {
-                createdAt: "2020-01-01T13:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { description: "foo bar Baz afterOnly", mood: 6 },
-              },
-              "2020-01-02T11:00:00.000Z": {
-                createdAt: "2020-01-02T11:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { description: "foo Bar", mood: 7 },
-              },
-              "2020-01-02T12:00:00.000Z": {
-                createdAt: "2020-01-02T12:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-              "2020-01-02T13:00:00.000Z": {
-                createdAt: "2020-01-02T13:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { description: "bar baz", mood: 7 },
-              },
-              "2020-01-03T11:00:00.000Z": {
-                createdAt: "2020-01-03T11:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { description: "foo", mood: 5 },
-              },
-              "2020-01-03T12:00:00.000Z": {
-                createdAt: "2020-01-03T12:00:00.000Z",
-                type: "v1/meditations/create",
-                payload: { seconds: 60 },
-              },
-              "2020-01-03T13:00:00.000Z": {
-                createdAt: "2020-01-03T13:00:00.000Z",
-                type: "v1/moods/create",
-                payload: { description: "baz", mood: 6 },
-              },
-            },
-          },
-        })
-      ).toEqual({
-        averageMoodChangeAfterMeditation: 1,
-        filteredWordsAfter: { Afteronly: 1, Baz: 2 },
-        filteredWordsBefore: { Foo: 2, Beforeonly: 1 },
-        wordsAfter: { Afteronly: 1, Foo: 1, Bar: 2, Baz: 3 },
-        wordsBefore: { Foo: 3, Bar: 2, Baz: 1, Beforeonly: 1 },
       });
     });
   });

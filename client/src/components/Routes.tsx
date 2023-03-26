@@ -1,6 +1,6 @@
 import About from "./pages/About";
-import AddMood from "./pages/AddMood";
-import EditMood from "./pages/EditMood";
+import AddMood from "./pages/Mood/AddMood";
+import EditMood from "./pages/Mood/EditMood";
 import Home from "./pages/Home";
 import Month from "./pages/Stats/Month";
 import ResendVerification from "./pages/ResendVerification";
@@ -23,19 +23,20 @@ import Notifications from "./pages/Settings/Notifications";
 import AuthedOnlyPage from "./shared/AuthedOnlyPage";
 import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
-import Meditate from "./pages/Meditate";
-import MeditationTimer from "./pages/Meditate/MeditationTimer";
+import Meditate from "./pages/Meditation/Meditate";
+import MeditationTimer from "./pages/Meditation/Meditate/MeditationTimer";
 import Day from "./pages/Stats/Day";
 import { Page } from "./shared/Page";
 import RedirectHome from "./RedirectHome";
-import Meditation from "./pages/Stats/Meditation";
-import OpenEndedMeditation from "./pages/Meditate/OpenEndedMeditation";
+import OpenEndedMeditation from "./pages/Meditation/Meditate/OpenEndedMeditation";
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
-import AddWeight from "./pages/AddWeight";
-import Weight from "./pages/Stats/Weight";
-import EditWeight from "./pages/EditWeight";
+import AddWeight from "./pages/Weight/AddWeight";
+import EditWeight from "./pages/Weight/EditWeight";
 import ChangeEmail from "./pages/Settings/ChangeEmail";
 import VerifyNewEmail from "./pages/Settings/VerifyNewEmail";
+import MeditationLog from "./pages/Meditation/MeditationLog";
+import WeightLog from "./pages/Weight/WeightLog";
+import MoodLog from "./pages/Mood/MoodLog";
 
 export default function Routes() {
   return (
@@ -50,10 +51,26 @@ export default function Routes() {
           path="/edit/:id"
         />
 
+        <Route path="/mood">
+          <Route
+            element={<AuthedOnlyPage Component={MoodLog} title="Mood log" />}
+            path="log"
+          />
+        </Route>
+
         <Route path="/meditation">
           <Route
             element={<AuthedOnlyPage Component={Meditate} title="Meditate" />}
             path=""
+          />
+          <Route
+            element={
+              <AuthedOnlyPage
+                Component={MeditationLog}
+                title="Meditation log"
+              />
+            }
+            path="log"
           />
           <Route
             element={
@@ -63,12 +80,6 @@ export default function Routes() {
               />
             }
             path="open-ended"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage Component={Meditation} title="Meditation stats" />
-            }
-            path="stats"
           />
           <Route
             element={
@@ -96,8 +107,10 @@ export default function Routes() {
             path="edit/:id"
           />
           <Route
-            element={<AuthedOnlyPage Component={Weight} title="Weight stats" />}
-            path="stats"
+            element={
+              <AuthedOnlyPage Component={WeightLog} title="Weight log" />
+            }
+            path="log"
           />
         </Route>
 

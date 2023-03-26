@@ -1,7 +1,12 @@
 import { Fab, Icon } from "eri";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const PATHS_TO_HIDE_ON = ["/add", "/edit", "/meditation"] as const;
+const PATHS_TO_HIDE_ON = [
+  "/add",
+  "/edit",
+  "/meditation/open-ended",
+  "/meditation/timer",
+] as const;
 
 interface Props {
   hide: boolean;

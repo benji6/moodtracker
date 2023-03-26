@@ -30,6 +30,7 @@ import withStatsPage from "../../hocs/withStatsPage";
 import startOfWeek from "date-fns/startOfWeek";
 import addWeeks from "date-fns/addWeeks";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
 
 interface Props {
   date: Date;
@@ -136,6 +137,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         xLabels={xLabels}
         xLines={xLines}
       />
+      <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
     </Paper.Group>
   );

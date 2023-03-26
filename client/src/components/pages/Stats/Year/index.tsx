@@ -32,6 +32,7 @@ import WeightChartForPeriod from "../WeightChartForPeriod";
 import WeatherForPeriod from "../WeatherForPeriod";
 import withStatsPage from "../../../hocs/withStatsPage";
 import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
+import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 
 interface Props {
   date: Date;
@@ -159,6 +160,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         xLabels={xLabels}
         xLines={xLines}
       />
+      <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
     </Paper.Group>
   );

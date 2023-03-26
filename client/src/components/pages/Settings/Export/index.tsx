@@ -35,14 +35,17 @@ export default function Export() {
               You can download all your data from here. Choose CSV format if you
               want to load your data into a spreadsheet and take a closer look.
             </p>
+            <h3>Moods</h3>
             <ExportControls
               category="moods"
               denormalizedData={denormalizedMoods}
             />
+            <h3>Meditations</h3>
             <ExportControls
               category="meditations"
               denormalizedData={denormalizedMeditations}
             />
+            <h3>Weights</h3>
             <ExportControls
               category="weights"
               denormalizedData={denormalizedWeights}

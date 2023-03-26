@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
 import {
   hasMeditationsSelector,
+  hasMoodsSelector,
   hasWeightsSelector,
   userEmailSelector,
   userIsSignedInSelector,
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export default function Nav({ handleNavClose, open }: Props) {
+  const hasMoods = useSelector(hasMoodsSelector);
   const hasMeditations = useSelector(hasMeditationsSelector);
   const hasWeights = useSelector(hasWeightsSelector);
   const userEmail = useSelector(userEmailSelector);
@@ -73,18 +75,65 @@ export default function Nav({ handleNavClose, open }: Props) {
           </EriNav.Link>
           {userIsSignedIn ? (
             <>
-              <EriNav.Link onClick={handleNavClose} to="/add">
-                <Icon margin="end" name="plus" />
-                Add mood
-              </EriNav.Link>
-              <EriNav.Link onClick={handleNavClose} to="/weight/add">
-                <Icon margin="end" name="plus" />
-                Add weight
-              </EriNav.Link>
-              <EriNav.Link onClick={handleNavClose} to="/meditation">
-                <Icon margin="end" name="bell" />
-                Meditate
-              </EriNav.Link>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <Icon margin="end" name="heart" />
+                    Mood
+                  </span>
+                }
+              >
+                <EriNav.Link onClick={handleNavClose} to="/add">
+                  <Icon margin="end" name="plus" />
+                  Add
+                </EriNav.Link>
+                {hasMoods && (
+                  <EriNav.Link onClick={handleNavClose} to="/mood/log">
+                    <Icon margin="end" name="book" />
+                    Log
+                  </EriNav.Link>
+                )}
+              </EriNav.SubList>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <Icon margin="end" name="bell" />
+                    Meditation
+                  </span>
+                }
+              >
+                <EriNav.Link onClick={handleNavClose} to="/meditation">
+                  <Icon margin="end" name="plus" />
+                  Add
+                </EriNav.Link>
+                {hasMeditations && (
+                  <EriNav.Link onClick={handleNavClose} to="/meditation/log">
+                    <Icon margin="end" name="book" />
+                    Log
+                  </EriNav.Link>
+                )}
+              </EriNav.SubList>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <Icon margin="end" name="weight" />
+                    Weight
+                  </span>
+                }
+              >
+                <EriNav.Link onClick={handleNavClose} to="/weight/add">
+                  <Icon margin="end" name="plus" />
+                  Add
+                </EriNav.Link>
+                {hasWeights && (
+                  <>
+                    <EriNav.Link onClick={handleNavClose} to="/weight/log">
+                      <Icon margin="end" name="book" />
+                      Log
+                    </EriNav.Link>
+                  </>
+                )}
+              </EriNav.SubList>
               <EriNav.SubList
                 heading={
                   <span>
@@ -127,18 +176,6 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <Icon margin="end" name="chart" />
                   This year
                 </EriNav.Link>
-                {hasMeditations && (
-                  <EriNav.Link onClick={handleNavClose} to="/meditation/stats">
-                    <Icon margin="end" name="chart" />
-                    Meditation
-                  </EriNav.Link>
-                )}
-                {hasWeights && (
-                  <EriNav.Link onClick={handleNavClose} to="/weight/stats">
-                    <Icon margin="end" name="chart" />
-                    Weight
-                  </EriNav.Link>
-                )}
                 <EriNav.Link onClick={handleNavClose} to="/stats/explore">
                   <Icon margin="end" name="chart" />
                   Explore

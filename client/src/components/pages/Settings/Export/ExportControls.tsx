@@ -1,10 +1,7 @@
 import { Button } from "eri";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
-import {
-  capitalizeFirstLetter,
-  formatIsoDateInLocalTimezone,
-} from "../../../../utils";
+import { formatIsoDateInLocalTimezone } from "../../../../utils";
 import {
   EventTypeCategories,
   Meditation,
@@ -79,23 +76,20 @@ interface Props {
 
 export default function ExportControls({ category, denormalizedData }: Props) {
   return denormalizedData.length ? (
-    <>
-      <h3>{capitalizeFirstLetter(category)}</h3>
-      <Button.Group>
-        <Button
-          onClick={() => downloadCsv(category, denormalizedData)}
-          type="button"
-        >
-          Export as CSV
-        </Button>
-        <Button
-          onClick={() => downloadJson(category, denormalizedData)}
-          type="button"
-          variant="secondary"
-        >
-          Export as JSON
-        </Button>
-      </Button.Group>
-    </>
+    <Button.Group>
+      <Button
+        onClick={() => downloadCsv(category, denormalizedData)}
+        type="button"
+      >
+        Export as CSV
+      </Button>
+      <Button
+        onClick={() => downloadJson(category, denormalizedData)}
+        type="button"
+        variant="secondary"
+      >
+        Export as JSON
+      </Button>
+    </Button.Group>
   ) : null;
 }

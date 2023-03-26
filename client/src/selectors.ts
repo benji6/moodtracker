@@ -4,14 +4,11 @@ import addHours from "date-fns/addHours";
 import addMonths from "date-fns/addMonths";
 import addWeeks from "date-fns/addWeeks";
 import addYears from "date-fns/addYears";
-import differenceInSeconds from "date-fns/differenceInSeconds";
 import eachDayOfInterval from "date-fns/eachDayOfInterval";
 import eachHourOfInterval from "date-fns/eachHourOfInterval";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
 import eachYearOfInterval from "date-fns/eachYearOfInterval";
-import sub from "date-fns/sub";
-import { MEDITATION_STATS_HOURS_RANGE, TIME } from "./constants";
 import { WEEK_OPTIONS } from "./formatters/dateTimeFormatters";
 import { captureException } from "./sentry";
 import { RootState } from "./store";
@@ -25,8 +22,6 @@ import {
 } from "./types";
 import {
   computeAverageMoodInInterval,
-  computeMean,
-  counter,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedTagsFromDescription,
@@ -190,6 +185,10 @@ export const denormalizedWeightsSelector = createSelector(
   ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
 );
 
+export const hasMoodsSelector = createSelector(
+  normalizedMoodsSelector,
+  ({ allIds }) => Boolean(allIds.length)
+);
 export const hasMeditationsSelector = createSelector(
   normalizedMeditationsSelector,
   ({ allIds }) => Boolean(allIds.length)
@@ -270,104 +269,6 @@ const makeNormalizedAveragesByPeriodSelector = (
       return normalizedAverages;
     }
   );
-
-export const meditationStatsSelector = createSelector(
-  normalizedMeditationsSelector,
-  normalizedMoodsSelector,
-  (
-    meditations,
-    moods
-  ): {
-    averageMoodChangeAfterMeditation: number | undefined;
-    filteredWordsAfter: { [word: string]: number };
-    filteredWordsBefore: { [word: string]: number };
-    wordsAfter: { [word: string]: number };
-    wordsBefore: { [word: string]: number };
-  } => {
-    const SECONDS = MEDITATION_STATS_HOURS_RANGE * TIME.secondsPerHour;
-
-    const moodChanges: number[] = [];
-    let wordsBeforeList: string[] = [];
-    let wordsAfterList: string[] = [];
-    let i = 0;
-    for (const meditationId of meditations.allIds) {
-      for (; i < moods.allIds.length; i++) {
-        const moodAfterId = moods.allIds[i];
-        if (moodAfterId < meditationId || i === 0) continue;
-        const moodBeforeId = moods.allIds[i - 1];
-        const moodBefore = moods.byId[moodBeforeId];
-        const moodAfter = moods.byId[moodAfterId];
-        const meditationLogDate = new Date(meditationId);
-        const meditationStartDate = sub(meditationLogDate, {
-          seconds: meditations.byId[meditationId].seconds,
-        });
-
-        // We use differenceInSeconds instead of differenceInHours as the latter
-        // rounds values down (i.e. a 4.4 hour difference is returned as 4 hours).
-        const differenceBefore = differenceInSeconds(
-          meditationStartDate,
-          new Date(moodBeforeId)
-        );
-        const differenceAfter = differenceInSeconds(
-          new Date(moodAfterId),
-          meditationLogDate
-        );
-
-        if (differenceBefore > SECONDS || differenceAfter > SECONDS) break;
-
-        moodChanges.push(moodAfter.mood - moodBefore.mood);
-
-        if (moodBefore.description)
-          wordsBeforeList = wordsBeforeList.concat(
-            getNormalizedTagsFromDescription(moodBefore.description)
-          );
-        if (moodAfter.description)
-          wordsAfterList = wordsAfterList.concat(
-            getNormalizedTagsFromDescription(moodAfter.description)
-          );
-        break;
-      }
-    }
-
-    const wordsAfter = counter(wordsAfterList);
-    const wordsBefore = counter(wordsBeforeList);
-
-    const filteredWordsAfter = { ...wordsAfter };
-    const filteredWordsBefore = { ...wordsBefore };
-
-    for (const word of new Set(wordsBeforeList)) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!wordsAfter.hasOwnProperty(word)) continue;
-      const afterCount = wordsAfter[word];
-      const beforeCount = wordsBefore[word];
-
-      if (afterCount === beforeCount) {
-        delete filteredWordsAfter[word];
-        delete filteredWordsBefore[word];
-        continue;
-      }
-
-      const lowestCount = Math.min(afterCount, beforeCount);
-
-      if (afterCount === lowestCount) {
-        delete filteredWordsAfter[word];
-        filteredWordsBefore[word] -= lowestCount;
-      }
-      if (beforeCount === lowestCount) {
-        delete filteredWordsBefore[word];
-        filteredWordsAfter[word] -= lowestCount;
-      }
-    }
-
-    return {
-      averageMoodChangeAfterMeditation: computeMean(moodChanges),
-      filteredWordsAfter,
-      filteredWordsBefore,
-      wordsAfter: counter(wordsAfterList),
-      wordsBefore: counter(wordsBeforeList),
-    };
-  }
-);
 
 export const normalizedDescriptionWordsSelector = createSelector(
   normalizedMoodsSelector,

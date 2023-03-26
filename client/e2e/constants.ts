@@ -17,5 +17,5 @@ export class URLS {
   static readonly resetPassowrd = `${URLS.origin}/reset-password`;
   static readonly statsOverview = `${URLS.origin}/stats`;
   static readonly weightAdd = `${URLS.origin}/weight/add`;
-  static readonly weightStats = `${URLS.origin}/weight/stats`;
+  static readonly weightLog = `${URLS.origin}/weight/log`;
 }
