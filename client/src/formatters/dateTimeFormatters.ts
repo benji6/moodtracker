@@ -75,17 +75,14 @@ const dayMonthLongFormatter = Intl.DateTimeFormat(undefined, {
   day: "numeric",
   month: "long",
 });
-const formatRangeDateMonth = (dateA: Date, dateB: Date) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (dayMonthLongFormatter as any).formatRange(dateA, dateB); // TODO - remove any once types are up-to-date
 export const formatWeek = (week: Date): string =>
-  formatRangeDateMonth(
+  dayMonthLongFormatter.formatRange(
     startOfWeek(week, WEEK_OPTIONS),
     endOfWeek(week, WEEK_OPTIONS)
   );
 
-const formatRange = (dateA: Date, dateB: Date) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (dateFormatter as any).formatRange(dateA, dateB); // TODO - remove any once types are up-to-date
 export const formatWeekWithYear = (week: Date): string =>
-  formatRange(startOfWeek(week, WEEK_OPTIONS), endOfWeek(week, WEEK_OPTIONS));
+  dateFormatter.formatRange(
+    startOfWeek(week, WEEK_OPTIONS),
+    endOfWeek(week, WEEK_OPTIONS)
+  );
