@@ -5,6 +5,7 @@ import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../formatters/dateTimeFormatters";
 import { normalizedMoodsSelector } from "../../../selectors";
 import { moodToColor } from "../../../utils";
+import LocationString from "../LocationString";
 import MoodCardWeather from "./MoodCardWeather";
 import "./style.css";
 
@@ -44,13 +45,11 @@ export default function MoodCard({ id }: Props) {
             {location && (
               <>
                 <br />
-                <small
-                  data-test-id={TEST_IDS.moodCardTime}
-                  data-time={Math.round(date.getTime() / 1e3)}
-                >
-                  Lat: {location.latitude}
-                  <br />
-                  Long: {location.longitude}
+                <small>
+                  <LocationString
+                    latitude={location.latitude}
+                    longitude={location.longitude}
+                  />
                 </small>
               </>
             )}

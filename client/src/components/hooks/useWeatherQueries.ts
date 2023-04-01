@@ -1,7 +1,7 @@
 import { useQueries } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { fetchWeather } from "../../api";
-import { WEATHER_QUERY_OPTIONS } from "../../constants";
+import { HIGHLY_CACHED_QUERY_OPTIONS } from "../../constants";
 import { eventsByIdSelector } from "../../selectors";
 import { AppEventWithLocation } from "../../types";
 
@@ -21,7 +21,11 @@ export function useWeatherQueries(ids: string[]) {
         "weather",
         { date: new Date(id), latitude, longitude },
       ];
-      return { ...WEATHER_QUERY_OPTIONS, queryKey, queryFn: fetchWeather };
+      return {
+        ...HIGHLY_CACHED_QUERY_OPTIONS,
+        queryKey,
+        queryFn: fetchWeather,
+      };
     }),
   });
 }

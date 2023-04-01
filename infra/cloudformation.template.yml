@@ -8,6 +8,8 @@ Outputs:
     Value: !Ref CognitoUserPoolClient
   CognitoUserPoolId:
     Value: !Ref CognitoUserPool
+  CognitoIdentityPoolId:
+    Value: !Ref CognitoIdentityPool
 Parameters:
   ApiReservedConcurrentExecutions:
     Default: 10
@@ -190,6 +192,45 @@ Resources:
         BlockPublicPolicy: true
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
+  CognitoIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      AllowUnauthenticatedIdentities: false
+      CognitoIdentityProviders:
+        - ClientId: !Ref CognitoUserPoolClient
+          ProviderName: !GetAtt CognitoUserPool.ProviderName
+          ServerSideTokenCheck: true
+      IdentityPoolName: moodtracker
+  CognitoIdentityPoolRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                cognito-identity.amazonaws.com:aud: !Ref CognitoIdentityPool
+              ForAnyValue:StringLike:
+                cognito-identity.amazonaws.com:amr: authenticated
+            Effect: Allow
+            Principal:
+              Federated: cognito-identity.amazonaws.com
+      Policies:
+        - PolicyName: moodtracker_idp_places_policy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - geo:SearchPlaceIndexForPosition
+                Effect: Allow
+                Resource: !GetAtt LocationPlaceIndex.Arn
+  CognitoIdentityPoolRoleAttachment:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    Properties:
+      IdentityPoolId: !Ref CognitoIdentityPool
+      Roles:
+        authenticated: !GetAtt CognitoIdentityPoolRole.Arn
   CognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
@@ -649,8 +690,14 @@ Resources:
               - Action: dynamodb:PutItem
                 Effect: Allow
                 Resource: !GetAtt DynamoWeeklyEmailsTable.Arn
+  LocationPlaceIndex:
+    Type: AWS::Location::PlaceIndex
+    Properties:
+      DataSource: Esri
+      Description: String
+      IndexName: MoodTrackerPlaceIndex
   SesReceiptRule:
-    Type: "AWS::SES::ReceiptRule"
+    Type: AWS::SES::ReceiptRule
     Properties:
       Rule:
         Actions:

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Icon, Paper, Spinner } from "eri";
 import { ComponentProps } from "react";
 import { fetchWeather } from "../../../../api";
-import { ERRORS, WEATHER_QUERY_OPTIONS } from "../../../../constants";
+import { ERRORS, HIGHLY_CACHED_QUERY_OPTIONS } from "../../../../constants";
 import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
 import {
   formatKelvinToCelcius,
@@ -27,7 +27,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
   const { data, error, isError, isLoading } = useQuery(
     ["weather", { date, latitude, longitude }] as const,
     fetchWeather,
-    WEATHER_QUERY_OPTIONS
+    HIGHLY_CACHED_QUERY_OPTIONS
   );
 
   const weatherData = data?.data[0];

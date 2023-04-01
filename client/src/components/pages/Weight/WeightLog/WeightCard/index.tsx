@@ -5,6 +5,7 @@ import { normalizedWeightsSelector } from "../../../../../selectors";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import { TEST_IDS } from "../../../../../constants";
+import LocationString from "../../../../shared/LocationString";
 
 interface Props {
   id: string;
@@ -33,9 +34,17 @@ export default function WeightCard({ id }: Props) {
         <div>
           {weight.location && (
             <small>
-              Lat: {weight.location.latitude}
-              <br />
-              Long: {weight.location.longitude}
+              <LocationString
+                errorFallback={
+                  <>
+                    Lat: {weight.location.latitude}
+                    <br />
+                    Lon: {weight.location.longitude}
+                  </>
+                }
+                latitude={weight.location.latitude}
+                longitude={weight.location.longitude}
+              />
             </small>
           )}
         </div>

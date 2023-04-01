@@ -6,10 +6,11 @@ import {
   CognitoUserPool,
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
+import { AWS_CONSTANTS } from "./constants";
 
 export const userPool = new CognitoUserPool({
   ClientId: "t3rc7etonlne28d9mf10ip0ci",
-  UserPoolId: "us-east-1_rdB8iu5X4",
+  UserPoolId: AWS_CONSTANTS.cognitoUserPoolId,
 });
 
 const authenticateUser = ({

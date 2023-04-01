@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 import { normalizedMeditationsSelector } from "../../../../../selectors";
 import { formatSecondsAsTime } from "../../../../../utils";
+import LocationString from "../../../../shared/LocationString";
 
 interface Props {
   id: string;
@@ -23,6 +24,11 @@ export default function MeditationCard({ id, onDelete }: Props) {
             {meditation.location && (
               <>
                 <br />
+                <LocationString
+                  latitude={meditation.location.latitude}
+                  longitude={meditation.location.longitude}
+                  successPostfix={<br />}
+                />
                 Latitude: {meditation.location.latitude}
                 <br />
                 Longitude: {meditation.location.longitude}

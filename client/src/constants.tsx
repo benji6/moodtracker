@@ -21,6 +21,12 @@ export const REPO_ISSUES_URL = `${REPO_URL}/issues`;
 export const MOODTRACKER_DESCRIPTION =
   "MoodTracker is a free and open source web app that aims to help you understand yourself better. Track your emotional landscape, keep a mood journal, time your meditations, keep a meditation log and gain new insights into yourself. It's simple to use, works offline and because it runs in your browser you can use it across all your devices!";
 
+export const AWS_CONSTANTS = {
+  cognitoIdentityPoolId: "us-east-1:4338729d-7f9a-4d17-b26a-ec5e2b0ee928",
+  cognitoUserPoolId: "us-east-1_rdB8iu5X4",
+  region: "us-east-1",
+};
+
 export const ERRORS = {
   generic:
     "Something went wrong, check the data you have entered and try again",
@@ -127,7 +133,7 @@ export const FIELDS = {
   },
 } as const;
 
-export const WEATHER_QUERY_OPTIONS = {
+export const HIGHLY_CACHED_QUERY_OPTIONS = {
   cacheTime: Infinity,
   networkMode: "offlineFirst",
   staleTime: TIME.secondsPerYear * 1e3,

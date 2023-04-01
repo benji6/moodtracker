@@ -18,6 +18,8 @@
   },
   "browserslist": "cover 80%",
   "dependencies": {
+    "@aws-sdk/client-location": "^3.301.0",
+    "@aws-sdk/credential-providers": "^3.301.0",
     "@reduxjs/toolkit": "^1.9.2",
     "@sentry/browser": "^7.46.0",
     "@tanstack/query-async-storage-persister": "^4.15.1",

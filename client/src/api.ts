@@ -1,5 +1,10 @@
+import {
+  LocationClient,
+  SearchPlaceIndexForPositionCommand,
+} from "@aws-sdk/client-location";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
-import { TIME } from "./constants";
+import { AWS_CONSTANTS, TIME } from "./constants";
 import { AppEvent, Usage, WeatherApiResponse } from "./types";
 
 const API_URI = "/api";
@@ -127,4 +132,33 @@ export const usageGet = async (): Promise<{ expires: Date; usage: Usage }> => {
     expires: new Date(response.headers.get("expires")!),
     usage,
   };
+};
+
+export const getReverseGeolocation = async ({
+  queryKey: [_, { latitude, longitude }],
+}: {
+  queryKey: Readonly<
+    ["reverse-geolocation", { latitude: number; longitude: number }]
+  >;
+}) => {
+  const idToken = await getIdToken();
+  const locationClient = new LocationClient({
+    region: AWS_CONSTANTS.region,
+    credentials: fromCognitoIdentityPool({
+      clientConfig: { region: AWS_CONSTANTS.region },
+      identityPoolId: AWS_CONSTANTS.cognitoIdentityPoolId,
+      logins: {
+        [`cognito-idp.${AWS_CONSTANTS.region}.amazonaws.com/${AWS_CONSTANTS.cognitoUserPoolId}`]:
+          idToken.getJwtToken(),
+      },
+    }),
+  });
+  return locationClient.send(
+    new SearchPlaceIndexForPositionCommand({
+      IndexName: "MoodTrackerPlaceIndex",
+      Language: "en-GB",
+      MaxResults: 1,
+      Position: [longitude, latitude],
+    })
+  );
 };
