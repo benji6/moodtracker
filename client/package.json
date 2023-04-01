@@ -71,6 +71,6 @@
     "puppeteer": "^19.8.2",
     "sharp": "^0.31.2",
     "ts-jest": "^29.0.3",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.3"
   }
 }
