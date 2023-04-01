@@ -2,7 +2,7 @@ import { Icon } from "eri";
 import { ComponentProps } from "react";
 import { getWeatherDisplayData } from "../../../../utils";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
-import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 import ColumnChart from "../../../shared/ColumnChart";
 
 interface Props {

@@ -1,8 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { Icon, Paper, Spinner } from "eri";
 import { ComponentProps } from "react";
-import { fetchWeather } from "../../../../api";
-import { ERRORS, HIGHLY_CACHED_QUERY_OPTIONS } from "../../../../constants";
+import { ERRORS } from "../../../../constants";
 import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
 import {
   formatKelvinToCelcius,
@@ -13,6 +11,7 @@ import {
   twoDecimalPlacesFormatter,
 } from "../../../../formatters/numberFormatters";
 import { capitalizeFirstLetter } from "../../../../utils";
+import { useWeatherQuery } from "../../../hooks/weatherHooks";
 import WeatherIconGrid from "./WeatherIconGrid";
 
 interface Props {
@@ -24,11 +23,11 @@ interface Props {
 type Entries<T> = [keyof T, T[keyof T]][];
 
 export default function Weather({ date, latitude, longitude }: Props) {
-  const { data, error, isError, isLoading } = useQuery(
-    ["weather", { date, latitude, longitude }] as const,
-    fetchWeather,
-    HIGHLY_CACHED_QUERY_OPTIONS
-  );
+  const { error, data, isError, isLoading } = useWeatherQuery({
+    date,
+    latitude,
+    longitude,
+  });
 
   const weatherData = data?.data[0];
 

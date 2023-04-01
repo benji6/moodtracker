@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../../../selectors";
 import { convertKelvinToCelcius } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
-import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 

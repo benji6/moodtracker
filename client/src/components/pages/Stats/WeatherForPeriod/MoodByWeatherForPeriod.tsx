@@ -5,7 +5,7 @@ import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatter
 import { normalizedMoodsSelector } from "../../../../selectors";
 import { getWeatherDisplayData, moodToColor } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
-import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 

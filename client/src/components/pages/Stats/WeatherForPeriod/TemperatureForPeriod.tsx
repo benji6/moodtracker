@@ -2,7 +2,7 @@ import { Chart } from "eri";
 import { integerFormatter } from "../../../../formatters/numberFormatters";
 import { convertKelvinToCelcius, createChartRange } from "../../../../utils";
 import useEnvelopingEventIdsWithLocation from "../../../hooks/useEnvelopingEventIdsWithLocation";
-import { useWeatherQueries } from "../../../hooks/useWeatherQueries";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
   dateFrom: Date;

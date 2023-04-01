@@ -1,9 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { Icon, Spinner } from "eri";
-import { fetchWeather } from "../../../../api";
-import { HIGHLY_CACHED_QUERY_OPTIONS } from "../../../../constants";
 import { formatKelvinToCelcius } from "../../../../formatters/numberFormatters";
 import { getWeatherDisplayData } from "../../../../utils";
+import { useWeatherQuery } from "../../../hooks/weatherHooks";
 import "./style.css";
 
 interface Props {
@@ -13,11 +11,11 @@ interface Props {
 }
 
 export default function MoodCardWeather({ date, latitude, longitude }: Props) {
-  const { data, isError, isLoading } = useQuery(
-    ["weather", { date, latitude, longitude }] as const,
-    fetchWeather,
-    HIGHLY_CACHED_QUERY_OPTIONS
-  );
+  const { data, isError, isLoading } = useWeatherQuery({
+    date,
+    latitude,
+    longitude,
+  });
 
   if (isError) return null;
 

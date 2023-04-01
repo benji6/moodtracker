@@ -4,7 +4,7 @@ import {
 } from "@aws-sdk/client-location";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
-import { AWS_CONSTANTS, TIME } from "./constants";
+import { AWS_CONSTANTS } from "./constants";
 import { AppEvent, Usage, WeatherApiResponse } from "./types";
 
 const API_URI = "/api";
@@ -55,28 +55,15 @@ const fetchWithAuthAndRetry: typeof fetch = async (
   });
 };
 
-const getUnixTimestampRoundedToNearestHourAndInPast = (date: Date) => {
-  const roundedTime =
-    Math.round(date.getTime() / 1e3 / TIME.secondsPerHour) *
-    TIME.secondsPerHour;
-  return (
-    roundedTime - (roundedTime > Date.now() / 1e3 ? TIME.secondsPerHour : 0)
-  );
-};
-
 export const fetchWeather = async ({
   queryKey: [_, { date, latitude, longitude }],
 }: {
   queryKey: Readonly<
-    ["weather", { date: Date; latitude: number; longitude: number }]
+    ["weather", { date: number; latitude: string; longitude: string }]
   >;
 }): Promise<WeatherApiResponse> => {
-  // Rounding latitude and longitude to 1 decimal place is required by the API and gives a resolution of about 10km (https://en.wikipedia.org/wiki/Decimal_degrees#Precision). More detail in API code
   const response = await fetchWithAuth(
-    `${WEATHER_URI}?lat=${latitude.toFixed(1)}&lon=${longitude.toFixed(1)}&t=${
-      // Date is rounded to the nearest hour, although finer resolution is likely available from many stations. The rounding should increase feasibility of caching on the backend
-      getUnixTimestampRoundedToNearestHourAndInPast(date)
-    }`
+    `${WEATHER_URI}?lat=${latitude}&lon=${longitude}&t=${date}`
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
