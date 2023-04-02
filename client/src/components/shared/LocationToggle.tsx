@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { settingsRecordLocationSelector } from "../../selectors";
 import settingsSlice from "../../store/settingsSlice";
 import usePermissionState from "../hooks/usePermissionState";
+import { Link } from "react-router-dom";
 
 export default function LocationToggle() {
   const locationEnabled = useSelector(settingsRecordLocationSelector);
@@ -11,11 +12,11 @@ export default function LocationToggle() {
 
   return (
     <>
+      <p>Opt in to record your location against all your events.</p>
       <p>
-        Opt in to record your location against all your events. If you log your
-        location in MoodTracker you will be able to see where you were when you
-        look back through your history and you will be able to view
-        location-based stats.
+        If you log your location in MoodTracker you will be able to see where
+        you were when you look back through your history and you will be able to
+        view location-based stats.
       </p>
       <Toggle
         checked={locationEnabled}
@@ -39,6 +40,15 @@ export default function LocationToggle() {
             : "Not recording location"
         }
       />
+      <p>
+        <small>
+          For any privacy concerns{" "}
+          <Link to="/about/privacy-policy">
+            take a look at the privacy policy
+          </Link>
+          .
+        </small>
+      </p>
     </>
   );
 }

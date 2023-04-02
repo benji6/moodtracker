@@ -37,6 +37,8 @@ import VerifyNewEmail from "./pages/Settings/VerifyNewEmail";
 import MeditationLog from "./pages/Meditation/MeditationLog";
 import WeightLog from "./pages/Weight/WeightLog";
 import MoodLog from "./pages/Mood/MoodLog";
+import PrivacyPolicy from "./pages/About/PrivacyPolicy";
+import Usage from "./pages/About/Usage";
 
 export default function Routes() {
   return (
@@ -198,10 +200,18 @@ export default function Routes() {
           </Route>
         </Route>
 
-        <Route
-          element={<Page Component={About} title="About" />}
-          path="/about"
-        />
+        <Route path="/about">
+          <Route element={<Page Component={About} title="About" />} path="" />
+          <Route
+            element={<Page Component={PrivacyPolicy} title="Privacy policy" />}
+            path="privacy-policy"
+          />
+          <Route
+            element={<Page Component={Usage} title="Usage" />}
+            path="usage"
+          />
+        </Route>
+
         <Route element={<Page Component={Blog} title="Blog" />} path="/blog" />
         <Route
           element={<Page Component={SeeAlso} title="See also" />}

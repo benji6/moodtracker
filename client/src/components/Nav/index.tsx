@@ -230,10 +230,27 @@ export default function Nav({ handleNavClose, open }: Props) {
             <Icon margin="end" name="book" />
             Blog
           </EriNav.Link>
-          <EriNav.Link onClick={handleNavClose} to="/about">
-            <Icon margin="end" name="help" />
-            About
-          </EriNav.Link>
+          <EriNav.SubList
+            heading={
+              <span>
+                <Icon margin="end" name="help" />
+                About
+              </span>
+            }
+          >
+            <EriNav.Link onClick={handleNavClose} to="/about">
+              <Icon margin="end" name="help" />
+              Overview
+            </EriNav.Link>
+            <EriNav.Link onClick={handleNavClose} to="/about/usage">
+              <Icon margin="end" name="chart" />
+              Usage
+            </EriNav.Link>
+            <EriNav.Link onClick={handleNavClose} to="/about/privacy-policy">
+              <Icon margin="end" name="eye" />
+              Privacy policy
+            </EriNav.Link>
+          </EriNav.SubList>
           <EriNav.Link onClick={handleNavClose} to="/see-also">
             <Icon margin="end" name="link" />
             See also
