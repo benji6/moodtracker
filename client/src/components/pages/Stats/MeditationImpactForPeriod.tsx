@@ -75,8 +75,6 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     }
   }
   const averageMoodChangeAfterMeditation = computeMean(moodChanges);
-  // This case should never happen
-  if (averageMoodChangeAfterMeditation === undefined) return null;
 
   const wordsAfter = counter(wordsAfterList);
   const wordsBefore = counter(wordsBeforeList);

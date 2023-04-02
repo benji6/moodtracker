@@ -25,6 +25,7 @@ import { FluxStandardAction } from "../../../../typeUtilities";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
+import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 const X_LABELS_COUNT = 4; // must be at least 2
@@ -244,6 +245,10 @@ export default function Explore() {
           <MoodByHourForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
           <MoodCloudForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
           <MoodFrequencyForPeriod
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
+          />
+          <MoodByLocationForPeriod
             dateFrom={localState.dateFrom}
             dateTo={dateTo}
           />

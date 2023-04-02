@@ -31,6 +31,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import addWeeks from "date-fns/addWeeks";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
+import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 
 interface Props {
   date: Date;
@@ -131,6 +132,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         xLabels={xLabels}
         xLines={xLines}
       />
+      <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod
         dateFrom={date}
         dateTo={nextDate}

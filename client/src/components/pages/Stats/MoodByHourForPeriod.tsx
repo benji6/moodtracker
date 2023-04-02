@@ -1,6 +1,9 @@
 import { normalizedAveragesByHourSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
-import { computeMean, formatIsoDateHourInLocalTimezone } from "../../../utils";
+import {
+  computeMeanSafe,
+  formatIsoDateHourInLocalTimezone,
+} from "../../../utils";
 import { Paper } from "eri";
 import { TIME } from "../../../constants";
 import addHours from "date-fns/addHours";
@@ -33,7 +36,7 @@ export default function MoodByHourForPeriod({ dateFrom, dateTo }: Props) {
   for (let i = 0; i < moodsByHourIndex.length; i++) {
     const moods = moodsByHourIndex[i];
     if (!moods) continue;
-    const mean = computeMean(moods);
+    const mean = computeMeanSafe(moods);
     if (!mean) continue;
     averages.push([i, mean]);
   }

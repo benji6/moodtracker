@@ -28,6 +28,7 @@ import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
 import withStatsPage from "../../hocs/withStatsPage";
 import addDays from "date-fns/addDays";
+import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 
 const X_LABELS_COUNT = 6;
 
@@ -109,6 +110,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         dateTo={nextDate}
         xLabels={xLabels}
       />
+      <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
       {moodIds ? (

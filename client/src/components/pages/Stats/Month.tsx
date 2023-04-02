@@ -37,6 +37,7 @@ import WeatherForPeriod from "./WeatherForPeriod";
 import withStatsPage from "../../hocs/withStatsPage";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
+import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -175,6 +176,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         dateTo={nextDate}
         xLabels={xLabels}
       />
+      <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
       <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />

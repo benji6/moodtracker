@@ -2,7 +2,7 @@ import { normalizedAveragesByDaySelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import {
-  computeMean,
+  computeMeanSafe,
   formatIsoDateInLocalTimezone,
   getWeekdayIndex,
 } from "../../../utils";
@@ -44,7 +44,7 @@ export default function MoodByWeekdayForPeriod({
 
   const averages = moodsByWeekdayIndex.map((moodsForWeekday, i) => [
     WEEKDAY_LABELS_SHORT[i],
-    moodsForWeekday && computeMean(moodsForWeekday),
+    moodsForWeekday && computeMeanSafe(moodsForWeekday),
   ]) as ComponentProps<typeof MoodByWeekdayChart>["averages"];
 
   return (

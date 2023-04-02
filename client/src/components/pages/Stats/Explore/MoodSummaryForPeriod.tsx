@@ -4,7 +4,7 @@ import { normalizedMeditationsSelector } from "../../../../selectors";
 import {
   computeStandardDeviation,
   computeSecondsMeditatedInInterval,
-  computeMean,
+  computeMeanSafe,
 } from "../../../../utils";
 import useMoodsInPeriod from "../../../hooks/useMoodsInPeriod";
 import useWeightsInPeriod from "../../../hooks/useWeightsInPeriod";
@@ -36,8 +36,8 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
       <MoodSummary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
-          mean: computeMean(moodValues),
-          meanWeight: computeMean(weightsInPeriod),
+          mean: computeMeanSafe(moodValues),
+          meanWeight: computeMeanSafe(weightsInPeriod),
           secondsMeditated,
           standardDeviation: computeStandardDeviation(moodValues),
           total: moodValues.length,

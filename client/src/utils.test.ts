@@ -10,7 +10,7 @@ import {
   getIdsInInterval,
   formatIsoDateInLocalTimezone,
   computeStandardDeviation,
-  computeMean,
+  computeMeanSafe,
   getWeekdayIndex,
   formatIsoYearInLocalTimezone,
   createDateFromLocalDateString,
@@ -26,6 +26,7 @@ import {
   convertKelvinToCelcius,
   roundDownToNearest10,
   createChartRange,
+  computeMean,
 } from "./utils";
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 
@@ -324,11 +325,24 @@ describe("utils", () => {
     });
   });
 
+  const sharedMeanTests = (
+    computeMeanFn: (xs: number[]) => number | undefined
+  ) => {
+    expect(computeMeanFn([5])).toBe(5);
+    expect(computeMeanFn([1, 5])).toBe(3);
+    expect(computeMeanFn([1, 2, 3, 4, 5, 6, 7])).toBe(4);
+  };
+
   test("computeMean", () => {
-    expect(computeMean([])).toBeUndefined();
-    expect(computeMean([5])).toBe(5);
-    expect(computeMean([1, 5])).toBe(3);
-    expect(computeMean([1, 2, 3, 4, 5, 6, 7])).toBe(4);
+    expect(() => computeMean([])).toThrowError(
+      Error("Need at least one number to compute mean")
+    );
+    sharedMeanTests(computeMean);
+  });
+
+  test("computeMeanSafe", () => {
+    expect(computeMeanSafe([])).toBeUndefined();
+    sharedMeanTests(computeMeanSafe);
   });
 
   test("convertKelvinToCelsius", () => {

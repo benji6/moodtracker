@@ -8,7 +8,7 @@ import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
   computeSecondsMeditatedInInterval,
-  computeMean,
+  computeMeanSafe,
 } from "../../../utils";
 import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import useWeightsInPeriod from "../../hooks/useWeightsInPeriod";
@@ -52,7 +52,7 @@ export default function MoodSummaryForCalendarPeriod({
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: normalizedAverages.byId[formatIsoDateInLocalTimezone(date1)],
-          meanWeight: computeMean(weightsInPeriod),
+          meanWeight: computeMeanSafe(weightsInPeriod),
           secondsMeditated: computeSecondsMeditatedInInterval(
             meditations,
             date1,
@@ -72,7 +72,7 @@ export default function MoodSummaryForCalendarPeriod({
                 mean: normalizedAverages.byId[
                   formatIsoDateInLocalTimezone(date0)
                 ],
-                meanWeight: computeMean(weightsInPreviousPeriod),
+                meanWeight: computeMeanSafe(weightsInPreviousPeriod),
                 secondsMeditated: computeSecondsMeditatedInInterval(
                   meditations,
                   date0,

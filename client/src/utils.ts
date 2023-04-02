@@ -96,7 +96,12 @@ export const computeAverageMoodInInterval = (
   return (area / maxArea) * MOOD_EXTENT;
 };
 
-export const computeMean = (xs: number[]): number | undefined => {
+export const computeMean = (xs: number[]): number => {
+  if (!xs.length) throw Error("Need at least one number to compute mean");
+  return computeMeanSafe(xs)!;
+};
+
+export const computeMeanSafe = (xs: number[]): number | undefined => {
   if (!xs.length) return undefined;
   let sum = 0;
   for (let i = 0; i < xs.length; i++) sum += xs[i];
@@ -117,8 +122,7 @@ export const computeStandardDeviation = (xs: number[]): number | undefined => {
   if (!xs.length) return;
   if (xs.length <= 1) return 0;
 
-  // mean is only undefined when xs.length is 0
-  const mean = computeMean(xs)!;
+  const mean = computeMean(xs);
   let sumOfSquaredDifferences = 0;
   for (const x of xs) sumOfSquaredDifferences += (x - mean) ** 2;
   return Math.sqrt(sumOfSquaredDifferences / (xs.length - 1));
