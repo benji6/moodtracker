@@ -6,6 +6,8 @@ import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
 import { AWS_CONSTANTS } from "./constants";
 import { AppEvent, Usage, WeatherApiResponse } from "./types";
+import addMinutes from "date-fns/addMinutes";
+import subMinutes from "date-fns/subMinutes";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
@@ -121,6 +123,48 @@ export const usageGet = async (): Promise<{ expires: Date; usage: Usage }> => {
   };
 };
 
+const getLocationClient = (() => {
+  let cachedLocationClient: Promise<LocationClient>;
+  let state: "NEVER_CALLED" | "SETTLED" | "IN_FLIGHT" = "NEVER_CALLED";
+  let expiresAt = new Date(0);
+
+  return async (): Promise<LocationClient> => {
+    const now = new Date();
+    if (state === "IN_FLIGHT" || (state === "SETTLED" && now < expiresAt))
+      return cachedLocationClient;
+    cachedLocationClient = new Promise((resolve) => {
+      getIdToken().then((idToken) => {
+        const idTokenExpiresAt = subMinutes(
+          new Date(idToken.getExpiration() * 1e3),
+          5
+        );
+        // Will expire after an hour, we use 55 minutes out of an abundance of caution
+        const locationClientExpiresAt = addMinutes(now, 55);
+        expiresAt =
+          idTokenExpiresAt < locationClientExpiresAt
+            ? idTokenExpiresAt
+            : locationClientExpiresAt;
+        resolve(
+          new LocationClient({
+            region: AWS_CONSTANTS.region,
+            credentials: fromCognitoIdentityPool({
+              clientConfig: { region: AWS_CONSTANTS.region },
+              identityPoolId: AWS_CONSTANTS.cognitoIdentityPoolId,
+              logins: {
+                [`cognito-idp.${AWS_CONSTANTS.region}.amazonaws.com/${AWS_CONSTANTS.cognitoUserPoolId}`]:
+                  idToken.getJwtToken(),
+              },
+            }),
+          })
+        );
+        state = "SETTLED";
+      });
+    });
+    state = "IN_FLIGHT";
+    return cachedLocationClient;
+  };
+})();
+
 export const getReverseGeolocation = async ({
   queryKey: [_, { latitude, longitude }],
 }: {
@@ -128,18 +172,7 @@ export const getReverseGeolocation = async ({
     ["reverse-geolocation", { latitude: number; longitude: number }]
   >;
 }) => {
-  const idToken = await getIdToken();
-  const locationClient = new LocationClient({
-    region: AWS_CONSTANTS.region,
-    credentials: fromCognitoIdentityPool({
-      clientConfig: { region: AWS_CONSTANTS.region },
-      identityPoolId: AWS_CONSTANTS.cognitoIdentityPoolId,
-      logins: {
-        [`cognito-idp.${AWS_CONSTANTS.region}.amazonaws.com/${AWS_CONSTANTS.cognitoUserPoolId}`]:
-          idToken.getJwtToken(),
-      },
-    }),
-  });
+  const locationClient = await getLocationClient();
   return locationClient.send(
     new SearchPlaceIndexForPositionCommand({
       IndexName: "MoodTrackerPlaceIndex",
