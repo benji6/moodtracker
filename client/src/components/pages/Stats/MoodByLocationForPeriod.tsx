@@ -2,11 +2,10 @@ import { useSelector } from "react-redux";
 import { useReverseGeolocationQueries } from "../../hooks/reverseGeolocationHooks";
 import { normalizedMoodsSelector } from "../../../selectors";
 import useMoodIdsWithLocationInPeriod from "../../hooks/useMoodIdsWithLocationInPeriod";
-import { computeMean } from "../../../utils";
-import MoodCell from "../../shared/MoodCell";
 import { Paper, Spinner } from "eri";
 import { integerPercentFormatter } from "../../../formatters/numberFormatters";
 import { captureException } from "../../../sentry";
+import MoodByLocationTable from "../../shared/MoodByLocationTable";
 
 interface Props {
   dateFrom: Date;
@@ -25,7 +24,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
 
   if (!moodIdsWithLocationInPeriod.length) return null;
 
-  const moodsByLocation = new Map();
+  const moodsByLocation: { [location: string]: number[] } = {};
 
   let errorCount = 0;
   let loadingCount = 0;
@@ -54,34 +53,15 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
       );
       continue;
     }
-    const val = moodsByLocation.get(key);
+    const val = moodsByLocation[key];
     if (val) val.push(mood);
-    else moodsByLocation.set(key, [mood]);
+    else moodsByLocation[key] = [mood];
   }
 
   return (
     <Paper>
       <h3>Average mood by location</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Location</th>
-            <th>Total moods</th>
-            <th>Average mood</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...moodsByLocation.entries()]
-            .sort((a, b) => a[0].localeCompare(b[0]))
-            .map(([location, moods]) => (
-              <tr key={location}>
-                <td>{location}</td>
-                <td>{moods.length}</td>
-                <MoodCell mood={computeMean(moods)} />
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <MoodByLocationTable moodsByLocation={moodsByLocation} />
       {loadingCount || errorCount ? (
         <p>
           <small>

@@ -12,8 +12,10 @@ export default function LocationToggle() {
   return (
     <>
       <p>
-        Opt in to record your location against all your events so you can see
-        where you were when you look back through your history.
+        Opt in to record your location against all your events. If you log your
+        location in MoodTracker you will be able to see where you were when you
+        look back through your history and you will be able to view
+        location-based stats.
       </p>
       <Toggle
         checked={locationEnabled}

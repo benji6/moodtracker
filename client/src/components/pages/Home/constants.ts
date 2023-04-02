@@ -3,6 +3,7 @@ import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodByTemperatureChart from "../../shared/MoodByTemperatureChart";
 import MoodByWeatherChart from "../../shared/MoodByWeatherChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
+import MoodByLocationTable from "../../shared/MoodByLocationTable";
 
 export const LINE_CHART_PROPS: {
   data: [number, number][];
@@ -154,6 +155,18 @@ export const MOOD_BY_HOUR_PROPS: ComponentProps<typeof MoodByHourChart> = {
     [22, 7.5],
     [23, 7.47],
   ],
+};
+
+export const MOOD_BY_LOCATION_PROPS: ComponentProps<
+  typeof MoodByLocationTable
+> = {
+  moodsByLocation: {
+    "New York City": [1, 10, 6],
+    London: [7, 7, 7, 8, 9],
+    Paris: [5, 4, 6, 7, 6, 8],
+    Tokyo: [8, 5, 6, 7, 7],
+    Dubai: [6, 7, 8, 5, 6],
+  },
 };
 
 export const MOOD_BY_TEMPERATURE_PROPS: ComponentProps<

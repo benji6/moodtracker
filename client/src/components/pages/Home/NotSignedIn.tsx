@@ -13,6 +13,7 @@ import MeditationTimerClock from "../Meditation/Meditate/MeditationTimer/Meditat
 import {
   LINE_CHART_PROPS,
   MOOD_BY_HOUR_PROPS,
+  MOOD_BY_LOCATION_PROPS,
   MOOD_BY_TEMPERATURE_PROPS,
   MOOD_BY_WEATHER_PROPS,
   MOOD_BY_WEEKDAY_PROPS,
@@ -20,6 +21,7 @@ import {
   MOOD_SUMMARY_PROPS,
   WORD_CLOUD_PROPS,
 } from "./constants";
+import MoodByLocationTable from "../../shared/MoodByLocationTable";
 
 const addMoodImgSrc = String(
   new URL("../Blog/2020-12-30/screenshot-1.png?as=avif", import.meta.url)
@@ -104,19 +106,22 @@ export default function NotSignedIn() {
           time.
         </p>
         <MeditationTimerClock remainingSeconds={222} totalSeconds={600} />
-        <h3>
-          See where you were when you logged your mood or did your meditation
-        </h3>
+        <h3>Location</h3>
         <p>
           This functionality is only available if you opt in to recording your
           location. We have an easy to configure permissions system if you are
           privacy conscious (see the <Link to="/about">about page</Link> for our
           privacy policy).
         </p>
+        <h4>
+          See where you were when you logged your mood or did your meditation
+        </h4>
         <LocationMap>
           <LocationMap.Marker latitude={48.8566} longitude={2.3522} />
           <LocationMap.Marker latitude={40.7128} longitude={-74.006} />
         </LocationMap>
+        <h4>See your mood broken down by location</h4>
+        <MoodByLocationTable {...MOOD_BY_LOCATION_PROPS} />
         <h3>See how often you log moods</h3>
         <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
         <h3>And much more!</h3>
