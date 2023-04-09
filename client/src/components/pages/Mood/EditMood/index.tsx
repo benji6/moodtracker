@@ -153,13 +153,7 @@ export default function EditMood() {
           open={isDialogOpen}
         />
       </Paper>
-      {mood.location && (
-        <Location
-          date={createdDate}
-          latitude={mood.location.latitude}
-          longitude={mood.location.longitude}
-        />
-      )}
+      {mood.location && <Location date={createdDate} {...mood.location} />}
     </Paper.Group>
   );
 }

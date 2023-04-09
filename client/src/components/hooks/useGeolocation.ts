@@ -21,7 +21,9 @@ export default function useGeolocation() {
       return;
     }
     idRef.current = navigator.geolocation.watchPosition(
-      ({ coords: { accuracy, latitude, longitude } }) => {
+      ({
+        coords: { accuracy, altitude, altitudeAccuracy, latitude, longitude },
+      }) => {
         const geolocation: DeviceGeolocation = {
           // meters
           accuracy: Math.round(accuracy),
@@ -31,6 +33,12 @@ export default function useGeolocation() {
           latitude: Number(latitude.toFixed(4)),
           longitude: Number(longitude.toFixed(4)),
         };
+
+        if (altitude !== null) {
+          geolocation.altitude = Math.round(altitude);
+          if (altitudeAccuracy !== null)
+            geolocation.altitudeAccuracy = Math.round(altitudeAccuracy);
+        }
 
         dispatch(deviceSlice.actions.setGeolocation(geolocation));
       }

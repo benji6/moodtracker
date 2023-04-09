@@ -117,13 +117,7 @@ export default function EditWeight() {
           open={isDialogOpen}
         />
       </Paper>
-      {weight.location && (
-        <Location
-          date={createdDate}
-          latitude={weight.location.latitude}
-          longitude={weight.location.longitude}
-        />
-      )}
+      {weight.location && <Location date={createdDate} {...weight.location} />}
     </Paper.Group>
   );
 }

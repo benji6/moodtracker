@@ -16,6 +16,11 @@ export interface Meditation {
 
 export interface DeviceGeolocation {
   accuracy: number;
+
+  // Altitude properties were added 2023-04-09
+  altitude?: number;
+  altitudeAccuracy?: number;
+
   latitude: number;
   longitude: number;
 }

@@ -21,6 +21,24 @@ describe("deviceSlice", () => {
         longitude: 5,
       },
     });
+    store.dispatch(
+      deviceSlice.actions.setGeolocation({
+        accuracy: 1,
+        altitude: 100,
+        altitudeAccuracy: 10,
+        latitude: 4,
+        longitude: 5,
+      })
+    );
+    expect(store.getState().device).toEqual({
+      geolocation: {
+        accuracy: 1,
+        altitude: 100,
+        altitudeAccuracy: 10,
+        latitude: 4,
+        longitude: 5,
+      },
+    });
   });
 
   test("clear", () => {

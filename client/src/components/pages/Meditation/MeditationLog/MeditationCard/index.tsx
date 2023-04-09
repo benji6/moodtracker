@@ -5,6 +5,10 @@ import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters"
 import { normalizedMeditationsSelector } from "../../../../../selectors";
 import { formatSecondsAsTime } from "../../../../../utils";
 import LocationString from "../../../../shared/LocationString";
+import {
+  floatDegreeFormatter,
+  integerMeterFormatter,
+} from "../../../../../formatters/numberFormatters";
 
 interface Props {
   id: string;
@@ -29,9 +33,18 @@ export default function MeditationCard({ id, onDelete }: Props) {
                   longitude={meditation.location.longitude}
                   successPostfix={<br />}
                 />
-                Latitude: {meditation.location.latitude}
+                Latitude:{" "}
+                {floatDegreeFormatter.format(meditation.location.latitude)}
                 <br />
-                Longitude: {meditation.location.longitude}
+                Longitude:{" "}
+                {floatDegreeFormatter.format(meditation.location.longitude)}
+                {meditation.location.altitude && (
+                  <>
+                    <br />
+                    Altitude:{" "}
+                    {integerMeterFormatter.format(meditation.location.altitude)}
+                  </>
+                )}
               </>
             )}
           </small>

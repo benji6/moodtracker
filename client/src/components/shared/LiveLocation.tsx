@@ -21,11 +21,7 @@ export default function LiveLocation() {
   if (!shouldRecordLocation) return null;
 
   return geolocation ? (
-    <Location
-      date={date}
-      latitude={geolocation.latitude}
-      longitude={geolocation.longitude}
-    />
+    <Location date={date} {...geolocation} />
   ) : (
     <>
       <Paper>

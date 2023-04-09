@@ -30,6 +30,10 @@ export const integerDegreeFormatter = Intl.NumberFormat(undefined, {
   style: "unit",
   unit: "degree",
 });
+export const floatDegreeFormatter = Intl.NumberFormat(undefined, {
+  style: "unit",
+  unit: "degree",
+});
 
 export const integerMeterFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0,
