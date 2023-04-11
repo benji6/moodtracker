@@ -63,7 +63,7 @@
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.5.0",
-    "favicons": "^7.0.0-beta.5",
+    "favicons": "^7.1.2",
     "jest": "^29.1.2",
     "npm-run-all": "^4.1.5",
     "parcel": "^2.7.0",
