@@ -40,12 +40,13 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
     if (!data) continue;
     successCount++;
 
-    const key = data.Results?.[0]?.Place?.Municipality;
-    if (!key) {
+    const Place = data?.Results?.[0]?.Place;
+    const locationName = Place?.Municipality ?? Place?.Label;
+    if (!locationName) {
       const { latitude, longitude } = location!;
       captureException(
         Error(
-          `Municipality not defined for ${JSON.stringify({
+          `Failed to derive location name for ${JSON.stringify({
             latitude,
             longitude,
           })}. Results: ${JSON.stringify(data.Results)}`
@@ -53,9 +54,9 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
       );
       continue;
     }
-    const val = moodsByLocation[key];
+    const val = moodsByLocation[locationName];
     if (val) val.push(mood);
-    else moodsByLocation[key] = [mood];
+    else moodsByLocation[locationName] = [mood];
   }
 
   return (

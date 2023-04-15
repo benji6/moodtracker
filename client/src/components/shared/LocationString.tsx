@@ -23,10 +23,12 @@ export default function LocationString({
 
   if (isLoading) return <Spinner inline />;
   if (isError) return errorFallback ?? null;
-  if (!data?.Results?.[0].Place?.Municipality) {
+  const Place = data?.Results?.[0]?.Place;
+  const locationName = Place?.Municipality ?? Place?.Label;
+  if (!locationName) {
     captureException(
       Error(
-        `Municipality not defined for ${JSON.stringify({
+        `Failed to derive location name for ${JSON.stringify({
           latitude,
           longitude,
         })}. Results: ${JSON.stringify(data.Results)}`
@@ -37,7 +39,7 @@ export default function LocationString({
 
   return (
     <>
-      {data.Results[0].Place.Municipality}
+      {locationName}
       {successPostfix ?? null}
     </>
   );
