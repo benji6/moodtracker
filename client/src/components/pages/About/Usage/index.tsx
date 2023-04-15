@@ -235,13 +235,8 @@ export default function Usage() {
       </Paper>
       <Paper>
         <h3>Miscellaneous user stats</h3>
-        <p>Confirmed users are users who have confirmed their email address.</p>
         <UsageTable
           data={[
-            [
-              "New confirmed users over the last 30 days",
-              data.usage.last30Days.newUsers,
-            ],
             [
               "Retention of users since a month ago",
               percentFormatter.format(data.usage.CRR),
@@ -250,7 +245,6 @@ export default function Usage() {
               "Users who are signed up to weekly emails",
               data.usage.usersWithWeeklyEmails,
             ],
-            ["Total confirmed users", data.usage.confirmedUsers],
             [
               "Active users who have logged a meditation over the last 30 days",
               formatAsPercentageOfMaus(data.usage.meditationMAUs),
@@ -263,6 +257,7 @@ export default function Usage() {
               "Active users who have logged their location over the last 30 days",
               formatAsPercentageOfMaus(data.usage.locationMAUs),
             ],
+            ["Total confirmed users", data.usage.confirmedUsers],
           ]}
         />
       </Paper>
