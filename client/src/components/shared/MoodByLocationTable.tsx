@@ -17,7 +17,7 @@ export default function MoodByLocationTable({ moodsByLocation }: Props) {
       </thead>
       <tbody>
         {[...Object.entries(moodsByLocation)]
-          .sort((a, b) => a[0].localeCompare(b[0]))
+          .sort((a, b) => b[1].length - a[1].length)
           .map(([location, moods]) => (
             <tr key={location}>
               <td>{location}</td>
