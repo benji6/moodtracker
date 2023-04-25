@@ -249,7 +249,7 @@ export const getWeatherDisplayData = ({
       weatherColor = "var(--color-figure-more)";
     } else if (weatherId < 800) {
       label = "Fog/Haze/Dust";
-      iconName = "menu";
+      iconName = "fog";
     } else if (weatherId < 802) {
       if (isDaytime) {
         iconName = "sun";

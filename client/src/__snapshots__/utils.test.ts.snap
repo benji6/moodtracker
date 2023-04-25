@@ -66,7 +66,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 622}) 1`]
 
 exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 701}) 1`] = `
 {
-  "iconName": "menu",
+  "iconName": "fog",
   "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
@@ -74,7 +74,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 701}) 1`]
 
 exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 762}) 1`] = `
 {
-  "iconName": "menu",
+  "iconName": "fog",
   "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
@@ -202,7 +202,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 622}) 1`] 
 
 exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 701}) 1`] = `
 {
-  "iconName": "menu",
+  "iconName": "fog",
   "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }
@@ -210,7 +210,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 701}) 1`] 
 
 exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 762}) 1`] = `
 {
-  "iconName": "menu",
+  "iconName": "fog",
   "label": "Fog/Haze/Dust",
   "weatherColor": "var(--color-balance-more)",
 }

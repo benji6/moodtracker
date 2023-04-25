@@ -83,7 +83,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
                   let iconName: ComponentProps<typeof Icon>["name"];
                   if (k === "sunrise" || k === "sunset") iconName = k;
                   else if (k === "clouds") iconName = "cloud";
-                  else if (k === "dew_point") iconName = "droplet";
+                  else if (k === "dew_point") iconName = "dew-point";
                   else if (k === "feels_like") iconName = "thermometer";
                   else if (k === "humidity") iconName = "droplet";
                   else if (k === "temp") iconName = "thermometer";

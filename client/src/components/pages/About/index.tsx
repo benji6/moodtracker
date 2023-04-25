@@ -77,9 +77,13 @@ export default function About() {
             <a href="https://feathericons.com" rel="noopener" target="_blank">
               Feather
             </a>{" "}
-            (MIT) &{" "}
-            <a href="https://tabler-icons.io/" rel="noopener" target="_blank">
+            (MIT),{" "}
+            <a href="https://tabler-icons.io" rel="noopener" target="_blank">
               tabler icons
+            </a>{" "}
+            (MIT) &{" "}
+            <a href="https://iconoir.com" rel="noopener" target="_blank">
+              iconoir
             </a>{" "}
             (MIT)
           </li>

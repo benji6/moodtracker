@@ -380,8 +380,8 @@ export const MOOD_BY_WEATHER_PROPS: ComponentProps<typeof MoodByWeatherChart> =
         y: 6.3,
       },
       {
-        iconName: "menu",
-        key: "Fog/Haze/Dust:menu:var(--color-balance-more)",
+        iconName: "fog",
+        key: "Fog/Haze/Dust:fog:var(--color-balance-more)",
         moodColor: "rgb(0, 239, 197)",
         title: "Fog/Haze/Dust (average of 19 moods): 6.2",
         labelText: "Fog/Haze/Dust",
