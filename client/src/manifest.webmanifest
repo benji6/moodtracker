@@ -22,6 +22,32 @@
   ],
   "lang": "en",
   "name": "MoodTracker",
+  "screenshots": [
+    {
+      "src": "screenshots/add-mood.png",
+      "sizes": "368x654",
+      "type": "image/png",
+      "label": "Add mood"
+    },
+    {
+      "src": "screenshots/day-stats.png",
+      "sizes": "368x654",
+      "type": "image/png",
+      "label": "Statistics for a day"
+    },
+    {
+      "src": "screenshots/not-signed-in.png",
+      "sizes": "368x654",
+      "type": "image/png",
+      "label": "Mood analysis and statistics"
+    },
+    {
+      "src": "screenshots/home.png",
+      "sizes": "368x654",
+      "type": "image/png",
+      "label": "Home page"
+    }
+  ],
   "short_name": "MoodTracker",
   "shortcuts": [
     {
