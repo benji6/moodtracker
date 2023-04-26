@@ -368,7 +368,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: 1
       Role: !GetAtt LambdaWeeklyEmailsRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
       Timeout: 5
   LambdaWeeklyEmailsSendEventBusPermission:
     Type: AWS::Lambda::Permission
@@ -413,7 +413,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
       Role: !GetAtt LambdaEventsGetRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
   LambdaEventsGetPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -453,7 +453,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
       Role: !GetAtt LambdaEventsPostRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
   LambdaEventsPostPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -491,7 +491,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
       Role: !GetAtt LambdaUsageGetRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
   LambdaUsageGetPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -544,7 +544,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: 512
       Role: !GetAtt LambdaWeatherGetRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
       # consider timeout in python request if you change this timeout
       Timeout: 12
   LambdaWeatherGetPermission:
@@ -586,7 +586,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsDeleteRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
   LambdaWeeklyEmailsDeletePermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -624,7 +624,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsGetRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
   LambdaWeeklyEmailsGetPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -662,7 +662,7 @@ Resources:
       Handler: index.handler
       ReservedConcurrentExecutions: !Ref ApiReservedConcurrentExecutions
       Role: !GetAtt LambdaWeeklyEmailsPostRole.Arn
-      Runtime: python3.9
+      Runtime: python3.10
   LambdaWeeklyEmailsPostPermission:
     Type: AWS::Lambda::Permission
     Properties:
