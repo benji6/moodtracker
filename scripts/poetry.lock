@@ -183,14 +183,14 @@ tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy"
 
 [[package]]
 name = "bc-detect-secrets"
-version = "1.4.16"
+version = "1.4.24"
 description = "Tool for detecting secrets in the codebase"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "bc-detect-secrets-1.4.16.tar.gz", hash = "sha256:16338bd88cf7a3375b73fbb7c73ca6651322c4112fa3d7a48d6d111aa013e9eb"},
-    {file = "bc_detect_secrets-1.4.16-py3-none-any.whl", hash = "sha256:73eb9ec225f9019b48ed5e6bd6c602256d938bf92059a7f7abe3ffd3ccd7905e"},
+    {file = "bc-detect-secrets-1.4.24.tar.gz", hash = "sha256:8df551cf5c77c854ee325330b0a72bd88e509dab05413bea3724d5a5ccd32252"},
+    {file = "bc_detect_secrets-1.4.24-py3-none-any.whl", hash = "sha256:adad3e365ad19d911984f8f85f0b6e571fd6d94b7821ffdd691787f2d4b5f440"},
 ]
 
 [package.dependencies]
@@ -409,14 +409,14 @@ unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "checkov"
-version = "2.3.141"
+version = "2.3.212"
 description = "Infrastructure as code static analysis"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "checkov-2.3.141-py3-none-any.whl", hash = "sha256:9fe8e8cf685bb7644153f485a30deb1c4bd75c71ecad8eba022073d3b207e7de"},
-    {file = "checkov-2.3.141.tar.gz", hash = "sha256:8c36d61b7b295fd156ab0ab8e3d167cd4186f6bc245ef59fd0f97db39a3c01e6"},
+    {file = "checkov-2.3.212-py3-none-any.whl", hash = "sha256:3620dd8679b810c3894c71c5477271e7394a3501c7b41f46de44fa3568b7a416"},
+    {file = "checkov-2.3.212.tar.gz", hash = "sha256:9f459494d36ea6ad7855668e46573502d0b9a0b3e88cc062c767e34a10c88529"},
 ]
 
 [package.dependencies]
@@ -424,7 +424,7 @@ aiodns = "*"
 aiohttp = "*"
 aiomultiprocess = "*"
 argcomplete = "*"
-bc-detect-secrets = "1.4.16"
+bc-detect-secrets = "1.4.24"
 bc-jsonpath-ng = "1.5.9"
 bc-python-hcl2 = "0.3.51"
 boto3 = ">=1.17"
@@ -451,7 +451,7 @@ packageurl-python = "*"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
-pycep-parser = "0.3.9"
+pycep-parser = "0.4.0"
 pyston = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\" and implementation_name == \"cpython\""}
 pyston-autoload = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\" and implementation_name == \"cpython\""}
 pyyaml = ">=5.4.1"
@@ -1294,14 +1294,14 @@ idna = ["idna (>=2.1)"]
 
 [[package]]
 name = "pycep-parser"
-version = "0.3.9"
+version = "0.4.0"
 description = "A Python based Bicep parser"
 category = "main"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "pycep-parser-0.3.9.tar.gz", hash = "sha256:6d3d1e18b497ec5db0d9b133a634f12f6431f6c61aff1d2fe83cfdf306b7d200"},
-    {file = "pycep_parser-0.3.9-py3-none-any.whl", hash = "sha256:ab5841f1766483941690291c1d2cdf16a14da377c5c1d4f4e7f1300a4e2ff88e"},
+    {file = "pycep_parser-0.4.0-py3-none-any.whl", hash = "sha256:f6061c31175062b2c6a38b37e0fa20469f08bd46ebbf5b40da3f100efcca350f"},
+    {file = "pycep_parser-0.4.0.tar.gz", hash = "sha256:f6cf51b32ee43fee27eb8d18e48b130e7618a17c48ab0b7dcab9740bbbb655e1"},
 ]
 
 [package.dependencies]
@@ -2018,4 +2018,4 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d3569ddb10674597ba53de97c35f3c282b52a980beddaaf892eed6fc3ebc3ba9"
+content-hash = "4e6cc9071a6390f193795b10d1dab9ade53171f8a9ba34218f3d6e8b802068d4"
