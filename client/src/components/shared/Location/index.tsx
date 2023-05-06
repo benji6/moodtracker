@@ -33,31 +33,33 @@ export default function Location({
             longitude={longitude}
             successPostfix={<br />}
           />
-          <small>
-            <table>
-              <thead>
+        </p>
+        <small>
+          <table>
+            <thead>
+              <tr>
                 <th>Coordinate</th>
                 <th>Value</th>
-              </thead>
-              <tbody>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Latitude</td>
+                <td>{floatDegreeFormatter.format(latitude)}</td>
+              </tr>
+              <tr>
+                <td>Longitude</td>
+                <td>{floatDegreeFormatter.format(longitude)}</td>
+              </tr>
+              {altitude && (
                 <tr>
-                  <td>Latitude</td>
-                  <td>{floatDegreeFormatter.format(latitude)}</td>
+                  <td>Altitude</td>
+                  <td>{integerMeterFormatter.format(altitude)}</td>
                 </tr>
-                <tr>
-                  <td>Longitude</td>
-                  <td>{floatDegreeFormatter.format(longitude)}</td>
-                </tr>
-                {altitude && (
-                  <tr>
-                    <td>Altitude</td>
-                    <td>{integerMeterFormatter.format(altitude)}</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </small>
-        </p>
+              )}
+            </tbody>
+          </table>
+        </small>
       </Paper>
       <Weather date={date} latitude={latitude} longitude={longitude} />
     </>
