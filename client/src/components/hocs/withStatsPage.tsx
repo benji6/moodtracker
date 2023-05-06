@@ -8,7 +8,7 @@ import {
   normalizedMoodsSelector,
 } from "../../selectors";
 import { createDateFromLocalDateString } from "../../utils";
-import RedirectHome from "../RedirectHome";
+import RedirectHome from "../shared/RedirectHome";
 import GetStartedCta from "../shared/GetStartedCta";
 
 // TODO probably a nicer way of writing this

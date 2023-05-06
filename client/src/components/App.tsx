@@ -6,7 +6,7 @@ import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import { useSelector } from "react-redux";
 import { userIsSignedInSelector } from "../selectors";
-import AddMoodFab from "./AddMoodFab";
+import AddMoodFab from "./shared/AddMoodFab";
 import { TEST_IDS } from "../constants";
 import useGeolocation from "./hooks/useGeolocation";
 import { Link } from "react-router-dom";

@@ -6,7 +6,7 @@ import {
   normalizedWeightsSelector,
 } from "../../../../selectors";
 import { mapRight } from "../../../../utils";
-import RedirectHome from "../../../RedirectHome";
+import RedirectHome from "../../../shared/RedirectHome";
 import ExportControls from "../../Settings/Export/ExportControls";
 import WeightCard from "./WeightCard";
 

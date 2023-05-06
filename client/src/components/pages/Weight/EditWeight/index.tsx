@@ -8,7 +8,7 @@ import { ERRORS, FIELDS } from "../../../../constants";
 import useKeyboardSave from "../../../hooks/useKeyboardSave";
 import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
 import Location from "../../../shared/Location";
-import RedirectHome from "../../../RedirectHome";
+import RedirectHome from "../../../shared/RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 

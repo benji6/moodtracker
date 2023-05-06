@@ -27,7 +27,7 @@ import Meditate from "./pages/Meditation/Meditate";
 import MeditationTimer from "./pages/Meditation/Meditate/MeditationTimer";
 import Day from "./pages/Stats/Day";
 import { Page } from "./shared/Page";
-import RedirectHome from "./RedirectHome";
+import RedirectHome from "./shared/RedirectHome";
 import OpenEndedMeditation from "./pages/Meditation/Meditate/OpenEndedMeditation";
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
 import AddWeight from "./pages/Weight/AddWeight";
