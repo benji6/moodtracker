@@ -1,14 +1,15 @@
 import * as React from "react";
-import withStorageLoaded from "../hocs/withStorageLoaded";
 import { Page } from "./Page";
+import { useSelector } from "react-redux";
+import { appIsStorageLoadingSelector } from "../../selectors";
+import { Spinner } from "eri";
 
 interface Props {
   Component: React.ComponentType;
   title: string;
 }
 
-function StorageLoadedPage(props: Props) {
-  return <Page {...props} />;
+export default function StorageLoadedPage(props: Props) {
+  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
+  return isStorageLoading ? <Spinner /> : <Page {...props} />;
 }
-
-export default withStorageLoaded(StorageLoadedPage);

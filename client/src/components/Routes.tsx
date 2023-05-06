@@ -20,8 +20,6 @@ import Year from "./pages/Stats/Year";
 import Export from "./pages/Settings/Export";
 import LocationSettings from "./pages/Settings/LocationSettings";
 import Notifications from "./pages/Settings/Notifications";
-import AuthedOnlyPage from "./shared/AuthedOnlyPage";
-import UnauthedOnlyPage from "./shared/UnauthedOnlyPage";
 import StorageLoadedPage from "./shared/StorageLoadedPage";
 import Meditate from "./pages/Meditation/Meditate";
 import MeditationTimer from "./pages/Meditation/Meditate/MeditationTimer";
@@ -39,166 +37,249 @@ import WeightLog from "./pages/Weight/WeightLog";
 import MoodLog from "./pages/Mood/MoodLog";
 import PrivacyPolicy from "./pages/About/PrivacyPolicy";
 import Usage from "./pages/About/Usage";
+import { useSelector } from "react-redux";
+import { userIsSignedInSelector, userLoadingSelector } from "../selectors";
+import { Spinner } from "eri";
 
 export default function Routes() {
+  const userIsSignedIn = useSelector(userIsSignedInSelector);
+  const userLoading = useSelector(userLoadingSelector);
+
   return (
     <App>
       <ReactRouterRoutes>
-        <Route
-          element={<AuthedOnlyPage Component={AddMood} title="Add mood" />}
-          path="/add"
-        />
-        <Route
-          element={<AuthedOnlyPage Component={EditMood} title="Edit mood" />}
-          path="/edit/:id"
-        />
-
-        <Route path="/mood">
-          <Route
-            element={<AuthedOnlyPage Component={MoodLog} title="Mood log" />}
-            path="log"
-          />
-        </Route>
-
-        <Route path="/meditation">
-          <Route
-            element={<AuthedOnlyPage Component={Meditate} title="Meditate" />}
-            path=""
-          />
-          <Route
-            element={
-              <AuthedOnlyPage
-                Component={MeditationLog}
-                title="Meditation log"
-              />
-            }
-            path="log"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage
-                Component={OpenEndedMeditation}
-                title="Open-ended meditation"
-              />
-            }
-            path="open-ended"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage
-                Component={MeditationTimer}
-                title="Meditation timer"
-              />
-            }
-            path="timer"
-          />
-        </Route>
-
-        <Route path="/weight">
-          <Route element={<RedirectHome />} path="" />
-          <Route
-            element={
-              <AuthedOnlyPage Component={AddWeight} title="Add weight" />
-            }
-            path="add"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage Component={EditWeight} title="Edit weight" />
-            }
-            path="edit/:id"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage Component={WeightLog} title="Weight log" />
-            }
-            path="log"
-          />
-        </Route>
-
-        <Route path="settings">
-          <Route
-            element={
-              <AuthedOnlyPage Component={ChangeEmail} title="Change email" />
-            }
-            path="change-email"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage
-                Component={VerifyNewEmail}
-                title="Verify new email address"
-              />
-            }
-            path="verify-new-email"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage
-                Component={ChangePassword}
-                title="Change password"
-              />
-            }
-            path="change-password"
-          />
-          <Route
-            element={<AuthedOnlyPage Component={Export} title="Export data" />}
-            path="export"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage Component={LocationSettings} title="Location" />
-            }
-            path="location"
-          />
-          <Route
-            element={
-              <AuthedOnlyPage Component={Notifications} title="Notifications" />
-            }
-            path="notifications"
-          />
-        </Route>
-
-        <Route path="/stats">
-          <Route
-            element={
-              <AuthedOnlyPage Component={Overview} title="Stats overview" />
-            }
-            path=""
-          />
-
-          <Route
-            element={
-              <AuthedOnlyPage Component={Explore} title="Explore stats" />
-            }
-            path="explore"
-          />
-
-          <Route path="days">
+        {userIsSignedIn ? (
+          <>
             <Route
-              element={<AuthedOnlyPage Component={Day} title="Day stats" />}
-              path=":date"
+              element={
+                <StorageLoadedPage Component={AddMood} title="Add mood" />
+              }
+              path="/add"
             />
-          </Route>
-          <Route path="weeks">
             <Route
-              element={<AuthedOnlyPage Component={Week} title="Week stats" />}
-              path=":date"
+              element={
+                <StorageLoadedPage Component={EditMood} title="Edit mood" />
+              }
+              path="/edit/:id"
             />
-          </Route>
-          <Route path="months">
+            <Route path="/mood">
+              <Route
+                element={
+                  <StorageLoadedPage Component={MoodLog} title="Mood log" />
+                }
+                path="log"
+              />
+            </Route>
+            <Route path="/meditation">
+              <Route
+                element={
+                  <StorageLoadedPage Component={Meditate} title="Meditate" />
+                }
+                path=""
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={MeditationLog}
+                    title="Meditation log"
+                  />
+                }
+                path="log"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={OpenEndedMeditation}
+                    title="Open-ended meditation"
+                  />
+                }
+                path="open-ended"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={MeditationTimer}
+                    title="Meditation timer"
+                  />
+                }
+                path="timer"
+              />
+            </Route>
+            <Route path="/weight">
+              <Route element={<RedirectHome />} path="" />
+              <Route
+                element={
+                  <StorageLoadedPage Component={AddWeight} title="Add weight" />
+                }
+                path="add"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={EditWeight}
+                    title="Edit weight"
+                  />
+                }
+                path="edit/:id"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage Component={WeightLog} title="Weight log" />
+                }
+                path="log"
+              />
+            </Route>
+            <Route path="settings">
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={ChangeEmail}
+                    title="Change email"
+                  />
+                }
+                path="change-email"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={VerifyNewEmail}
+                    title="Verify new email address"
+                  />
+                }
+                path="verify-new-email"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={ChangePassword}
+                    title="Change password"
+                  />
+                }
+                path="change-password"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage Component={Export} title="Export data" />
+                }
+                path="export"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={LocationSettings}
+                    title="Location"
+                  />
+                }
+                path="location"
+              />
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={Notifications}
+                    title="Notifications"
+                  />
+                }
+                path="notifications"
+              />
+            </Route>
+            <Route path="/stats">
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={Overview}
+                    title="Stats overview"
+                  />
+                }
+                path=""
+              />
+
+              <Route
+                element={
+                  <StorageLoadedPage
+                    Component={Explore}
+                    title="Explore stats"
+                  />
+                }
+                path="explore"
+              />
+
+              <Route path="days">
+                <Route
+                  element={
+                    <StorageLoadedPage Component={Day} title="Day stats" />
+                  }
+                  path=":date"
+                />
+              </Route>
+              <Route path="weeks">
+                <Route
+                  element={
+                    <StorageLoadedPage Component={Week} title="Week stats" />
+                  }
+                  path=":date"
+                />
+              </Route>
+              <Route path="months">
+                <Route
+                  element={
+                    <StorageLoadedPage Component={Month} title="Month stats" />
+                  }
+                  path=":date"
+                />
+              </Route>
+              <Route path="years">
+                <Route
+                  element={
+                    <StorageLoadedPage Component={Year} title="Year stats" />
+                  }
+                  path=":date"
+                />
+              </Route>
+            </Route>
+          </>
+        ) : (
+          <>
             <Route
-              element={<AuthedOnlyPage Component={Month} title="Month stats" />}
-              path=":date"
+              element={
+                <StorageLoadedPage
+                  Component={ForgotPassword}
+                  title="Forgot password"
+                />
+              }
+              path="/forgot-password"
             />
-          </Route>
-          <Route path="years">
             <Route
-              element={<AuthedOnlyPage Component={Year} title="Year stats" />}
-              path=":date"
+              element={
+                <StorageLoadedPage
+                  Component={ResendVerification}
+                  title="Resend verification"
+                />
+              }
+              path="/resend-verification"
             />
-          </Route>
-        </Route>
+            <Route
+              element={
+                <StorageLoadedPage
+                  Component={ResetPassword}
+                  title="Reset password"
+                />
+              }
+              path="/reset-password"
+            />
+            <Route
+              element={<StorageLoadedPage Component={SignIn} title="Sign in" />}
+              path="/sign-in"
+            />
+            <Route
+              element={<StorageLoadedPage Component={SignUp} title="Sign up" />}
+              path="/sign-up"
+            />
+            <Route
+              element={<StorageLoadedPage Component={Verify} title="Verify" />}
+              path="/verify"
+            />
+          </>
+        )}
 
         <Route path="/about">
           <Route element={<Page Component={About} title="About" />} path="" />
@@ -229,46 +310,9 @@ export default function Routes() {
         />
 
         <Route
-          element={
-            <UnauthedOnlyPage
-              Component={ForgotPassword}
-              title="Forgot password"
-            />
-          }
-          path="/forgot-password"
+          element={userLoading ? <Spinner /> : <RedirectHome />}
+          path="*"
         />
-        <Route
-          element={
-            <UnauthedOnlyPage
-              Component={ResendVerification}
-              title="Resend verification"
-            />
-          }
-          path="/resend-verification"
-        />
-        <Route
-          element={
-            <UnauthedOnlyPage
-              Component={ResetPassword}
-              title="Reset password"
-            />
-          }
-          path="/reset-password"
-        />
-        <Route
-          element={<UnauthedOnlyPage Component={SignIn} title="Sign in" />}
-          path="/sign-in"
-        />
-        <Route
-          element={<UnauthedOnlyPage Component={SignUp} title="Sign up" />}
-          path="/sign-up"
-        />
-        <Route
-          element={<UnauthedOnlyPage Component={Verify} title="Verify" />}
-          path="/verify"
-        />
-
-        <Route element={<RedirectHome />} path="*" />
       </ReactRouterRoutes>
     </App>
   );
