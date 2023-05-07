@@ -5,7 +5,7 @@ interface Props {
   title: string;
 }
 
-export function Page({ Component, title, ...rest }: Props) {
+export default function Page({ Component, title, ...rest }: Props) {
   React.useEffect(() => {
     document.title = `MoodTracker - ${title}`;
   }, [title]);
