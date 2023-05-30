@@ -1,4 +1,4 @@
-import { Dialog, Button } from "eri";
+import { Dialog, Button, Icon } from "eri";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import eventsSlice from "../../../../store/eventsSlice";
@@ -29,9 +29,11 @@ export default function MoodDeleteDialog({ id, onClose, open }: Props) {
             navigate("/");
           }}
         >
+          <Icon margin="end" name="trash" />
           Delete
         </Button>
         <Button onClick={onClose} variant="secondary">
+          <Icon margin="end" name="cross" />
           Cancel
         </Button>
       </Button.Group>

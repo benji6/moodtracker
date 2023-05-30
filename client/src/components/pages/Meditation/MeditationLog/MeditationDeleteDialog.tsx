@@ -1,4 +1,4 @@
-import { Dialog, Button } from "eri";
+import { Dialog, Button, Icon } from "eri";
 import { useDispatch } from "react-redux";
 import eventsSlice from "../../../../store/eventsSlice";
 import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
@@ -42,9 +42,11 @@ export default function MeditationDeleteDialog({ id, onClose, open }: Props) {
             onClose();
           }}
         >
+          <Icon margin="end" name="trash" />
           Delete
         </Button>
         <Button onClick={onClose} variant="secondary">
+          <Icon margin="end" name="cross" />
           Cancel
         </Button>
       </Button.Group>

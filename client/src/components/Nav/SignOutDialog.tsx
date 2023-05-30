@@ -1,4 +1,4 @@
-import { Dialog, Button } from "eri";
+import { Dialog, Button, Icon } from "eri";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { queryClient } from "../..";
@@ -52,9 +52,11 @@ export default function SignOutDialog({ onClose, open }: Props) {
           disabled={isLoading}
           onClick={handleSignOut}
         >
+          <Icon margin="end" name="sign-out" />
           Sign out
         </Button>
         <Button disabled={isLoading} onClick={onClose} variant="secondary">
+          <Icon margin="end" name="cross" />
           Cancel
         </Button>
       </Button.Group>

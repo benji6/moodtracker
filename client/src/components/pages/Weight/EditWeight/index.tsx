@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Paper, TextField } from "eri";
+import { Button, Icon, Paper, TextField } from "eri";
 import WeightDeleteDialog from "./WeightDeleteDialog";
 import { normalizedWeightsSelector } from "../../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,8 +98,12 @@ export default function EditWeight() {
             <p className="center negative">{ERRORS.noChanges}</p>
           )}
           <Button.Group>
-            <Button>Update</Button>
+            <Button>
+              <Icon margin="end" name="save" />
+              Save
+            </Button>
             <Button danger onClick={() => setIsDialogOpen(true)} type="button">
+              <Icon margin="end" name="trash" />
               Delete
             </Button>
             <Button
@@ -107,6 +111,7 @@ export default function EditWeight() {
               type="button"
               variant="secondary"
             >
+              <Icon margin="end" name="left" />
               Back
             </Button>
           </Button.Group>

@@ -1,4 +1,4 @@
-import { Button, Paper, RadioButton, TextArea, TextField } from "eri";
+import { Button, Icon, Paper, RadioButton, TextArea, TextField } from "eri";
 import MoodDeleteDialog from "./MoodDeleteDialog";
 import { normalizedMoodsSelector } from "../../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
@@ -134,8 +134,12 @@ export default function EditMood() {
             <p className="center negative">{ERRORS.noChanges}</p>
           )}
           <Button.Group>
-            <Button>Update</Button>
+            <Button>
+              <Icon margin="end" name="save" />
+              Save
+            </Button>
             <Button danger onClick={() => setIsDialogOpen(true)} type="button">
+              <Icon margin="end" name="trash" />
               Delete
             </Button>
             <Button
@@ -143,6 +147,7 @@ export default function EditMood() {
               type="button"
               variant="secondary"
             >
+              <Icon margin="end" name="left" />
               Back
             </Button>
           </Button.Group>

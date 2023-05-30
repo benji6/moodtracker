@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Paper, TextField } from "eri";
+import { Button, Icon, Paper, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../store/eventsSlice";
 import { Weight } from "../../../types";
@@ -64,7 +64,8 @@ export default function AddWeight() {
           <TextField {...FIELDS.weight} error={error} />
           <Button.Group>
             <Button data-test-id={TEST_IDS.weightAddSubmitButton}>
-              Submit
+              <Icon margin="end" name="save" />
+              Save
             </Button>
           </Button.Group>
         </form>

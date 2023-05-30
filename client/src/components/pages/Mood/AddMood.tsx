@@ -1,5 +1,6 @@
 import {
   Button,
+  Icon,
   Paper,
   RadioButton,
   SubHeading,
@@ -107,7 +108,10 @@ export default function AddMood() {
           <TextField {...FIELDS.description} error={descriptionError} />
           <TextArea {...FIELDS.exploration} />
           <Button.Group>
-            <Button data-test-id={TEST_IDS.addMoodSubmitButton}>Submit</Button>
+            <Button data-test-id={TEST_IDS.addMoodSubmitButton}>
+              <Icon margin="end" name="save" />
+              Save
+            </Button>
           </Button.Group>
         </form>
       </Paper>
