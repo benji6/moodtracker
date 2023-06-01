@@ -48,7 +48,7 @@
     "@types/d3-geo": "^3.0.2",
     "@types/d3-interpolate": "^3.0.1",
     "@types/file-saver": "^2.0.1",
-    "@types/jest": "^29.2.3",
+    "@types/jest": "^29.5.2",
     "@types/marked": "^5.0.0",
     "@types/papaparse": "^5.3.5",
     "@types/react": "^18.0.18",
