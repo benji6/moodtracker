@@ -1,4 +1,4 @@
-import { Paper, Pagination, Card, Button } from "eri";
+import { Paper, Pagination, Card, Button, Icon } from "eri";
 import { createDateFromLocalDateString, mapRight } from "../../../utils";
 import { moodIdsByDateSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
@@ -29,9 +29,18 @@ export default function MoodList() {
       <Paper data-test-id={TEST_IDS.moodList}>
         <h2>Home</h2>
         <Button.Group>
-          <Button onClick={() => navigate("/add")}>Add mood</Button>
-          <Button onClick={() => navigate("/weight/add")}>Add weight</Button>
-          <Button onClick={() => navigate("/meditation")}>Meditate</Button>
+          <Button onClick={() => navigate("/add")}>
+            <Icon margin="end" name="heart" />
+            Add mood
+          </Button>
+          <Button onClick={() => navigate("/weight/add")}>
+            <Icon margin="end" name="weight" />
+            Add weight
+          </Button>
+          <Button onClick={() => navigate("/meditation")}>
+            <Icon margin="end" name="bell" />
+            Meditate
+          </Button>
         </Button.Group>
       </Paper>
       {moodsGroupedByDay.length ? (
