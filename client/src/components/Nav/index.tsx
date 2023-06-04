@@ -17,7 +17,7 @@ import {
 } from "../../utils";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
-import MoodTrackerIcon from "../../icons/Icon";
+import AppIcon from "../../icons/AppIcon";
 import "./style.css";
 import { TEST_IDS } from "../../constants";
 
@@ -46,7 +46,7 @@ export default function Nav({ handleNavClose, open }: Props) {
         {userIsSignedIn && (
           <div className="m-nav__header">
             <div className="m-profile">
-              <MoodTrackerIcon className="br-max bs-0" />
+              <AppIcon className="br-max bs-0" />
               <b className="m-profile__state">Signed in</b>
               <em className="m-profile__email" title={userEmail}>
                 {userEmail}

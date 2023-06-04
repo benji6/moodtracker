@@ -1,9 +1,7 @@
 import * as React from "react";
 import "./style.css";
 
-export default function MoodTrackerIcon(
-  props: React.HtmlHTMLAttributes<SVGElement>
-) {
+export default function AppIcon(props: React.HtmlHTMLAttributes<SVGElement>) {
   return (
     <svg
       {...props}
