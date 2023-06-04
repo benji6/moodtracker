@@ -4,7 +4,7 @@ analytics:
 
 # Generates the CloudFormation file
 infra/cloudformation.yml: infra/cloudformation.template.yml infra/*.py
-	@./bin/cloudformation.py
+	@./bin/cloudformation.sh
 	@echo "🍄 CloudFormation template built successfully! 🍄"
 
 # Builds and validates the CloudFormation template

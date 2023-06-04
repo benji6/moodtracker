@@ -29,6 +29,7 @@
             "AWS::Cognito::UserPoolClient",
             "AWS::Cognito::UserPoolDomain",
             "AWS::Events::Rule",
+            "AWS::SES::ReceiptRule",
             "AWS::SNS::Topic"
           ]
         }
