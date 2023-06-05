@@ -1,9 +1,32 @@
 import os
 from troposphere import Ref, GetAtt, Sub, Ref
-import troposphere.awslambda as awslambda
-import troposphere.iam as iam
-import troposphere.apigateway as apigateway
-from constants import INFRA_DIR
+from troposphere import iam, awslambda, apigateway
+
+
+def api_gateway_resource(template, name, **kwargs):
+    template.add_resource(
+        apigateway.Resource(
+            name,
+            ParentId=GetAtt("ApiGateway", "RootResourceId"),
+            RestApiId=Ref("ApiGateway"),
+            **kwargs,
+        )
+    )
+
+
+def lambda_function(template, name, code_filename, **kwargs):
+    with open(os.path.join(os.path.dirname(__file__), "lambdas", code_filename)) as f:
+        lambda_code = f.read()
+
+    template.add_resource(
+        awslambda.Function(
+            name,
+            Code=awslambda.Code(ZipFile=lambda_code),
+            Handler="index.handler",
+            Runtime="python3.10",
+            **kwargs,
+        )
+    )
 
 
 def lambda_permission(template, name, function_name, principal, source_arn):
@@ -48,18 +71,13 @@ def lambda_role(template, name, policy_name, statement):
     )
 
 
-def lambda_endpoint(
+def lambda_api_method(
     template, name, method, statement, authorization=True, function_args={}
 ):
     snake_case_name = name.replace(" ", "_")
     pascal_case_name = name.title().replace(" ", "")
     title_method = method.title()
     lower_method = method.lower()
-
-    with open(
-        os.path.join(INFRA_DIR, f"{snake_case_name}_{lower_method}.lambda.py")
-    ) as f:
-        lambda_code = f.read()
 
     apigateway_args = (
         {
@@ -98,20 +116,18 @@ def lambda_endpoint(
             **apigateway_args,
         )
     )
-    template.add_resource(
-        awslambda.Function(
-            f"Lambda{pascal_case_name}{title_method}",
-            Code=awslambda.Code(ZipFile=lambda_code),
-            FunctionName=f"MoodTracker{pascal_case_name}{title_method}",
-            Handler="index.handler",
-            Role=GetAtt(f"Lambda{pascal_case_name}{title_method}Role", "Arn"),
-            Runtime="python3.10",
-            **{
-                "ReservedConcurrentExecutions": Ref("ApiReservedConcurrentExecutions"),
-                **function_args,
-            },
-        )
+    lambda_function(
+        template,
+        f"Lambda{pascal_case_name}{title_method}",
+        code_filename=f"{snake_case_name}_{lower_method}.py",
+        FunctionName=f"MoodTracker{pascal_case_name}{title_method}",
+        Role=GetAtt(f"Lambda{pascal_case_name}{title_method}Role", "Arn"),
+        **{
+            "ReservedConcurrentExecutions": Ref("ApiReservedConcurrentExecutions"),
+            **function_args,
+        },
     )
+
     lambda_permission(
         template,
         f"Lambda{pascal_case_name}{title_method}Permission",

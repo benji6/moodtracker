@@ -1,10 +1,10 @@
-from troposphere import GetAtt, Sub
-from modules import lambda_endpoint
-import troposphere.awslambda as awslambda
+from troposphere import awslambda, GetAtt, Sub
+from modules import api_gateway_resource, lambda_api_method
 
 
-def http_api(template):
-    lambda_endpoint(
+def http_api_resources(template):
+    api_gateway_resource(template, "ApiGatewayEventsResource", PathPart="events")
+    lambda_api_method(
         template,
         "events",
         "GET",
@@ -17,7 +17,7 @@ def http_api(template):
             ],
         },
     )
-    lambda_endpoint(
+    lambda_api_method(
         template,
         "events",
         "POST",
@@ -27,7 +27,9 @@ def http_api(template):
             "Resource": GetAtt("DynamoEventsTable", "Arn"),
         },
     )
-    lambda_endpoint(
+
+    api_gateway_resource(template, "ApiGatewayUsageResource", PathPart="usage")
+    lambda_api_method(
         template,
         "usage",
         "GET",
@@ -55,7 +57,9 @@ def http_api(template):
             },
         ],
     )
-    lambda_endpoint(
+
+    api_gateway_resource(template, "ApiGatewayWeatherResource", PathPart="weather")
+    lambda_api_method(
         template,
         "weather",
         "GET",
@@ -85,7 +89,11 @@ def http_api(template):
             "Timeout": 12,
         },
     )
-    lambda_endpoint(
+
+    api_gateway_resource(
+        template, "ApiGatewayWeeklyEmailsResource", PathPart="weekly-emails"
+    )
+    lambda_api_method(
         template,
         "weekly emails",
         "DELETE",
@@ -95,7 +103,7 @@ def http_api(template):
             "Resource": GetAtt("DynamoWeeklyEmailsTable", "Arn"),
         },
     )
-    lambda_endpoint(
+    lambda_api_method(
         template,
         "weekly emails",
         "POST",
@@ -105,7 +113,7 @@ def http_api(template):
             "Resource": GetAtt("DynamoWeeklyEmailsTable", "Arn"),
         },
     )
-    lambda_endpoint(
+    lambda_api_method(
         template,
         "weekly emails",
         "GET",
