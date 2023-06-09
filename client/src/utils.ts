@@ -102,7 +102,7 @@ export const computeMean = (xs: number[]): number => {
 };
 
 export const computeMeanSafe = (xs: number[]): number | undefined => {
-  if (!xs.length) return undefined;
+  if (!xs.length) return;
   let sum = 0;
   for (let i = 0; i < xs.length; i++) sum += xs[i];
   return sum / xs.length;
