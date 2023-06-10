@@ -96,6 +96,16 @@ def http_api_resources(template):
     lambda_api_method(
         template,
         "web push tokens",
+        "GET",
+        statement={
+            "Action": "dynamodb:Query",
+            "Effect": "Allow",
+            "Resource": GetAtt("DynamoWebPushTokensTable", "Arn"),
+        },
+    )
+    lambda_api_method(
+        template,
+        "web push tokens",
         "POST",
         statement={
             "Action": "dynamodb:PutItem",

@@ -35,6 +35,7 @@ def handler(event, context):
     }
     try:
         table.put_item(Item=item)
+        del item["userId"]
         return {
             "body": json.dumps(item),
             "headers": HEADERS,

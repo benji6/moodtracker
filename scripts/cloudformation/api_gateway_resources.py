@@ -53,6 +53,7 @@ def api_gateway_resources(template):
                 "ApiGatewayWeeklyEmailsDelete",
                 "ApiGatewayWeeklyEmailsGet",
                 "ApiGatewayWeeklyEmailsPost",
+                "ApiGatewayWebPushTokensGet",
                 "ApiGatewayWebPushTokensPost",
             ],
             RestApiId=Ref("ApiGateway"),
