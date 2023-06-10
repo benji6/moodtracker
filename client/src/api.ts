@@ -71,6 +71,7 @@ export const fetchWeather = async ({
   return response.json();
 };
 
+// events queries do not use react-query so they are made with retry
 export const eventsGet = async (
   cursor?: string
 ): Promise<{
@@ -93,7 +94,6 @@ export const eventsPost = async (events: AppEvent[]): Promise<void> => {
   if (!response.ok) throw Error(String(response.status));
 };
 
-// Below are used with react-query which handles retries
 export const weeklyEmailsGet = async (): Promise<boolean> => {
   const response = await fetchWithAuth(WEEKLY_EMAILS_URI);
   if (response.status === 404) return false;
@@ -114,7 +114,7 @@ export const weeklyEmailsEnable = async (): Promise<void> => {
 };
 
 export const usageGet = async (): Promise<{ expires: Date; usage: Usage }> => {
-  const response = await fetchWithRetry(USAGE_URI);
+  const response = await fetch(USAGE_URI);
   if (!response.ok) throw Error(String(response.status));
   const usage = await response.json();
   return {
