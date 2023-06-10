@@ -91,6 +91,20 @@ def http_api_resources(template):
     )
 
     api_gateway_resource(
+        template, "ApiGatewayWebPushTokensResource", PathPart="web-push-tokens"
+    )
+    lambda_api_method(
+        template,
+        "web push tokens",
+        "POST",
+        statement={
+            "Action": "dynamodb:PutItem",
+            "Effect": "Allow",
+            "Resource": GetAtt("DynamoWebPushTokensTable", "Arn"),
+        },
+    )
+
+    api_gateway_resource(
         template, "ApiGatewayWeeklyEmailsResource", PathPart="weekly-emails"
     )
     lambda_api_method(

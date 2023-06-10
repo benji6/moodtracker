@@ -70,6 +70,22 @@ def dynamo_resources(template):
     )
     table(
         template,
+        "DynamoWebPushTokensTable",
+        AttributeDefinitions=[
+            dynamodb.AttributeDefinition(AttributeName="userId", AttributeType="S"),
+            dynamodb.AttributeDefinition(
+                AttributeName="createdAt",
+                AttributeType="S",
+            ),
+        ],
+        KeySchema=[
+            dynamodb.KeySchema(AttributeName="userId", KeyType="HASH"),
+            dynamodb.KeySchema(AttributeName="createdAt", KeyType="RANGE"),
+        ],
+        TableName="moodtracker_web_push_tokens",
+    )
+    table(
+        template,
         "DynamoWeatherTable",
         AttributeDefinitions=[
             dynamodb.AttributeDefinition(

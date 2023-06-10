@@ -53,6 +53,7 @@ def api_gateway_resources(template):
                 "ApiGatewayWeeklyEmailsDelete",
                 "ApiGatewayWeeklyEmailsGet",
                 "ApiGatewayWeeklyEmailsPost",
+                "ApiGatewayWebPushTokensPost",
             ],
             RestApiId=Ref("ApiGateway"),
             StageDescription=apigateway.StageDescription(
