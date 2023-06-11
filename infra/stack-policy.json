@@ -6,6 +6,7 @@
         "StringEquals": {
           "ResourceType": [
             "AWS::ApiGateway::Method",
+            "AWS::ApiGateway::Resource",
             "AWS::IAM::Role",
             "AWS::Lambda::Function",
             "AWS::Lambda::Permission"
