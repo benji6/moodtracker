@@ -1,5 +1,6 @@
 import json
 from datetime import datetime, timezone
+import urllib.parse
 
 import boto3
 
@@ -13,18 +14,12 @@ def handler(event, context):
     user_id = event["requestContext"]["authorizer"]["claims"]["sub"]
 
     try:
-        token = json.loads(event["body"])["token"]
-    except json.JSONDecodeError as e:
-        print("JSONDecodeError", e)
-        return {
-            "body": json.dumps({"error": "Malformed request body"}),
-            "headers": HEADERS,
-            "statusCode": 400,
-        }
+        # checkov:skip=CKV_SECRET_6:False positive
+        token = urllib.parse.unquote(event["pathParameters"]["token"])
     except KeyError as e:
         print("KeyError", e)
         return {
-            "body": json.dumps({"error": "Request body is missing `token` property"}),
+            "body": json.dumps({"error": "Token not provided"}),
             "headers": HEADERS,
             "statusCode": 400,
         }

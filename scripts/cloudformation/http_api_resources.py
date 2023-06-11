@@ -1,4 +1,4 @@
-from troposphere import awslambda, GetAtt, Sub
+from troposphere import awslambda, GetAtt, Ref, Sub
 from modules import api_gateway_resource, lambda_api_method
 
 
@@ -93,6 +93,12 @@ def http_api_resources(template):
     api_gateway_resource(
         template, "ApiGatewayWebPushTokensResource", PathPart="web-push-tokens"
     )
+    api_gateway_resource(
+        template,
+        "ApiGatewayWebPushTokensPathResource",
+        ParentId=Ref("ApiGatewayWebPushTokensResource"),
+        PathPart="{token}",
+    )
     lambda_api_method(
         template,
         "web push tokens",
@@ -107,6 +113,7 @@ def http_api_resources(template):
         template,
         "web push tokens",
         "POST",
+        ResourceId=Ref(f"ApiGatewayWebPushTokensPathResource"),
         statement={
             "Action": "dynamodb:PutItem",
             "Effect": "Allow",

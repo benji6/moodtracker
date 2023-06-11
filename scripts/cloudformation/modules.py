@@ -3,11 +3,13 @@ from troposphere import Ref, GetAtt, Sub, Ref
 from troposphere import iam, awslambda, apigateway
 
 
-def api_gateway_resource(template, name, **kwargs):
+def api_gateway_resource(
+    template, name, ParentId=GetAtt("ApiGateway", "RootResourceId"), **kwargs
+):
     template.add_resource(
         apigateway.Resource(
             name,
-            ParentId=GetAtt("ApiGateway", "RootResourceId"),
+            ParentId=ParentId,
             RestApiId=Ref("ApiGateway"),
             **kwargs,
         )
@@ -72,7 +74,13 @@ def lambda_role(template, name, policy_name, statement):
 
 
 def lambda_api_method(
-    template, name, method, statement, authorization=True, function_args={}
+    template,
+    name,
+    method,
+    statement,
+    authorization=True,
+    function_args={},
+    ResourceId=None,
 ):
     snake_case_name = name.replace(" ", "_")
     pascal_case_name = name.title().replace(" ", "")
@@ -111,7 +119,9 @@ def lambda_api_method(
                     f"arn:aws:apigateway:${{AWS::Region}}:lambda:path/2015-03-31/functions/${{Lambda{pascal_case_name}{title_method}.Arn}}/invocations"
                 ),
             ),
-            ResourceId=Ref(f"ApiGateway{pascal_case_name}Resource"),
+            ResourceId=ResourceId
+            if ResourceId
+            else Ref(f"ApiGateway{pascal_case_name}Resource"),
             RestApiId=Ref("ApiGateway"),
             **apigateway_args,
         )
