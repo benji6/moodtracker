@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 import boto3
 
@@ -29,7 +29,7 @@ def handler(event, context):
             "statusCode": 400,
         }
     item = {
-        "createdAt": datetime.utcnow().isoformat(),
+        "createdAt": datetime.now(timezone.utc).isoformat(),
         "userId": user_id,
         "token": token,
     }
