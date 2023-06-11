@@ -1,11 +1,11 @@
 # NOTE: This will not scale beyond a certain number of
 # subscriptions as lambda excution is time-bound
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import boto3
 
-today = datetime.utcnow().date()
+today = datetime.now(timezone.utc).date()
 last_monday = today - timedelta(days=today.weekday() + 7)
 last_monday_iso = last_monday.isoformat()
 

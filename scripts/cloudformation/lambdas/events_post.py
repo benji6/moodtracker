@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal
 
 import boto3
@@ -25,7 +25,7 @@ def handler(event, context):
     try:
         with table.batch_writer() as batch:
             for event in events:
-                event["serverCreatedAt"] = datetime.utcnow().isoformat()
+                event["serverCreatedAt"] = datetime.now(timezone.utc).isoformat()
                 event["userId"] = user_id
                 batch.put_item(Item=event)
         return {"statusCode": 204}

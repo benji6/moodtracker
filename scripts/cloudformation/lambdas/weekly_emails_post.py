@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 
 import boto3
 
@@ -15,7 +15,7 @@ def handler(event, context):
     try:
         table.put_item(
             Item={
-                "createdAt": datetime.utcnow().isoformat(),
+                "createdAt": datetime.now(timezone.utc).isoformat(),
                 "userId": user_id,
             }
         )
