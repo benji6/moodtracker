@@ -13,7 +13,6 @@ from http_api_resources import http_api_resources
 from misc_resources import misc_resources
 from send_weekly_email_resources import send_weekly_email_resources
 
-
 template = Template()
 template.set_version("2010-09-09")
 template.add_parameter(

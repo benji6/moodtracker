@@ -93,6 +93,16 @@ def http_api_resources(template):
     api_gateway_resource(
         template, "ApiGatewayWebPushTokensResource", PathPart="web-push-tokens"
     )
+    lambda_api_method(
+        template,
+        "web push tokens",
+        "GET",
+        statement={
+            "Action": "dynamodb:Query",
+            "Effect": "Allow",
+            "Resource": GetAtt("DynamoWebPushTokensTable", "Arn"),
+        },
+    )
     api_gateway_resource(
         template,
         "ApiGatewayWebPushTokensPathResource",
@@ -102,9 +112,10 @@ def http_api_resources(template):
     lambda_api_method(
         template,
         "web push tokens",
-        "GET",
+        "DELETE",
+        ResourceId=Ref(f"ApiGatewayWebPushTokensPathResource"),
         statement={
-            "Action": "dynamodb:Query",
+            "Action": "dynamodb:DeleteItem",
             "Effect": "Allow",
             "Resource": GetAtt("DynamoWebPushTokensTable", "Arn"),
         },

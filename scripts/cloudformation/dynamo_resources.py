@@ -74,13 +74,13 @@ def dynamo_resources(template):
         AttributeDefinitions=[
             dynamodb.AttributeDefinition(AttributeName="userId", AttributeType="S"),
             dynamodb.AttributeDefinition(
-                AttributeName="createdAt",
+                AttributeName="token",
                 AttributeType="S",
             ),
         ],
         KeySchema=[
             dynamodb.KeySchema(AttributeName="userId", KeyType="HASH"),
-            dynamodb.KeySchema(AttributeName="createdAt", KeyType="RANGE"),
+            dynamodb.KeySchema(AttributeName="token", KeyType="RANGE"),
         ],
         TableName="moodtracker_web_push_tokens",
     )
