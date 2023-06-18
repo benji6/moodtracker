@@ -21,6 +21,13 @@ export const getRegistrationToken = async (): Promise<string> => {
   });
 };
 
-onMessage(messaging, (payload) =>
-  alert(`Message received: ${JSON.stringify(payload)}`)
-);
+onMessage(messaging, (payload) => {
+  const notification = payload.notification!;
+
+  new Notification(notification.title!, {
+    badge: notification.icon,
+    icon: notification.icon,
+    body: notification.body,
+    lang: "en",
+  });
+});
