@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner, Toggle } from "eri";
-import { queryClient } from "../..";
+import { queryClient } from "../../..";
 import {
   weeklyEmailsDisable,
   weeklyEmailsEnable,
   weeklyEmailsGet,
-} from "../../api";
-import { ERRORS } from "../../constants";
+} from "../../../api";
+import { ERRORS } from "../../../constants";
 
 export default function WeeklyEmailNotifications() {
   const { data, isError, isLoading } = useQuery(
@@ -32,7 +32,7 @@ export default function WeeklyEmailNotifications() {
       <h3>Weekly email updates</h3>
       <p>
         Opt in to receive an email update every Monday morning with your own
-        personal weekly mood report!
+        personal weekly mood report.
       </p>
       <Toggle
         checked={data}

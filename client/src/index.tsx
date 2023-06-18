@@ -1,5 +1,7 @@
 import "./sentry";
 import "eri/dist/index.css";
+import "./serviceWorkerRegistrationPromise";
+import "./firebase";
 import { StrictMode } from "react";
 import { BrowserRouter } from "react-router-dom";
 import * as ReactDOM from "react-dom/client";
@@ -55,9 +57,3 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     </BrowserRouter>
   </StrictMode>
 );
-
-if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator)
-  navigator.serviceWorker.register(
-    new URL("service-worker.ts", import.meta.url),
-    { type: "module" }
-  );

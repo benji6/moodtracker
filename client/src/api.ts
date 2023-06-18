@@ -13,6 +13,7 @@ const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
 const USAGE_URI = `${API_URI}/usage`;
 const WEATHER_URI = `${API_URI}/weather`;
+const WEB_PUSH_TOKENS_URI = `${API_URI}/web-push-tokens`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
 const fetchWithAuth: typeof fetch = async (
@@ -121,6 +122,37 @@ export const usageGet = async (): Promise<{ expires: Date; usage: Usage }> => {
     expires: new Date(response.headers.get("expires")!),
     usage,
   };
+};
+
+export const webPushTokensList = async (): Promise<{
+  tokens: {
+    createdAt: string;
+    token: string;
+  }[];
+}> => {
+  const response = await fetchWithAuth(WEB_PUSH_TOKENS_URI);
+  if (!response.ok) throw Error(String(response.status));
+  return response.json();
+};
+export const webPushTokensDelete = async (token: string): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${WEB_PUSH_TOKENS_URI}/${encodeURIComponent(token)}`,
+    { method: "DELETE" }
+  );
+  if (!response.ok) throw Error(String(response.status));
+};
+export const webPushTokensPost = async (
+  token: string
+): Promise<{
+  createdAt: string;
+  token: string;
+}> => {
+  const response = await fetchWithAuth(
+    `${WEB_PUSH_TOKENS_URI}/${encodeURIComponent(token)}`,
+    { method: "POST" }
+  );
+  if (!response.ok) throw Error(String(response.status));
+  return response.json();
 };
 
 const getLocationClient = (() => {

@@ -3,7 +3,10 @@ import "./sentry";
 import { join as pathJoin } from "path";
 
 const CACHE_NAME = "v1";
-const CACHE_LIST = (process.env.CACHE_LIST as string).split(",");
+const CACHE_LIST =
+  process.env.NODE_ENV === "production"
+    ? (process.env.CACHE_LIST as string).split(",")
+    : [];
 
 const sw: any = self;
 
