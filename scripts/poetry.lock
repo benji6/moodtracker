@@ -529,13 +529,13 @@ files = [
 
 [[package]]
 name = "checkov"
-version = "2.3.267"
+version = "2.3.309"
 description = "Infrastructure as code static analysis"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "checkov-2.3.267-py3-none-any.whl", hash = "sha256:24a96f27de24f2a19d6effb511882892d87bcf292ada08ab50ddb602738c6735"},
-    {file = "checkov-2.3.267.tar.gz", hash = "sha256:8e3edfcead6e8f806711e2f3b157fc84831ca9f3fc6cea9ee32b243b47536011"},
+    {file = "checkov-2.3.309-py3-none-any.whl", hash = "sha256:4fcd693e407731a548dc60abfcce489c8b7950ad0cbabd01b851702407fcd00c"},
+    {file = "checkov-2.3.309.tar.gz", hash = "sha256:6d363468bfe5f1648a96cc52070d78ea431972578759d8b3deb58fa6a81fc726"},
 ]
 
 [package.dependencies]
@@ -571,7 +571,7 @@ packageurl-python = "*"
 packaging = "*"
 policyuniverse = "*"
 prettytable = ">=3.0.0"
-pycep-parser = "0.4.0"
+pycep-parser = "0.4.1"
 pyston = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\" and implementation_name == \"cpython\""}
 pyston-autoload = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\" and implementation_name == \"cpython\""}
 pyyaml = ">=5.4.1"
@@ -1467,13 +1467,13 @@ idna = ["idna (>=2.1)"]
 
 [[package]]
 name = "pycep-parser"
-version = "0.4.0"
+version = "0.4.1"
 description = "A Python based Bicep parser"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "pycep_parser-0.4.0-py3-none-any.whl", hash = "sha256:f6061c31175062b2c6a38b37e0fa20469f08bd46ebbf5b40da3f100efcca350f"},
-    {file = "pycep_parser-0.4.0.tar.gz", hash = "sha256:f6cf51b32ee43fee27eb8d18e48b130e7618a17c48ab0b7dcab9740bbbb655e1"},
+    {file = "pycep_parser-0.4.1-py3-none-any.whl", hash = "sha256:27c87ad875538eb17d696002b266d921ce8eb3f7fa3b7fc09c1b3c085009527f"},
+    {file = "pycep_parser-0.4.1.tar.gz", hash = "sha256:a3edd1c3d280c283d614c865a854a693daf56c35cd4095b373016c214baa76dd"},
 ]
 
 [package.dependencies]
@@ -2246,4 +2246,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "54321ac011c79fd9845c475120fc0aa0ed9464cbe0251052da0c21da58fa1fd4"
+content-hash = "9ac0a72b8f9457e5ded6a6ccd8af967aee834be2771407f15f1df40f01944fa4"
