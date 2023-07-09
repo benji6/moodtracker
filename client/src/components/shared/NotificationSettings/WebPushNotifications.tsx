@@ -54,11 +54,14 @@ export default function WebPushNotifications() {
       tokenError.message.includes("messaging/permission-blocked")
     )
       registrationTokenErrorMessage =
-        "Notifications permission is disabled - you need to enable it to use this feature";
-    else if (tokenError.message === "Registration failed - push service error")
+        "Notifications permission is disabled - you will not receive any notifications unless you enable it";
+    else if (
+      tokenError.message === "Registration failed - push service error"
+    ) {
       registrationTokenErrorMessage =
         "Something went wrong, you may need to use a different browser or try again later";
-    else {
+      captureException(tokenError);
+    } else {
       registrationTokenErrorMessage =
         "Something went wrong, please try again later";
       captureException(tokenError);
