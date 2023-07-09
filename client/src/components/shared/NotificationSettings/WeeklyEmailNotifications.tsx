@@ -35,7 +35,7 @@ export default function WeeklyEmailNotifications() {
         personal weekly mood report.
       </p>
       <Toggle
-        checked={data}
+        checked={Boolean(data)}
         disabled={mutation.isLoading || isLoading}
         error={mutation.isError || isError ? ERRORS.network : undefined}
         onChange={() => mutation.mutate(Boolean(data))}
