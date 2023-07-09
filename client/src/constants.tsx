@@ -8,6 +8,12 @@ import {
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
 export const DESCRIPTION_MAX_LENGTH = 32;
+export const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDJUEfQvbke4ImRxqW5KwijugRKCzXw4BY",
+  appId: "1:189351604256:web:35457f768494fdf7e14c45",
+  messagingSenderId: "189351604256",
+  projectId: "moodtracker-4df02",
+} as const;
 export const MEDITATION_SEARCH_PARAM_TIME_KEY = "t";
 export const MINIMUM_WORD_CLOUD_WORDS = 5;
 export const MOOD_RANGE: [number, number] = [0, 10];

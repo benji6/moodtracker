@@ -3,6 +3,7 @@ import "./sentry";
 import { join as pathJoin } from "path";
 import { initializeApp } from "firebase/app";
 import { getMessaging } from "firebase/messaging/sw";
+import { FIREBASE_CONFIG } from "./constants";
 
 const CACHE_NAME = "v1";
 const CACHE_LIST =
@@ -12,12 +13,7 @@ const CACHE_LIST =
 
 const sw: any = self;
 
-const firebaseApp = initializeApp({
-  apiKey: "AIzaSyDJUEfQvbke4ImRxqW5KwijugRKCzXw4BY",
-  appId: "1:189351604256:web:35457f768494fdf7e14c45",
-  messagingSenderId: "189351604256",
-  projectId: "moodtracker-4df02",
-});
+const firebaseApp = initializeApp(FIREBASE_CONFIG);
 
 getMessaging(firebaseApp);
 

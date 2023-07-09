@@ -23,12 +23,8 @@ export default function useWebPushToken(): {
     if (permissionState === "granted") {
       setIsLoading(true);
       getRegistrationToken()
-        .then((t) => {
-          setToken(t);
-        })
-        .catch((e) => {
-          setError(e);
-        })
+        .then(setToken)
+        .catch(setError)
         .finally(() => setIsLoading(false));
     }
   }, [error?.message, permissionState]);
