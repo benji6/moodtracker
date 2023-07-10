@@ -4,7 +4,7 @@ const path = require("path");
 const { SOURCE_PATH } = require("./constants");
 
 const iconsDirPath = path.join(SOURCE_PATH, "icons");
-const iconPath = path.join(iconsDirPath, "icon.svg");
+const iconPath = path.join(iconsDirPath, "icon-without-css.svg");
 
 const faviconsConfig = {
   online: false,
