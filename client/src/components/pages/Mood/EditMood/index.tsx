@@ -69,7 +69,7 @@ export default function EditMood() {
         type: "v1/moods/update",
         createdAt: new Date().toISOString(),
         payload,
-      })
+      }),
     );
     navigate("/");
   };

@@ -52,11 +52,11 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
       // rounds values down (i.e. a 4.4 hour difference is returned as 4 hours).
       const differenceBefore = differenceInSeconds(
         meditationStartDate,
-        new Date(moodBeforeId)
+        new Date(moodBeforeId),
       );
       const differenceAfter = differenceInSeconds(
         new Date(moodAfterId),
-        meditationLogDate
+        meditationLogDate,
       );
 
       if (differenceBefore > SECONDS || differenceAfter > SECONDS) break;
@@ -65,11 +65,11 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
 
       if (moodBefore.description)
         wordsBeforeList = wordsBeforeList.concat(
-          getNormalizedTagsFromDescription(moodBefore.description)
+          getNormalizedTagsFromDescription(moodBefore.description),
         );
       if (moodAfter.description)
         wordsAfterList = wordsAfterList.concat(
-          getNormalizedTagsFromDescription(moodAfter.description)
+          getNormalizedTagsFromDescription(moodAfter.description),
         );
       break;
     }
@@ -126,7 +126,7 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
             On average the mood you recorded after meditation was{" "}
             <b>
               {oneDecimalPlaceFormatter.format(
-                Math.abs(averageMoodChangeAfterMeditation)
+                Math.abs(averageMoodChangeAfterMeditation),
               )}{" "}
               {averageMoodChangeAfterMeditation > 0 ? "higher" : "lower"}
             </b>{" "}

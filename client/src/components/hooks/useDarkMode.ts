@@ -5,7 +5,7 @@ const mediaQueryList = window.matchMedia(MEDIA_QUERY);
 
 export default function useDarkMode() {
   const [darkMode, setDarkMode] = useState(
-    window.matchMedia(MEDIA_QUERY).matches
+    window.matchMedia(MEDIA_QUERY).matches,
   );
 
   useEffect(() => {

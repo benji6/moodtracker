@@ -16,7 +16,7 @@ import { captureException } from "../../../sentry";
 export default function WebPushNotifications() {
   const { data, isError, isLoading } = useQuery(
     ["web-push-tokens"],
-    webPushTokensList
+    webPushTokensList,
   );
   const {
     error: tokenError,

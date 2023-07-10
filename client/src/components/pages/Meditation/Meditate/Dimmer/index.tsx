@@ -31,6 +31,6 @@ export default function Dimmer({ enabled, ...rest }: Props) {
         </span>
       )}
     </div>,
-    portalEl
+    portalEl,
   );
 }

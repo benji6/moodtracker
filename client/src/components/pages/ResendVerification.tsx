@@ -6,7 +6,7 @@ import { ERRORS } from "../../constants";
 const resendConfirmation = ({ email }: { email: string }) =>
   new Promise((resolve, reject) => {
     createCognitoUser(email).resendConfirmationCode((err, result) =>
-      err ? reject(err) : resolve(result)
+      err ? reject(err) : resolve(result),
     );
   });
 

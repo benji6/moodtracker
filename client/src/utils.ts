@@ -23,7 +23,7 @@ export const capitalizeFirstLetter = (s: string): string =>
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): number | undefined => {
   if (!moods.allIds.length) {
     captureException(Error("No moods"));
@@ -67,7 +67,7 @@ export const computeAverageMoodInInterval = (
       area += trapeziumArea(
         mood0 + ((mood1 - mood0) * (d0 - t0)) / (t1 - t0),
         mood0 + ((mood1 - mood0) * (d1 - t0)) / (t1 - t0),
-        d1 - d0
+        d1 - d0,
       );
       continue;
     }
@@ -76,7 +76,7 @@ export const computeAverageMoodInInterval = (
       area += trapeziumArea(
         mood1 + ((mood0 - mood1) * (t1 - d0)) / (t1 - t0),
         mood1,
-        t1 - d0
+        t1 - d0,
       );
       continue;
     }
@@ -85,7 +85,7 @@ export const computeAverageMoodInInterval = (
       area += trapeziumArea(
         mood0,
         mood0 + ((mood1 - mood0) * (d1 - t0)) / (t1 - t0),
-        d1 - t0
+        d1 - t0,
       );
       break;
     }
@@ -111,7 +111,7 @@ export const computeMeanSafe = (xs: number[]): number | undefined => {
 export const computeSecondsMeditatedInInterval = (
   { allIds, byId }: NormalizedMeditations,
   d0: Date,
-  d1: Date
+  d1: Date,
 ): number => {
   let sum = 0;
   for (const id of getIdsInInterval(allIds, d0, d1)) sum += byId[id].seconds;
@@ -144,7 +144,7 @@ export const createChartRange = (values: number[]): [number, number] => {
   const { length } = values;
   if (length < 2)
     throw Error(
-      `\`createChartRange\` requires at least 2 values but received ${length}`
+      `\`createChartRange\` requires at least 2 values but received ${length}`,
     );
 
   const maxValue = Math.max(...values);
@@ -157,7 +157,7 @@ export const createDateFromLocalDateString = (dateString: string) =>
   new Date(`${dateString}T00:00:00`);
 
 export const getNormalizedTagsFromDescription = (
-  description: string
+  description: string,
 ): string[] => {
   const descriptions: string[] = [];
   for (const word of description.split(/\s+/)) {
@@ -173,7 +173,7 @@ export const getNormalizedTagsFromDescription = (
 export const getEnvelopingIds = (
   ids: NormalizedMoods["allIds"],
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): NormalizedMoods["allIds"] => {
   if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
 
@@ -190,14 +190,14 @@ export const getEnvelopingIds = (
   const j = bisectLeft(ids, toIso, i);
   return ids.slice(
     Math.max(i - 1, 0),
-    Math.min(j + 2 - Number(i === j), ids.length + 1)
+    Math.min(j + 2 - Number(i === j), ids.length + 1),
   );
 };
 
 export const getIdsInInterval = (
   ids: string[],
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): typeof ids => {
   if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
   const fromIso = dateFrom.toISOString();
@@ -276,19 +276,19 @@ export const getWeatherDisplayData = ({
 export const formatIsoDateInLocalTimezone = (date: Date): string =>
   `${formatIsoMonthInLocalTimezone(date)}-${String(date.getDate()).padStart(
     2,
-    "0"
+    "0",
   )}`;
 
 export const formatIsoDateHourInLocalTimezone = (date: Date): string =>
   `${formatIsoDateInLocalTimezone(date)}T${String(date.getHours()).padStart(
     2,
-    "0"
+    "0",
   )}:00:00.000Z`;
 
 export const formatIsoMonthInLocalTimezone = (date: Date): string =>
   `${formatIsoYearInLocalTimezone(date)}-${String(date.getMonth() + 1).padStart(
     2,
-    "0"
+    "0",
   )}`;
 
 export const formatIsoYearInLocalTimezone = (date: Date): string =>
@@ -297,7 +297,7 @@ export const formatIsoYearInLocalTimezone = (date: Date): string =>
 export const formatSecondsAsTime = (seconds: number): string =>
   `${String(Math.floor(seconds / TIME.secondsPerMinute)).padStart(
     2,
-    "0"
+    "0",
   )}:${String(Math.floor(seconds % TIME.secondsPerMinute)).padStart(2, "0")}`;
 
 export const getWeekdayIndex = (date: Date): 0 | 1 | 2 | 3 | 4 | 5 | 6 => {

@@ -42,7 +42,7 @@ import ExportControls from "../../Settings/Export/ExportControls";
 const DAYS_PER_PAGE = 7;
 
 const groupMoodIdsByDay = (
-  moodIds: string[]
+  moodIds: string[],
 ): [dateStr: string, moodIds: string[]][] => {
   const moodsGroupedByDate: { [date: string]: string[] } = {};
 
@@ -62,12 +62,12 @@ export default function MoodLog() {
   const moodIdsByDate = useSelector(moodIdsByDateSelector);
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
   const normalizedDescriptionWords = useSelector(
-    normalizedDescriptionWordsSelector
+    normalizedDescriptionWordsSelector,
   );
   const dateNow = new Date();
   const [dateTo, setDateTo] = React.useState(roundDateUp(dateNow));
   const [dateFrom, setDateFrom] = React.useState(
-    roundDateDown(new Date(moods.allIds[0]))
+    roundDateDown(new Date(moods.allIds[0])),
   );
 
   const filterDescriptions = localState.filterDescription
@@ -93,8 +93,8 @@ export default function MoodLog() {
       if (filterDescriptions.length) {
         const normalizedMoodDescription = mood.description?.toLowerCase();
         if (
-          !filterDescriptions.every((description) =>
-            normalizedMoodDescription?.includes(description)
+          !filterDescriptions.every(
+            (description) => normalizedMoodDescription?.includes(description),
           )
         )
           return false;
@@ -123,7 +123,7 @@ export default function MoodLog() {
 
   const pageCount = Math.max(
     Math.ceil(filteredMoodsGroupedByDay.length / DAYS_PER_PAGE),
-    1
+    1,
   );
 
   let averageMood: undefined | number;
@@ -202,7 +202,7 @@ export default function MoodLog() {
                             payload: Number(e.target.value),
                             type: "filterMood/set",
                           }
-                        : { type: "filterMood/clear" }
+                        : { type: "filterMood/clear" },
                     )
                   }
                   required={false}
@@ -253,7 +253,7 @@ export default function MoodLog() {
         mapRight(
           filteredMoodsGroupedByDay.slice(
             Math.max(endIndex - DAYS_PER_PAGE, 0),
-            endIndex
+            endIndex,
           ),
           ([dayStr, ids]) => {
             const day = createDateFromLocalDateString(dayStr);
@@ -275,7 +275,7 @@ export default function MoodLog() {
                 </Card.Group>
               </Paper>
             );
-          }
+          },
         )
       ) : (
         <Paper>

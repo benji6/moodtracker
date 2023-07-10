@@ -28,7 +28,7 @@ export default function MeditationDeleteDialog({ id, onClose, open }: Props) {
           onClick={() => {
             if (!id) {
               captureException(
-                Error("Dialog button was pressed while dialog was closed")
+                Error("Dialog button was pressed while dialog was closed"),
               );
               return;
             }
@@ -37,7 +37,7 @@ export default function MeditationDeleteDialog({ id, onClose, open }: Props) {
                 type: "v1/meditations/delete",
                 createdAt: new Date().toISOString(),
                 payload: id,
-              })
+              }),
             );
             onClose();
           }}

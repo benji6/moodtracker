@@ -15,8 +15,8 @@ describe("MoodChartForPeriod", () => {
         [
           new Date("2020-07-25T00:00:00.000Z").getTime(),
           new Date("2020-07-27T00:00:00.000Z").getTime(),
-        ]
-      )
+        ],
+      ),
     ).toMatchInlineSnapshot(`
       [
         [

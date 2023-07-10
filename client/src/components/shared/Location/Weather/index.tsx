@@ -141,7 +141,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
                     case "wind_speed":
                     case "wind_gust":
                       displayValue = `${twoDecimalPlacesFormatter.format(
-                        v
+                        v,
                       )} m/s`;
                   }
 

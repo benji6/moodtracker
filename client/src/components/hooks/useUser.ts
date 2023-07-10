@@ -35,7 +35,7 @@ export default function useUser(): void {
               userSlice.actions.set({
                 email: idToken.payload.email,
                 id: idToken.payload.sub,
-              })
+              }),
             );
         } catch (e) {
           if (e instanceof Error && e.message !== "No current user") return;
@@ -43,6 +43,6 @@ export default function useUser(): void {
           dispatch(eventsSlice.actions.clear());
         }
       })(),
-    [dispatch]
+    [dispatch],
   );
 }

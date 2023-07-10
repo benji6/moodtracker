@@ -19,7 +19,7 @@ export default function TemperatureForPeriod({
 }: Props) {
   const envelopingEventIdsWithLocation = useEnvelopingEventIdsWithLocation(
     dateFrom,
-    dateTo
+    dateTo,
   );
   const weatherResults = useWeatherQueries(envelopingEventIdsWithLocation);
 

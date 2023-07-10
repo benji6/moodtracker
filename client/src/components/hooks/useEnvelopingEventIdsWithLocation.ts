@@ -4,7 +4,7 @@ import { getEnvelopingIds } from "../../utils";
 
 export default function useEnvelopingEventIdsWithLocation(
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): string[] {
   const ids = useSelector(eventsAllIdsWithLocationSelector);
   return getEnvelopingIds(ids, dateFrom, dateTo);

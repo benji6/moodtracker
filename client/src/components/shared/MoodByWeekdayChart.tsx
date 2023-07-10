@@ -11,7 +11,7 @@ interface Props {
     [string, number | undefined],
     [string, number | undefined],
     [string, number | undefined],
-    [string, number | undefined]
+    [string, number | undefined],
   ];
   onClick?(i: number): void;
 }

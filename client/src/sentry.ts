@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "production")
 
 export const captureException: typeof Sentry.captureException = (
   exception,
-  context
+  context,
 ) =>
   process.env.NODE_ENV === "production"
     ? Sentry.captureException(exception, context)

@@ -28,7 +28,7 @@ describe("meditation", () => {
 
     test("using a preset time", async () => {
       const button = (await page.$(
-        `${SELECTORS.meditationPresetTimeButton}[data-minutes="10"]`
+        `${SELECTORS.meditationPresetTimeButton}[data-minutes="10"]`,
       ))!;
       button.tap();
       await page.waitForSelector(SELECTORS.meditatePage);
@@ -43,7 +43,7 @@ describe("meditation", () => {
       expect(error).toBeNull();
 
       const customTimeInput = (await page.$(
-        SELECTORS.meditationCustomTimeInput
+        SELECTORS.meditationCustomTimeInput,
       ))!;
       await customTimeInput.press("Enter");
 

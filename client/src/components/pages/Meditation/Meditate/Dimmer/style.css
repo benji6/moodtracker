@@ -25,14 +25,17 @@
     var(--easing-accelerate) infinite;
   color: var(--color-highlight-default);
   font-weight: var(--font-weight-bold);
-  text-shadow: 0 0 0.75em, 0 0 1.5em;
+  text-shadow:
+    0 0 0.75em,
+    0 0 1.5em;
   user-select: none;
 }
 .m-dimmer__text-container {
   --text-display-time: 8s;
 
-  animation: m-dimmer-text-fade var(--text-display-time)
-      var(--easing-accelerate) forwards,
+  animation:
+    m-dimmer-text-fade var(--text-display-time) var(--easing-accelerate)
+      forwards,
     m-dimmer-text-bounce calc(var(--text-display-time) / 4)
       var(--easing-accelerate) infinite;
   text-align: center;

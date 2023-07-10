@@ -145,7 +145,7 @@ export default function Usage() {
                   label: monthYearShortFormatter.format(new Date(k)),
                   y,
                   title: `${k}: ${integerFormatter.format(
-                    y
+                    y,
                   )} new confirmed user${y === 1 ? "" : "s"}`,
                 };
               })
@@ -169,7 +169,7 @@ export default function Usage() {
                   label: monthYearShortFormatter.format(new Date(k)),
                   y,
                   title: `${k}: ${integerFormatter.format(
-                    y
+                    y,
                   )} new unconfirmed user${y === 1 ? "" : "s"}`,
                 };
               })
@@ -198,7 +198,7 @@ export default function Usage() {
                   key: k,
                   title: `${label}: ${integerFormatter.format(y)}`,
                 };
-              }
+              },
             )}
             rotateXLabels
             xAxisTitle="Weekday"
@@ -223,7 +223,7 @@ export default function Usage() {
             [
               "Total time meditated by all users over the last 30 days",
               formatDurationFromSeconds(
-                data.usage.last30Days.meditationSeconds
+                data.usage.last30Days.meditationSeconds,
               ),
             ],
             [

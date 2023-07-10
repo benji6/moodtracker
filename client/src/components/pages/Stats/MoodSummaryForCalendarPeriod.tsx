@@ -33,10 +33,10 @@ export default function MoodSummaryForCalendarPeriod({
   const meditations = useSelector(normalizedMeditationsSelector);
   const moods = useSelector(normalizedMoodsSelector);
   const weightsInPeriod = useWeightsInPeriod(date1, date2).map(
-    ({ value }) => value
+    ({ value }) => value,
   );
   const weightsInPreviousPeriod = useWeightsInPeriod(date0, date1).map(
-    ({ value }) => value
+    ({ value }) => value,
   );
 
   const firstMoodDate = new Date(moods.allIds[0]);
@@ -56,7 +56,7 @@ export default function MoodSummaryForCalendarPeriod({
           secondsMeditated: computeSecondsMeditatedInInterval(
             meditations,
             date1,
-            date2
+            date2,
           ),
           standardDeviation: computeStandardDeviation(moodValues),
           total: moodValues.length,
@@ -76,7 +76,7 @@ export default function MoodSummaryForCalendarPeriod({
                 secondsMeditated: computeSecondsMeditatedInInterval(
                   meditations,
                   date0,
-                  date1
+                  date1,
                 ),
                 standardDeviation: computeStandardDeviation(prevMoodValues),
                 total: prevMoodValues.length,

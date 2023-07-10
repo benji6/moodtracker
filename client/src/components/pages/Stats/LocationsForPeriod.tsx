@@ -14,7 +14,7 @@ export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
   const eventsById = useSelector(eventsByIdSelector);
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     dateFrom,
-    dateTo
+    dateTo,
   );
 
   const coordinatesToRender = new Set();

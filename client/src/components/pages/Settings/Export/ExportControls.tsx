@@ -13,10 +13,10 @@ type DenormalizedTrackedCatergories = Meditation[] | Mood[] | Weight[];
 
 const createFilename = (
   dataType: EventTypeCategories,
-  extension: "csv" | "json"
+  extension: "csv" | "json",
 ): string =>
   `moodtracker-${dataType}-export-${formatIsoDateInLocalTimezone(
-    new Date()
+    new Date(),
   )}.${extension}`;
 
 interface FlattenedDatum {
@@ -25,7 +25,7 @@ interface FlattenedDatum {
 
 const downloadCsv = (
   dataType: EventTypeCategories,
-  denormalizedData: DenormalizedTrackedCatergories
+  denormalizedData: DenormalizedTrackedCatergories,
 ) => {
   const columns: Set<string> = new Set();
   const flattenedDenormalizedData: FlattenedDatum[] = [];
@@ -39,7 +39,7 @@ const downloadCsv = (
         continue;
       }
       for (const [k, v] of Object.entries(
-        val as Record<string, number | string>
+        val as Record<string, number | string>,
       )) {
         const flattenedKey = `${key}:${k}`;
         flattenedDatum[flattenedKey] = v;
@@ -53,19 +53,19 @@ const downloadCsv = (
     new Blob([unparse(flattenedDenormalizedData, { columns: [...columns] })], {
       type: "text/csv",
     }),
-    createFilename(dataType, "csv")
+    createFilename(dataType, "csv"),
   );
 };
 
 const downloadJson = (
   dataType: EventTypeCategories,
-  denormalizedData: DenormalizedTrackedCatergories
+  denormalizedData: DenormalizedTrackedCatergories,
 ) => {
   saveAs(
     new Blob([JSON.stringify(denormalizedData)], {
       type: "application/json",
     }),
-    createFilename(dataType, "json")
+    createFilename(dataType, "json"),
   );
 };
 

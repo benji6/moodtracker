@@ -21,12 +21,12 @@ const MAX_WEEKS_PER_PAGE = 8;
 
 export default function Weeks() {
   const normalizedAveragesByWeek = useSelector(
-    normalizedAveragesByWeekSelector
+    normalizedAveragesByWeekSelector,
   );
   const [page, setPage] = React.useState(0);
 
   const pageCount = Math.ceil(
-    normalizedAveragesByWeek.allIds.length / MAX_WEEKS_PER_PAGE
+    normalizedAveragesByWeek.allIds.length / MAX_WEEKS_PER_PAGE,
   );
   const endIndex =
     normalizedAveragesByWeek.allIds.length - MAX_WEEKS_PER_PAGE * page;
@@ -54,7 +54,7 @@ export default function Weeks() {
                   <td>
                     <Link
                       to={`weeks/${formatIsoDateInLocalTimezone(
-                        startOfWeek(week, WEEK_OPTIONS)
+                        startOfWeek(week, WEEK_OPTIONS),
                       )}`}
                     >
                       {weekFormattedString}
@@ -69,7 +69,7 @@ export default function Weeks() {
                   <MoodCell mood={normalizedAveragesByWeek.byId[dateString]!} />
                 </tr>
               );
-            }
+            },
           )}
         </tbody>
       </table>

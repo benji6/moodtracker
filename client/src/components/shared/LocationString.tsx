@@ -31,8 +31,8 @@ export default function LocationString({
         `Failed to derive location name for ${JSON.stringify({
           latitude,
           longitude,
-        })}. Results: ${JSON.stringify(data.Results)}`
-      )
+        })}. Results: ${JSON.stringify(data.Results)}`,
+      ),
     );
     return errorFallback ?? null;
   }

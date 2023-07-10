@@ -24,7 +24,7 @@ export default function MoodDeleteDialog({ id, onClose, open }: Props) {
                 type: "v1/moods/delete",
                 createdAt: new Date().toISOString(),
                 payload: id,
-              })
+              }),
             );
             navigate("/");
           }}

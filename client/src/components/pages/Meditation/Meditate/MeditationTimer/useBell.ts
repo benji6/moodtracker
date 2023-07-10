@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 import useHasBeenActive from "../../../../hooks/useHasBeenActive";
 
 const meditationBellUri = String(
-  new URL("meditation-bell.mp3", import.meta.url)
+  new URL("meditation-bell.mp3", import.meta.url),
 );
 
 const arrayBufferPromise = fetch(meditationBellUri).then((response) =>
-  response.arrayBuffer()
+  response.arrayBuffer(),
 );
 
 let audioBufferPromise: Promise<AudioBuffer>;
@@ -28,7 +28,7 @@ export default function useBell(): Bell | void {
 
     if (!audioBufferPromise)
       audioBufferPromise = arrayBufferPromise.then((arrayBuffer) =>
-        audioContext.decodeAudioData(arrayBuffer)
+        audioContext.decodeAudioData(arrayBuffer),
       );
 
     bellRef.current = {

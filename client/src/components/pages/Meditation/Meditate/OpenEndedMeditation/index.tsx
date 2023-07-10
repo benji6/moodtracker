@@ -28,7 +28,7 @@ export default function OpenEndedMeditation() {
         type: "v1/meditations/create",
         createdAt: new Date().toISOString(),
         payload,
-      })
+      }),
     );
     navigate("/meditation");
   }, [dispatch, geolocation, navigate, roundedSecondsElapsed]);

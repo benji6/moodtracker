@@ -42,7 +42,7 @@ export default function MoodChartForPeriod({
         hidePoints={hidePoints}
         trendlinePoints={computeTrendlinePoints(
           { ...moods, allIds: envelopingMoodIds },
-          domain
+          domain,
         )}
         xAxisTitle={xAxisTitle}
         xLabels={xLabels}

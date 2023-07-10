@@ -36,11 +36,11 @@ export default function withStatsPage({
     props: Omit<
       Props,
       "date" | "nextDate" | "prevDate" | "showNext" | "showPrevious"
-    >
+    >,
   ) {
     const { date: dateStr } = useParams();
     const eventsHasLoadedFromServer = useSelector(
-      eventsHasLoadedFromServerSelector
+      eventsHasLoadedFromServerSelector,
     );
     const moods = useSelector(normalizedMoodsSelector);
 

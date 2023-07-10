@@ -18,11 +18,11 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
   const [filterOutPreviousPeriod, setFilterOutPreviousPeriod] = useState(false);
   const currentPeriodWords = useMoodCloudWords(
     currentPeriod.dateFrom,
-    currentPeriod.dateTo
+    currentPeriod.dateTo,
   );
   const previousPeriodWords = useMoodCloudWords(
     previousPeriod.dateFrom,
-    previousPeriod.dateTo
+    previousPeriod.dateTo,
   );
 
   if (

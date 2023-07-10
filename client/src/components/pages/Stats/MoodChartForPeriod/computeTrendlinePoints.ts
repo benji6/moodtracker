@@ -6,7 +6,7 @@ const TRENDLINE_MOVING_AVERAGE_PERIOD_COUNT = 3;
 
 export default function computeTrendlinePoints(
   moods: NormalizedMoods,
-  domain: [number, number]
+  domain: [number, number],
 ): [number, number][] {
   const period = (domain[1] - domain[0]) / TRENDLINE_POINTS_COUNT;
   const earliestMoodTime = new Date(moods.allIds[0]).getTime();
@@ -24,7 +24,7 @@ export default function computeTrendlinePoints(
     const mood = computeAverageMoodInInterval(
       moods,
       new Date(t0),
-      new Date(t1)
+      new Date(t1),
     );
     if (mood !== undefined) trendlinePoints.push([trendlineX, mood]);
   }

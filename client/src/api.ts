@@ -18,7 +18,7 @@ const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
 const fetchWithAuth: typeof fetch = async (
   input: RequestInfo | URL,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<Response> => {
   const idToken = await getIdToken();
   return fetch(input, {
@@ -32,7 +32,7 @@ const fetchWithAuth: typeof fetch = async (
 
 const fetchWithRetry: typeof fetch = async (
   input: RequestInfo | URL,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<Response> => {
   let retriesLeft = 3;
   let response = await fetch(input, init);
@@ -46,7 +46,7 @@ const fetchWithRetry: typeof fetch = async (
 
 const fetchWithAuthAndRetry: typeof fetch = async (
   input: RequestInfo | URL,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<Response> => {
   const idToken = await getIdToken();
   return fetchWithRetry(input, {
@@ -66,7 +66,7 @@ export const fetchWeather = async ({
   >;
 }): Promise<WeatherApiResponse> => {
   const response = await fetchWithAuth(
-    `${WEATHER_URI}?lat=${latitude}&lon=${longitude}&t=${date}`
+    `${WEATHER_URI}?lat=${latitude}&lon=${longitude}&t=${date}`,
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
@@ -74,14 +74,14 @@ export const fetchWeather = async ({
 
 // events queries do not use react-query so they are made with retry
 export const eventsGet = async (
-  cursor?: string
+  cursor?: string,
 ): Promise<{
   events: AppEvent[];
   hasNextPage: boolean;
   nextCursor: string;
 }> => {
   const response = await fetchWithAuthAndRetry(
-    cursor ? `${EVENTS_URI}/?cursor=${encodeURIComponent(cursor)}` : EVENTS_URI
+    cursor ? `${EVENTS_URI}/?cursor=${encodeURIComponent(cursor)}` : EVENTS_URI,
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
@@ -137,19 +137,19 @@ export const webPushTokensList = async (): Promise<{
 export const webPushTokensDelete = async (token: string): Promise<void> => {
   const response = await fetchWithAuth(
     `${WEB_PUSH_TOKENS_URI}/${encodeURIComponent(token)}`,
-    { method: "DELETE" }
+    { method: "DELETE" },
   );
   if (!response.ok) throw Error(String(response.status));
 };
 export const webPushTokensPost = async (
-  token: string
+  token: string,
 ): Promise<{
   createdAt: string;
   token: string;
 }> => {
   const response = await fetchWithAuth(
     `${WEB_PUSH_TOKENS_URI}/${encodeURIComponent(token)}`,
-    { method: "POST" }
+    { method: "POST" },
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
@@ -168,7 +168,7 @@ const getLocationClient = (() => {
       getIdToken().then((idToken) => {
         const idTokenExpiresAt = subMinutes(
           new Date(idToken.getExpiration() * 1e3),
-          5
+          5,
         );
         // Will expire after an hour, we use 55 minutes out of an abundance of caution
         const locationClientExpiresAt = addMinutes(now, 55);
@@ -187,7 +187,7 @@ const getLocationClient = (() => {
                   idToken.getJwtToken(),
               },
             }),
-          })
+          }),
         );
         state = "SETTLED";
       });
@@ -211,6 +211,6 @@ export const getReverseGeolocation = async ({
       Language: "en-GB",
       MaxResults: 1,
       Position: [longitude, latitude],
-    })
+    }),
   );
 };

@@ -8,7 +8,7 @@ import { path } from "./utils";
 const features: any[] = (
   feature(
     worldTopoJson as any,
-    worldTopoJson.objects.ne_110m_admin_0_countries as any
+    worldTopoJson.objects.ne_110m_admin_0_countries as any,
   ) as any
 ).features;
 

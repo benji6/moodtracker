@@ -13,7 +13,7 @@ interface Props {
 export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     dateFrom,
-    dateTo
+    dateTo,
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 
@@ -38,7 +38,7 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
       const [label, iconName, color] = key.split(":") as [
         string,
         ComponentProps<typeof Icon>["name"],
-        string
+        string,
       ];
       return {
         color,

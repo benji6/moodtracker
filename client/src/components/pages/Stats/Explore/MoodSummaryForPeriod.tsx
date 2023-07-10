@@ -19,12 +19,12 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const meditations = useSelector(normalizedMeditationsSelector);
   const moodValues = useMoodsInPeriod(dateFrom, dateTo).map(({ mood }) => mood);
   const weightsInPeriod = useWeightsInPeriod(dateFrom, dateTo).map(
-    ({ value }) => value
+    ({ value }) => value,
   );
   const secondsMeditated = computeSecondsMeditatedInInterval(
     meditations,
     dateFrom,
-    dateTo
+    dateTo,
   );
 
   return (

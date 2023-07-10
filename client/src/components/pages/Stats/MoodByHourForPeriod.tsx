@@ -16,7 +16,7 @@ interface Props {
 
 export default function MoodByHourForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedAveragesByHour = useSelector(
-    normalizedAveragesByHourSelector
+    normalizedAveragesByHourSelector,
   );
   const moodsByHourIndex: (number[] | undefined)[] = [
     ...Array(TIME.daysPerWeek),

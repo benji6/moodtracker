@@ -41,7 +41,7 @@ export default function MoodByWeatherChart({ data }: Props) {
             ),
             title,
             y,
-          })
+          }),
         )}
         maxRange={MOOD_EXTENT}
         rotateXLabels

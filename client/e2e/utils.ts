@@ -25,7 +25,7 @@ export const createPageAndSignIn = async (browser: Browser): Promise<Page> => {
 
 export const signIn = async (page: Page): Promise<void> => {
   const signInLink = (await page.waitForSelector(
-    SELECTORS.signInLink
+    SELECTORS.signInLink,
   )) as ElementHandle<HTMLInputElement>;
   await Promise.all([
     page.waitForNavigation(),
@@ -35,17 +35,17 @@ export const signIn = async (page: Page): Promise<void> => {
   await waitForTransitionToComplete();
 
   const emailInput = (await page.waitForSelector(
-    '[type="email"]'
+    '[type="email"]',
   )) as ElementHandle<HTMLInputElement>;
   await emailInput.type(TEST_USER_EMAIL, { delay: 10 });
   expect(await emailInput.evaluate((el) => el.value)).toBe(TEST_USER_EMAIL);
 
   const passwordInput = (await page.$(
-    '[type="password"]'
+    '[type="password"]',
   )) as ElementHandle<HTMLInputElement>;
   await passwordInput.type(TEST_USER_PASSWORD, { delay: 10 });
   expect(await passwordInput.evaluate((el) => el.value)).toBe(
-    TEST_USER_PASSWORD
+    TEST_USER_PASSWORD,
   );
 
   await Promise.all([
@@ -55,7 +55,7 @@ export const signIn = async (page: Page): Promise<void> => {
 
   await page.waitForSelector(SELECTORS.deviceSpecificSettingsDialog);
   const closeButton = (await page.$(
-    ".close-button"
+    ".close-button",
   )) as ElementHandle<HTMLButtonElement>;
   await closeButton.evaluate((el) => el.click());
   await page.waitForSelector(SELECTORS.moodList);

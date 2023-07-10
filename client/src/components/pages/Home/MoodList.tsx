@@ -19,7 +19,7 @@ export default function MoodList() {
 
   const pageCount = Math.max(
     Math.ceil(moodsGroupedByDay.length / DAYS_PER_PAGE),
-    1
+    1,
   );
 
   const endIndex = moodsGroupedByDay.length - page * DAYS_PER_PAGE;
@@ -47,7 +47,7 @@ export default function MoodList() {
         mapRight(
           moodsGroupedByDay.slice(
             Math.max(endIndex - DAYS_PER_PAGE, 0),
-            endIndex
+            endIndex,
           ),
           ([dayStr, ids]) => {
             const day = createDateFromLocalDateString(dayStr);
@@ -69,7 +69,7 @@ export default function MoodList() {
                 </Card.Group>
               </Paper>
             );
-          }
+          },
         )
       ) : (
         <Paper>

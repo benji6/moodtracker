@@ -21,7 +21,7 @@ export default function Meditate() {
     void navigate(
       `/meditation/timer?${MEDITATION_SEARCH_PARAM_TIME_KEY}=${
         minutes * TIME.secondsPerMinute
-      }`
+      }`,
     );
 
   return (

@@ -17,12 +17,12 @@ const MAX_YEARS_PER_PAGE = 8;
 
 export default function Years() {
   const normalizedAveragesByYear = useSelector(
-    normalizedAveragesByYearSelector
+    normalizedAveragesByYearSelector,
   );
   const [page, setPage] = React.useState(0);
 
   const pageCount = Math.ceil(
-    normalizedAveragesByYear.allIds.length / MAX_YEARS_PER_PAGE
+    normalizedAveragesByYear.allIds.length / MAX_YEARS_PER_PAGE,
   );
   const endIndex =
     normalizedAveragesByYear.allIds.length - MAX_YEARS_PER_PAGE * page;
@@ -61,7 +61,7 @@ export default function Years() {
                   <MoodCell mood={normalizedAveragesByYear.byId[dateString]!} />
                 </tr>
               );
-            }
+            },
           )}
         </tbody>
       </table>

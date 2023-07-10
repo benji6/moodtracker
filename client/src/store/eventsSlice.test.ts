@@ -45,7 +45,7 @@ describe("eventsSlice", () => {
             createdAt: "2020-05-07T19:53:00.000Z",
             type: "v1/moods/create",
             payload: { mood: 7 },
-          })
+          }),
         );
         expect(store.getState().events).toEqual({
           ...initialState,
@@ -77,7 +77,7 @@ describe("eventsSlice", () => {
               hasLoadedFromServer: true,
               idsToSync: ["2020-05-07T19:39:00.000Z"],
               nextCursor: "test-cursor-123",
-            })
+            }),
           );
         });
 
@@ -87,7 +87,7 @@ describe("eventsSlice", () => {
               createdAt: "2020-05-07T20:34:00.000Z",
               type: "v1/moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
-            })
+            }),
           );
           expect(store.getState().events).toEqual({
             ...initialState,
@@ -116,7 +116,7 @@ describe("eventsSlice", () => {
               createdAt: "2020-05-07T20:34:00.000Z",
               type: "v1/moods/update",
               payload: { id: "2020-05-07T20:32:00.000Z", mood: 5 },
-            })
+            }),
           );
           expect(store.getState().events).toEqual({
             ...initialState,
@@ -156,7 +156,7 @@ describe("eventsSlice", () => {
               hasLoadedFromServer: true,
               idsToSync: ["2020-05-07T19:39:00.000Z"],
               nextCursor: "test-cursor-123",
-            })
+            }),
           );
         });
 
@@ -166,7 +166,7 @@ describe("eventsSlice", () => {
               createdAt: "2020-05-07T19:38:00.000Z",
               type: "v1/moods/create",
               payload: { mood: 4 },
-            })
+            }),
           );
           expect(store.getState().events).toEqual({
             ...initialState,
@@ -195,7 +195,7 @@ describe("eventsSlice", () => {
               createdAt: "2020-05-07T19:38:00.000Z",
               type: "v1/moods/delete",
               payload: "2020-05-07T19:39:00.000Z",
-            })
+            }),
           );
           expect(store.getState().events).toEqual({
             ...initialState,
@@ -224,7 +224,7 @@ describe("eventsSlice", () => {
               createdAt: "2020-05-07T19:38:00.000Z",
               type: "v1/moods/update",
               payload: { id: "2020-05-07T19:39:00.000Z", mood: 7 },
-            })
+            }),
           );
           expect(store.getState().events).toEqual({
             ...initialState,
@@ -292,7 +292,7 @@ describe("eventsSlice", () => {
           eventsSlice.actions.syncFromServerSuccess({
             cursor: "cursor-789",
             events: [],
-          })
+          }),
         );
         expect(store.getState().events).toEqual({
           ...initialState,
@@ -307,7 +307,7 @@ describe("eventsSlice", () => {
           eventsSlice.actions.syncFromServerSuccess({
             cursor: "cursor-789",
             events: [],
-          })
+          }),
         );
         expect(store.getState().events).toEqual({
           ...stateWithEvents,
@@ -336,7 +336,7 @@ describe("eventsSlice", () => {
                 payload: { mood: 8 },
               },
             ],
-          })
+          }),
         );
         expect(store.getState().events).toEqual({
           ...initialState,
@@ -390,7 +390,7 @@ describe("eventsSlice", () => {
                 type: "v1/moods/create",
               },
             ],
-          })
+          }),
         );
         expect(store.getState().events).toEqual({
           ...initialState,

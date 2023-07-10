@@ -46,7 +46,7 @@ export default function useEvents() {
             eventsSlice.actions.syncFromServerSuccess({
               cursor,
               events: serverEvents,
-            })
+            }),
           );
         }
       } catch {

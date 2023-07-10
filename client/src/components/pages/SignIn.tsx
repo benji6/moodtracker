@@ -39,7 +39,7 @@ export default function SignIn() {
                   <Link to="/resend-verification">
                     resend the verification email
                   </Link>
-                </>
+                </>,
               );
 
             case "NotAuthorizedException":

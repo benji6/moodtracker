@@ -17,7 +17,7 @@ export interface HomeState {
 
 export default function Home() {
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
+    eventsHasLoadedFromServerSelector,
   );
   const moods = useSelector(normalizedMoodsSelector);
   const userIsSignedIn = useSelector(userIsSignedInSelector);

@@ -18,12 +18,12 @@ const firebaseApp = initializeApp(FIREBASE_CONFIG);
 getMessaging(firebaseApp);
 
 const cacheListWithHost = CACHE_LIST.map((resource) =>
-  pathJoin(location.host, resource)
+  pathJoin(location.host, resource),
 );
 
 const rejectAfterTimeout = (t: number): Promise<never> =>
   new Promise((_, reject) =>
-    setTimeout(() => reject(Error(`Timed out after ${t}ms`)), t)
+    setTimeout(() => reject(Error(`Timed out after ${t}ms`)), t),
   );
 
 const customFetch = async (request: Request): Promise<Response> => {
@@ -41,7 +41,7 @@ sw.oninstall = (event: any) => {
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       return cache.addAll(CACHE_LIST);
-    })()
+    })(),
   );
 };
 
@@ -60,6 +60,6 @@ sw.onfetch = (event: any) => {
         if (!cachedResponse) throw e;
         return cachedResponse;
       }
-    })()
+    })(),
   );
 };

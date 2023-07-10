@@ -17,12 +17,12 @@ const MAX_MONTHS_PER_PAGE = 12;
 
 export default function Months() {
   const normalizedAveragesByMonth = useSelector(
-    normalizedAveragesByMonthSelector
+    normalizedAveragesByMonthSelector,
   );
   const [page, setPage] = React.useState(0);
 
   const pageCount = Math.ceil(
-    normalizedAveragesByMonth.allIds.length / MAX_MONTHS_PER_PAGE
+    normalizedAveragesByMonth.allIds.length / MAX_MONTHS_PER_PAGE,
   );
   const endIndex =
     normalizedAveragesByMonth.allIds.length - MAX_MONTHS_PER_PAGE * page;
@@ -63,7 +63,7 @@ export default function Months() {
                   />
                 </tr>
               );
-            }
+            },
           )}
         </tbody>
       </table>

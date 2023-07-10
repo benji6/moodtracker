@@ -4,7 +4,7 @@ import { getIdsInInterval } from "../../utils";
 
 export default function useMoodIdsInPeriod(
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): string[] {
   const { allIds } = useSelector(normalizedMoodsSelector);
   return getIdsInInterval(allIds, dateFrom, dateTo);

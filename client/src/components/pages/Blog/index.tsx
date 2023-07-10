@@ -161,11 +161,11 @@ export default function Blog() {
           for (const { pathname } of post.imageUrls)
             text = text.replace(
               pathname.slice(1).replace(/\..+\.avif$/, ".png"),
-              pathname
+              pathname,
             );
         const __html = marked.parse(text);
         return { __html, dateString, title: post.title };
-      })
+      }),
     ).then(setPosts);
   }, []);
 

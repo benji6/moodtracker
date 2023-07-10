@@ -41,7 +41,7 @@ export default function useGeolocation() {
         }
 
         dispatch(deviceSlice.actions.setGeolocation(geolocation));
-      }
+      },
     );
   }, [dispatch, hasBeenActive, shouldRecordLocation]);
 }

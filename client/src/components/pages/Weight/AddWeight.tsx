@@ -42,7 +42,7 @@ export default function AddWeight() {
         type: "v1/weights/create",
         createdAt: new Date().toISOString(),
         payload,
-      })
+      }),
     );
     navigate("/weight/log");
   };

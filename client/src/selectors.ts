@@ -67,7 +67,7 @@ export const eventsAllIdsWithLocationSelector = createSelector(
       return (
         typeof payload !== "string" && "location" in payload && payload.location
       );
-    })
+    }),
 );
 
 const trackedCategoriesSelector = createSelector(
@@ -75,7 +75,7 @@ const trackedCategoriesSelector = createSelector(
   eventsByIdSelector,
   (
     allIds,
-    byId
+    byId,
   ): {
     meditations: NormalizedMeditations;
     moods: NormalizedMoods;
@@ -117,9 +117,9 @@ const trackedCategoriesSelector = createSelector(
             captureException(
               Error(
                 `Delete event error - could not find event to delete: ${JSON.stringify(
-                  event
-                )}`
-              )
+                  event,
+                )}`,
+              ),
             );
             break;
           }
@@ -145,17 +145,17 @@ const trackedCategoriesSelector = createSelector(
     }
 
     return normalizedCategories;
-  }
+  },
 );
 
 export const normalizedMeditationsSelector = createSelector(
   trackedCategoriesSelector,
-  ({ meditations }): NormalizedMeditations => meditations
+  ({ meditations }): NormalizedMeditations => meditations,
 );
 
 export const normalizedMoodsSelector = createSelector(
   trackedCategoriesSelector,
-  ({ moods }): NormalizedMoods => moods
+  ({ moods }): NormalizedMoods => moods,
 );
 
 export const moodIdsWithLocationSelector = createSelector(
@@ -164,38 +164,38 @@ export const moodIdsWithLocationSelector = createSelector(
     allIds.filter((id) => {
       const mood = byId[id];
       return "location" in mood && mood.location;
-    })
+    }),
 );
 
 export const normalizedWeightsSelector = createSelector(
   trackedCategoriesSelector,
-  ({ weights }): NormalizedWeights => weights
+  ({ weights }): NormalizedWeights => weights,
 );
 
 export const denormalizedMeditationsSelector = createSelector(
   normalizedMeditationsSelector,
-  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
+  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id })),
 );
 export const denormalizedMoodsSelector = createSelector(
   normalizedMoodsSelector,
-  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
+  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id })),
 );
 export const denormalizedWeightsSelector = createSelector(
   normalizedWeightsSelector,
-  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id }))
+  ({ allIds, byId }) => allIds.map((id) => ({ ...byId[id], createdAt: id })),
 );
 
 export const hasMoodsSelector = createSelector(
   normalizedMoodsSelector,
-  ({ allIds }) => Boolean(allIds.length)
+  ({ allIds }) => Boolean(allIds.length),
 );
 export const hasMeditationsSelector = createSelector(
   normalizedMeditationsSelector,
-  ({ allIds }) => Boolean(allIds.length)
+  ({ allIds }) => Boolean(allIds.length),
 );
 export const hasWeightsSelector = createSelector(
   normalizedWeightsSelector,
-  ({ allIds }) => Boolean(allIds.length)
+  ({ allIds }) => Boolean(allIds.length),
 );
 
 // some code may depend on the fact that the array
@@ -213,18 +213,18 @@ export const moodIdsByDateSelector = createSelector(
     }
 
     return moodsGroupedByDate;
-  }
+  },
 );
 
 const makeNormalizedAveragesByPeriodSelector = (
   eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
   addPeriods: (date: Date, n: number) => Date,
-  createId = formatIsoDateInLocalTimezone
+  createId = formatIsoDateInLocalTimezone,
 ) =>
   createSelector(
     normalizedMoodsSelector,
     (
-      moods
+      moods,
     ): {
       allIds: string[];
       byId: { [k: string]: number | undefined };
@@ -257,7 +257,7 @@ const makeNormalizedAveragesByPeriodSelector = (
         const averageMoodInInterval = computeAverageMoodInInterval(
           moods,
           p0,
-          p1
+          p1,
         );
         if (averageMoodInInterval !== undefined) {
           const id = createId(p0);
@@ -267,7 +267,7 @@ const makeNormalizedAveragesByPeriodSelector = (
       }
 
       return normalizedAverages;
-    }
+    },
   );
 
 export const normalizedDescriptionWordsSelector = createSelector(
@@ -284,7 +284,7 @@ export const normalizedDescriptionWordsSelector = createSelector(
         descriptionWords.add(normalizedWords[j]);
     }
     return [...descriptionWords].sort((a, b) => a.localeCompare(b));
-  }
+  },
 );
 
 export const normalizedAveragesByDaySelector =
@@ -294,7 +294,7 @@ export const normalizedAveragesByHourSelector =
   makeNormalizedAveragesByPeriodSelector(
     eachHourOfInterval,
     addHours,
-    formatIsoDateHourInLocalTimezone
+    formatIsoDateHourInLocalTimezone,
   );
 
 export const normalizedAveragesByMonthSelector =
@@ -304,7 +304,7 @@ export const normalizedAveragesByWeekSelector =
   makeNormalizedAveragesByPeriodSelector(
     ({ start, end }: Interval) =>
       eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
-    addWeeks
+    addWeeks,
   );
 
 export const normalizedAveragesByYearSelector =

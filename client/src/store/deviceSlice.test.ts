@@ -12,7 +12,7 @@ describe("deviceSlice", () => {
         accuracy: 1,
         latitude: 4,
         longitude: 5,
-      })
+      }),
     );
     expect(store.getState().device).toEqual({
       geolocation: {
@@ -28,7 +28,7 @@ describe("deviceSlice", () => {
         altitudeAccuracy: 10,
         latitude: 4,
         longitude: 5,
-      })
+      }),
     );
     expect(store.getState().device).toEqual({
       geolocation: {
@@ -47,7 +47,7 @@ describe("deviceSlice", () => {
         accuracy: 1,
         latitude: 4,
         longitude: 5,
-      })
+      }),
     );
     store.dispatch(deviceSlice.actions.clear());
     expect(store.getState().device).toEqual(createInitialState());

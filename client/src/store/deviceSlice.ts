@@ -16,7 +16,7 @@ export default createSlice({
     clear: createInitialState,
     setGeolocation: (
       state: DeviceState,
-      action: PayloadAction<DeviceGeolocation>
+      action: PayloadAction<DeviceGeolocation>,
     ) => {
       state.geolocation = action.payload;
     },

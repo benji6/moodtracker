@@ -78,11 +78,11 @@ const dayMonthLongFormatter = Intl.DateTimeFormat(undefined, {
 export const formatWeek = (week: Date): string =>
   dayMonthLongFormatter.formatRange(
     startOfWeek(week, WEEK_OPTIONS),
-    endOfWeek(week, WEEK_OPTIONS)
+    endOfWeek(week, WEEK_OPTIONS),
   );
 
 export const formatWeekWithYear = (week: Date): string =>
   dateFormatter.formatRange(
     startOfWeek(week, WEEK_OPTIONS),
-    endOfWeek(week, WEEK_OPTIONS)
+    endOfWeek(week, WEEK_OPTIONS),
   );

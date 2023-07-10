@@ -13,7 +13,7 @@ export default function ChangePassword() {
         try {
           const { cognitoUser } = await createAuthenticatedUserAndSession(
             email,
-            currentPassword
+            currentPassword,
           );
           return new Promise((resolve, reject) => {
             cognitoUser.changePassword(
@@ -33,7 +33,7 @@ export default function ChangePassword() {
                     setSubmitError(ERRORS.generic);
                 }
                 return reject(JSON.stringify(e));
-              }
+              },
             );
           });
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

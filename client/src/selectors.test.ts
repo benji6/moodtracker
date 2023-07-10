@@ -89,7 +89,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:00:00.000Z"],
         byId: { "2020-10-10T08:00:00.000Z": { seconds: 60 } },
@@ -135,7 +135,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:01:00.000Z"],
         byId: { "2020-10-10T08:01:00.000Z": { seconds: 120 } },
@@ -166,7 +166,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:00:00.000Z"],
         byId: { "2020-10-10T08:00:00.000Z": { mood: 5 } },
@@ -212,7 +212,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:01:00.000Z"],
         byId: { "2020-10-10T08:01:00.000Z": { mood: 8 } },
@@ -269,7 +269,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:01:00.000Z", "2020-10-10T08:03:00.000Z"],
         byId: {
@@ -320,7 +320,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:01:00.000Z", "2020-10-10T08:03:00.000Z"],
         byId: {
@@ -379,7 +379,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:01:00.000Z"],
         byId: {
@@ -421,7 +421,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-10-10T08:01:00.000Z"],
         byId: { "2020-10-10T08:01:00.000Z": { value: 70 } },
@@ -449,7 +449,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([{ createdAt: "2020-10-10T08:00:00.000Z", seconds: 60 }]);
     });
 
@@ -482,7 +482,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([{ createdAt: "2020-10-10T08:01:00.000Z", seconds: 120 }]);
     });
   });
@@ -507,7 +507,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([{ createdAt: "2020-10-10T08:00:00.000Z", mood: 5 }]);
     });
 
@@ -540,7 +540,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([{ createdAt: "2020-10-10T08:01:00.000Z", mood: 8 }]);
     });
 
@@ -594,7 +594,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([
         {
           createdAt: "2020-10-10T08:01:00.000Z",
@@ -646,7 +646,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([
         {
           createdAt: "2020-10-10T08:01:00.000Z",
@@ -683,7 +683,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([{ createdAt: "2020-10-10T08:00:00.000Z", value: 50 }]);
     });
 
@@ -707,7 +707,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([]);
     });
 
@@ -736,7 +736,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual([
         {
           createdAt: "2020-10-10T08:01:00.000Z",
@@ -767,7 +767,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(false);
     });
 
@@ -786,7 +786,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(true);
     });
 
@@ -810,7 +810,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(false);
     });
 
@@ -839,7 +839,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(false);
     });
 
@@ -858,7 +858,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(true);
     });
 
@@ -891,7 +891,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(true);
     });
   });
@@ -916,7 +916,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(false);
     });
 
@@ -935,7 +935,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(true);
     });
 
@@ -959,7 +959,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toBe(false);
     });
 
@@ -1006,7 +1006,7 @@ describe("selectors", () => {
             },
           },
         },
-      })
+      }),
     ).toEqual(["🙂", "Bulbasaur", "Charmander", "Pikachu", "Squirtle"]);
   });
 
@@ -1030,7 +1030,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ "2020-10-10": ["2020-10-10T08:00:00.000Z"] });
     });
 
@@ -1075,7 +1075,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         "2020-10-10": ["2020-10-10T07:00:00.000Z", "2020-10-10T08:00:00.000Z"],
         "2020-10-13": ["2020-10-13T08:00:00.000Z"],
@@ -1099,7 +1099,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-07-10"], byId: { "2020-07-10": 5 } });
     });
 
@@ -1123,7 +1123,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-07-28"], byId: { "2020-07-28": 6 } });
     });
 
@@ -1147,7 +1147,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-07-27", "2020-07-28"],
         byId: { "2020-07-27": 5, "2020-07-28": 5 },
@@ -1173,7 +1173,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1208,7 +1208,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08"],
         byId: {
@@ -1239,7 +1239,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1277,7 +1277,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-07-10T00:00:00.000Z"],
         byId: { "2020-07-10T00:00:00.000Z": 5 },
@@ -1304,7 +1304,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-07-28T00:00:00.000Z"],
         byId: { "2020-07-28T00:00:00.000Z": 6 },
@@ -1331,7 +1331,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T01:00:00.000Z"],
         byId: { "2020-07-27T00:00:00.000Z": 5, "2020-07-27T01:00:00.000Z": 5 },
@@ -1357,7 +1357,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1392,7 +1392,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: [
           "2020-07-27T00:00:00.000Z",
@@ -1428,7 +1428,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1464,7 +1464,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-07-01"], byId: { "2020-07-01": 5 } });
     });
 
@@ -1488,7 +1488,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-07-01"], byId: { "2020-07-01": 6 } });
     });
 
@@ -1512,7 +1512,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-06-01", "2020-07-01"],
         byId: { "2020-06-01": 5, "2020-07-01": 5 },
@@ -1538,7 +1538,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1573,7 +1573,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01"],
         byId: {
@@ -1604,7 +1604,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1640,7 +1640,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-07-27"], byId: { "2020-07-27": 5 } });
     });
 
@@ -1659,7 +1659,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-08-10"], byId: { "2020-08-10": 5 } });
     });
 
@@ -1683,7 +1683,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-07-27"], byId: { "2020-07-27": 6 } });
     });
 
@@ -1707,7 +1707,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-07-20", "2020-07-27"],
         byId: { "2020-07-20": 5, "2020-07-27": 5 },
@@ -1733,7 +1733,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1768,7 +1768,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: [
           "2020-06-29",
@@ -1806,7 +1806,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1842,7 +1842,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-01-01"], byId: { "2020-01-01": 5 } });
       expect(
         normalizedAveragesByYearSelector({
@@ -1858,7 +1858,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2021-01-01"], byId: { "2021-01-01": 5 } });
     });
 
@@ -1882,7 +1882,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({ allIds: ["2020-01-01"], byId: { "2020-01-01": 6 } });
     });
 
@@ -1906,7 +1906,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-01-01", "2021-01-01"],
         byId: { "2020-01-01": 5, "2021-01-01": 5 },
@@ -1932,7 +1932,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [
@@ -1965,7 +1965,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toEqual({
         allIds: ["2020-01-01", "2021-01-01", "2022-01-01"],
         byId: { "2020-01-01": 5, "2021-01-01": 5, "2022-01-01": 5 },
@@ -1991,7 +1991,7 @@ describe("selectors", () => {
               },
             },
           },
-        })
+        }),
       ).toMatchInlineSnapshot(`
         {
           "allIds": [

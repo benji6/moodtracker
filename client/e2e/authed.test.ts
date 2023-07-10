@@ -24,12 +24,12 @@ describe("authed", () => {
     const navButton = (await page.$(SELECTORS.navButton))!;
     await navButton.evaluate((el) => (el as HTMLButtonElement).click());
     const signOutButton = (await page.waitForSelector(
-      SELECTORS.signOutButton
+      SELECTORS.signOutButton,
     ))!;
     await waitForTransitionToComplete();
     await signOutButton.evaluate((el) => (el as HTMLButtonElement).click());
     const signOutConfirmButton = (await page.waitForSelector(
-      SELECTORS.signOutConfirmButton
+      SELECTORS.signOutConfirmButton,
     ))!;
     await Promise.all([
       page.waitForNavigation(),

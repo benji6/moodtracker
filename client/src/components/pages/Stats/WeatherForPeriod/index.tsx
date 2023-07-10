@@ -23,7 +23,7 @@ export default function WeatherForPeriod({
 }: Props) {
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     dateFrom,
-    dateTo
+    dateTo,
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 
@@ -51,7 +51,7 @@ export default function WeatherForPeriod({
               <Spinner inline margin="end" />
               Fetching weather data (may require an internet connection)...{" "}
               {integerPercentFormatter.format(
-                successCount / eventIdsWithLocationInPeriod.length
+                successCount / eventIdsWithLocationInPeriod.length,
               )}
             </>
           )}
@@ -60,7 +60,7 @@ export default function WeatherForPeriod({
             <span className="negative">
               Could not fetch weather for{" "}
               {integerPercentFormatter.format(
-                errorCount / eventIdsWithLocationInPeriod.length
+                errorCount / eventIdsWithLocationInPeriod.length,
               )}{" "}
               of locations, please try again later
             </span>

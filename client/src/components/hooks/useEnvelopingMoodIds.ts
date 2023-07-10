@@ -4,7 +4,7 @@ import { getEnvelopingIds } from "../../utils";
 
 export default function useEnvelopingMoodIds(
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): string[] {
   const { allIds } = useSelector(normalizedMoodsSelector);
   return getEnvelopingIds(allIds, dateFrom, dateTo);

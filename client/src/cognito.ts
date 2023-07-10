@@ -55,14 +55,14 @@ export const changeEmail = async (newEmailAddress: string): Promise<void> => {
       (error) => {
         if (error) return reject(error);
         resolve();
-      }
+      },
     );
   });
 };
 
 export const createAuthenticatedUserAndSession = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<{
   cognitoUser: CognitoUser;
   cognitoUserSession: CognitoUserSession;
@@ -93,7 +93,7 @@ export const getIdToken = (): Promise<CognitoIdToken> =>
           return reject(Error("No current user"));
         }
         reject(error);
-      }
+      },
     );
   });
 
@@ -105,12 +105,12 @@ export const refreshSession = async (): Promise<CognitoUserSession> => {
     currentUser.refreshSession(refreshToken, (error, session) => {
       if (error) return reject(error);
       resolve(session);
-    })
+    }),
   );
 };
 
 export const verifyNewEmail = async (
-  verificationCode: string
+  verificationCode: string,
 ): Promise<void> => {
   const currentUser = getCurrentUser();
   await getSession(currentUser);

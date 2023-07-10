@@ -24,7 +24,7 @@ export default function WeightDeleteDialog({ id, onClose, open }: Props) {
                 type: "v1/weights/delete",
                 createdAt: new Date().toISOString(),
                 payload: id,
-              })
+              }),
             );
             navigate("/weight/log");
           }}

@@ -16,10 +16,10 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     dateFrom,
-    dateTo
+    dateTo,
   );
   const reverseGeolocationResults = useReverseGeolocationQueries(
-    moodIdsWithLocationInPeriod
+    moodIdsWithLocationInPeriod,
   );
 
   if (!moodIdsWithLocationInPeriod.length) return null;
@@ -49,8 +49,8 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
           `Failed to derive location name for ${JSON.stringify({
             latitude,
             longitude,
-          })}. Results: ${JSON.stringify(data.Results)}`
-        )
+          })}. Results: ${JSON.stringify(data.Results)}`,
+        ),
       );
       continue;
     }
@@ -71,7 +71,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
                 <Spinner inline margin="end" />
                 Fetching location data (may require an internet connection)...{" "}
                 {integerPercentFormatter.format(
-                  successCount / moodIdsWithLocationInPeriod.length
+                  successCount / moodIdsWithLocationInPeriod.length,
                 )}
               </>
             )}
@@ -80,7 +80,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
               <span className="negative">
                 Could not fetch location for{" "}
                 {integerPercentFormatter.format(
-                  errorCount / moodIdsWithLocationInPeriod.length
+                  errorCount / moodIdsWithLocationInPeriod.length,
                 )}{" "}
                 of moods, please try again later
               </span>

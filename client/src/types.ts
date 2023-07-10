@@ -58,7 +58,7 @@ type EventType =
 export type EventTypeTuple = [
   EventTypeVersions,
   EventTypeCategories,
-  EventTypeOperations
+  EventTypeOperations,
 ];
 
 type PayloadEvent<Type extends EventType, Payload> = {
@@ -164,7 +164,7 @@ export interface WeatherApiResponse {
       wind_deg: number;
       wind_gust?: number;
       wind_speed: number;
-    }
+    },
   ];
   lat: number;
   lon: number;

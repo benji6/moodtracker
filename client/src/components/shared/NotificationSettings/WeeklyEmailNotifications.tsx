@@ -11,7 +11,7 @@ import { ERRORS } from "../../../constants";
 export default function WeeklyEmailNotifications() {
   const { data, isError, isLoading } = useQuery(
     ["weekly-emails"],
-    weeklyEmailsGet
+    weeklyEmailsGet,
   );
 
   const mutation = useMutation(
@@ -21,10 +21,10 @@ export default function WeeklyEmailNotifications() {
       onSuccess: () => {
         queryClient.setQueryData<typeof data>(
           ["weekly-emails"],
-          (isEnabled) => !isEnabled
+          (isEnabled) => !isEnabled,
         );
       },
-    }
+    },
   );
 
   return (

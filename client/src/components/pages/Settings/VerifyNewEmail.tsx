@@ -75,7 +75,7 @@ export default function VerifyNewEmail() {
                   switch (e.code) {
                     case "CodeMismatchException":
                       setSubmitError(
-                        "The code you've provided is incorrect, please try again"
+                        "The code you've provided is incorrect, please try again",
                       );
                       break;
                     case "ExpiredCodeException":
@@ -86,7 +86,7 @@ export default function VerifyNewEmail() {
                             changing your email
                           </Link>{" "}
                           again
-                        </>
+                        </>,
                       );
                       break;
                     case "NetworkError":

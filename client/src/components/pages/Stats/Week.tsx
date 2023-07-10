@@ -67,7 +67,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           <SubHeading>
             <Link
               to={`../../months/${formatIsoMonthInLocalTimezone(
-                lastDayOfWeek
+                lastDayOfWeek,
               )}`}
             >
               {monthLongFormatter.format(lastDayOfWeek)}

@@ -22,17 +22,17 @@ export default function MeditationTimer() {
 
   const geolocation = useSelector(deviceGeolocationSelector);
   const timerDurationInSeconds = Number(
-    searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY)
+    searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY),
   );
   const initialTime = React.useRef(Date.now());
   const roundedSecondsRemaining = Math.round(
-    (localState.remainingTime ?? timerDurationInSeconds * 1e3) / 1e3
+    (localState.remainingTime ?? timerDurationInSeconds * 1e3) / 1e3,
   );
   const secondsMeditated = timerDurationInSeconds - roundedSecondsRemaining;
 
   const onDim = React.useCallback(
     () => localDispatch({ payload: true, type: "isDimmerEnabled/set" }),
-    []
+    [],
   );
   const onDontLog = React.useCallback(() => {
     navigate("/meditation");
@@ -49,7 +49,7 @@ export default function MeditationTimer() {
   }, [roundedSecondsRemaining, timerDurationInSeconds]);
   const onReveal = React.useCallback(
     () => localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
-    []
+    [],
   );
 
   const onCloseDialog = React.useCallback(() => {
@@ -72,8 +72,8 @@ export default function MeditationTimer() {
     else {
       captureException(
         Error(
-          "Problem logging meditation: Expected finish time to be defined, falling back to log time instead"
-        )
+          "Problem logging meditation: Expected finish time to be defined, falling back to log time instead",
+        ),
       );
       createdAt = new Date().toISOString();
     }
@@ -82,7 +82,7 @@ export default function MeditationTimer() {
         type: "v1/meditations/create",
         createdAt,
         payload,
-      })
+      }),
     );
     onDontLog();
   }, [
@@ -94,7 +94,7 @@ export default function MeditationTimer() {
   ]);
 
   useKeyboardEscape(() =>
-    localDispatch({ payload: false, type: "isDimmerEnabled/set" })
+    localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
   );
 
   React.useEffect(() => {

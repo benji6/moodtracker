@@ -50,7 +50,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   for (let i = 0; i < X_LABELS_COUNT; i++) {
     const d = addHours(
       date,
-      Math.round((i * TIME.hoursPerDay) / X_LABELS_COUNT)
+      Math.round((i * TIME.hoursPerDay) / X_LABELS_COUNT),
     );
     xLabels.push([d.getTime(), hourNumericFormatter.format(d)]);
   }
@@ -63,7 +63,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           <SubHeading>
             <Link
               to={`../../weeks/${formatIsoDateInLocalTimezone(
-                startOfWeekDate
+                startOfWeekDate,
               )}`}
             >
               {formatWeek(startOfWeekDate)}

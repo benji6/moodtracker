@@ -37,7 +37,7 @@ const convertDateToLabel = (date: Date): [number, string] => [
 
 const createXLabels = (
   domain: [number, number],
-  now: number
+  now: number,
 ): [number, string][] => {
   const labels: [number, string][] = [];
 
@@ -52,9 +52,9 @@ const createXLabels = (
     const label = convertDateToLabel(
       roundFn(
         new Date(
-          domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1)
-        )
-      )
+          domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1),
+        ),
+      ),
     );
     if (!labels.some(([x]) => x === label[0])) labels.push(label);
   }
@@ -170,11 +170,11 @@ export default function Explore() {
           }
       }
     },
-    initialState
+    initialState,
   );
 
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
+    eventsHasLoadedFromServerSelector,
   );
 
   const dateTo = addDays(localState.displayDateTo, 1);

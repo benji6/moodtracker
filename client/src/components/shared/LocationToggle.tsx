@@ -28,8 +28,8 @@ export default function LocationToggle() {
         onChange={() =>
           dispatch(
             settingsSlice.actions.setLocationRecording(
-              locationEnabled ? false : true
-            )
+              locationEnabled ? false : true,
+            ),
           )
         }
         label={

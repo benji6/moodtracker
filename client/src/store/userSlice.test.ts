@@ -12,7 +12,7 @@ describe("userSlice", () => {
 
   test("set", () => {
     store.dispatch(
-      userSlice.actions.set({ email: "test@test.com", id: "foo" })
+      userSlice.actions.set({ email: "test@test.com", id: "foo" }),
     );
     expect(store.getState().user).toEqual({
       email: "test@test.com",

@@ -30,7 +30,7 @@ else {
     for (const inputType of ACTIVATION_TRIGGERING_INPUT_EVENTS)
       document.documentElement.removeEventListener(
         inputType,
-        handleUserGesture
+        handleUserGesture,
       );
   };
   for (const inputType of ACTIVATION_TRIGGERING_INPUT_EVENTS)

@@ -20,13 +20,13 @@ interface Props {
 
 export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedAveragesByMonth = useSelector(
-    normalizedAveragesByMonthSelector
+    normalizedAveragesByMonthSelector,
   );
   const navigate = useNavigate();
 
   const months = eachMonthOfInterval({ start: dateFrom, end: dateTo }).slice(
     0,
-    -1
+    -1,
   );
 
   return (
@@ -47,7 +47,7 @@ export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
               averageMood === undefined
                 ? undefined
                 : `Average mood: ${oneDecimalPlaceFormatter.format(
-                    averageMood
+                    averageMood,
                   )}`,
             y: averageMood,
           };

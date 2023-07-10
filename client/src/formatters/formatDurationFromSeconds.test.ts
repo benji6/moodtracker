@@ -11,7 +11,7 @@ describe("formatDurationFromSeconds", () => {
 
   test("with 12345 second", () => {
     expect(formatDurationFromSeconds(12345)).toBe(
-      "3 hours 25 minutes 45 seconds"
+      "3 hours 25 minutes 45 seconds",
     );
   });
 });

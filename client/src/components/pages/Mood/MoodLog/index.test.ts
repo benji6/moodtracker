@@ -12,7 +12,7 @@ describe("MoodLog", () => {
         reducer(createState({ filterDescription: "foo", page: 3 }), {
           payload: "bar",
           type: "filterDescription/set",
-        })
+        }),
       ).toEqual(createState({ filterDescription: "bar", page: 0 }));
     });
 
@@ -21,7 +21,7 @@ describe("MoodLog", () => {
         reducer(createState({ searchString: "foo", page: 3 }), {
           payload: "bar",
           type: "searchString/set",
-        })
+        }),
       ).toEqual(createState({ searchString: "bar", page: 0 }));
     });
 
@@ -29,7 +29,7 @@ describe("MoodLog", () => {
       expect(
         reducer(createState({ filterMood: 5, page: 3 }), {
           type: "filterMood/clear",
-        })
+        }),
       ).toEqual(createState({ filterMood: undefined, page: 0 }));
     });
 
@@ -38,7 +38,7 @@ describe("MoodLog", () => {
         reducer(createState({ filterMood: 5, page: 3 }), {
           payload: 7,
           type: "filterMood/set",
-        })
+        }),
       ).toEqual(createState({ filterMood: 7, page: 0 }));
     });
 
@@ -47,7 +47,7 @@ describe("MoodLog", () => {
         reducer(createState({ page: 5 }), {
           payload: 7,
           type: "page/set",
-        })
+        }),
       ).toEqual(createState({ page: 7 }));
     });
 
@@ -69,7 +69,7 @@ describe("MoodLog", () => {
           reducer(state, {
             payload: false,
             type: "shouldShowFilter/set",
-          })
+          }),
         ).toEqual(createState());
       });
 
@@ -78,7 +78,7 @@ describe("MoodLog", () => {
           reducer(state, {
             payload: true,
             type: "shouldShowFilter/set",
-          })
+          }),
         ).toEqual({ ...state, shouldShowFilter: true });
       });
     });

@@ -23,7 +23,7 @@ export default function useStorage() {
   const eventsAllIds = useSelector(eventsAllIdsSelector);
   const eventsById = useSelector(eventsByIdSelector);
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
+    eventsHasLoadedFromServerSelector,
   );
   const eventsIdsToSync = useSelector(eventsIdsToSyncSelector);
   const eventsNextCursor = useSelector(eventsNextCursorSelector);

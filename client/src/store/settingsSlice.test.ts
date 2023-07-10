@@ -26,10 +26,10 @@ describe("settingsSlice", () => {
 
     test("clear", () => {
       store.dispatch(
-        settingsSlice.actions.loadFromStorage(createFakeSettingsData())
+        settingsSlice.actions.loadFromStorage(createFakeSettingsData()),
       );
       expect(settingsDataSelector(store.getState())).toEqual(
-        createFakeSettingsData()
+        createFakeSettingsData(),
       );
       store.dispatch(settingsSlice.actions.clear());
       expect(settingsDataSelector(store.getState())).toBeUndefined();
@@ -37,10 +37,10 @@ describe("settingsSlice", () => {
 
     test("loadFromStorage", () => {
       store.dispatch(
-        settingsSlice.actions.loadFromStorage(createFakeSettingsData())
+        settingsSlice.actions.loadFromStorage(createFakeSettingsData()),
       );
       expect(settingsDataSelector(store.getState())).toEqual(
-        createFakeSettingsData()
+        createFakeSettingsData(),
       );
     });
   });

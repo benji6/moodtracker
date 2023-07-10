@@ -18,7 +18,7 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     dateFrom,
-    dateTo
+    dateTo,
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 
@@ -61,7 +61,7 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
       const [label, iconName, weatherColor] = key.split(":") as [
         string,
         ComponentProps<typeof Icon>["name"],
-        string
+        string,
       ];
       const meanMood = sumOfMoods / moodCount;
       return {

@@ -4,7 +4,7 @@ import useMoodsInPeriod from "./useMoodsInPeriod";
 
 export default function useMoodCloudWords(
   dateFrom: Date,
-  dateTo: Date
+  dateTo: Date,
 ): { [word: string]: number } | undefined {
   const moodsInPeriod = useMoodsInPeriod(dateFrom, dateTo);
 

@@ -156,7 +156,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <EriNav.Link
                   onClick={handleNavClose}
                   to={`/stats/weeks/${formatIsoDateInLocalTimezone(
-                    startOfWeek(now, WEEK_OPTIONS)
+                    startOfWeek(now, WEEK_OPTIONS),
                   )}`}
                 >
                   <Icon margin="end" name="chart" />

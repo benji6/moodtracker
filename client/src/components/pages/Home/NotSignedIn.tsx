@@ -24,7 +24,7 @@ import {
 import MoodByLocationTable from "../../shared/MoodByLocationTable";
 
 const addMoodImgSrc = String(
-  new URL("../Blog/2020-12-30/screenshot-1.png?as=avif", import.meta.url)
+  new URL("../Blog/2020-12-30/screenshot-1.png?as=avif", import.meta.url),
 );
 
 export default function NotSignedIn() {

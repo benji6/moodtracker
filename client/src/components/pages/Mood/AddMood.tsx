@@ -54,7 +54,7 @@ export default function AddMood() {
         type: "v1/moods/create",
         createdAt: new Date().toISOString(),
         payload,
-      })
+      }),
     );
     navigate("/");
   };

@@ -25,10 +25,10 @@ describe("mood", () => {
       await page.waitForSelector(SELECTORS.addMoodPage);
 
       descriptionInput = ((await page.$(
-        SELECTORS.descriptionInput
+        SELECTORS.descriptionInput,
       )) as ElementHandle<HTMLInputElement>)!;
       submitButton = ((await page.$(
-        SELECTORS.addMoodSubmitButton
+        SELECTORS.addMoodSubmitButton,
       )) as ElementHandle<HTMLButtonElement>)!;
     });
 
@@ -42,7 +42,7 @@ describe("mood", () => {
       expect(errorMessage).toBe(ERRORS.required);
 
       const moodRadioButton = (await page.$(
-        SELECTORS.addMoodRadioButton
+        SELECTORS.addMoodRadioButton,
       )) as HandleFor<HTMLInputElement>;
       await moodRadioButton.evaluate((el) => el.click());
 
@@ -81,7 +81,7 @@ describe("mood", () => {
       expect(errorMessage).toBe(ERRORS.required);
 
       const moodRadioButton = (await page.$(
-        `${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`
+        `${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`,
       )) as HandleFor<HTMLInputElement>;
       await moodRadioButton.evaluate((el) => el.click());
 
@@ -97,14 +97,14 @@ describe("mood", () => {
 
       const moodCardMood = await page.waitForSelector(SELECTORS.moodCardMood);
       const moodCardMoodText = await moodCardMood!.evaluate(
-        (el) => el.textContent
+        (el) => el.textContent,
       );
 
       expect(moodCardMoodText).toBe(String(MOOD));
 
       const moodCardTime = await page.$(SELECTORS.moodCardTime);
       const moodCardTimeValue = await moodCardTime!.evaluate((el) =>
-        el.getAttribute("data-time")
+        el.getAttribute("data-time"),
       );
       expect(moodCardTimeValue).toBe(String(expectedTime));
     });

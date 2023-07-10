@@ -16,12 +16,12 @@ export default function ResetPassword() {
               switch (e.code) {
                 case "CodeMismatchException":
                   setSubmitError(
-                    "Incorrect verification code, check the data you have entered and try again"
+                    "Incorrect verification code, check the data you have entered and try again",
                   );
                   break;
                 case "ExpiredCodeException":
                   setSubmitError(
-                    "This verification code has expired, please request another one and try again"
+                    "This verification code has expired, please request another one and try again",
                   );
                   break;
                 case "NetworkError":

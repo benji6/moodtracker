@@ -18,7 +18,7 @@ export default function MoodByTemperatureForPeriod({
   const normalizedMoods = useSelector(normalizedMoodsSelector);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     dateFrom,
-    dateTo
+    dateTo,
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 

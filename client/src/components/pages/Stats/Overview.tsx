@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 export default function Overview() {
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector
+    eventsHasLoadedFromServerSelector,
   );
   const moods = useSelector(normalizedMoodsSelector);
 

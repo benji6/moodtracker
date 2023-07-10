@@ -42,12 +42,12 @@ export const useWeatherQuery = (queryParameters: {
   useQuery(
     ["weather", roundQueryParameters(queryParameters)] as const,
     fetchWeather,
-    HIGHLY_CACHED_QUERY_OPTIONS
+    HIGHLY_CACHED_QUERY_OPTIONS,
   );
 
 type QueryKey = [
   "weather",
-  { date: number; latitude: string; longitude: string }
+  { date: number; latitude: string; longitude: string },
 ];
 
 export const useWeatherQueries = (ids: string[]) => {

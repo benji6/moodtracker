@@ -52,12 +52,12 @@ interface Props {
 function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
   const normalizedAveragesByWeek = useSelector(
-    normalizedAveragesByWeekSelector
+    normalizedAveragesByWeekSelector,
   );
 
   const nextMonthDateString = formatIsoDateInLocalTimezone(nextDate);
   const monthMinus7DaysDateString = formatIsoDateInLocalTimezone(
-    subDays(date, 7)
+    subDays(date, 7),
   );
 
   const monthLength = differenceInCalendarDays(nextDate, date);
@@ -66,7 +66,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   for (let i = 0; i < X_LABELS_COUNT; i++) {
     const d = addDays(
       date,
-      Math.round((i * monthLength) / (X_LABELS_COUNT - 1))
+      Math.round((i * monthLength) / (X_LABELS_COUNT - 1)),
     );
     xLabels.push([d.getTime(), dayMonthFormatter.format(d)]);
   }
@@ -127,7 +127,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
                   .filter(
                     (dateString) =>
                       dateString >= monthMinus7DaysDateString &&
-                      dateString < nextMonthDateString
+                      dateString < nextMonthDateString,
                   )
                   .map((dateString) => {
                     const week = createDateFromLocalDateString(dateString);
@@ -137,7 +137,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
                         <td>
                           <Link
                             to={`../../weeks/${formatIsoDateInLocalTimezone(
-                              startOfWeek(week, WEEK_OPTIONS)
+                              startOfWeek(week, WEEK_OPTIONS),
                             )}`}
                           >
                             {weekStr}

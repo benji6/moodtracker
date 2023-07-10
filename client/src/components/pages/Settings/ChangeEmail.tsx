@@ -37,14 +37,14 @@ export default function ChangeEmail() {
               return setFieldError("Email address not valid");
             if (value === currentEmail)
               return setFieldError(
-                "New email address is the same as your current email address"
+                "New email address is the same as your current email address",
               );
 
             setIsSubmitting(true);
             try {
               await changeEmail(value);
               navigate(
-                `/settings/verify-new-email?${NEW_EMAIL_SEARCH_PARAM_KEY}=${value}`
+                `/settings/verify-new-email?${NEW_EMAIL_SEARCH_PARAM_KEY}=${value}`,
               );
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (e: any) {

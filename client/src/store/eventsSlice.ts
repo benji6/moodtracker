@@ -85,7 +85,7 @@ export default createSlice({
     },
     syncFromServerSuccess: (
       state,
-      action: PayloadAction<{ cursor: string; events: AppEvent[] }>
+      action: PayloadAction<{ cursor: string; events: AppEvent[] }>,
     ) => {
       state.isSyncingFromServer = false;
       state.syncFromServerError = false;
@@ -93,7 +93,7 @@ export default createSlice({
       state.nextCursor = action.payload.cursor;
       if (!action.payload.events.length) return;
       const serverEventIds = action.payload.events.map(
-        (event) => event.createdAt
+        (event) => event.createdAt,
       );
       if (serverEventIds.every((id) => id in state.byId)) return;
       for (const event of action.payload.events)

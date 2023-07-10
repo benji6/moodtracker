@@ -36,7 +36,7 @@ export default function ColumnChart({
   let range: [number, number];
   if (maxRange === undefined) {
     const maxY = Math.max(
-      ...data.filter(({ y }) => y !== undefined).map(({ y }) => y as number)
+      ...data.filter(({ y }) => y !== undefined).map(({ y }) => y as number),
     );
     range = [0, maxY <= 7 ? maxY + 1 : roundUpToNearest10(maxY)];
   } else range = [0, maxRange];

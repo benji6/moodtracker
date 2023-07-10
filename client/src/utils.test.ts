@@ -87,8 +87,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-31T00:00:00.000Z"),
-            new Date("2020-07-30T00:00:00.000Z")
-          )
+            new Date("2020-07-30T00:00:00.000Z"),
+          ),
         ).toBeUndefined();
       });
     });
@@ -102,8 +102,8 @@ describe("utils", () => {
               byId: {},
             },
             new Date("2020-07-30T00:00:00.000Z"),
-            new Date("2020-07-31T00:00:00.000Z")
-          )
+            new Date("2020-07-31T00:00:00.000Z"),
+          ),
         ).toBeUndefined();
       });
     });
@@ -117,8 +117,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-28T00:00:00.000Z")
-          )
+            new Date("2020-07-28T00:00:00.000Z"),
+          ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
@@ -127,8 +127,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-07-28T00:00:00.000Z")
-          )
+            new Date("2020-07-28T00:00:00.000Z"),
+          ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
@@ -137,8 +137,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
@@ -147,8 +147,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(5);
       });
 
@@ -160,8 +160,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-25T00:00:00.000Z"),
-            new Date("2020-07-25T00:00:00.000Z")
-          )
+            new Date("2020-07-25T00:00:00.000Z"),
+          ),
         ).toBeUndefined();
         expect(
           computeAverageMoodInInterval(
@@ -170,8 +170,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-24T00:00:00.000Z"),
-            new Date("2020-07-25T00:00:00.000Z")
-          )
+            new Date("2020-07-25T00:00:00.000Z"),
+          ),
         ).toBeUndefined();
         expect(
           computeAverageMoodInInterval(
@@ -180,8 +180,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-30T00:00:00.000Z"),
-            new Date("2020-07-30T00:00:00.000Z")
-          )
+            new Date("2020-07-30T00:00:00.000Z"),
+          ),
         ).toBeUndefined();
         expect(
           computeAverageMoodInInterval(
@@ -190,8 +190,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
             },
             new Date("2020-07-30T00:00:00.000Z"),
-            new Date("2020-07-31T00:00:00.000Z")
-          )
+            new Date("2020-07-31T00:00:00.000Z"),
+          ),
         ).toBeUndefined();
       });
     });
@@ -208,8 +208,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(6);
         expect(
           computeAverageMoodInInterval(
@@ -221,8 +221,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(6);
         expect(
           computeAverageMoodInInterval(
@@ -234,8 +234,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-30T00:00:00.000Z")
-          )
+            new Date("2020-07-30T00:00:00.000Z"),
+          ),
         ).toEqual(6);
         expect(
           computeAverageMoodInInterval(
@@ -247,8 +247,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-08-02T00:00:00.000Z")
-          )
+            new Date("2020-08-02T00:00:00.000Z"),
+          ),
         ).toEqual(6);
       });
 
@@ -263,8 +263,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-26T00:00:00.000Z"),
-            new Date("2020-08-02T00:00:00.000Z")
-          )
+            new Date("2020-08-02T00:00:00.000Z"),
+          ),
         ).toEqual(4.75);
         expect(
           computeAverageMoodInInterval(
@@ -276,8 +276,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-23T00:00:00.000Z"),
-            new Date("2020-07-24T00:00:00.000Z")
-          )
+            new Date("2020-07-24T00:00:00.000Z"),
+          ),
         ).toEqual(4);
         expect(
           computeAverageMoodInInterval(
@@ -289,8 +289,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-08-02T00:00:00.000Z")
-          )
+            new Date("2020-08-02T00:00:00.000Z"),
+          ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
@@ -302,8 +302,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-20T00:00:00.000Z"),
-            new Date("2020-07-25T00:00:00.000Z")
-          )
+            new Date("2020-07-25T00:00:00.000Z"),
+          ),
         ).toEqual(4.125);
       });
 
@@ -318,15 +318,15 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-25T00:00:00.000Z"),
-            new Date("2020-07-27T00:00:00.000Z")
-          )
+            new Date("2020-07-27T00:00:00.000Z"),
+          ),
         ).toEqual(4.5);
       });
     });
   });
 
   const sharedMeanTests = (
-    computeMeanFn: (xs: number[]) => number | undefined
+    computeMeanFn: (xs: number[]) => number | undefined,
   ) => {
     expect(computeMeanFn([5])).toBe(5);
     expect(computeMeanFn([1, 5])).toBe(3);
@@ -335,7 +335,7 @@ describe("utils", () => {
 
   test("computeMean", () => {
     expect(() => computeMean([])).toThrowError(
-      Error("Need at least one number to compute mean")
+      Error("Need at least one number to compute mean"),
     );
     sharedMeanTests(computeMean);
   });
@@ -364,10 +364,10 @@ describe("utils", () => {
 
   test("createChartRange", () => {
     expect(() => createChartRange([])).toThrowError(
-      Error("`createChartRange` requires at least 2 values but received 0")
+      Error("`createChartRange` requires at least 2 values but received 0"),
     );
     expect(() => createChartRange([0])).toThrowError(
-      "`createChartRange` requires at least 2 values but received 1"
+      "`createChartRange` requires at least 2 values but received 1",
     );
     expect(createChartRange([0, 0])).toEqual([-5, 5]);
     expect(createChartRange([0.1, 0.1])).toEqual([-5, 5]);
@@ -395,8 +395,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-31T00:00:00.000Z"),
-            new Date("2020-07-30T00:00:00.000Z")
-          )
+            new Date("2020-07-30T00:00:00.000Z"),
+          ),
         ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
       });
     });
@@ -410,8 +410,8 @@ describe("utils", () => {
               byId: {},
             },
             new Date("2020-07-30T00:00:00.000Z"),
-            new Date("2020-07-31T00:00:00.000Z")
-          )
+            new Date("2020-07-31T00:00:00.000Z"),
+          ),
         ).toBe(0);
       });
     });
@@ -425,8 +425,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-28T00:00:00.000Z")
-          )
+            new Date("2020-07-28T00:00:00.000Z"),
+          ),
         ).toEqual(120);
         expect(
           computeSecondsMeditatedInInterval(
@@ -435,8 +435,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-07-28T00:00:00.000Z")
-          )
+            new Date("2020-07-28T00:00:00.000Z"),
+          ),
         ).toEqual(120);
         expect(
           computeSecondsMeditatedInInterval(
@@ -445,8 +445,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(120);
         expect(
           computeSecondsMeditatedInInterval(
@@ -455,8 +455,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(120);
       });
 
@@ -468,8 +468,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-25T00:00:00.000Z"),
-            new Date("2020-07-25T00:00:00.000Z")
-          )
+            new Date("2020-07-25T00:00:00.000Z"),
+          ),
         ).toBe(0);
         expect(
           computeSecondsMeditatedInInterval(
@@ -478,8 +478,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-24T00:00:00.000Z"),
-            new Date("2020-07-25T00:00:00.000Z")
-          )
+            new Date("2020-07-25T00:00:00.000Z"),
+          ),
         ).toBe(0);
         expect(
           computeSecondsMeditatedInInterval(
@@ -488,8 +488,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-30T00:00:00.000Z"),
-            new Date("2020-07-30T00:00:00.000Z")
-          )
+            new Date("2020-07-30T00:00:00.000Z"),
+          ),
         ).toBe(0);
         expect(
           computeSecondsMeditatedInInterval(
@@ -498,8 +498,8 @@ describe("utils", () => {
               byId: { "2020-07-28T00:00:00.000Z": { seconds: 120 } },
             },
             new Date("2020-07-30T00:00:00.000Z"),
-            new Date("2020-07-31T00:00:00.000Z")
-          )
+            new Date("2020-07-31T00:00:00.000Z"),
+          ),
         ).toBe(0);
       });
     });
@@ -516,8 +516,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(300);
         expect(
           computeSecondsMeditatedInInterval(
@@ -529,8 +529,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-07-29T00:00:00.000Z")
-          )
+            new Date("2020-07-29T00:00:00.000Z"),
+          ),
         ).toEqual(300);
         expect(
           computeSecondsMeditatedInInterval(
@@ -542,8 +542,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-28T00:00:00.000Z"),
-            new Date("2020-07-30T00:00:00.000Z")
-          )
+            new Date("2020-07-30T00:00:00.000Z"),
+          ),
         ).toEqual(300);
         expect(
           computeSecondsMeditatedInInterval(
@@ -555,8 +555,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-27T00:00:00.000Z"),
-            new Date("2020-08-02T00:00:00.000Z")
-          )
+            new Date("2020-08-02T00:00:00.000Z"),
+          ),
         ).toEqual(300);
       });
 
@@ -571,8 +571,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-26T00:00:00.000Z"),
-            new Date("2020-08-02T00:00:00.000Z")
-          )
+            new Date("2020-08-02T00:00:00.000Z"),
+          ),
         ).toEqual(120);
         expect(
           computeSecondsMeditatedInInterval(
@@ -584,8 +584,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-23T00:00:00.000Z"),
-            new Date("2020-07-24T00:00:00.000Z")
-          )
+            new Date("2020-07-24T00:00:00.000Z"),
+          ),
         ).toEqual(60);
       });
 
@@ -600,8 +600,8 @@ describe("utils", () => {
               },
             },
             new Date("2020-07-25T00:00:00.000Z"),
-            new Date("2020-07-27T00:00:00.000Z")
-          )
+            new Date("2020-07-27T00:00:00.000Z"),
+          ),
         ).toEqual(0);
       });
     });
@@ -609,7 +609,7 @@ describe("utils", () => {
 
   test("createDateFromLocalDateString", () => {
     expect(createDateFromLocalDateString("2021-01-01")).toEqual(
-      new Date("2021-01-01T00:00:00")
+      new Date("2021-01-01T00:00:00"),
     );
   });
 
@@ -628,7 +628,7 @@ describe("utils", () => {
 
     it("returns the correct standard deviation", () => {
       expect(
-        computeStandardDeviation([727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1])
+        computeStandardDeviation([727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1]),
       ).toBeCloseTo(420.96);
     });
   });
@@ -639,15 +639,15 @@ describe("utils", () => {
         getEnvelopingIds(
           [],
           new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-01T00:00:00")
-        )
+          new Date("2020-09-01T00:00:00"),
+        ),
       ).not.toThrow();
       expect(() =>
         getEnvelopingIds(
           [],
           new Date("2020-09-01T00:00:01"),
-          new Date("2020-09-01T00:00:00")
-        )
+          new Date("2020-09-01T00:00:00"),
+        ),
       ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
 
@@ -661,8 +661,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-02T00:00:00")
-        )
+          new Date("2020-09-02T00:00:00"),
+        ),
       ).toEqual(["2020-10-04T00:00:00"]);
     });
 
@@ -676,8 +676,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-11-01T00:00:00"),
-          new Date("2020-11-02T00:00:00")
-        )
+          new Date("2020-11-02T00:00:00"),
+        ),
       ).toEqual(["2020-10-06T00:00:00"]);
     });
 
@@ -691,8 +691,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-10-01T00:00:00"),
-          new Date("2020-10-31T00:00:00")
-        )
+          new Date("2020-10-31T00:00:00"),
+        ),
       ).toEqual(allIds);
     });
 
@@ -706,8 +706,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-10-04T00:00:00"),
-          new Date("2020-10-06T00:00:00")
-        )
+          new Date("2020-10-06T00:00:00"),
+        ),
       ).toEqual(allIds);
     });
 
@@ -722,8 +722,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-10-04T00:00:02.000Z"),
-          new Date("2020-10-06T00:00:00.000Z")
-        )
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
       ).toEqual([
         "2020-10-04T00:00:01.000Z",
         "2020-10-04T00:00:02.000Z",
@@ -743,8 +743,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-10-04T00:00:00.000Z"),
-          new Date("2020-10-06T00:00:00.000Z")
-        )
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
       ).toEqual([
         "2020-10-04T00:00:00.000Z",
         "2020-10-05T00:00:00.000Z",
@@ -767,8 +767,8 @@ describe("utils", () => {
         getEnvelopingIds(
           allIds,
           new Date("2020-10-04T00:00:02.000Z"),
-          new Date("2020-10-06T00:00:00.000Z")
-        )
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
       ).toEqual([
         "2020-10-04T00:00:01.000Z",
         "2020-10-04T00:00:02.000Z",
@@ -785,15 +785,15 @@ describe("utils", () => {
         getIdsInInterval(
           [],
           new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-01T00:00:00")
-        )
+          new Date("2020-09-01T00:00:00"),
+        ),
       ).not.toThrow();
       expect(() =>
         getIdsInInterval(
           [],
           new Date("2020-09-01T00:00:01"),
-          new Date("2020-09-01T00:00:00")
-        )
+          new Date("2020-09-01T00:00:00"),
+        ),
       ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
 
@@ -802,8 +802,8 @@ describe("utils", () => {
         getIdsInInterval(
           [],
           new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00")
-        )
+          new Date("2020-09-03T00:00:00"),
+        ),
       ).toEqual([]);
     });
 
@@ -812,8 +812,8 @@ describe("utils", () => {
         getIdsInInterval(
           ["2020-09-01T23:59:59Z", "2020-09-03T00:00:01Z"],
           new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00")
-        )
+          new Date("2020-09-03T00:00:00"),
+        ),
       ).toEqual([]);
     });
 
@@ -822,8 +822,8 @@ describe("utils", () => {
         getIdsInInterval(
           ["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"],
           new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00")
-        )
+          new Date("2020-09-03T00:00:00"),
+        ),
       ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
     });
 
@@ -837,8 +837,8 @@ describe("utils", () => {
             "2020-09-03T00:00:01Z",
           ],
           new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00")
-        )
+          new Date("2020-09-03T00:00:00"),
+        ),
       ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
     });
   });
@@ -848,8 +848,8 @@ describe("utils", () => {
       200, 232, 300, 321, 500, 531, 600, 622, 701, 762, 771, 781, 800, 801, 802,
       803, 804,
     ].flatMap((weatherId) =>
-      [true, false].map((isDaytime) => ({ isDaytime, weatherId }))
-    )
+      [true, false].map((isDaytime) => ({ isDaytime, weatherId })),
+    ),
   )("getWeatherDisplayData(%p)", (x) => {
     expect(getWeatherDisplayData(x)).toMatchSnapshot();
   });
@@ -862,55 +862,55 @@ describe("utils", () => {
       "Pikachu",
     ]);
     expect(
-      getNormalizedTagsFromDescription("  Bulbasaur pIkaChu  🙂   ")
+      getNormalizedTagsFromDescription("  Bulbasaur pIkaChu  🙂   "),
     ).toEqual(["Bulbasaur", "Pikachu", "🙂"]);
   });
 
   test("formatIsoDateInLocalTimezone", () => {
     expect(formatIsoDateInLocalTimezone(new Date("2020-09-01T00:00:00"))).toBe(
-      "2020-09-01"
+      "2020-09-01",
     );
     expect(formatIsoDateInLocalTimezone(new Date("2020-09-30T23:59:59"))).toBe(
-      "2020-09-30"
+      "2020-09-30",
     );
     expect(formatIsoDateInLocalTimezone(new Date("2020-10-01T00:00:01"))).toBe(
-      "2020-10-01"
+      "2020-10-01",
     );
   });
 
   test("formatIsoDateHourInLocalTimezone", () => {
     expect(
-      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:01:01"))
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:01:01")),
     ).toBe("2021-02-14T00:00:00.000Z");
     expect(
-      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:00:00"))
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:00:00")),
     ).toBe("2021-02-14T00:00:00.000Z");
     expect(
-      formatIsoDateHourInLocalTimezone(new Date("2021-02-13T23:59:59"))
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-13T23:59:59")),
     ).toBe("2021-02-13T23:00:00.000Z");
   });
 
   test("formatIsoMonthInLocalTimezone", () => {
     expect(formatIsoMonthInLocalTimezone(new Date("2020-09-01T00:00:00"))).toBe(
-      "2020-09"
+      "2020-09",
     );
     expect(formatIsoMonthInLocalTimezone(new Date("2020-09-30T23:59:59"))).toBe(
-      "2020-09"
+      "2020-09",
     );
     expect(formatIsoMonthInLocalTimezone(new Date("2020-10-01T00:00:00"))).toBe(
-      "2020-10"
+      "2020-10",
     );
   });
 
   test("formatIsoYearInLocalTimezone", () => {
     expect(formatIsoYearInLocalTimezone(new Date("2020-01-01T00:00:00"))).toBe(
-      "2020"
+      "2020",
     );
     expect(formatIsoYearInLocalTimezone(new Date("2020-12-31T23:59:59"))).toBe(
-      "2020"
+      "2020",
     );
     expect(formatIsoYearInLocalTimezone(new Date("2021-01-01T00:00:00"))).toBe(
-      "2021"
+      "2021",
     );
   });
 
@@ -944,40 +944,40 @@ describe("utils", () => {
 
   test("moodToColor", () => {
     expect(moodToColor(MOOD_RANGE[0])).toMatchInlineSnapshot(
-      `"rgb(23, 71, 240)"`
+      `"rgb(23, 71, 240)"`,
     );
     expect(
-      moodToColor(MOOD_RANGE[0] + (MOOD_RANGE[1] + MOOD_RANGE[0]) / 2)
+      moodToColor(MOOD_RANGE[0] + (MOOD_RANGE[1] + MOOD_RANGE[0]) / 2),
     ).toMatchInlineSnapshot(`"rgb(0, 224, 224)"`);
     expect(moodToColor(MOOD_RANGE[1])).toMatchInlineSnapshot(
-      `"rgb(16, 255, 0)"`
+      `"rgb(16, 255, 0)"`,
     );
     expect(
-      moodToColor(MOOD_RANGE[0] + MOOD_EXTENT / Math.PI)
+      moodToColor(MOOD_RANGE[0] + MOOD_EXTENT / Math.PI),
     ).toMatchInlineSnapshot(`"rgb(0, 181, 250)"`);
   });
 
   test("roundDateDown", () => {
     expect(roundDateDown(new Date("2020-09-09T00:00:00.000"))).toEqual(
-      new Date("2020-09-09T00:00:00.000")
+      new Date("2020-09-09T00:00:00.000"),
     );
     expect(roundDateDown(new Date("2020-09-09T00:00:00.001"))).toEqual(
-      new Date("2020-09-09T00:00:00.000")
+      new Date("2020-09-09T00:00:00.000"),
     );
     expect(roundDateDown(new Date("2020-09-09T23:59:59.999"))).toEqual(
-      new Date("2020-09-09T00:00:00.000")
+      new Date("2020-09-09T00:00:00.000"),
     );
   });
 
   test("roundDateUp", () => {
     expect(roundDateUp(new Date("2020-09-08T00:00:00.000"))).toEqual(
-      new Date("2020-09-08T00:00:00.000")
+      new Date("2020-09-08T00:00:00.000"),
     );
     expect(roundDateUp(new Date("2020-09-08T00:00:00.001"))).toEqual(
-      new Date("2020-09-09T00:00:00.000")
+      new Date("2020-09-09T00:00:00.000"),
     );
     expect(roundDateUp(new Date("2020-09-07T23:59:59.999"))).toEqual(
-      new Date("2020-09-08T00:00:00.000")
+      new Date("2020-09-08T00:00:00.000"),
     );
   });
 

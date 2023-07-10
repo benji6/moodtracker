@@ -160,9 +160,9 @@ const weekdayDates = [
 
 type WeekdayLabels = [string, string, string, string, string, string, string];
 export const WEEKDAY_LABELS_NARROW: WeekdayLabels = weekdayDates.map((date) =>
-  weekdayNarrowFormatter.format(date)
+  weekdayNarrowFormatter.format(date),
 ) as WeekdayLabels;
 
 export const WEEKDAY_LABELS_SHORT: WeekdayLabels = weekdayDates.map((date) =>
-  weekdayShortFormatter.format(date)
+  weekdayShortFormatter.format(date),
 ) as WeekdayLabels;

@@ -47,12 +47,12 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
-    normalizedAveragesByMonthSelector
+    normalizedAveragesByMonthSelector,
   );
 
   const months = eachMonthOfInterval({ start: date, end: nextDate }).slice(
     0,
-    -1
+    -1,
   );
 
   const calendars = [];
@@ -82,7 +82,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           <small>{formattedAverageMood && ` (${formattedAverageMood})`}</small>
         </h4>
         <MoodCalendarForMonth month={month} small />
-      </button>
+      </button>,
     );
   }
 

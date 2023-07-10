@@ -25,10 +25,10 @@ describe("weight", () => {
       await page.waitForSelector(SELECTORS.weightAddPage);
 
       input = ((await page.$(
-        SELECTORS.weightValueInput
+        SELECTORS.weightValueInput,
       )) as ElementHandle<HTMLInputElement>)!;
       submitButton = ((await page.$(
-        SELECTORS.weightAddSubmitButton
+        SELECTORS.weightAddSubmitButton,
       )) as ElementHandle<HTMLButtonElement>)!;
     });
 
@@ -89,17 +89,17 @@ describe("weight", () => {
       expect(page.url()).toBe(URLS.weightLog);
 
       const weightCardValue = await page.waitForSelector(
-        SELECTORS.weightCardValue
+        SELECTORS.weightCardValue,
       );
       const weightText = await weightCardValue!.evaluate(
-        (el) => el.textContent
+        (el) => el.textContent,
       );
 
       expect(weightText).toBe(`${weightTestValue}kg`);
 
       const cardTime = await page.$(SELECTORS.weightCardTime);
       const timeValue = await cardTime!.evaluate((el) =>
-        el.getAttribute("data-time")
+        el.getAttribute("data-time"),
       );
       expect(timeValue).toBe(String(expectedTime));
     });

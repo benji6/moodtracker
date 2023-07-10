@@ -49,7 +49,7 @@ export default function EditWeight() {
         createdAt: new Date().toISOString(),
         // The user is redirected if `id` is not defined
         payload: { id: id!, value: valueAsNumber },
-      })
+      }),
     );
     navigate("/weight/log");
   };
