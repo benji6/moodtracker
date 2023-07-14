@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowUnreachableCode": false,
     "esModuleInterop": true, // for tests
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
