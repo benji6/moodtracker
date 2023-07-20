@@ -44,7 +44,7 @@
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
-    "@parcel/packager-raw-url": "^2.7.0",
+    "@parcel/packager-raw-url": "^2.9.3",
     "@parcel/transformer-webmanifest": "^2.7.0",
     "@types/d3-geo": "^3.0.2",
     "@types/d3-interpolate": "^3.0.1",
