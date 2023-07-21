@@ -56,8 +56,7 @@ export const ERRORS = {
 } as const;
 
 export const PATTERNS = {
-  noPunctuation:
-    "[^‒–—―|$&~=\\/⁄@+*!?({[\\]})<>‹›«».;:^‘’“”'\",،、`·•†‡°″¡¿※#№÷×%‰−‱¶′‴§_‖¦]*",
+  noPunctuation: "[\\p{L}\\p{Emoji_Presentation}\\s]*",
 } as const;
 
 export const TIME = {
