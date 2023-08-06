@@ -25,7 +25,7 @@ def lambda_function(template, name, code_filename, **kwargs):
             name,
             Code=awslambda.Code(ZipFile=lambda_code),
             Handler="index.handler",
-            Runtime="python3.10",
+            Runtime="python3.11",
             **kwargs,
         )
     )
