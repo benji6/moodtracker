@@ -31,11 +31,15 @@ help:
 
 # Install all dependencies
 init: init/ci
-	@cd scripts && echo "⏳ Installing Python dependencies... ⏳" && poetry install && echo "🍄 Python dependencies successfully installed! 🍄"
+	@echo "⏳ Installing Python dependencies... ⏳"
+	@cd scripts && poetry install
+	@echo "🍄 Python dependencies successfully installed! 🍄"
 
 # Install all Node.js dependencies
 init/ci:
-	@cd client && echo "⏳ Installing Node.js dependencies... ⏳" && npm i && echo "🍄 Node.js dependencies successfully installed! 🍄"
+	@echo "⏳ Installing Node.js dependencies... ⏳"
+	@cd client && npm i
+	@echo "🍄 Node.js dependencies successfully installed! 🍄"
 
 # Updates the CloudFormation stack policy
 stack-policy:
@@ -48,7 +52,7 @@ start:
 
 # Run all tests
 test: cloudformation/test
-	@./bin/test.sh
+	@cd client && npm t && echo "🍄 All tests pass! 🍄"
 
 # Runs all CI tests (CloudFormation checks and e2e tests not yet supported)
 test/ci:
