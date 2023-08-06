@@ -1,6 +1,6 @@
 # Compiles some basic usage analytics
 analytics:
-	@./bin/analytics.sh
+	@cd scripts && poetry run python3 ./analytics.py
 
 # Generates the CloudFormation file
 infra/cloudformation.yml: scripts/cloudformation/*.py scripts/cloudformation/**/*.py
