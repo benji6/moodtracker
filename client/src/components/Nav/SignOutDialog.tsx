@@ -1,11 +1,9 @@
 import { Dialog, Button, Icon } from "eri";
-import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { queryClient } from "../..";
-import { userPool } from "../../cognito";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { TEST_IDS } from "../../constants";
 import { eventsIdsToSyncSelector } from "../../selectors";
-import { slicesToClearOnLogout } from "../../store";
+import signOut from "../../signout";
 
 interface Props {
   onClose(): void;
@@ -14,16 +12,12 @@ interface Props {
 
 export default function SignOutDialog({ onClose, open }: Props) {
   const idsToSync = useSelector(eventsIdsToSyncSelector);
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     setIsLoading(true);
-    const currentUser = userPool.getCurrentUser();
-    if (currentUser) currentUser.signOut();
+    await signOut();
     onClose();
-    for (const slice of slicesToClearOnLogout) dispatch(slice.actions.clear());
-    queryClient.clear();
     setIsLoading(false);
   };
 

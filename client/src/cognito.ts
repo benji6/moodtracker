@@ -7,6 +7,7 @@ import {
   CognitoUserSession,
 } from "amazon-cognito-identity-js";
 import { AWS_CONSTANTS } from "./constants";
+import signOut from "./signout";
 
 export const userPool = new CognitoUserPool({
   ClientId: "t3rc7etonlne28d9mf10ip0ci",
@@ -87,9 +88,9 @@ export const getIdToken = (): Promise<CognitoIdToken> =>
     const currentUser = getCurrentUser();
     getSession(currentUser).then(
       (session) => resolve(session.getIdToken()),
-      (error) => {
+      async (error) => {
         if (error.message === "User does not exist.") {
-          currentUser.signOut();
+          await signOut(currentUser);
           return reject(Error("No current user"));
         }
         reject(error);
