@@ -31,7 +31,8 @@ help:
 
 # Install all dependencies
 init:
-	@./bin/init.sh
+	@cd client && echo "⏳ Installing Node.js dependencies... ⏳" && npm i && echo "🍄 Node.js dependencies successfully installed! 🍄"
+	@cd scripts && echo "⏳ Installing Python dependencies... ⏳" && poetry install && echo "🍄 Python dependencies successfully installed! 🍄"
 
 # Install all Node.js dependencies
 init/ci:
