@@ -4,7 +4,7 @@ analytics:
 
 # Generates the CloudFormation file
 infra/cloudformation.yml: scripts/cloudformation/*.py scripts/cloudformation/**/*.py
-	@./bin/cloudformation.sh
+	@cd scripts && poetry run python3 cloudformation/main.py
 	@echo "🍄 CloudFormation template built successfully! 🍄"
 
 # Builds and validates the CloudFormation template
