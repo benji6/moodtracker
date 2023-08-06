@@ -44,7 +44,7 @@ stack-policy:
 
 # Run the project locally
 start:
-	@./bin/start.sh
+	@cd client && npm start
 
 # Run all tests
 test: cloudformation/test
