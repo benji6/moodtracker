@@ -30,6 +30,7 @@
             "AWS::Cognito::UserPoolClient",
             "AWS::Cognito::UserPoolDomain",
             "AWS::Events::Rule",
+            "AWS::S3::Bucket",
             "AWS::SES::ReceiptRule",
             "AWS::SNS::Topic"
           ]
