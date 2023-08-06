@@ -52,6 +52,6 @@ test: cloudformation/test
 
 # Runs all CI tests (CloudFormation checks and e2e tests not yet supported)
 test/ci:
-	@./bin/test-ci.sh
+	@cd client && npm run test-ci && echo "🍄 All tests pass! 🍄"
 
 .PHONY: analytics cloudformation/test deploy deploy/dry-run help init init/ci stack-policy start test test/ci
