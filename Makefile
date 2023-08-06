@@ -30,13 +30,12 @@ help:
 		less -R
 
 # Install all dependencies
-init:
-	@cd client && echo "⏳ Installing Node.js dependencies... ⏳" && npm i && echo "🍄 Node.js dependencies successfully installed! 🍄"
+init: init/ci
 	@cd scripts && echo "⏳ Installing Python dependencies... ⏳" && poetry install && echo "🍄 Python dependencies successfully installed! 🍄"
 
 # Install all Node.js dependencies
 init/ci:
-	@./bin/init-ci.sh
+	@cd client && echo "⏳ Installing Node.js dependencies... ⏳" && npm i && echo "🍄 Node.js dependencies successfully installed! 🍄"
 
 # Updates the CloudFormation stack policy
 stack-policy:
