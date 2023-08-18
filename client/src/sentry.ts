@@ -10,7 +10,13 @@ if (process.env.NODE_ENV === "production")
 export const captureException: typeof Sentry.captureException = (
   exception,
   context,
-) =>
-  process.env.NODE_ENV === "production"
-    ? Sentry.captureException(exception, context)
-    : "";
+) => {
+  if (process.env.NODE_ENV === "production")
+    return Sentry.captureException(exception, context);
+  // eslint-disable-next-line no-console
+  console.error(
+    "Following exception would be sent to Sentry in production:",
+    exception,
+  );
+  return "";
+};
