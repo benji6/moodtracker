@@ -1,6 +1,5 @@
 import os
-from troposphere import Ref, GetAtt, Sub, Ref
-from troposphere import iam, awslambda, apigateway
+from troposphere import Ref, GetAtt, Sub, Ref, iam, awslambda, apigateway
 
 
 def api_gateway_resource(

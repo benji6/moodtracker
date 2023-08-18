@@ -2,6 +2,19 @@
 analytics:
 	@cd scripts && poetry run python3 ./analytics.py
 
+# Makes notifications_send.zip
+scripts/cloudformation/lambdas/notifications_send.zip: scripts/cloudformation/lambdas/notifications_send/*
+	@cd scripts/cloudformation/lambdas/notifications_send &&\
+		mkdir -p package &&\
+		pip install -r requirements.txt --target ./package > /dev/null
+	@echo "🍄 notifications_send dependencies installed successfully! 🍄"
+	@cd scripts/cloudformation/lambdas/notifications_send/package &&\
+		rm -r __pycache__ &&\
+		zip -r ../../notifications_send.zip . > /dev/null &&\
+		cd .. &&\
+		zip ../notifications_send.zip index.py > /dev/null
+	@echo "🍄 notifications_send.zip made successfully! 🍄"
+
 # Generates the CloudFormation file
 infra/cloudformation.yml: scripts/cloudformation/*.py scripts/cloudformation/**/*.py
 	@cd scripts && poetry run python3 cloudformation/main.py
@@ -14,12 +27,18 @@ cloudformation/test: infra/cloudformation.yml
 	@./bin/test-cloudformation.sh
 
 # Deploy infrastructure
-deploy: cloudformation/test
+deploy: cloudformation/test deploy/notifications_send
 	@./bin/deploy.sh
 
 # Deployment dry run to view potential changes
 deploy/dry-run: cloudformation/test
 	@aws cloudformation deploy --capabilities CAPABILITY_IAM --no-execute-changeset --s3-bucket moodtracker-cloudformation --stack-name moodtracker --template-file infra/cloudformation.yml
+
+deploy/notifications_send: scripts/cloudformation/lambdas/notifications_send.zip
+	@aws s3 cp --quiet scripts/cloudformation/lambdas/notifications_send.zip s3://moodtracker-cloudformation/lambdas/notifications_send.zip
+	@echo "🍄 notifications_send.zip uploaded to S3 successfully! 🍄"
+	@aws lambda update-function-code --function-name MoodTrackerWebNotificationsSend --s3-bucket moodtracker-cloudformation --s3-key lambdas/notifications_send.zip > /dev/null
+	@echo "🍄 MoodTrackerWebNotificationsSend lambda updated successfully! 🍄"
 
 # Print this help message
 help:
@@ -58,4 +77,4 @@ test: cloudformation/test
 test/ci:
 	@cd client && npm run test-ci && echo "🍄 All tests pass! 🍄"
 
-.PHONY: analytics cloudformation/test deploy deploy/dry-run help init init/ci stack-policy start test test/ci
+.PHONY: analytics cloudformation/test deploy deploy/dry-run deploy/notifications_send help init init/ci stack-policy start test test/ci

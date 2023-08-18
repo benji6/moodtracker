@@ -12,6 +12,7 @@ from dynamo_resources import dynamo_resources
 from http_api_resources import http_api_resources
 from misc_resources import misc_resources
 from send_weekly_email_resources import send_weekly_email_resources
+from send_web_notifications_resources import send_web_notifications_resources
 
 template = Template()
 template.set_version("2010-09-09")
@@ -75,6 +76,7 @@ dynamo_resources(template)
 http_api_resources(template)
 misc_resources(template)
 send_weekly_email_resources(template)
+send_web_notifications_resources(template)
 
 
 with open(

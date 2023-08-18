@@ -1,5 +1,6 @@
-from troposphere import location, Ref, s3, ses, sns, Sub
-from modules import lambda_function, lambda_role, lambda_permission
+from troposphere import GetAtt, location, Ref, s3, ses, sns, Sub
+from modules import awslambda, lambda_function, lambda_role, lambda_permission
+from constants import CLOUDFORMATION_BUCKET_NAME
 
 
 def misc_resources(template):
@@ -14,7 +15,7 @@ def misc_resources(template):
                             "id": "CKV_AWS_18",
                         },
                         {
-                            "comment": "Unnecessary because template is stored in version control and S3 object can be rebuilt trivially",
+                            "comment": "Unnecessary because objects in this bucket are stored in version control and can be rebuilt trivially",
                             "id": "CKV_AWS_21",
                         },
                     ]
@@ -29,7 +30,7 @@ def misc_resources(template):
                     )
                 ]
             ),
-            BucketName="moodtracker-cloudformation",
+            BucketName=CLOUDFORMATION_BUCKET_NAME,
             PublicAccessBlockConfiguration=s3.PublicAccessBlockConfiguration(
                 BlockPublicAcls=True,
                 BlockPublicPolicy=True,
