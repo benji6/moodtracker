@@ -20,18 +20,18 @@ table = dynamodb.Table("moodtracker_web_push_tokens")
 def handler(event, context):
     response = table.scan(
         ExpressionAttributeNames={"#t": "token"},
-        ProjectionExpression="#t",
+        ProjectionExpression="#t,userId",
     )
-    registration_tokens = [item["token"] for item in response["Items"]]
+    items = response["Items"]
     while response.get("LastEvaluatedKey"):
         response = table.scan(
             ExclusiveStartKey=response["LastEvaluatedKey"],
             ExpressionAttributeNames={"#t": "token"},
-            ProjectionExpression="#t",
+            ProjectionExpression="#t,userId",
         )
-        registration_tokens.extend([item["token"] for item in response["Items"]])
+        items.extend(response["Items"])
 
-    print("{0} tokens fetched".format(len(registration_tokens)))
+    print("{0} tokens fetched".format(len(items)))
 
     message = messaging.MulticastMessage(
         webpush=messaging.WebpushConfig(
@@ -47,7 +47,7 @@ def handler(event, context):
                 title="Daily reminder",
             ),
         ),
-        tokens=registration_tokens,
+        tokens=[i["token"] for i in items],
     )
 
     response = messaging.send_multicast(message)
@@ -55,14 +55,21 @@ def handler(event, context):
     print("{0} messages were sent successfully".format(response.success_count))
     print("{0} messages failed to send".format(response.failure_count))
 
-    if response.failure_count > 0:
-        responses = response.responses
-        failed_tokens = []
-        for i, resp in enumerate(responses):
-            if not resp.success:
-                # The order of responses corresponds to the order of the registration tokens
-                failed_tokens.append(registration_tokens[i])
-                print(registration_tokens[i])
-                print(resp.exception)
-                print(resp.exception.code)
-        print("List of tokens that caused failures: {0}".format(failed_tokens))
+    if response.failure_count == 0:
+        return
+
+    for i, resp in enumerate(response.responses):
+        if resp.success:
+            continue
+        # The order of responses corresponds to the order of the registration tokens
+        item = items[i]
+        print("Failed to send notification for:", item)
+        print(resp.exception)
+        print(resp.exception.code)
+        if resp.exception.code == "NOT_FOUND":
+            try:
+                table.delete_item(
+                    Key={"token": item["token"], "userId": item["userId"]}
+                )
+            except Exception as e:
+                print("Failed to delete token", e)

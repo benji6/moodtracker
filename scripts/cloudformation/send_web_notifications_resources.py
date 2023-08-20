@@ -38,7 +38,7 @@ def send_web_notifications_resources(template):
         "moodtracker_lambda_notifications_send_policy",
         [
             {
-                "Action": "dynamodb:Scan",
+                "Action": ["dynamodb:DeleteItem", "dynamodb:Scan"],
                 "Effect": "Allow",
                 "Resource": GetAtt("DynamoWebPushTokensTable", "Arn"),
             },
