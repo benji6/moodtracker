@@ -4,7 +4,7 @@ import { queryClient } from "../../..";
 import {
   webPushTokensDelete,
   webPushTokensList,
-  webPushTokensPost,
+  webPushTokensPut,
 } from "../../../api";
 import { ERRORS } from "../../../constants";
 import useWebPushToken, {
@@ -33,19 +33,21 @@ export default function WebPushNotifications() {
       }));
     },
   });
-  const postMutation = useMutation(webPushTokensPost, {
-    onSuccess: (t) => {
+  const putMutation = useMutation(webPushTokensPut, {
+    onSuccess: (tokenObject) => {
       queryClient.setQueryData<typeof data>(["web-push-tokens"], (data) => ({
-        tokens: data ? [...data.tokens, t] : [t],
+        tokens: data ? [...data.tokens, tokenObject] : [tokenObject],
       }));
     },
   });
 
   useEffect(() => {
     if (!shouldPostToken || !token) return;
-    postMutation.mutate(token);
+    const createdAt = new Date().toISOString();
+    const updatedAt = createdAt;
+    putMutation.mutate({ createdAt, token, updatedAt });
     setShouldPostToken(false);
-  }, [postMutation, shouldPostToken, token]);
+  }, [putMutation, shouldPostToken, token]);
 
   let registrationTokenErrorMessage: undefined | string;
   if (tokenError) {
@@ -72,7 +74,7 @@ export default function WebPushNotifications() {
     isLoading ||
     isTokenLoading ||
     deleteMutation.isLoading ||
-    postMutation.isLoading;
+    putMutation.isLoading;
 
   return (
     <>
@@ -87,7 +89,7 @@ export default function WebPushNotifications() {
         disabled={isSomethingLoading}
         error={
           registrationTokenErrorMessage ??
-          (postMutation.isError || isError ? ERRORS.network : undefined)
+          (putMutation.isError || isError ? ERRORS.network : undefined)
         }
         onChange={() => {
           if (!token) {

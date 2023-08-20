@@ -128,6 +128,7 @@ export const webPushTokensList = async (): Promise<{
   tokens: {
     createdAt: string;
     token: string;
+    updatedAt: string;
   }[];
 }> => {
   const response = await fetchWithAuth(WEB_PUSH_TOKENS_URI);
@@ -141,18 +142,25 @@ export const webPushTokensDelete = async (token: string): Promise<void> => {
   );
   if (!response.ok) throw Error(String(response.status));
 };
-export const webPushTokensPost = async (
-  token: string,
-): Promise<{
+export const webPushTokensPut = async (tokenObject: {
   createdAt: string;
   token: string;
+  updatedAt: string;
+}): Promise<{
+  createdAt: string;
+  token: string;
+  updatedAt: string;
 }> => {
+  const { token, ...body } = tokenObject;
   const response = await fetchWithAuth(
     `${WEB_PUSH_TOKENS_URI}/${encodeURIComponent(token)}`,
-    { method: "POST" },
+    {
+      body: JSON.stringify(body),
+      method: "PUT",
+    },
   );
   if (!response.ok) throw Error(String(response.status));
-  return response.json();
+  return tokenObject;
 };
 
 const getLocationClient = (() => {

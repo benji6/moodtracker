@@ -58,8 +58,11 @@ def handler(event, context):
     if response.failure_count > 0:
         responses = response.responses
         failed_tokens = []
-        for idx, resp in enumerate(responses):
+        for i, resp in enumerate(responses):
             if not resp.success:
-                # The order of responses corresponds to the order of the registration tokens.
-                failed_tokens.append(registration_tokens[idx])
+                # The order of responses corresponds to the order of the registration tokens
+                failed_tokens.append(registration_tokens[i])
+                print(registration_tokens[i])
+                print(resp.exception)
+                print(resp.exception.code)
         print("List of tokens that caused failures: {0}".format(failed_tokens))

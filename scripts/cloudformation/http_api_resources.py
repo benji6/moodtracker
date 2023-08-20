@@ -123,7 +123,7 @@ def http_api_resources(template):
     lambda_api_method(
         template,
         "web push tokens",
-        "POST",
+        "PUT",
         ResourceId=Ref(f"ApiGatewayWebPushTokensPathResource"),
         statement={
             "Action": "dynamodb:PutItem",
