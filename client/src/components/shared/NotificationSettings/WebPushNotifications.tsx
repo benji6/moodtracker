@@ -78,7 +78,6 @@ export default function WebPushNotifications() {
 
   return (
     <>
-      <h3>Daily push notifications</h3>
       <p>
         Opt in to receive daily push notifications that remind you to log your
         mood. Note that your phone will need an internet connection to receive

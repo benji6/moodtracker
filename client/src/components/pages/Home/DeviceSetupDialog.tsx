@@ -4,6 +4,7 @@ import { TEST_IDS } from "../../../constants";
 import { appShowNewSignInUiSelector } from "../../../selectors";
 import appSlice from "../../../store/appSlice";
 import LocationToggle from "../../shared/LocationToggle";
+import WebPushNotifications from "../../shared/NotificationSettings/WebPushNotifications";
 
 export default function DeviceSetupDialog() {
   const userHasManuallySignedIn = useSelector(appShowNewSignInUiSelector);
@@ -16,6 +17,8 @@ export default function DeviceSetupDialog() {
       title="Check your device-specific settings"
       onClose={() => dispatch(appSlice.actions.dismissNewSignInUi())}
     >
+      <h4>Daily push notifications</h4>
+      <WebPushNotifications />
       <h4 style={{ marginTop: 0 }}>Location settings</h4>
       <LocationToggle />
     </Dialog>
