@@ -20,6 +20,7 @@ export default function useWebPushToken(): {
       return setError(Error(NOTIFICATIONS_PERMISSION_DENIED_ERROR_MESSAGE));
     if (error?.message === NOTIFICATIONS_PERMISSION_DENIED_ERROR_MESSAGE)
       setError(undefined);
+    if (error) return;
     if (permissionState === "granted") {
       setIsLoading(true);
       getRegistrationToken()
@@ -27,7 +28,7 @@ export default function useWebPushToken(): {
         .catch(setError)
         .finally(() => setIsLoading(false));
     }
-  }, [error?.message, permissionState]);
+  }, [error, permissionState]);
 
   return { error, isLoading, token };
 }
