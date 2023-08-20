@@ -7,9 +7,9 @@ export default function usePermissionState(name: PermissionName) {
   >();
 
   useInterval(() => {
-    navigator.permissions
-      .query({ name })
-      .then(({ state }) => setPermissionState(state));
+    navigator.permissions.query({ name }).then(({ state }) => {
+      if (state !== permissionState) setPermissionState(state);
+    });
   }, 1e2);
 
   return permissionState;
