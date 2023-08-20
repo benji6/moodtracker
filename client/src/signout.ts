@@ -10,8 +10,8 @@ export default async function signOut(currentUser = userPool.getCurrentUser()) {
     name: "notifications",
   });
   if (state === "granted") {
-    const token = await getRegistrationToken();
     try {
+      const token = await getRegistrationToken();
       await webPushTokensDelete(token);
     } catch (e) {
       captureException(e);
