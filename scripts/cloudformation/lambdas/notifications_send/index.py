@@ -31,7 +31,7 @@ def handler(event, context):
         )
         items.extend(response["Items"])
 
-    print("{0} tokens fetched".format(len(items)))
+    print("{0} tokens retrieved from DB".format(len(items)))
 
     message = messaging.MulticastMessage(
         webpush=messaging.WebpushConfig(
@@ -63,13 +63,20 @@ def handler(event, context):
             continue
         # The order of responses corresponds to the order of the registration tokens
         item = items[i]
-        print("Failed to send notification for:", item)
-        print(resp.exception)
-        print(resp.exception.code)
+
+        print(
+            "Failed to send notification: ",
+            resp.exception,
+            "; code: ",
+            resp.exception.code,
+            "; item: ",
+            item,
+        )
         if resp.exception.code == "NOT_FOUND":
             try:
                 table.delete_item(
                     Key={"token": item["token"], "userId": item["userId"]}
                 )
+                print("Deleted token: ", item)
             except Exception as e:
-                print("Failed to delete token", e)
+                print("Failed to delete token: ", e, "; item: ", item)
