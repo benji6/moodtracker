@@ -80,8 +80,14 @@ export default function WebPushNotifications() {
     <>
       <p>
         Opt in to receive daily push notifications that remind you to log your
-        mood. Note that your phone will need an internet connection to receive
-        push notifications.
+        mood.
+      </p>
+      <p>
+        <small>
+          You will need to set this up separately on each device you use
+          MoodTracker on and your device will need an internet connection to
+          receive push notifications.
+        </small>
       </p>
       <Toggle
         checked={isEnabled}
