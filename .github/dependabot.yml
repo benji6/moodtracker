@@ -12,3 +12,7 @@ updates:
     directory: /scripts
     schedule:
       interval: monthly
+  - package-ecosystem: pip
+    directory: /scripts/cloudformation/lambdas/notifications_send
+    schedule:
+      interval: monthly
