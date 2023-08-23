@@ -8,7 +8,7 @@
     "icons": "node scripts/icons",
     "start": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') parcel src/index.html --open",
     "test": "run-p test:*",
-    "test:audit": "npm audit --audit-level=critical",
+    "test:audit": "npm audit --audit-level=low",
     "test:e2e": "jest e2e",
     "test:fmt": "prettier --check -u '**/*'",
     "test:lint": "eslint --ext js,ts,tsx .",
