@@ -43,7 +43,10 @@ def http_api_resources(template):
             {
                 "Action": "dynamodb:DescribeTable",
                 "Effect": "Allow",
-                "Resource": GetAtt("DynamoWeeklyEmailsTable", "Arn"),
+                "Resource": [
+                    GetAtt("DynamoWebPushTokensTable", "Arn"),
+                    GetAtt("DynamoWeeklyEmailsTable", "Arn"),
+                ],
             },
             {
                 "Action": ["dynamodb:GetItem", "dynamodb:PutItem"],

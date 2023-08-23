@@ -17,6 +17,8 @@ cache = {}
 dynamodb = boto3.resource("dynamodb")
 cache_table = dynamodb.Table("moodtracker_global_cache")
 events_table = dynamodb.Table("moodtracker_events")
+# checkov:skip=CKV_SECRET_6:False positive
+web_push_tokens_table = dynamodb.Table("moodtracker_web_push_tokens")
 weekly_emails_table = dynamodb.Table("moodtracker_weekly_emails")
 
 
@@ -221,6 +223,7 @@ def handler(event, context):
                     1,
                 ),
                 "meditationMAUs": len(meditation_MAU_ids),
+                "totalWebPushTokens": web_push_tokens_table.item_count,
                 "usersWithWeeklyEmails": weekly_emails_table.item_count,
                 "weightMAUs": len(weight_MAU_ids),
                 "CRR": round(
