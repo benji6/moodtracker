@@ -16,8 +16,8 @@ const roundQueryParameters = ({
   longitude: number;
 } => ({
   // Rounding latitude and longitude to 3 decimal places gives a resolution of about 100m (https://en.wikipedia.org/wiki/Decimal_degrees#Precision) and improves client-side caching
-  latitude: Number(latitude.toFixed(1)),
-  longitude: Number(longitude.toFixed(1)),
+  latitude: Number(latitude.toFixed(3)),
+  longitude: Number(longitude.toFixed(3)),
 });
 
 export const useReverseGeolocationQuery = ({
