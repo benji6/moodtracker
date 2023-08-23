@@ -4,9 +4,10 @@ from troposphere import dynamodb
 def table(template, name, pitr=True, **kwargs):
     extra_args = (
         {
+            "DeletionProtectionEnabled": True,
             "PointInTimeRecoverySpecification": dynamodb.PointInTimeRecoverySpecification(
                 PointInTimeRecoveryEnabled=True
-            )
+            ),
         }
         if pitr
         else {}
