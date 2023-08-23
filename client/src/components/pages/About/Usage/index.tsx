@@ -242,6 +242,10 @@ export default function Usage() {
               percentFormatter.format(data.usage.CRR),
             ],
             [
+              "Number of devices with push notifications enabled",
+              data.usage.totalWebPushTokens,
+            ],
+            [
               "Users who are signed up to weekly emails",
               data.usage.usersWithWeeklyEmails,
             ],

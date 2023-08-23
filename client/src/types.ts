@@ -131,6 +131,7 @@ export interface Usage {
   MAUs: number;
   meanMoodInLast7Days: number;
   meditationMAUs: number;
+  totalWebPushTokens?: number;
   usersWithWeeklyEmails: number;
   WAUs: number;
   weightMAUs: number;
