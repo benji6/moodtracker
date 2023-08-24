@@ -39,13 +39,12 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
   while (i--) data.push(undefined);
 
   let daysInMonth = getDaysInMonth(month);
-  let d0 = month;
-  while (true) {
-    const dateString = formatIsoDateInLocalTimezone(d0);
+  let d = month;
+  while (daysInMonth--) {
+    const dateString = formatIsoDateInLocalTimezone(d);
     const mood = normalizedAveragesByDay.byId[dateString];
     data.push({ dateString, mood });
-    if (!daysInMonth--) break;
-    d0 = addDays(d0, 1);
+    d = addDays(d, 1);
   }
 
   return (
