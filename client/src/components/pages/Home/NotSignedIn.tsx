@@ -126,6 +126,9 @@ export default function NotSignedIn() {
         <MoodFrequencyChart {...MOOD_FREQUENCY_PROPS} />
         <h3>And much more!</h3>
         <ul>
+          <li>
+            Set up daily push notifications to remind you to record your mood
+          </li>
           <li>Set up weekly email reports</li>
           <li>
             Export your data at any time, put it in a spreadsheet or do whatever
