@@ -7,7 +7,7 @@ authors = ["Your Name <you@example.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 boto3 = "^1"
-checkov = "^2.4.9"
+checkov = "^2.4.22"
 troposphere = {extras = ["policy"], version = "^4.4.1"}
 
 [tool.poetry.dev-dependencies]
