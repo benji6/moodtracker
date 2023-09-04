@@ -547,13 +547,13 @@ files = [
 
 [[package]]
 name = "checkov"
-version = "2.4.9"
+version = "2.4.22"
 description = "Infrastructure as code static analysis"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "checkov-2.4.9-py3-none-any.whl", hash = "sha256:2d7113bd91059ed3918ffb495dbd35ca30bb677faddd6d899469634547e9a9d7"},
-    {file = "checkov-2.4.9.tar.gz", hash = "sha256:318fd8039e837c0cb5cf92ca38f3c23e84e0781e05e565fb8a6f2cbec1efd45e"},
+    {file = "checkov-2.4.22-py3-none-any.whl", hash = "sha256:969411609c77521ececedcbbc9160cecc715f4d7d9a27becfc1612a2066e92d4"},
+    {file = "checkov-2.4.22.tar.gz", hash = "sha256:b599b22db80dce26147988ffb3efd4e97ca2a94f24954d6b542107bfe0b7903e"},
 ]
 
 [package.dependencies]
@@ -2270,4 +2270,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "39ed573c4f2ddb667b8de7e9ee8345edb4c1e9b7e39f3ea7da5d31e6cad34464"
+content-hash = "8ac539fdd85be44a56a2e9006d5c03b320179906f21d76ade55fbb546940425f"
