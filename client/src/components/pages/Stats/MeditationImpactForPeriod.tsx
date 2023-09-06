@@ -140,7 +140,7 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
             <h4>Mood clouds</h4>
             <Toggle
               checked={shouldRemoveSharedWords}
-              label="Filter out shared moods"
+              label="Filter out moods that are shared between both clouds"
               onChange={() =>
                 setShouldRemoveSharedWords(!shouldRemoveSharedWords)
               }
