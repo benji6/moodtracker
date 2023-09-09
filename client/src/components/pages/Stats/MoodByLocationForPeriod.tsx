@@ -22,7 +22,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
     moodIdsWithLocationInPeriod,
   );
 
-  if (!moodIdsWithLocationInPeriod.length) return null;
+  if (!moodIdsWithLocationInPeriod.length) return;
 
   const moodsByLocation: { [location: string]: number[] } = {};
 

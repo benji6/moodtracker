@@ -20,7 +20,7 @@ export default function WeightChartForPeriod({
   const weights = useSelector(normalizedWeightsSelector);
   const envelopingIds = getEnvelopingIds(weights.allIds, dateFrom, dateTo);
 
-  if (envelopingIds.length < 2) return null;
+  if (envelopingIds.length < 2) return;
 
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
   const envelopingValues = envelopingIds.map((id) => weights.byId[id].value);

@@ -17,7 +17,7 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
     longitude,
   });
 
-  if (isError) return null;
+  if (isError) return;
 
   if (isLoading)
     return (

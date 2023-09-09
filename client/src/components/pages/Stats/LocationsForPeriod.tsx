@@ -27,7 +27,7 @@ export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
     locationsToRender.push([id, location]);
   }
 
-  if (!locationsToRender.length) return null;
+  if (!locationsToRender.length) return;
 
   return (
     <Paper>

@@ -26,7 +26,7 @@ export default function MoodChartForPeriod({
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
   const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
 
-  if (envelopingMoodIds.length < 2) return null;
+  if (envelopingMoodIds.length < 2) return;
 
   const data: [number, number][] = envelopingMoodIds.map((id) => {
     const mood = moods.byId[id];

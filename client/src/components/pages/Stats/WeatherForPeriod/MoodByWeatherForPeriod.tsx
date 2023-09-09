@@ -25,7 +25,7 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
   if (
     moodIdsWithLocationInPeriod.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS
   )
-    return null;
+    return;
 
   const chartData: {
     [nameAndColor: string]: {
@@ -81,7 +81,7 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
       return yDifference || a.labelText.localeCompare(b.labelText);
     });
 
-  if (!data.length) return null;
+  if (!data.length) return;
 
   return <MoodByWeatherChart data={data} />;
 }

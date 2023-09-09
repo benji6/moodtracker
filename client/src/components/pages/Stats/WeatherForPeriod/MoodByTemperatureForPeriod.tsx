@@ -25,7 +25,7 @@ export default function MoodByTemperatureForPeriod({
   if (
     moodIdsWithLocationInPeriod.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS
   )
-    return null;
+    return;
 
   const fineGrainedData: {
     [celcius: string]: {
@@ -65,13 +65,13 @@ export default function MoodByTemperatureForPeriod({
 
   const fineGrainedDataEntries = Object.entries(fineGrainedData);
   if (fineGrainedDataEntries.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS)
-    return null;
+    return;
   const coarseGrainedDataEntries = Object.entries(coarseGrainedData);
   if (
     coarseGrainedDataEntries.length <
     MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS / 2
   )
-    return null;
+    return;
 
   const fineGrainedDataToRender = fineGrainedDataEntries
     .map(([key, { moodCount, sumOfMoods }]): [number, number] => {

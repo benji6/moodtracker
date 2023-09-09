@@ -27,7 +27,7 @@ export default function WeatherForPeriod({
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 
-  if (!eventIdsWithLocationInPeriod.length) return null;
+  if (!eventIdsWithLocationInPeriod.length) return;
 
   let errorCount = 0;
   let loadingCount = 0;

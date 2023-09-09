@@ -14,7 +14,7 @@ export default function MoodCloudForPeriod({ dateFrom, dateTo }: Props) {
     !currentPeriodWords ||
     Object.keys(currentPeriodWords).length < MINIMUM_WORD_CLOUD_WORDS
   )
-    return null;
+    return;
 
   return (
     <Paper>

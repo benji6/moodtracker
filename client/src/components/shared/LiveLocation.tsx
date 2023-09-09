@@ -18,7 +18,7 @@ export default function LiveLocation() {
     setDate(new Date());
   }, TIME.secondsPerHour * 1e3);
 
-  if (!shouldRecordLocation) return null;
+  if (!shouldRecordLocation) return;
 
   return geolocation ? (
     <Location date={date} {...geolocation} />

@@ -41,7 +41,7 @@ export default function MoodByHourForPeriod({ dateFrom, dateTo }: Props) {
     averages.push([i, mean]);
   }
 
-  if (averages.length < 2) return null;
+  if (averages.length < 2) return;
 
   return (
     <Paper>

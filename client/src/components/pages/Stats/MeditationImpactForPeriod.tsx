@@ -30,7 +30,7 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const [shouldRemoveSharedWords, setShouldRemoveSharedWords] = useState(true);
   const meditationIdsInPeriod = useMeditationIdsInPeriod(dateFrom, dateTo);
 
-  if (!meditationIdsInPeriod.length || !moods.allIds.length) return null;
+  if (!meditationIdsInPeriod.length || !moods.allIds.length) return;
 
   const moodChanges: number[] = [];
   let wordsBeforeList: string[] = [];
@@ -75,7 +75,7 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     }
   }
 
-  if (!moodChanges.length) return null;
+  if (!moodChanges.length) return;
 
   const averageMoodChangeAfterMeditation = computeMean(moodChanges);
 

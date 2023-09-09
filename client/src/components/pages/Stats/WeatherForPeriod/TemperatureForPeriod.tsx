@@ -23,7 +23,7 @@ export default function TemperatureForPeriod({
   );
   const weatherResults = useWeatherQueries(envelopingEventIdsWithLocation);
 
-  if (!envelopingEventIdsWithLocation.length) return null;
+  if (!envelopingEventIdsWithLocation.length) return;
 
   const temperatures: number[] = [];
   const chartData: [number, number][] = [];
@@ -38,7 +38,7 @@ export default function TemperatureForPeriod({
       celcius,
     ]);
   }
-  if (chartData.length < 2) return null;
+  if (chartData.length < 2) return;
 
   const range = createChartRange(temperatures);
   const yLabels: [number, string][] = [...Array(11).keys()].map((n) => {

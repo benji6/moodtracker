@@ -134,7 +134,7 @@ export default function MeditationTimer() {
 
   if (!searchParams.has(MEDITATION_SEARCH_PARAM_TIME_KEY)) {
     navigate("/");
-    return null;
+    return;
   }
 
   return (

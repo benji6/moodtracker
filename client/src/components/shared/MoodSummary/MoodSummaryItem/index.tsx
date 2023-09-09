@@ -28,7 +28,7 @@ export default function MoodSummaryItem({
   previousValue,
   units,
 }: Props) {
-  if (currentValue === undefined) return null;
+  if (currentValue === undefined) return;
   const round = (n: number): number =>
     n ? Math.round((n + Number.EPSILON) * 10) / 10 : Math.round(n);
   const roundedCurrentValue = round(currentValue);

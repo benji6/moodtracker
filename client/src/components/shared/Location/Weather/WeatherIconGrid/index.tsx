@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function WeatherIconGrid({ daytime, weatherIconsData }: Props) {
-  if (!weatherIconsData.length) return null;
+  if (!weatherIconsData.length) return;
 
   return (
     <div className="m-weather-icon-grid">

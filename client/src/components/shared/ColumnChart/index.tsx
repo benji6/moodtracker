@@ -31,7 +31,7 @@ export default function ColumnChart({
   yAxisTitle: yTitle,
   ...rest
 }: Props) {
-  if (!data.length) return null;
+  if (!data.length) return;
 
   let range: [number, number];
   if (maxRange === undefined) {

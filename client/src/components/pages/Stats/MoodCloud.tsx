@@ -29,7 +29,7 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
     !currentPeriodWords ||
     Object.keys(currentPeriodWords).length < MINIMUM_WORD_CLOUD_WORDS
   )
-    return null;
+    return;
 
   const filteredWords = { ...currentPeriodWords };
 

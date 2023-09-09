@@ -18,7 +18,7 @@ export default function MoodGradientForPeriod({ dateFrom, dateTo }: Props) {
   const timeInterval = toTime - fromTime;
   const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
 
-  if (envelopingMoodIds.length < 2) return null;
+  if (envelopingMoodIds.length < 2) return;
 
   const firstTime = new Date(envelopingMoodIds[0]).getTime();
   const lastTime = new Date(envelopingMoodIds.at(-1)!).getTime();

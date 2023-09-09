@@ -17,7 +17,7 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 
-  if (!eventIdsWithLocationInPeriod.length) return null;
+  if (!eventIdsWithLocationInPeriod.length) return;
 
   const chartData: { [nameAndColor: string]: number } = {};
   for (const { data } of weatherResults) {
@@ -59,7 +59,7 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
       return yDifference || a.text.localeCompare(b.text);
     });
 
-  if (!frequencyChartData.length) return null;
+  if (!frequencyChartData.length) return;
 
   return (
     <>
