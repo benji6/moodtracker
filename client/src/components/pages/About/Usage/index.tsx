@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import subDays from "date-fns/subDays";
-import { Paper, Spinner, SubHeading } from "eri";
+import { Chart, Paper, Spinner, SubHeading } from "eri";
 import { usageGet } from "../../../../api";
 import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
 import { monthYearShortFormatter } from "../../../../formatters/dateTimeFormatters";
@@ -11,7 +11,6 @@ import {
   percentFormatter,
 } from "../../../../formatters/numberFormatters";
 import { Usage } from "../../../../types";
-import ColumnChart from "../../../shared/ColumnChart";
 import MoodCell from "../../../shared/MoodCell";
 import UsageTable from "./UsageTable";
 
@@ -92,7 +91,7 @@ export default function Usage() {
       </Paper>
       <Paper>
         <h3>Users by period last active</h3>
-        <ColumnChart
+        <Chart.ColumnChart
           data={(
             [
               { key: "DAUs", label: "Within last 24 hours" },
@@ -115,7 +114,7 @@ export default function Usage() {
       </Paper>
       <Paper>
         <h3>Active users by join date</h3>
-        <ColumnChart
+        <Chart.ColumnChart
           data={usersByJoinDateColumnChartData.map(({ key, label }) => ({
             label,
             key,
@@ -135,7 +134,7 @@ export default function Usage() {
             Confirmed users are users who create an account and confirm their
             email address.
           </p>
-          <ColumnChart
+          <Chart.ColumnChart
             data={Object.entries(data.usage.byMonth)
               .map(([k, v]) => {
                 const y = v.users.confirmed;
@@ -159,7 +158,7 @@ export default function Usage() {
             Unconfirmed users are users who create an account but do not confirm
             their email address. They cannot use MoodTracker.
           </p>
-          <ColumnChart
+          <Chart.ColumnChart
             data={Object.entries(data.usage.byMonth)
               .map(([k, v]) => {
                 const y = v.users.unconfirmed;
@@ -186,7 +185,7 @@ export default function Usage() {
             Average number of events by weekday
             <SubHeading>Based on the last 28 days</SubHeading>
           </h3>
-          <ColumnChart
+          <Chart.ColumnChart
             data={Object.entries(data.usage.last28Days.eventCountByWeekday).map(
               ([k, count]) => {
                 const label = WEEKDAY_LABELS_SHORT[Number(k)];

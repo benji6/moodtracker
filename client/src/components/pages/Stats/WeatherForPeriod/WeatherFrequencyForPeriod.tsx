@@ -1,9 +1,8 @@
-import { Icon } from "eri";
+import { Chart, Icon } from "eri";
 import { ComponentProps } from "react";
 import { getWeatherDisplayData } from "../../../../utils";
 import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
-import ColumnChart from "../../../shared/ColumnChart";
 
 interface Props {
   dateFrom: Date;
@@ -64,7 +63,7 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
   return (
     <>
       <h4>Weather frequency</h4>
-      <ColumnChart
+      <Chart.ColumnChart
         aria-label="Chart displaying the frequency at which different weather types were recorded"
         data={frequencyChartData}
         rotateXLabels

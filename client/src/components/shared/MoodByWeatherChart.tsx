@@ -1,7 +1,6 @@
-import { Icon } from "eri";
+import { Chart, Icon } from "eri";
 import { ComponentProps } from "react";
 import { MOOD_EXTENT } from "../../constants";
-import ColumnChart from "./ColumnChart";
 
 interface Props {
   data: {
@@ -19,7 +18,7 @@ export default function MoodByWeatherChart({ data }: Props) {
   return (
     <>
       <h4>Average mood by weather</h4>
-      <ColumnChart
+      <Chart.ColumnChart
         aria-label="Chart displaying average mood for different weather types"
         data={data.map(
           ({

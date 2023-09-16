@@ -1,6 +1,6 @@
+import { Chart } from "eri";
 import { integerFormatter } from "../../formatters/numberFormatters";
 import { moodToColor } from "../../utils";
-import ColumnChart from "./ColumnChart";
 
 interface Props {
   data: number[];
@@ -8,7 +8,7 @@ interface Props {
 
 export default function MoodFrequencyChart({ data }: Props) {
   return (
-    <ColumnChart
+    <Chart.ColumnChart
       aria-label="Chart displaying the frequency at which different moods were recorded"
       data={data.map((count, i) => ({
         color: moodToColor(i),

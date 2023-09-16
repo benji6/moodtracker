@@ -1,7 +1,7 @@
+import { Chart } from "eri";
 import { MOOD_EXTENT } from "../../constants";
 import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import { moodToColor } from "../../utils";
-import ColumnChart from "./ColumnChart";
 
 interface Props {
   averages: [
@@ -18,12 +18,13 @@ interface Props {
 
 export default function MoodByWeekdayChart({ averages, onClick }: Props) {
   return (
-    <ColumnChart
+    <Chart.ColumnChart
       aria-label="Chart displaying average mood by weekday"
-      data={averages.map(([day, averageMood]) => ({
+      data={averages.map(([day, averageMood], i) => ({
         color: averageMood === undefined ? undefined : moodToColor(averageMood),
         key: day,
         label: day,
+        onClick: onClick && (() => onClick(i)),
         title:
           averageMood === undefined
             ? undefined
@@ -31,7 +32,6 @@ export default function MoodByWeekdayChart({ averages, onClick }: Props) {
         y: averageMood,
       }))}
       maxRange={MOOD_EXTENT}
-      onBarClick={onClick}
       rotateXLabels
       xAxisTitle="Weekday"
       yAxisTitle="Average mood"

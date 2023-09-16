@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 import { normalizedAveragesByMonthSelector } from "../../../../selectors";
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
-import ColumnChart from "../../../shared/ColumnChart";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { MOOD_EXTENT } from "../../../../constants";
 import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
-import { Paper } from "eri";
+import { Chart, Paper } from "eri";
 
 interface Props {
   dateFrom: Date;
@@ -32,7 +31,7 @@ export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
   return (
     <Paper>
       <h3>Average mood by month</h3>
-      <ColumnChart
+      <Chart.ColumnChart
         aria-label="Chart displaying average mood by month"
         data={months.map((month) => {
           const averageMood =
@@ -43,6 +42,8 @@ export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
               averageMood === undefined ? undefined : moodToColor(averageMood),
             key: label,
             label: label,
+            onClick: () =>
+              navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`),
             title:
               averageMood === undefined
                 ? undefined
@@ -53,9 +54,6 @@ export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
           };
         })}
         maxRange={MOOD_EXTENT}
-        onBarClick={(i) =>
-          navigate(`/stats/months/${formatIsoMonthInLocalTimezone(months[i])}`)
-        }
         rotateXLabels
         xAxisTitle="Month"
         yAxisTitle="Average mood"
