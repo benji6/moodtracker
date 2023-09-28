@@ -26,42 +26,34 @@ import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
+import differenceInDays from "date-fns/differenceInDays";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
-const X_LABELS_COUNT = 4; // must be at least 2
 
-const convertDateToLabel = (date: Date): [number, string] => [
-  Number(date),
-  dayMonthFormatter.format(date),
-];
+const getFactors = (n: number): number[] => {
+  const factors = [];
+  for (let i = 1; i <= n; i++) if (!(n % i)) factors.push(i);
+  return factors;
+};
 
-const createXLabels = (
-  domain: [number, number],
-  now: number,
-): [number, string][] => {
-  const labels: [number, string][] = [];
-
-  labels.push(convertDateToLabel(roundDateUp(new Date(domain[0]))));
+const createXLabels = (domain: [number, number], now: number): string[] => {
+  const numberOfDays = differenceInDays(domain[1], domain[0]);
+  const factors = getFactors(numberOfDays);
+  const factorsValidForLabelCount = factors.filter((n) => n <= 10 && n > 1);
+  const labelCount = Math.max(2, ...factorsValidForLabelCount) + 1;
 
   const roundFn =
     now - roundDateDown(new Date(now)).getTime() < MILLISECONDS_IN_HALF_A_DAY
       ? roundDateUp
       : roundDateDown;
 
-  for (let i = 1; i < X_LABELS_COUNT - 1; i++) {
-    const label = convertDateToLabel(
+  return [...Array(labelCount).keys()].map((n) =>
+    dayMonthFormatter.format(
       roundFn(
-        new Date(
-          domain[0] + ((domain[1] - domain[0]) * i) / (X_LABELS_COUNT - 1),
-        ),
+        new Date(domain[0] + ((domain[1] - domain[0]) * n) / (labelCount - 1)),
       ),
-    );
-    if (!labels.some(([x]) => x === label[0])) labels.push(label);
-  }
-
-  const label = convertDateToLabel(roundDateDown(new Date(domain[1])));
-  if (!labels.some(([x]) => x === label[0])) labels.push(label);
-  return labels;
+    ),
+  );
 };
 
 const DATE_RANGE_OPTIONS = [

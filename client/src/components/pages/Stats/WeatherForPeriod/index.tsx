@@ -9,17 +9,17 @@ import TemperatureForPeriod from "./TemperatureForPeriod";
 import WeatherFrequencyForPeriod from "./WeatherFrequencyForPeriod";
 
 interface Props {
+  centerXAxisLabels?: boolean;
   dateFrom: Date;
   dateTo: Date;
-  xLabels: [number, string][];
-  xLines?: number[];
+  xLabels: string[];
 }
 
 export default function WeatherForPeriod({
+  centerXAxisLabels = false,
   dateFrom,
   dateTo,
   xLabels,
-  xLines,
 }: Props) {
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     dateFrom,
@@ -97,10 +97,10 @@ export default function WeatherForPeriod({
       <MoodByTemperatureForPeriod dateFrom={dateFrom} dateTo={dateTo} />
       {loadingEl}
       <TemperatureForPeriod
+        centerXAxisLabels={centerXAxisLabels}
         dateFrom={dateFrom}
         dateTo={dateTo}
         xLabels={xLabels}
-        xLines={xLines}
       />
       {loadingEl}
     </Paper>

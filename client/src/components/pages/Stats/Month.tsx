@@ -62,14 +62,13 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
 
   const monthLength = differenceInCalendarDays(nextDate, date);
 
-  const xLabels: [number, string][] = [];
-  for (let i = 0; i < X_LABELS_COUNT; i++) {
-    const d = addDays(
-      date,
-      Math.round((i * monthLength) / (X_LABELS_COUNT - 1)),
+  const xLabels: string[] = [];
+  for (let i = 0; i < X_LABELS_COUNT; i++)
+    xLabels.push(
+      dayMonthFormatter.format(
+        addDays(date, Math.round((i * monthLength) / (X_LABELS_COUNT - 1))),
+      ),
     );
-    xLabels.push([d.getTime(), dayMonthFormatter.format(d)]);
-  }
 
   return (
     <Paper.Group>

@@ -1,21 +1,20 @@
 import { Chart } from "eri";
-import { integerFormatter } from "../../../../formatters/numberFormatters";
-import { convertKelvinToCelcius, createChartRange } from "../../../../utils";
+import { convertKelvinToCelcius, createChartExtent } from "../../../../utils";
 import useEnvelopingEventIdsWithLocation from "../../../hooks/useEnvelopingEventIdsWithLocation";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
+  centerXAxisLabels: boolean;
   dateFrom: Date;
   dateTo: Date;
-  xLabels: [number, string][];
-  xLines?: number[];
+  xLabels: string[];
 }
 
 export default function TemperatureForPeriod({
+  centerXAxisLabels,
   dateFrom,
   dateTo,
   xLabels,
-  xLines,
 }: Props) {
   const envelopingEventIdsWithLocation = useEnvelopingEventIdsWithLocation(
     dateFrom,
@@ -40,12 +39,6 @@ export default function TemperatureForPeriod({
   }
   if (chartData.length < 2) return;
 
-  const range = createChartRange(temperatures);
-  const yLabels: [number, string][] = [...Array(11).keys()].map((n) => {
-    const y = Math.round((n / 10) * (range[1] - range[0]) + range[0]);
-    return [y, integerFormatter.format(y)];
-  });
-
   const chartVariation: "small" | "medium" | "large" =
     chartData.length >= 128
       ? "large"
@@ -58,22 +51,18 @@ export default function TemperatureForPeriod({
       <h4>Temperature chart</h4>
       <Chart.LineChart
         aria-label="Chart displaying temperature against time"
+        centerXAxisLabels={centerXAxisLabels}
         domain={[dateFrom.getTime(), dateTo.getTime()]}
-        range={range}
+        range={createChartExtent(temperatures)}
+        xAxisLabels={xLabels}
         xAxisTitle="Month"
         yAxisTitle="Temperature (°C)"
       >
-        <Chart.XGridLines lines={xLines ?? xLabels.map(([n]) => n)} />
-        <Chart.YGridLines lines={yLabels.map(([y]) => y)} />
-        <Chart.PlotArea>
-          <Chart.Line
-            data={chartData}
-            thickness={chartVariation === "medium" ? 2 : undefined}
-          />
-          {chartVariation === "small" && <Chart.Points data={chartData} />}
-        </Chart.PlotArea>
-        <Chart.XAxis labels={xLabels} markers={xLines ?? true} />
-        <Chart.YAxis labels={yLabels} markers />
+        <Chart.Line
+          data={chartData}
+          thickness={chartVariation === "medium" ? 2 : undefined}
+        />
+        {chartVariation === "small" && <Chart.Points data={chartData} />}
       </Chart.LineChart>
     </>
   );

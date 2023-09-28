@@ -30,7 +30,7 @@ import withStatsPage from "../../hocs/withStatsPage";
 import addDays from "date-fns/addDays";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 
-const X_LABELS_COUNT = 6;
+const X_LABELS_COUNT = 7;
 
 interface Props {
   date: Date;
@@ -46,14 +46,16 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIds = moodIdsByDate[formatIsoDateInLocalTimezone(date)];
   const startOfWeekDate = startOfWeek(date, WEEK_OPTIONS);
 
-  const xLabels: [number, string][] = [];
-  for (let i = 0; i < X_LABELS_COUNT; i++) {
-    const d = addHours(
-      date,
-      Math.round((i * TIME.hoursPerDay) / X_LABELS_COUNT),
+  const xLabels: string[] = [];
+  for (let i = 0; i < X_LABELS_COUNT; i++)
+    xLabels.push(
+      hourNumericFormatter.format(
+        addHours(
+          date,
+          Math.round((i * TIME.hoursPerDay) / (X_LABELS_COUNT - 1)),
+        ),
+      ),
     );
-    xLabels.push([d.getTime(), hourNumericFormatter.format(d)]);
-  }
 
   return (
     <Paper.Group>

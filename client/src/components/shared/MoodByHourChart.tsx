@@ -10,11 +10,9 @@ interface Props {
 }
 
 export default function MoodByHourChart({ data }: Props) {
-  const xLabels: [number, string][] = [];
-  for (let i = 0; i < TIME.hoursPerDay; i += 4)
-    xLabels.push([i, hourNumericFormatter.format(setHours(arbitraryDate, i))]);
-
-  const yLabels: [number, string][] = MOOD_INTEGERS.map((y) => [y, String(y)]);
+  const xLabels: string[] = [];
+  for (let i = 0; i <= TIME.hoursPerDay; i += 4)
+    xLabels.push(hourNumericFormatter.format(setHours(arbitraryDate, i)));
 
   return (
     <Chart.LineChart
@@ -23,14 +21,10 @@ export default function MoodByHourChart({ data }: Props) {
       range={MOOD_RANGE}
       xAxisTitle="Hour of day"
       yAxisTitle="Mood"
+      xAxisLabels={xLabels}
+      yAxisLabels={MOOD_INTEGERS.map(String)}
     >
-      <Chart.XGridLines lines={xLabels.map(([x]) => x)} />
-      <Chart.YGridLines lines={yLabels.map(([y]) => y)} />
-      <Chart.PlotArea>
-        <Chart.Line data={data} thickness={2} />
-      </Chart.PlotArea>
-      <Chart.XAxis labels={xLabels} markers />
-      <Chart.YAxis labels={yLabels} markers />
+      <Chart.Line data={data} thickness={2} />
     </Chart.LineChart>
   );
 }

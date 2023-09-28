@@ -46,18 +46,9 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
 
   const lastDayOfWeek = subDays(nextDate, 1);
 
-  const xLabels: [number, string][] = [];
-  for (let i = 0; i < TIME.daysPerWeek; i++) {
-    const d = addDays(date, i);
-    xLabels.push([
-      (d.getTime() + addDays(d, 1).getTime()) / 2,
-      weekdayShortFormatter.format(d),
-    ]);
-  }
-
-  const xLines: number[] = [];
-  for (let i = 0; i <= TIME.daysPerWeek; i++)
-    xLines.push(addDays(date, i).getTime());
+  const xLabels: string[] = [];
+  for (let i = 0; i < TIME.daysPerWeek; i++)
+    xLabels.push(weekdayShortFormatter.format(addDays(date, i)));
 
   return (
     <Paper.Group>
@@ -102,10 +93,10 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
+            centerXAxisLabels
             dateFrom={date}
             dateTo={nextDate}
             xLabels={xLabels}
-            xLines={xLines}
           />
           <MoodByWeekdayForPeriod
             canDrillDown
@@ -127,17 +118,17 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </Paper>
       )}
       <WeightChartForPeriod
+        centerXAxisLabels
         dateFrom={date}
         dateTo={nextDate}
         xLabels={xLabels}
-        xLines={xLines}
       />
       <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod
+        centerXAxisLabels
         dateFrom={date}
         dateTo={nextDate}
         xLabels={xLabels}
-        xLines={xLines}
       />
       <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />

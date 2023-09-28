@@ -140,11 +140,11 @@ export const counter = (xs: string[]): { [word: string]: number } => {
   return count;
 };
 
-export const createChartRange = (values: number[]): [number, number] => {
+export const createChartExtent = (values: number[]): [number, number] => {
   const { length } = values;
   if (length < 2)
     throw Error(
-      `\`createChartRange\` requires at least 2 values but received ${length}`,
+      `\`createChartExtent\` requires at least 2 values but received ${length}`,
     );
 
   const maxValue = Math.max(...values);

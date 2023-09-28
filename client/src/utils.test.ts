@@ -25,7 +25,7 @@ import {
   roundUpToNearest10,
   convertKelvinToCelcius,
   roundDownToNearest10,
-  createChartRange,
+  createChartExtent,
   computeMean,
 } from "./utils";
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
@@ -362,25 +362,25 @@ describe("utils", () => {
     });
   });
 
-  test("createChartRange", () => {
-    expect(() => createChartRange([])).toThrowError(
-      Error("`createChartRange` requires at least 2 values but received 0"),
+  test("createChartExtent", () => {
+    expect(() => createChartExtent([])).toThrowError(
+      Error("`createChartExtent` requires at least 2 values but received 0"),
     );
-    expect(() => createChartRange([0])).toThrowError(
-      "`createChartRange` requires at least 2 values but received 1",
+    expect(() => createChartExtent([0])).toThrowError(
+      "`createChartExtent` requires at least 2 values but received 1",
     );
-    expect(createChartRange([0, 0])).toEqual([-5, 5]);
-    expect(createChartRange([0.1, 0.1])).toEqual([-5, 5]);
-    expect(createChartRange([0.49, 0.49])).toEqual([-5, 5]);
-    expect(createChartRange([0.5, 0.5])).toEqual([-4, 6]);
-    expect(createChartRange([0, 0.1])).toEqual([-5, 5]);
-    expect(createChartRange([0.1, 9.9])).toEqual([0, 10]);
-    expect(createChartRange([0, 10])).toEqual([-5, 15]);
-    expect(createChartRange([0, 10.1])).toEqual([-5, 15]);
-    expect(createChartRange([8, 1, 2, 9.9, 4, 5, 6, 9, 0, 7, 3])).toEqual([
+    expect(createChartExtent([0, 0])).toEqual([-5, 5]);
+    expect(createChartExtent([0.1, 0.1])).toEqual([-5, 5]);
+    expect(createChartExtent([0.49, 0.49])).toEqual([-5, 5]);
+    expect(createChartExtent([0.5, 0.5])).toEqual([-4, 6]);
+    expect(createChartExtent([0, 0.1])).toEqual([-5, 5]);
+    expect(createChartExtent([0.1, 9.9])).toEqual([0, 10]);
+    expect(createChartExtent([0, 10])).toEqual([-5, 15]);
+    expect(createChartExtent([0, 10.1])).toEqual([-5, 15]);
+    expect(createChartExtent([8, 1, 2, 9.9, 4, 5, 6, 9, 0, 7, 3])).toEqual([
       -0, 10,
     ]);
-    expect(createChartRange([8, 1, 2, 10, 4, 5, 6, 9, 0, 7, 3])).toEqual([
+    expect(createChartExtent([8, 1, 2, 10, 4, 5, 6, 9, 0, 7, 3])).toEqual([
       -5, 15,
     ]);
   });

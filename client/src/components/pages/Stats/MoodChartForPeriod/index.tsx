@@ -6,21 +6,21 @@ import MoodChart from "../../../shared/MoodChart";
 import computeTrendlinePoints from "./computeTrendlinePoints";
 
 interface Props {
+  centerXAxisLabels?: boolean;
   dateFrom: Date;
   dateTo: Date;
   hidePoints?: boolean;
   xAxisTitle?: string;
-  xLabels: [number, string][];
-  xLines?: number[];
+  xLabels: string[];
 }
 
 export default function MoodChartForPeriod({
+  centerXAxisLabels = false,
   dateFrom,
   dateTo,
   hidePoints = false,
   xAxisTitle,
   xLabels,
-  xLines,
 }: Props) {
   const moods = useSelector(normalizedMoodsSelector);
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
@@ -37,6 +37,7 @@ export default function MoodChartForPeriod({
     <Paper>
       <h3>Mood chart</h3>
       <MoodChart
+        centerXAxisLabels={centerXAxisLabels}
         data={data}
         domain={domain}
         hidePoints={hidePoints}
@@ -46,7 +47,6 @@ export default function MoodChartForPeriod({
         )}
         xAxisTitle={xAxisTitle}
         xLabels={xLabels}
-        xLines={xLines}
       />
     </Paper>
   );

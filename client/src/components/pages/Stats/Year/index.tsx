@@ -86,15 +86,9 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
     );
   }
 
-  const xLabels: [number, string][] = [...Array(12).keys()].map((n) => {
-    const d = addMonths(date, n);
-    return [
-      (d.getTime() + addMonths(d, 1).getTime()) / 2,
-      monthNarrowFormatter.format(d),
-    ];
-  });
-
-  const xLines = [...Array(13).keys()].map((n) => addMonths(date, n).getTime());
+  const xLabels: string[] = [...Array(12).keys()].map((n) =>
+    monthNarrowFormatter.format(addMonths(date, n)),
+  );
 
   return (
     <Paper.Group>
@@ -122,11 +116,11 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
+            centerXAxisLabels
             dateFrom={date}
             dateTo={nextDate}
             hidePoints
             xLabels={xLabels}
-            xLines={xLines}
           />
           <Paper>
             <h3>
@@ -151,16 +145,16 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       )}
       <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod
+        centerXAxisLabels
         dateFrom={date}
         dateTo={nextDate}
         xLabels={xLabels}
-        xLines={xLines}
       />
       <WeightChartForPeriod
+        centerXAxisLabels
         dateFrom={date}
         dateTo={nextDate}
         xLabels={xLabels}
-        xLines={xLines}
       />
       <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />

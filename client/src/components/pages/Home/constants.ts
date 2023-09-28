@@ -9,8 +9,7 @@ export const LINE_CHART_PROPS: {
   data: [number, number][];
   domain: [number, number];
   trendlinePoints: [number, number][];
-  xLabels: [number, string][];
-  xLines: number[];
+  xLabels: string[];
 } = {
   data: [
     [1603667889807, 6],
@@ -113,19 +112,7 @@ export const LINE_CHART_PROPS: {
     [1604256300000, 7.53],
     [1604275200000, 7.5],
   ],
-  xLabels: [
-    [1603713600000, "Mon"],
-    [1603800000000, "Tue"],
-    [1603886400000, "Wed"],
-    [1603972800000, "Thu"],
-    [1604059200000, "Fri"],
-    [1604145600000, "Sat"],
-    [1604232000000, "Sun"],
-  ],
-  xLines: [
-    1603756800000, 1603843200000, 1603929600000, 1604016000000, 1604102400000,
-    1604188800000, 1604275200000,
-  ],
+  xLabels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
 };
 
 export const MOOD_BY_HOUR_PROPS: ComponentProps<typeof MoodByHourChart> = {
