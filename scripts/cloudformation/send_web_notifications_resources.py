@@ -30,7 +30,7 @@ def send_web_notifications_resources(template):
             Runtime="python3.11",
             ReservedConcurrentExecutions=1,
             Role=GetAtt("LambdaNotificationsSendRole", "Arn"),
-            Timeout=5,
+            Timeout=8,
         )
     )
     lambda_role(
