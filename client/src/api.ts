@@ -16,8 +16,8 @@ const WEATHER_URI = `${API_URI}/weather`;
 const WEB_PUSH_TOKENS_URI = `${API_URI}/web-push-tokens`;
 const WEEKLY_EMAILS_URI = `${API_URI}/weekly-emails`;
 
-const fetchWithAuth: typeof fetch = async (
-  input: RequestInfo | URL,
+const fetchWithAuth = async (
+  input: string,
   init?: RequestInit,
 ): Promise<Response> => {
   const idToken = await getIdToken();
@@ -30,8 +30,8 @@ const fetchWithAuth: typeof fetch = async (
   });
 };
 
-const fetchWithRetry: typeof fetch = async (
-  input: RequestInfo | URL,
+const fetchWithRetry = async (
+  input: string,
   init?: RequestInit,
 ): Promise<Response> => {
   let retriesLeft = 3;
@@ -44,8 +44,8 @@ const fetchWithRetry: typeof fetch = async (
   return response;
 };
 
-const fetchWithAuthAndRetry: typeof fetch = async (
-  input: RequestInfo | URL,
+const fetchWithAuthAndRetry = async (
+  input: string,
   init?: RequestInit,
 ): Promise<Response> => {
   const idToken = await getIdToken();
