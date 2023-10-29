@@ -117,7 +117,6 @@ export interface Usage {
     eventCount: number;
     meanMood: number;
     meditationSeconds: number;
-    newUsers: number;
   };
   locationMAUs: number;
   MAUFunnel: {

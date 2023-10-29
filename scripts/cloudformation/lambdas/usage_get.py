@@ -204,14 +204,6 @@ def handler(event, context):
                         float(statistics.mean([v["mood"] for v in moods.values()])), 1
                     ),
                     "meditationSeconds": meditation_seconds,
-                    # TODO can remove this because it was removed from the frontend on 2023-04-15
-                    "newUsers": len(
-                        [
-                            u
-                            for u in confirmed_users
-                            if u["UserCreateDate"] > days_ago_30
-                        ]
-                    ),
                 },
                 "locationMAUs": len(location_MAU_ids),
                 "meanMoodInLast7Days": round(
