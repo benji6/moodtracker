@@ -16,7 +16,7 @@
     "test:unit": "TZ=UTC jest src",
     "test-ci": "run-p test:audit test:fmt test:types test:unit"
   },
-  "browserslist": "cover 85% and since 2021",
+  "browserslist": "cover 86%",
   "dependencies": {
     "@aws-sdk/client-location": "^3.421.0",
     "@aws-sdk/credential-providers": "^3.342.0",
