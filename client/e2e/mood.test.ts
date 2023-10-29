@@ -108,5 +108,41 @@ describe("mood", () => {
       );
       expect(moodCardTimeValue).toBe(String(expectedTime));
     });
+
+    test("adding a mood with an emoji tag", async () => {
+      const MOOD = Math.floor(Math.random() * 11);
+
+      const moodRadioButton = (await page.$(
+        `${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`,
+      )) as HandleFor<HTMLInputElement>;
+      await moodRadioButton.evaluate((el) => el.click());
+
+      await descriptionInput.click({ clickCount: 3 });
+      await descriptionInput.type("🧪", { delay: 10 });
+      const expectedTime = Math.round(Date.now() / 1e3);
+
+      await descriptionInput.press("Enter");
+      await page.waitForSelector(SELECTORS.moodList);
+
+      expect(page.url()).toBe(URLS.home);
+
+      const moodCardMood = await page.waitForSelector(SELECTORS.moodCardMood);
+      const moodCardMoodText = await moodCardMood!.evaluate(
+        (el) => el.textContent,
+      );
+      expect(moodCardMoodText).toBe(String(MOOD));
+
+      const moodCardTags = await page.waitForSelector(SELECTORS.moodCardTags);
+      const moodCardTagsText = await moodCardTags!.evaluate(
+        (el) => el.textContent,
+      );
+      expect(moodCardTagsText).toBe("🧪");
+
+      const moodCardTime = await page.$(SELECTORS.moodCardTime);
+      const moodCardTimeValue = await moodCardTime!.evaluate((el) =>
+        el.getAttribute("data-time"),
+      );
+      expect(moodCardTimeValue).toBe(String(expectedTime));
+    });
   });
 });

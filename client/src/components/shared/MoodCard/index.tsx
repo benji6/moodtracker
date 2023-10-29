@@ -30,7 +30,10 @@ export default function MoodCard({ id }: Props) {
           <h3 className="m-mood-card__heading center">
             <span data-test-id={TEST_IDS.moodCardMood}>{mood}</span>
             {description && (
-              <SubHeading style={{ margin: "var(--space-0) 0" }}>
+              <SubHeading
+                data-test-id={TEST_IDS.moodCardTags}
+                style={{ margin: "var(--space-0) 0" }}
+              >
                 {description}
               </SubHeading>
             )}
