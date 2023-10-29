@@ -39,11 +39,11 @@ export const useWeatherQuery = (queryParameters: {
   latitude: number;
   longitude: number;
 }) =>
-  useQuery(
-    ["weather", roundQueryParameters(queryParameters)] as const,
-    fetchWeather,
-    HIGHLY_CACHED_QUERY_OPTIONS,
-  );
+  useQuery({
+    queryKey: ["weather", roundQueryParameters(queryParameters)],
+    queryFn: fetchWeather,
+    ...HIGHLY_CACHED_QUERY_OPTIONS,
+  });
 
 type QueryKey = [
   "weather",

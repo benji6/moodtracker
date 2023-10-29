@@ -36,7 +36,7 @@ export default function WeatherForPeriod({
   for (let i = 0; i < weatherResults.length; i++) {
     const result = weatherResults[i];
     if (result.isError) errorCount++;
-    else if (result.isLoading) loadingCount++;
+    else if (result.isPending) loadingCount++;
     const { data } = result;
     if (!data) continue;
     successCount++;

@@ -23,7 +23,7 @@ interface Props {
 type Entries<T> = [keyof T, T[keyof T]][];
 
 export default function Weather({ date, latitude, longitude }: Props) {
-  const { error, data, isError, isLoading } = useWeatherQuery({
+  const { error, data, isError, isPending } = useWeatherQuery({
     date,
     latitude,
     longitude,
@@ -34,7 +34,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
   return (
     <Paper>
       <h3>Weather</h3>
-      {isLoading ? (
+      {isPending ? (
         <Spinner />
       ) : isError ? (
         <p className="negative">

@@ -14,10 +14,10 @@ import { useEffect, useState } from "react";
 import { captureException } from "../../../sentry";
 
 export default function WebPushNotifications() {
-  const { data, isError, isLoading } = useQuery(
-    ["web-push-tokens"],
-    webPushTokensList,
-  );
+  const { data, isError, isPending } = useQuery({
+    queryKey: ["web-push-tokens"],
+    queryFn: webPushTokensList,
+  });
   const {
     error: tokenError,
     token,
@@ -26,14 +26,16 @@ export default function WebPushNotifications() {
   const [shouldPostToken, setShouldPostToken] = useState(false);
 
   const isEnabled = Boolean(data?.tokens.find(({ token: t }) => t === token));
-  const deleteMutation = useMutation(webPushTokensDelete, {
+  const deleteMutation = useMutation({
+    mutationFn: webPushTokensDelete,
     onSuccess: (_, token) => {
       queryClient.setQueryData<typeof data>(["web-push-tokens"], (data) => ({
         tokens: data!.tokens.filter((t) => t.token !== token),
       }));
     },
   });
-  const putMutation = useMutation(webPushTokensPut, {
+  const putMutation = useMutation({
+    mutationFn: webPushTokensPut,
     onSuccess: (tokenObject) => {
       queryClient.setQueryData<typeof data>(["web-push-tokens"], (data) => ({
         tokens: data ? [...data.tokens, tokenObject] : [tokenObject],
@@ -71,10 +73,10 @@ export default function WebPushNotifications() {
   }
 
   const isSomethingLoading =
-    isLoading ||
+    isPending ||
     isTokenLoading ||
-    deleteMutation.isLoading ||
-    putMutation.isLoading;
+    deleteMutation.isPending ||
+    putMutation.isPending;
 
   return (
     <>

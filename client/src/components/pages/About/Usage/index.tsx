@@ -15,7 +15,9 @@ import MoodCell from "../../../shared/MoodCell";
 import UsageTable from "./UsageTable";
 
 export default function Usage() {
-  const { data, error, isError, isLoading } = useQuery(["usage"], usageGet, {
+  const { data, error, isError, isPending } = useQuery({
+    queryKey: ["usage"],
+    queryFn: usageGet,
     networkMode: "offlineFirst",
   });
 
@@ -37,7 +39,7 @@ export default function Usage() {
 
   const titleEl = <h2>Usage</h2>;
 
-  if (isLoading)
+  if (isPending)
     return (
       <Paper.Group>
         <Paper>

@@ -27,14 +27,14 @@ export const useReverseGeolocationQuery = ({
   latitude: number;
   longitude: number;
 }) =>
-  useQuery(
-    [
+  useQuery({
+    queryKey: [
       "reverse-geolocation",
       roundQueryParameters({ latitude, longitude }),
-    ] as const,
-    getReverseGeolocation,
-    HIGHLY_CACHED_QUERY_OPTIONS,
-  );
+    ],
+    queryFn: getReverseGeolocation,
+    ...HIGHLY_CACHED_QUERY_OPTIONS,
+  });
 
 type QueryKey = [
   "reverse-geolocation",

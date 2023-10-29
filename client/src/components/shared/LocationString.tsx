@@ -16,12 +16,12 @@ export default function LocationString({
   longitude,
   successPostfix,
 }: Props) {
-  const { data, isError, isLoading } = useReverseGeolocationQuery({
+  const { data, isError, isPending } = useReverseGeolocationQuery({
     latitude,
     longitude,
   });
 
-  if (isLoading) return <Spinner inline />;
+  if (isPending) return <Spinner inline />;
   if (isError) return errorFallback ?? null;
   const Place = data?.Results?.[0]?.Place;
   const locationName = Place?.Municipality ?? Place?.Label;

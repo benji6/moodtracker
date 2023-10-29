@@ -9,23 +9,21 @@ import {
 import { ERRORS } from "../../../constants";
 
 export default function WeeklyEmailNotifications() {
-  const { data, isError, isLoading } = useQuery(
-    ["weekly-emails"],
-    weeklyEmailsGet,
-  );
+  const { data, isError, isPending } = useQuery({
+    queryKey: ["weekly-emails"],
+    queryFn: weeklyEmailsGet,
+  });
 
-  const mutation = useMutation(
-    (isEnabled: boolean) =>
+  const mutation = useMutation({
+    mutationFn: (isEnabled: boolean) =>
       isEnabled ? weeklyEmailsDisable() : weeklyEmailsEnable(),
-    {
-      onSuccess: () => {
-        queryClient.setQueryData<typeof data>(
-          ["weekly-emails"],
-          (isEnabled) => !isEnabled,
-        );
-      },
+    onSuccess: () => {
+      queryClient.setQueryData<typeof data>(
+        ["weekly-emails"],
+        (isEnabled) => !isEnabled,
+      );
     },
-  );
+  });
 
   return (
     <>
@@ -36,11 +34,11 @@ export default function WeeklyEmailNotifications() {
       </p>
       <Toggle
         checked={Boolean(data)}
-        disabled={mutation.isLoading || isLoading}
+        disabled={mutation.isPending || isPending}
         error={mutation.isError || isError ? ERRORS.network : undefined}
         onChange={() => mutation.mutate(Boolean(data))}
         label={
-          mutation.isLoading || isLoading ? (
+          mutation.isPending || isPending ? (
             <span>
               <Spinner inline />
             </span>

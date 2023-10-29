@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function MoodCardWeather({ date, latitude, longitude }: Props) {
-  const { data, isError, isLoading } = useWeatherQuery({
+  const { data, isError, isPending } = useWeatherQuery({
     date,
     latitude,
     longitude,
@@ -19,7 +19,7 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
 
   if (isError) return;
 
-  if (isLoading)
+  if (isPending)
     return (
       <div className="m-mood-card-weather m-mood-card-weather--spinner">
         <Spinner margin={false} />

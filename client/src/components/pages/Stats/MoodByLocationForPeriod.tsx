@@ -35,7 +35,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
     const { mood, location } =
       normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
     if (result.isError) errorCount++;
-    else if (result.isLoading) loadingCount++;
+    else if (result.isPending) loadingCount++;
     const { data } = result;
     if (!data) continue;
     successCount++;
