@@ -1,5 +1,11 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {
+  Messaging,
+  getMessaging,
+  getToken,
+  isSupported,
+  onMessage,
+} from "firebase/messaging";
 import serviceWorkerRegistrationPromise from "./serviceWorkerRegistrationPromise";
 import { FIREBASE_CONFIG } from "./constants";
 
@@ -8,22 +14,30 @@ const PUBLIC_VAPID_KEY =
 
 const firebaseApp = initializeApp(FIREBASE_CONFIG);
 
-const messaging = getMessaging(firebaseApp);
+const messagingPromise: Promise<Messaging | void> = isSupported().then(
+  (supported) => {
+    if (!supported) return;
+    const messaging = getMessaging(firebaseApp);
+    onMessage(messaging, (payload) => {
+      const notification = payload.notification!;
+      new Notification(notification.title!, {
+        badge: notification.icon,
+        icon: notification.icon,
+        body: notification.body,
+        lang: "en",
+      });
+    });
+    return messaging;
+  },
+);
+
 export const getRegistrationToken = async (): Promise<string> => {
   const serviceWorkerRegistration = await serviceWorkerRegistrationPromise;
+  const messaging = await messagingPromise;
+  if (!messaging)
+    throw Error("Firebase messaging is not supported in this browser");
   return getToken(messaging, {
     serviceWorkerRegistration,
     vapidKey: PUBLIC_VAPID_KEY,
   });
 };
-
-onMessage(messaging, (payload) => {
-  const notification = payload.notification!;
-
-  new Notification(notification.title!, {
-    badge: notification.icon,
-    icon: notification.icon,
-    body: notification.body,
-    lang: "en",
-  });
-});

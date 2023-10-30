@@ -14,7 +14,11 @@ export default async function signOut(currentUser = userPool.getCurrentUser()) {
       const token = await getRegistrationToken();
       await webPushTokensDelete(token);
     } catch (e) {
-      captureException(e);
+      if (
+        !(e instanceof Error) ||
+        e.message !== "Firebase messaging is not supported in this browser"
+      )
+        captureException(e);
     }
   }
   await new Promise<void>((resolve) => {
