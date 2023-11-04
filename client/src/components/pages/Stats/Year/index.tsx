@@ -34,6 +34,7 @@ import withStatsPage from "../../../hocs/withStatsPage";
 import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
+import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
 
 interface Props {
   date: Date;
@@ -130,6 +131,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             <div className="m-year__calendar-grid">{calendars}</div>
           </Paper>
           <MoodByMonthForPeriod dateFrom={date} dateTo={nextDate} />
+          <MeditationByMonthForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodCloud

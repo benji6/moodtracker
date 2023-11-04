@@ -22,6 +22,7 @@ import {
 } from "./types";
 import {
   computeAverageMoodInInterval,
+  computeSecondsMeditatedInInterval,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getNormalizedTagsFromDescription,
@@ -296,6 +297,53 @@ export const normalizedAveragesByHourSelector =
     addHours,
     formatIsoDateHourInLocalTimezone,
   );
+
+export const normalizedTotalSecondsMeditatedByMonthSelector = createSelector(
+  normalizedMeditationsSelector,
+  (
+    normalizedMeditations,
+  ): {
+    allIds: string[];
+    byId: { [k: string]: number | undefined };
+  } => {
+    const allIds: string[] = [];
+    const byId: { [k: string]: number } = {};
+    const normalizedTotalSeconds = { allIds, byId };
+
+    if (!normalizedMeditations.allIds.length) return normalizedTotalSeconds;
+
+    const periods = eachMonthOfInterval({
+      start: new Date(normalizedMeditations.allIds[0]),
+      end: new Date(normalizedMeditations.allIds.at(-1)!),
+    });
+
+    const finalPeriod = addMonths(periods.at(-1)!, 1);
+
+    if (normalizedMeditations.allIds.length === 1) {
+      const id = formatIsoDateInLocalTimezone(periods[0]);
+      allIds.push(id);
+      byId[id] =
+        normalizedMeditations.byId[normalizedMeditations.allIds[0]].seconds;
+      return normalizedTotalSeconds;
+    }
+
+    periods.push(finalPeriod);
+
+    for (let i = 1; i < periods.length; i++) {
+      const p0 = periods[i - 1];
+      const p1 = periods[i];
+      const id = formatIsoDateInLocalTimezone(p0);
+      allIds.push(id);
+      byId[id] = computeSecondsMeditatedInInterval(
+        normalizedMeditations,
+        p0,
+        p1,
+      );
+    }
+
+    return normalizedTotalSeconds;
+  },
+);
 
 export const normalizedAveragesByMonthSelector =
   makeNormalizedAveragesByPeriodSelector(eachMonthOfInterval, addMonths);
