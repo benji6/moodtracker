@@ -1,4 +1,4 @@
-import { Browser, Page } from "puppeteer";
+import { Browser, Dialog, Page } from "puppeteer";
 import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
 import {
@@ -21,9 +21,19 @@ describe("meditation", () => {
   });
 
   describe("meditation", () => {
+    const handleDialog = (dialog: Dialog) => dialog.accept();
+
+    beforeAll(() => {
+      page.on("dialog", handleDialog);
+    });
+
     beforeEach(async () => {
       await page.goto(URLS.meditation);
       await page.waitForSelector(SELECTORS.meditatePage);
+    });
+
+    afterAll(() => {
+      page.off("dialog", handleDialog);
     });
 
     test("using a preset time", async () => {
