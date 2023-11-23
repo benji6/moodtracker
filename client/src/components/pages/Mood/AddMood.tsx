@@ -66,10 +66,10 @@ export default function AddMood() {
     currentHour < 4
       ? "evening"
       : currentHour < 12
-      ? "morning"
-      : currentHour < 17
-      ? "afternoon"
-      : "evening";
+        ? "morning"
+        : currentHour < 17
+          ? "afternoon"
+          : "evening";
 
   return (
     <Paper.Group data-test-id={TEST_IDS.addMoodPage}>

@@ -43,8 +43,8 @@ export default function TemperatureForPeriod({
     chartData.length >= 128
       ? "large"
       : chartData.length >= 48
-      ? "medium"
-      : "small";
+        ? "medium"
+        : "small";
 
   return (
     <>
