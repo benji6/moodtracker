@@ -23,7 +23,7 @@ export default function LocationString({
 
   if (isPending) return <Spinner inline />;
   if (isError) return errorFallback ?? null;
-  const Place = data?.Results?.[0]?.Place;
+  const Place = data.Results?.[0]?.Place;
   const locationName = Place?.Municipality ?? Place?.Label;
   if (!locationName) {
     captureException(

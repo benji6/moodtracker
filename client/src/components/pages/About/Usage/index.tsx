@@ -35,8 +35,6 @@ export default function Usage() {
     { label: "More than a year ago", key: ">=365 days" },
   ] as const;
 
-  if (data === undefined || !("expires" in data) || !("usage" in data)) return;
-
   const titleEl = <h2>Usage</h2>;
 
   if (isPending)

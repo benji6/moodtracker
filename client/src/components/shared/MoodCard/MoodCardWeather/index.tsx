@@ -26,7 +26,7 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
       </div>
     );
 
-  const weatherData = data!.data[0];
+  const weatherData = data.data[0];
   const weatherIconData = weatherData?.weather[0];
 
   const { iconName, weatherColor } = getWeatherDisplayData({
