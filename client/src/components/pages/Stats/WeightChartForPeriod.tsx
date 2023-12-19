@@ -39,6 +39,11 @@ export default function WeightChartForPeriod({
         centerXAxisLabels={centerXAxisLabels}
         aria-label="Chart displaying weight against time"
         domain={domain}
+        points={
+          chartVariation === "small"
+            ? data.map(([x, y]) => ({ x, y }))
+            : undefined
+        }
         range={createChartExtent(envelopingValues)}
         xAxisLabels={xLabels}
         yAxisTitle="Weight (kg)"
@@ -47,7 +52,6 @@ export default function WeightChartForPeriod({
           data={data}
           thickness={chartVariation === "medium" ? 2 : undefined}
         />
-        {chartVariation === "small" && <Chart.Points data={data} />}
       </Chart.LineChart>
     </Paper>
   );

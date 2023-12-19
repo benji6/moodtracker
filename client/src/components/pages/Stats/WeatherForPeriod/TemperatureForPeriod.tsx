@@ -53,6 +53,11 @@ export default function TemperatureForPeriod({
         aria-label="Chart displaying temperature against time"
         centerXAxisLabels={centerXAxisLabels}
         domain={[dateFrom.getTime(), dateTo.getTime()]}
+        points={
+          chartVariation === "small"
+            ? chartData.map(([x, y]) => ({ x, y }))
+            : undefined
+        }
         range={createChartExtent(temperatures)}
         xAxisLabels={xLabels}
         xAxisTitle="Month"
@@ -62,7 +67,6 @@ export default function TemperatureForPeriod({
           data={chartData}
           thickness={chartVariation === "medium" ? 2 : undefined}
         />
-        {chartVariation === "small" && <Chart.Points data={chartData} />}
       </Chart.LineChart>
     </>
   );

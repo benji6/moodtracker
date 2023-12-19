@@ -26,6 +26,11 @@ export default function MoodChart({
       aria-label="Chart displaying mood against time"
       centerXAxisLabels={centerXAxisLabels}
       domain={domain}
+      points={
+        hidePoints
+          ? undefined
+          : data.map(([x, y]) => ({ color: moodToColor(y), x, y }))
+      }
       range={MOOD_RANGE}
       xAxisLabels={xLabels}
       xAxisTitle={xAxisTitle}
@@ -45,7 +50,6 @@ export default function MoodChart({
             thickness={2}
           />
           <Chart.Line data={data} />
-          <Chart.Points colorFromY={moodToColor} data={data} />
         </>
       )}
     </Chart.LineChart>
