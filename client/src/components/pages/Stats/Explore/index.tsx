@@ -1,4 +1,3 @@
-import subDays from "date-fns/subDays";
 import { Paper, Select, Spinner } from "eri";
 import { roundDateUp, roundDateDown } from "../../../../utils";
 import MoodChartForPeriod from "../MoodChartForPeriod";
@@ -18,7 +17,6 @@ import LocationsForPeriod from "../LocationsForPeriod";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import WeatherForPeriod from "../WeatherForPeriod";
-import addDays from "date-fns/addDays";
 import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 import { useReducer } from "react";
 import { FluxStandardAction } from "../../../../typeUtilities";
@@ -26,7 +24,7 @@ import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
-import differenceInDays from "date-fns/differenceInDays";
+import { addDays, differenceInDays, subDays } from "date-fns";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 

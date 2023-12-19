@@ -6,8 +6,8 @@ import {
 } from "../../../utils";
 import { Paper } from "eri";
 import { TIME } from "../../../constants";
-import addHours from "date-fns/addHours";
 import MoodByHourChart from "../../shared/MoodByHourChart";
+import { addHours } from "date-fns";
 
 interface Props {
   dateFrom: Date;

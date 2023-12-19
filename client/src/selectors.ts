@@ -1,14 +1,17 @@
 import { createSelector } from "@reduxjs/toolkit";
-import addDays from "date-fns/addDays";
-import addHours from "date-fns/addHours";
-import addMonths from "date-fns/addMonths";
-import addWeeks from "date-fns/addWeeks";
-import addYears from "date-fns/addYears";
-import eachDayOfInterval from "date-fns/eachDayOfInterval";
-import eachHourOfInterval from "date-fns/eachHourOfInterval";
-import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
-import eachWeekOfInterval from "date-fns/eachWeekOfInterval";
-import eachYearOfInterval from "date-fns/eachYearOfInterval";
+import {
+  Interval,
+  addDays,
+  addHours,
+  addMonths,
+  addWeeks,
+  addYears,
+  eachDayOfInterval,
+  eachHourOfInterval,
+  eachMonthOfInterval,
+  eachWeekOfInterval,
+  eachYearOfInterval,
+} from "date-fns";
 import { WEEK_OPTIONS } from "./formatters/dateTimeFormatters";
 import { captureException } from "./sentry";
 import { RootState } from "./store";

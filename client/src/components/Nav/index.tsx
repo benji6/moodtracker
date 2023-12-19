@@ -1,4 +1,4 @@
-import startOfWeek from "date-fns/startOfWeek";
+import { startOfWeek } from "date-fns";
 import { Nav as EriNav, Button, Icon } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";

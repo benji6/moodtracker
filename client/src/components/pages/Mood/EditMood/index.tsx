@@ -10,10 +10,10 @@ import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
 import Location from "../../../shared/Location";
 import RedirectHome from "../../../shared/RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { useRef, useState } from "react";
 import useDarkMode from "../../../hooks/useDarkMode";
 import { moodToColor } from "../../../../utils";
+import { formatDistanceToNow } from "date-fns";
 
 export default function EditMood() {
   const navigate = useNavigate();

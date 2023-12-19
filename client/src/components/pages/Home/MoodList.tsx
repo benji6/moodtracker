@@ -1,3 +1,4 @@
+import { addDays } from "date-fns";
 import { Paper, Pagination, Card, Button, Icon } from "eri";
 import { createDateFromLocalDateString, mapRight } from "../../../utils";
 import { moodIdsByDateSelector } from "../../../selectors";
@@ -6,7 +7,6 @@ import { TEST_IDS } from "../../../constants";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
 import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
 import MoodCard from "../../shared/MoodCard";
-import addDays from "date-fns/addDays";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 

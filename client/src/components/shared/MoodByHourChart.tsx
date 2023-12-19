@@ -1,7 +1,7 @@
-import setHours from "date-fns/setHours";
 import { Chart } from "eri";
 import { MOOD_INTEGERS, MOOD_RANGE, TIME } from "../../constants";
 import { hourNumericFormatter } from "../../formatters/dateTimeFormatters";
+import { setHours } from "date-fns";
 
 const arbitraryDate = new Date();
 

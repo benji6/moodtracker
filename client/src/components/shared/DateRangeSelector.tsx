@@ -1,5 +1,3 @@
-import addMinutes from "date-fns/addMinutes";
-import subDays from "date-fns/subDays";
 import { DateField } from "eri";
 import { useSelector } from "react-redux";
 import { normalizedMoodsSelector } from "../../selectors";
@@ -8,6 +6,7 @@ import {
   roundDateDown,
   roundDateUp,
 } from "../../utils";
+import { addMinutes, subDays } from "date-fns";
 
 interface Props {
   dateFrom: Date;

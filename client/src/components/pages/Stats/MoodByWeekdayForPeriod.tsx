@@ -8,9 +8,9 @@ import {
 } from "../../../utils";
 import { Paper } from "eri";
 import { TIME, WEEKDAY_LABELS_SHORT } from "../../../constants";
-import addDays from "date-fns/addDays";
 import { useNavigate } from "react-router-dom";
 import { ComponentProps } from "react";
+import { addDays } from "date-fns";
 
 interface Props {
   canDrillDown?: boolean;

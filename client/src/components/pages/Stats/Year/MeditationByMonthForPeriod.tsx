@@ -7,9 +7,9 @@ import { normalizedTotalSecondsMeditatedByMonthSelector } from "../../../../sele
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import { Chart, Paper } from "eri";
 import { TIME } from "../../../../constants";
+import { eachMonthOfInterval } from "date-fns";
 
 interface Props {
   dateFrom: Date;

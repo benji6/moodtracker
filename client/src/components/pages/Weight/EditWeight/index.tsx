@@ -10,7 +10,7 @@ import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
 import Location from "../../../shared/Location";
 import RedirectHome from "../../../shared/RedirectHome";
 import { useNavigate, useParams } from "react-router-dom";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns";
 
 export default function EditWeight() {
   const navigate = useNavigate();

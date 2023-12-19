@@ -1,5 +1,4 @@
-import formatDuration from "date-fns/formatDuration";
-import intervalToDuration from "date-fns/intervalToDuration";
+import { formatDuration, intervalToDuration } from "date-fns";
 
 export default function formatDurationFromSeconds(seconds: number): string {
   const epoch = new Date(0);

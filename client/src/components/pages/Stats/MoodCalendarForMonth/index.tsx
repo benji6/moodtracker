@@ -1,5 +1,3 @@
-import addDays from "date-fns/addDays";
-import getDaysInMonth from "date-fns/getDaysInMonth";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
@@ -17,6 +15,7 @@ import {
   roundDateDown,
 } from "../../../../utils";
 import "./style.css";
+import { addDays, getDaysInMonth } from "date-fns";
 
 interface Props {
   month: Date;

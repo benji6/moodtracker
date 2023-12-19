@@ -1,4 +1,4 @@
-import isValid from "date-fns/isValid";
+import { isValid } from "date-fns";
 import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";

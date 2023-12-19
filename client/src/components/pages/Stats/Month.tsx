@@ -19,13 +19,7 @@ import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForMonth from "./MoodSummaryForMonth";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "./MoodCalendarForMonth";
-import addMonths from "date-fns/addMonths";
-import differenceInCalendarDays from "date-fns/differenceInCalendarDays";
-import addDays from "date-fns/addDays";
-import addWeeks from "date-fns/addWeeks";
 import MoodCell from "../../shared/MoodCell";
-import startOfWeek from "date-fns/startOfWeek";
-import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
@@ -38,6 +32,14 @@ import withStatsPage from "../../hocs/withStatsPage";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
+import {
+  addDays,
+  addMonths,
+  addWeeks,
+  differenceInCalendarDays,
+  startOfWeek,
+  subDays,
+} from "date-fns";
 
 const X_LABELS_COUNT = 5;
 

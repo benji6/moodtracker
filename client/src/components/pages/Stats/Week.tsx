@@ -15,8 +15,6 @@ import {
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
-import addDays from "date-fns/addDays";
-import subDays from "date-fns/subDays";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
@@ -27,11 +25,10 @@ import WeightChartForPeriod from "./WeightChartForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
 import withStatsPage from "../../hocs/withStatsPage";
-import startOfWeek from "date-fns/startOfWeek";
-import addWeeks from "date-fns/addWeeks";
 import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
+import { addDays, addWeeks, startOfWeek, subDays } from "date-fns";
 
 interface Props {
   date: Date;

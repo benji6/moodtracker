@@ -10,8 +10,8 @@ import { yearFormatter } from "../../../formatters/dateTimeFormatters";
 import { normalizedAveragesByYearSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import addYears from "date-fns/addYears";
 import { Link } from "react-router-dom";
+import { addYears } from "date-fns";
 
 const MAX_YEARS_PER_PAGE = 8;
 

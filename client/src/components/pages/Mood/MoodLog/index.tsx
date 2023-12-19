@@ -32,12 +32,12 @@ import {
 import MoodGradientForPeriod from "../../Stats/MoodGradientForPeriod";
 import { dateWeekdayFormatter } from "../../../../formatters/dateTimeFormatters";
 import MoodCard from "../../../shared/MoodCard";
-import addDays from "date-fns/addDays";
 import { Link } from "react-router-dom";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
 import { initialState, reducer } from "./moodLogReducer";
 import OptionalMoodCell from "../../Home/OptionalMoodCell";
 import ExportControls from "../../Settings/Export/ExportControls";
+import { addDays } from "date-fns";
 
 const DAYS_PER_PAGE = 7;
 

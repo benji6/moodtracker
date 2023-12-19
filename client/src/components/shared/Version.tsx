@@ -1,4 +1,4 @@
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns";
 import { BUILD_TIME } from "../../constants";
 
 export default function Version() {

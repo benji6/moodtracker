@@ -1,4 +1,3 @@
-import addHours from "date-fns/addHours";
 import { Card, Icon, Paper, SubHeading } from "eri";
 import { useSelector } from "react-redux";
 import {
@@ -18,7 +17,6 @@ import {
 import PrevNextControls from "../../shared/PrevNextControls";
 import MoodCard from "../../shared/MoodCard";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import startOfWeek from "date-fns/startOfWeek";
 import MoodSummaryForDay from "./MoodSummaryForDay";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import { TIME } from "../../../constants";
@@ -27,8 +25,8 @@ import { Link } from "react-router-dom";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
 import withStatsPage from "../../hocs/withStatsPage";
-import addDays from "date-fns/addDays";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
+import { addDays, addHours, startOfWeek } from "date-fns";
 
 const X_LABELS_COUNT = 7;
 

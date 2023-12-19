@@ -1,7 +1,5 @@
 import { interpolateHcl } from "d3-interpolate";
-import addDays from "date-fns/addDays";
-import getDay from "date-fns/getDay";
-import set from "date-fns/set";
+import { addDays, getDay, set } from "date-fns";
 import { Icon } from "eri";
 import { MOOD_EXTENT, TIME } from "./constants";
 import { captureException } from "./sentry";

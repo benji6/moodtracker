@@ -15,8 +15,6 @@ import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
-import addYears from "date-fns/addYears";
-import eachMonthOfInterval from "date-fns/eachMonthOfInterval";
 import MoodByMonthForPeriod from "./MoodByMonthForPeriod";
 import "./style.css";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
@@ -27,7 +25,6 @@ import LocationsForPeriod from "../LocationsForPeriod";
 import { Link, useNavigate } from "react-router-dom";
 import MoodCloud from "../MoodCloud";
 import MoodChartForPeriod from "../MoodChartForPeriod";
-import addMonths from "date-fns/addMonths";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import WeatherForPeriod from "../WeatherForPeriod";
 import withStatsPage from "../../../hocs/withStatsPage";
@@ -35,6 +32,7 @@ import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
+import { addMonths, addYears, eachMonthOfInterval } from "date-fns";
 
 interface Props {
   date: Date;

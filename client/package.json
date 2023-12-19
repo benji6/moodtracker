@@ -28,7 +28,7 @@
     "amazon-cognito-identity-js": "^6.1.2",
     "d3-geo": "^3.0.1",
     "d3-interpolate": "^3.0.1",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.0.0",
     "eri": "^45.0.0",
     "file-saver": "^2.0.5",
     "firebase": "^10.1.0",

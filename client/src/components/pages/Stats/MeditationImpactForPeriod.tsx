@@ -1,5 +1,3 @@
-import differenceInSeconds from "date-fns/differenceInSeconds";
-import sub from "date-fns/sub";
 import { Paper, SubHeading, Toggle, WordCloud } from "eri";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -15,6 +13,7 @@ import {
   getNormalizedTagsFromDescription,
 } from "../../../utils";
 import useMeditationIdsInPeriod from "../../hooks/useMeditationIdsInPeriod";
+import { differenceInSeconds, sub } from "date-fns";
 
 const MEDITATION_STATS_HOURS_RANGE = 4;
 const SECONDS = MEDITATION_STATS_HOURS_RANGE * TIME.secondsPerHour;

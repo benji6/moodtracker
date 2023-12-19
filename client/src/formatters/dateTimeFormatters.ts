@@ -1,5 +1,4 @@
-import endOfWeek from "date-fns/endOfWeek";
-import startOfWeek from "date-fns/startOfWeek";
+import { endOfWeek, startOfWeek } from "date-fns";
 
 export const WEEK_OPTIONS = { weekStartsOn: 1 } as const;
 

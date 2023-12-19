@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
-import subDays from "date-fns/subDays";
+import { formatDistanceToNow, subDays } from "date-fns";
 import { Chart, Paper, Spinner, SubHeading } from "eri";
 import { usageGet } from "../../../../api";
 import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";

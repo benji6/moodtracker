@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import eventsSlice from "../../../../store/eventsSlice";
 import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
 import { captureException } from "../../../../sentry";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns";
 
 interface Props {
   id: string | undefined;
