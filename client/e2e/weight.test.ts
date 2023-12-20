@@ -24,12 +24,12 @@ describe("weight", () => {
       await page.goto(URLS.weightAdd);
       await page.waitForSelector(SELECTORS.weightAddPage);
 
-      input = ((await page.$(
+      input = (await page.$(
         SELECTORS.weightValueInput,
-      )) as ElementHandle<HTMLInputElement>)!;
-      submitButton = ((await page.$(
+      )) as ElementHandle<HTMLInputElement>;
+      submitButton = (await page.$(
         SELECTORS.weightAddSubmitButton,
-      )) as ElementHandle<HTMLButtonElement>)!;
+      )) as ElementHandle<HTMLButtonElement>;
     });
 
     test("no value", async () => {
@@ -91,14 +91,14 @@ describe("weight", () => {
       const weightCardValue = await page.waitForSelector(
         SELECTORS.weightCardValue,
       );
-      const weightText = await weightCardValue!.evaluate(
-        (el) => el.textContent,
-      );
+      if (!weightCardValue) throw Error(`weightCardValue not found`);
+      const weightText = await weightCardValue.evaluate((el) => el.textContent);
 
       expect(weightText).toBe(`${weightTestValue}kg`);
 
       const cardTime = await page.$(SELECTORS.weightCardTime);
-      const timeValue = await cardTime!.evaluate((el) =>
+      if (!cardTime) throw Error(`cardTime not found`);
+      const timeValue = await cardTime.evaluate((el) =>
         el.getAttribute("data-time"),
       );
       expect(timeValue).toBe(String(expectedTime));

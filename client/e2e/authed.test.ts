@@ -21,16 +21,17 @@ describe("authed", () => {
   });
 
   test("user can sign out and sign back in", async () => {
-    const navButton = (await page.$(SELECTORS.navButton))!;
+    const navButton = await page.$(SELECTORS.navButton);
+    if (!navButton) throw Error("navButton not found");
     await navButton.evaluate((el) => (el as HTMLButtonElement).click());
-    const signOutButton = (await page.waitForSelector(
-      SELECTORS.signOutButton,
-    ))!;
+    const signOutButton = await page.waitForSelector(SELECTORS.signOutButton);
+    if (!signOutButton) throw Error("signOutButton not found");
     await waitForTransitionToComplete();
     await signOutButton.evaluate((el) => (el as HTMLButtonElement).click());
-    const signOutConfirmButton = (await page.waitForSelector(
+    const signOutConfirmButton = await page.waitForSelector(
       SELECTORS.signOutConfirmButton,
-    ))!;
+    );
+    if (!signOutConfirmButton) throw Error("signOutConfirmButton not found");
     await Promise.all([
       page.waitForNavigation(),
       signOutConfirmButton.evaluate((el) => (el as HTMLButtonElement).click()),

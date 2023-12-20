@@ -24,12 +24,12 @@ describe("mood", () => {
       await page.goto(URLS.add);
       await page.waitForSelector(SELECTORS.addMoodPage);
 
-      descriptionInput = ((await page.$(
+      descriptionInput = (await page.$(
         SELECTORS.descriptionInput,
-      )) as ElementHandle<HTMLInputElement>)!;
-      submitButton = ((await page.$(
+      )) as ElementHandle<HTMLInputElement>;
+      submitButton = (await page.$(
         SELECTORS.addMoodSubmitButton,
-      )) as ElementHandle<HTMLButtonElement>)!;
+      )) as ElementHandle<HTMLButtonElement>;
     });
 
     test("mood field errors", async () => {
@@ -96,14 +96,16 @@ describe("mood", () => {
       expect(page.url()).toBe(URLS.home);
 
       const moodCardMood = await page.waitForSelector(SELECTORS.moodCardMood);
-      const moodCardMoodText = await moodCardMood!.evaluate(
+      if (!moodCardMood) throw Error("moodCardMood not found");
+      const moodCardMoodText = await moodCardMood.evaluate(
         (el) => el.textContent,
       );
 
       expect(moodCardMoodText).toBe(String(MOOD));
 
       const moodCardTime = await page.$(SELECTORS.moodCardTime);
-      const moodCardTimeValue = await moodCardTime!.evaluate((el) =>
+      if (!moodCardTime) throw Error("moodCardTime not found");
+      const moodCardTimeValue = await moodCardTime.evaluate((el) =>
         el.getAttribute("data-time"),
       );
       expect(moodCardTimeValue).toBe(String(expectedTime));
@@ -127,19 +129,22 @@ describe("mood", () => {
       expect(page.url()).toBe(URLS.home);
 
       const moodCardMood = await page.waitForSelector(SELECTORS.moodCardMood);
-      const moodCardMoodText = await moodCardMood!.evaluate(
+      if (!moodCardMood) throw Error("moodCardMood not found");
+      const moodCardMoodText = await moodCardMood.evaluate(
         (el) => el.textContent,
       );
       expect(moodCardMoodText).toBe(String(MOOD));
 
       const moodCardTags = await page.waitForSelector(SELECTORS.moodCardTags);
-      const moodCardTagsText = await moodCardTags!.evaluate(
+      if (!moodCardTags) throw Error("moodCardTags not found");
+      const moodCardTagsText = await moodCardTags.evaluate(
         (el) => el.textContent,
       );
       expect(moodCardTagsText).toBe("🧪");
 
       const moodCardTime = await page.$(SELECTORS.moodCardTime);
-      const moodCardTimeValue = await moodCardTime!.evaluate((el) =>
+      if (!moodCardTime) throw Error("moodCardTime not found");
+      const moodCardTimeValue = await moodCardTime.evaluate((el) =>
         el.getAttribute("data-time"),
       );
       expect(moodCardTimeValue).toBe(String(expectedTime));

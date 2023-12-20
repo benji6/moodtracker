@@ -1,8 +1,13 @@
 import { Browser, ElementHandle, launch, Page } from "puppeteer";
 import { ROOT_DOCUMENT_TITLE, SELECTORS, URLS } from "./constants";
 
-const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL!;
-const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD!;
+const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL;
+const TEST_USER_PASSWORD = process.env.MOODTRACKER_TEST_USER_PASSWORD;
+
+if (!TEST_USER_EMAIL)
+  throw Error("TEST_USER_EMAIL environment variable not set");
+if (!TEST_USER_PASSWORD)
+  throw Error("TEST_USER_PASSWORD environment variable not set");
 
 export const createAndSetUpBrowser = (): Promise<Browser> =>
   launch({
@@ -36,7 +41,10 @@ export const signIn = async (page: Page): Promise<void> => {
 
   const emailInput = (await page.waitForSelector(
     '[type="email"]',
-  )) as ElementHandle<HTMLInputElement>;
+  )) as ElementHandle<HTMLInputElement> | null;
+  if (!emailInput) throw Error("emailInput not found");
+  await new Promise((resolve) => setTimeout(() => resolve(null), 1000));
+  await waitForTransitionToComplete();
   await emailInput.type(TEST_USER_EMAIL, { delay: 10 });
   expect(await emailInput.evaluate((el) => el.value)).toBe(TEST_USER_EMAIL);
 

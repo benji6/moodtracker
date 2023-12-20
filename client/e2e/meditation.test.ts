@@ -37,9 +37,10 @@ describe("meditation", () => {
     });
 
     test("using a preset time", async () => {
-      const button = (await page.$(
+      const button = await page.$(
         `${SELECTORS.meditationPresetTimeButton}[data-minutes="10"]`,
-      ))!;
+      );
+      if (!button) throw Error("button not found");
       button.tap();
       await page.waitForSelector(SELECTORS.meditatePage);
 
@@ -52,20 +53,20 @@ describe("meditation", () => {
       let error = await page.$('[data-eri-id="field-error"]');
       expect(error).toBeNull();
 
-      const customTimeInput = (await page.$(
-        SELECTORS.meditationCustomTimeInput,
-      ))!;
+      const customTimeInput = await page.$(SELECTORS.meditationCustomTimeInput);
+      if (!customTimeInput) throw Error("customTimeInput not found");
       await customTimeInput.press("Enter");
 
-      error = (await page.$('[data-eri-id="field-error"]'))!;
-      expect(error).not.toBeNull();
-      let errorMessage = await error!.evaluate((el) => el.textContent);
+      error = await page.$('[data-eri-id="field-error"]');
+      if (!error) throw Error("error not found");
+      let errorMessage = await error.evaluate((el) => el.textContent);
       expect(errorMessage).toBe(ERRORS.required);
 
       await customTimeInput.type("6e1");
       await customTimeInput.press("Enter");
 
-      error = (await page.$('[data-eri-id="field-error"]'))!;
+      error = await page.$('[data-eri-id="field-error"]');
+      if (!error) throw Error("error not found");
       expect(error).not.toBeNull();
       errorMessage = await error.evaluate((el) => el.textContent);
       expect(errorMessage).toBe(ERRORS.integer);
@@ -74,7 +75,8 @@ describe("meditation", () => {
       await customTimeInput.type("181");
       await customTimeInput.press("Enter");
 
-      error = (await page.$('[data-eri-id="field-error"]'))!;
+      error = await page.$('[data-eri-id="field-error"]');
+      if (!error) throw Error("error not found");
       expect(error).not.toBeNull();
       errorMessage = await error.evaluate((el) => el.textContent);
       expect(errorMessage).toBe("The maximum allowed time is 180 minutes");
