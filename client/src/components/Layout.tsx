@@ -4,19 +4,19 @@ import useEvents from "./hooks/useEvents";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import { useSelector } from "react-redux";
-import { userIsSignedInSelector } from "../selectors";
 import AddMoodFab from "./shared/AddMoodFab";
 import { TEST_IDS } from "../constants";
 import useGeolocation from "./hooks/useGeolocation";
 import { Link, Outlet } from "react-router-dom";
 import { useState } from "react";
+import userSlice from "../store/userSlice";
 
 export default function Layout() {
   useUser();
   useGeolocation();
   useEvents();
   useStorage();
-  const userIsSignedIn = useSelector(userIsSignedInSelector);
+  const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (

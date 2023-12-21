@@ -1,6 +1,5 @@
 import { Button, Icon, Paper, RadioButton, TextArea, TextField } from "eri";
 import MoodDeleteDialog from "./MoodDeleteDialog";
-import { normalizedMoodsSelector } from "../../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../../store/eventsSlice";
 import { UpdateMood } from "../../../../types";
@@ -20,7 +19,7 @@ export default function EditMood() {
   const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const moods = useSelector(normalizedMoodsSelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [descriptionError, setDescriptionError] = useState<
     string | undefined

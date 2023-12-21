@@ -2,10 +2,12 @@ import { ChangePasswordPage } from "eri";
 import { useSelector } from "react-redux";
 import { createAuthenticatedUserAndSession } from "../../../cognito";
 import { ERRORS } from "../../../constants";
-import { userEmailSelector } from "../../../selectors";
+import userSlice from "../../../store/userSlice";
 
 export default function ChangePassword() {
-  const email = useSelector(userEmailSelector)!;
+  const email = useSelector(userSlice.selectors.email);
+
+  if (!email) throw Error("User email not defined");
 
   return (
     <ChangePasswordPage

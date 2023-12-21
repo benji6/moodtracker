@@ -1,10 +1,6 @@
 import { Paper } from "eri";
 import { useSelector } from "react-redux";
 import {
-  normalizedMeditationsSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
-import {
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
   computeSecondsMeditatedInInterval,
@@ -13,6 +9,7 @@ import {
 import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import useWeightsInPeriod from "../../hooks/useWeightsInPeriod";
 import MoodSummary from "../../shared/MoodSummary";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   dates: [Date, Date, Date];
@@ -30,8 +27,8 @@ export default function MoodSummaryForCalendarPeriod({
   normalizedAverages,
   periodType,
 }: Props) {
-  const meditations = useSelector(normalizedMeditationsSelector);
-  const moods = useSelector(normalizedMoodsSelector);
+  const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const weightsInPeriod = useWeightsInPeriod(date1, date2).map(
     ({ value }) => value,
   );

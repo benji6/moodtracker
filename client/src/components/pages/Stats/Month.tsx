@@ -7,7 +7,6 @@ import {
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
-import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
@@ -40,6 +39,7 @@ import {
   startOfWeek,
   subDays,
 } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 const X_LABELS_COUNT = 5;
 
@@ -54,7 +54,7 @@ interface Props {
 function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
   const normalizedAveragesByWeek = useSelector(
-    normalizedAveragesByWeekSelector,
+    eventsSlice.selectors.normalizedAveragesByWeek,
   );
 
   const nextMonthDateString = formatIsoDateInLocalTimezone(nextDate);

@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TEST_IDS } from "../../../constants";
 import { timeFormatter } from "../../../formatters/dateTimeFormatters";
-import { normalizedMoodsSelector } from "../../../selectors";
 import { moodToColor } from "../../../utils";
 import LocationString from "../LocationString";
 import MoodCardWeather from "./MoodCardWeather";
 import "./style.css";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   id: string;
@@ -16,7 +16,7 @@ interface Props {
 export default function MoodCard({ id }: Props) {
   const navigate = useNavigate();
   const date = new Date(id);
-  const normalizedMoods = useSelector(normalizedMoodsSelector);
+  const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
   const { description, exploration, location, mood } = normalizedMoods.byId[id];
 
   return (

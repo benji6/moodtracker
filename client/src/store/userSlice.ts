@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserDetails {
   email: string;
@@ -17,6 +17,8 @@ const initialState: UserState = {
   loading: true,
 };
 
+const emailSelector = (state: UserState) => state.email;
+
 export default createSlice({
   name: "user",
   initialState,
@@ -30,5 +32,11 @@ export default createSlice({
       ...state,
       email: action.payload,
     }),
+  },
+  selectors: {
+    email: emailSelector,
+    id: (state) => state.id,
+    isSignedIn: createSelector(emailSelector, (email) => Boolean(email)),
+    loading: (state) => state.loading,
   },
 });

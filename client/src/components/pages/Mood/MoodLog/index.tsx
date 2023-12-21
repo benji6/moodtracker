@@ -17,12 +17,6 @@ import {
   roundDateDown,
   roundDateUp,
 } from "../../../../utils";
-import {
-  denormalizedMoodsSelector,
-  moodIdsByDateSelector,
-  normalizedDescriptionWordsSelector,
-  normalizedMoodsSelector,
-} from "../../../../selectors";
 import { useSelector } from "react-redux";
 import {
   DESCRIPTION_MAX_LENGTH,
@@ -38,6 +32,7 @@ import { initialState, reducer } from "./moodLogReducer";
 import OptionalMoodCell from "../../Home/OptionalMoodCell";
 import ExportControls from "../../Settings/Export/ExportControls";
 import { addDays } from "date-fns";
+import eventsSlice from "../../../../store/eventsSlice";
 
 const DAYS_PER_PAGE = 7;
 
@@ -57,12 +52,14 @@ const groupMoodIdsByDay = (
 };
 
 export default function MoodLog() {
-  const moods = useSelector(normalizedMoodsSelector);
-  const denormalizedMoods = useSelector(denormalizedMoodsSelector);
-  const moodIdsByDate = useSelector(moodIdsByDateSelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const denormalizedMoods = useSelector(
+    eventsSlice.selectors.denormalizedMoods,
+  );
+  const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
   const [localState, localDispatch] = React.useReducer(reducer, initialState);
   const normalizedDescriptionWords = useSelector(
-    normalizedDescriptionWordsSelector,
+    eventsSlice.selectors.normalizedDescriptionWords,
   );
   const dateNow = new Date();
   const [dateTo, setDateTo] = React.useState(roundDateUp(dateNow));

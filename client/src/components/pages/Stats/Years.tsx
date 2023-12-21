@@ -7,17 +7,17 @@ import {
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
 import { yearFormatter } from "../../../formatters/dateTimeFormatters";
-import { normalizedAveragesByYearSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { Link } from "react-router-dom";
 import { addYears } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 const MAX_YEARS_PER_PAGE = 8;
 
 export default function Years() {
   const normalizedAveragesByYear = useSelector(
-    normalizedAveragesByYearSelector,
+    eventsSlice.selectors.normalizedAveragesByYear,
   );
   const [page, setPage] = React.useState(0);
 

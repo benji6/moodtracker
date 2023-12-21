@@ -4,13 +4,6 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
 import {
-  hasMeditationsSelector,
-  hasMoodsSelector,
-  hasWeightsSelector,
-  userEmailSelector,
-  userIsSignedInSelector,
-} from "../../selectors";
-import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
@@ -20,6 +13,8 @@ import SyncState from "./SyncState";
 import AppIcon from "../../icons/AppIcon";
 import "./style.css";
 import { TEST_IDS } from "../../constants";
+import userSlice from "../../store/userSlice";
+import eventsSlice from "../../store/eventsSlice";
 
 interface Props {
   open: boolean;
@@ -27,11 +22,11 @@ interface Props {
 }
 
 export default function Nav({ handleNavClose, open }: Props) {
-  const hasMoods = useSelector(hasMoodsSelector);
-  const hasMeditations = useSelector(hasMeditationsSelector);
-  const hasWeights = useSelector(hasWeightsSelector);
-  const userEmail = useSelector(userEmailSelector);
-  const userIsSignedIn = useSelector(userIsSignedInSelector);
+  const hasMoods = useSelector(eventsSlice.selectors.hasMoods);
+  const hasMeditations = useSelector(eventsSlice.selectors.hasMeditations);
+  const hasWeights = useSelector(eventsSlice.selectors.hasWeights);
+  const userEmail = useSelector(userSlice.selectors.email);
+  const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const handleDialogClose = () => {
     setIsDialogOpen(false);

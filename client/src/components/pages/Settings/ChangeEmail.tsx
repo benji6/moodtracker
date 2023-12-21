@@ -4,12 +4,12 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { changeEmail } from "../../../cognito";
 import { ERRORS } from "../../../constants";
-import { userEmailSelector } from "../../../selectors";
 import { NEW_EMAIL_SEARCH_PARAM_KEY } from "./constants";
+import userSlice from "../../../store/userSlice";
 
 export default function ChangeEmail() {
   const navigate = useNavigate();
-  const currentEmail = useSelector(userEmailSelector)!;
+  const currentEmail = useSelector(userSlice.selectors.email);
   const [fieldError, setFieldError] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string>();

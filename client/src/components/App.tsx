@@ -42,15 +42,13 @@ import MoodLog from "./pages/Mood/MoodLog";
 import PrivacyPolicy from "./pages/About/PrivacyPolicy";
 import Usage from "./pages/About/Usage";
 import { useSelector } from "react-redux";
-import {
-  appIsStorageLoadingSelector,
-  userIsSignedInSelector,
-} from "../selectors";
 import { Spinner } from "eri";
+import appSlice from "../store/appSlice";
+import userSlice from "../store/userSlice";
 
 function Root() {
-  const userIsSignedIn = useSelector(userIsSignedInSelector);
-  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
+  const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
+  const isStorageLoading = useSelector(appSlice.selectors.isStorageLoading);
 
   return (
     <ReactRouterRoutes>

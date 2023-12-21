@@ -22,4 +22,8 @@ export default createSlice({
       };
     },
   },
+  selectors: {
+    data: (state) => state.data,
+    recordLocation: (state) => Boolean(state.data?.recordLocation),
+  },
 });

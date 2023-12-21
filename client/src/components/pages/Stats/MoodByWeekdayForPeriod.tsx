@@ -1,4 +1,3 @@
-import { normalizedAveragesByDaySelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import {
@@ -11,6 +10,7 @@ import { TIME, WEEKDAY_LABELS_SHORT } from "../../../constants";
 import { useNavigate } from "react-router-dom";
 import { ComponentProps } from "react";
 import { addDays } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   canDrillDown?: boolean;
@@ -23,7 +23,9 @@ export default function MoodByWeekdayForPeriod({
   dateFrom,
   dateTo,
 }: Props) {
-  const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
+  const normalizedAveragesByDay = useSelector(
+    eventsSlice.selectors.normalizedAveragesByDay,
+  );
   const navigate = useNavigate();
 
   const moodsByWeekdayIndex: (number[] | undefined)[] = [

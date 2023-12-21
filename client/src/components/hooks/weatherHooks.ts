@@ -2,8 +2,8 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { fetchWeather } from "../../api";
 import { HIGHLY_CACHED_QUERY_OPTIONS, TIME } from "../../constants";
-import { eventsByIdSelector } from "../../selectors";
 import { AppEventWithLocation } from "../../types";
+import eventsSlice from "../../store/eventsSlice";
 
 const getUnixTimestampRoundedToNearestHourAndInPast = (date: Date) => {
   const roundedTime =
@@ -51,7 +51,7 @@ type QueryKey = [
 ];
 
 export const useWeatherQueries = (ids: string[]) => {
-  const eventsById = useSelector(eventsByIdSelector);
+  const eventsById = useSelector(eventsSlice.selectors.byId);
 
   return useQueries({
     queries: ids.map((id) => {

@@ -1,7 +1,6 @@
 import { addDays } from "date-fns";
 import { Paper, Pagination, Card, Button, Icon } from "eri";
 import { createDateFromLocalDateString, mapRight } from "../../../utils";
-import { moodIdsByDateSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import { TEST_IDS } from "../../../constants";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
@@ -9,12 +8,15 @@ import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
 import MoodCard from "../../shared/MoodCard";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import eventsSlice from "../../../store/eventsSlice";
 
 const DAYS_PER_PAGE = 7;
 
 export default function MoodList() {
   const navigate = useNavigate();
-  const moodsGroupedByDay = Object.entries(useSelector(moodIdsByDateSelector));
+  const moodsGroupedByDay = Object.entries(
+    useSelector(eventsSlice.selectors.moodIdsByDate),
+  );
   const [page, setPage] = useState(0);
 
   const pageCount = Math.max(

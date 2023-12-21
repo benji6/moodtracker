@@ -1,19 +1,19 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deviceGeolocationSelector } from "../../../../../selectors";
 import eventsSlice from "../../../../../store/eventsSlice";
 import { Meditation } from "../../../../../types";
 import useKeyboardEscape from "../../../../hooks/useKeyboardEscape";
 import { noSleep } from "../nosleep";
 import OpenEndedMeditationPresentation from "./OpenEndedMeditationPresentation";
+import deviceSlice from "../../../../../store/deviceSlice";
 
 export default function OpenEndedMeditation() {
   const [secondsElapsed, setSecondsElapsed] = React.useState(0);
   const [isDimmerEnabled, setIsDimmerEnabled] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(false);
   const dispatch = useDispatch();
-  const geolocation = useSelector(deviceGeolocationSelector);
+  const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const navigate = useNavigate();
   const initialTime = React.useRef(Date.now());
   const roundedSecondsElapsed = Math.round(secondsElapsed);

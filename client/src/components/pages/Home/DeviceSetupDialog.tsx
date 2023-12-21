@@ -1,13 +1,14 @@
 import { Dialog } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import { TEST_IDS } from "../../../constants";
-import { appShowNewSignInUiSelector } from "../../../selectors";
 import appSlice from "../../../store/appSlice";
 import LocationToggle from "../../shared/LocationToggle";
 import WebPushNotifications from "../../shared/NotificationSettings/WebPushNotifications";
 
 export default function DeviceSetupDialog() {
-  const userHasManuallySignedIn = useSelector(appShowNewSignInUiSelector);
+  const userHasManuallySignedIn = useSelector(
+    appSlice.selectors.showNewSignInUi,
+  );
   const dispatch = useDispatch();
 
   return (

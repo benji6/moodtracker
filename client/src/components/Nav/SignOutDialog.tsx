@@ -2,8 +2,8 @@ import { Dialog, Button, Icon } from "eri";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { TEST_IDS } from "../../constants";
-import { eventsIdsToSyncSelector } from "../../selectors";
 import signOut from "../../signout";
+import eventsSlice from "../../store/eventsSlice";
 
 interface Props {
   onClose(): void;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function SignOutDialog({ onClose, open }: Props) {
-  const idsToSync = useSelector(eventsIdsToSyncSelector);
+  const idsToSync = useSelector(eventsSlice.selectors.idsToSync);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignOut = async () => {

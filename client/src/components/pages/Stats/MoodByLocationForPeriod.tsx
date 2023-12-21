@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { useReverseGeolocationQueries } from "../../hooks/reverseGeolocationHooks";
-import { normalizedMoodsSelector } from "../../../selectors";
 import useMoodIdsWithLocationInPeriod from "../../hooks/useMoodIdsWithLocationInPeriod";
 import { Paper, Spinner } from "eri";
 import { integerPercentFormatter } from "../../../formatters/numberFormatters";
 import { captureException } from "../../../sentry";
 import MoodByLocationTable from "../../shared/MoodByLocationTable";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
-  const normalizedMoods = useSelector(normalizedMoodsSelector);
+  const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     dateFrom,
     dateTo,

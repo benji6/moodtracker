@@ -4,10 +4,6 @@ import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
 import { dateFormatter } from "../../../../formatters/dateTimeFormatters";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import {
-  normalizedAveragesByDaySelector,
-  normalizedMoodsSelector,
-} from "../../../../selectors";
-import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
   getWeekdayIndex,
@@ -16,6 +12,7 @@ import {
 } from "../../../../utils";
 import "./style.css";
 import { addDays, getDaysInMonth } from "date-fns";
+import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   month: Date;
@@ -23,8 +20,10 @@ interface Props {
 }
 
 export default function MoodCalendarForMonth({ month, small }: Props) {
-  const moods = useSelector(normalizedMoodsSelector);
-  const normalizedAveragesByDay = useSelector(normalizedAveragesByDaySelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const normalizedAveragesByDay = useSelector(
+    eventsSlice.selectors.normalizedAveragesByDay,
+  );
   const navigate = useNavigate();
 
   const now = new Date();

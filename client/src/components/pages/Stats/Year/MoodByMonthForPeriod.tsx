@@ -4,13 +4,13 @@ import {
   moodToColor,
 } from "../../../../utils";
 import { useSelector } from "react-redux";
-import { normalizedAveragesByMonthSelector } from "../../../../selectors";
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { MOOD_EXTENT } from "../../../../constants";
 import { Chart, Paper } from "eri";
 import { eachMonthOfInterval } from "date-fns";
+import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -19,7 +19,7 @@ interface Props {
 
 export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedAveragesByMonth = useSelector(
-    normalizedAveragesByMonthSelector,
+    eventsSlice.selectors.normalizedAveragesByMonth,
   );
   const navigate = useNavigate();
 

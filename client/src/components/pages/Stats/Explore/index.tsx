@@ -1,10 +1,6 @@
 import { Paper, Select, Spinner } from "eri";
 import { roundDateUp, roundDateDown } from "../../../../utils";
 import MoodChartForPeriod from "../MoodChartForPeriod";
-import {
-  eventsHasLoadedFromServerSelector,
-  normalizedMoodsSelector,
-} from "../../../../selectors";
 import { useSelector } from "react-redux";
 import GetStartedCta from "../../../shared/GetStartedCta";
 import { TIME } from "../../../../constants";
@@ -25,6 +21,7 @@ import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import { addDays, differenceInDays, subDays } from "date-fns";
+import eventsSlice from "../../../../store/eventsSlice";
 
 const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
 
@@ -79,7 +76,7 @@ interface State {
 
 export default function Explore() {
   const dateNow = new Date();
-  const moods = useSelector(normalizedMoodsSelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const firstMoodDateRoundedDown = roundDateDown(new Date(moods.allIds[0]));
   const dateToToday = roundDateDown(dateNow);
 
@@ -164,7 +161,7 @@ export default function Explore() {
   );
 
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector,
+    eventsSlice.selectors.hasLoadedFromServer,
   );
 
   const dateTo = addDays(localState.displayDateTo, 1);

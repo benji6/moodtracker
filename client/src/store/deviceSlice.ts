@@ -21,4 +21,7 @@ export default createSlice({
       state.geolocation = action.payload;
     },
   },
+  selectors: {
+    geolocation: (state) => state.geolocation,
+  },
 });

@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Button, Icon, Paper, TextField } from "eri";
 import WeightDeleteDialog from "./WeightDeleteDialog";
-import { normalizedWeightsSelector } from "../../../../selectors";
 import { useDispatch, useSelector } from "react-redux";
 import eventsSlice from "../../../../store/eventsSlice";
 import { ERRORS, FIELDS } from "../../../../constants";
@@ -17,7 +16,7 @@ export default function EditWeight() {
   const dispatch = useDispatch();
   const [error, setError] = React.useState<string | undefined>();
   const { id } = useParams();
-  const weights = useSelector(normalizedWeightsSelector);
+  const weights = useSelector(eventsSlice.selectors.normalizedWeights);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [showNoUpdateError, setShowNoUpdateError] = React.useState(false);
 

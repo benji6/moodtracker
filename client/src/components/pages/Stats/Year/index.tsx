@@ -5,7 +5,6 @@ import {
   monthNarrowFormatter,
   yearFormatter,
 } from "../../../../formatters/dateTimeFormatters";
-import { normalizedAveragesByMonthSelector } from "../../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
@@ -33,6 +32,7 @@ import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
 import { addMonths, addYears, eachMonthOfInterval } from "date-fns";
+import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   date: Date;
@@ -46,7 +46,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
-    normalizedAveragesByMonthSelector,
+    eventsSlice.selectors.normalizedAveragesByMonth,
   );
 
   const months = eachMonthOfInterval({ start: date, end: nextDate }).slice(

@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import { normalizedMoodsSelector } from "../../selectors";
 import { getIdsInInterval } from "../../utils";
+import eventsSlice from "../../store/eventsSlice";
 
 export default function useMoodIdsInPeriod(
   dateFrom: Date,
   dateTo: Date,
 ): string[] {
-  const { allIds } = useSelector(normalizedMoodsSelector);
+  const { allIds } = useSelector(eventsSlice.selectors.normalizedMoods);
   return getIdsInInterval(allIds, dateFrom, dateTo);
 }

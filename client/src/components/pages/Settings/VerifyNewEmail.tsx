@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import { refreshSession, verifyNewEmail } from "../../../cognito";
 import { ERRORS } from "../../../constants";
-import { userEmailSelector } from "../../../selectors";
 import userSlice from "../../../store/userSlice";
 import { NEW_EMAIL_SEARCH_PARAM_KEY } from "./constants";
 
@@ -15,7 +14,7 @@ export default function VerifyNewEmail() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchParams] = useSearchParams();
   const [successfullyUpdated, setSuccessfullyUpdated] = useState(false);
-  const currentEmailAddress = useSelector(userEmailSelector);
+  const currentEmailAddress = useSelector(userSlice.selectors.email);
   const [submitError, setSubmitError] = useState<ReactNode>();
   const newEmail = searchParams.get(NEW_EMAIL_SEARCH_PARAM_KEY);
 

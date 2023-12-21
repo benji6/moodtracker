@@ -1,17 +1,19 @@
 import { Button, Paper } from "eri";
 import { useSelector } from "react-redux";
-import {
-  denormalizedMeditationsSelector,
-  denormalizedMoodsSelector,
-  denormalizedWeightsSelector,
-} from "../../../../selectors";
 import { useNavigate } from "react-router-dom";
 import ExportControls from "./ExportControls";
+import eventsSlice from "../../../../store/eventsSlice";
 
 export default function Export() {
-  const denormalizedMeditations = useSelector(denormalizedMeditationsSelector);
-  const denormalizedMoods = useSelector(denormalizedMoodsSelector);
-  const denormalizedWeights = useSelector(denormalizedWeightsSelector);
+  const denormalizedMeditations = useSelector(
+    eventsSlice.selectors.denormalizedMeditations,
+  );
+  const denormalizedMoods = useSelector(
+    eventsSlice.selectors.denormalizedMoods,
+  );
+  const denormalizedWeights = useSelector(
+    eventsSlice.selectors.denormalizedWeights,
+  );
   const navigate = useNavigate();
 
   return (

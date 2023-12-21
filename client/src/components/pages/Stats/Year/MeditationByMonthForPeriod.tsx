@@ -3,13 +3,13 @@ import {
   formatIsoMonthInLocalTimezone,
 } from "../../../../utils";
 import { useSelector } from "react-redux";
-import { normalizedTotalSecondsMeditatedByMonthSelector } from "../../../../selectors";
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { Chart, Paper } from "eri";
 import { TIME } from "../../../../constants";
 import { eachMonthOfInterval } from "date-fns";
+import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -21,7 +21,7 @@ export default function MeditationByMonthForPeriod({
   dateTo,
 }: Props) {
   const noramlizedTotalSecondsMeditatedByMonth = useSelector(
-    normalizedTotalSecondsMeditatedByMonthSelector,
+    eventsSlice.selectors.normalizedTotalSecondsMeditatedByMonth,
   );
   const navigate = useNavigate();
 

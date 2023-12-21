@@ -5,7 +5,6 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../../constants";
-import { deviceGeolocationSelector } from "../../../../../selectors";
 import { captureException } from "../../../../../sentry";
 import eventsSlice from "../../../../../store/eventsSlice";
 import { Meditation } from "../../../../../types";
@@ -16,6 +15,7 @@ import LogMeditationDialog from "./LogMeditationDialog";
 import MeditationTimerPresentation from "./MeditationTimerPresentation";
 import { initialState, reducer } from "./reducer";
 import { useCallback, useEffect, useReducer, useRef } from "react";
+import deviceSlice from "../../../../../store/deviceSlice";
 
 export default function MeditationTimer() {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function MeditationTimer() {
   const [localState, localDispatch] = useReducer(reducer, initialState);
   const bell = useBell();
 
-  const geolocation = useSelector(deviceGeolocationSelector);
+  const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const timerDurationInSeconds = Number(
     searchParams.get(MEDITATION_SEARCH_PARAM_TIME_KEY),
   );

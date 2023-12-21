@@ -2,12 +2,12 @@ import { Icon } from "eri";
 import { ComponentProps } from "react";
 import { useSelector } from "react-redux";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import { normalizedMoodsSelector } from "../../../../selectors";
 import { getWeatherDisplayData, moodToColor } from "../../../../utils";
 import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
+import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
-  const normalizedMoods = useSelector(normalizedMoodsSelector);
+  const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
   const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
     dateFrom,
     dateTo,

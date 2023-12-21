@@ -1,20 +1,19 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  denormalizedWeightsSelector,
-  normalizedWeightsSelector,
-} from "../../../../selectors";
 import { mapRight } from "../../../../utils";
 import RedirectHome from "../../../shared/RedirectHome";
 import ExportControls from "../../Settings/Export/ExportControls";
 import WeightCard from "./WeightCard";
+import eventsSlice from "../../../../store/eventsSlice";
 
 const MAX_ITEMS_PER_PAGE = 10;
 
 export default function WeightLog() {
-  const weights = useSelector(normalizedWeightsSelector);
-  const denormalizedWeights = useSelector(denormalizedWeightsSelector);
+  const weights = useSelector(eventsSlice.selectors.normalizedWeights);
+  const denormalizedWeights = useSelector(
+    eventsSlice.selectors.denormalizedWeights,
+  );
   const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(weights.allIds.length / MAX_ITEMS_PER_PAGE);

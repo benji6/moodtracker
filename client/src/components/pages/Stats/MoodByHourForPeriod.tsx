@@ -1,4 +1,3 @@
-import { normalizedAveragesByHourSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import {
   computeMeanSafe,
@@ -8,6 +7,7 @@ import { Paper } from "eri";
 import { TIME } from "../../../constants";
 import MoodByHourChart from "../../shared/MoodByHourChart";
 import { addHours } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -16,7 +16,7 @@ interface Props {
 
 export default function MoodByHourForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedAveragesByHour = useSelector(
-    normalizedAveragesByHourSelector,
+    eventsSlice.selectors.normalizedAveragesByHour,
   );
   const moodsByHourIndex: (number[] | undefined)[] = [
     ...Array(TIME.daysPerWeek),

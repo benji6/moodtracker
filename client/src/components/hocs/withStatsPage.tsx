@@ -3,13 +3,10 @@ import { Paper, Spinner } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  eventsHasLoadedFromServerSelector,
-  normalizedMoodsSelector,
-} from "../../selectors";
 import { createDateFromLocalDateString } from "../../utils";
 import RedirectHome from "../shared/RedirectHome";
 import GetStartedCta from "../shared/GetStartedCta";
+import eventsSlice from "../../store/eventsSlice";
 
 // TODO probably a nicer way of writing this
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,9 +37,9 @@ export default function withStatsPage({
   ) {
     const { date: dateStr } = useParams();
     const eventsHasLoadedFromServer = useSelector(
-      eventsHasLoadedFromServerSelector,
+      eventsSlice.selectors.hasLoadedFromServer,
     );
-    const moods = useSelector(normalizedMoodsSelector);
+    const moods = useSelector(eventsSlice.selectors.normalizedMoods);
 
     if (!dateStr || !dateRegex.test(dateStr)) return <RedirectHome />;
     const date = adjustDate(createDateFromLocalDateString(dateStr));

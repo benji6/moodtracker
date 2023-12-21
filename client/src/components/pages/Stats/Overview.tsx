@@ -2,21 +2,18 @@ import { Paper, Spinner } from "eri";
 import GetStartedCta from "../../shared/GetStartedCta";
 import Months from "./Months";
 import Weeks from "./Weeks";
-import {
-  eventsHasLoadedFromServerSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
 import { useSelector } from "react-redux";
 import Years from "./Years";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { TEST_IDS } from "../../../constants";
 import { Link } from "react-router-dom";
+import eventsSlice from "../../../store/eventsSlice";
 
 export default function Overview() {
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector,
+    eventsSlice.selectors.hasLoadedFromServer,
   );
-  const moods = useSelector(normalizedMoodsSelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
 
   if (!moods.allIds.length)
     return (

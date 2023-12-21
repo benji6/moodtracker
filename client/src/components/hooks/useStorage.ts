@@ -1,37 +1,26 @@
 import * as React from "react";
 import storage from "../../storage";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  appIsStorageLoadingSelector,
-  eventsAllIdsSelector,
-  eventsByIdSelector,
-  eventsHasLoadedFromServerSelector,
-  eventsIdsToSyncSelector,
-  eventsNextCursorSelector,
-  settingsDataSelector,
-  userEmailSelector,
-  userIdSelector,
-  userLoadingSelector,
-} from "../../selectors";
 import eventsSlice from "../../store/eventsSlice";
 import appSlice from "../../store/appSlice";
 import settingsSlice from "../../store/settingsSlice";
 import { useNavigate } from "react-router-dom";
+import userSlice from "../../store/userSlice";
 
 export default function useStorage() {
   const navigate = useNavigate();
-  const eventsAllIds = useSelector(eventsAllIdsSelector);
-  const eventsById = useSelector(eventsByIdSelector);
+  const eventsAllIds = useSelector(eventsSlice.selectors.allIds);
+  const eventsById = useSelector(eventsSlice.selectors.byId);
   const eventsHasLoadedFromServer = useSelector(
-    eventsHasLoadedFromServerSelector,
+    eventsSlice.selectors.hasLoadedFromServer,
   );
-  const eventsIdsToSync = useSelector(eventsIdsToSyncSelector);
-  const eventsNextCursor = useSelector(eventsNextCursorSelector);
-  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
-  const settingsData = useSelector(settingsDataSelector);
-  const userEmail = useSelector(userEmailSelector);
-  const userId = useSelector(userIdSelector);
-  const userLoading = useSelector(userLoadingSelector);
+  const eventsIdsToSync = useSelector(eventsSlice.selectors.idsToSync);
+  const eventsNextCursor = useSelector(eventsSlice.selectors.nextCursor);
+  const isStorageLoading = useSelector(appSlice.selectors.isStorageLoading);
+  const settingsData = useSelector(settingsSlice.selectors.data);
+  const userEmail = useSelector(userSlice.selectors.email);
+  const userId = useSelector(userSlice.selectors.id);
+  const userLoading = useSelector(userSlice.selectors.loading);
   const dispatch = useDispatch();
 
   const lastUserId = React.useRef<string | undefined>();

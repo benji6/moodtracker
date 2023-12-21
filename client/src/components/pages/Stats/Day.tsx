@@ -8,7 +8,6 @@ import {
   WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
-import { moodIdsByDateSelector } from "../../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
@@ -27,6 +26,7 @@ import WeatherForPeriod from "./WeatherForPeriod";
 import withStatsPage from "../../hocs/withStatsPage";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 import { addDays, addHours, startOfWeek } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 const X_LABELS_COUNT = 7;
 
@@ -39,7 +39,7 @@ interface Props {
 }
 
 function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const moodIdsByDate = useSelector(moodIdsByDateSelector);
+  const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
 
   const moodIds = moodIdsByDate[formatIsoDateInLocalTimezone(date)];
   const startOfWeekDate = startOfWeek(date, WEEK_OPTIONS);

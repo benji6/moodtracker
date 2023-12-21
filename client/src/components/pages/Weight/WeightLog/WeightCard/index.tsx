@@ -1,18 +1,18 @@
 import "./style.css";
 import { Card } from "eri";
 import { useSelector } from "react-redux";
-import { normalizedWeightsSelector } from "../../../../../selectors";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import { TEST_IDS } from "../../../../../constants";
 import LocationString from "../../../../shared/LocationString";
+import eventsSlice from "../../../../../store/eventsSlice";
 
 interface Props {
   id: string;
 }
 
 export default function WeightCard({ id }: Props) {
-  const weights = useSelector(normalizedWeightsSelector);
+  const weights = useSelector(eventsSlice.selectors.normalizedWeights);
   const weight = weights.byId[id];
   const navigate = useNavigate();
   const date = new Date(id);

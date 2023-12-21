@@ -5,15 +5,15 @@ import eventsSlice from "../../../store/eventsSlice";
 import { Weight } from "../../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
-import { deviceGeolocationSelector } from "../../../selectors";
 import { useNavigate } from "react-router-dom";
 import LiveLocation from "../../shared/LiveLocation";
+import deviceSlice from "../../../store/deviceSlice";
 
 export default function AddWeight() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = React.useState<string | undefined>();
-  const geolocation = useSelector(deviceGeolocationSelector);
+  const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const formRef = React.useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {

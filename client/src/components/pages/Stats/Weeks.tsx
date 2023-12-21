@@ -10,17 +10,17 @@ import {
   formatWeekWithYear,
   WEEK_OPTIONS,
 } from "../../../formatters/dateTimeFormatters";
-import { normalizedAveragesByWeekSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { Link } from "react-router-dom";
 import { addWeeks, startOfWeek } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 const MAX_WEEKS_PER_PAGE = 8;
 
 export default function Weeks() {
   const normalizedAveragesByWeek = useSelector(
-    normalizedAveragesByWeekSelector,
+    eventsSlice.selectors.normalizedAveragesByWeek,
   );
   const [page, setPage] = React.useState(0);
 

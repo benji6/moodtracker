@@ -1,9 +1,9 @@
 import { Paper } from "eri";
 import { useSelector } from "react-redux";
-import { normalizedMoodsSelector } from "../../../../selectors";
 import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import MoodChart from "../../../shared/MoodChart";
 import computeTrendlinePoints from "./computeTrendlinePoints";
+import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   centerXAxisLabels?: boolean;
@@ -22,7 +22,7 @@ export default function MoodChartForPeriod({
   xAxisTitle,
   xLabels,
 }: Props) {
-  const moods = useSelector(normalizedMoodsSelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
   const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
 

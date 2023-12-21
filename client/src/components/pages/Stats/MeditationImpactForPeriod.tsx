@@ -4,16 +4,13 @@ import { useSelector } from "react-redux";
 import { MINIMUM_WORD_CLOUD_WORDS, TIME } from "../../../constants";
 import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
 import {
-  normalizedMeditationsSelector,
-  normalizedMoodsSelector,
-} from "../../../selectors";
-import {
   computeMean,
   counter,
   getNormalizedTagsFromDescription,
 } from "../../../utils";
 import useMeditationIdsInPeriod from "../../hooks/useMeditationIdsInPeriod";
 import { differenceInSeconds, sub } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 const MEDITATION_STATS_HOURS_RANGE = 4;
 const SECONDS = MEDITATION_STATS_HOURS_RANGE * TIME.secondsPerHour;
@@ -24,8 +21,8 @@ interface Props {
 }
 
 export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
-  const meditations = useSelector(normalizedMeditationsSelector);
-  const moods = useSelector(normalizedMoodsSelector);
+  const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const [shouldRemoveSharedWords, setShouldRemoveSharedWords] = useState(true);
   const meditationIdsInPeriod = useMeditationIdsInPeriod(dateFrom, dateTo);
 

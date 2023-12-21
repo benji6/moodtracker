@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import { eventsAllIdsWithLocationSelector } from "../../selectors";
 import { getIdsInInterval } from "../../utils";
+import eventsSlice from "../../store/eventsSlice";
 
 export default function useEventIdsWithLocationInPeriod(
   dateFrom: Date,
   dateTo: Date,
 ): string[] {
-  const ids = useSelector(eventsAllIdsWithLocationSelector);
+  const ids = useSelector(eventsSlice.selectors.allIdsWithLocation);
   return getIdsInInterval(ids, dateFrom, dateTo);
 }

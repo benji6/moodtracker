@@ -12,12 +12,12 @@ import eventsSlice from "../../../store/eventsSlice";
 import { Mood } from "../../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
-import { deviceGeolocationSelector } from "../../../selectors";
 import { useNavigate } from "react-router-dom";
 import LiveLocation from "../../shared/LiveLocation";
 import { moodToColor } from "../../../utils";
 import { useRef, useState } from "react";
 import useDarkMode from "../../hooks/useDarkMode";
+import deviceSlice from "../../../store/deviceSlice";
 
 export default function AddMood() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function AddMood() {
   const [descriptionError, setDescriptionError] = useState<
     string | undefined
   >();
-  const geolocation = useSelector(deviceGeolocationSelector);
+  const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {

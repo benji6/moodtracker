@@ -1,8 +1,8 @@
 import "./style.css";
 import { useSelector } from "react-redux";
-import { hasMeditationsSelector } from "../../../selectors";
 import MoodSummaryItem from "./MoodSummaryItem";
 import { TIME } from "../../../constants";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface PeriodData {
   best?: number;
@@ -27,7 +27,7 @@ export default function MoodSummary({
   previousPeriod,
   showMeditationStatsOverride = false,
 }: Props) {
-  const showMeditationStats = useSelector(hasMeditationsSelector);
+  const showMeditationStats = useSelector(eventsSlice.selectors.hasMeditations);
 
   return (
     <div className="m-mood-summary">

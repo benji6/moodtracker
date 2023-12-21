@@ -1,5 +1,4 @@
 import store, { RootState } from ".";
-import { settingsDataSelector } from "../selectors";
 import { Settings } from "../types";
 import settingsSlice, { createInitialState } from "./settingsSlice";
 
@@ -28,18 +27,18 @@ describe("settingsSlice", () => {
       store.dispatch(
         settingsSlice.actions.loadFromStorage(createFakeSettingsData()),
       );
-      expect(settingsDataSelector(store.getState())).toEqual(
+      expect(settingsSlice.selectors.data(store.getState())).toEqual(
         createFakeSettingsData(),
       );
       store.dispatch(settingsSlice.actions.clear());
-      expect(settingsDataSelector(store.getState())).toBeUndefined();
+      expect(settingsSlice.selectors.data(store.getState())).toBeUndefined();
     });
 
     test("loadFromStorage", () => {
       store.dispatch(
         settingsSlice.actions.loadFromStorage(createFakeSettingsData()),
       );
-      expect(settingsDataSelector(store.getState())).toEqual(
+      expect(settingsSlice.selectors.data(store.getState())).toEqual(
         createFakeSettingsData(),
       );
     });

@@ -29,4 +29,8 @@ export default createSlice({
       state.isStorageLoading = false;
     },
   },
+  selectors: {
+    isStorageLoading: (state) => state.isStorageLoading,
+    showNewSignInUi: (state) => state.showNewSignInUi,
+  },
 });

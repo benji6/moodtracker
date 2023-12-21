@@ -1,17 +1,20 @@
 import { Icon, Spinner } from "eri";
 import { useSelector } from "react-redux";
-import {
-  eventsIsSyncingFromServerSelector,
-  eventsIsSyncingToServerSelector,
-  eventsSyncFromServerErrorSelector,
-  eventsSyncToServerErrorSelector,
-} from "../../selectors";
+import eventsSlice from "../../store/eventsSlice";
 
 export default function SyncState() {
-  const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
-  const isSyncingToServer = useSelector(eventsIsSyncingToServerSelector);
-  const syncFromServerError = useSelector(eventsSyncFromServerErrorSelector);
-  const syncToServerError = useSelector(eventsSyncToServerErrorSelector);
+  const isSyncingFromServer = useSelector(
+    eventsSlice.selectors.isSyncingFromServer,
+  );
+  const isSyncingToServer = useSelector(
+    eventsSlice.selectors.isSyncingToServer,
+  );
+  const syncFromServerError = useSelector(
+    eventsSlice.selectors.syncFromServerError,
+  );
+  const syncToServerError = useSelector(
+    eventsSlice.selectors.syncToServerError,
+  );
 
   return (
     <div className="m-nav__sync-state">

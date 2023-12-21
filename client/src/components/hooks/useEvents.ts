@@ -2,27 +2,23 @@ import * as React from "react";
 import useInterval from "./useInterval";
 import { eventsGet, eventsPost } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  appIsStorageLoadingSelector,
-  eventsByIdSelector,
-  eventsIdsToSyncSelector,
-  eventsIsSyncingFromServerSelector,
-  eventsIsSyncingToServerSelector,
-  eventsNextCursorSelector,
-  userEmailSelector,
-  userIsSignedInSelector,
-} from "../../selectors";
+import appSlice from "../../store/appSlice";
 import eventsSlice from "../../store/eventsSlice";
+import userSlice from "../../store/userSlice";
 
 export default function useEvents() {
-  const eventsById = useSelector(eventsByIdSelector);
-  const eventsIdsToSync = useSelector(eventsIdsToSyncSelector);
-  const eventsNextCursor = useSelector(eventsNextCursorSelector);
-  const isStorageLoading = useSelector(appIsStorageLoadingSelector);
-  const isSyncingFromServer = useSelector(eventsIsSyncingFromServerSelector);
-  const isSyncingToServer = useSelector(eventsIsSyncingToServerSelector);
-  const userEmail = useSelector(userEmailSelector);
-  const userIsSignedIn = useSelector(userIsSignedInSelector);
+  const eventsById = useSelector(eventsSlice.selectors.byId);
+  const eventsIdsToSync = useSelector(eventsSlice.selectors.idsToSync);
+  const eventsNextCursor = useSelector(eventsSlice.selectors.nextCursor);
+  const isStorageLoading = useSelector(appSlice.selectors.isStorageLoading);
+  const isSyncingFromServer = useSelector(
+    eventsSlice.selectors.isSyncingFromServer,
+  );
+  const isSyncingToServer = useSelector(
+    eventsSlice.selectors.isSyncingToServer,
+  );
+  const userEmail = useSelector(userSlice.selectors.email);
+  const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
   const dispatch = useDispatch();
 
   const syncFromServer = (): void =>

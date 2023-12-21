@@ -2,13 +2,13 @@ import "./style.css";
 import { Button, Card, Icon } from "eri";
 import { useSelector } from "react-redux";
 import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
-import { normalizedMeditationsSelector } from "../../../../../selectors";
 import { formatSecondsAsTime } from "../../../../../utils";
 import LocationString from "../../../../shared/LocationString";
 import {
   floatDegreeFormatter,
   integerMeterFormatter,
 } from "../../../../../formatters/numberFormatters";
+import eventsSlice from "../../../../../store/eventsSlice";
 
 interface Props {
   id: string;
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function MeditationCard({ id, onDelete }: Props) {
-  const meditations = useSelector(normalizedMeditationsSelector);
+  const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
   const meditation = meditations.byId[id];
 
   return (

@@ -1,9 +1,9 @@
 import { Paper, SubHeading } from "eri";
 import { useSelector } from "react-redux";
-import { eventsByIdSelector } from "../../../selectors";
 import { AppEventWithLocation, DeviceGeolocation } from "../../../types";
 import useEventIdsWithLocationInPeriod from "../../hooks/useEventIdsWithLocationInPeriod";
 import LocationMap from "../../shared/LocationMap";
+import eventsSlice from "../../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
-  const eventsById = useSelector(eventsByIdSelector);
+  const eventsById = useSelector(eventsSlice.selectors.byId);
   const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
     dateFrom,
     dateTo,

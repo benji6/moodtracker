@@ -1,20 +1,19 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import {
-  denormalizedMeditationsSelector,
-  normalizedMeditationsSelector,
-} from "../../../../selectors";
 import { mapRight } from "../../../../utils";
 import ExportControls from "../../Settings/Export/ExportControls";
 import MeditationCard from "./MeditationCard";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
+import eventsSlice from "../../../../store/eventsSlice";
 
 const MAX_ITEMS_PER_PAGE = 10;
 
 export default function MeditationLog() {
-  const meditations = useSelector(normalizedMeditationsSelector);
-  const denormalizedMeditations = useSelector(denormalizedMeditationsSelector);
+  const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
+  const denormalizedMeditations = useSelector(
+    eventsSlice.selectors.denormalizedMeditations,
+  );
   const [dialogId, setDialogId] = React.useState<undefined | string>();
   const [isOpen, setIsOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);

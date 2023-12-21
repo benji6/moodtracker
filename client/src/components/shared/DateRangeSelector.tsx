@@ -1,12 +1,12 @@
 import { DateField } from "eri";
 import { useSelector } from "react-redux";
-import { normalizedMoodsSelector } from "../../selectors";
 import {
   formatIsoDateInLocalTimezone,
   roundDateDown,
   roundDateUp,
 } from "../../utils";
 import { addMinutes, subDays } from "date-fns";
+import eventsSlice from "../../store/eventsSlice";
 
 interface Props {
   dateFrom: Date;
@@ -21,7 +21,7 @@ export default function DateRangeSelector({
   setDateFrom,
   setDateTo,
 }: Props) {
-  const moods = useSelector(normalizedMoodsSelector);
+  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const maxDate = roundDateUp(new Date());
 
   return (

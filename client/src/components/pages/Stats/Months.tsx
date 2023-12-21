@@ -7,17 +7,17 @@ import {
 } from "../../../utils";
 import MoodCell from "../../shared/MoodCell";
 import { monthYearFormatter } from "../../../formatters/dateTimeFormatters";
-import { normalizedAveragesByMonthSelector } from "../../../selectors";
 import { useSelector } from "react-redux";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { Link } from "react-router-dom";
 import { addMonths } from "date-fns";
+import eventsSlice from "../../../store/eventsSlice";
 
 const MAX_MONTHS_PER_PAGE = 12;
 
 export default function Months() {
   const normalizedAveragesByMonth = useSelector(
-    normalizedAveragesByMonthSelector,
+    eventsSlice.selectors.normalizedAveragesByMonth,
   );
   const [page, setPage] = React.useState(0);
 
