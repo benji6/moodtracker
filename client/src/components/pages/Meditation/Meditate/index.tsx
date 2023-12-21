@@ -1,5 +1,4 @@
 import { Button, Paper, TextField } from "eri";
-import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ERRORS,
@@ -8,6 +7,7 @@ import {
   TIME,
 } from "../../../../constants";
 import "./style.css";
+import { useState } from "react";
 
 const MAX_MINUTES = 180;
 const MINUTES_INPUT_NAME = "minutes";
@@ -15,7 +15,7 @@ const TIMES = [1, 2, 3, 5, 10, 15, 20, 30, 40];
 
 export default function Meditate() {
   const navigate = useNavigate();
-  const [error, setError] = React.useState("");
+  const [error, setError] = useState("");
 
   const navigateToTimer = (minutes: number): void =>
     void navigate(
