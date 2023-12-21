@@ -5,13 +5,13 @@ interface SettingsState {
   data?: Settings;
 }
 
-export const createInitialState = (): SettingsState => ({});
+const initialState: SettingsState = {};
 
 export default createSlice({
   name: "settings",
-  initialState: createInitialState(),
+  initialState,
   reducers: {
-    clear: createInitialState,
+    clear: () => initialState,
     loadFromStorage(state, action: PayloadAction<Settings>) {
       state.data = action.payload;
     },

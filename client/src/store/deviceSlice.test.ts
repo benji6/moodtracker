@@ -1,9 +1,9 @@
 import store from ".";
-import deviceSlice, { createInitialState } from "./deviceSlice";
+import deviceSlice from "./deviceSlice";
 
 describe("deviceSlice", () => {
   test("initial state", () => {
-    expect(store.getState().device).toEqual(createInitialState());
+    expect(store.getState().device).toEqual(deviceSlice.getInitialState());
   });
 
   test("setGeolocation", () => {
@@ -50,6 +50,6 @@ describe("deviceSlice", () => {
       }),
     );
     store.dispatch(deviceSlice.actions.clear());
-    expect(store.getState().device).toEqual(createInitialState());
+    expect(store.getState().device).toEqual(deviceSlice.getInitialState());
   });
 });

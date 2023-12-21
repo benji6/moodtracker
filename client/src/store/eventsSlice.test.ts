@@ -1,15 +1,15 @@
 import store, { RootState } from ".";
-import eventsSlice, { createInitialState } from "./eventsSlice";
+import eventsSlice from "./eventsSlice";
 
 describe("eventsSlice", () => {
   let initialState: RootState["events"];
   let stateWithEvents: RootState["events"];
 
   beforeEach(() => {
-    initialState = createInitialState();
+    initialState = eventsSlice.getInitialState();
 
     stateWithEvents = {
-      ...createInitialState(),
+      ...eventsSlice.getInitialState(),
       allIds: ["2020-05-07T19:36:00.000Z", "2020-05-07T20:31:00.000Z"],
       byId: {
         "2020-05-07T19:36:00.000Z": {

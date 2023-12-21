@@ -1,6 +1,6 @@
-import store, { RootState } from ".";
+import store from ".";
 import { Settings } from "../types";
-import settingsSlice, { createInitialState } from "./settingsSlice";
+import settingsSlice from "./settingsSlice";
 
 const createFakeSettingsData = (): Settings => ({
   recordLocation: true,
@@ -8,14 +8,8 @@ const createFakeSettingsData = (): Settings => ({
 });
 
 describe("settingsSlice", () => {
-  let initialState: RootState["settings"];
-
-  beforeEach(() => {
-    initialState = createInitialState();
-  });
-
   test("initial state", () => {
-    expect(store.getState().settings).toEqual(initialState);
+    expect(store.getState().settings).toEqual(settingsSlice.getInitialState());
   });
 
   describe("actions", () => {

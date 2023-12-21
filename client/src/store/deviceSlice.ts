@@ -5,15 +5,13 @@ interface DeviceState {
   geolocation: DeviceGeolocation | undefined;
 }
 
-export const createInitialState = (): DeviceState => ({
-  geolocation: undefined,
-});
+const initialState: DeviceState = { geolocation: undefined };
 
 export default createSlice({
   name: "device",
-  initialState: createInitialState(),
+  initialState,
   reducers: {
-    clear: createInitialState,
+    clear: () => initialState,
     setGeolocation: (
       state: DeviceState,
       action: PayloadAction<DeviceGeolocation>,

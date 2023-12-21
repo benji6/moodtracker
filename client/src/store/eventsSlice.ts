@@ -211,7 +211,7 @@ const getLastEvent = (normalizedState: EventsState): AppEvent => {
   return normalizedState.byId[lastId];
 };
 
-export const createInitialState = (): EventsState => ({
+const initialState: EventsState = {
   allIds: [],
   byId: {},
   hasLoadedFromServer: false,
@@ -221,11 +221,11 @@ export const createInitialState = (): EventsState => ({
   syncFromServerError: false,
   syncToServerError: false,
   nextCursor: undefined,
-});
+};
 
 export default createSlice({
   name: "events",
-  initialState: createInitialState(),
+  initialState,
   reducers: {
     add: (state, action: PayloadAction<AppEvent>) => {
       const lastEvent = state.allIds.length ? getLastEvent(state) : undefined;
@@ -239,7 +239,7 @@ export default createSlice({
       state.byId[action.payload.createdAt] = action.payload;
       state.idsToSync.push(action.payload.createdAt);
     },
-    clear: createInitialState,
+    clear: () => initialState,
     loadFromStorage: (state, action: PayloadAction<EventsStateToStore>) =>
       Object.assign(state, action.payload),
     syncToServerStart: (state) => {
