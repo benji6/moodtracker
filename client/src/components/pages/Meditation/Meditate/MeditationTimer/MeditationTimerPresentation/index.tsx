@@ -1,9 +1,9 @@
 import { Button, Icon, Paper } from "eri";
-import * as React from "react";
 import { TEST_IDS } from "../../../../../../constants";
 import Dimmer from "../../Dimmer";
 import { TimerState } from "../reducer";
 import MeditationTimerClock from "./MeditationTimerClock";
+import { memo } from "react";
 
 interface Props {
   dimmed: boolean;
@@ -13,7 +13,7 @@ interface Props {
   onLog(): void;
   onPause(): void;
   onPlay(): void;
-  onReveal(): void;
+  onUndim(): void;
   roundedSecondsRemaining: number;
   timerState: TimerState;
   totalSeconds: number;
@@ -27,7 +27,7 @@ function MeditationTimerPresentation({
   onLog,
   onPause,
   onPlay,
-  onReveal,
+  onUndim,
   roundedSecondsRemaining,
   timerState,
   totalSeconds,
@@ -78,9 +78,9 @@ function MeditationTimerPresentation({
           )}
         </Paper>
       </Paper.Group>
-      <Dimmer enabled={dimmed} onClick={onReveal} />
+      <Dimmer enabled={dimmed} onUndim={onUndim} />
     </>
   );
 }
 
-export default React.memo(MeditationTimerPresentation);
+export default memo(MeditationTimerPresentation);

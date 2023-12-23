@@ -8,7 +8,6 @@ import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../../constants";
 import { captureException } from "../../../../../sentry";
 import eventsSlice from "../../../../../store/eventsSlice";
 import { Meditation } from "../../../../../types";
-import useKeyboardEscape from "../../../../hooks/useKeyboardEscape";
 import { noSleep } from "../nosleep";
 import useBell from "./useBell";
 import LogMeditationDialog from "./LogMeditationDialog";
@@ -51,7 +50,7 @@ export default function MeditationTimer() {
       Date.now() + roundedSecondsRemaining * 1e3 - timerDurationInSeconds * 1e3;
     localDispatch({ payload: "TIMING", type: "timerState/set" });
   }, [roundedSecondsRemaining, timerDurationInSeconds]);
-  const onReveal = useCallback(
+  const onUndim = useCallback(
     () => localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
     [],
   );
@@ -96,10 +95,6 @@ export default function MeditationTimer() {
     localState.timeFinished,
     secondsMeditated,
   ]);
-
-  useKeyboardEscape(() =>
-    localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
-  );
 
   useEffect(() => {
     noSleep.enable();
@@ -153,7 +148,7 @@ export default function MeditationTimer() {
         onPause={onPause}
         onPlay={onPlay}
         onLog={onLog}
-        onReveal={onReveal}
+        onUndim={onUndim}
         roundedSecondsRemaining={roundedSecondsRemaining}
         timerState={localState.timerState}
         totalSeconds={timerDurationInSeconds}

@@ -1,8 +1,8 @@
 import { Button, Icon, Paper } from "eri";
-import * as React from "react";
 import { formatSecondsAsTime } from "../../../../../../utils";
 import Dimmer from "../../Dimmer";
 import "./style.css";
+import { memo } from "react";
 
 interface Props {
   dimmed: boolean;
@@ -11,7 +11,7 @@ interface Props {
   onFinishAndLog(): void;
   onPause(): void;
   onPlay(): void;
-  onReveal(): void;
+  onUndim(): void;
   roundedSeconds: number;
 }
 
@@ -22,7 +22,7 @@ const OpenEndedMeditationPresentation = ({
   onFinishAndLog,
   onPause,
   onPlay,
-  onReveal,
+  onUndim,
   roundedSeconds,
 }: Props) => {
   return (
@@ -61,9 +61,9 @@ const OpenEndedMeditationPresentation = ({
           </Button.Group>
         </Paper>
       </Paper.Group>
-      <Dimmer enabled={dimmed} onClick={onReveal} />
+      <Dimmer enabled={dimmed} onUndim={onUndim} />
     </>
   );
 };
 
-export default React.memo(OpenEndedMeditationPresentation);
+export default memo(OpenEndedMeditationPresentation);
