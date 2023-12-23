@@ -1,9 +1,9 @@
-import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import deviceSlice from "../../store/deviceSlice";
+import { useEffect, useRef } from "react";
 import { DeviceGeolocation } from "../../types";
-import useHasBeenActive from "./useHasBeenActive";
+import deviceSlice from "../../store/deviceSlice";
 import settingsSlice from "../../store/settingsSlice";
+import useHasBeenActive from "./useHasBeenActive";
 
 export default function useGeolocation() {
   const shouldRecordLocation = useSelector(
@@ -12,9 +12,9 @@ export default function useGeolocation() {
   const dispatch = useDispatch();
   const hasBeenActive = useHasBeenActive();
 
-  const idRef = React.useRef<number | undefined>();
+  const idRef = useRef<number | undefined>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!hasBeenActive) return;
     if (!shouldRecordLocation) {
       if (idRef.current !== undefined)

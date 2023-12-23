@@ -1,20 +1,20 @@
-import { startOfWeek } from "date-fns";
-import { Nav as EriNav, Button, Icon } from "eri";
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
+import "./style.css";
+import { Button, Nav as EriNav, Icon } from "eri";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
 } from "../../utils";
+import AppIcon from "../../icons/AppIcon";
 import SignOutDialog from "./SignOutDialog";
 import SyncState from "./SyncState";
-import AppIcon from "../../icons/AppIcon";
-import "./style.css";
 import { TEST_IDS } from "../../constants";
-import userSlice from "../../store/userSlice";
+import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
 import eventsSlice from "../../store/eventsSlice";
+import { startOfWeek } from "date-fns";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import userSlice from "../../store/userSlice";
 
 interface Props {
   open: boolean;
@@ -27,7 +27,7 @@ export default function Nav({ handleNavClose, open }: Props) {
   const hasWeights = useSelector(eventsSlice.selectors.hasWeights);
   const userEmail = useSelector(userSlice.selectors.email);
   const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDialogClose = () => {
     setIsDialogOpen(false);
     handleNavClose();

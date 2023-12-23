@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "./sentry";
-import { join as pathJoin } from "path";
-import { initializeApp } from "firebase/app";
-import { getMessaging } from "firebase/messaging/sw";
 import { FIREBASE_CONFIG } from "./constants";
+import { getMessaging } from "firebase/messaging/sw";
+import { initializeApp } from "firebase/app";
+import { join as pathJoin } from "path";
 
 const CACHE_NAME = "v1";
 const CACHE_LIST =

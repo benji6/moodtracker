@@ -1,9 +1,9 @@
-import { Paper } from "eri";
-import { useSelector } from "react-redux";
-import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import MoodChart from "../../../shared/MoodChart";
+import { Paper } from "eri";
 import computeTrendlinePoints from "./computeTrendlinePoints";
 import eventsSlice from "../../../../store/eventsSlice";
+import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
+import { useSelector } from "react-redux";
 
 interface Props {
   centerXAxisLabels?: boolean;

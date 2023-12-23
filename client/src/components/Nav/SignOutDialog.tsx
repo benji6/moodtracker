@@ -1,9 +1,9 @@
-import { Dialog, Button, Icon } from "eri";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { Button, Dialog, Icon } from "eri";
 import { TEST_IDS } from "../../constants";
-import signOut from "../../signout";
 import eventsSlice from "../../store/eventsSlice";
+import signOut from "../../signout";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 interface Props {
   onClose(): void;

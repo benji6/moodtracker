@@ -1,16 +1,16 @@
+import { Chart, Paper } from "eri";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   moodToColor,
 } from "../../../../utils";
-import { useSelector } from "react-redux";
-import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
-import { useNavigate } from "react-router-dom";
-import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { MOOD_EXTENT } from "../../../../constants";
-import { Chart, Paper } from "eri";
 import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
+import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

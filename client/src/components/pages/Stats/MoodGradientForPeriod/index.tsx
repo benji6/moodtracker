@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
-import { moodToColor } from "../../../../utils";
-import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import "./style.css";
 import eventsSlice from "../../../../store/eventsSlice";
+import { moodToColor } from "../../../../utils";
+import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

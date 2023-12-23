@@ -1,14 +1,14 @@
-import { Header, Nav as EriNav, QuickNav, Icon } from "eri";
+import { Nav as EriNav, Header, Icon, QuickNav } from "eri";
+import { Link, Outlet } from "react-router-dom";
+import AddMoodFab from "./shared/AddMoodFab";
 import Nav from "./Nav";
+import { TEST_IDS } from "../constants";
 import useEvents from "./hooks/useEvents";
+import useGeolocation from "./hooks/useGeolocation";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
-import { useSelector } from "react-redux";
-import AddMoodFab from "./shared/AddMoodFab";
-import { TEST_IDS } from "../constants";
-import useGeolocation from "./hooks/useGeolocation";
-import { Link, Outlet } from "react-router-dom";
-import { useState } from "react";
 import userSlice from "../store/userSlice";
 
 export default function Layout() {

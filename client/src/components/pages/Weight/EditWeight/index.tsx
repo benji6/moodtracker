@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Button, Icon, Paper, TextField } from "eri";
-import WeightDeleteDialog from "./WeightDeleteDialog";
-import { useDispatch, useSelector } from "react-redux";
-import eventsSlice from "../../../../store/eventsSlice";
 import { ERRORS, FIELDS } from "../../../../constants";
-import useKeyboardSave from "../../../hooks/useKeyboardSave";
-import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import Location from "../../../shared/Location";
 import RedirectHome from "../../../shared/RedirectHome";
-import { useNavigate, useParams } from "react-router-dom";
+import WeightDeleteDialog from "./WeightDeleteDialog";
+import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../../store/eventsSlice";
 import { formatDistanceToNow } from "date-fns";
+import useKeyboardSave from "../../../hooks/useKeyboardSave";
 
 export default function EditWeight() {
   const navigate = useNavigate();

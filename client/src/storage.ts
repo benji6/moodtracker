@@ -1,7 +1,7 @@
 import { del, get, set } from "idb-keyval";
 import { EventsStateToStore } from "./store/eventsSlice";
-import { UserDetails } from "./store/userSlice";
 import { Settings } from "./types";
+import { UserDetails } from "./store/userSlice";
 
 const APPLICATION_NAME = "moodtracker";
 const USER_KEY = `${APPLICATION_NAME}:user`;

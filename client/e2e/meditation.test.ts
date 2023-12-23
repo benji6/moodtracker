@@ -1,11 +1,11 @@
 import { Browser, Dialog, Page } from "puppeteer";
-import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
 import {
   createAndSetUpBrowser,
   createPageAndSignIn,
   waitForTransitionToComplete,
 } from "./utils";
+import { ERRORS } from "../src/constants";
 
 describe("meditation", () => {
   let browser: Browser;

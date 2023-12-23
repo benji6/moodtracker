@@ -1,9 +1,9 @@
 import { ComponentProps } from "react";
 import MoodByHourChart from "../../shared/MoodByHourChart";
+import MoodByLocationTable from "../../shared/MoodByLocationTable";
 import MoodByTemperatureChart from "../../shared/MoodByTemperatureChart";
 import MoodByWeatherChart from "../../shared/MoodByWeatherChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
-import MoodByLocationTable from "../../shared/MoodByLocationTable";
 
 export const LINE_CHART_PROPS: {
   data: [number, number][];

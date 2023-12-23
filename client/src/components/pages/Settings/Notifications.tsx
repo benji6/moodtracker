@@ -1,5 +1,5 @@
-import { Paper } from "eri";
 import NotificationSettings from "../../shared/NotificationSettings";
+import { Paper } from "eri";
 
 export default function Notifications() {
   return (

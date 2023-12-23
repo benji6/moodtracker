@@ -1,7 +1,7 @@
 import { Paper, SubHeading, Toggle, WordCloud } from "eri";
-import { useState } from "react";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
 import useMoodCloudWords from "../../hooks/useMoodCloudWords";
+import { useState } from "react";
 
 interface Props {
   currentPeriod: {

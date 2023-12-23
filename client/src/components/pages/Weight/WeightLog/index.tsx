@@ -1,11 +1,11 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { mapRight } from "../../../../utils";
-import RedirectHome from "../../../shared/RedirectHome";
 import ExportControls from "../../Settings/Export/ExportControls";
+import RedirectHome from "../../../shared/RedirectHome";
 import WeightCard from "./WeightCard";
 import eventsSlice from "../../../../store/eventsSlice";
+import { mapRight } from "../../../../utils";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const MAX_ITEMS_PER_PAGE = 10;
 

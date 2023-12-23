@@ -1,8 +1,8 @@
+import "./style.css";
 import { Icon, Spinner } from "eri";
 import { formatKelvinToCelcius } from "../../../../formatters/numberFormatters";
 import { getWeatherDisplayData } from "../../../../utils";
 import { useWeatherQuery } from "../../../hooks/weatherHooks";
-import "./style.css";
 
 interface Props {
   date: Date;

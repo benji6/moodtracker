@@ -1,15 +1,15 @@
+import { Chart, Paper } from "eri";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
 } from "../../../../utils";
-import { useSelector } from "react-redux";
-import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
-import { useNavigate } from "react-router-dom";
-import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import { Chart, Paper } from "eri";
 import { TIME } from "../../../../constants";
 import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
+import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

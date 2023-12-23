@@ -1,12 +1,12 @@
+import "./style.css";
 import { Button, Paper, TextField } from "eri";
-import { useNavigate } from "react-router-dom";
 import {
   ERRORS,
   MEDITATION_SEARCH_PARAM_TIME_KEY,
   TEST_IDS,
   TIME,
 } from "../../../../constants";
-import "./style.css";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const MAX_MINUTES = 180;

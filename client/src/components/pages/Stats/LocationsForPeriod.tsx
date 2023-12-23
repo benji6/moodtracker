@@ -1,9 +1,9 @@
-import { Paper, SubHeading } from "eri";
-import { useSelector } from "react-redux";
 import { AppEventWithLocation, DeviceGeolocation } from "../../../types";
-import useEventIdsWithLocationInPeriod from "../../hooks/useEventIdsWithLocationInPeriod";
+import { Paper, SubHeading } from "eri";
 import LocationMap from "../../shared/LocationMap";
 import eventsSlice from "../../../store/eventsSlice";
+import useEventIdsWithLocationInPeriod from "../../hooks/useEventIdsWithLocationInPeriod";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

@@ -1,9 +1,9 @@
-import { Dialog } from "eri";
 import { useDispatch, useSelector } from "react-redux";
-import { TEST_IDS } from "../../../constants";
-import appSlice from "../../../store/appSlice";
+import { Dialog } from "eri";
 import LocationToggle from "../../shared/LocationToggle";
+import { TEST_IDS } from "../../../constants";
 import WebPushNotifications from "../../shared/NotificationSettings/WebPushNotifications";
+import appSlice from "../../../store/appSlice";
 
 export default function DeviceSetupDialog() {
   const userHasManuallySignedIn = useSelector(

@@ -1,8 +1,8 @@
 import { Button, Icon, Paper } from "eri";
-import { TEST_IDS } from "../../../../../../constants";
 import Dimmer from "../../Dimmer";
-import { TimerState } from "../reducer";
 import MeditationTimerClock from "./MeditationTimerClock";
+import { TEST_IDS } from "../../../../../../constants";
+import { TimerState } from "../reducer";
 import { memo } from "react";
 
 interface Props {

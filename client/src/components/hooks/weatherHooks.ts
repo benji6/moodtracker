@@ -1,9 +1,9 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
-import { fetchWeather } from "../../api";
 import { HIGHLY_CACHED_QUERY_OPTIONS, TIME } from "../../constants";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { AppEventWithLocation } from "../../types";
 import eventsSlice from "../../store/eventsSlice";
+import { fetchWeather } from "../../api";
+import { useSelector } from "react-redux";
 
 const getUnixTimestampRoundedToNearestHourAndInPast = (date: Date) => {
   const roundedTime =

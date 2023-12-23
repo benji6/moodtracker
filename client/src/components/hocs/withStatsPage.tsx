@@ -1,12 +1,11 @@
-import { isValid } from "date-fns";
 import { Paper, Spinner } from "eri";
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { createDateFromLocalDateString } from "../../utils";
-import RedirectHome from "../shared/RedirectHome";
 import GetStartedCta from "../shared/GetStartedCta";
+import RedirectHome from "../shared/RedirectHome";
+import { createDateFromLocalDateString } from "../../utils";
 import eventsSlice from "../../store/eventsSlice";
+import { isValid } from "date-fns";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // TODO probably a nicer way of writing this
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

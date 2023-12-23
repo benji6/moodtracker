@@ -1,6 +1,6 @@
+import { ERRORS } from "../../constants";
 import { ForgotPasswordPage } from "eri";
 import { createCognitoUser } from "../../cognito";
-import { ERRORS } from "../../constants";
 
 export default function ForgotPassword() {
   return (

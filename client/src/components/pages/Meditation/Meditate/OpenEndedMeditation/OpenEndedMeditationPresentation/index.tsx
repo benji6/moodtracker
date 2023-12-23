@@ -1,7 +1,7 @@
-import { Button, Icon, Paper } from "eri";
-import { formatSecondsAsTime } from "../../../../../../utils";
-import Dimmer from "../../Dimmer";
 import "./style.css";
+import { Button, Icon, Paper } from "eri";
+import Dimmer from "../../Dimmer";
+import { formatSecondsAsTime } from "../../../../../../utils";
 import { memo } from "react";
 
 interface Props {

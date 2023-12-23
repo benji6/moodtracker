@@ -1,20 +1,20 @@
-import { useDispatch, useSelector } from "react-redux";
+import { initialState, reducer } from "./reducer";
 import {
   useBeforeUnload,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { useCallback, useEffect, useReducer, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import LogMeditationDialog from "./LogMeditationDialog";
 import { MEDITATION_SEARCH_PARAM_TIME_KEY } from "../../../../../constants";
-import { captureException } from "../../../../../sentry";
-import eventsSlice from "../../../../../store/eventsSlice";
 import { Meditation } from "../../../../../types";
+import MeditationTimerPresentation from "./MeditationTimerPresentation";
+import { captureException } from "../../../../../sentry";
+import deviceSlice from "../../../../../store/deviceSlice";
+import eventsSlice from "../../../../../store/eventsSlice";
 import { noSleep } from "../nosleep";
 import useBell from "./useBell";
-import LogMeditationDialog from "./LogMeditationDialog";
-import MeditationTimerPresentation from "./MeditationTimerPresentation";
-import { initialState, reducer } from "./reducer";
-import { useCallback, useEffect, useReducer, useRef } from "react";
-import deviceSlice from "../../../../../store/deviceSlice";
 
 export default function MeditationTimer() {
   const dispatch = useDispatch();

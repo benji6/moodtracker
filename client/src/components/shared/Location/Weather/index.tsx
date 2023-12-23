@@ -1,7 +1,4 @@
 import { Icon, Paper, Spinner } from "eri";
-import { ComponentProps } from "react";
-import { ERRORS } from "../../../../constants";
-import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
 import {
   formatKelvinToCelcius,
   integerDegreeFormatter,
@@ -10,9 +7,12 @@ import {
   integerPercentFormatter,
   twoDecimalPlacesFormatter,
 } from "../../../../formatters/numberFormatters";
-import { capitalizeFirstLetter } from "../../../../utils";
-import { useWeatherQuery } from "../../../hooks/weatherHooks";
+import { ComponentProps } from "react";
+import { ERRORS } from "../../../../constants";
 import WeatherIconGrid from "./WeatherIconGrid";
+import { capitalizeFirstLetter } from "../../../../utils";
+import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
+import { useWeatherQuery } from "../../../hooks/weatherHooks";
 
 interface Props {
   date: Date;

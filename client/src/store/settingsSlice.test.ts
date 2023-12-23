@@ -1,6 +1,6 @@
-import store from ".";
 import { Settings } from "../types";
 import settingsSlice from "./settingsSlice";
+import store from ".";
 
 const createFakeSettingsData = (): Settings => ({
   recordLocation: true,

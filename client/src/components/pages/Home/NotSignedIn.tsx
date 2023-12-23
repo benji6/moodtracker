@@ -1,15 +1,4 @@
 import { Button, Paper, WordCloud } from "eri";
-import { Link, useNavigate } from "react-router-dom";
-import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
-import LocationMap from "../../shared/LocationMap";
-import MoodByHourChart from "../../shared/MoodByHourChart";
-import MoodByTemperatureChart from "../../shared/MoodByTemperatureChart";
-import MoodByWeatherChart from "../../shared/MoodByWeatherChart";
-import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
-import MoodChart from "../../shared/MoodChart";
-import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
-import MoodSummary from "../../shared/MoodSummary";
-import MeditationTimerClock from "../Meditation/Meditate/MeditationTimer/MeditationTimerPresentation/MeditationTimerClock";
 import {
   LINE_CHART_PROPS,
   MOOD_BY_HOUR_PROPS,
@@ -21,7 +10,18 @@ import {
   MOOD_SUMMARY_PROPS,
   WORD_CLOUD_PROPS,
 } from "./constants";
+import { Link, useNavigate } from "react-router-dom";
+import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
+import LocationMap from "../../shared/LocationMap";
+import MeditationTimerClock from "../Meditation/Meditate/MeditationTimer/MeditationTimerPresentation/MeditationTimerClock";
+import MoodByHourChart from "../../shared/MoodByHourChart";
 import MoodByLocationTable from "../../shared/MoodByLocationTable";
+import MoodByTemperatureChart from "../../shared/MoodByTemperatureChart";
+import MoodByWeatherChart from "../../shared/MoodByWeatherChart";
+import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
+import MoodChart from "../../shared/MoodChart";
+import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
+import MoodSummary from "../../shared/MoodSummary";
 
 const addMoodImgSrc = String(
   new URL("../Blog/2020-12-30/screenshot-1.png?as=avif", import.meta.url),

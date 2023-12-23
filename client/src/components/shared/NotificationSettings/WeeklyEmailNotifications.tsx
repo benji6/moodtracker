@@ -1,12 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner, Toggle } from "eri";
-import { queryClient } from "../../..";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   weeklyEmailsDisable,
   weeklyEmailsEnable,
   weeklyEmailsGet,
 } from "../../../api";
 import { ERRORS } from "../../../constants";
+import { queryClient } from "../../..";
 
 export default function WeeklyEmailNotifications() {
   const { data, isError, isPending } = useQuery({

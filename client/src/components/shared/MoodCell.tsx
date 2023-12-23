@@ -1,5 +1,5 @@
-import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import MoodBar from "./MoodBar";
+import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 
 interface Props {
   mood: number;

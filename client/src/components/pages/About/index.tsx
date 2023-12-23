@@ -1,11 +1,11 @@
-import { Paper, ShareButton } from "eri";
-import { Link } from "react-router-dom";
 import {
   GH_USER_URL,
   MOODTRACKER_DESCRIPTION,
   REPO_ISSUES_URL,
   REPO_URL,
 } from "../../../constants";
+import { Paper, ShareButton } from "eri";
+import { Link } from "react-router-dom";
 import Version from "../../shared/Version";
 
 export default function About() {

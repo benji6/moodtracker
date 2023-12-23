@@ -1,9 +1,9 @@
-import * as React from "react";
-import useInterval from "./useInterval";
 import { eventsGet, eventsPost } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
 import appSlice from "../../store/appSlice";
 import eventsSlice from "../../store/eventsSlice";
+import { useEffect } from "react";
+import useInterval from "./useInterval";
 import userSlice from "../../store/userSlice";
 
 export default function useEvents() {
@@ -50,9 +50,9 @@ export default function useEvents() {
       }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(syncFromServer, [isStorageLoading, userEmail]);
+  useEffect(syncFromServer, [isStorageLoading, userEmail]);
   useInterval(syncFromServer, 6e4);
-  React.useEffect(() => {
+  useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") syncFromServer();
     };
@@ -80,6 +80,6 @@ export default function useEvents() {
       }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(syncToServer, [eventsIdsToSync, isStorageLoading, userEmail]);
+  useEffect(syncToServer, [eventsIdsToSync, isStorageLoading, userEmail]);
   useInterval(syncToServer, 1e4);
 }

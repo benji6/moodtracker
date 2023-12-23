@@ -1,7 +1,7 @@
 import { Chart } from "eri";
 import { MOOD_EXTENT } from "../../constants";
-import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 import { moodToColor } from "../../utils";
+import { oneDecimalPlaceFormatter } from "../../formatters/numberFormatters";
 
 interface Props {
   averages: [

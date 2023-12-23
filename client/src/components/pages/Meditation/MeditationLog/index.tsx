@@ -1,11 +1,11 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { mapRight } from "../../../../utils";
 import ExportControls from "../../Settings/Export/ExportControls";
 import MeditationCard from "./MeditationCard";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 import eventsSlice from "../../../../store/eventsSlice";
+import { mapRight } from "../../../../utils";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const MAX_ITEMS_PER_PAGE = 10;
 
@@ -14,9 +14,9 @@ export default function MeditationLog() {
   const denormalizedMeditations = useSelector(
     eventsSlice.selectors.denormalizedMeditations,
   );
-  const [dialogId, setDialogId] = React.useState<undefined | string>();
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [page, setPage] = React.useState(0);
+  const [dialogId, setDialogId] = useState<undefined | string>();
+  const [isOpen, setIsOpen] = useState(false);
+  const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(meditations.allIds.length / MAX_ITEMS_PER_PAGE);
   const endIndex = meditations.allIds.length - MAX_ITEMS_PER_PAGE * page;

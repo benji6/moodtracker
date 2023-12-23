@@ -1,4 +1,4 @@
-import { initialState, reducer, State } from "./reducer";
+import { State, initialState, reducer } from "./reducer";
 
 const createState = (props?: Partial<State>): State => ({
   ...initialState,

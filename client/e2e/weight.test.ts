@@ -1,7 +1,7 @@
-import { Browser, Page, ElementHandle } from "puppeteer";
-import { ERRORS } from "../src/constants";
+import { Browser, ElementHandle, Page } from "puppeteer";
 import { SELECTORS, URLS } from "./constants";
 import { createAndSetUpBrowser, createPageAndSignIn } from "./utils";
+import { ERRORS } from "../src/constants";
 
 describe("weight", () => {
   let browser: Browser;

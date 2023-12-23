@@ -1,5 +1,5 @@
-import { computeMean } from "../../utils";
 import MoodCell from "./MoodCell";
+import { computeMean } from "../../utils";
 
 interface Props {
   moodsByLocation: { [location: string]: number[] };

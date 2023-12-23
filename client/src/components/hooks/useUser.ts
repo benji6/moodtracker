@@ -1,14 +1,14 @@
-import * as React from "react";
+import userSlice, { UserDetails } from "../../store/userSlice";
+import eventsSlice from "../../store/eventsSlice";
 import { getIdToken } from "../../cognito";
 import storage from "../../storage";
 import { useDispatch } from "react-redux";
-import userSlice, { UserDetails } from "../../store/userSlice";
-import eventsSlice from "../../store/eventsSlice";
+import { useEffect } from "react";
 
 export default function useUser(): void {
   const dispatch = useDispatch();
 
-  React.useEffect(
+  useEffect(
     () =>
       void (async () => {
         let storedUser: UserDetails | undefined;

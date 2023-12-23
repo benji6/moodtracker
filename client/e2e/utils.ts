@@ -1,4 +1,4 @@
-import { Browser, ElementHandle, launch, Page } from "puppeteer";
+import { Browser, ElementHandle, Page, launch } from "puppeteer";
 import { ROOT_DOCUMENT_TITLE, SELECTORS, URLS } from "./constants";
 
 const TEST_USER_EMAIL = process.env.MOODTRACKER_TEST_USER_EMAIL;

@@ -1,4 +1,3 @@
-import { initializeApp } from "firebase/app";
 import {
   Messaging,
   getMessaging,
@@ -6,8 +5,9 @@ import {
   isSupported,
   onMessage,
 } from "firebase/messaging";
-import serviceWorkerRegistrationPromise from "./serviceWorkerRegistrationPromise";
 import { FIREBASE_CONFIG } from "./constants";
+import { initializeApp } from "firebase/app";
+import serviceWorkerRegistrationPromise from "./serviceWorkerRegistrationPromise";
 
 const PUBLIC_VAPID_KEY =
   "BBhO8kx_ynJrYpotsDiOmkL46BWjWyDkKmaa9OntpGZV3rNM9Vc1fycZQpCUcF01pgHeIFXC2Sy7fFdmD82Hz9g";

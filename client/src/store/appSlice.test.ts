@@ -1,5 +1,5 @@
-import store from ".";
 import appSlice from "./appSlice";
+import store from ".";
 
 describe("appSlice", () => {
   test("initial state", () => {

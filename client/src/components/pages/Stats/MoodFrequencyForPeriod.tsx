@@ -1,7 +1,7 @@
-import { Paper } from "eri";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../../constants";
-import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
+import { Paper } from "eri";
+import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 
 interface Props {
   dateFrom: Date;

@@ -1,5 +1,5 @@
-import { Chart } from "eri";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../constants";
+import { Chart } from "eri";
 import { createChartExtent } from "../../utils";
 
 interface Props {

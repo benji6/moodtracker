@@ -7,17 +7,17 @@ import {
   TextArea,
   TextField,
 } from "eri";
-import { useDispatch, useSelector } from "react-redux";
-import eventsSlice from "../../../store/eventsSlice";
-import { Mood } from "../../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { useRef, useState } from "react";
+import LiveLocation from "../../shared/LiveLocation";
+import { Mood } from "../../../types";
+import deviceSlice from "../../../store/deviceSlice";
+import eventsSlice from "../../../store/eventsSlice";
+import { moodToColor } from "../../../utils";
+import useDarkMode from "../../hooks/useDarkMode";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { useNavigate } from "react-router-dom";
-import LiveLocation from "../../shared/LiveLocation";
-import { moodToColor } from "../../../utils";
-import { useRef, useState } from "react";
-import useDarkMode from "../../hooks/useDarkMode";
-import deviceSlice from "../../../store/deviceSlice";
 
 export default function AddMood() {
   const navigate = useNavigate();

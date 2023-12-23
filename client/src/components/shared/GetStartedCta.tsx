@@ -1,6 +1,6 @@
 import { Button, Paper } from "eri";
-import { useNavigate } from "react-router-dom";
 import NotificationSettings from "./NotificationSettings";
+import { useNavigate } from "react-router-dom";
 
 export default function GetStartedCta() {
   const navigate = useNavigate();

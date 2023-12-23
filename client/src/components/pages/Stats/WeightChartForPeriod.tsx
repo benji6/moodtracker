@@ -1,7 +1,7 @@
 import { Chart, Paper } from "eri";
-import { useSelector } from "react-redux";
 import { createChartExtent, getEnvelopingIds } from "../../../utils";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   centerXAxisLabels?: boolean;

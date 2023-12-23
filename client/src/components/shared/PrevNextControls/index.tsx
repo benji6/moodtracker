@@ -1,5 +1,5 @@
-import * as React from "react";
 import "./style.css";
+import * as React from "react";
 
 export default function PrevNextControls(
   props: React.HtmlHTMLAttributes<HTMLDivElement>,

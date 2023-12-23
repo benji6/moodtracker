@@ -1,8 +1,8 @@
 import "./style.css";
-import { useSelector } from "react-redux";
 import MoodSummaryItem from "./MoodSummaryItem";
 import { TIME } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface PeriodData {
   best?: number;

@@ -1,11 +1,11 @@
-import { Paper } from "eri";
-import LocationString from "../LocationString";
-import LocationMap from "../LocationMap";
-import Weather from "./Weather";
 import {
   floatDegreeFormatter,
   integerMeterFormatter,
 } from "../../../formatters/numberFormatters";
+import LocationMap from "../LocationMap";
+import LocationString from "../LocationString";
+import { Paper } from "eri";
+import Weather from "./Weather";
 
 interface Props {
   altitude?: number;

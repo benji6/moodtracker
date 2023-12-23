@@ -1,15 +1,15 @@
-import { Paper } from "eri";
-import { useSelector } from "react-redux";
 import {
+  computeMeanSafe,
+  computeSecondsMeditatedInInterval,
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
-  computeSecondsMeditatedInInterval,
-  computeMeanSafe,
 } from "../../../utils";
-import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
-import useWeightsInPeriod from "../../hooks/useWeightsInPeriod";
 import MoodSummary from "../../shared/MoodSummary";
+import { Paper } from "eri";
 import eventsSlice from "../../../store/eventsSlice";
+import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
+import { useSelector } from "react-redux";
+import useWeightsInPeriod from "../../hooks/useWeightsInPeriod";
 
 interface Props {
   dates: [Date, Date, Date];

@@ -1,32 +1,32 @@
 import { Card, Icon, Paper, SubHeading } from "eri";
-import { useSelector } from "react-redux";
 import {
+  WEEK_OPTIONS,
   dateWeekdayFormatter,
   formatWeek,
   hourNumericFormatter,
   monthLongFormatter,
-  WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
+import { addDays, addHours, startOfWeek } from "date-fns";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
 } from "../../../utils";
-import PrevNextControls from "../../shared/PrevNextControls";
+import { Link } from "react-router-dom";
+import LocationsForPeriod from "./LocationsForPeriod";
+import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 import MoodCard from "../../shared/MoodCard";
+import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import MoodSummaryForDay from "./MoodSummaryForDay";
-import MoodChartForPeriod from "./MoodChartForPeriod";
+import PrevNextControls from "../../shared/PrevNextControls";
 import { TIME } from "../../../constants";
-import LocationsForPeriod from "./LocationsForPeriod";
-import { Link } from "react-router-dom";
-import WeightChartForPeriod from "./WeightChartForPeriod";
 import WeatherForPeriod from "./WeatherForPeriod";
-import withStatsPage from "../../hocs/withStatsPage";
-import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
-import { addDays, addHours, startOfWeek } from "date-fns";
+import WeightChartForPeriod from "./WeightChartForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
+import withStatsPage from "../../hocs/withStatsPage";
 
 const X_LABELS_COUNT = 7;
 

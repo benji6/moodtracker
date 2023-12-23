@@ -1,11 +1,11 @@
 import { Paper, Spinner } from "eri";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { TIME } from "../../constants";
-import useInterval from "../hooks/useInterval";
 import Location from "./Location";
+import { TIME } from "../../constants";
 import deviceSlice from "../../store/deviceSlice";
 import settingsSlice from "../../store/settingsSlice";
+import useInterval from "../hooks/useInterval";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 export default function LiveLocation() {
   const geolocation = useSelector(deviceSlice.selectors.geolocation);

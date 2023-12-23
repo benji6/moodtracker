@@ -1,8 +1,8 @@
-import { Toggle } from "eri";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Toggle } from "eri";
 import settingsSlice from "../../store/settingsSlice";
 import usePermissionState from "../hooks/usePermissionState";
-import { Link } from "react-router-dom";
 
 export default function LocationToggle() {
   const locationEnabled = useSelector(settingsSlice.selectors.recordLocation);

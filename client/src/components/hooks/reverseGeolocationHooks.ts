@@ -1,9 +1,9 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
+import { AppEventWithLocation } from "../../types";
 import { HIGHLY_CACHED_QUERY_OPTIONS } from "../../constants";
+import eventsSlice from "../../store/eventsSlice";
 import { getReverseGeolocation } from "../../api";
 import { useSelector } from "react-redux";
-import { AppEventWithLocation } from "../../types";
-import eventsSlice from "../../store/eventsSlice";
 
 const roundQueryParameters = ({
   latitude,

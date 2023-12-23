@@ -1,8 +1,5 @@
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
-import { dateFormatter } from "../../../../formatters/dateTimeFormatters";
-import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import "./style.css";
+import { addDays, getDaysInMonth } from "date-fns";
 import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
@@ -10,9 +7,12 @@ import {
   moodToColor,
   roundDateDown,
 } from "../../../../utils";
-import "./style.css";
-import { addDays, getDaysInMonth } from "date-fns";
+import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
+import { dateFormatter } from "../../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../../store/eventsSlice";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface Props {
   month: Date;

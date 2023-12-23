@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { feature } from "topojson-client";
 import { LOCATION_MAP_HEIGHT, LOCATION_MAP_WIDTH } from "./constants";
-import worldTopoJson from "./world-topojson.json";
 import Marker from "./Marker";
+import { feature } from "topojson-client";
 import { path } from "./utils";
+import worldTopoJson from "./world-topojson.json";
 
 const features: any[] = (
   feature(

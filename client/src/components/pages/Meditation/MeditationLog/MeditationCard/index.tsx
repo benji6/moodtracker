@@ -1,14 +1,14 @@
 import "./style.css";
 import { Button, Card, Icon } from "eri";
-import { useSelector } from "react-redux";
-import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
-import { formatSecondsAsTime } from "../../../../../utils";
-import LocationString from "../../../../shared/LocationString";
 import {
   floatDegreeFormatter,
   integerMeterFormatter,
 } from "../../../../../formatters/numberFormatters";
+import LocationString from "../../../../shared/LocationString";
+import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../../../store/eventsSlice";
+import { formatSecondsAsTime } from "../../../../../utils";
+import { useSelector } from "react-redux";
 
 interface Props {
   id: string;

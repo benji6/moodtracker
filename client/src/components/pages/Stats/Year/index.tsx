@@ -1,38 +1,38 @@
+import "./style.css";
 import { Icon, Paper, SubHeading } from "eri";
-import { useSelector } from "react-redux";
-import {
-  monthLongFormatter,
-  monthNarrowFormatter,
-  yearFormatter,
-} from "../../../../formatters/dateTimeFormatters";
+import { Link, useNavigate } from "react-router-dom";
+import { addMonths, addYears, eachMonthOfInterval } from "date-fns";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
 } from "../../../../utils";
-import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
-import MoodSummaryForYear from "../MoodSummaryForYear";
+import {
+  monthLongFormatter,
+  monthNarrowFormatter,
+  yearFormatter,
+} from "../../../../formatters/dateTimeFormatters";
+import LocationsForPeriod from "../LocationsForPeriod";
+import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
+import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
+import MoodByHourForPeriod from "../MoodByHourForPeriod";
+import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
+import MoodByMonthForPeriod from "./MoodByMonthForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
-import MoodByMonthForPeriod from "./MoodByMonthForPeriod";
-import "./style.css";
-import MoodByHourForPeriod from "../MoodByHourForPeriod";
-import PrevNextControls from "../../../shared/PrevNextControls";
-import MoodGradientForPeriod from "../MoodGradientForPeriod";
-import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import LocationsForPeriod from "../LocationsForPeriod";
-import { Link, useNavigate } from "react-router-dom";
-import MoodCloud from "../MoodCloud";
 import MoodChartForPeriod from "../MoodChartForPeriod";
-import WeightChartForPeriod from "../WeightChartForPeriod";
+import MoodCloud from "../MoodCloud";
+import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
+import MoodGradientForPeriod from "../MoodGradientForPeriod";
+import MoodSummaryForYear from "../MoodSummaryForYear";
+import PrevNextControls from "../../../shared/PrevNextControls";
 import WeatherForPeriod from "../WeatherForPeriod";
-import withStatsPage from "../../../hocs/withStatsPage";
-import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
-import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
-import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
-import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
-import { addMonths, addYears, eachMonthOfInterval } from "date-fns";
+import WeightChartForPeriod from "../WeightChartForPeriod";
 import eventsSlice from "../../../../store/eventsSlice";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
+import { useSelector } from "react-redux";
+import withStatsPage from "../../../hocs/withStatsPage";
 
 interface Props {
   date: Date;

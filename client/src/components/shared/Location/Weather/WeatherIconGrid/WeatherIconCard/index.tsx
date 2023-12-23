@@ -1,9 +1,9 @@
+import "./style.css";
 import { Card, Icon } from "eri";
 import {
   capitalizeFirstLetter,
   getWeatherDisplayData,
 } from "../../../../../../utils";
-import "./style.css";
 
 interface Props {
   daytime: boolean;

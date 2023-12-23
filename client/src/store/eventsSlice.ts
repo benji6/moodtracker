@@ -1,4 +1,3 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   AppCreateEvent,
   AppEvent,
@@ -8,15 +7,8 @@ import {
   NormalizedMoods,
   NormalizedWeights,
 } from "../types";
-import { captureException } from "../sentry";
 import {
-  computeAverageMoodInInterval,
-  computeSecondsMeditatedInInterval,
-  formatIsoDateHourInLocalTimezone,
-  formatIsoDateInLocalTimezone,
-  getNormalizedTagsFromDescription,
-} from "../utils";
-import {
+  Interval,
   addDays,
   addHours,
   addMonths,
@@ -27,9 +19,17 @@ import {
   eachMonthOfInterval,
   eachWeekOfInterval,
   eachYearOfInterval,
-  Interval,
 } from "date-fns";
+import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import {
+  computeAverageMoodInInterval,
+  computeSecondsMeditatedInInterval,
+  formatIsoDateHourInLocalTimezone,
+  formatIsoDateInLocalTimezone,
+  getNormalizedTagsFromDescription,
+} from "../utils";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
+import { captureException } from "../sentry";
 
 interface EventsState {
   allIds: string[];

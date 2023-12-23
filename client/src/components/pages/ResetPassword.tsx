@@ -1,6 +1,6 @@
+import { ERRORS, TEST_IDS } from "../../constants";
 import { ResetPasswordPage } from "eri";
 import { createCognitoUser } from "../../cognito";
-import { ERRORS, TEST_IDS } from "../../constants";
 
 export default function ResetPassword() {
   return (

@@ -1,7 +1,7 @@
 import { Button, Dialog } from "eri";
-import * as React from "react";
 import { TIME } from "../../../../../constants";
 import formatDurationFromSeconds from "../../../../../formatters/formatDurationFromSeconds";
+import { memo } from "react";
 
 interface Props {
   onClose(): void;
@@ -44,4 +44,4 @@ function LogMeditationDialog({
   );
 }
 
-export default React.memo(LogMeditationDialog);
+export default memo(LogMeditationDialog);

@@ -1,7 +1,7 @@
 import { Browser, ElementHandle, HandleFor, Page } from "puppeteer";
-import { ERRORS } from "../src/constants";
 import { SELECTORS, URLS } from "./constants";
 import { createAndSetUpBrowser, createPageAndSignIn } from "./utils";
+import { ERRORS } from "../src/constants";
 
 describe("mood", () => {
   let browser: Browser;

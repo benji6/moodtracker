@@ -1,12 +1,12 @@
 import { Paper, Spinner, SubHeading } from "eri";
-import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
-import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByTemperatureForPeriod from "./MoodByTemperatureForPeriod";
 import MoodByWeatherForPeriod from "./MoodByWeatherForPeriod";
 import TemperatureForPeriod from "./TemperatureForPeriod";
 import WeatherFrequencyForPeriod from "./WeatherFrequencyForPeriod";
+import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
+import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
   centerXAxisLabels?: boolean;

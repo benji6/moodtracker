@@ -1,11 +1,11 @@
+import "./style.css";
 import { Card, Icon } from "eri";
 import {
   integerFormatter,
   oneDecimalPlaceFormatter,
 } from "../../../../formatters/numberFormatters";
-import { moodToColor } from "../../../../utils";
 import MoodBar from "../../MoodBar";
-import "./style.css";
+import { moodToColor } from "../../../../utils";
 
 interface Props {
   currentValue?: number;

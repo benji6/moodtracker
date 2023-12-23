@@ -1,18 +1,18 @@
 import { Button, Icon, Paper, RadioButton, TextArea, TextField } from "eri";
-import MoodDeleteDialog from "./MoodDeleteDialog";
-import { useDispatch, useSelector } from "react-redux";
-import eventsSlice from "../../../../store/eventsSlice";
-import { UpdateMood } from "../../../../types";
 import { ERRORS, FIELDS } from "../../../../constants";
-import useKeyboardSave from "../../../hooks/useKeyboardSave";
-import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
-import Location from "../../../shared/Location";
-import RedirectHome from "../../../shared/RedirectHome";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import useDarkMode from "../../../hooks/useDarkMode";
-import { moodToColor } from "../../../../utils";
+import Location from "../../../shared/Location";
+import MoodDeleteDialog from "./MoodDeleteDialog";
+import RedirectHome from "../../../shared/RedirectHome";
+import { UpdateMood } from "../../../../types";
+import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../../store/eventsSlice";
 import { formatDistanceToNow } from "date-fns";
+import { moodToColor } from "../../../../utils";
+import useDarkMode from "../../../hooks/useDarkMode";
+import useKeyboardSave from "../../../hooks/useKeyboardSave";
 
 export default function EditMood() {
   const navigate = useNavigate();

@@ -1,17 +1,17 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner, Toggle } from "eri";
-import { queryClient } from "../../..";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import useWebPushToken, {
+  NOTIFICATIONS_PERMISSION_DENIED_ERROR_MESSAGE,
+} from "../../hooks/useWebPushToken";
 import {
   webPushTokensDelete,
   webPushTokensList,
   webPushTokensPut,
 } from "../../../api";
 import { ERRORS } from "../../../constants";
-import useWebPushToken, {
-  NOTIFICATIONS_PERMISSION_DENIED_ERROR_MESSAGE,
-} from "../../hooks/useWebPushToken";
-import { useEffect, useState } from "react";
 import { captureException } from "../../../sentry";
+import { queryClient } from "../../..";
 
 export default function WebPushNotifications() {
   const { data, isError, isPending } = useQuery({

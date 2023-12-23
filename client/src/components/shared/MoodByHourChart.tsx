@@ -1,5 +1,5 @@
-import { Chart } from "eri";
 import { MOOD_INTEGERS, MOOD_RANGE, TIME } from "../../constants";
+import { Chart } from "eri";
 import { hourNumericFormatter } from "../../formatters/dateTimeFormatters";
 import { setHours } from "date-fns";
 

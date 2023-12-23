@@ -23,7 +23,9 @@
     "no-console": 2,
     "no-constant-condition": 0,
     "no-empty": [2, { "allowEmptyCatch": true }],
-    "react/jsx-no-target-blank": 0
+    "react/jsx-no-target-blank": 0,
+    "react/self-closing-comp": 2,
+    "sort-imports": 2
   },
   "settings": {
     "react": { "version": "detect" }

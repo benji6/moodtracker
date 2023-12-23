@@ -1,9 +1,9 @@
-import * as React from "react";
-import storage from "../../storage";
 import { useDispatch, useSelector } from "react-redux";
-import eventsSlice from "../../store/eventsSlice";
+import { useEffect, useRef } from "react";
 import appSlice from "../../store/appSlice";
+import eventsSlice from "../../store/eventsSlice";
 import settingsSlice from "../../store/settingsSlice";
+import storage from "../../storage";
 import { useNavigate } from "react-router-dom";
 import userSlice from "../../store/userSlice";
 
@@ -23,7 +23,7 @@ export default function useStorage() {
   const userLoading = useSelector(userSlice.selectors.loading);
   const dispatch = useDispatch();
 
-  const lastUserId = React.useRef<string | undefined>();
+  const lastUserId = useRef<string | undefined>();
 
   // handle user sign out
   if (lastUserId.current && !userId) {
@@ -34,14 +34,14 @@ export default function useStorage() {
   lastUserId.current = userId;
 
   // save/clear user
-  React.useEffect(() => {
+  useEffect(() => {
     if (userLoading) return;
     if (!userEmail || !userId) storage.deleteUser();
     else storage.setUser({ email: userEmail, id: userId });
   }, [userEmail, userLoading, userId]);
 
   // load events & settings
-  React.useEffect(() => {
+  useEffect(() => {
     if (userLoading || !isStorageLoading) return;
     void (async () => {
       try {
@@ -59,7 +59,7 @@ export default function useStorage() {
   }, [dispatch, isStorageLoading, userId, userLoading]);
 
   // save events & settings
-  React.useEffect(() => {
+  useEffect(() => {
     if (isStorageLoading || !userId) return;
     storage.setEvents(userId, {
       allIds: eventsAllIds,

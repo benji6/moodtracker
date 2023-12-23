@@ -1,49 +1,49 @@
-import About from "./pages/About";
-import AddMood from "./pages/Mood/AddMood";
-import EditMood from "./pages/Mood/EditMood";
-import Home from "./pages/Home";
-import Month from "./pages/Stats/Month";
-import ResendVerification from "./pages/ResendVerification";
-import SeeAlso from "./pages/SeeAlso";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import Overview from "./pages/Stats/Overview";
-import Verify from "./pages/Verify";
-import Week from "./pages/Stats/Week";
-import Explore from "./pages/Stats/Explore";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import ChangePassword from "./pages/Settings/ChangePassword";
-import Layout from "./Layout";
-import Blog from "./pages/Blog";
-import Year from "./pages/Stats/Year";
-import Export from "./pages/Settings/Export";
-import LocationSettings from "./pages/Settings/LocationSettings";
-import Notifications from "./pages/Settings/Notifications";
-import Page from "./shared/Page";
-import Meditate from "./pages/Meditation/Meditate";
-import MeditationTimer from "./pages/Meditation/Meditate/MeditationTimer";
-import Day from "./pages/Stats/Day";
-import RedirectHome from "./shared/RedirectHome";
-import OpenEndedMeditation from "./pages/Meditation/Meditate/OpenEndedMeditation";
 import {
   Routes as ReactRouterRoutes,
   Route,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
+import About from "./pages/About";
+import AddMood from "./pages/Mood/AddMood";
 import AddWeight from "./pages/Weight/AddWeight";
-import EditWeight from "./pages/Weight/EditWeight";
+import Blog from "./pages/Blog";
 import ChangeEmail from "./pages/Settings/ChangeEmail";
-import VerifyNewEmail from "./pages/Settings/VerifyNewEmail";
+import ChangePassword from "./pages/Settings/ChangePassword";
+import Day from "./pages/Stats/Day";
+import EditMood from "./pages/Mood/EditMood";
+import EditWeight from "./pages/Weight/EditWeight";
+import Explore from "./pages/Stats/Explore";
+import Export from "./pages/Settings/Export";
+import ForgotPassword from "./pages/ForgotPassword";
+import Home from "./pages/Home";
+import Layout from "./Layout";
+import LocationSettings from "./pages/Settings/LocationSettings";
+import Meditate from "./pages/Meditation/Meditate";
 import MeditationLog from "./pages/Meditation/MeditationLog";
-import WeightLog from "./pages/Weight/WeightLog";
+import MeditationTimer from "./pages/Meditation/Meditate/MeditationTimer";
+import Month from "./pages/Stats/Month";
 import MoodLog from "./pages/Mood/MoodLog";
+import Notifications from "./pages/Settings/Notifications";
+import OpenEndedMeditation from "./pages/Meditation/Meditate/OpenEndedMeditation";
+import Overview from "./pages/Stats/Overview";
+import Page from "./shared/Page";
 import PrivacyPolicy from "./pages/About/PrivacyPolicy";
-import Usage from "./pages/About/Usage";
-import { useSelector } from "react-redux";
+import RedirectHome from "./shared/RedirectHome";
+import ResendVerification from "./pages/ResendVerification";
+import ResetPassword from "./pages/ResetPassword";
+import SeeAlso from "./pages/SeeAlso";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import { Spinner } from "eri";
+import Usage from "./pages/About/Usage";
+import Verify from "./pages/Verify";
+import VerifyNewEmail from "./pages/Settings/VerifyNewEmail";
+import Week from "./pages/Stats/Week";
+import WeightLog from "./pages/Weight/WeightLog";
+import Year from "./pages/Stats/Year";
 import appSlice from "../store/appSlice";
+import { useSelector } from "react-redux";
 import userSlice from "../store/userSlice";
 
 function Root() {

@@ -1,13 +1,13 @@
-import { useSelector } from "react-redux";
 import {
   computeMeanSafe,
   formatIsoDateHourInLocalTimezone,
 } from "../../../utils";
+import MoodByHourChart from "../../shared/MoodByHourChart";
 import { Paper } from "eri";
 import { TIME } from "../../../constants";
-import MoodByHourChart from "../../shared/MoodByHourChart";
 import { addHours } from "date-fns";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

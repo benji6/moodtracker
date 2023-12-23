@@ -1,5 +1,5 @@
-import { Paper } from "eri";
 import LocationToggle from "../../shared/LocationToggle";
+import { Paper } from "eri";
 
 export default function LocationSettings() {
   return (

@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
-import { useReverseGeolocationQueries } from "../../hooks/reverseGeolocationHooks";
-import useMoodIdsWithLocationInPeriod from "../../hooks/useMoodIdsWithLocationInPeriod";
 import { Paper, Spinner } from "eri";
-import { integerPercentFormatter } from "../../../formatters/numberFormatters";
-import { captureException } from "../../../sentry";
 import MoodByLocationTable from "../../shared/MoodByLocationTable";
+import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
+import { integerPercentFormatter } from "../../../formatters/numberFormatters";
+import useMoodIdsWithLocationInPeriod from "../../hooks/useMoodIdsWithLocationInPeriod";
+import { useReverseGeolocationQueries } from "../../hooks/reverseGeolocationHooks";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

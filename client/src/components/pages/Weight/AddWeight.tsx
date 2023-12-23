@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Button, Icon, Paper, TextField } from "eri";
-import { useDispatch, useSelector } from "react-redux";
-import eventsSlice from "../../../store/eventsSlice";
-import { Weight } from "../../../types";
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
+import { useDispatch, useSelector } from "react-redux";
+import LiveLocation from "../../shared/LiveLocation";
+import { Weight } from "../../../types";
+import deviceSlice from "../../../store/deviceSlice";
+import eventsSlice from "../../../store/eventsSlice";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { useNavigate } from "react-router-dom";
-import LiveLocation from "../../shared/LiveLocation";
-import deviceSlice from "../../../store/deviceSlice";
 
 export default function AddWeight() {
   const navigate = useNavigate();

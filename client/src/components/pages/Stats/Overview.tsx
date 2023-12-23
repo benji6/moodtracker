@@ -1,13 +1,13 @@
 import { Paper, Spinner } from "eri";
 import GetStartedCta from "../../shared/GetStartedCta";
+import { Link } from "react-router-dom";
 import Months from "./Months";
-import Weeks from "./Weeks";
-import { useSelector } from "react-redux";
-import Years from "./Years";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { TEST_IDS } from "../../../constants";
-import { Link } from "react-router-dom";
+import Weeks from "./Weeks";
+import Years from "./Years";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 export default function Overview() {
   const eventsHasLoadedFromServer = useSelector(

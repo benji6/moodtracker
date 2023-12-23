@@ -1,11 +1,11 @@
 import { Paper, Spinner } from "eri";
-import MoodList from "./MoodList";
-import GetStartedCta from "../../shared/GetStartedCta";
-import { useSelector } from "react-redux";
-import NotSignedIn from "./NotSignedIn";
 import DeviceSetupDialog from "./DeviceSetupDialog";
-import userSlice from "../../../store/userSlice";
+import GetStartedCta from "../../shared/GetStartedCta";
+import MoodList from "./MoodList";
+import NotSignedIn from "./NotSignedIn";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
+import userSlice from "../../../store/userSlice";
 
 export interface HomeState {
   dayCount: number | undefined;

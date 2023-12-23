@@ -1,10 +1,10 @@
 import { Button, Paper, TextField } from "eri";
 import { FormEvent, useState } from "react";
-import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { changeEmail } from "../../../cognito";
 import { ERRORS } from "../../../constants";
 import { NEW_EMAIL_SEARCH_PARAM_KEY } from "./constants";
+import { changeEmail } from "../../../cognito";
+import { useSelector } from "react-redux";
 import userSlice from "../../../store/userSlice";
 
 export default function ChangeEmail() {

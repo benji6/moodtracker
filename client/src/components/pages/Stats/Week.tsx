@@ -1,34 +1,34 @@
 import { Icon, Paper, SubHeading } from "eri";
-import { TIME } from "../../../constants";
 import {
+  WEEK_OPTIONS,
   formatWeek,
   monthLongFormatter,
   weekdayShortFormatter,
-  WEEK_OPTIONS,
   yearFormatter,
 } from "../../../formatters/dateTimeFormatters";
+import { addDays, addWeeks, startOfWeek, subDays } from "date-fns";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
 } from "../../../utils";
-import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
-import MoodSummaryForWeek from "./MoodSummaryForWeek";
-import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
-import MoodByHourForPeriod from "./MoodByHourForPeriod";
-import PrevNextControls from "../../shared/PrevNextControls";
-import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import LocationsForPeriod from "./LocationsForPeriod";
 import { Link } from "react-router-dom";
-import MoodCloud from "./MoodCloud";
-import WeightChartForPeriod from "./WeightChartForPeriod";
-import MoodChartForPeriod from "./MoodChartForPeriod";
-import WeatherForPeriod from "./WeatherForPeriod";
-import withStatsPage from "../../hocs/withStatsPage";
-import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import LocationsForPeriod from "./LocationsForPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
+import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
-import { addDays, addWeeks, startOfWeek, subDays } from "date-fns";
+import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
+import MoodChartForPeriod from "./MoodChartForPeriod";
+import MoodCloud from "./MoodCloud";
+import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
+import MoodSummaryForWeek from "./MoodSummaryForWeek";
+import PrevNextControls from "../../shared/PrevNextControls";
+import { TIME } from "../../../constants";
+import WeatherForPeriod from "./WeatherForPeriod";
+import WeightChartForPeriod from "./WeightChartForPeriod";
+import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import withStatsPage from "../../hocs/withStatsPage";
 
 interface Props {
   date: Date;

@@ -1,7 +1,7 @@
-import { ResendVerificationPage } from "eri";
-import { useNavigate } from "react-router-dom";
-import { createCognitoUser } from "../../cognito";
 import { ERRORS } from "../../constants";
+import { ResendVerificationPage } from "eri";
+import { createCognitoUser } from "../../cognito";
+import { useNavigate } from "react-router-dom";
 
 const resendConfirmation = ({ email }: { email: string }) =>
   new Promise((resolve, reject) => {

@@ -1,8 +1,8 @@
 import { Paper, Spinner, SubHeading } from "eri";
-import { marked } from "marked";
 import { useEffect, useState } from "react";
-import { dateFormatter } from "../../../formatters/dateTimeFormatters";
 import Version from "../../shared/Version";
+import { dateFormatter } from "../../../formatters/dateTimeFormatters";
+import { marked } from "marked";
 
 const BLOG_POSTS = {
   "2023-08-25": {

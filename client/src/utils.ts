@@ -1,9 +1,9 @@
-import { interpolateHcl } from "d3-interpolate";
+import { MOOD_EXTENT, TIME } from "./constants";
+import { NormalizedMeditations, NormalizedMoods } from "./types";
 import { addDays, getDay, set } from "date-fns";
 import { Icon } from "eri";
-import { MOOD_EXTENT, TIME } from "./constants";
 import { captureException } from "./sentry";
-import { NormalizedMeditations, NormalizedMoods } from "./types";
+import { interpolateHcl } from "d3-interpolate";
 
 export const bisectLeft = (xs: string[], x: string, lo = 0) => {
   let hi = xs.length;

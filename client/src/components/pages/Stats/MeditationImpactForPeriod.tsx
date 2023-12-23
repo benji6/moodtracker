@@ -1,16 +1,16 @@
-import { Paper, SubHeading, Toggle, WordCloud } from "eri";
-import { useState } from "react";
-import { useSelector } from "react-redux";
 import { MINIMUM_WORD_CLOUD_WORDS, TIME } from "../../../constants";
-import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
+import { Paper, SubHeading, Toggle, WordCloud } from "eri";
 import {
   computeMean,
   counter,
   getNormalizedTagsFromDescription,
 } from "../../../utils";
-import useMeditationIdsInPeriod from "../../hooks/useMeditationIdsInPeriod";
 import { differenceInSeconds, sub } from "date-fns";
 import eventsSlice from "../../../store/eventsSlice";
+import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
+import useMeditationIdsInPeriod from "../../hooks/useMeditationIdsInPeriod";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const MEDITATION_STATS_HOURS_RANGE = 4;
 const SECONDS = MEDITATION_STATS_HOURS_RANGE * TIME.secondsPerHour;

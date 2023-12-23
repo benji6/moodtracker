@@ -1,13 +1,13 @@
-import { Icon } from "eri";
-import { ComponentProps } from "react";
-import { useSelector } from "react-redux";
-import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { getWeatherDisplayData, moodToColor } from "../../../../utils";
-import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
-import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
+import { ComponentProps } from "react";
+import { Icon } from "eri";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
+import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
 import eventsSlice from "../../../../store/eventsSlice";
+import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
+import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
+import { useSelector } from "react-redux";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
   dateFrom: Date;

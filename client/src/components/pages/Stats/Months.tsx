@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Pagination, Paper } from "eri";
 import {
-  mapRight,
-  formatIsoMonthInLocalTimezone,
   createDateFromLocalDateString,
+  formatIsoMonthInLocalTimezone,
+  mapRight,
 } from "../../../utils";
-import MoodCell from "../../shared/MoodCell";
-import { monthYearFormatter } from "../../../formatters/dateTimeFormatters";
-import { useSelector } from "react-redux";
-import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { Link } from "react-router-dom";
+import MoodCell from "../../shared/MoodCell";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { addMonths } from "date-fns";
 import eventsSlice from "../../../store/eventsSlice";
+import { monthYearFormatter } from "../../../formatters/dateTimeFormatters";
+import { useSelector } from "react-redux";
 
 const MAX_MONTHS_PER_PAGE = 12;
 

@@ -1,12 +1,12 @@
+import { AppEvent, Usage, WeatherApiResponse } from "./types";
 import {
   LocationClient,
   SearchPlaceIndexForPositionCommand,
 } from "@aws-sdk/client-location";
-import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { addMinutes, subMinutes } from "date-fns";
-import { getIdToken } from "./cognito";
 import { AWS_CONSTANTS } from "./constants";
-import { AppEvent, Usage, WeatherApiResponse } from "./types";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+import { getIdToken } from "./cognito";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;

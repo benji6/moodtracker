@@ -1,5 +1,5 @@
-import store from ".";
 import deviceSlice from "./deviceSlice";
+import store from ".";
 
 describe("deviceSlice", () => {
   test("initial state", () => {

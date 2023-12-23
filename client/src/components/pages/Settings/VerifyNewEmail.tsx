@@ -1,12 +1,12 @@
 import { Button, Paper, TextField } from "eri";
 import { FormEvent, ReactNode, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { Link, useSearchParams } from "react-router-dom";
 import { refreshSession, verifyNewEmail } from "../../../cognito";
 import { ERRORS } from "../../../constants";
-import userSlice from "../../../store/userSlice";
 import { NEW_EMAIL_SEARCH_PARAM_KEY } from "./constants";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import userSlice from "../../../store/userSlice";
 
 export default function VerifyNewEmail() {
   const dispatch = useDispatch();

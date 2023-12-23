@@ -2,20 +2,20 @@ import "./sentry";
 import "eri/dist/index.css";
 import "./serviceWorkerRegistrationPromise";
 import "./firebase";
-import { StrictMode } from "react";
 import * as ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
-import store from "./store";
-import App from "./components/App";
-import { QueryClient } from "@tanstack/react-query";
 import {
-  PersistedClient,
   PersistQueryClientProvider,
+  PersistedClient,
   removeOldestQuery,
 } from "@tanstack/react-query-persist-client";
-import { captureException } from "./sentry";
 import { del, get, set } from "idb-keyval";
+import App from "./components/App";
+import { Provider } from "react-redux";
+import { QueryClient } from "@tanstack/react-query";
+import { StrictMode } from "react";
+import { captureException } from "./sentry";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import store from "./store";
 
 export const queryClient = new QueryClient();
 

@@ -1,12 +1,12 @@
-import { DateField } from "eri";
-import { useSelector } from "react-redux";
+import { addMinutes, subDays } from "date-fns";
 import {
   formatIsoDateInLocalTimezone,
   roundDateDown,
   roundDateUp,
 } from "../../utils";
-import { addMinutes, subDays } from "date-fns";
+import { DateField } from "eri";
 import eventsSlice from "../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;

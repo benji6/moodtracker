@@ -1,20 +1,20 @@
 import * as React from "react";
 import { Pagination, Paper } from "eri";
 import {
-  mapRight,
-  formatIsoDateInLocalTimezone,
-  createDateFromLocalDateString,
-} from "../../../utils";
-import MoodCell from "../../shared/MoodCell";
-import {
-  formatWeekWithYear,
   WEEK_OPTIONS,
+  formatWeekWithYear,
 } from "../../../formatters/dateTimeFormatters";
-import { useSelector } from "react-redux";
-import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import { Link } from "react-router-dom";
 import { addWeeks, startOfWeek } from "date-fns";
+import {
+  createDateFromLocalDateString,
+  formatIsoDateInLocalTimezone,
+  mapRight,
+} from "../../../utils";
+import { Link } from "react-router-dom";
+import MoodCell from "../../shared/MoodCell";
+import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 const MAX_WEEKS_PER_PAGE = 8;
 

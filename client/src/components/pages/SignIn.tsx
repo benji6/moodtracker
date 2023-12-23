@@ -1,9 +1,9 @@
-import { SignInPage } from "eri";
-import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { createAuthenticatedUserAndSession } from "../../cognito";
 import { ERRORS } from "../../constants";
+import { SignInPage } from "eri";
 import appSlice from "../../store/appSlice";
+import { createAuthenticatedUserAndSession } from "../../cognito";
+import { useDispatch } from "react-redux";
 import userSlice from "../../store/userSlice";
 
 // The properties declared here are by no means exhaustive

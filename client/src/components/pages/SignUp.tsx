@@ -1,8 +1,8 @@
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { ERRORS } from "../../constants";
 import { SignUpPage } from "eri";
 import { useNavigate } from "react-router-dom";
 import { userPool } from "../../cognito";
-import { ERRORS } from "../../constants";
 
 const signUp = ({
   attributeList,

@@ -1,9 +1,9 @@
-import { Dialog, Button, Icon } from "eri";
-import { useDispatch } from "react-redux";
-import eventsSlice from "../../../../store/eventsSlice";
-import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
+import { Button, Dialog, Icon } from "eri";
 import { captureException } from "../../../../sentry";
+import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../../store/eventsSlice";
 import { formatDistanceToNow } from "date-fns";
+import { useDispatch } from "react-redux";
 
 interface Props {
   id: string | undefined;

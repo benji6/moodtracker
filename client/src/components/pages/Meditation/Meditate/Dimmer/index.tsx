@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import * as ReactDOM from "react-dom";
 import "./style.css";
+import * as ReactDOM from "react-dom";
+import { useEffect, useRef } from "react";
 
 interface Props {
   enabled: boolean;

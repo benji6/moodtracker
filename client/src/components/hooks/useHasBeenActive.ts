@@ -1,5 +1,5 @@
-import { useState } from "react";
 import useInterval from "./useInterval";
+import { useState } from "react";
 
 interface UserActivation {
   hasBeenActive: boolean;

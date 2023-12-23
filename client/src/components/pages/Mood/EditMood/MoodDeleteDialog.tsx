@@ -1,7 +1,7 @@
-import { Dialog, Button, Icon } from "eri";
+import { Button, Dialog, Icon } from "eri";
+import eventsSlice from "../../../../store/eventsSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import eventsSlice from "../../../../store/eventsSlice";
 
 interface Props {
   id: string;

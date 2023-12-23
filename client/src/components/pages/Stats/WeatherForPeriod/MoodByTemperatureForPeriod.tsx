@@ -1,10 +1,10 @@
-import { useSelector } from "react-redux";
-import { convertKelvinToCelcius } from "../../../../utils";
-import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
-import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
+import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
+import { convertKelvinToCelcius } from "../../../../utils";
 import eventsSlice from "../../../../store/eventsSlice";
+import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
+import { useSelector } from "react-redux";
+import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
   dateFrom: Date;

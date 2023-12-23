@@ -1,11 +1,11 @@
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import eventsSlice from "../../../../../store/eventsSlice";
 import { Meditation } from "../../../../../types";
-import { noSleep } from "../nosleep";
 import OpenEndedMeditationPresentation from "./OpenEndedMeditationPresentation";
 import deviceSlice from "../../../../../store/deviceSlice";
-import { useCallback, useEffect, useRef, useState } from "react";
+import eventsSlice from "../../../../../store/eventsSlice";
+import { noSleep } from "../nosleep";
+import { useNavigate } from "react-router-dom";
 
 export default function OpenEndedMeditation() {
   const [secondsElapsed, setSecondsElapsed] = useState(0);

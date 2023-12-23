@@ -1,7 +1,7 @@
-import * as React from "react";
 import "./style.css";
+import { HtmlHTMLAttributes } from "react";
 
-export default function AppIcon(props: React.HtmlHTMLAttributes<SVGElement>) {
+export default function AppIcon(props: HtmlHTMLAttributes<SVGElement>) {
   return (
     <svg
       {...props}

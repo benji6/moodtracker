@@ -1,9 +1,9 @@
-import { queryClient } from ".";
-import { webPushTokensDelete } from "./api";
-import { userPool } from "./cognito";
-import { getRegistrationToken } from "./firebase";
-import { captureException } from "./sentry";
 import store, { slicesToClearOnLogout } from "./store";
+import { captureException } from "./sentry";
+import { getRegistrationToken } from "./firebase";
+import { queryClient } from ".";
+import { userPool } from "./cognito";
+import { webPushTokensDelete } from "./api";
 
 export default async function signOut(currentUser = userPool.getCurrentUser()) {
   const { state } = await navigator.permissions.query({

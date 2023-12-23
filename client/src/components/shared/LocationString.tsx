@@ -1,5 +1,5 @@
-import { Spinner } from "eri";
 import { ReactElement } from "react";
+import { Spinner } from "eri";
 import { captureException } from "../../sentry";
 import { useReverseGeolocationQuery } from "../hooks/reverseGeolocationHooks";
 

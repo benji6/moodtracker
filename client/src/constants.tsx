@@ -1,9 +1,9 @@
-import { addDays, startOfWeek } from "date-fns";
 import {
   WEEK_OPTIONS,
   weekdayNarrowFormatter,
   weekdayShortFormatter,
 } from "./formatters/dateTimeFormatters";
+import { addDays, startOfWeek } from "date-fns";
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
 export const DESCRIPTION_MAX_LENGTH = 32;

@@ -1,17 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
-import { formatDistanceToNow, subDays } from "date-fns";
 import { Chart, Paper, Spinner, SubHeading } from "eri";
-import { usageGet } from "../../../../api";
 import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
-import { monthYearShortFormatter } from "../../../../formatters/dateTimeFormatters";
-import formatDurationFromSeconds from "../../../../formatters/formatDurationFromSeconds";
+import { formatDistanceToNow, subDays } from "date-fns";
 import {
   integerFormatter,
   percentFormatter,
 } from "../../../../formatters/numberFormatters";
-import { Usage } from "../../../../types";
 import MoodCell from "../../../shared/MoodCell";
+import { Usage } from "../../../../types";
 import UsageTable from "./UsageTable";
+import formatDurationFromSeconds from "../../../../formatters/formatDurationFromSeconds";
+import { monthYearShortFormatter } from "../../../../formatters/dateTimeFormatters";
+import { usageGet } from "../../../../api";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Usage() {
   const { data, error, isError, isPending } = useQuery({

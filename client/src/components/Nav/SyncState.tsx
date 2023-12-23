@@ -1,6 +1,6 @@
 import { Icon, Spinner } from "eri";
-import { useSelector } from "react-redux";
 import eventsSlice from "../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 export default function SyncState() {
   const isSyncingFromServer = useSelector(

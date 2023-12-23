@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
 import MoodSummaryForCalendarPeriod from "./MoodSummaryForCalendarPeriod";
 import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   dates: [Date, Date, Date];

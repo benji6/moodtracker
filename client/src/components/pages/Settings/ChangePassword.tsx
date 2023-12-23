@@ -1,7 +1,7 @@
 import { ChangePasswordPage } from "eri";
-import { useSelector } from "react-redux";
-import { createAuthenticatedUserAndSession } from "../../../cognito";
 import { ERRORS } from "../../../constants";
+import { createAuthenticatedUserAndSession } from "../../../cognito";
+import { useSelector } from "react-redux";
 import userSlice from "../../../store/userSlice";
 
 export default function ChangePassword() {

@@ -1,15 +1,18 @@
 import {
-  Paper,
+  Card,
+  ComboBox,
   Pagination,
+  Paper,
+  Select,
+  SubHeading,
   TextField,
   Toggle,
-  Select,
-  ComboBox,
-  Card,
-  SubHeading,
 } from "eri";
-import Fuse from "fuse.js";
-import * as React from "react";
+import {
+  DESCRIPTION_MAX_LENGTH,
+  FIELDS,
+  MOOD_INTEGERS,
+} from "../../../../constants";
 import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
@@ -17,22 +20,19 @@ import {
   roundDateDown,
   roundDateUp,
 } from "../../../../utils";
-import { useSelector } from "react-redux";
-import {
-  DESCRIPTION_MAX_LENGTH,
-  FIELDS,
-  MOOD_INTEGERS,
-} from "../../../../constants";
-import MoodGradientForPeriod from "../../Stats/MoodGradientForPeriod";
-import { dateWeekdayFormatter } from "../../../../formatters/dateTimeFormatters";
-import MoodCard from "../../../shared/MoodCard";
-import { Link } from "react-router-dom";
-import DateRangeSelector from "../../../shared/DateRangeSelector";
 import { initialState, reducer } from "./moodLogReducer";
-import OptionalMoodCell from "../../Home/OptionalMoodCell";
+import { useReducer, useState } from "react";
+import DateRangeSelector from "../../../shared/DateRangeSelector";
 import ExportControls from "../../Settings/Export/ExportControls";
+import Fuse from "fuse.js";
+import { Link } from "react-router-dom";
+import MoodCard from "../../../shared/MoodCard";
+import MoodGradientForPeriod from "../../Stats/MoodGradientForPeriod";
+import OptionalMoodCell from "../../Home/OptionalMoodCell";
 import { addDays } from "date-fns";
+import { dateWeekdayFormatter } from "../../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 const DAYS_PER_PAGE = 7;
 
@@ -57,13 +57,13 @@ export default function MoodLog() {
     eventsSlice.selectors.denormalizedMoods,
   );
   const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
-  const [localState, localDispatch] = React.useReducer(reducer, initialState);
+  const [localState, localDispatch] = useReducer(reducer, initialState);
   const normalizedDescriptionWords = useSelector(
     eventsSlice.selectors.normalizedDescriptionWords,
   );
   const dateNow = new Date();
-  const [dateTo, setDateTo] = React.useState(roundDateUp(dateNow));
-  const [dateFrom, setDateFrom] = React.useState(
+  const [dateTo, setDateTo] = useState(roundDateUp(dateNow));
+  const [dateFrom, setDateFrom] = useState(
     roundDateDown(new Date(moods.allIds[0])),
   );
 
