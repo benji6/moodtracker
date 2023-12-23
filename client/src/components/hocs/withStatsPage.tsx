@@ -1,4 +1,5 @@
 import { Paper, Spinner } from "eri";
+import { ComponentType } from "react";
 import GetStartedCta from "../shared/GetStartedCta";
 import RedirectHome from "../shared/RedirectHome";
 import { createDateFromLocalDateString } from "../../utils";
@@ -26,7 +27,7 @@ export default function withStatsPage({
   addPeriod(date: number | Date, amount: number): Date;
   adjustDate?: (date: Date) => Date;
   dateRegex?: RegExp;
-  Component: React.ComponentType<Props>;
+  Component: ComponentType<Props>;
 }) {
   return function WithStatsPage(
     props: Omit<

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LOCATION_MAP_HEIGHT, LOCATION_MAP_WIDTH } from "./constants";
 import Marker from "./Marker";
+import { ReactNode } from "react";
 import { feature } from "topojson-client";
 import { path } from "./utils";
 import worldTopoJson from "./world-topojson.json";
@@ -13,7 +14,7 @@ const features: any[] = (
 ).features;
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function LocationMap({ children }: Props) {

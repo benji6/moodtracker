@@ -1,6 +1,6 @@
 import "./style.css";
-import * as ReactDOM from "react-dom";
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 interface Props {
   enabled: boolean;
@@ -42,7 +42,7 @@ export default function Dimmer({ enabled, onUndim }: Props) {
     };
   }, [onUndim]);
 
-  return ReactDOM.createPortal(
+  return createPortal(
     // Neither eslint rule is relevant in this case
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div

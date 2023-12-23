@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Pagination, Paper } from "eri";
 import {
   createDateFromLocalDateString,
@@ -11,6 +10,7 @@ import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { addYears } from "date-fns";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 import { yearFormatter } from "../../../formatters/dateTimeFormatters";
 
 const MAX_YEARS_PER_PAGE = 8;
@@ -19,7 +19,7 @@ export default function Years() {
   const normalizedAveragesByYear = useSelector(
     eventsSlice.selectors.normalizedAveragesByYear,
   );
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(
     normalizedAveragesByYear.allIds.length / MAX_YEARS_PER_PAGE,

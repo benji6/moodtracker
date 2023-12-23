@@ -1,8 +1,8 @@
-import * as React from "react";
 import { Button, Icon, Paper, TextField } from "eri";
 import { ERRORS, FIELDS } from "../../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { useRef, useState } from "react";
 import Location from "../../../shared/Location";
 import RedirectHome from "../../../shared/RedirectHome";
 import WeightDeleteDialog from "./WeightDeleteDialog";
@@ -14,13 +14,13 @@ import useKeyboardSave from "../../../hooks/useKeyboardSave";
 export default function EditWeight() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [error, setError] = React.useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>();
   const { id } = useParams();
   const weights = useSelector(eventsSlice.selectors.normalizedWeights);
-  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const [showNoUpdateError, setShowNoUpdateError] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [showNoUpdateError, setShowNoUpdateError] = useState(false);
 
-  const formRef = React.useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Pagination, Paper } from "eri";
 import {
   createDateFromLocalDateString,
@@ -12,6 +11,7 @@ import { addMonths } from "date-fns";
 import eventsSlice from "../../../store/eventsSlice";
 import { monthYearFormatter } from "../../../formatters/dateTimeFormatters";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const MAX_MONTHS_PER_PAGE = 12;
 
@@ -19,7 +19,7 @@ export default function Months() {
   const normalizedAveragesByMonth = useSelector(
     eventsSlice.selectors.normalizedAveragesByMonth,
   );
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(
     normalizedAveragesByMonth.allIds.length / MAX_MONTHS_PER_PAGE,

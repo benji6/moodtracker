@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Pagination, Paper } from "eri";
 import {
   WEEK_OPTIONS,
@@ -15,6 +14,7 @@ import MoodCell from "../../shared/MoodCell";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const MAX_WEEKS_PER_PAGE = 8;
 
@@ -22,7 +22,7 @@ export default function Weeks() {
   const normalizedAveragesByWeek = useSelector(
     eventsSlice.selectors.normalizedAveragesByWeek,
   );
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(
     normalizedAveragesByWeek.allIds.length / MAX_WEEKS_PER_PAGE,

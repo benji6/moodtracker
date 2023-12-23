@@ -1,6 +1,7 @@
 import { MOOD_EXTENT, TIME } from "./constants";
 import { NormalizedMeditations, NormalizedMoods } from "./types";
 import { addDays, getDay, set } from "date-fns";
+import { ComponentProps } from "react";
 import { Icon } from "eri";
 import { captureException } from "./sentry";
 import { interpolateHcl } from "d3-interpolate";
@@ -213,11 +214,11 @@ export const getWeatherDisplayData = ({
   isDaytime: boolean;
   weatherId: number;
 }): {
-  iconName: React.ComponentProps<typeof Icon>["name"];
+  iconName: ComponentProps<typeof Icon>["name"];
   label: string;
   weatherColor: string;
 } => {
-  let iconName: React.ComponentProps<typeof Icon>["name"] = "cloud";
+  let iconName: ComponentProps<typeof Icon>["name"] = "cloud";
   let label = "Clouds";
   let weatherColor = "var(--color-balance-more)";
 

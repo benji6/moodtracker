@@ -1,7 +1,7 @@
-import * as React from "react";
 import { Button, Icon, Paper, TextField } from "eri";
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
+import { useRef, useState } from "react";
 import LiveLocation from "../../shared/LiveLocation";
 import { Weight } from "../../../types";
 import deviceSlice from "../../../store/deviceSlice";
@@ -12,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 export default function AddWeight() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [error, setError] = React.useState<string | undefined>();
+  const [error, setError] = useState<string | undefined>();
   const geolocation = useSelector(deviceSlice.selectors.geolocation);
-  const formRef = React.useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;

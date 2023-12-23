@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useRef } from "react";
 
 let isMetaPressed = false;
 
@@ -13,11 +13,11 @@ window.addEventListener("keyup", (e) => {
 });
 
 export default function useKeyboardSave(callback: () => void) {
-  const savedCallback = React.useRef(callback);
-  React.useEffect(() => {
+  const savedCallback = useRef(callback);
+  useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (
         (e.ctrlKey || isMetaPressed) &&

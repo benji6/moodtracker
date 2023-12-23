@@ -1,12 +1,12 @@
-import * as React from "react";
+import { ComponentType, useEffect } from "react";
 
 interface Props {
-  Component: React.ComponentType;
+  Component: ComponentType;
   title: string;
 }
 
 export default function Page({ Component, title, ...rest }: Props) {
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = `MoodTracker - ${title}`;
   }, [title]);
   return <Component {...rest} />;
