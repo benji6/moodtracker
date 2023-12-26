@@ -37,6 +37,7 @@ events.sort(key=operator.itemgetter("createdAt"))
 categories = {
     "meditations": OrderedDict(),
     "moods": OrderedDict(),
+    "sleeps": OrderedDict(),
     "weights": OrderedDict(),
 }
 for event in events:
@@ -69,6 +70,7 @@ def compute_breakdown(get_key):
                 "events": 1,
                 "meditations": [],
                 "moods": [],
+                "sleeps": [],
                 "weights": [],
                 "userIds": {event["userId"]},
             }
@@ -81,6 +83,10 @@ def compute_breakdown(get_key):
         stats = results.get(get_key(k))
         stats["moods"].append(int(v["mood"]))
 
+    for k, v in categories["sleeps"].items():
+        stats = results.get(get_key(k))
+        stats["sleeps"].append(int(v["minutesSlept"]))
+
     for k, v in categories["weights"].items():
         stats = results.get(get_key(k))
         stats["weights"].append(int(v["value"]))
@@ -89,6 +95,7 @@ def compute_breakdown(get_key):
         event_counts = {}
         event_counts["meditations"] = len(v["meditations"])
         event_counts["moods"] = len(v["moods"])
+        event_counts["sleeps"] = len(v["sleeps"])
         event_counts["weights"] = len(v["weights"])
         event_counts["total"] = v["events"]
         v["eventCounts"] = event_counts
@@ -102,6 +109,7 @@ def compute_breakdown(get_key):
         del v["meditations"]
         del v["moods"]
         del v["userIds"]
+        del v["sleeps"]
         del v["weights"]
 
     return results
