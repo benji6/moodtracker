@@ -2,6 +2,7 @@ import {
   EventTypeCategories,
   Meditation,
   Mood,
+  Sleep,
   Weight,
 } from "../../../../types";
 import { Button } from "eri";
@@ -9,7 +10,11 @@ import { formatIsoDateInLocalTimezone } from "../../../../utils";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
 
-type DenormalizedTrackedCatergories = Meditation[] | Mood[] | Weight[];
+type DenormalizedTrackedCatergories =
+  | Meditation[]
+  | Mood[]
+  | Sleep[]
+  | Weight[];
 
 const createFilename = (
   dataType: EventTypeCategories,

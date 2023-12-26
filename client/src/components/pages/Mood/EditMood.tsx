@@ -1,18 +1,17 @@
 import { Button, Icon, Paper, RadioButton, TextArea, TextField } from "eri";
-import { ERRORS, FIELDS } from "../../../../constants";
+import { ERRORS, FIELDS } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import Location from "../../../shared/Location";
-import MoodDeleteDialog from "./MoodDeleteDialog";
-import RedirectHome from "../../../shared/RedirectHome";
-import { UpdateMood } from "../../../../types";
-import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../store/eventsSlice";
-import { formatDistanceToNow } from "date-fns";
-import { moodToColor } from "../../../../utils";
-import useDarkMode from "../../../hooks/useDarkMode";
-import useKeyboardSave from "../../../hooks/useKeyboardSave";
+import DeleteEventDialog from "../../shared/DeleteEventDialog";
+import Location from "../../shared/Location";
+import RedirectHome from "../../shared/RedirectHome";
+import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
+import { UpdateMood } from "../../../types";
+import eventsSlice from "../../../store/eventsSlice";
+import { moodToColor } from "../../../utils";
+import useDarkMode from "../../hooks/useDarkMode";
+import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditMood() {
   const navigate = useNavigate();
@@ -30,6 +29,8 @@ export default function EditMood() {
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
+    setShowNoUpdateError(false);
+
     const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
     const descriptionValue = descriptionEl.value;
     const explorationValue: string = formEl[FIELDS.exploration.name].value;
@@ -78,28 +79,16 @@ export default function EditMood() {
   const mood = moods.byId[id];
   if (!mood) return <RedirectHome />;
 
-  const createdDate = new Date(id);
-  const updatedDate = mood.updatedAt ? new Date(mood.updatedAt) : undefined;
+  const dateCreated = new Date(id);
 
   return (
     <Paper.Group>
       <Paper>
         <h2>Edit mood</h2>
-        <p>
-          <small>
-            Created: {dateTimeFormatter.format(createdDate)} (
-            {formatDistanceToNow(createdDate)} ago)
-          </small>
-          {updatedDate && (
-            <>
-              <br />
-              <small>
-                Last updated: {dateTimeFormatter.format(updatedDate)} (
-                {formatDistanceToNow(updatedDate)} ago)
-              </small>
-            </>
-          )}
-        </p>
+        <TimeDisplayForEditEventForm
+          dateCreated={dateCreated}
+          dateUpdated={mood.updatedAt ? new Date(mood.updatedAt) : undefined}
+        />
         <form
           noValidate
           onSubmit={(e) => {
@@ -151,13 +140,14 @@ export default function EditMood() {
             </Button>
           </Button.Group>
         </form>
-        <MoodDeleteDialog
+        <DeleteEventDialog
+          eventType="mood"
           id={id}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}
         />
       </Paper>
-      {mood.location && <Location date={createdDate} {...mood.location} />}
+      {mood.location && <Location date={dateCreated} {...mood.location} />}
     </Paper.Group>
   );
 }

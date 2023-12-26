@@ -251,6 +251,12 @@ export default function Usage() {
               formatAsPercentageOfMaus(data.usage.meditationMAUs),
             ],
             [
+              "Active users who have logged a sleep over the last 30 days",
+              data.usage.sleepMAUs
+                ? formatAsPercentageOfMaus(data.usage.sleepMAUs)
+                : 0,
+            ],
+            [
               "Active users who have logged a weight over the last 30 days",
               formatAsPercentageOfMaus(data.usage.weightMAUs),
             ],

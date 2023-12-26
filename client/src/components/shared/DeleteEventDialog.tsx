@@ -1,32 +1,39 @@
 import { Button, Dialog, Icon } from "eri";
-import eventsSlice from "../../../../store/eventsSlice";
+import { EventTypeCategories } from "../../types";
+import eventsSlice from "../../store/eventsSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
+  eventType: EventTypeCategories extends `${infer Prefix}s` ? Prefix : never;
   id: string;
   onClose(): void;
   open: boolean;
 }
 
-export default function MoodDeleteDialog({ id, onClose, open }: Props) {
+export default function DeleteEventDialog({
+  eventType,
+  id,
+  onClose,
+  open,
+}: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return (
-    <Dialog onClose={onClose} open={open} title="Delete mood?">
+    <Dialog onClose={onClose} open={open} title={`Delete ${eventType}?`}>
       <Button.Group>
         <Button
           danger
           onClick={() => {
             dispatch(
               eventsSlice.actions.add({
-                type: "v1/moods/delete",
+                type: `v1/${eventType}s/delete`,
                 createdAt: new Date().toISOString(),
                 payload: id,
               }),
             );
-            navigate("/");
+            navigate(`/${eventType}/log`);
           }}
         >
           <Icon margin="end" name="trash" />

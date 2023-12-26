@@ -6,12 +6,14 @@ import {
 } from "react-router-dom";
 import About from "./pages/About";
 import AddMood from "./pages/Mood/AddMood";
+import AddSleep from "./pages/Sleep/AddSleep";
 import AddWeight from "./pages/Weight/AddWeight";
 import Blog from "./pages/Blog";
 import ChangeEmail from "./pages/Settings/ChangeEmail";
 import ChangePassword from "./pages/Settings/ChangePassword";
 import Day from "./pages/Stats/Day";
 import EditMood from "./pages/Mood/EditMood";
+import EditSleep from "./pages/Sleep/EditSleep";
 import EditWeight from "./pages/Weight/EditWeight";
 import Explore from "./pages/Stats/Explore";
 import Export from "./pages/Settings/Export";
@@ -35,6 +37,7 @@ import ResetPassword from "./pages/ResetPassword";
 import SeeAlso from "./pages/SeeAlso";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import SleepLog from "./pages/Sleep/SleepLog";
 import { Spinner } from "eri";
 import Usage from "./pages/About/Usage";
 import Verify from "./pages/Verify";
@@ -111,6 +114,21 @@ function Root() {
                       />
                     }
                     path="timer"
+                  />
+                </Route>
+                <Route path="/sleep">
+                  <Route element={<RedirectHome />} path="" />
+                  <Route
+                    element={<Page Component={AddSleep} title="Add sleep" />}
+                    path="add"
+                  />
+                  <Route
+                    element={<Page Component={EditSleep} title="Edit sleep" />}
+                    path="edit/:id"
+                  />
+                  <Route
+                    element={<Page Component={SleepLog} title="Sleep log" />}
+                    path="log"
                   />
                 </Route>
                 <Route path="/weight">

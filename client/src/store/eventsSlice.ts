@@ -5,6 +5,7 @@ import {
   EventTypeTuple,
   NormalizedMeditations,
   NormalizedMoods,
+  NormalizedSleeps,
   NormalizedWeights,
 } from "../types";
 import {
@@ -66,15 +67,18 @@ const trackedCategoriesSelector = createSelector(
   ): {
     meditations: NormalizedMeditations;
     moods: NormalizedMoods;
+    sleeps: NormalizedSleeps;
     weights: NormalizedWeights;
   } => {
     const normalizedCategories: {
       meditations: NormalizedMeditations;
       moods: NormalizedMoods;
+      sleeps: NormalizedSleeps;
       weights: NormalizedWeights;
     } = {
       meditations: { allIds: [], byId: {} },
       moods: { allIds: [], byId: {} },
+      sleeps: { allIds: [], byId: {} },
       weights: { allIds: [], byId: {} },
     };
 
@@ -137,17 +141,22 @@ const trackedCategoriesSelector = createSelector(
 
 const normalizedMeditationsSelector = createSelector(
   trackedCategoriesSelector,
-  ({ meditations }): NormalizedMeditations => meditations,
+  ({ meditations }) => meditations,
 );
 
 const normalizedMoodsSelector = createSelector(
   trackedCategoriesSelector,
-  ({ moods }): NormalizedMoods => moods,
+  ({ moods }) => moods,
+);
+
+const normalizedSleepsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ sleeps }) => sleeps,
 );
 
 const normalizedWeightsSelector = createSelector(
   trackedCategoriesSelector,
-  ({ weights }): NormalizedWeights => weights,
+  ({ weights }) => weights,
 );
 
 const makeNormalizedAveragesByPeriodSelector = (
@@ -210,6 +219,17 @@ const getLastEvent = (normalizedState: EventsState): AppEvent => {
   const lastId = normalizedState.allIds.at(-1)!;
   return normalizedState.byId[lastId];
 };
+
+const denormalize = <TrackedCategory>({
+  allIds,
+  byId,
+}: {
+  allIds: string[];
+  byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
+}) => allIds.map((id) => ({ ...byId[id], createdAt: id }));
+
+const normalizedStateNotEmpty = ({ allIds }: { allIds: string[] }) =>
+  Boolean(allIds.length);
 
 const initialState: EventsState = {
   allIds: [],
@@ -320,28 +340,23 @@ export default createSlice({
     ),
     denormalizedMeditations: createSelector(
       normalizedMeditationsSelector,
-      ({ allIds, byId }) =>
-        allIds.map((id) => ({ ...byId[id], createdAt: id })),
+      denormalize,
     ),
-    denormalizedMoods: createSelector(
-      normalizedMoodsSelector,
-      ({ allIds, byId }) =>
-        allIds.map((id) => ({ ...byId[id], createdAt: id })),
-    ),
-    denormalizedWeights: createSelector(
-      normalizedWeightsSelector,
-      ({ allIds, byId }) =>
-        allIds.map((id) => ({ ...byId[id], createdAt: id })),
-    ),
-    hasMoods: createSelector(normalizedMoodsSelector, ({ allIds }) =>
-      Boolean(allIds.length),
-    ),
+    denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
+    denormalizedSleeps: createSelector(normalizedSleepsSelector, denormalize),
+    denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
+    hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
     hasMeditations: createSelector(
       normalizedMeditationsSelector,
-      ({ allIds }) => Boolean(allIds.length),
+      normalizedStateNotEmpty,
     ),
-    hasWeights: createSelector(normalizedWeightsSelector, ({ allIds }) =>
-      Boolean(allIds.length),
+    hasSleeps: createSelector(
+      normalizedSleepsSelector,
+      normalizedStateNotEmpty,
+    ),
+    hasWeights: createSelector(
+      normalizedWeightsSelector,
+      normalizedStateNotEmpty,
     ),
 
     // some code may depend on the fact that the array
@@ -379,6 +394,19 @@ export default createSlice({
     ),
     normalizedMeditations: normalizedMeditationsSelector,
     normalizedMoods: normalizedMoodsSelector,
+    normalizedSleeps: normalizedSleepsSelector,
+    normalizedSleepsSortedByDateAwoke: createSelector(
+      normalizedSleepsSelector,
+      (normalizedSleeps) => ({
+        ...normalizedSleeps,
+        // sorting is stable so 2 events with same dateAwoke will be ordered by event id
+        allIds: [...normalizedSleeps.allIds].sort((a, b) => {
+          const dateAwokeA = normalizedSleeps.byId[a].dateAwoke;
+          const dateAwokeB = normalizedSleeps.byId[b].dateAwoke;
+          return dateAwokeA > dateAwokeB ? 1 : dateAwokeA < dateAwokeB ? -1 : 0;
+        }),
+      }),
+    ),
     normalizedWeights: normalizedWeightsSelector,
     normalizedAveragesByDay: makeNormalizedAveragesByPeriodSelector(
       eachDayOfInterval,

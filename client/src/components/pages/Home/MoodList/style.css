@@ -1,0 +1,6 @@
+.mood-list__add-links {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  justify-content: center;
+}

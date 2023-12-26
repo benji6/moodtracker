@@ -1,15 +1,14 @@
 import { Button, Icon, Paper, TextField } from "eri";
-import { ERRORS, FIELDS } from "../../../../constants";
+import { ERRORS, FIELDS } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import Location from "../../../shared/Location";
-import RedirectHome from "../../../shared/RedirectHome";
-import WeightDeleteDialog from "./WeightDeleteDialog";
-import { dateTimeFormatter } from "../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../store/eventsSlice";
-import { formatDistanceToNow } from "date-fns";
-import useKeyboardSave from "../../../hooks/useKeyboardSave";
+import DeleteEventDialog from "../../shared/DeleteEventDialog";
+import Location from "../../shared/Location";
+import RedirectHome from "../../shared/RedirectHome";
+import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
+import eventsSlice from "../../../store/eventsSlice";
+import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditWeight() {
   const navigate = useNavigate();
@@ -24,6 +23,8 @@ export default function EditWeight() {
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
+    setShowNoUpdateError(false);
+
     const inputEl: HTMLInputElement = formEl[FIELDS.weight.name];
     const { valueAsNumber } = inputEl;
 
@@ -58,28 +59,18 @@ export default function EditWeight() {
   const weight = weights.byId[id];
   if (!weight) return <RedirectHome />;
 
-  const createdDate = new Date(id);
-  const updatedDate = weight.updatedAt ? new Date(weight.updatedAt) : undefined;
+  const dateCreated = new Date(id);
 
   return (
     <Paper.Group>
       <Paper>
         <h2>Edit weight</h2>
-        <p>
-          <small>
-            Created: {dateTimeFormatter.format(createdDate)} (
-            {formatDistanceToNow(createdDate)} ago)
-          </small>
-          {updatedDate && (
-            <>
-              <br />
-              <small>
-                Last updated: {dateTimeFormatter.format(updatedDate)} (
-                {formatDistanceToNow(updatedDate)} ago)
-              </small>
-            </>
-          )}
-        </p>
+        <TimeDisplayForEditEventForm
+          dateCreated={dateCreated}
+          dateUpdated={
+            weight.updatedAt ? new Date(weight.updatedAt) : undefined
+          }
+        />
         <form
           noValidate
           onSubmit={(e) => {
@@ -115,13 +106,14 @@ export default function EditWeight() {
             </Button>
           </Button.Group>
         </form>
-        <WeightDeleteDialog
+        <DeleteEventDialog
+          eventType="weight"
           id={id}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}
         />
       </Paper>
-      {weight.location && <Location date={createdDate} {...weight.location} />}
+      {weight.location && <Location date={dateCreated} {...weight.location} />}
     </Paper.Group>
   );
 }

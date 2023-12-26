@@ -125,6 +125,7 @@ def handler(event, context):
     user_ids_in_current_30_day_window = set()
     user_ids_in_previous_30_day_window = set()
     weight_MAU_ids = set()
+    sleep_MAU_ids = set()
     for event in events:
         event["createdAt"] = datetime.fromisoformat(event["createdAt"][:-1]).replace(
             tzinfo=timezone.utc
@@ -144,6 +145,9 @@ def handler(event, context):
                 meditations[event["createdAt"]] = event["payload"]
             elif event["type"] == "v1/meditations/delete":
                 meditations.pop(event["payload"], None)
+
+            elif event["type"] == "v1/sleeps/create":
+                sleep_MAU_ids.add(event["userId"])
 
             elif event["type"] == "v1/weights/create":
                 weight_MAU_ids.add(event["userId"])
@@ -215,6 +219,7 @@ def handler(event, context):
                     1,
                 ),
                 "meditationMAUs": len(meditation_MAU_ids),
+                "sleepMAUs": len(sleep_MAU_ids),
                 "totalWebPushTokens": web_push_tokens_table.item_count,
                 "usersWithWeeklyEmails": weekly_emails_table.item_count,
                 "weightMAUs": len(weight_MAU_ids),

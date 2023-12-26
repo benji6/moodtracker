@@ -24,6 +24,7 @@ interface Props {
 export default function Nav({ handleNavClose, open }: Props) {
   const hasMoods = useSelector(eventsSlice.selectors.hasMoods);
   const hasMeditations = useSelector(eventsSlice.selectors.hasMeditations);
+  const hasSleeps = useSelector(eventsSlice.selectors.hasSleeps);
   const hasWeights = useSelector(eventsSlice.selectors.hasWeights);
   const userEmail = useSelector(userSlice.selectors.email);
   const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
@@ -92,20 +93,22 @@ export default function Nav({ handleNavClose, open }: Props) {
               <EriNav.SubList
                 heading={
                   <span>
-                    <Icon margin="end" name="bell" />
-                    Meditation
+                    <Icon margin="end" name="moon" />
+                    Sleep
                   </span>
                 }
               >
-                <EriNav.Link onClick={handleNavClose} to="/meditation">
+                <EriNav.Link onClick={handleNavClose} to="/sleep/add">
                   <Icon margin="end" name="plus" />
                   Add
                 </EriNav.Link>
-                {hasMeditations && (
-                  <EriNav.Link onClick={handleNavClose} to="/meditation/log">
-                    <Icon margin="end" name="book" />
-                    Log
-                  </EriNav.Link>
+                {hasSleeps && (
+                  <>
+                    <EriNav.Link onClick={handleNavClose} to="/sleep/log">
+                      <Icon margin="end" name="book" />
+                      Log
+                    </EriNav.Link>
+                  </>
                 )}
               </EriNav.SubList>
               <EriNav.SubList
@@ -127,6 +130,25 @@ export default function Nav({ handleNavClose, open }: Props) {
                       Log
                     </EriNav.Link>
                   </>
+                )}
+              </EriNav.SubList>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <Icon margin="end" name="bell" />
+                    Meditation
+                  </span>
+                }
+              >
+                <EriNav.Link onClick={handleNavClose} to="/meditation">
+                  <Icon margin="end" name="plus" />
+                  Add
+                </EriNav.Link>
+                {hasMeditations && (
+                  <EriNav.Link onClick={handleNavClose} to="/meditation/log">
+                    <Icon margin="end" name="book" />
+                    Log
+                  </EriNav.Link>
                 )}
               </EriNav.SubList>
               <EriNav.SubList

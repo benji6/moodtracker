@@ -62,6 +62,7 @@ export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,
   millisecondsPerDay: 86400000,
+  minutesPerHour: 60,
   secondsPerDay: 86400,
   secondsPerHour: 3600,
   secondsPerMinute: 60,
@@ -73,6 +74,7 @@ export const TEST_IDS = (() => {
     "addMoodPage",
     "addMoodRadioButton",
     "addMoodSubmitButton",
+    "dateAwokeInput",
     "descriptionInput",
     "deviceSpecificSettingsDialog",
     "meditatePage",
@@ -88,7 +90,11 @@ export const TEST_IDS = (() => {
     "signInLink",
     "signOutButton",
     "signOutConfirmButton",
+    "sleepAddPage",
+    "sleepAddSubmitButton",
+    "sleepCardValue",
     "statsOverviewPage",
+    "timeSleptInput",
     "weightAddPage",
     "weightAddSubmitButton",
     "weightCardTime",
@@ -103,6 +109,12 @@ export const TEST_IDS = (() => {
 })();
 
 export const FIELDS = {
+  dateAwoke: {
+    "data-test-id": TEST_IDS.dateAwokeInput,
+    label: "Date you woke up",
+    name: "date-awoke",
+    type: "date",
+  },
   description: {
     autoComplete: "on",
     "data-test-id": TEST_IDS.descriptionInput,
@@ -124,6 +136,14 @@ export const FIELDS = {
   mood: {
     label: "Mood",
     name: "mood",
+  },
+  timeSlept: {
+    "data-test-id": TEST_IDS.timeSleptInput,
+    label: "Time slept",
+    min: "00:01",
+    name: "time-slept",
+    supportiveText: "How long did you sleep in hours and minutes?",
+    type: "time",
   },
   weight: {
     "data-test-id": TEST_IDS.weightValueInput,

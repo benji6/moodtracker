@@ -1,12 +1,13 @@
+import "./style.css";
 import { Button, Card, Icon, Pagination, Paper } from "eri";
 import { Link, useNavigate } from "react-router-dom";
-import { createDateFromLocalDateString, mapRight } from "../../../utils";
-import MoodCard from "../../shared/MoodCard";
-import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
-import { TEST_IDS } from "../../../constants";
+import { createDateFromLocalDateString, mapRight } from "../../../../utils";
+import MoodCard from "../../../shared/MoodCard";
+import MoodGradientForPeriod from "../../Stats/MoodGradientForPeriod";
+import { TEST_IDS } from "../../../../constants";
 import { addDays } from "date-fns";
-import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../store/eventsSlice";
+import { dateWeekdayFormatter } from "../../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
@@ -30,10 +31,14 @@ export default function MoodList() {
     <>
       <Paper data-test-id={TEST_IDS.moodList}>
         <h2>Home</h2>
-        <Button.Group>
+        <div className="mood-list__add-links">
           <Button onClick={() => navigate("/add")}>
             <Icon margin="end" name="heart" />
             Add mood
+          </Button>
+          <Button onClick={() => navigate("/sleep/add")}>
+            <Icon margin="end" name="moon" />
+            Add sleep
           </Button>
           <Button onClick={() => navigate("/weight/add")}>
             <Icon margin="end" name="weight" />
@@ -43,7 +48,7 @@ export default function MoodList() {
             <Icon margin="end" name="bell" />
             Meditate
           </Button>
-        </Button.Group>
+        </div>
       </Paper>
       {moodsGroupedByDay.length ? (
         mapRight(

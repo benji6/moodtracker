@@ -7,6 +7,7 @@ export type NormalizedTrackedCategory<TrackedCategory> = {
 
 export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
+export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
 export type NormalizedWeights = NormalizedTrackedCategory<Weight>;
 
 export interface Meditation {
@@ -31,7 +32,6 @@ export interface Mood {
   location?: DeviceGeolocation;
   mood: number;
 }
-
 export interface UpdateMood {
   description?: string;
   exploration?: string;
@@ -43,14 +43,25 @@ export interface Weight {
   location?: DeviceGeolocation;
   value: number;
 }
-
 export interface UpdateWeight {
   id: string;
   value: number;
 }
 
+export interface Sleep {
+  dateAwoke: string;
+  minutesSlept: number;
+}
+export interface UpdateSleep extends Sleep {
+  id: string;
+}
+
 type EventTypeVersions = "v1";
-export type EventTypeCategories = "meditations" | "moods" | "weights";
+export type EventTypeCategories =
+  | "meditations"
+  | "moods"
+  | "sleeps"
+  | "weights";
 type EventTypeOperations = "create" | "update" | "delete";
 type EventType =
   `${EventTypeVersions}/${EventTypeCategories}/${EventTypeOperations}`;
@@ -70,6 +81,7 @@ type PayloadEvent<Type extends EventType, Payload> = {
 export type AppCreateEvent =
   | PayloadEvent<"v1/meditations/create", Meditation>
   | PayloadEvent<"v1/moods/create", Mood>
+  | PayloadEvent<"v1/sleeps/create", Sleep>
   | PayloadEvent<"v1/weights/create", Weight>;
 export type AppEventWithLocation =
   | PayloadEvent<
@@ -81,6 +93,7 @@ export type AppEventWithLocation =
 
 export type AppUpdateEvent =
   | PayloadEvent<"v1/moods/update", UpdateMood>
+  | PayloadEvent<"v1/sleeps/update", UpdateSleep>
   | PayloadEvent<"v1/weights/update", UpdateWeight>;
 
 export type AppEvent =
@@ -88,6 +101,7 @@ export type AppEvent =
   | AppUpdateEvent
   | PayloadEvent<"v1/meditations/delete", string>
   | PayloadEvent<"v1/moods/delete", string>
+  | PayloadEvent<"v1/sleeps/delete", string>
   | PayloadEvent<"v1/weights/delete", string>;
 
 export interface Settings {
@@ -130,6 +144,7 @@ export interface Usage {
   MAUs: number;
   meanMoodInLast7Days: number;
   meditationMAUs: number;
+  sleepMAUs?: number;
   totalWebPushTokens?: number;
   usersWithWeeklyEmails: number;
   WAUs: number;
