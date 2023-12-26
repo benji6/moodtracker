@@ -1,6 +1,7 @@
 .m-sleep-card {
   align-items: center;
   display: grid;
+  gap: var(--space-2);
   grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
+  text-align: center;
 }
