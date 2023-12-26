@@ -39,6 +39,7 @@ describe("sleep", () => {
 
     test("no input", async () => {
       await dateAwokeInput.evaluate((el) => (el.value = ""));
+      await timeSleptInput.evaluate((el) => (el.value = ""));
       await submitButton.evaluate((el) => el.click());
 
       const errors = await page.$$('[data-eri-id="field-error"]');

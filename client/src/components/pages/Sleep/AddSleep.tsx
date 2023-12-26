@@ -59,7 +59,11 @@ export default function AddSleep() {
           }}
           ref={formRef}
         >
-          <TextField {...FIELDS.timeSlept} error={timeSleptError} />
+          <TextField
+            {...FIELDS.timeSlept}
+            defaultValue="00:00"
+            error={timeSleptError}
+          />
           <TextField
             {...FIELDS.dateAwoke}
             defaultValue={isoDateStringNow}
