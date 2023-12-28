@@ -5,10 +5,10 @@ import {
 } from "../../../../utils";
 import MoodSummary from "../../../shared/MoodSummary";
 import { Paper } from "eri";
+import { RootState } from "../../../../store";
 import eventsSlice from "../../../../store/eventsSlice";
 import useMoodsInPeriod from "../../../hooks/useMoodsInPeriod";
 import { useSelector } from "react-redux";
-import useWeightsInPeriod from "../../../hooks/useWeightsInPeriod";
 
 interface Props {
   dateFrom: Date;
@@ -18,8 +18,8 @@ interface Props {
 export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
   const moodValues = useMoodsInPeriod(dateFrom, dateTo).map(({ mood }) => mood);
-  const weightsInPeriod = useWeightsInPeriod(dateFrom, dateTo).map(
-    ({ value }) => value,
+  const meanWeightInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.meanWeightInPeriod(state, dateFrom, dateTo),
   );
   const secondsMeditated = computeSecondsMeditatedInInterval(
     meditations,
@@ -30,14 +30,16 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   return (
     <Paper>
       <h3>Summary</h3>
-      {!moodValues.length && !moodValues.length && !weightsInPeriod.length && (
-        <p>No data for the selected period</p>
-      )}
+      {!moodValues.length &&
+        !moodValues.length &&
+        meanWeightInPeriod === undefined && (
+          <p>No data for the selected period</p>
+        )}
       <MoodSummary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: computeMeanSafe(moodValues),
-          meanWeight: computeMeanSafe(weightsInPeriod),
+          meanWeight: meanWeightInPeriod,
           secondsMeditated,
           standardDeviation: computeStandardDeviation(moodValues),
           total: moodValues.length,

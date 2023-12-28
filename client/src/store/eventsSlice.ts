@@ -24,9 +24,11 @@ import {
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import {
   computeAverageMoodInInterval,
+  computeMeanSafe,
   computeSecondsMeditatedInInterval,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
+  getIdsInInterval,
   getNormalizedTagsFromDescription,
 } from "../utils";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
@@ -357,6 +359,18 @@ export default createSlice({
     hasWeights: createSelector(
       normalizedWeightsSelector,
       normalizedStateNotEmpty,
+    ),
+
+    meanWeightInPeriod: createSelector(
+      normalizedWeightsSelector,
+      (_state, dateFrom: Date) => dateFrom,
+      (_state, _dateFrom: Date, dateTo: Date) => dateTo,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
+        computeMeanSafe(
+          getIdsInInterval(allIds, dateFrom, dateTo)
+            .map((id) => byId[id])
+            .map(({ value }) => value),
+        ),
     ),
 
     // some code may depend on the fact that the array

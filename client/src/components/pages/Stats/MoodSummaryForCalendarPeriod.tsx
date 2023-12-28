@@ -1,15 +1,14 @@
 import {
-  computeMeanSafe,
   computeSecondsMeditatedInInterval,
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
 } from "../../../utils";
 import MoodSummary from "../../shared/MoodSummary";
 import { Paper } from "eri";
+import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
 import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import { useSelector } from "react-redux";
-import useWeightsInPeriod from "../../hooks/useWeightsInPeriod";
 
 interface Props {
   dates: [Date, Date, Date];
@@ -29,11 +28,11 @@ export default function MoodSummaryForCalendarPeriod({
 }: Props) {
   const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const weightsInPeriod = useWeightsInPeriod(date1, date2).map(
-    ({ value }) => value,
+  const meanWeightInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.meanWeightInPeriod(state, date1, date2),
   );
-  const weightsInPreviousPeriod = useWeightsInPeriod(date0, date1).map(
-    ({ value }) => value,
+  const meanWeightInPreviousPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.meanWeightInPeriod(state, date0, date1),
   );
 
   const firstMoodDate = new Date(moods.allIds[0]);
@@ -49,7 +48,7 @@ export default function MoodSummaryForCalendarPeriod({
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: normalizedAverages.byId[formatIsoDateInLocalTimezone(date1)],
-          meanWeight: computeMeanSafe(weightsInPeriod),
+          meanWeight: meanWeightInPeriod,
           secondsMeditated: computeSecondsMeditatedInInterval(
             meditations,
             date1,
@@ -69,7 +68,7 @@ export default function MoodSummaryForCalendarPeriod({
                 mean: normalizedAverages.byId[
                   formatIsoDateInLocalTimezone(date0)
                 ],
-                meanWeight: computeMeanSafe(weightsInPreviousPeriod),
+                meanWeight: meanWeightInPreviousPeriod,
                 secondsMeditated: computeSecondsMeditatedInInterval(
                   meditations,
                   date0,

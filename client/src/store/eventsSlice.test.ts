@@ -1487,6 +1487,78 @@ describe("eventsSlice", () => {
       ).toEqual(["🙂", "Bulbasaur", "Charmander", "Pikachu", "Squirtle"]);
     });
 
+    describe("meanWeightInPeriod", () => {
+      test("when there are no events", () => {
+        expect(
+          eventsSlice.selectors.meanWeightInPeriod(
+            initialState,
+            new Date("2020-01-01"),
+            new Date("2023-01-01"),
+          ),
+        ).toBe(undefined);
+      });
+
+      test("when there are no events that match the date range", () => {
+        expect(
+          eventsSlice.selectors.meanWeightInPeriod(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: ["2020-01-01T00:00:00.000Z"],
+                byId: {
+                  "2020-01-01T00:00:00.000Z": {
+                    createdAt: "2020-01-01T00:00:00.000Z",
+                    type: "v1/weights/create",
+                    payload: { value: 70 },
+                  },
+                },
+              },
+            },
+            new Date("2020-01-02"),
+            new Date("2023-01-01"),
+          ),
+        ).toBe(undefined);
+      });
+
+      test("when there are events that match the date range", () => {
+        expect(
+          eventsSlice.selectors.meanWeightInPeriod(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: [
+                  "2020-01-01T00:00:00.000Z",
+                  "2020-01-02T00:00:00.000Z",
+                  "2020-01-03T00:00:00.000Z",
+                ],
+                byId: {
+                  "2020-01-01T00:00:00.000Z": {
+                    createdAt: "2020-01-01T00:00:00.000Z",
+                    type: "v1/weights/create",
+                    payload: { value: 10 },
+                  },
+                  "2020-01-02T00:00:00.000Z": {
+                    createdAt: "2020-01-02T00:00:00.000Z",
+                    type: "v1/weights/create",
+                    payload: { value: 50 },
+                  },
+                  "2020-01-03T00:00:00.000Z": {
+                    createdAt: "2020-01-03T00:00:00.000Z",
+                    type: "v1/weights/create",
+                    payload: { value: 70 },
+                  },
+                },
+              },
+            },
+            new Date("2020-01-02"),
+            new Date("2023-01-01"),
+          ),
+        ).toBe(60);
+      });
+    });
+
     describe("moodIdsByDate", () => {
       test("when there are no events", () => {
         expect(eventsSlice.selectors.moodIdsByDate(initialState)).toEqual({});
