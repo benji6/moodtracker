@@ -1,5 +1,6 @@
 import { Chart, Paper } from "eri";
-import { createChartExtent, getEnvelopingIds } from "../../../utils";
+import { RootState } from "../../../store";
+import { createChartExtent } from "../../../utils";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
@@ -17,7 +18,9 @@ export default function WeightChartForPeriod({
   xLabels,
 }: Props) {
   const weights = useSelector(eventsSlice.selectors.normalizedWeights);
-  const envelopingIds = getEnvelopingIds(weights.allIds, dateFrom, dateTo);
+  const envelopingIds = useSelector((state: RootState) =>
+    eventsSlice.selectors.envelopingWeightIds(state, dateFrom, dateTo),
+  );
 
   if (envelopingIds.length < 2) return;
 

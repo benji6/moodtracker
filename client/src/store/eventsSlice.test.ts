@@ -2538,7 +2538,6 @@ describe("eventsSlice", () => {
                   type: "v1/moods/create",
                   payload: { mood: 4 },
                 },
-
                 "2022-07-25T00:00:00.000Z": {
                   createdAt: "2022-07-25T00:00:00.000Z",
                   type: "v1/moods/create",
@@ -2561,6 +2560,220 @@ describe("eventsSlice", () => {
           },
         }
       `);
+      });
+    });
+
+    describe("secondsMeditatedInPeriod", () => {
+      describe("when the dateFrom is after the dateTo", () => {
+        it("throws an error", () => {
+          expect(() =>
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              initialState,
+              new Date("2020-07-31T00:00:00.000Z"),
+              new Date("2020-07-30T00:00:00.000Z"),
+            ),
+          ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
+        });
+      });
+
+      describe("when there are 0 meditations", () => {
+        it("returns 0", () => {
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              initialState,
+              new Date("2020-07-30T00:00:00.000Z"),
+              new Date("2020-07-31T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+        });
+      });
+
+      describe("when there is 1 meditation", () => {
+        let state: RootState;
+
+        beforeEach(() => {
+          state = {
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": {
+                  createdAt: "2020-07-28T00:00:00.000Z",
+                  type: "v1/meditations/create",
+                  payload: { seconds: 120 },
+                },
+              },
+            },
+          };
+        });
+
+        it("returns the total seconds when the meditation is within the interval", () => {
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-28T00:00:00.000Z"),
+              new Date("2020-07-28T00:00:00.000Z"),
+            ),
+          ).toEqual(120);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-27T00:00:00.000Z"),
+              new Date("2020-07-28T00:00:00.000Z"),
+            ),
+          ).toEqual(120);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-28T00:00:00.000Z"),
+              new Date("2020-07-29T00:00:00.000Z"),
+            ),
+          ).toEqual(120);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-27T00:00:00.000Z"),
+              new Date("2020-07-29T00:00:00.000Z"),
+            ),
+          ).toEqual(120);
+        });
+
+        it("returns 0 when the meditation does not lie within the interval", () => {
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-25T00:00:00.000Z"),
+              new Date("2020-07-25T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-24T00:00:00.000Z"),
+              new Date("2020-07-25T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-30T00:00:00.000Z"),
+              new Date("2020-07-30T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-30T00:00:00.000Z"),
+              new Date("2020-07-31T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+        });
+      });
+
+      describe("when there are multiple meditations", () => {
+        let state: RootState;
+        let stateB: RootState;
+
+        beforeEach(() => {
+          state = {
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": {
+                  createdAt: "2020-07-28T00:00:00.000Z",
+                  type: "v1/meditations/create",
+                  payload: { seconds: 120 },
+                },
+                "2020-07-29T00:00:00.000Z": {
+                  createdAt: "2020-07-29T00:00:00.000Z",
+                  type: "v1/meditations/create",
+                  payload: { seconds: 180 },
+                },
+              },
+            },
+          };
+
+          stateB = {
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
+              byId: {
+                "2020-07-24T00:00:00.000Z": {
+                  createdAt: "2020-07-24T00:00:00.000Z",
+                  type: "v1/meditations/create",
+                  payload: { seconds: 60 },
+                },
+                "2020-07-28T00:00:00.000Z": {
+                  createdAt: "2020-07-28T00:00:00.000Z",
+                  type: "v1/meditations/create",
+                  payload: { seconds: 120 },
+                },
+              },
+            },
+          };
+        });
+
+        it("works with 2 meditations within the interval", () => {
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-28T00:00:00.000Z"),
+              new Date("2020-07-29T00:00:00.000Z"),
+            ),
+          ).toEqual(300);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-27T00:00:00.000Z"),
+              new Date("2020-07-29T00:00:00.000Z"),
+            ),
+          ).toEqual(300);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-28T00:00:00.000Z"),
+              new Date("2020-07-30T00:00:00.000Z"),
+            ),
+          ).toEqual(300);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              state,
+              new Date("2020-07-27T00:00:00.000Z"),
+              new Date("2020-08-02T00:00:00.000Z"),
+            ),
+          ).toEqual(300);
+        });
+
+        it("works with 2 meditations and only one in the interval", () => {
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              stateB,
+              new Date("2020-07-26T00:00:00.000Z"),
+              new Date("2020-08-02T00:00:00.000Z"),
+            ),
+          ).toEqual(120);
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              stateB,
+              new Date("2020-07-23T00:00:00.000Z"),
+              new Date("2020-07-24T00:00:00.000Z"),
+            ),
+          ).toEqual(60);
+        });
+
+        it("works with 2 meditations and both outside the interval", () => {
+          expect(
+            eventsSlice.selectors.secondsMeditatedInPeriod(
+              stateB,
+              new Date("2020-07-25T00:00:00.000Z"),
+              new Date("2020-07-27T00:00:00.000Z"),
+            ),
+          ).toEqual(0);
+        });
       });
     });
   });

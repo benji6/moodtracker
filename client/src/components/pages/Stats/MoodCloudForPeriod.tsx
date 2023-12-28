@@ -1,6 +1,8 @@
 import { Paper, SubHeading, WordCloud } from "eri";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
-import useMoodCloudWords from "../../hooks/useMoodCloudWords";
+import { RootState } from "../../../store";
+import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;
@@ -8,13 +10,11 @@ interface Props {
 }
 
 export default function MoodCloudForPeriod({ dateFrom, dateTo }: Props) {
-  const currentPeriodWords = useMoodCloudWords(dateFrom, dateTo);
+  const words = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodCloudWords(state, dateFrom, dateTo),
+  );
 
-  if (
-    !currentPeriodWords ||
-    Object.keys(currentPeriodWords).length < MINIMUM_WORD_CLOUD_WORDS
-  )
-    return;
+  if (!words || Object.keys(words).length < MINIMUM_WORD_CLOUD_WORDS) return;
 
   return (
     <Paper>
@@ -23,7 +23,7 @@ export default function MoodCloudForPeriod({ dateFrom, dateTo }: Props) {
       </h3>
       <WordCloud
         aria-label="Word cloud displaying mood descriptions"
-        words={currentPeriodWords}
+        words={words}
       />
     </Paper>
   );

@@ -14,12 +14,12 @@ import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
+import { RootState } from "../../../../store";
 import { TIME } from "../../../../constants";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import { dayMonthFormatter } from "../../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../../store/eventsSlice";
-import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 import { useReducer } from "react";
 import { useSelector } from "react-redux";
 
@@ -165,7 +165,9 @@ export default function Explore() {
   );
 
   const dateTo = addDays(localState.displayDateTo, 1);
-  const moodIdsInPeriod = useMoodIdsInPeriod(localState.dateFrom, dateTo);
+  const moodIdsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodIdsInPeriod(state, localState.dateFrom, dateTo),
+  );
 
   if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)

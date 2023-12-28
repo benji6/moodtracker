@@ -1,7 +1,7 @@
 import "./style.css";
+import { RootState } from "../../../../store";
 import eventsSlice from "../../../../store/eventsSlice";
 import { moodToColor } from "../../../../utils";
-import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -16,7 +16,9 @@ export default function MoodGradientForPeriod({ dateFrom, dateTo }: Props) {
   const fromTime = dateFrom.getTime();
   const toTime = dateTo.getTime();
   const timeInterval = toTime - fromTime;
-  const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
+  const envelopingMoodIds = useSelector((state: RootState) =>
+    eventsSlice.selectors.envelopingMoodIds(state, dateFrom, dateTo),
+  );
 
   if (envelopingMoodIds.length < 2) return;
 

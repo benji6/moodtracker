@@ -1,8 +1,8 @@
 import { MOOD_EXTENT, TIME } from "./constants";
-import { NormalizedMeditations, NormalizedMoods } from "./types";
 import { addDays, getDay, set } from "date-fns";
 import { ComponentProps } from "react";
 import { Icon } from "eri";
+import { NormalizedMoods } from "./types";
 import { captureException } from "./sentry";
 import { interpolateHcl } from "d3-interpolate";
 
@@ -105,16 +105,6 @@ export const computeMeanSafe = (xs: number[]): number | undefined => {
   let sum = 0;
   for (let i = 0; i < xs.length; i++) sum += xs[i];
   return sum / xs.length;
-};
-
-export const computeSecondsMeditatedInInterval = (
-  { allIds, byId }: NormalizedMeditations,
-  d0: Date,
-  d1: Date,
-): number => {
-  let sum = 0;
-  for (const id of getIdsInInterval(allIds, d0, d1)) sum += byId[id].seconds;
-  return sum;
 };
 
 export const computeStandardDeviation = (xs: number[]): number | undefined => {

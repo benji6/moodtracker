@@ -1,5 +1,4 @@
 import {
-  computeSecondsMeditatedInInterval,
   computeStandardDeviation,
   formatIsoDateInLocalTimezone,
 } from "../../../utils";
@@ -7,7 +6,6 @@ import MoodSummary from "../../shared/MoodSummary";
 import { Paper } from "eri";
 import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
-import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -26,7 +24,6 @@ export default function MoodSummaryForCalendarPeriod({
   normalizedAverages,
   periodType,
 }: Props) {
-  const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const meanWeightInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meanWeightInPeriod(state, date1, date2),
@@ -34,12 +31,22 @@ export default function MoodSummaryForCalendarPeriod({
   const meanWeightInPreviousPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meanWeightInPeriod(state, date0, date1),
   );
+  const secondsMeditatedInCurrentPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.secondsMeditatedInPeriod(state, date1, date2),
+  );
+  const secondsMeditatedInPreviousPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.secondsMeditatedInPeriod(state, date0, date1),
+  );
 
   const firstMoodDate = new Date(moods.allIds[0]);
   const showPrevious = date1 > firstMoodDate;
 
-  const moodValues = useMoodsInPeriod(date1, date2).map(({ mood }) => mood);
-  const prevMoodValues = useMoodsInPeriod(date0, date1).map(({ mood }) => mood);
+  const moodValues = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodsInPeriod(state, date1, date2),
+  ).map(({ mood }) => mood);
+  const prevMoodValues = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodsInPeriod(state, date0, date1),
+  ).map(({ mood }) => mood);
 
   return (
     <Paper>
@@ -49,11 +56,7 @@ export default function MoodSummaryForCalendarPeriod({
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: normalizedAverages.byId[formatIsoDateInLocalTimezone(date1)],
           meanWeight: meanWeightInPeriod,
-          secondsMeditated: computeSecondsMeditatedInInterval(
-            meditations,
-            date1,
-            date2,
-          ),
+          secondsMeditated: secondsMeditatedInCurrentPeriod,
           standardDeviation: computeStandardDeviation(moodValues),
           total: moodValues.length,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
@@ -69,11 +72,7 @@ export default function MoodSummaryForCalendarPeriod({
                   formatIsoDateInLocalTimezone(date0)
                 ],
                 meanWeight: meanWeightInPreviousPeriod,
-                secondsMeditated: computeSecondsMeditatedInInterval(
-                  meditations,
-                  date0,
-                  date1,
-                ),
+                secondsMeditated: secondsMeditatedInPreviousPeriod,
                 standardDeviation: computeStandardDeviation(prevMoodValues),
                 total: prevMoodValues.length,
                 worst: prevMoodValues.length

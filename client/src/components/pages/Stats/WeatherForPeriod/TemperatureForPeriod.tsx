@@ -1,6 +1,8 @@
 import { convertKelvinToCelcius, createChartExtent } from "../../../../utils";
 import { Chart } from "eri";
-import useEnvelopingEventIdsWithLocation from "../../../hooks/useEnvelopingEventIdsWithLocation";
+import { RootState } from "../../../../store";
+import eventsSlice from "../../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
@@ -16,9 +18,8 @@ export default function TemperatureForPeriod({
   dateTo,
   xLabels,
 }: Props) {
-  const envelopingEventIdsWithLocation = useEnvelopingEventIdsWithLocation(
-    dateFrom,
-    dateTo,
+  const envelopingEventIdsWithLocation = useSelector((state: RootState) =>
+    eventsSlice.selectors.envelopingIdsWithLocation(state, dateFrom, dateTo),
   );
   const weatherResults = useWeatherQueries(envelopingEventIdsWithLocation);
 

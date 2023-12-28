@@ -1,8 +1,8 @@
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
+import { RootState } from "../../../../store";
 import { convertKelvinToCelcius } from "../../../../utils";
 import eventsSlice from "../../../../store/eventsSlice";
-import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useSelector } from "react-redux";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
@@ -16,9 +16,8 @@ export default function MoodByTemperatureForPeriod({
   dateTo,
 }: Props) {
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
-    dateFrom,
-    dateTo,
+  const moodIdsWithLocationInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodIdsWithLocationInPeriod(state, dateFrom, dateTo),
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 

@@ -1,8 +1,8 @@
 import MoodChart from "../../../shared/MoodChart";
 import { Paper } from "eri";
+import { RootState } from "../../../../store";
 import computeTrendlinePoints from "./computeTrendlinePoints";
 import eventsSlice from "../../../../store/eventsSlice";
-import useEnvelopingMoodIds from "../../../hooks/useEnvelopingMoodIds";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -24,7 +24,9 @@ export default function MoodChartForPeriod({
 }: Props) {
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
-  const envelopingMoodIds = useEnvelopingMoodIds(dateFrom, dateTo);
+  const envelopingMoodIds = useSelector((state: RootState) =>
+    eventsSlice.selectors.envelopingMoodIds(state, dateFrom, dateTo),
+  );
 
   if (envelopingMoodIds.length < 2) return;
 

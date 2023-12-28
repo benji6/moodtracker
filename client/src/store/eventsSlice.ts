@@ -3,6 +3,7 @@ import {
   AppEvent,
   AppUpdateEvent,
   EventTypeTuple,
+  Mood,
   NormalizedMeditations,
   NormalizedMoods,
   NormalizedSleeps,
@@ -25,12 +26,13 @@ import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import {
   computeAverageMoodInInterval,
   computeMeanSafe,
-  computeSecondsMeditatedInInterval,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
+  getEnvelopingIds,
   getIdsInInterval,
   getNormalizedTagsFromDescription,
 } from "../utils";
+import { MINIMUM_WORD_CLOUD_WORDS } from "../constants";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
 import { captureException } from "../sentry";
 
@@ -59,6 +61,17 @@ export type EventsStateToStore = Omit<
 
 const allIdsSelector = (state: EventsState) => state.allIds;
 const byIdSelector = (state: EventsState) => state.byId;
+const allIdsWithLocationSelector = createSelector(
+  allIdsSelector,
+  byIdSelector,
+  (allIds, byId) =>
+    allIds.filter((id) => {
+      const { payload } = byId[id];
+      return (
+        typeof payload !== "string" && "location" in payload && payload.location
+      );
+    }),
+);
 
 const trackedCategoriesSelector = createSelector(
   allIdsSelector,
@@ -161,6 +174,15 @@ const normalizedWeightsSelector = createSelector(
   ({ weights }) => weights,
 );
 
+const moodIdsWithLocationSelector = createSelector(
+  normalizedMoodsSelector,
+  ({ allIds, byId }): string[] =>
+    allIds.filter((id) => {
+      const mood = byId[id];
+      return "location" in mood && mood.location;
+    }),
+);
+
 const makeNormalizedAveragesByPeriodSelector = (
   eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
   addPeriods: (date: Date, n: number) => Date,
@@ -232,6 +254,30 @@ const denormalize = <TrackedCategory>({
 
 const normalizedStateNotEmpty = ({ allIds }: { allIds: string[] }) =>
   Boolean(allIds.length);
+
+const dateFromSelector = (_state: EventsState, dateFrom: Date): Date =>
+  dateFrom;
+const dateToSelector = (
+  _state: EventsState,
+  _dateFrom: Date,
+  dateTo: Date,
+): Date => dateTo;
+
+const moodsInPeriodResultFunction = (
+  { allIds, byId }: NormalizedMoods,
+  dateFrom: Date,
+  dateTo: Date,
+): Mood[] => getIdsInInterval(allIds, dateFrom, dateTo).map((id) => byId[id]);
+const secondsMeditatedInPeriodResultFunction = (
+  { allIds, byId }: NormalizedMeditations,
+  dateFrom: Date,
+  dateTo: Date,
+): number => {
+  let sum = 0;
+  for (const id of getIdsInInterval(allIds, dateFrom, dateTo))
+    sum += byId[id].seconds;
+  return sum;
+};
 
 const initialState: EventsState = {
   allIds: [],
@@ -314,31 +360,24 @@ export default createSlice({
     byId: byIdSelector,
     hasLoadedFromServer: (state: EventsState) => state.hasLoadedFromServer,
     idsToSync: (state: EventsState) => state.idsToSync,
+    idsWithLocationInPeriod: createSelector(
+      allIdsWithLocationSelector,
+      dateFromSelector,
+      dateToSelector,
+      getIdsInInterval,
+    ),
     isSyncingFromServer: (state: EventsState) => state.isSyncingFromServer,
     isSyncingToServer: (state: EventsState) => state.isSyncingToServer,
     nextCursor: (state: EventsState) => state.nextCursor,
     syncFromServerError: (state: EventsState) => state.syncFromServerError,
     syncToServerError: (state: EventsState) => state.syncToServerError,
-    allIdsWithLocation: createSelector(
-      allIdsSelector,
-      byIdSelector,
-      (allIds, byId) =>
-        allIds.filter((id) => {
-          const { payload } = byId[id];
-          return (
-            typeof payload !== "string" &&
-            "location" in payload &&
-            payload.location
-          );
-        }),
-    ),
-    moodIdsWithLocation: createSelector(
-      normalizedMoodsSelector,
-      ({ allIds, byId }): string[] =>
-        allIds.filter((id) => {
-          const mood = byId[id];
-          return "location" in mood && mood.location;
-        }),
+    allIdsWithLocation: allIdsWithLocationSelector,
+    moodIdsWithLocation: moodIdsWithLocationSelector,
+    moodIdsWithLocationInPeriod: createSelector(
+      moodIdsWithLocationSelector,
+      dateFromSelector,
+      dateToSelector,
+      getIdsInInterval,
     ),
     denormalizedMeditations: createSelector(
       normalizedMeditationsSelector,
@@ -347,6 +386,26 @@ export default createSlice({
     denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
     denormalizedSleeps: createSelector(normalizedSleepsSelector, denormalize),
     denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
+    envelopingMoodIds: createSelector(
+      normalizedMoodsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom, dateTo) =>
+        getEnvelopingIds(allIds, dateFrom, dateTo),
+    ),
+    envelopingWeightIds: createSelector(
+      normalizedWeightsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom, dateTo) =>
+        getEnvelopingIds(allIds, dateFrom, dateTo),
+    ),
+    envelopingIdsWithLocation: createSelector(
+      allIdsWithLocationSelector,
+      dateFromSelector,
+      dateToSelector,
+      getEnvelopingIds,
+    ),
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
     hasMeditations: createSelector(
       normalizedMeditationsSelector,
@@ -360,11 +419,10 @@ export default createSlice({
       normalizedWeightsSelector,
       normalizedStateNotEmpty,
     ),
-
     meanWeightInPeriod: createSelector(
       normalizedWeightsSelector,
-      (_state, dateFrom: Date) => dateFrom,
-      (_state, _dateFrom: Date, dateTo: Date) => dateTo,
+      dateFromSelector,
+      dateToSelector,
       ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
         computeMeanSafe(
           getIdsInInterval(allIds, dateFrom, dateTo)
@@ -372,7 +430,44 @@ export default createSlice({
             .map(({ value }) => value),
         ),
     ),
+    meditationIdsInPeriod: createSelector(
+      normalizedMeditationsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date) =>
+        getIdsInInterval(allIds, dateFrom, dateTo),
+    ),
+    moodCloudWords: createSelector(
+      normalizedMoodsSelector,
+      dateFromSelector,
+      dateToSelector,
+      (
+        normalizedMoods,
+        dateFrom: Date,
+        dateTo: Date,
+      ): { [word: string]: number } | undefined => {
+        const moodsInPeriod = moodsInPeriodResultFunction(
+          normalizedMoods,
+          dateFrom,
+          dateTo,
+        );
 
+        const words: { [word: string]: number } = {};
+        for (const { description } of moodsInPeriod) {
+          const normalizedDescriptionWords = description
+            ? getNormalizedTagsFromDescription(description)
+            : [];
+          for (const caseNormalizedWord of normalizedDescriptionWords) {
+            if (words[caseNormalizedWord]) words[caseNormalizedWord] += 1;
+            else words[caseNormalizedWord] = 1;
+          }
+        }
+
+        return Object.keys(words).length < MINIMUM_WORD_CLOUD_WORDS
+          ? undefined
+          : words;
+      },
+    ),
     // some code may depend on the fact that the array
     // value in the returned object cannot be empty
     moodIdsByDate: createSelector(
@@ -389,6 +484,19 @@ export default createSlice({
 
         return moodsGroupedByDate;
       },
+    ),
+    moodIdsInPeriod: createSelector(
+      normalizedMoodsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date): string[] =>
+        getIdsInInterval(allIds, dateFrom, dateTo),
+    ),
+    moodsInPeriod: createSelector(
+      normalizedMoodsSelector,
+      dateFromSelector,
+      dateToSelector,
+      moodsInPeriodResultFunction,
     ),
     normalizedDescriptionWords: createSelector(
       normalizedMoodsSelector,
@@ -467,7 +575,7 @@ export default createSlice({
           const p1 = periods[i];
           const id = formatIsoDateInLocalTimezone(p0);
           allIds.push(id);
-          byId[id] = computeSecondsMeditatedInInterval(
+          byId[id] = secondsMeditatedInPeriodResultFunction(
             normalizedMeditations,
             p0,
             p1,
@@ -489,6 +597,12 @@ export default createSlice({
     normalizedAveragesByYear: makeNormalizedAveragesByPeriodSelector(
       eachYearOfInterval,
       addYears,
+    ),
+    secondsMeditatedInPeriod: createSelector(
+      normalizedMeditationsSelector,
+      dateFromSelector,
+      dateToSelector,
+      secondsMeditatedInPeriodResultFunction,
     ),
   },
 });

@@ -3,9 +3,9 @@ import { ComponentProps } from "react";
 import { Icon } from "eri";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
+import { RootState } from "../../../../store";
 import eventsSlice from "../../../../store/eventsSlice";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import useMoodIdsWithLocationInPeriod from "../../../hooks/useMoodIdsWithLocationInPeriod";
 import { useSelector } from "react-redux";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
@@ -16,9 +16,8 @@ interface Props {
 
 export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const moodIdsWithLocationInPeriod = useMoodIdsWithLocationInPeriod(
-    dateFrom,
-    dateTo,
+  const moodIdsWithLocationInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodIdsWithLocationInPeriod(state, dateFrom, dateTo),
   );
   const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 

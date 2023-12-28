@@ -26,11 +26,11 @@ import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
 import PrevNextControls from "../../../shared/PrevNextControls";
+import { RootState } from "../../../../store";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import eventsSlice from "../../../../store/eventsSlice";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import useMoodIdsInPeriod from "../../../hooks/useMoodIdsInPeriod";
 import { useSelector } from "react-redux";
 import withStatsPage from "../../../hocs/withStatsPage";
 
@@ -43,7 +43,9 @@ interface Props {
 }
 
 function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
+  const moodIdsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
+  );
   const navigate = useNavigate();
   const normalizedAveragesByMonth = useSelector(
     eventsSlice.selectors.normalizedAveragesByMonth,

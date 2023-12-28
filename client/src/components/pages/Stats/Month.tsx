@@ -34,10 +34,10 @@ import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import MoodSummaryForMonth from "./MoodSummaryForMonth";
 import PrevNextControls from "../../shared/PrevNextControls";
+import { RootState } from "../../../store";
 import WeatherForPeriod from "./WeatherForPeriod";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
-import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
 import { useSelector } from "react-redux";
 import withStatsPage from "../../hocs/withStatsPage";
 
@@ -52,7 +52,9 @@ interface Props {
 }
 
 function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
+  const moodIdsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
+  );
   const normalizedAveragesByWeek = useSelector(
     eventsSlice.selectors.normalizedAveragesByWeek,
   );

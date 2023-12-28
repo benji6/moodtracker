@@ -6,9 +6,9 @@ import {
   getNormalizedTagsFromDescription,
 } from "../../../utils";
 import { differenceInSeconds, sub } from "date-fns";
+import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
 import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
-import useMeditationIdsInPeriod from "../../hooks/useMeditationIdsInPeriod";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
@@ -24,7 +24,9 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const [shouldRemoveSharedWords, setShouldRemoveSharedWords] = useState(true);
-  const meditationIdsInPeriod = useMeditationIdsInPeriod(dateFrom, dateTo);
+  const meditationIdsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
+  );
 
   if (!meditationIdsInPeriod.length || !moods.allIds.length) return;
 

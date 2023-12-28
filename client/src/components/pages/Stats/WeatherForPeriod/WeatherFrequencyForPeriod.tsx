@@ -1,7 +1,9 @@
 import { Chart, Icon } from "eri";
 import { ComponentProps } from "react";
+import { RootState } from "../../../../store";
+import eventsSlice from "../../../../store/eventsSlice";
 import { getWeatherDisplayData } from "../../../../utils";
-import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
+import { useSelector } from "react-redux";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
@@ -10,9 +12,8 @@ interface Props {
 }
 
 export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
-  const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
-    dateFrom,
-    dateTo,
+  const eventIdsWithLocationInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.idsWithLocationInPeriod(state, dateFrom, dateTo),
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 

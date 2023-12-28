@@ -1,7 +1,9 @@
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../../constants";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 import { Paper } from "eri";
-import useMoodsInPeriod from "../../hooks/useMoodsInPeriod";
+import { RootState } from "../../../store";
+import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 interface Props {
   dateFrom: Date;
@@ -9,7 +11,9 @@ interface Props {
 }
 
 export default function MoodFrequencyForPeriod({ dateFrom, dateTo }: Props) {
-  const moodsInPeriod = useMoodsInPeriod(dateFrom, dateTo);
+  const moodsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodsInPeriod(state, dateFrom, dateTo),
+  );
 
   const moodCounter = new Map(MOOD_INTEGERS.map((n) => [MOOD_RANGE[0] + n, 0]));
 

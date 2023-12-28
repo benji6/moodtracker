@@ -24,10 +24,12 @@ import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import PrevNextControls from "../../shared/PrevNextControls";
+import { RootState } from "../../../store";
 import { TIME } from "../../../constants";
 import WeatherForPeriod from "./WeatherForPeriod";
 import WeightChartForPeriod from "./WeightChartForPeriod";
-import useMoodIdsInPeriod from "../../hooks/useMoodIdsInPeriod";
+import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 import withStatsPage from "../../hocs/withStatsPage";
 
 interface Props {
@@ -39,7 +41,9 @@ interface Props {
 }
 
 function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const moodIdsInPeriod = useMoodIdsInPeriod(date, nextDate);
+  const moodIdsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
+  );
 
   const lastDayOfWeek = subDays(nextDate, 1);
 

@@ -1,6 +1,8 @@
 import { Paper, SubHeading, Toggle, WordCloud } from "eri";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
-import useMoodCloudWords from "../../hooks/useMoodCloudWords";
+import { RootState } from "../../../store";
+import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 
 interface Props {
@@ -16,13 +18,20 @@ interface Props {
 
 export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
   const [filterOutPreviousPeriod, setFilterOutPreviousPeriod] = useState(false);
-  const currentPeriodWords = useMoodCloudWords(
-    currentPeriod.dateFrom,
-    currentPeriod.dateTo,
+
+  const currentPeriodWords = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodCloudWords(
+      state,
+      currentPeriod.dateFrom,
+      currentPeriod.dateTo,
+    ),
   );
-  const previousPeriodWords = useMoodCloudWords(
-    previousPeriod.dateFrom,
-    previousPeriod.dateTo,
+  const previousPeriodWords = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodCloudWords(
+      state,
+      previousPeriod.dateFrom,
+      previousPeriod.dateTo,
+    ),
   );
 
   if (

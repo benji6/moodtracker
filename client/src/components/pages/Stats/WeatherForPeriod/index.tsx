@@ -2,10 +2,12 @@ import { Paper, Spinner, SubHeading } from "eri";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByTemperatureForPeriod from "./MoodByTemperatureForPeriod";
 import MoodByWeatherForPeriod from "./MoodByWeatherForPeriod";
+import { RootState } from "../../../../store";
 import TemperatureForPeriod from "./TemperatureForPeriod";
 import WeatherFrequencyForPeriod from "./WeatherFrequencyForPeriod";
+import eventsSlice from "../../../../store/eventsSlice";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
-import useEventIdsWithLocationInPeriod from "../../../hooks/useEventIdsWithLocationInPeriod";
+import { useSelector } from "react-redux";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
@@ -21,9 +23,8 @@ export default function WeatherForPeriod({
   dateTo,
   xLabels,
 }: Props) {
-  const eventIdsWithLocationInPeriod = useEventIdsWithLocationInPeriod(
-    dateFrom,
-    dateTo,
+  const eventIdsWithLocationInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.idsWithLocationInPeriod(state, dateFrom, dateTo),
   );
   const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
 

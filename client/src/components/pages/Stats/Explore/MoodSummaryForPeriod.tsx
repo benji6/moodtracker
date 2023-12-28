@@ -1,13 +1,8 @@
-import {
-  computeMeanSafe,
-  computeSecondsMeditatedInInterval,
-  computeStandardDeviation,
-} from "../../../../utils";
+import { computeMeanSafe, computeStandardDeviation } from "../../../../utils";
 import MoodSummary from "../../../shared/MoodSummary";
 import { Paper } from "eri";
 import { RootState } from "../../../../store";
 import eventsSlice from "../../../../store/eventsSlice";
-import useMoodsInPeriod from "../../../hooks/useMoodsInPeriod";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -16,15 +11,14 @@ interface Props {
 }
 
 export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
-  const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
-  const moodValues = useMoodsInPeriod(dateFrom, dateTo).map(({ mood }) => mood);
+  const moodValues = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodsInPeriod(state, dateFrom, dateTo),
+  ).map(({ mood }) => mood);
   const meanWeightInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meanWeightInPeriod(state, dateFrom, dateTo),
   );
-  const secondsMeditated = computeSecondsMeditatedInInterval(
-    meditations,
-    dateFrom,
-    dateTo,
+  const secondsMeditated = useSelector((state: RootState) =>
+    eventsSlice.selectors.secondsMeditatedInPeriod(state, dateFrom, dateTo),
   );
 
   return (
