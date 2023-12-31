@@ -44,8 +44,7 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
 
   if (previousPeriodWords)
     for (const [word, count] of Object.entries(filteredWords)) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!previousPeriodWords.hasOwnProperty(word)) continue;
+      if (!Object.hasOwn(previousPeriodWords, word)) continue;
 
       const previousCount = previousPeriodWords[word];
       if (previousCount >= count) {

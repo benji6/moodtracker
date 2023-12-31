@@ -84,8 +84,7 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const filteredWordsBefore = { ...wordsBefore };
 
   for (const word of new Set(wordsBeforeList)) {
-    // eslint-disable-next-line no-prototype-builtins
-    if (!wordsAfter.hasOwnProperty(word)) continue;
+    if (!Object.hasOwn(wordsAfter, word)) continue;
     const afterCount = wordsAfter[word];
     const beforeCount = wordsBefore[word];
 
