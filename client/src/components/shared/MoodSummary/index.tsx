@@ -75,7 +75,7 @@ export default function MoodSummary({
       <MoodSummaryItem
         currentValue={currentPeriod.meanSleep}
         format={formatMinutesAsTimeStringShort}
-        heading="Average sleep"
+        heading={periodType === "day" ? "Sleep" : " Average sleep"}
         periodType={periodType}
         previousValue={previousPeriod?.meanSleep}
       />
