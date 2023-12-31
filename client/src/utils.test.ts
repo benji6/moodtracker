@@ -10,6 +10,7 @@ import {
   counter,
   createChartExtent,
   createDateFromLocalDateString,
+  defaultDict,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
@@ -352,9 +353,9 @@ describe("utils", () => {
   });
 
   test("counter", () => {
-    expect(counter([])).toEqual({});
-    expect(counter(["foo"])).toEqual({ foo: 1 });
-    expect(counter(["foo", "bar", "baz", "foo", "foo", "bar"])).toEqual({
+    expect({ ...counter([]) }).toEqual({});
+    expect({ ...counter(["foo"]) }).toEqual({ foo: 1 });
+    expect({ ...counter(["foo", "bar", "baz", "foo", "foo", "bar"]) }).toEqual({
       bar: 2,
       baz: 1,
       foo: 3,
@@ -407,6 +408,28 @@ describe("utils", () => {
       expect(
         computeStandardDeviation([727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1]),
       ).toBeCloseTo(420.96);
+    });
+  });
+
+  describe("defaultDict", () => {
+    test("has no prototype keys", () => {
+      const x = defaultDict(() => {});
+      expect("toString" in x).toBe(false);
+    });
+    test("default to 0", () => {
+      const numberDefaultDict = defaultDict(() => 0);
+      expect({ ...numberDefaultDict }).toEqual({});
+      numberDefaultDict["a"] += 1;
+      expect({ ...numberDefaultDict }).toEqual({ a: 1 });
+    });
+
+    test("default to array", () => {
+      const arrayDefaultDict = defaultDict((): number[] => []);
+      expect({ ...arrayDefaultDict }).toEqual({});
+      arrayDefaultDict["a"];
+      expect({ ...arrayDefaultDict }).toEqual({ a: [] });
+      arrayDefaultDict["b"].push(1);
+      expect({ ...arrayDefaultDict }).toEqual({ a: [], b: [1] });
     });
   });
 

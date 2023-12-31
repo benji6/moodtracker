@@ -121,11 +121,8 @@ export const convertKelvinToCelcius = (kelvin: number): number =>
   kelvin - 273.15;
 
 export const counter = (xs: string[]): { [word: string]: number } => {
-  const count: { [word: string]: number } = {};
-  for (const x of xs) {
-    if (count[x]) count[x] += 1;
-    else count[x] = 1;
-  }
+  const count = defaultDict(() => 0);
+  for (const x of xs) count[x] += 1;
   return count;
 };
 
@@ -144,6 +141,14 @@ export const createChartExtent = (values: number[]): [number, number] => {
 
 export const createDateFromLocalDateString = (dateString: string) =>
   new Date(`${dateString}T00:00:00`);
+
+export const defaultDict = <V>(createDefaultValue: () => V) =>
+  new Proxy<{ [k: string]: V }>(Object.create(null), {
+    get: (target, key: string): V => {
+      if (!Object.hasOwn(target, key)) target[key] = createDefaultValue();
+      return target[key];
+    },
+  });
 
 export const getNormalizedTagsFromDescription = (
   description: string,
