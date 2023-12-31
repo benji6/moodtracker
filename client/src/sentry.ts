@@ -11,6 +11,7 @@ export const captureException: typeof Sentry.captureException = (
   exception,
   context,
 ) => {
+  if (process.env.NODE_ENV === "test") return "";
   if (process.env.NODE_ENV === "production")
     return Sentry.captureException(exception, context);
   // eslint-disable-next-line no-console
