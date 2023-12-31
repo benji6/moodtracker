@@ -3,6 +3,7 @@ import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
 } from "../../../../utils";
+import { RootState } from "../../../../store";
 import { TIME } from "../../../../constants";
 import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
@@ -20,10 +21,15 @@ export default function MeditationByMonthForPeriod({
   dateFrom,
   dateTo,
 }: Props) {
+  const meditationIdsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
+  );
   const noramlizedTotalSecondsMeditatedByMonth = useSelector(
     eventsSlice.selectors.normalizedTotalSecondsMeditatedByMonth,
   );
   const navigate = useNavigate();
+
+  if (!meditationIdsInPeriod.length) return null;
 
   const months = eachMonthOfInterval({ start: dateFrom, end: dateTo }).slice(
     0,
