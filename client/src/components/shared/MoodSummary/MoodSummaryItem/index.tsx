@@ -1,16 +1,13 @@
 import "./style.css";
 import { Card, Icon } from "eri";
-import {
-  integerFormatter,
-  oneDecimalPlaceFormatter,
-} from "../../../../formatters/numberFormatters";
 import MoodBar from "../../MoodBar";
+import { integerFormatter } from "../../../../formatters/numberFormatters";
 import { moodToColor } from "../../../../utils";
 
 interface Props {
   currentValue?: number;
-  decimalPlaces?: 0 | 1;
   displayTrendSentiment?: boolean;
+  format?(n: number): string;
   heading: string;
   isMood?: boolean;
   periodType?: "day" | "month" | "week" | "year";
@@ -20,8 +17,8 @@ interface Props {
 
 export default function MoodSummaryItem({
   currentValue,
-  decimalPlaces = 0,
   displayTrendSentiment = false,
+  format = integerFormatter.format,
   heading,
   isMood = false,
   periodType,
@@ -45,10 +42,6 @@ export default function MoodSummaryItem({
     if (difference > 0) color = "var(--color-positive)";
     else color = "var(--color-negative)";
   }
-
-  const format = decimalPlaces
-    ? oneDecimalPlaceFormatter.format
-    : integerFormatter.format;
 
   return (
     <Card color={color}>

@@ -1,7 +1,10 @@
 import { TIME } from "../constants";
 
 export const formatMinutesAsTimeStringShort = (minutes: number): string =>
-  [Math.floor(minutes / TIME.minutesPerHour), minutes % TIME.minutesPerHour]
+  [
+    Math.floor(minutes / TIME.minutesPerHour),
+    Math.round(minutes % TIME.minutesPerHour),
+  ]
     .map((n) => String(n).padStart(2, "0"))
     .join(":");
 

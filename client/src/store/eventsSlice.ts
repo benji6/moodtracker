@@ -26,6 +26,7 @@ import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import {
   computeAverageMoodInInterval,
   computeMeanSafe,
+  defaultDict,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getEnvelopingIds,
@@ -418,6 +419,23 @@ export default createSlice({
     hasWeights: createSelector(
       normalizedWeightsSelector,
       normalizedStateNotEmpty,
+    ),
+    meanDailySleepDurationInPeriod: createSelector(
+      normalizedSleepsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date): number | undefined => {
+        const sleepByDateAwoke = defaultDict(() => 0);
+        // TODO make this more performant
+        for (const id of allIds) {
+          const sleep = byId[id];
+          const { dateAwoke } = sleep;
+          const dateAwokeDate = new Date(dateAwoke);
+          if (dateAwokeDate < dateFrom || dateAwokeDate >= dateTo) continue;
+          sleepByDateAwoke[dateAwoke] += sleep.minutesSlept;
+        }
+        return computeMeanSafe(Object.values(sleepByDateAwoke));
+      },
     ),
     meanWeightInPeriod: createSelector(
       normalizedWeightsSelector,

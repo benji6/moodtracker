@@ -14,26 +14,31 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const moodValues = useSelector((state: RootState) =>
     eventsSlice.selectors.moodsInPeriod(state, dateFrom, dateTo),
   ).map(({ mood }) => mood);
-  const meanWeightInPeriod = useSelector((state: RootState) =>
+  const meanSleep = useSelector((state: RootState) =>
+    eventsSlice.selectors.meanDailySleepDurationInPeriod(
+      state,
+      dateFrom,
+      dateTo,
+    ),
+  );
+  const meanWeight = useSelector((state: RootState) =>
     eventsSlice.selectors.meanWeightInPeriod(state, dateFrom, dateTo),
   );
   const secondsMeditated = useSelector((state: RootState) =>
     eventsSlice.selectors.secondsMeditatedInPeriod(state, dateFrom, dateTo),
   );
-
   return (
     <Paper>
       <h3>Summary</h3>
-      {!moodValues.length &&
-        !moodValues.length &&
-        meanWeightInPeriod === undefined && (
-          <p>No data for the selected period</p>
-        )}
+      {!moodValues.length && !moodValues.length && meanWeight === undefined && (
+        <p>No data for the selected period</p>
+      )}
       <MoodSummary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: computeMeanSafe(moodValues),
-          meanWeight: meanWeightInPeriod,
+          meanWeight,
+          meanSleep,
           secondsMeditated,
           standardDeviation: computeStandardDeviation(moodValues),
           total: moodValues.length,

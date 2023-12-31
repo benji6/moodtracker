@@ -2,12 +2,15 @@ import "./style.css";
 import MoodSummaryItem from "./MoodSummaryItem";
 import { TIME } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
+import { formatMinutesAsTimeStringShort } from "../../../formatters/formatMinutesAsTimeString";
+import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
 
 interface PeriodData {
   best?: number;
   mean?: number;
   meanWeight?: number;
+  meanSleep?: number;
   secondsMeditated: number;
   standardDeviation?: number;
   total: number;
@@ -33,7 +36,7 @@ export default function MoodSummary({
     <div className="m-mood-summary">
       <MoodSummaryItem
         currentValue={currentPeriod.mean}
-        decimalPlaces={1}
+        format={oneDecimalPlaceFormatter.format}
         displayTrendSentiment
         heading="Average mood"
         isMood
@@ -64,14 +67,21 @@ export default function MoodSummary({
       />
       <MoodSummaryItem
         currentValue={currentPeriod.standardDeviation}
-        decimalPlaces={1}
+        format={oneDecimalPlaceFormatter.format}
         heading="Mood standard deviation"
         periodType={periodType}
         previousValue={previousPeriod?.standardDeviation}
       />
       <MoodSummaryItem
+        currentValue={currentPeriod.meanSleep}
+        format={formatMinutesAsTimeStringShort}
+        heading="Average sleep"
+        periodType={periodType}
+        previousValue={previousPeriod?.meanSleep}
+      />
+      <MoodSummaryItem
         currentValue={currentPeriod.meanWeight}
-        decimalPlaces={1}
+        format={oneDecimalPlaceFormatter.format}
         heading="Average weight"
         periodType={periodType}
         previousValue={previousPeriod?.meanWeight}
@@ -85,7 +95,7 @@ export default function MoodSummary({
               ? TIME.secondsPerHour
               : TIME.secondsPerMinute)
           }
-          decimalPlaces={1}
+          format={oneDecimalPlaceFormatter.format}
           heading={`${
             currentPeriod.secondsMeditated >= TIME.secondsPerHour
               ? "Hours"
