@@ -240,17 +240,17 @@ ply = "*"
 
 [[package]]
 name = "bc-python-hcl2"
-version = "0.4.1"
+version = "0.4.2"
 description = "A parser for HCL2"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "bc-python-hcl2-0.4.1.tar.gz", hash = "sha256:72a438ceeced7d2e4c898e218f55a2a4aba7a887c1d64a4cf913837193c446b6"},
-    {file = "bc_python_hcl2-0.4.1-py3-none-any.whl", hash = "sha256:55943510b9a4f4a8571405a14570d59c48b542857c5395e11d99852be3d1ad0d"},
+    {file = "bc-python-hcl2-0.4.2.tar.gz", hash = "sha256:ac8ff59fb9bd437ea29b89a7d7c507fd0a1e957845bae9aeac69f2892b8d681e"},
+    {file = "bc_python_hcl2-0.4.2-py3-none-any.whl", hash = "sha256:90d2afbaa2c7e77b7b30bf58180084e11d95287f7c3e19c5bfbdb54ab2fd80e9"},
 ]
 
 [package.dependencies]
-importlib-resources = {version = ">=2.0.0", markers = "python_version < \"3.9\""}
+importlib-resources = {version = ">=2.0.0,<7.0.0", markers = "python_version < \"3.9\""}
 lark = ">=1.0.0"
 
 [[package]]
@@ -552,62 +552,59 @@ files = [
 
 [[package]]
 name = "checkov"
-version = "3.1.20"
+version = "3.1.50"
 description = "Infrastructure as code static analysis"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "checkov-3.1.20-py3-none-any.whl", hash = "sha256:f0a590e6ff7a05ca34cb7c304fb8168a0be63eccfca6eea89776b256628df977"},
-    {file = "checkov-3.1.20.tar.gz", hash = "sha256:400cf3e639f1a73a187fee75515f7b66f85df2aadfe052c11d7acb548962b0bc"},
+    {file = "checkov-3.1.50-py3-none-any.whl", hash = "sha256:beeabdf7561ca8a21bb690f9d6e297ff1c649fb3b41474376a2d2cba352400a6"},
+    {file = "checkov-3.1.50.tar.gz", hash = "sha256:18ccd011b15e2740884c4cd252463a52eb98c57e74b0dfe48791149f1616b476"},
 ]
 
 [package.dependencies]
-aiodns = "*"
-aiohttp = "*"
-aiomultiprocess = "*"
-argcomplete = "*"
+aiodns = ">=3.0.0,<4.0.0"
+aiohttp = ">=3.8.0,<4.0.0"
+aiomultiprocess = ">=0.9.0,<0.10.0"
+argcomplete = ">=3.0.0,<4.0.0"
 bc-detect-secrets = "1.4.30"
 bc-jsonpath-ng = "1.6.1"
-bc-python-hcl2 = "0.4.1"
-boto3 = ">=1.17"
-cachetools = "*"
-charset-normalizer = "*"
-click = ">=8.0.0"
-cloudsplaining = ">=0.6.2"
-colorama = "*"
-configargparse = "*"
-cyclonedx-python-lib = ">=5.0.0"
-docker = "*"
-dockerfile-parse = "*"
+bc-python-hcl2 = "0.4.2"
+boto3 = ">=1.28.0,<2.0.0"
+cachetools = ">=5.2.0,<6.0.0"
+charset-normalizer = ">=3.1.0,<4.0.0"
+click = ">=8.1.0,<9.0.0"
+cloudsplaining = ">=0.6.2,<0.7.0"
+colorama = ">=0.4.6,<0.5.0"
+configargparse = ">=1.5.3,<2.0.0"
+cyclonedx-python-lib = ">=6.0.0,<7.0.0"
+docker = ">=6.0.1,<8.0.0"
+dockerfile-parse = ">=2.0.0,<3.0.0"
 dpath = "2.1.3"
-gitpython = "*"
+gitpython = ">=3.1.30,<4.0.0"
 igraph = "<0.11.0"
-importlib-metadata = ">=0.12"
-jmespath = "*"
-jsonschema = ">=4.6.0,<5.0.0"
-junit-xml = ">=1.9"
-license-expression = "*"
+importlib-metadata = ">=6.0.0,<8.0.0"
+jmespath = ">=1.0.0,<2.0.0"
+jsonschema = ">=4.17.0,<5.0.0"
+junit-xml = ">=1.9,<2.0"
+license-expression = ">=30.1.0,<31.0.0"
 networkx = "<2.7"
 openai = "<1.0.0"
-packageurl-python = "*"
-packaging = "*"
-prettytable = ">=3.0.0"
+packageurl-python = ">=0.11.1,<0.14.0"
+packaging = ">=23.0,<24.0"
+prettytable = ">=3.6.0,<4.0.0"
 pycep-parser = "0.4.1"
-pydantic = "*"
+pydantic = ">=2.0.0,<3.0.0"
 pyston = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\" and implementation_name == \"cpython\""}
 pyston-autoload = {version = "2.3.5", markers = "python_version < \"3.11\" and (sys_platform == \"linux\" or sys_platform == \"darwin\") and platform_machine == \"x86_64\" and implementation_name == \"cpython\""}
-pyyaml = ">=5.4.1"
-requests = ">=2.27.0"
-rustworkx = "*"
-schema = "*"
-semantic-version = "*"
+pyyaml = ">=6.0.0,<7.0.0"
+requests = ">=2.28.0,<3.0.0"
+rustworkx = ">=0.13.0,<0.14.0"
 spdx-tools = ">=0.8.0,<0.9.0"
-tabulate = "*"
-termcolor = "*"
-tqdm = "*"
-typing-extensions = ">=4.1.0"
-update-checker = "*"
-yarl = "*"
+tabulate = ">=0.9.0,<0.10.0"
+termcolor = ">=2.2.0,<2.4.0"
+tqdm = ">=4.65.0,<5.0.0"
+typing-extensions = ">=4.5.0,<5.0.0"
+yarl = ">=1.9.1,<2.0.0"
 
 [package.extras]
 dev = ["GitPython (==3.1.7)", "bandit", "coverage (==5.5)", "coverage-badge", "jsonschema", "pytest (==5.3.1)"]
@@ -707,25 +704,25 @@ files = [
 
 [[package]]
 name = "cyclonedx-python-lib"
-version = "5.1.0"
+version = "6.2.0"
 description = "Python library for CycloneDX"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "cyclonedx_python_lib-5.1.0-py3-none-any.whl", hash = "sha256:4cf64c2e8e3e12051b56560744ad690b15670c46a15835e3d6725b8521c537bf"},
-    {file = "cyclonedx_python_lib-5.1.0.tar.gz", hash = "sha256:c315cd977c4e6052b5145f96c8eea446e49755ed337e67e55462a1a4e1de47a4"},
+    {file = "cyclonedx_python_lib-6.2.0-py3-none-any.whl", hash = "sha256:1bd116e5a7c4a9927beb27766cb3f3810ff17c0ba26a822505a67e66c35caf6e"},
+    {file = "cyclonedx_python_lib-6.2.0.tar.gz", hash = "sha256:6b5314812683211b971f54a341cd680e8c9e32ac0b99c342105bd8a14f226792"},
 ]
 
 [package.dependencies]
 license-expression = ">=30,<31"
 packageurl-python = ">=0.11"
-py-serializable = ">=0.15,<0.16"
+py-serializable = ">=0.16,<0.17"
 sortedcontainers = ">=2.4.0,<3.0.0"
 
 [package.extras]
 json-validation = ["jsonschema[format] (>=4.18,<5.0)"]
-validation = ["jsonschema[format] (>=4.18,<5.0)", "lxml (>=4,<5)"]
-xml-validation = ["lxml (>=4,<5)"]
+validation = ["jsonschema[format] (>=4.18,<5.0)", "lxml (>=4,<6)"]
+xml-validation = ["lxml (>=4,<6)"]
 
 [[package]]
 name = "decorator"
@@ -1453,13 +1450,13 @@ tests = ["pytest", "pytest-cov", "pytest-lazy-fixture"]
 
 [[package]]
 name = "py-serializable"
-version = "0.15.0"
+version = "0.16.0"
 description = "Library for serializing and deserializing Python Objects to and from JSON and XML."
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "py-serializable-0.15.0.tar.gz", hash = "sha256:8fc41457d8ee5f5c5a12f41fd87bf1a4f2ecf9da39fee92059b728e78f320771"},
-    {file = "py_serializable-0.15.0-py3-none-any.whl", hash = "sha256:d3f1201b33420c481aa83f7860c7bf2c2f036ba3ea82b6e15a96696457c36cd2"},
+    {file = "py-serializable-0.16.0.tar.gz", hash = "sha256:80d3401ede78ab350d66ef8c167a688790a1ca8e11b563e8e68283bf29f34a01"},
+    {file = "py_serializable-0.16.0-py3-none-any.whl", hash = "sha256:736f54c67407a055cf91b58a75557293d303cb37685ea3061b26cf9b4866a677"},
 ]
 
 [package.dependencies]
@@ -2299,25 +2296,6 @@ files = [
 ]
 
 [[package]]
-name = "update-checker"
-version = "0.18.0"
-description = "A python module that will check for package updates."
-optional = false
-python-versions = "*"
-files = [
-    {file = "update_checker-0.18.0-py3-none-any.whl", hash = "sha256:cbba64760a36fe2640d80d85306e8fe82b6816659190993b7bdabadee4d4bbfd"},
-    {file = "update_checker-0.18.0.tar.gz", hash = "sha256:6a2d45bb4ac585884a6b03f9eade9161cedd9e8111545141e9aa9058932acb13"},
-]
-
-[package.dependencies]
-requests = ">=2.3.0"
-
-[package.extras]
-dev = ["black", "flake8", "pytest (>=2.7.3)"]
-lint = ["black", "flake8"]
-test = ["pytest (>=2.7.3)"]
-
-[[package]]
 name = "uritools"
 version = "4.0.1"
 description = "URI parsing, classification and composition"
@@ -2487,4 +2465,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "4e39e38f05ec2da032b408fa17515ed5b47b436ff36d848603830a8cd9aef775"
+content-hash = "77a835bfc3fc842a0af50f1825173b72fdc3f5be0704f97fba09ede05727e085"
