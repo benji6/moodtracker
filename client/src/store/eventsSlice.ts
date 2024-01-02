@@ -490,17 +490,11 @@ export default createSlice({
     // value in the returned object cannot be empty
     moodIdsByDate: createSelector(
       normalizedMoodsSelector,
-      ({ allIds }): { [date: string]: string[] | undefined } => {
-        const moodsGroupedByDate: { [date: string]: string[] } = {};
-
-        for (let i = 0; i < allIds.length; i++) {
-          const id = allIds[i];
-          const key = formatIsoDateInLocalTimezone(new Date(id));
-          if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
-          else moodsGroupedByDate[key] = [id];
-        }
-
-        return moodsGroupedByDate;
+      ({ allIds }): { [date: string]: string[] } => {
+        const moodsByDate = defaultDict((): string[] => []);
+        for (const id of allIds)
+          moodsByDate[formatIsoDateInLocalTimezone(new Date(id))].push(id);
+        return { ...moodsByDate };
       },
     ),
     moodIdsInPeriod: createSelector(

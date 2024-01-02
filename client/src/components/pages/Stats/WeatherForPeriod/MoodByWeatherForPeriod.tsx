@@ -1,4 +1,8 @@
-import { getWeatherDisplayData, moodToColor } from "../../../../utils";
+import {
+  defaultDict,
+  getWeatherDisplayData,
+  moodToColor,
+} from "../../../../utils";
 import { ComponentProps } from "react";
 import { Icon } from "eri";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
@@ -26,13 +30,7 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
   )
     return;
 
-  const chartData: {
-    [nameAndColor: string]: {
-      moodCount: number;
-      sumOfMoods: number;
-    };
-  } = {};
-
+  const chartData = defaultDict(() => ({ moodCount: 0, sumOfMoods: 0 }));
   for (let i = 0; i < weatherResults.length; i++) {
     const result = weatherResults[i];
     const { data } = result;
@@ -45,13 +43,8 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
         weatherId,
       });
       const key = `${label}:${iconName}:${weatherColor}`;
-      chartData[key] =
-        key in chartData
-          ? {
-              moodCount: chartData[key].moodCount + 1,
-              sumOfMoods: chartData[key].sumOfMoods + mood,
-            }
-          : { moodCount: 1, sumOfMoods: mood };
+      chartData[key].moodCount += 1;
+      chartData[key].sumOfMoods += mood;
     }
   }
 

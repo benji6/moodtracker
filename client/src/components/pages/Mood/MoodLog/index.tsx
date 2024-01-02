@@ -15,6 +15,7 @@ import {
 } from "../../../../constants";
 import {
   createDateFromLocalDateString,
+  defaultDict,
   formatIsoDateInLocalTimezone,
   mapRight,
   roundDateDown,
@@ -39,16 +40,10 @@ const DAYS_PER_PAGE = 7;
 const groupMoodIdsByDay = (
   moodIds: string[],
 ): [dateStr: string, moodIds: string[]][] => {
-  const moodsGroupedByDate: { [date: string]: string[] } = {};
-
-  for (let i = 0; i < moodIds.length; i++) {
-    const id = moodIds[i];
-    const key = formatIsoDateInLocalTimezone(new Date(id));
-    if (moodsGroupedByDate[key]) moodsGroupedByDate[key].push(id);
-    else moodsGroupedByDate[key] = [id];
-  }
-
-  return Object.entries(moodsGroupedByDate);
+  const moodsByDate = defaultDict((): string[] => []);
+  for (const id of moodIds)
+    moodsByDate[formatIsoDateInLocalTimezone(new Date(id))].push(id);
+  return Object.entries(moodsByDate);
 };
 
 export default function MoodLog() {
