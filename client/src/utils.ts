@@ -123,7 +123,7 @@ export const convertKelvinToCelcius = (kelvin: number): number =>
 export const counter = (xs: string[]): { [word: string]: number } => {
   const count = defaultDict(() => 0);
   for (const x of xs) count[x] += 1;
-  return count;
+  return { ...count };
 };
 
 export const createChartExtent = (values: number[]): [number, number] => {

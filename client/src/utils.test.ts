@@ -353,9 +353,9 @@ describe("utils", () => {
   });
 
   test("counter", () => {
-    expect({ ...counter([]) }).toEqual({});
-    expect({ ...counter(["foo"]) }).toEqual({ foo: 1 });
-    expect({ ...counter(["foo", "bar", "baz", "foo", "foo", "bar"]) }).toEqual({
+    expect(counter([])).toEqual({});
+    expect(counter(["foo"])).toEqual({ foo: 1 });
+    expect(counter(["foo", "bar", "baz", "foo", "foo", "bar"])).toEqual({
       bar: 2,
       baz: 1,
       foo: 3,
