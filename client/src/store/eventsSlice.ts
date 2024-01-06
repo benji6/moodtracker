@@ -263,6 +263,19 @@ const dateToSelector = (
   _dateFrom: Date,
   dateTo: Date,
 ): Date => dateTo;
+const denormalizedSleepsSelector = createSelector(
+  normalizedSleepsSelector,
+  denormalize,
+);
+const minutesSleptByDateAwokeSelector = createSelector(
+  denormalizedSleepsSelector,
+  (sleeps) => {
+    const sleepByDateAwoke = defaultDict(() => 0);
+    for (const { dateAwoke, minutesSlept } of sleeps)
+      sleepByDateAwoke[dateAwoke] += minutesSlept;
+    return { ...sleepByDateAwoke };
+  },
+);
 
 const moodsInPeriodResultFunction = (
   { allIds, byId }: NormalizedMoods,
@@ -385,7 +398,7 @@ export default createSlice({
       denormalize,
     ),
     denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
-    denormalizedSleeps: createSelector(normalizedSleepsSelector, denormalize),
+    denormalizedSleeps: denormalizedSleepsSelector,
     denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
     envelopingMoodIds: createSelector(
       normalizedMoodsSelector,
@@ -421,22 +434,29 @@ export default createSlice({
       normalizedStateNotEmpty,
     ),
     meanDailySleepDurationInPeriod: createSelector(
-      normalizedSleepsSelector,
+      minutesSleptByDateAwokeSelector,
       dateFromSelector,
       dateToSelector,
-      ({ allIds, byId }, dateFrom: Date, dateTo: Date): number | undefined => {
-        const sleepByDateAwoke = defaultDict(() => 0);
-        // TODO make this more performant
-        for (const id of allIds) {
-          const sleep = byId[id];
-          const { dateAwoke } = sleep;
-          const dateAwokeDate = new Date(dateAwoke);
-          if (dateAwokeDate < dateFrom || dateAwokeDate >= dateTo) continue;
-          sleepByDateAwoke[dateAwoke] += sleep.minutesSlept;
+      (
+        minutesSleptByDateAwoke,
+        dateFrom: Date,
+        dateTo: Date,
+      ): number | undefined => {
+        const dateToString = formatIsoDateInLocalTimezone(dateTo);
+        const minutesSleptArray: number[] = [];
+        for (
+          let date = formatIsoDateInLocalTimezone(dateFrom);
+          date < dateToString;
+          date = formatIsoDateInLocalTimezone(addDays(date, 1))
+        ) {
+          const minutesSlept = minutesSleptByDateAwoke[date];
+          if (minutesSlept === undefined) continue;
+          minutesSleptArray.push(minutesSlept);
         }
-        return computeMeanSafe(Object.values(sleepByDateAwoke));
+        return computeMeanSafe(minutesSleptArray);
       },
     ),
+    minutesSleptByDateAwoke: minutesSleptByDateAwokeSelector,
     meanWeightInPeriod: createSelector(
       normalizedWeightsSelector,
       dateFromSelector,

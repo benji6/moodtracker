@@ -25,6 +25,7 @@ import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import PrevNextControls from "../../shared/PrevNextControls";
 import { RootState } from "../../../store";
+import SleepChartForWeek from "./SleepChartForWeek";
 import { TIME } from "../../../constants";
 import WeatherForPeriod from "./WeatherForPeriod";
 import WeightChartForPeriod from "./WeightChartForPeriod";
@@ -118,6 +119,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           </p>
         </Paper>
       )}
+      <SleepChartForWeek dateFrom={date} />
       <WeightChartForPeriod
         centerXAxisLabels
         dateFrom={date}
