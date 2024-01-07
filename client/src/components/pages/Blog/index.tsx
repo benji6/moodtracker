@@ -168,6 +168,8 @@ export default function Blog() {
               pathname,
             );
         const __html = marked.parse(text);
+        if (typeof __html !== "string")
+          throw Error("Expected `marked.parse` to return a string");
         return { __html, dateString, title: post.title };
       }),
     ).then(setPosts);
