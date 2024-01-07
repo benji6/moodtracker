@@ -10,18 +10,15 @@ import { useSelector } from "react-redux";
 
 interface Props {
   dates: [Date, Date, Date];
-  normalizedAverages: {
-    allIds: string[];
-    byId: {
-      [k: string]: number | undefined;
-    };
+  meanMoodByDate: {
+    [date: string]: number | undefined;
   };
   periodType: "day" | "month" | "week" | "year";
 }
 
 export default function MoodSummaryForCalendarPeriod({
   dates: [date0, date1, date2],
-  normalizedAverages,
+  meanMoodByDate,
   periodType,
 }: Props) {
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
@@ -60,7 +57,7 @@ export default function MoodSummaryForCalendarPeriod({
       <MoodSummary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
-          mean: normalizedAverages.byId[formatIsoDateInLocalTimezone(date1)],
+          mean: meanMoodByDate[formatIsoDateInLocalTimezone(date1)],
           meanSleep: meanSleepInPeriod,
           meanWeight: meanWeightInPeriod,
           secondsMeditated: secondsMeditatedInCurrentPeriod,
@@ -75,9 +72,7 @@ export default function MoodSummaryForCalendarPeriod({
                 best: prevMoodValues.length
                   ? Math.max(...prevMoodValues)
                   : undefined,
-                mean: normalizedAverages.byId[
-                  formatIsoDateInLocalTimezone(date0)
-                ],
+                mean: meanMoodByDate[formatIsoDateInLocalTimezone(date0)],
                 meanSleep: meanSleepInPreviousPeriod,
                 meanWeight: meanWeightInPreviousPeriod,
                 secondsMeditated: secondsMeditatedInPreviousPeriod,

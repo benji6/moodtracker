@@ -16,16 +16,12 @@ import { yearFormatter } from "../../../formatters/dateTimeFormatters";
 const MAX_YEARS_PER_PAGE = 8;
 
 export default function Years() {
-  const normalizedAveragesByYear = useSelector(
-    eventsSlice.selectors.normalizedAveragesByYear,
-  );
+  const meanMoodsByYear = useSelector(eventsSlice.selectors.meanMoodsByYear);
+  const years = Object.keys(meanMoodsByYear);
   const [page, setPage] = useState(0);
 
-  const pageCount = Math.ceil(
-    normalizedAveragesByYear.allIds.length / MAX_YEARS_PER_PAGE,
-  );
-  const endIndex =
-    normalizedAveragesByYear.allIds.length - MAX_YEARS_PER_PAGE * page;
+  const pageCount = Math.ceil(years.length / MAX_YEARS_PER_PAGE);
+  const endIndex = years.length - MAX_YEARS_PER_PAGE * page;
   const startIndex = Math.max(0, endIndex - MAX_YEARS_PER_PAGE);
 
   return (
@@ -40,29 +36,26 @@ export default function Years() {
           </tr>
         </thead>
         <tbody>
-          {mapRight(
-            normalizedAveragesByYear.allIds.slice(startIndex, endIndex),
-            (dateString) => {
-              const year = createDateFromLocalDateString(dateString);
-              const yearFormattedString = yearFormatter.format(year);
-              return (
-                <tr key={yearFormattedString}>
-                  <td>
-                    <Link to={`years/${formatIsoYearInLocalTimezone(year)}`}>
-                      {yearFormattedString}
-                    </Link>
-                  </td>
-                  <td>
-                    <MoodGradientForPeriod
-                      dateFrom={year}
-                      dateTo={addYears(year, 1)}
-                    />
-                  </td>
-                  <MoodCell mood={normalizedAveragesByYear.byId[dateString]!} />
-                </tr>
-              );
-            },
-          )}
+          {mapRight(years.slice(startIndex, endIndex), (dateString) => {
+            const year = createDateFromLocalDateString(dateString);
+            const yearFormattedString = yearFormatter.format(year);
+            return (
+              <tr key={yearFormattedString}>
+                <td>
+                  <Link to={`years/${formatIsoYearInLocalTimezone(year)}`}>
+                    {yearFormattedString}
+                  </Link>
+                </td>
+                <td>
+                  <MoodGradientForPeriod
+                    dateFrom={year}
+                    dateTo={addYears(year, 1)}
+                  />
+                </td>
+                <MoodCell mood={meanMoodsByYear[dateString]!} />
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <Pagination onChange={setPage} page={page} pageCount={pageCount} />

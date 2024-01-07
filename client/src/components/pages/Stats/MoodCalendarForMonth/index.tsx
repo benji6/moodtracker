@@ -21,9 +21,7 @@ interface Props {
 
 export default function MoodCalendarForMonth({ month, small }: Props) {
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const normalizedAveragesByDay = useSelector(
-    eventsSlice.selectors.normalizedAveragesByDay,
-  );
+  const meanMoodByDay = useSelector(eventsSlice.selectors.meanMoodsByDay);
   const navigate = useNavigate();
 
   const now = new Date();
@@ -40,7 +38,7 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
   let d = month;
   while (daysInMonth--) {
     const dateString = formatIsoDateInLocalTimezone(d);
-    const mood = normalizedAveragesByDay.byId[dateString];
+    const mood = meanMoodByDay[dateString];
     data.push({ dateString, mood });
     d = addDays(d, 1);
   }

@@ -16,16 +16,12 @@ import { useState } from "react";
 const MAX_MONTHS_PER_PAGE = 12;
 
 export default function Months() {
-  const normalizedAveragesByMonth = useSelector(
-    eventsSlice.selectors.normalizedAveragesByMonth,
-  );
+  const meanMoodByMonth = useSelector(eventsSlice.selectors.meanMoodsByMonth);
+  const months = Object.keys(meanMoodByMonth);
   const [page, setPage] = useState(0);
 
-  const pageCount = Math.ceil(
-    normalizedAveragesByMonth.allIds.length / MAX_MONTHS_PER_PAGE,
-  );
-  const endIndex =
-    normalizedAveragesByMonth.allIds.length - MAX_MONTHS_PER_PAGE * page;
+  const pageCount = Math.ceil(months.length / MAX_MONTHS_PER_PAGE);
+  const endIndex = months.length - MAX_MONTHS_PER_PAGE * page;
   const startIndex = Math.max(0, endIndex - MAX_MONTHS_PER_PAGE);
 
   return (
@@ -40,31 +36,26 @@ export default function Months() {
           </tr>
         </thead>
         <tbody>
-          {mapRight(
-            normalizedAveragesByMonth.allIds.slice(startIndex, endIndex),
-            (dateString) => {
-              const month = createDateFromLocalDateString(dateString);
-              const monthStr = monthYearFormatter.format(month);
-              return (
-                <tr key={monthStr}>
-                  <td>
-                    <Link to={`months/${formatIsoMonthInLocalTimezone(month)}`}>
-                      {monthStr}
-                    </Link>
-                  </td>
-                  <td>
-                    <MoodGradientForPeriod
-                      dateFrom={month}
-                      dateTo={addMonths(month, 1)}
-                    />
-                  </td>
-                  <MoodCell
-                    mood={normalizedAveragesByMonth.byId[dateString]!}
+          {mapRight(months.slice(startIndex, endIndex), (dateString) => {
+            const month = createDateFromLocalDateString(dateString);
+            const monthStr = monthYearFormatter.format(month);
+            return (
+              <tr key={monthStr}>
+                <td>
+                  <Link to={`months/${formatIsoMonthInLocalTimezone(month)}`}>
+                    {monthStr}
+                  </Link>
+                </td>
+                <td>
+                  <MoodGradientForPeriod
+                    dateFrom={month}
+                    dateTo={addMonths(month, 1)}
                   />
-                </tr>
-              );
-            },
-          )}
+                </td>
+                <MoodCell mood={meanMoodByMonth[dateString]} />
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <Pagination onChange={setPage} page={page} pageCount={pageCount} />

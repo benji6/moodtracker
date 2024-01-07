@@ -15,16 +15,13 @@ interface Props {
 }
 
 export default function MoodByHourForPeriod({ dateFrom, dateTo }: Props) {
-  const normalizedAveragesByHour = useSelector(
-    eventsSlice.selectors.normalizedAveragesByHour,
-  );
+  const meanMoodByHour = useSelector(eventsSlice.selectors.meanMoodsByHour);
   const moodsByHourIndex: (number[] | undefined)[] = [
     ...Array(TIME.daysPerWeek),
   ];
 
   for (let t0 = dateFrom; t0 < dateTo; t0 = addHours(t0, 1)) {
-    const mood =
-      normalizedAveragesByHour.byId[formatIsoDateHourInLocalTimezone(t0)];
+    const mood = meanMoodByHour[formatIsoDateHourInLocalTimezone(t0)];
     if (mood === undefined) continue;
     const hourIndex = t0.getHours(); //
     const moodsForHour = moodsByHourIndex[hourIndex];

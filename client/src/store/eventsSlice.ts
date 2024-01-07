@@ -184,24 +184,17 @@ const moodIdsWithLocationSelector = createSelector(
     }),
 );
 
-const makeNormalizedAveragesByPeriodSelector = (
+const makeMeanMoodsByPeriodSelector = (
   eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
   addPeriods: (date: Date, n: number) => Date,
   createId = formatIsoDateInLocalTimezone,
 ) =>
   createSelector(
     normalizedMoodsSelector,
-    (
-      moods,
-    ): {
-      allIds: string[];
-      byId: { [k: string]: number | undefined };
-    } => {
-      const allIds: string[] = [];
-      const byId: { [k: string]: number } = {};
-      const normalizedAverages = { allIds, byId };
+    (moods): { [date: string]: number } => {
+      const meanMoods: { [date: string]: number } = {};
 
-      if (!moods.allIds.length) return normalizedAverages;
+      if (!moods.allIds.length) return meanMoods;
 
       const periods = eachPeriodOfInterval({
         start: new Date(moods.allIds[0]),
@@ -211,10 +204,8 @@ const makeNormalizedAveragesByPeriodSelector = (
       const finalPeriod = addPeriods(periods.at(-1)!, 1);
 
       if (moods.allIds.length === 1) {
-        const id = createId(periods[0]);
-        allIds.push(id);
-        byId[id] = moods.byId[moods.allIds[0]].mood;
-        return normalizedAverages;
+        meanMoods[createId(periods[0])] = moods.byId[moods.allIds[0]].mood;
+        return meanMoods;
       }
 
       periods.push(finalPeriod);
@@ -227,14 +218,11 @@ const makeNormalizedAveragesByPeriodSelector = (
           p0,
           p1,
         );
-        if (averageMoodInInterval !== undefined) {
-          const id = createId(p0);
-          allIds.push(id);
-          byId[id] = averageMoodInInterval;
-        }
+        if (averageMoodInInterval !== undefined)
+          meanMoods[createId(p0)] = averageMoodInInterval;
       }
 
-      return normalizedAverages;
+      return meanMoods;
     },
   );
 
@@ -562,14 +550,24 @@ export default createSlice({
       }),
     ),
     normalizedWeights: normalizedWeightsSelector,
-    normalizedAveragesByDay: makeNormalizedAveragesByPeriodSelector(
-      eachDayOfInterval,
-      addDays,
-    ),
-    normalizedAveragesByHour: makeNormalizedAveragesByPeriodSelector(
+    meanMoodsByHour: makeMeanMoodsByPeriodSelector(
       eachHourOfInterval,
       addHours,
       formatIsoDateHourInLocalTimezone,
+    ),
+    meanMoodsByDay: makeMeanMoodsByPeriodSelector(eachDayOfInterval, addDays),
+    meanMoodsByWeek: makeMeanMoodsByPeriodSelector(
+      ({ start, end }: Interval) =>
+        eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
+      addWeeks,
+    ),
+    meanMoodsByMonth: makeMeanMoodsByPeriodSelector(
+      eachMonthOfInterval,
+      addMonths,
+    ),
+    meanMoodsByYear: makeMeanMoodsByPeriodSelector(
+      eachYearOfInterval,
+      addYears,
     ),
     normalizedTotalSecondsMeditatedByMonth: createSelector(
       normalizedMeditationsSelector,
@@ -616,19 +614,6 @@ export default createSlice({
 
         return normalizedTotalSeconds;
       },
-    ),
-    normalizedAveragesByMonth: makeNormalizedAveragesByPeriodSelector(
-      eachMonthOfInterval,
-      addMonths,
-    ),
-    normalizedAveragesByWeek: makeNormalizedAveragesByPeriodSelector(
-      ({ start, end }: Interval) =>
-        eachWeekOfInterval({ start, end }, WEEK_OPTIONS),
-      addWeeks,
-    ),
-    normalizedAveragesByYear: makeNormalizedAveragesByPeriodSelector(
-      eachYearOfInterval,
-      addYears,
     ),
     secondsMeditatedInPeriod: createSelector(
       normalizedMeditationsSelector,

@@ -18,9 +18,7 @@ interface Props {
 }
 
 export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
-  const normalizedAveragesByMonth = useSelector(
-    eventsSlice.selectors.normalizedAveragesByMonth,
-  );
+  const meanMoodsByMonth = useSelector(eventsSlice.selectors.meanMoodsByMonth);
   const navigate = useNavigate();
 
   const months = eachMonthOfInterval({ start: dateFrom, end: dateTo }).slice(
@@ -35,7 +33,7 @@ export default function MoodByMonthForPeriod({ dateFrom, dateTo }: Props) {
         aria-label="Chart displaying average mood by month"
         data={months.map((month) => {
           const averageMood =
-            normalizedAveragesByMonth.byId[formatIsoDateInLocalTimezone(month)];
+            meanMoodsByMonth[formatIsoDateInLocalTimezone(month)];
           const label = monthShortFormatter.format(month);
           return {
             color:

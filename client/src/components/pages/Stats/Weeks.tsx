@@ -19,16 +19,12 @@ import { useState } from "react";
 const MAX_WEEKS_PER_PAGE = 8;
 
 export default function Weeks() {
-  const normalizedAveragesByWeek = useSelector(
-    eventsSlice.selectors.normalizedAveragesByWeek,
-  );
+  const meanMoodsByWeek = useSelector(eventsSlice.selectors.meanMoodsByWeek);
+  const weeks = Object.keys(meanMoodsByWeek);
   const [page, setPage] = useState(0);
 
-  const pageCount = Math.ceil(
-    normalizedAveragesByWeek.allIds.length / MAX_WEEKS_PER_PAGE,
-  );
-  const endIndex =
-    normalizedAveragesByWeek.allIds.length - MAX_WEEKS_PER_PAGE * page;
+  const pageCount = Math.ceil(weeks.length / MAX_WEEKS_PER_PAGE);
+  const endIndex = weeks.length - MAX_WEEKS_PER_PAGE * page;
   const startIndex = Math.max(0, endIndex - MAX_WEEKS_PER_PAGE);
 
   return (
@@ -43,33 +39,30 @@ export default function Weeks() {
           </tr>
         </thead>
         <tbody>
-          {mapRight(
-            normalizedAveragesByWeek.allIds.slice(startIndex, endIndex),
-            (dateString) => {
-              const week = createDateFromLocalDateString(dateString);
-              const weekFormattedString = formatWeekWithYear(week);
-              return (
-                <tr key={weekFormattedString}>
-                  <td>
-                    <Link
-                      to={`weeks/${formatIsoDateInLocalTimezone(
-                        startOfWeek(week, WEEK_OPTIONS),
-                      )}`}
-                    >
-                      {weekFormattedString}
-                    </Link>
-                  </td>
-                  <td>
-                    <MoodGradientForPeriod
-                      dateFrom={week}
-                      dateTo={addWeeks(week, 1)}
-                    />
-                  </td>
-                  <MoodCell mood={normalizedAveragesByWeek.byId[dateString]!} />
-                </tr>
-              );
-            },
-          )}
+          {mapRight(weeks.slice(startIndex, endIndex), (dateString) => {
+            const week = createDateFromLocalDateString(dateString);
+            const weekFormattedString = formatWeekWithYear(week);
+            return (
+              <tr key={weekFormattedString}>
+                <td>
+                  <Link
+                    to={`weeks/${formatIsoDateInLocalTimezone(
+                      startOfWeek(week, WEEK_OPTIONS),
+                    )}`}
+                  >
+                    {weekFormattedString}
+                  </Link>
+                </td>
+                <td>
+                  <MoodGradientForPeriod
+                    dateFrom={week}
+                    dateTo={addWeeks(week, 1)}
+                  />
+                </td>
+                <MoodCell mood={meanMoodsByWeek[dateString]} />
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <Pagination onChange={setPage} page={page} pageCount={pageCount} />

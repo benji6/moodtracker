@@ -23,9 +23,7 @@ export default function MoodByWeekdayForPeriod({
   dateFrom,
   dateTo,
 }: Props) {
-  const normalizedAveragesByDay = useSelector(
-    eventsSlice.selectors.normalizedAveragesByDay,
-  );
+  const meanMoodByDay = useSelector(eventsSlice.selectors.meanMoodsByDay);
   const navigate = useNavigate();
 
   const moodsByWeekdayIndex: (number[] | undefined)[] = [
@@ -36,7 +34,7 @@ export default function MoodByWeekdayForPeriod({
   for (let t0 = dateFrom; t0 < dateTo; t0 = addDays(t0, 1)) {
     const dateString = formatIsoDateInLocalTimezone(t0);
     dateStrings.push(dateString);
-    const mood = normalizedAveragesByDay.byId[dateString];
+    const mood = meanMoodByDay[dateString];
     if (mood === undefined) continue;
     const weekdayIndex = getWeekdayIndex(t0);
     const moodsForWeekday = moodsByWeekdayIndex[weekdayIndex];

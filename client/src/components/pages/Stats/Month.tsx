@@ -55,9 +55,8 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
   );
-  const normalizedAveragesByWeek = useSelector(
-    eventsSlice.selectors.normalizedAveragesByWeek,
-  );
+  const meanMoodsByWeek = useSelector(eventsSlice.selectors.meanMoodsByWeek);
+  const weeks = Object.keys(meanMoodsByWeek);
 
   const nextMonthDateString = formatIsoDateInLocalTimezone(nextDate);
   const monthMinus7DaysDateString = formatIsoDateInLocalTimezone(
@@ -126,7 +125,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
                 </tr>
               </thead>
               <tbody>
-                {normalizedAveragesByWeek.allIds
+                {weeks
                   .filter(
                     (dateString) =>
                       dateString >= monthMinus7DaysDateString &&
@@ -152,9 +151,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
                             dateTo={addWeeks(week, 1)}
                           />
                         </td>
-                        <MoodCell
-                          mood={normalizedAveragesByWeek.byId[dateString]!}
-                        />
+                        <MoodCell mood={meanMoodsByWeek[dateString]!} />
                       </tr>
                     );
                   })}

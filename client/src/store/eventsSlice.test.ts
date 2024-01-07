@@ -1635,10 +1635,10 @@ describe("eventsSlice", () => {
       });
     });
 
-    describe("normalizedAveragesByDay", () => {
+    describe("meanMoodsByDay", () => {
       it("works with 1 mood", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByDay({
+          eventsSlice.selectors.meanMoodsByDay({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1652,12 +1652,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-07-10"], byId: { "2020-07-10": 5 } });
+        ).toEqual({ "2020-07-10": 5 });
       });
 
       it("works with 2 moods in the same day", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByDay({
+          eventsSlice.selectors.meanMoodsByDay({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1676,12 +1676,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-07-28"], byId: { "2020-07-28": 6 } });
+        ).toEqual({ "2020-07-28": 6 });
       });
 
       it("works with 2 moods in adjacent days", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByDay({
+          eventsSlice.selectors.meanMoodsByDay({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1700,13 +1700,10 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({
-          allIds: ["2020-07-27", "2020-07-28"],
-          byId: { "2020-07-27": 5, "2020-07-28": 5 },
-        });
+        ).toEqual({ "2020-07-27": 5, "2020-07-28": 5 });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByDay({
+          eventsSlice.selectors.meanMoodsByDay({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1727,22 +1724,16 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-06-10",
-            "2020-06-11",
-          ],
-          "byId": {
-            "2020-06-10": 5.5,
-            "2020-06-11": 7,
-          },
-        }
-      `);
+{
+  "2020-06-10": 5.5,
+  "2020-06-11": 7,
+}
+`);
       });
 
       it("works with 2 moods in separate non-adjacent days", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByDay({
+          eventsSlice.selectors.meanMoodsByDay({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1762,17 +1753,14 @@ describe("eventsSlice", () => {
             },
           }),
         ).toEqual({
-          allIds: ["2020-04-05", "2020-04-06", "2020-04-07", "2020-04-08"],
-          byId: {
-            "2020-04-05": 5,
-            "2020-04-06": 5,
-            "2020-04-07": 5,
-            "2020-04-08": 5,
-          },
+          "2020-04-05": 5,
+          "2020-04-06": 5,
+          "2020-04-07": 5,
+          "2020-04-08": 5,
         });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByDay({
+          eventsSlice.selectors.meanMoodsByDay({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1793,30 +1781,21 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-04-05",
-            "2020-04-06",
-            "2020-04-07",
-            "2020-04-08",
-            "2020-04-09",
-          ],
-          "byId": {
-            "2020-04-05": 3.75,
-            "2020-04-06": 5.25,
-            "2020-04-07": 6.75,
-            "2020-04-08": 8.25,
-            "2020-04-09": 9,
-          },
-        }
-      `);
+{
+  "2020-04-05": 3.75,
+  "2020-04-06": 5.25,
+  "2020-04-07": 6.75,
+  "2020-04-08": 8.25,
+  "2020-04-09": 9,
+}
+`);
       });
     });
 
-    describe("normalizedAveragesByHour", () => {
+    describe("meanMoodsByHour", () => {
       it("works with 1 mood", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByHour({
+          eventsSlice.selectors.meanMoodsByHour({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1830,15 +1809,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({
-          allIds: ["2020-07-10T00:00:00.000Z"],
-          byId: { "2020-07-10T00:00:00.000Z": 5 },
-        });
+        ).toEqual({ "2020-07-10T00:00:00.000Z": 5 });
       });
 
       it("works with 2 moods in the same hour", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByHour({
+          eventsSlice.selectors.meanMoodsByHour({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1857,15 +1833,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({
-          allIds: ["2020-07-28T00:00:00.000Z"],
-          byId: { "2020-07-28T00:00:00.000Z": 6 },
-        });
+        ).toEqual({ "2020-07-28T00:00:00.000Z": 6 });
       });
 
       it("works with 2 moods in adjacent hours", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByHour({
+          eventsSlice.selectors.meanMoodsByHour({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1885,15 +1858,12 @@ describe("eventsSlice", () => {
             },
           }),
         ).toEqual({
-          allIds: ["2020-07-27T00:00:00.000Z", "2020-07-27T01:00:00.000Z"],
-          byId: {
-            "2020-07-27T00:00:00.000Z": 5,
-            "2020-07-27T01:00:00.000Z": 5,
-          },
+          "2020-07-27T00:00:00.000Z": 5,
+          "2020-07-27T01:00:00.000Z": 5,
         });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByHour({
+          eventsSlice.selectors.meanMoodsByHour({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1914,22 +1884,16 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-07-27T00:00:00.000Z",
-            "2020-07-27T01:00:00.000Z",
-          ],
-          "byId": {
-            "2020-07-27T00:00:00.000Z": 5.5,
-            "2020-07-27T01:00:00.000Z": 7,
-          },
-        }
-      `);
+{
+  "2020-07-27T00:00:00.000Z": 5.5,
+  "2020-07-27T01:00:00.000Z": 7,
+}
+`);
       });
 
       it("works with 2 moods in separate non-adjacent hours", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByHour({
+          eventsSlice.selectors.meanMoodsByHour({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1949,22 +1913,14 @@ describe("eventsSlice", () => {
             },
           }),
         ).toEqual({
-          allIds: [
-            "2020-07-27T00:00:00.000Z",
-            "2020-07-27T01:00:00.000Z",
-            "2020-07-27T02:00:00.000Z",
-            "2020-07-27T03:00:00.000Z",
-          ],
-          byId: {
-            "2020-07-27T00:00:00.000Z": 5,
-            "2020-07-27T01:00:00.000Z": 5,
-            "2020-07-27T02:00:00.000Z": 5,
-            "2020-07-27T03:00:00.000Z": 5,
-          },
+          "2020-07-27T00:00:00.000Z": 5,
+          "2020-07-27T01:00:00.000Z": 5,
+          "2020-07-27T02:00:00.000Z": 5,
+          "2020-07-27T03:00:00.000Z": 5,
         });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByHour({
+          eventsSlice.selectors.meanMoodsByHour({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1985,28 +1941,20 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-07-27T00:00:00.000Z",
-            "2020-07-27T01:00:00.000Z",
-            "2020-07-27T02:00:00.000Z",
-            "2020-07-27T03:00:00.000Z",
-          ],
-          "byId": {
-            "2020-07-27T00:00:00.000Z": 4,
-            "2020-07-27T01:00:00.000Z": 6,
-            "2020-07-27T02:00:00.000Z": 8,
-            "2020-07-27T03:00:00.000Z": 9,
-          },
-        }
-      `);
+{
+  "2020-07-27T00:00:00.000Z": 4,
+  "2020-07-27T01:00:00.000Z": 6,
+  "2020-07-27T02:00:00.000Z": 8,
+  "2020-07-27T03:00:00.000Z": 9,
+}
+`);
       });
     });
 
-    describe("normalizedAveragesByMonth", () => {
+    describe("meanMoodsByMonth", () => {
       it("works with 1 mood", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByMonth({
+          eventsSlice.selectors.meanMoodsByMonth({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2020,12 +1968,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-07-01"], byId: { "2020-07-01": 5 } });
+        ).toEqual({ "2020-07-01": 5 });
       });
 
       it("works with 2 moods in the same month", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByMonth({
+          eventsSlice.selectors.meanMoodsByMonth({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2044,12 +1992,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-07-01"], byId: { "2020-07-01": 6 } });
+        ).toEqual({ "2020-07-01": 6 });
       });
 
       it("works with 2 moods in adjacent months", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByMonth({
+          eventsSlice.selectors.meanMoodsByMonth({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2068,13 +2016,10 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({
-          allIds: ["2020-06-01", "2020-07-01"],
-          byId: { "2020-06-01": 5, "2020-07-01": 5 },
-        });
+        ).toEqual({ "2020-06-01": 5, "2020-07-01": 5 });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByMonth({
+          eventsSlice.selectors.meanMoodsByMonth({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2095,22 +2040,16 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-06-01",
-            "2020-07-01",
-          ],
-          "byId": {
-            "2020-06-01": 5.05,
-            "2020-07-01": 6.550000000000001,
-          },
-        }
-      `);
+{
+  "2020-06-01": 5.05,
+  "2020-07-01": 6.550000000000001,
+}
+`);
       });
 
       it("works with 2 moods in separate non-adjacent months", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByMonth({
+          eventsSlice.selectors.meanMoodsByMonth({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2130,17 +2069,14 @@ describe("eventsSlice", () => {
             },
           }),
         ).toEqual({
-          allIds: ["2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01"],
-          byId: {
-            "2020-04-01": 5,
-            "2020-05-01": 5,
-            "2020-06-01": 5,
-            "2020-07-01": 5,
-          },
+          "2020-04-01": 5,
+          "2020-05-01": 5,
+          "2020-06-01": 5,
+          "2020-07-01": 5,
         });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByMonth({
+          eventsSlice.selectors.meanMoodsByMonth({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2161,28 +2097,20 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-04-01",
-            "2020-05-01",
-            "2020-06-01",
-            "2020-07-01",
-          ],
-          "byId": {
-            "2020-04-01": 3.857142857142857,
-            "2020-05-01": 5.736263736263737,
-            "2020-06-01": 7.747252747252748,
-            "2020-07-01": 8.868131868131869,
-          },
-        }
-      `);
+{
+  "2020-04-01": 3.857142857142857,
+  "2020-05-01": 5.736263736263737,
+  "2020-06-01": 7.747252747252748,
+  "2020-07-01": 8.868131868131869,
+}
+`);
       });
     });
 
-    describe("normalizedAveragesByWeek", () => {
+    describe("meanMoodsByWeek", () => {
       it("works with 1 mood", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2196,12 +2124,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-07-27"], byId: { "2020-07-27": 5 } });
+        ).toEqual({ "2020-07-27": 5 });
       });
 
       it("gets date correct", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2215,12 +2143,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-08-10"], byId: { "2020-08-10": 5 } });
+        ).toEqual({ "2020-08-10": 5 });
       });
 
       it("works with 2 moods in the same week", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2239,12 +2167,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-07-27"], byId: { "2020-07-27": 6 } });
+        ).toEqual({ "2020-07-27": 6 });
       });
 
       it("works with 2 moods in adjacent weeks", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2263,13 +2191,10 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({
-          allIds: ["2020-07-20", "2020-07-27"],
-          byId: { "2020-07-20": 5, "2020-07-27": 5 },
-        });
+        ).toEqual({ "2020-07-20": 5, "2020-07-27": 5 });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2290,22 +2215,16 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-07-20",
-            "2020-07-27",
-          ],
-          "byId": {
-            "2020-07-20": 4,
-            "2020-07-27": 5.5,
-          },
-        }
-      `);
+{
+  "2020-07-20": 4,
+  "2020-07-27": 5.5,
+}
+`);
       });
 
       it("works with 2 moods in separate non-adjacent weeks", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2325,24 +2244,15 @@ describe("eventsSlice", () => {
             },
           }),
         ).toEqual({
-          allIds: [
-            "2020-06-29",
-            "2020-07-06",
-            "2020-07-13",
-            "2020-07-20",
-            "2020-07-27",
-          ],
-          byId: {
-            "2020-06-29": 5,
-            "2020-07-06": 5,
-            "2020-07-13": 5,
-            "2020-07-20": 5,
-            "2020-07-27": 5,
-          },
+          "2020-06-29": 5,
+          "2020-07-06": 5,
+          "2020-07-13": 5,
+          "2020-07-20": 5,
+          "2020-07-27": 5,
         });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByWeek({
+          eventsSlice.selectors.meanMoodsByWeek({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2363,28 +2273,20 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-06-29",
-            "2020-07-06",
-            "2020-07-13",
-            "2020-07-20",
-          ],
-          "byId": {
-            "2020-06-29": 4.050000000000001,
-            "2020-07-06": 4.449999999999999,
-            "2020-07-13": 5.15,
-            "2020-07-20": 5.75,
-          },
-        }
-      `);
+{
+  "2020-06-29": 4.050000000000001,
+  "2020-07-06": 4.449999999999999,
+  "2020-07-13": 5.15,
+  "2020-07-20": 5.75,
+}
+`);
       });
     });
 
-    describe("normalizedAveragesByYear", () => {
+    describe("meanMoodsByYear", () => {
       it("works with 1 mood", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2398,9 +2300,9 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-01-01"], byId: { "2020-01-01": 5 } });
+        ).toEqual({ "2020-01-01": 5 });
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2414,12 +2316,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2021-01-01"], byId: { "2021-01-01": 5 } });
+        ).toEqual({ "2021-01-01": 5 });
       });
 
       it("works with 2 moods in the same year", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2438,12 +2340,12 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({ allIds: ["2020-01-01"], byId: { "2020-01-01": 6 } });
+        ).toEqual({ "2020-01-01": 6 });
       });
 
       it("works with 2 moods in adjacent years", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2463,12 +2365,12 @@ describe("eventsSlice", () => {
             },
           }),
         ).toEqual({
-          allIds: ["2020-01-01", "2021-01-01"],
-          byId: { "2020-01-01": 5, "2021-01-01": 5 },
+          "2020-01-01": 5,
+          "2021-01-01": 5,
         });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2489,20 +2391,15 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-01-01",
-          ],
-          "byId": {
-            "2020-01-01": 4.5,
-          },
-        }
-      `);
+{
+  "2020-01-01": 4.5,
+}
+`);
       });
 
       it("works with 2 moods in separate non-adjacent years", () => {
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2521,13 +2418,10 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual({
-          allIds: ["2020-01-01", "2021-01-01", "2022-01-01"],
-          byId: { "2020-01-01": 5, "2021-01-01": 5, "2022-01-01": 5 },
-        });
+        ).toEqual({ "2020-01-01": 5, "2021-01-01": 5, "2022-01-01": 5 });
 
         expect(
-          eventsSlice.selectors.normalizedAveragesByYear({
+          eventsSlice.selectors.meanMoodsByYear({
             ...initialState,
             events: {
               ...initialState.events,
@@ -2547,19 +2441,12 @@ describe("eventsSlice", () => {
             },
           }),
         ).toMatchInlineSnapshot(`
-        {
-          "allIds": [
-            "2020-01-01",
-            "2021-01-01",
-            "2022-01-01",
-          ],
-          "byId": {
-            "2020-01-01": 4.24,
-            "2021-01-01": 4.966666666666667,
-            "2022-01-01": 5.726666666666667,
-          },
-        }
-      `);
+{
+  "2020-01-01": 4.24,
+  "2021-01-01": 4.966666666666667,
+  "2022-01-01": 5.726666666666667,
+}
+`);
       });
     });
 

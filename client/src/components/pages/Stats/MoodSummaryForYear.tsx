@@ -7,14 +7,12 @@ interface Props {
 }
 
 export default function MoodSummaryForYear(props: Props) {
-  const normalizedAverages = useSelector(
-    eventsSlice.selectors.normalizedAveragesByYear,
-  );
+  const meanMoods = useSelector(eventsSlice.selectors.meanMoodsByYear);
 
   return (
     <MoodSummaryForCalendarPeriod
       {...props}
-      normalizedAverages={normalizedAverages}
+      meanMoodByDate={meanMoods}
       periodType="year"
     />
   );

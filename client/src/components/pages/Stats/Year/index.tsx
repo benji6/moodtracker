@@ -47,9 +47,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
     eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
   );
   const navigate = useNavigate();
-  const normalizedAveragesByMonth = useSelector(
-    eventsSlice.selectors.normalizedAveragesByMonth,
-  );
+  const meanMoodsByMonth = useSelector(eventsSlice.selectors.meanMoodsByMonth);
 
   const months = eachMonthOfInterval({ start: date, end: nextDate }).slice(
     0,
@@ -59,8 +57,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const calendars = [];
   for (const month of months) {
     const monthString = monthLongFormatter.format(month);
-    const averageMood =
-      normalizedAveragesByMonth.byId[formatIsoDateInLocalTimezone(month)];
+    const averageMood = meanMoodsByMonth[formatIsoDateInLocalTimezone(month)];
     const formattedAverageMood =
       averageMood === undefined
         ? undefined
