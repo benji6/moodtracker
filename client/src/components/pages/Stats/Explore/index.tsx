@@ -8,6 +8,7 @@ import LocationsForPeriod from "../LocationsForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
+import MoodBySleepForPeriod from "../MoodBySleepForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodChartForPeriod from "../MoodChartForPeriod";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
@@ -248,6 +249,7 @@ export default function Explore() {
           />
         </>
       ) : null}
+      <MoodBySleepForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
       <WeightChartForPeriod
         dateFrom={localState.dateFrom}
         dateTo={dateTo}

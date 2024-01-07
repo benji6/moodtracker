@@ -18,6 +18,7 @@ import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MoodByMonthForPeriod from "./MoodByMonthForPeriod";
+import MoodBySleepForPeriod from "../MoodBySleepForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
 import MoodChartForPeriod from "../MoodChartForPeriod";
@@ -149,6 +150,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         dateTo={nextDate}
         xLabels={xLabels}
       />
+      <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />
       <WeightChartForPeriod
         centerXAxisLabels
         dateFrom={date}

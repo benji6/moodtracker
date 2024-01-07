@@ -25,6 +25,7 @@ import LocationsForPeriod from "./LocationsForPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
+import MoodBySleepForPeriod from "./MoodBySleepForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "./MoodCalendarForMonth";
 import MoodCell from "../../shared/MoodCell";
@@ -171,6 +172,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           <p>No mood data for this month.</p>
         </Paper>
       )}
+      <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />
       <WeightChartForPeriod
         dateFrom={date}
         dateTo={nextDate}

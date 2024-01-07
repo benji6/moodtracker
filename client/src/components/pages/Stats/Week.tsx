@@ -17,6 +17,7 @@ import LocationsForPeriod from "./LocationsForPeriod";
 import MeditationImpactForPeriod from "./MeditationImpactForPeriod";
 import MoodByHourForPeriod from "./MoodByHourForPeriod";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
+import MoodBySleepForPeriod from "./MoodBySleepForPeriod";
 import MoodByWeekdayForPeriod from "./MoodByWeekdayForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodCloud from "./MoodCloud";
@@ -120,6 +121,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </Paper>
       )}
       <SleepChartForWeek dateFrom={date} />
+      <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />
       <WeightChartForPeriod
         centerXAxisLabels
         dateFrom={date}
