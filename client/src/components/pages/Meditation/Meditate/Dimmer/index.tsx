@@ -13,7 +13,8 @@ export default function Dimmer({ enabled, onUndim }: Props) {
   const dimmerEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (enabled && dimmerEl.current) dimmerEl.current.requestFullscreen();
+    // TODO can remove `?.` once API is supported on iPhone https://caniuse.com/?search=requestfullscreen
+    if (enabled && dimmerEl.current) dimmerEl.current.requestFullscreen?.();
     else if (document.fullscreenElement) document.exitFullscreen();
   }, [enabled]);
 
