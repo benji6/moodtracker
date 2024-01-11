@@ -9,12 +9,13 @@ import {
   removeOldestQuery,
 } from "@tanstack/react-query-persist-client";
 import { del, get, set } from "idb-keyval";
-import App from "./components/App";
 import { Provider } from "react-redux";
 import { QueryClient } from "@tanstack/react-query";
+import { RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { captureException } from "./sentry";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import router from "./router";
 import store from "./store";
 
 export const queryClient = new QueryClient();
@@ -49,7 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           }),
         }}
       >
-        <App />
+        <RouterProvider router={router} />
       </PersistQueryClientProvider>
     </Provider>
   </StrictMode>,

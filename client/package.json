@@ -21,7 +21,7 @@
     "@aws-sdk/client-location": "^3.462.0",
     "@aws-sdk/credential-providers": "^3.342.0",
     "@reduxjs/toolkit": "^2.0.1",
-    "@sentry/browser": "^7.77.0",
+    "@sentry/react": "^7.93.0",
     "@tanstack/query-async-storage-persister": "^5.0.5",
     "@tanstack/react-query": "^5.10.0",
     "@tanstack/react-query-persist-client": "^5.4.3",
