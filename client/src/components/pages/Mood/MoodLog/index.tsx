@@ -85,8 +85,8 @@ export default function MoodLog() {
       if (filterDescriptions.length) {
         const normalizedMoodDescription = mood.description?.toLowerCase();
         if (
-          !filterDescriptions.every(
-            (description) => normalizedMoodDescription?.includes(description),
+          !filterDescriptions.every((description) =>
+            normalizedMoodDescription?.includes(description),
           )
         )
           return false;
