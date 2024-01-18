@@ -42,7 +42,7 @@ describe("meditation", () => {
       );
       if (!button) throw Error("button not found");
       button.tap();
-      await page.waitForSelector(SELECTORS.meditatePage);
+      await page.waitForSelector(SELECTORS.meditationTimerPage);
 
       await waitForTransitionToComplete();
 

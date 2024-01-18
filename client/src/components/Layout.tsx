@@ -6,12 +6,14 @@ import { TEST_IDS } from "../constants";
 import useEvents from "./hooks/useEvents";
 import useGeolocation from "./hooks/useGeolocation";
 import { useSelector } from "react-redux";
+import { useShuffleBackgroundMesh } from "./hooks/useShuffleBackgroundMesh";
 import { useState } from "react";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import userSlice from "../store/userSlice";
 
 export default function Layout() {
+  useShuffleBackgroundMesh();
   useUser();
   useGeolocation();
   useEvents();
