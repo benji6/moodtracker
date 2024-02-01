@@ -101,17 +101,10 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             dateTo={nextDate}
             xLabels={xLabels}
           />
-          <MoodByWeekdayForPeriod
-            canDrillDown
-            dateFrom={date}
-            dateTo={nextDate}
-          />
-          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodCloud
             currentPeriod={{ dateFrom: date, dateTo: nextDate }}
             previousPeriod={{ dateFrom: prevDate, dateTo: date }}
           />
-          <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
         </>
       ) : (
         <Paper>
@@ -120,6 +113,17 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           </p>
         </Paper>
       )}
+      <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
+      {moodIdsInPeriod.length ? (
+        <>
+          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByWeekdayForPeriod
+            canDrillDown
+            dateFrom={date}
+            dateTo={nextDate}
+          />
+        </>
+      ) : null}
       <SleepChartForWeek dateFrom={date} />
       <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />
       <WeightChartForPeriod

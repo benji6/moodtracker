@@ -15,6 +15,8 @@ export default function MoodFrequencyForPeriod({ dateFrom, dateTo }: Props) {
     eventsSlice.selectors.moodsInPeriod(state, dateFrom, dateTo),
   );
 
+  if (!moodsInPeriod.length) return null;
+
   const moodCounter = new Map(MOOD_INTEGERS.map((n) => [MOOD_RANGE[0] + n, 0]));
 
   for (const { mood } of moodsInPeriod) {
