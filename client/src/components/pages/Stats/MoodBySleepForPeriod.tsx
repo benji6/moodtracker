@@ -46,8 +46,8 @@ export default function MoodBySleepForPeriod({ dateFrom, dateTo }: Props) {
   });
 
   const ysByX = defaultDict((): number[] => []);
-  // Round to nearest 12 for a resolution of 5 minutes
-  for (const { x, y } of points) ysByX[Math.round(x * 12) / 12].push(y);
+  // Round to nearest 6 for a resolution of 10 minutes
+  for (const { x, y } of points) ysByX[Math.round(x * 6) / 6].push(y);
   const linePoints = Object.keys(ysByX).map((x) => ({
     x: Number(x),
     y: computeMean(ysByX[x]),
