@@ -34,7 +34,7 @@ export default function MoodBySleepForPeriod({ dateFrom, dateTo }: Props) {
   const intersectingKeys = minutesSleptKeys.filter((key) =>
     meanMoodsKeysSet.has(key),
   );
-  if (intersectingKeys.length < 2) return;
+  if (intersectingKeys.length < 5) return;
 
   const points = intersectingKeys.map((key) => {
     const y = meanMoodsByDay[key];
