@@ -7,6 +7,7 @@ import DeleteEventDialog from "../../shared/DeleteEventDialog";
 import RedirectHome from "../../shared/RedirectHome";
 import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
 import eventsSlice from "../../../store/eventsSlice";
+import { formatIsoDateInLocalTimezone } from "../../../utils";
 import { formatMinutesAsTimeStringShort } from "../../../formatters/formatMinutesAsTimeString";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 
@@ -94,7 +95,7 @@ export default function EditSleep() {
             {...FIELDS.dateAwoke}
             defaultValue={sleep.dateAwoke}
             error={dateAwokeError}
-            max={new Date().toISOString().slice(0, 10)}
+            max={formatIsoDateInLocalTimezone(new Date())}
           />
           {showNoUpdateError && (
             <p className="center negative">{ERRORS.noChanges}</p>

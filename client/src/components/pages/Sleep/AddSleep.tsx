@@ -2,6 +2,7 @@ import { Button, Icon, Paper, TextField } from "eri";
 import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../../constants";
 import { useRef, useState } from "react";
 import eventsSlice from "../../../store/eventsSlice";
+import { formatIsoDateInLocalTimezone } from "../../../utils";
 import { useDispatch } from "react-redux";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { useNavigate } from "react-router-dom";
@@ -45,7 +46,7 @@ export default function AddSleep() {
 
   useKeyboardSave(handleSubmit);
 
-  const isoDateStringNow = new Date().toISOString().slice(0, 10);
+  const isoDateStringNow = formatIsoDateInLocalTimezone(new Date());
 
   return (
     <Paper.Group data-test-id={TEST_IDS.sleepAddPage}>

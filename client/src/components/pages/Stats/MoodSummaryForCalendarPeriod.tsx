@@ -4,12 +4,14 @@ import {
 } from "../../../utils";
 import MoodSummary from "../../shared/MoodSummary";
 import { Paper } from "eri";
+import { ReactNode } from "react";
 import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 interface Props {
   dates: [Date, Date, Date];
+  heading?: ReactNode;
   meanMoodByDate: {
     [date: string]: number | undefined;
   };
@@ -18,6 +20,7 @@ interface Props {
 
 export default function MoodSummaryForCalendarPeriod({
   dates: [date0, date1, date2],
+  heading = "Summary",
   meanMoodByDate,
   periodType,
 }: Props) {
@@ -53,7 +56,7 @@ export default function MoodSummaryForCalendarPeriod({
 
   return (
     <Paper>
-      <h3>Summary</h3>
+      <h3>{heading}</h3>
       <MoodSummary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
