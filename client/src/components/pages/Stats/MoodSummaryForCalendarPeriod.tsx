@@ -54,6 +54,18 @@ export default function MoodSummaryForCalendarPeriod({
     eventsSlice.selectors.moodsInPeriod(state, date0, date1),
   ).map(({ mood }) => mood);
 
+  if (
+    !moodValues.length &&
+    !prevMoodValues.length &&
+    meanSleepInPeriod === undefined &&
+    meanSleepInPreviousPeriod === undefined &&
+    meanWeightInPeriod === undefined &&
+    meanWeightInPreviousPeriod === undefined &&
+    !secondsMeditatedInCurrentPeriod &&
+    !secondsMeditatedInPreviousPeriod
+  )
+    return null;
+
   return (
     <Paper>
       <h3>{heading}</h3>
