@@ -33,6 +33,9 @@ export default function MoodSummary({
   const showMeditationStats: boolean =
     useSelector(eventsSlice.selectors.hasMeditations) &&
     Boolean(currentPeriod.secondsMeditated || previousPeriod?.secondsMeditated);
+  const showTotalMoodsRecorded: boolean = Boolean(
+    currentPeriod.total || previousPeriod?.total,
+  );
 
   return (
     <div className="m-mood-summary">
@@ -61,12 +64,14 @@ export default function MoodSummary({
         periodType={periodType}
         previousValue={previousPeriod?.worst}
       />
-      <MoodSummaryItem
-        currentValue={currentPeriod.total}
-        heading="Moods recorded"
-        periodType={periodType}
-        previousValue={previousPeriod?.total}
-      />
+      {showTotalMoodsRecorded && (
+        <MoodSummaryItem
+          currentValue={currentPeriod.total}
+          heading="Moods recorded"
+          periodType={periodType}
+          previousValue={previousPeriod?.total}
+        />
+      )}
       <MoodSummaryItem
         currentValue={currentPeriod.standardDeviation}
         format={oneDecimalPlaceFormatter.format}
