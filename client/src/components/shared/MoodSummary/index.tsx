@@ -30,7 +30,9 @@ export default function MoodSummary({
   previousPeriod,
   showMeditationStatsOverride = false,
 }: Props) {
-  const showMeditationStats = useSelector(eventsSlice.selectors.hasMeditations);
+  const showMeditationStats: boolean =
+    useSelector(eventsSlice.selectors.hasMeditations) &&
+    Boolean(currentPeriod.secondsMeditated || previousPeriod?.secondsMeditated);
 
   return (
     <div className="m-mood-summary">
