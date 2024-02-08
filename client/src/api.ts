@@ -5,6 +5,7 @@ import {
 } from "@aws-sdk/client-location";
 import { addMinutes, subMinutes } from "date-fns";
 import { AWS_CONSTANTS } from "./constants";
+import { captureException } from "./sentry";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
 
@@ -82,7 +83,15 @@ export const eventsGet = async (
   const response = await fetchWithAuthAndRetry(
     cursor ? `${EVENTS_URI}/?cursor=${encodeURIComponent(cursor)}` : EVENTS_URI,
   );
-  if (!response.ok) throw Error(String(response.status));
+  if (!response.ok) {
+    const error = { body: undefined, status: response.status };
+    try {
+      error.body = await response.json();
+    } catch (e) {
+      captureException(e);
+    }
+    throw Error(JSON.stringify(error));
+  }
   return response.json();
 };
 export const eventsPost = async (events: AppEvent[]): Promise<void> => {

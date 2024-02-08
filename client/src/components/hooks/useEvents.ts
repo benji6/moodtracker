@@ -1,6 +1,7 @@
 import { eventsGet, eventsPost } from "../../api";
 import { useDispatch, useSelector } from "react-redux";
 import appSlice from "../../store/appSlice";
+import { captureException } from "../../sentry";
 import eventsSlice from "../../store/eventsSlice";
 import { useEffect } from "react";
 import useInterval from "./useInterval";
@@ -45,7 +46,8 @@ export default function useEvents() {
             }),
           );
         }
-      } catch {
+      } catch (e) {
+        captureException(e);
         dispatch(eventsSlice.actions.syncFromServerError());
       }
     })();
