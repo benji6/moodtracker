@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import appSlice from "../../store/appSlice";
+import { captureException } from "../../sentry";
 import eventsSlice from "../../store/eventsSlice";
 import settingsSlice from "../../store/settingsSlice";
 import storage from "../../storage";
@@ -46,7 +47,18 @@ export default function useStorage() {
     void (async () => {
       if (!userId) return dispatch(appSlice.actions.storageLoaded());
       try {
-        const [events, settings] = await storage.getEventsAndSettings(userId);
+        const result = await Promise.race([
+          storage.getEventsAndSettings(userId),
+          new Promise((resolve) => setTimeout(resolve, 5e3)),
+        ]);
+        if (result === undefined) {
+          const error = Error("Storage did not load within 5 seconds");
+          captureException(error);
+          throw error;
+        }
+        const [events, settings] = result as Awaited<
+          ReturnType<typeof storage.getEventsAndSettings>
+        >;
         if (events) dispatch(eventsSlice.actions.loadFromStorage(events));
         if (settings) dispatch(settingsSlice.actions.loadFromStorage(settings));
       } finally {
