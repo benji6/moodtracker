@@ -44,12 +44,9 @@ export default function useStorage() {
   useEffect(() => {
     if (userLoading || !isStorageLoading) return;
     void (async () => {
+      if (!userId) return dispatch(appSlice.actions.storageLoaded());
       try {
-        if (!userId) return dispatch(appSlice.actions.storageLoaded());
-        const [events, settings] = await Promise.all([
-          storage.getEvents(userId),
-          storage.getSettings(userId),
-        ]);
+        const [events, settings] = await storage.getEventsAndSettings(userId);
         if (events) dispatch(eventsSlice.actions.loadFromStorage(events));
         if (settings) dispatch(settingsSlice.actions.loadFromStorage(settings));
       } finally {
@@ -61,14 +58,21 @@ export default function useStorage() {
   // save events & settings
   useEffect(() => {
     if (isStorageLoading || !userId) return;
-    storage.setEvents(userId, {
+    const eventsData = {
       allIds: eventsAllIds,
       byId: eventsById,
       hasLoadedFromServer: eventsHasLoadedFromServer,
       idsToSync: eventsIdsToSync,
       nextCursor: eventsNextCursor,
-    });
-    if (settingsData) storage.setSettings(userId, settingsData);
+    };
+    if (settingsData)
+      return void storage.setEventsAndSettings(
+        userId,
+        eventsData,
+        settingsData,
+      );
+
+    storage.setEvents(userId, eventsData);
   }, [
     eventsAllIds,
     eventsById,
