@@ -6,6 +6,7 @@ import { TEST_IDS } from "../constants";
 import useEvents from "./hooks/useEvents";
 import useGeolocation from "./hooks/useGeolocation";
 import { useSelector } from "react-redux";
+import { useSentryUser } from "../sentry";
 import { useShuffleBackgroundMesh } from "./hooks/useShuffleBackgroundMesh";
 import { useState } from "react";
 import useStorage from "./hooks/useStorage";
@@ -18,6 +19,7 @@ export default function Layout() {
   useGeolocation();
   useEvents();
   useStorage();
+  useSentryUser();
   const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
   const [isNavOpen, setIsNavOpen] = useState(false);
 

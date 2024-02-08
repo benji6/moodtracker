@@ -1,4 +1,6 @@
 import * as Sentry from "@sentry/browser";
+import { useSelector } from "react-redux";
+import userSlice from "./store/userSlice";
 
 if (process.env.NODE_ENV === "production")
   Sentry.init({
@@ -20,4 +22,10 @@ export const captureException: typeof Sentry.captureException = (
     exception,
   );
   return "";
+};
+
+export const useSentryUser = () => {
+  const userId = useSelector(userSlice.selectors.id);
+  if (process.env.NODE_ENV !== "production") return;
+  Sentry.setUser(userId ? { id: userId } : null);
 };
