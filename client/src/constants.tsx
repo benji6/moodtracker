@@ -6,6 +6,8 @@ import {
 import { addDays, startOfWeek } from "date-fns";
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
+// COMMIT_REF automatically supplied by Netlify https://docs.netlify.com/configure-builds/environment-variables/#git-metadata
+export const COMMIT_REF = process.env.COMMIT_REF;
 export const DESCRIPTION_MAX_LENGTH = 32;
 export const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDJUEfQvbke4ImRxqW5KwijugRKCzXw4BY",

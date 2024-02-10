@@ -9,6 +9,7 @@ import {
   removeOldestQuery,
 } from "@tanstack/react-query-persist-client";
 import { del, get, set } from "idb-keyval";
+import { COMMIT_REF } from "./constants";
 import { Provider } from "react-redux";
 import { QueryClient } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
@@ -19,6 +20,9 @@ import router from "./router";
 import store from "./store";
 
 export const queryClient = new QueryClient();
+
+// eslint-disable-next-line no-console
+console.log("COMMIT_REF: ", COMMIT_REF);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
