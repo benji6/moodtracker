@@ -219,8 +219,9 @@ export default function Blog() {
           </Paper>
         ))
       ) : (
-        <div>
+        <div className="center">
           <Spinner />
+          Loading blog posts...
         </div>
       )}
     </Paper.Group>

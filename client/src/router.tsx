@@ -70,7 +70,15 @@ function Root() {
       <ReactRouterRoutes>
         <Route element={<Layout />}>
           {isStorageLoading ? (
-            <Route element={<Spinner />} path="*" />
+            <Route
+              element={
+                <div className="center">
+                  <Spinner />
+                  Storage loading...
+                </div>
+              }
+              path="*"
+            />
           ) : (
             <>
               <Route element={<RedirectHome />} path="*" />

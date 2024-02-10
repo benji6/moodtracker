@@ -1,9 +1,10 @@
-import { Paper, Select, Spinner } from "eri";
+import { Paper, Select } from "eri";
 import { addDays, differenceInDays, subDays } from "date-fns";
 import { roundDateDown, roundDateUp } from "../../../../utils";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
 import { FluxStandardAction } from "../../../../typeUtilities";
 import GetStartedCta from "../../../shared/GetStartedCta";
+import { LoadingFromServerSpinner } from "../../../shared/LoadingFromServerSpinner";
 import LocationsForPeriod from "../LocationsForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
@@ -170,7 +171,7 @@ export default function Explore() {
     eventsSlice.selectors.moodIdsInPeriod(state, localState.dateFrom, dateTo),
   );
 
-  if (!eventsHasLoadedFromServer) return <Spinner />;
+  if (!eventsHasLoadedFromServer) return <LoadingFromServerSpinner />;
   if (!moods.allIds.length)
     return (
       <Paper.Group>
