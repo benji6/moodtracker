@@ -16,13 +16,28 @@ import { RouterProvider } from "react-router-dom";
 import { StrictMode } from "react";
 import { captureException } from "./sentry";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import { percentFormatter } from "./formatters/numberFormatters";
 import router from "./router";
 import store from "./store";
 
 export const queryClient = new QueryClient();
 
 // eslint-disable-next-line no-console
-console.log("COMMIT_REF: ", COMMIT_REF);
+if (COMMIT_REF) console.log("COMMIT_REF: ", COMMIT_REF);
+
+navigator.storage.estimate().then((estimate) => {
+  if (
+    estimate.usage === undefined ||
+    estimate.quota === undefined ||
+    estimate.usage < estimate.quota / 2
+  )
+    return;
+  captureException(
+    Error(
+      `Storage ${percentFormatter.format(estimate.usage / estimate.quota)} full: ${estimate.usage}`,
+    ),
+  );
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
