@@ -430,14 +430,10 @@ export default createSlice({
         dateFrom: Date,
         dateTo: Date,
       ): number | undefined => {
-        const dateToString = formatIsoDateInLocalTimezone(dateTo);
         const minutesSleptArray: number[] = [];
-        for (
-          let date = formatIsoDateInLocalTimezone(dateFrom);
-          date < dateToString;
-          date = formatIsoDateInLocalTimezone(addDays(date, 1))
-        ) {
-          const minutesSlept = minutesSleptByDateAwoke[date];
+        for (let date = dateFrom; date < dateTo; date = addDays(date, 1)) {
+          const minutesSlept =
+            minutesSleptByDateAwoke[formatIsoDateInLocalTimezone(date)];
           if (minutesSlept === undefined) continue;
           minutesSleptArray.push(minutesSlept);
         }
