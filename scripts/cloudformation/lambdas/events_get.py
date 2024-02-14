@@ -11,6 +11,10 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("moodtracker_events")
 
 
+def log_error(error, user_id):
+    print({"error": error, "userId": user_id})
+
+
 def handler(event, context):
     cursor_date = None
     user_id = event["requestContext"]["authorizer"]["claims"]["sub"]
@@ -22,7 +26,7 @@ def handler(event, context):
                     event["queryStringParameters"]["cursor"]
                 )
             except ValueError as e:
-                print(e)
+                log_error(e, user_id)
                 return {
                     "body": json.dumps(
                         {"error": 'Invalid "cursor" query string parameter'}
@@ -81,7 +85,7 @@ def handler(event, context):
             "statusCode": 200,
         }
     except Exception as e:
-        print(e)
+        log_error(e, user_id)
         return {
             "body": json.dumps({"error": "Internal server error"}),
             "headers": HEADERS,
