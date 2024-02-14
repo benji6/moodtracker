@@ -1,7 +1,6 @@
+import { Paper, Spinner } from "eri";
 import { ComponentType } from "react";
 import GetStartedCta from "../shared/GetStartedCta";
-import { LoadingFromServerSpinner } from "../shared/LoadingFromServerSpinner";
-import { Paper } from "eri";
 import RedirectHome from "../shared/RedirectHome";
 import { createDateFromLocalDateString } from "../../utils";
 import eventsSlice from "../../store/eventsSlice";
@@ -45,7 +44,7 @@ export default function withStatsPage({
     if (!dateStr || !dateRegex.test(dateStr)) return <RedirectHome />;
     const date = adjustDate(createDateFromLocalDateString(dateStr));
     if (!isValid(date)) return <RedirectHome />;
-    if (!eventsHasLoadedFromServer) return <LoadingFromServerSpinner />;
+    if (!eventsHasLoadedFromServer) return <Spinner />;
     if (!moods.allIds.length)
       return (
         <Paper.Group>

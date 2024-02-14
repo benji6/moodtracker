@@ -1,9 +1,8 @@
+import { Paper, Spinner } from "eri";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { Link } from "react-router-dom";
-import { LoadingFromServerSpinner } from "../../shared/LoadingFromServerSpinner";
 import Months from "./Months";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import { Paper } from "eri";
 import { TEST_IDS } from "../../../constants";
 import Weeks from "./Weeks";
 import Years from "./Years";
@@ -23,7 +22,7 @@ export default function Overview() {
       </Paper.Group>
     );
 
-  if (!eventsHasLoadedFromServer) return <LoadingFromServerSpinner />;
+  if (!eventsHasLoadedFromServer) return <Spinner />;
 
   return (
     <Paper.Group data-test-id={TEST_IDS.statsOverviewPage}>

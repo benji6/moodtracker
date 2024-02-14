@@ -1,13 +1,12 @@
+import { Paper, Spinner } from "eri";
 import { addDays, subDays } from "date-fns";
 import { formatIsoDateInLocalTimezone, roundDateDown } from "../../../utils";
 import DeviceSetupDialog from "./DeviceSetupDialog";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { Link } from "react-router-dom";
-import { LoadingFromServerSpinner } from "../../shared/LoadingFromServerSpinner";
 import MoodList from "./MoodList";
 import MoodSummaryForDay from "../Stats/MoodSummaryForDay";
 import NotSignedIn from "./NotSignedIn";
-import { Paper } from "eri";
 import { QuickTrackNav } from "./QuickTrackNav";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -51,7 +50,7 @@ export default function Home() {
           <GetStartedCta />
         )
       ) : (
-        <LoadingFromServerSpinner />
+        <Spinner />
       )}
       <DeviceSetupDialog />
     </Paper.Group>
