@@ -6,7 +6,9 @@ const ignoreSet = new Set(["index.html", "robots.txt", "service-worker.js"]);
 
 (async () => {
   const files = await fs.readdir(BUILD_PATH);
-  const filteredFiles = files.filter((file) => !ignoreSet.has(file));
+  const filteredFiles = files.filter(
+    (file) => !(ignoreSet.has(file) || file.endsWith(".map")),
+  );
   const cacheList = ["/", ...filteredFiles];
   const serviceWorkerPath = path.join(BUILD_PATH, "service-worker.js");
   const serviceWorker = await fs.readFile(serviceWorkerPath, "utf-8");
