@@ -17,6 +17,7 @@ const firebaseApp = initializeApp(FIREBASE_CONFIG);
 
 getMessaging(firebaseApp);
 
+const cacheSet = new Set(CACHE_LIST);
 const cacheListWithHost = CACHE_LIST.map((resource) =>
   pathJoin(location.host, resource),
 );
@@ -40,6 +41,12 @@ sw.oninstall = (event: any) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
+      const keys = await cache.keys();
+      for (const request of keys) {
+        const { pathname } = new URL(request.url);
+        if (cacheSet.has(pathname === "/" ? "/" : pathname.slice(1))) continue;
+        cache.delete(request);
+      }
       return cache.addAll(CACHE_LIST);
     })(),
   );
