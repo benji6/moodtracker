@@ -37,7 +37,12 @@ const customFetch = async (request: Request): Promise<Response> => {
   return response;
 };
 
-sw.oninstall = (event: any) => {
+sw.oninstall = (event: any) =>
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_LIST)),
+  );
+
+sw.onactivate = (event: any) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
@@ -47,7 +52,6 @@ sw.oninstall = (event: any) => {
         if (cacheSet.has(pathname === "/" ? "/" : pathname.slice(1))) continue;
         cache.delete(request);
       }
-      return cache.addAll(CACHE_LIST);
     })(),
   );
 };
