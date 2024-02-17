@@ -56,20 +56,28 @@ sw.onactivate = (event: any) => {
   );
 };
 
+/* eslint-disable no-console */
 sw.onfetch = (event: any) => {
-  if (!cacheListWithHost.some((item) => event.request.url.endsWith(item)))
+  if (!cacheListWithHost.some((item) => event.request.url.endsWith(item))) {
+    console.log("URL not within cache: ", event.request.url);
     return;
+  }
+  console.time(`${event.request.url}`);
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       try {
         const networkResponse = await customFetch(event.request);
         event.waitUntil(cache.put(event.request, networkResponse.clone()));
+        console.log(`${event.request.url}: Response from network`);
         return networkResponse;
       } catch (e) {
         const cachedResponse = await cache.match(event.request);
         if (!cachedResponse) throw e;
+        console.log(`${event.request.url}: Response from cache`);
         return cachedResponse;
+      } finally {
+        console.timeEnd(`${event.request.url}`);
       }
     })(),
   );
