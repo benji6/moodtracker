@@ -8,13 +8,17 @@
     Content-Security-Policy = "default-src 'self';connect-src 'self' https://cognito-identity.us-east-1.amazonaws.com https://cognito-idp.us-east-1.amazonaws.com https://fcmregistrations.googleapis.com https://firebaseinstallations.googleapis.com https://o4504114345017344.ingest.sentry.io/api/4504114369527808/envelope/ https://places.geo.us-east-1.amazonaws.com/places/v0/indexes/MoodTrackerPlaceIndex/search/position;frame-ancestors 'none';media-src data:; report-uri https://o4504114345017344.ingest.sentry.io/api/4504114369527808/security/?sentry_key=7fc7812ff3d6482ba2113d6fc90177fa"
     X-Content-Type-Options = "nosniff"
 [[headers]]
-  for = "*.(avif|css|md|png|svg|woff2)"
+  for = "*.(avif|css|md|mp3|png|svg|woff2)"
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
 [[headers]]
   for = "index.*.js|wordCloudWorker.*.js"
   [headers.values]
     Cache-Control = "immutable,max-age=31536000"
+[[headers]]
+  for = "icons/icon-without-css.svg"
+  [headers.values]
+    Cache-Control = "public,max-age=0,must-revalidate"
 [[redirects]]
   from = "api/*"
   status = 200
