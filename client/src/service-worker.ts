@@ -3,24 +3,31 @@ import "./sentry";
 import { FIREBASE_CONFIG } from "./constants";
 import { getMessaging } from "firebase/messaging/sw";
 import { initializeApp } from "firebase/app";
-import { join as pathJoin } from "path";
 
 const CACHE_NAME = "v1";
-const CACHE_LIST =
+const CACHE_FIRST_CACHE =
   process.env.NODE_ENV === "production"
-    ? (process.env.CACHE_LIST as string).split(",")
+    ? process.env.CACHE_FIRST_CACHE!.split(",")
     : [];
+const NETWORK_FIRST_CACHE =
+  process.env.NODE_ENV === "production"
+    ? process.env.NETWORK_FIRST_CACHE!.split(",")
+    : [];
+
+const cacheList = [...CACHE_FIRST_CACHE, ...NETWORK_FIRST_CACHE];
+const cacheSet = new Set(cacheList);
+const cacheFirstSetWithFullUrls = new Set(
+  CACHE_FIRST_CACHE.map((path) => String(new URL(path, location.origin))),
+);
+const networkFirstSetWithFullUrls = new Set(
+  NETWORK_FIRST_CACHE.map((path) => String(new URL(path, location.origin))),
+);
 
 const sw: any = self;
 
 const firebaseApp = initializeApp(FIREBASE_CONFIG);
 
 getMessaging(firebaseApp);
-
-const cacheSet = new Set(CACHE_LIST);
-const cacheListWithHost = CACHE_LIST.map((resource) =>
-  pathJoin(location.host, resource),
-);
 
 const rejectAfterTimeout = (t: number): Promise<never> =>
   new Promise((_, reject) =>
@@ -39,7 +46,7 @@ const customFetch = async (request: Request): Promise<Response> => {
 
 sw.oninstall = (event: any) =>
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_LIST)),
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(cacheList)),
   );
 
 sw.onactivate = (event: any) => {
@@ -56,29 +63,35 @@ sw.onactivate = (event: any) => {
   );
 };
 
-/* eslint-disable no-console */
 sw.onfetch = (event: any) => {
-  if (!cacheListWithHost.some((item) => event.request.url.endsWith(item))) {
-    console.log("URL not within cache: ", event.request.url);
-    return;
-  }
-  console.time(`${event.request.url}`);
+  const isInCacheFirstCache = cacheFirstSetWithFullUrls.has(event.request.url);
+  const isInNetworkFirstCache = networkFirstSetWithFullUrls.has(
+    event.request.url,
+  );
+  if (!isInCacheFirstCache && !isInNetworkFirstCache) return;
+  if (isInNetworkFirstCache)
+    return event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        try {
+          const networkResponse = await customFetch(event.request);
+          event.waitUntil(cache.put(event.request, networkResponse.clone()));
+          return networkResponse;
+        } catch (e) {
+          const cachedResponse = await cache.match(event.request);
+          if (!cachedResponse) throw e;
+          return cachedResponse;
+        }
+      })(),
+    );
   event.respondWith(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      try {
-        const networkResponse = await customFetch(event.request);
-        event.waitUntil(cache.put(event.request, networkResponse.clone()));
-        console.log(`${event.request.url}: Response from network`);
-        return networkResponse;
-      } catch (e) {
-        const cachedResponse = await cache.match(event.request);
-        if (!cachedResponse) throw e;
-        console.log(`${event.request.url}: Response from cache`);
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.match(event.request))
+      .then((cachedResponse) => {
+        if (!cachedResponse)
+          throw Error(`${event.request.url}: Not found in cache`);
         return cachedResponse;
-      } finally {
-        console.timeEnd(`${event.request.url}`);
-      }
-    })(),
+      }),
   );
 };

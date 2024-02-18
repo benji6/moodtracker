@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheList",
-    "build:parcel": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') CACHE_LIST=CACHE_LIST parcel build src/index.html",
+    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheLists",
+    "build:parcel": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') CACHE_FIRST_CACHE=CACHE_FIRST_CACHE NETWORK_FIRST_CACHE=NETWORK_FIRST_CACHE parcel build src/index.html",
     "build:robots": "touch dist/robots.txt",
     "fmt": "npm run test:lint --fix && prettier -u --write '**/*'",
     "icons": "node scripts/icons",
