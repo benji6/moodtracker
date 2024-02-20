@@ -28,6 +28,7 @@ import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import MoodSummaryForYear from "../MoodSummaryForYear";
 import PrevNextControls from "../../../shared/PrevNextControls";
 import { RootState } from "../../../../store";
+import SleepByMonthForPeriod from "./SleepByMonthForPeriod";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import eventsSlice from "../../../../store/eventsSlice";
@@ -112,15 +113,15 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </PrevNextControls>
       </Paper>
       <MoodSummaryForYear dates={[prevDate, date, nextDate]} />
+      <MoodChartForPeriod
+        centerXAxisLabels
+        dateFrom={date}
+        dateTo={nextDate}
+        hidePoints
+        xLabels={xLabels}
+      />
       {moodIdsInPeriod.length ? (
         <>
-          <MoodChartForPeriod
-            centerXAxisLabels
-            dateFrom={date}
-            dateTo={nextDate}
-            hidePoints
-            xLabels={xLabels}
-          />
           <Paper>
             <h3>
               Calendar view
@@ -129,20 +130,25 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             <div className="m-year__calendar-grid">{calendars}</div>
           </Paper>
           <MoodByMonthForPeriod dateFrom={date} dateTo={nextDate} />
-          <MeditationByMonthForPeriod dateFrom={date} dateTo={nextDate} />
-          <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
-          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
-          <MoodCloud
-            currentPeriod={{ dateFrom: date, dateTo: nextDate }}
-            previousPeriod={{ dateFrom: prevDate, dateTo: date }}
-          />
-          <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
         </>
       ) : (
         <Paper>
           <p>No mood data for this year.</p>
         </Paper>
       )}
+      <SleepByMonthForPeriod dateFrom={date} dateTo={nextDate} />
+      <MeditationByMonthForPeriod dateFrom={date} dateTo={nextDate} />
+      {moodIdsInPeriod.length ? (
+        <>
+          <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodCloud
+            currentPeriod={{ dateFrom: date, dateTo: nextDate }}
+            previousPeriod={{ dateFrom: prevDate, dateTo: date }}
+          />
+        </>
+      ) : null}
+      <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
       <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod
         centerXAxisLabels

@@ -25,6 +25,7 @@ import {
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import {
   computeAverageMoodInInterval,
+  computeMean,
   computeMeanSafe,
   defaultDict,
   formatIsoDateHourInLocalTimezone,
@@ -438,6 +439,22 @@ export default createSlice({
           minutesSleptArray.push(minutesSlept);
         }
         return computeMeanSafe(minutesSleptArray);
+      },
+    ),
+    meanMinutesSleptByMonth: createSelector(
+      minutesSleptByDateAwokeSelector,
+      (minutesSleptByDateAwoke) => {
+        const sleepsByMonth = defaultDict((): number[] => []);
+        for (const [date, minutesSlept] of Object.entries(
+          minutesSleptByDateAwoke,
+        ))
+          sleepsByMonth[date.slice(0, 7)].push(minutesSlept);
+        return Object.fromEntries(
+          Object.entries(sleepsByMonth).map(([month, sleeps]) => [
+            month,
+            computeMean(sleeps),
+          ]),
+        );
       },
     ),
     minutesSleptByDateAwoke: minutesSleptByDateAwokeSelector,

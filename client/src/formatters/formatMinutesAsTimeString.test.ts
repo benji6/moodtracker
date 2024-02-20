@@ -19,6 +19,8 @@ test("formatMinutesAsTimeStringShort", () => {
 
 test("formatMinutesAsTimeStringLong", () => {
   expect(formatMinutesAsTimeStringLong(0)).toBe("0 minutes");
+  expect(formatMinutesAsTimeStringLong(0.49)).toBe("0 minutes");
+  expect(formatMinutesAsTimeStringLong(0.5)).toBe("1 minute");
   expect(formatMinutesAsTimeStringLong(1)).toBe("1 minute");
   expect(formatMinutesAsTimeStringLong(2)).toBe("2 minutes");
   expect(formatMinutesAsTimeStringLong(59)).toBe("59 minutes");
@@ -30,5 +32,6 @@ test("formatMinutesAsTimeStringLong", () => {
   expect(formatMinutesAsTimeStringLong(121)).toBe("2 hours & 1 minute");
   expect(formatMinutesAsTimeStringLong(122)).toBe("2 hours & 2 minutes");
   expect(formatMinutesAsTimeStringLong(432)).toBe("7 hours & 12 minutes");
+  expect(formatMinutesAsTimeStringLong(432.123)).toBe("7 hours & 12 minutes");
   expect(formatMinutesAsTimeStringLong(1439)).toBe("23 hours & 59 minutes");
 });
