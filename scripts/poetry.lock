@@ -205,13 +205,13 @@ files = [
 
 [[package]]
 name = "bc-detect-secrets"
-version = "1.4.30"
+version = "1.5.4"
 description = "Tool for detecting secrets in the codebase"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "bc-detect-secrets-1.4.30.tar.gz", hash = "sha256:53154e5aee4c3415f20d5be327c9dad240804b113196ec6346c0b5390a7ed52d"},
-    {file = "bc_detect_secrets-1.4.30-py3-none-any.whl", hash = "sha256:99fd6a7e5033ea3a4532d3ccc11b3f669c447da0109e0cb9d66998f4131dba0c"},
+    {file = "bc-detect-secrets-1.5.4.tar.gz", hash = "sha256:4ee47ebff2b86b7538e49476342e22fd014e4e232019e7a2965910949eab1585"},
+    {file = "bc_detect_secrets-1.5.4-py3-none-any.whl", hash = "sha256:4b83fe926f3bea3bc08f3dcc3f912984079184f99450685dbf9da125e74bdf63"},
 ]
 
 [package.dependencies]
@@ -552,13 +552,13 @@ files = [
 
 [[package]]
 name = "checkov"
-version = "3.2.3"
+version = "3.2.10"
 description = "Infrastructure as code static analysis"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "checkov-3.2.3-py3-none-any.whl", hash = "sha256:fbd9be87d375550f8dba406d72bde92544b13fa47241a0d90e609a6809c3d301"},
-    {file = "checkov-3.2.3.tar.gz", hash = "sha256:f6db61fcb57ac0c0c1a4d5357b871cf10ca9333409d5f50e62629ad9b0f018d7"},
+    {file = "checkov-3.2.10-py3-none-any.whl", hash = "sha256:6b16608d633327f37abb60641678e447e538914e9185a055882ed6641dbed18b"},
+    {file = "checkov-3.2.10.tar.gz", hash = "sha256:18156d7d3d8fc669717fe9924894ff76f4795745d835628f8c5c86f76446d630"},
 ]
 
 [package.dependencies]
@@ -566,7 +566,7 @@ aiodns = ">=3.0.0,<4.0.0"
 aiohttp = ">=3.8.0,<4.0.0"
 aiomultiprocess = ">=0.9.0,<0.10.0"
 argcomplete = ">=3.0.0,<4.0.0"
-bc-detect-secrets = "1.4.30"
+bc-detect-secrets = "1.5.4"
 bc-jsonpath-ng = "1.6.1"
 bc-python-hcl2 = "0.4.2"
 boto3 = ">=1.28.0,<2.0.0"
@@ -2387,4 +2387,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "3a30c77ad279e75dc93704779b489a5c994e9525ca0bb9beaa1f5c4ecce1cd6e"
+content-hash = "341a50f88191d9fb295bdc288942ce54fc1a7ffed1c993834cd27bed5b5ac168"
