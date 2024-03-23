@@ -1,0 +1,4 @@
+.m-interval-input {
+  display: flex;
+  gap: var(--space-1);
+}

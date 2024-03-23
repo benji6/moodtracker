@@ -77,10 +77,12 @@ export const TEST_IDS = (() => {
     "dateAwokeInput",
     "descriptionInput",
     "deviceSpecificSettingsDialog",
+    "hoursSleptInput",
     "meditatePage",
     "meditationCustomTimeInput",
     "meditationPresetTimeButton",
     "meditationTimerPage",
+    "minutesSleptInput",
     "moodCardMood",
     "moodCardTags",
     "moodCardTime",
@@ -94,7 +96,6 @@ export const TEST_IDS = (() => {
     "sleepAddSubmitButton",
     "sleepCardValue",
     "statsOverviewPage",
-    "timeSleptInput",
     "weightAddPage",
     "weightAddSubmitButton",
     "weightCardTime",
@@ -133,17 +134,19 @@ export const FIELDS = {
     supportiveText:
       "Use this space as a journal to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
   },
+  hoursSlept: {
+    "data-test-id": TEST_IDS.hoursSleptInput,
+    label: "Hours slept",
+    name: "hours-slept",
+  },
+  minutesSlept: {
+    "data-test-id": TEST_IDS.minutesSleptInput,
+    label: "Minutes slept",
+    name: "minutes-slept",
+  },
   mood: {
     label: "Mood",
     name: "mood",
-  },
-  timeSlept: {
-    "data-test-id": TEST_IDS.timeSleptInput,
-    label: "Time slept",
-    min: "00:01",
-    name: "time-slept",
-    supportiveText: "How long did you sleep in hours and minutes?",
-    type: "time",
   },
   weight: {
     "data-test-id": TEST_IDS.weightValueInput,

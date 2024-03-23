@@ -17,7 +17,8 @@ describe("sleep", () => {
   });
 
   describe("adding a sleep", () => {
-    let timeSleptInput: ElementHandle<HTMLInputElement>;
+    let hoursSleptInput: ElementHandle<HTMLInputElement>;
+    let minutesSleptInput: ElementHandle<HTMLInputElement>;
     let dateAwokeInput: ElementHandle<HTMLInputElement>;
     let submitButton: ElementHandle<HTMLButtonElement>;
 
@@ -27,8 +28,11 @@ describe("sleep", () => {
       dateAwokeInput = (await page.$(
         SELECTORS.dateAwokeInput,
       )) as ElementHandle<HTMLInputElement>;
-      timeSleptInput = (await page.$(
-        SELECTORS.timeSleptInput,
+      hoursSleptInput = (await page.$(
+        SELECTORS.hoursSleptInput,
+      )) as ElementHandle<HTMLInputElement>;
+      minutesSleptInput = (await page.$(
+        SELECTORS.minutesSleptInput,
       )) as ElementHandle<HTMLInputElement>;
       submitButton = (await page.$(
         SELECTORS.sleepAddSubmitButton,
@@ -37,42 +41,24 @@ describe("sleep", () => {
       expect(dateAwokeValue).toBe(new Date().toISOString().slice(0, 10));
     });
 
-    test("no input", async () => {
+    test("no date awoke", async () => {
       await dateAwokeInput.evaluate((el) => (el.value = ""));
-      await timeSleptInput.evaluate((el) => (el.value = ""));
       await submitButton.evaluate((el) => el.click());
 
       const errors = await page.$$('[data-eri-id="field-error"]');
-      expect(errors).toHaveLength(2);
+      expect(errors).toHaveLength(1);
 
       const errorMessages = await Promise.all(
         errors.map((error) => error.evaluate((el) => el.textContent)),
       );
 
-      expect(errorMessages).toStrictEqual([ERRORS.required, ERRORS.required]);
-    });
-
-    test("time slept range underflow", async () => {
-      await timeSleptInput.focus();
-      await timeSleptInput.type("00:00", { delay: 10 });
-      const timeSleptValue = await timeSleptInput.evaluate((x) => x.value);
-      expect(timeSleptValue).toBe("00:00");
-      await timeSleptInput.press("Enter");
-
-      const errors = await page.$$('[data-eri-id="field-error"]');
-      expect(errors).toHaveLength(1);
-
-      const errorMessage = await errors[0].evaluate((el) => el.textContent);
-      expect(errorMessage).toBe(ERRORS.rangeUnderflow);
+      expect(errorMessages).toStrictEqual([ERRORS.required]);
     });
 
     test("date awoke range overflow", async () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const isoDateTomorrow = tomorrow.toISOString().slice(0, 10);
-
-      await timeSleptInput.focus();
-      await timeSleptInput.type("08:00", { delay: 10 });
 
       await dateAwokeInput.focus();
       await dateAwokeInput.evaluate((el) => {
@@ -92,8 +78,8 @@ describe("sleep", () => {
     });
 
     test("valid", async () => {
-      await timeSleptInput.focus();
-      await timeSleptInput.type("08:00", { delay: 10 });
+      await hoursSleptInput.select("8");
+      await minutesSleptInput.select("10");
 
       await submitButton.evaluate((el) => el.click());
 
@@ -105,7 +91,7 @@ describe("sleep", () => {
       if (!sleepCardValue) throw Error(`sleepCardValue not found`);
       const sleepText = await sleepCardValue.evaluate((el) => el.textContent);
 
-      expect(sleepText).toBe(`8 hours`);
+      expect(sleepText).toBe("8 hours & 10 minutes");
     });
   });
 });

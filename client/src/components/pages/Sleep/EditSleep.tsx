@@ -1,4 +1,4 @@
-import { Button, Icon, Paper, TextField } from "eri";
+import { Button, Icon, Paper, Select, TextField } from "eri";
 import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,14 +8,12 @@ import RedirectHome from "../../shared/RedirectHome";
 import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
-import { formatMinutesAsTimeStringShort } from "../../../formatters/formatMinutesAsTimeString";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditSleep() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dateAwokeError, setDateAwokeError] = useState<string | undefined>();
-  const [timeSleptError, setTimeSleptError] = useState<string | undefined>();
   const { id } = useParams();
   const sleeps = useSelector(eventsSlice.selectors.normalizedSleeps);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -27,11 +25,8 @@ export default function EditSleep() {
     const formEl = formRef.current!;
     setShowNoUpdateError(false);
 
-    const timeSleptEl: HTMLInputElement = formEl[FIELDS.timeSlept.name];
-    if (timeSleptEl.validity.valueMissing) setTimeSleptError(ERRORS.required);
-    else if (timeSleptEl.validity.rangeUnderflow)
-      setTimeSleptError(ERRORS.rangeUnderflow);
-    else setTimeSleptError(undefined);
+    const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
+    const minutesSleptEl: HTMLInputElement = formEl[FIELDS.minutesSlept.name];
 
     const dateAwokeEl: HTMLInputElement = formEl[FIELDS.dateAwoke.name];
     if (dateAwokeEl.validity.valueMissing) setDateAwokeError(ERRORS.required);
@@ -39,11 +34,12 @@ export default function EditSleep() {
       setDateAwokeError(ERRORS.rangeOverflow);
     else setDateAwokeError(undefined);
 
-    if (!timeSleptEl.validity.valid || !dateAwokeEl.validity.valid) return;
+    if (!dateAwokeEl.validity.valid) return;
 
+    const minutesSlept =
+      Number(hoursSleptEl.value) * 60 + Number(minutesSleptEl.value);
     if (
-      timeSleptEl.value ===
-        formatMinutesAsTimeStringShort(sleep.minutesSlept) &&
+      minutesSlept === sleep.minutesSlept &&
       dateAwokeEl.value === sleep.dateAwoke
     )
       return setShowNoUpdateError(true);
@@ -56,7 +52,7 @@ export default function EditSleep() {
         payload: {
           dateAwoke: dateAwokeEl.value,
           id: id!,
-          minutesSlept: timeSleptEl.valueAsNumber / 1e3 / TIME.secondsPerMinute,
+          minutesSlept,
         },
       }),
     );
@@ -86,11 +82,30 @@ export default function EditSleep() {
           }}
           ref={formRef}
         >
-          <TextField
-            {...FIELDS.timeSlept}
-            defaultValue={formatMinutesAsTimeStringShort(sleep.minutesSlept)}
-            error={timeSleptError}
-          />
+          <div className="m-interval-input">
+            <Select
+              {...FIELDS.hoursSlept}
+              defaultValue={Math.floor(
+                sleep.minutesSlept / TIME.minutesPerHour,
+              )}
+            >
+              {[...Array(TIME.hoursPerDay)].map((_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Select>
+            <Select
+              {...FIELDS.minutesSlept}
+              defaultValue={sleep.minutesSlept % TIME.minutesPerHour}
+            >
+              {[...Array(TIME.minutesPerHour)].map((_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Select>
+          </div>
           <TextField
             {...FIELDS.dateAwoke}
             defaultValue={sleep.dateAwoke}

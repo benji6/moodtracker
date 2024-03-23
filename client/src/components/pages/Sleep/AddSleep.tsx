@@ -1,4 +1,5 @@
-import { Button, Icon, Paper, TextField } from "eri";
+import "./style.css";
+import { Button, Icon, Paper, Select, TextField } from "eri";
 import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../../constants";
 import { useRef, useState } from "react";
 import eventsSlice from "../../../store/eventsSlice";
@@ -11,17 +12,13 @@ export default function AddSleep() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dateAwokeError, setDateAwokeError] = useState<string | undefined>();
-  const [timeSleptError, setTimeSleptError] = useState<string | undefined>();
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = () => {
     const formEl = formRef.current!;
 
-    const timeSleptEl: HTMLInputElement = formEl[FIELDS.timeSlept.name];
-    if (timeSleptEl.validity.valueMissing) setTimeSleptError(ERRORS.required);
-    else if (timeSleptEl.validity.rangeUnderflow)
-      setTimeSleptError(ERRORS.rangeUnderflow);
-    else setTimeSleptError(undefined);
+    const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
+    const minutesSleptEl: HTMLInputElement = formEl[FIELDS.minutesSlept.name];
 
     const dateAwokeEl: HTMLInputElement = formEl[FIELDS.dateAwoke.name];
     if (dateAwokeEl.validity.valueMissing) setDateAwokeError(ERRORS.required);
@@ -29,14 +26,15 @@ export default function AddSleep() {
       setDateAwokeError(ERRORS.rangeOverflow);
     else setDateAwokeError(undefined);
 
-    if (!timeSleptEl.validity.valid || !dateAwokeEl.validity.valid) return;
+    if (!dateAwokeEl.validity.valid) return;
 
     dispatch(
       eventsSlice.actions.add({
         type: "v1/sleeps/create",
         createdAt: new Date().toISOString(),
         payload: {
-          minutesSlept: timeSleptEl.valueAsNumber / 1e3 / TIME.secondsPerMinute,
+          minutesSlept:
+            Number(hoursSleptEl.value) * 60 + Number(minutesSleptEl.value),
           dateAwoke: dateAwokeEl.value,
         },
       }),
@@ -60,11 +58,22 @@ export default function AddSleep() {
           }}
           ref={formRef}
         >
-          <TextField
-            {...FIELDS.timeSlept}
-            defaultValue="00:00"
-            error={timeSleptError}
-          />
+          <div className="m-interval-input">
+            <Select {...FIELDS.hoursSlept}>
+              {[...Array(TIME.hoursPerDay)].map((_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Select>
+            <Select {...FIELDS.minutesSlept}>
+              {[...Array(TIME.minutesPerHour)].map((_, i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </Select>
+          </div>
           <TextField
             {...FIELDS.dateAwoke}
             defaultValue={isoDateStringNow}
