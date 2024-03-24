@@ -50,7 +50,7 @@ def handler(event, context):
         tokens=[i["token"] for i in items],
     )
 
-    response = messaging.send_multicast(message)
+    response = messaging.send_each_for_multicast(message)
 
     print("{0} messages were sent successfully".format(response.success_count))
     print("{0} messages failed to send".format(response.failure_count))
