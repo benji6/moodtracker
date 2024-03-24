@@ -87,12 +87,12 @@ export default function MeditationTimer() {
         payload,
       }),
     );
-    onDontLog();
+    navigate("/meditation/log");
   }, [
     dispatch,
     geolocation,
-    onDontLog,
     localState.timeFinished,
+    navigate,
     secondsMeditated,
   ]);
 

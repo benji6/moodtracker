@@ -45,7 +45,7 @@ function MeditationTimerPresentation({
             <Button.Group>
               <Button onClick={onLog}>Log meditation</Button>
               <Button onClick={onDontLog} variant="secondary">
-                Finish
+                Finish without logging
               </Button>
             </Button.Group>
           ) : (
