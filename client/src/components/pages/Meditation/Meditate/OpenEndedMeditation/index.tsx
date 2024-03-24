@@ -29,7 +29,7 @@ export default function OpenEndedMeditation() {
         payload,
       }),
     );
-    navigate("/meditation");
+    navigate("/meditation/log");
   }, [dispatch, geolocation, navigate, roundedSecondsElapsed]);
   const onPause = useCallback(() => {
     noSleep.disable();
