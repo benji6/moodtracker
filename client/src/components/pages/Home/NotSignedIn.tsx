@@ -127,6 +127,10 @@ export default function NotSignedIn() {
         <h3>And much more!</h3>
         <ul>
           <li>
+            Track your mood, weight, meditation, sleep &amp; location (including
+            automatic weather tracking) and see how they are connected
+          </li>
+          <li>
             Set up daily push notifications to remind you to record your mood
           </li>
           <li>Set up weekly email reports</li>
