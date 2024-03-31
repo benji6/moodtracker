@@ -2,6 +2,7 @@ import { Browser, ElementHandle, Page } from "puppeteer";
 import { SELECTORS, URLS } from "./constants";
 import { createAndSetUpBrowser, createPageAndSignIn } from "./utils";
 import { ERRORS } from "../src/constants";
+import { formatIsoDateInLocalTimezone } from "../src/utils";
 
 describe("sleep", () => {
   let browser: Browser;
@@ -38,7 +39,7 @@ describe("sleep", () => {
         SELECTORS.sleepAddSubmitButton,
       )) as ElementHandle<HTMLButtonElement>;
       const dateAwokeValue = await dateAwokeInput.evaluate((x) => x.value);
-      expect(dateAwokeValue).toBe(new Date().toISOString().slice(0, 10));
+      expect(dateAwokeValue).toBe(formatIsoDateInLocalTimezone(new Date()));
     });
 
     test("no date awoke", async () => {
@@ -58,13 +59,15 @@ describe("sleep", () => {
     test("date awoke range overflow", async () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const isoDateTomorrow = tomorrow.toISOString().slice(0, 10);
+      const isoDateTomorrow = formatIsoDateInLocalTimezone(tomorrow);
 
       await dateAwokeInput.focus();
       await dateAwokeInput.evaluate((el) => {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        el.value = tomorrow.toISOString().slice(0, 10);
+        el.value = `${String(tomorrow.getFullYear())}-${String(
+          tomorrow.getMonth() + 1,
+        ).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
       });
       const dateAwokeValue = await dateAwokeInput.evaluate((x) => x.value);
       expect(dateAwokeValue).toBe(isoDateTomorrow);
