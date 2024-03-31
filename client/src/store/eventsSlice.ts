@@ -112,28 +112,23 @@ const trackedCategoriesSelector = createSelector(
           ).payload;
           break;
         case "delete": {
-          let index: undefined | number;
-          let i = normalizedCategory.allIds.length;
-
-          while (i--)
-            if (normalizedCategory.allIds[i] === event.payload) {
-              index = i;
-              break;
-            }
-
-          if (index === undefined) {
+          if (typeof event.payload !== "string") {
             captureException(
               Error(
-                `Delete event error - could not find event to delete: ${JSON.stringify(
-                  event,
-                )}`,
+                `Delete payload should be a string: ${JSON.stringify(event)}`,
               ),
             );
             break;
           }
-
+          const index = normalizedCategory.allIds.lastIndexOf(event.payload);
+          if (index === -1) {
+            captureException(
+              Error(`Could not find event to delete: ${JSON.stringify(event)}`),
+            );
+            break;
+          }
           normalizedCategory.allIds.splice(index, 1);
-          delete normalizedCategory.byId[event.payload as string];
+          delete normalizedCategory.byId[event.payload];
           break;
         }
         case "update": {
