@@ -1,7 +1,6 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
 import ExportControls from "../../Settings/Export/ExportControls";
 import MeditationCard from "./MeditationCard";
-import MeditationDeleteDialog from "./MeditationDeleteDialog";
 import eventsSlice from "../../../../store/eventsSlice";
 import { mapRight } from "../../../../utils";
 import { useSelector } from "react-redux";
@@ -14,8 +13,6 @@ export default function MeditationLog() {
   const denormalizedMeditations = useSelector(
     eventsSlice.selectors.denormalizedMeditations,
   );
-  const [dialogId, setDialogId] = useState<undefined | string>();
-  const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(meditations.allIds.length / MAX_ITEMS_PER_PAGE);
@@ -45,22 +42,10 @@ export default function MeditationLog() {
         </h3>
         <Card.Group>
           {mapRight(meditations.allIds.slice(startIndex, endIndex), (id) => (
-            <MeditationCard
-              key={id}
-              id={id}
-              onDelete={() => {
-                setDialogId(id);
-                setIsOpen(true);
-              }}
-            />
+            <MeditationCard key={id} id={id} />
           ))}
         </Card.Group>
         <Pagination onChange={setPage} page={page} pageCount={pageCount} />
-        <MeditationDeleteDialog
-          id={dialogId}
-          onClose={() => setIsOpen(false)}
-          open={isOpen}
-        />
       </Paper>
     </Paper.Group>
   );
