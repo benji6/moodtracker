@@ -1,7 +1,7 @@
 import { Button, Dialog, Icon } from "eri";
-import { captureException } from "../../../../../sentry";
-import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../../store/eventsSlice";
+import { captureException } from "../../../sentry";
+import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../store/eventsSlice";
 import { formatDistanceToNow } from "date-fns";
 import { useDispatch } from "react-redux";
 

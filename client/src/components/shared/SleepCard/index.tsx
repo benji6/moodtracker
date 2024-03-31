@@ -1,9 +1,9 @@
 import "./style.css";
 import { Card } from "eri";
-import { TEST_IDS } from "../../../../../constants";
-import { dateFormatter } from "../../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../../store/eventsSlice";
-import { formatMinutesAsTimeStringLong } from "../../../../../formatters/formatMinutesAsTimeString";
+import { TEST_IDS } from "../../../constants";
+import { dateFormatter } from "../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../store/eventsSlice";
+import { formatMinutesAsTimeStringLong } from "../../../formatters/formatMinutesAsTimeString";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 

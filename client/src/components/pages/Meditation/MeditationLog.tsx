@@ -1,8 +1,8 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
-import ExportControls from "../../Settings/Export/ExportControls";
-import MeditationCard from "./MeditationCard";
-import eventsSlice from "../../../../store/eventsSlice";
-import { mapRight } from "../../../../utils";
+import ExportControls from "../Settings/Export/ExportControls";
+import MeditationCard from "../../shared/MeditationCard";
+import eventsSlice from "../../../store/eventsSlice";
+import { mapRight } from "../../../utils";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 

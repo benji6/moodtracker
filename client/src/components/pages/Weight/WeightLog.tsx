@@ -1,9 +1,9 @@
 import { Card, Pagination, Paper, SubHeading } from "eri";
-import ExportControls from "../../Settings/Export/ExportControls";
-import RedirectHome from "../../../shared/RedirectHome";
-import WeightCard from "./WeightCard";
-import eventsSlice from "../../../../store/eventsSlice";
-import { mapRight } from "../../../../utils";
+import ExportControls from "../Settings/Export/ExportControls";
+import RedirectHome from "../../shared/RedirectHome";
+import WeightCard from "../../shared/WeightCard";
+import eventsSlice from "../../../store/eventsSlice";
+import { mapRight } from "../../../utils";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 

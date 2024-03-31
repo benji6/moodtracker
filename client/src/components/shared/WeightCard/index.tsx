@@ -1,9 +1,9 @@
 import "./style.css";
 import { Card } from "eri";
-import LocationString from "../../../../shared/LocationString";
-import { TEST_IDS } from "../../../../../constants";
-import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../../store/eventsSlice";
+import LocationString from "../LocationString";
+import { TEST_IDS } from "../../../constants";
+import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../store/eventsSlice";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 

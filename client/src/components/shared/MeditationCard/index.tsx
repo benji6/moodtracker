@@ -3,12 +3,12 @@ import { Button, Card, Icon } from "eri";
 import {
   floatDegreeFormatter,
   integerMeterFormatter,
-} from "../../../../../formatters/numberFormatters";
-import LocationString from "../../../../shared/LocationString";
+} from "../../../formatters/numberFormatters";
+import LocationString from "../LocationString";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
-import { dateTimeFormatter } from "../../../../../formatters/dateTimeFormatters";
-import eventsSlice from "../../../../../store/eventsSlice";
-import { formatSecondsAsTime } from "../../../../../utils";
+import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
+import eventsSlice from "../../../store/eventsSlice";
+import { formatSecondsAsTime } from "../../../utils";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
