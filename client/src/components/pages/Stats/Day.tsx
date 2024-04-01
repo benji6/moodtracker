@@ -15,14 +15,17 @@ import {
 } from "../../../utils";
 import { Link } from "react-router-dom";
 import LocationsForPeriod from "./LocationsForPeriod";
+import MeditationCard from "../../shared/MeditationCard";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 import MoodCard from "../../shared/MoodCard";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import MoodSummaryForDay from "./MoodSummaryForDay";
 import PrevNextControls from "../../shared/PrevNextControls";
+import SleepCard from "../../shared/SleepCard";
 import { TIME } from "../../../constants";
 import WeatherForPeriod from "./WeatherForPeriod";
+import WeightCard from "../../shared/WeightCard";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -38,10 +41,22 @@ interface Props {
   showPrevious: boolean;
 }
 
+const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT = {
+  meditation: MeditationCard,
+  mood: MoodCard,
+  sleep: SleepCard,
+  weight: WeightCard,
+} as const;
+
 function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
-
-  const moodIds = moodIdsByDate[formatIsoDateInLocalTimezone(date)];
+  const allDenormalizedTrackedCategoriesByDate = useSelector(
+    eventsSlice.selectors.allDenormalizedTrackedCategoriesByDate,
+  );
+  const isoDateInLocalTimezone = formatIsoDateInLocalTimezone(date);
+  const denormalizedTrackedCategories =
+    allDenormalizedTrackedCategoriesByDate[isoDateInLocalTimezone];
+  const moodIds = moodIdsByDate[isoDateInLocalTimezone];
   const startOfWeekDate = startOfWeek(date, WEEK_OPTIONS);
 
   const xLabels: string[] = [];
@@ -113,18 +128,19 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
       <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
       <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
-      {moodIds ? (
+      {denormalizedTrackedCategories ? (
         <Paper>
-          <h3>Moods</h3>
+          <h3>Events</h3>
           <Card.Group>
-            {moodIds.map((id) => (
-              <MoodCard id={id} key={id} />
-            ))}
+            {denormalizedTrackedCategories.map(({ id, type }) => {
+              const Component = TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT[type];
+              return <Component id={id} key={id} />;
+            })}
           </Card.Group>
         </Paper>
       ) : (
         <Paper>
-          <p>No mood data for this day.</p>
+          <p>Nothing logged on this day.</p>
         </Paper>
       )}
     </Paper.Group>

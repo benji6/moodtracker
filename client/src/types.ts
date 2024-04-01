@@ -5,6 +5,19 @@ export type NormalizedTrackedCategory<TrackedCategory> = {
   byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
 };
 
+export type NormalizedAllCategories = {
+  allIds: string[];
+  byId: {
+    [id: string]: (
+      | (Meditation & { type: "meditation" })
+      | (Mood & { type: "mood" })
+      | (Sleep & { type: "sleep" })
+      | (Weight & { type: "weight" })
+    ) & {
+      updatedAt?: string;
+    };
+  };
+};
 export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
 export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
@@ -57,6 +70,7 @@ export interface UpdateSleep extends Sleep {
 }
 
 type EventTypeVersions = "v1";
+export type EventCategoryTypes = "meditation" | "mood" | "sleep" | "weight";
 export type EventTypeCategories =
   | "meditations"
   | "moods"

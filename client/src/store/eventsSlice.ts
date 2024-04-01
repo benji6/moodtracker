@@ -2,8 +2,10 @@ import {
   AppCreateEvent,
   AppEvent,
   AppUpdateEvent,
+  EventCategoryTypes,
   EventTypeTuple,
   Mood,
+  NormalizedAllCategories,
   NormalizedMeditations,
   NormalizedMoods,
   NormalizedSleeps,
@@ -37,6 +39,16 @@ import {
 import { MINIMUM_WORD_CLOUD_WORDS } from "../constants";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
 import { captureException } from "../sentry";
+
+const CATEGORY_MAP = {
+  meditations: "meditation",
+  moods: "mood",
+  sleeps: "sleep",
+  weights: "weight",
+} as const;
+
+const compareFunctionForStringSorting = (a: string, b: string): number =>
+  a > b ? 1 : a < b ? -1 : 0;
 
 interface EventsState {
   allIds: string[];
@@ -75,24 +87,28 @@ const allIdsWithLocationSelector = createSelector(
     }),
 );
 
-const trackedCategoriesSelector = createSelector(
+export const trackedCategoriesSelector = createSelector(
   allIdsSelector,
   byIdSelector,
   (
     allIds,
     byId,
   ): {
+    all: NormalizedAllCategories;
     meditations: NormalizedMeditations;
     moods: NormalizedMoods;
     sleeps: NormalizedSleeps;
     weights: NormalizedWeights;
   } => {
+    const all: NormalizedAllCategories = { allIds: [], byId: {} };
     const normalizedCategories: {
+      all: NormalizedAllCategories;
       meditations: NormalizedMeditations;
       moods: NormalizedMoods;
       sleeps: NormalizedSleeps;
       weights: NormalizedWeights;
     } = {
+      all,
       meditations: { allIds: [], byId: {} },
       moods: { allIds: [], byId: {} },
       sleeps: { allIds: [], byId: {} },
@@ -106,10 +122,15 @@ const trackedCategoriesSelector = createSelector(
 
       switch (operation) {
         case "create":
+          all.allIds.push(event.createdAt);
           normalizedCategory.allIds.push(event.createdAt);
           normalizedCategory.byId[event.createdAt] = (
             event as AppCreateEvent
           ).payload;
+          all.byId[event.createdAt] = {
+            ...normalizedCategory.byId[event.createdAt],
+            type: CATEGORY_MAP[category],
+          } as (typeof all.byId)[string];
           break;
         case "delete": {
           if (typeof event.payload !== "string") {
@@ -120,26 +141,43 @@ const trackedCategoriesSelector = createSelector(
             );
             break;
           }
-          const index = normalizedCategory.allIds.lastIndexOf(event.payload);
-          if (index === -1) {
+
+          const allIndex = all.allIds.lastIndexOf(event.payload);
+          if (allIndex === -1) {
             captureException(
               Error(`Could not find event to delete: ${JSON.stringify(event)}`),
             );
             break;
           }
-          normalizedCategory.allIds.splice(index, 1);
+          all.allIds.splice(allIndex, 1);
+          delete all.byId[event.payload];
+
+          const categoryIndex = normalizedCategory.allIds.lastIndexOf(
+            event.payload,
+          );
+          if (categoryIndex === -1) {
+            captureException(
+              Error(`Could not find event to delete: ${JSON.stringify(event)}`),
+            );
+            break;
+          }
+          normalizedCategory.allIds.splice(categoryIndex, 1);
           delete normalizedCategory.byId[event.payload];
           break;
         }
         case "update": {
           const { payload } = event as AppUpdateEvent;
-          const currentData = normalizedCategory.byId[payload.id];
           const { id: _, ...rest } = payload;
 
           // for reasons that are beyond my energy to investigate there is
           // a runtime error if you try to update the data object directly
+          all.byId[payload.id] = {
+            ...all.byId[payload.id],
+            ...rest,
+            updatedAt: event.createdAt,
+          };
           normalizedCategory.byId[payload.id] = {
-            ...currentData,
+            ...normalizedCategory.byId[payload.id],
             ...rest,
             updatedAt: event.createdAt,
           };
@@ -350,7 +388,7 @@ export default createSlice({
           : serverEventIds
       )
         // The API offers no order guarantees
-        .sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
+        .sort(compareFunctionForStringSorting);
     },
   },
   selectors: {
@@ -370,6 +408,40 @@ export default createSlice({
     syncFromServerError: (state: EventsState) => state.syncFromServerError,
     syncToServerError: (state: EventsState) => state.syncToServerError,
     allIdsWithLocation: allIdsWithLocationSelector,
+    allDenormalizedTrackedCategoriesByDate: createSelector(
+      trackedCategoriesSelector,
+      (
+        trackedCategories,
+      ): {
+        [date: string]: {
+          id: string;
+          type: EventCategoryTypes;
+        }[];
+      } => {
+        const allDenormalizedTrackedCategories = denormalize(
+          trackedCategories.all,
+        ).sort((a, b) =>
+          // `dateAwoke` does not include a time string which means sleeps will be sorted before all other events on a given day
+          // because sort is stable, sleeps will have a secondary sort on `dateCreated`
+          compareFunctionForStringSorting(
+            "dateAwoke" in a ? a.dateAwoke : a.createdAt,
+            "dateAwoke" in b ? b.dateAwoke : b.createdAt,
+          ),
+        );
+        const byDate = defaultDict(
+          (): {
+            id: string;
+            type: EventCategoryTypes;
+          }[] => [],
+        );
+        for (const x of allDenormalizedTrackedCategories) {
+          byDate[
+            x.type === "sleep" ? x.dateAwoke : x.createdAt.slice(0, 10)
+          ].push({ id: x.createdAt, type: x.type });
+        }
+        return { ...byDate };
+      },
+    ),
     moodIdsWithLocation: moodIdsWithLocationSelector,
     moodIdsWithLocationInPeriod: createSelector(
       moodIdsWithLocationSelector,
@@ -550,11 +622,12 @@ export default createSlice({
       (normalizedSleeps) => ({
         ...normalizedSleeps,
         // sorting is stable so 2 events with same dateAwoke will be ordered by event id
-        allIds: [...normalizedSleeps.allIds].sort((a, b) => {
-          const dateAwokeA = normalizedSleeps.byId[a].dateAwoke;
-          const dateAwokeB = normalizedSleeps.byId[b].dateAwoke;
-          return dateAwokeA > dateAwokeB ? 1 : dateAwokeA < dateAwokeB ? -1 : 0;
-        }),
+        allIds: [...normalizedSleeps.allIds].sort((a, b) =>
+          compareFunctionForStringSorting(
+            normalizedSleeps.byId[a].dateAwoke,
+            normalizedSleeps.byId[b].dateAwoke,
+          ),
+        ),
       }),
     ),
     normalizedWeights: normalizedWeightsSelector,
