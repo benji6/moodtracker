@@ -1,4 +1,4 @@
-import { Card, Icon, Paper, SubHeading } from "eri";
+import { Icon, Paper, SubHeading } from "eri";
 import {
   WEEK_OPTIONS,
   dateWeekdayFormatter,
@@ -15,17 +15,14 @@ import {
 } from "../../../utils";
 import { Link } from "react-router-dom";
 import LocationsForPeriod from "./LocationsForPeriod";
-import MeditationCard from "../../shared/MeditationCard";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
-import MoodCard from "../../shared/MoodCard";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import MoodSummaryForDay from "./MoodSummaryForDay";
 import PrevNextControls from "../../shared/PrevNextControls";
-import SleepCard from "../../shared/SleepCard";
 import { TIME } from "../../../constants";
+import TrackedCategoriesList from "../../shared/TrackedCategoriesList";
 import WeatherForPeriod from "./WeatherForPeriod";
-import WeightCard from "../../shared/WeightCard";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -40,13 +37,6 @@ interface Props {
   showNext: boolean;
   showPrevious: boolean;
 }
-
-const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT = {
-  meditation: MeditationCard,
-  mood: MoodCard,
-  sleep: SleepCard,
-  weight: WeightCard,
-} as const;
 
 function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
@@ -131,12 +121,9 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       {denormalizedTrackedCategories ? (
         <Paper>
           <h3>Events</h3>
-          <Card.Group>
-            {denormalizedTrackedCategories.map(({ id, type }) => {
-              const Component = TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT[type];
-              return <Component id={id} key={id} />;
-            })}
-          </Card.Group>
+          <TrackedCategoriesList
+            isoDateInLocalTimezone={isoDateInLocalTimezone}
+          />
         </Paper>
       ) : (
         <Paper>

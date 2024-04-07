@@ -1,5 +1,6 @@
+import "./style.css";
 import { Button, Icon, Paper } from "eri";
-import { TEST_IDS } from "../../../constants";
+import { TEST_IDS } from "../../../../constants";
 import { useNavigate } from "react-router-dom";
 
 export function QuickTrackNav() {
@@ -8,7 +9,7 @@ export function QuickTrackNav() {
   return (
     <Paper data-test-id={TEST_IDS.moodList}>
       <h2>Home</h2>
-      <div className="mood-list__add-links">
+      <div className="quick-track-nav__links">
         <Button onClick={() => navigate("/add")}>
           <Icon margin="end" name="heart" />
           Add mood

@@ -4,10 +4,10 @@ import { formatIsoDateInLocalTimezone, roundDateDown } from "../../../utils";
 import DeviceSetupDialog from "./DeviceSetupDialog";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { Link } from "react-router-dom";
-import MoodList from "./MoodList";
 import MoodSummaryForDay from "../Stats/MoodSummaryForDay";
 import NotSignedIn from "./NotSignedIn";
 import { QuickTrackNav } from "./QuickTrackNav";
+import TrackedCategoriesByDay from "./TrackedCategoriesByDay";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 import userSlice from "../../../store/userSlice";
@@ -44,7 +44,7 @@ export default function Home() {
               }
               dates={[subDays(dateToday, 1), dateToday, dateTomorrow]}
             />
-            <MoodList />
+            <TrackedCategoriesByDay />
           </>
         ) : (
           <GetStartedCta />

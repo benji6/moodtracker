@@ -413,10 +413,12 @@ export default createSlice({
       (
         trackedCategories,
       ): {
-        [date: string]: {
-          id: string;
-          type: EventCategoryTypes;
-        }[];
+        [date: string]:
+          | {
+              id: string;
+              type: EventCategoryTypes;
+            }[]
+          | undefined;
       } => {
         const allDenormalizedTrackedCategories = denormalize(
           trackedCategories.all,
