@@ -31,7 +31,7 @@
     "date-fns": "^3.0.0",
     "eri": "^45.0.0",
     "file-saver": "^2.0.5",
-    "firebase": "^10.1.0",
+    "firebase": "^10.11.0",
     "fuse.js": "^7.0.0",
     "idb-keyval": "^6.2.0",
     "marked": "^12.0.0",
