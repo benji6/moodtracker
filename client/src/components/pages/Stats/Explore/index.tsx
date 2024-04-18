@@ -258,7 +258,7 @@ export default function Explore() {
       <WeightChartForPeriod
         dateFrom={localState.dateFrom}
         dateTo={dateTo}
-        xLabels={createXLabels(domain, dateNow.getTime())}
+        xLabels={xLabels}
       />
       <MeditationImpactForPeriod
         dateFrom={localState.dateFrom}
