@@ -189,6 +189,11 @@ export const trackedCategoriesSelector = createSelector(
   },
 );
 
+const allNormalizedTrackedCategoriesSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ all }) => all,
+);
+
 const normalizedMeditationsSelector = createSelector(
   trackedCategoriesSelector,
   ({ meditations }) => meditations,
@@ -408,10 +413,11 @@ export default createSlice({
     syncFromServerError: (state: EventsState) => state.syncFromServerError,
     syncToServerError: (state: EventsState) => state.syncToServerError,
     allIdsWithLocation: allIdsWithLocationSelector,
+    allNormalizedTrackedCategories: allNormalizedTrackedCategoriesSelector,
     allDenormalizedTrackedCategoriesByDate: createSelector(
-      trackedCategoriesSelector,
+      allNormalizedTrackedCategoriesSelector,
       (
-        trackedCategories,
+        normalizedTrackedCategories,
       ): {
         [date: string]:
           | {
@@ -421,7 +427,7 @@ export default createSlice({
           | undefined;
       } => {
         const allDenormalizedTrackedCategories = denormalize(
-          trackedCategories.all,
+          normalizedTrackedCategories,
         ).sort((a, b) =>
           // `dateAwoke` does not include a time string which means sleeps will be sorted before all other events on a given day
           // because sort is stable, sleeps will have a secondary sort on `dateCreated`

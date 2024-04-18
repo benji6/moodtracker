@@ -78,13 +78,18 @@ interface State {
 export default function Explore() {
   const dateNow = new Date();
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const firstMoodDateRoundedDown = roundDateDown(new Date(moods.allIds[0]));
+  const allNormalizedTrackedCategories = useSelector(
+    eventsSlice.selectors.allNormalizedTrackedCategories,
+  );
+  const firstTrackedCategoryDateRoundedDown = roundDateDown(
+    new Date(allNormalizedTrackedCategories.allIds[0]),
+  );
   const dateToToday = roundDateDown(dateNow);
 
   const calculateDateFrom = (days: number) => {
     const dateFrom = subDays(dateToToday, days - 1);
-    return dateFrom < firstMoodDateRoundedDown
-      ? firstMoodDateRoundedDown
+    return dateFrom < firstTrackedCategoryDateRoundedDown
+      ? firstTrackedCategoryDateRoundedDown
       : dateFrom;
   };
 
@@ -114,7 +119,7 @@ export default function Explore() {
             case "All time":
               return {
                 dateRange: action.payload,
-                dateFrom: firstMoodDateRoundedDown,
+                dateFrom: firstTrackedCategoryDateRoundedDown,
                 displayDateTo: dateToToday,
               };
             case "Custom":
