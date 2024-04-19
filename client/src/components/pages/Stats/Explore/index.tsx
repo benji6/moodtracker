@@ -1,6 +1,5 @@
 import { Paper, Select, Spinner } from "eri";
-import { addDays, differenceInDays, subDays } from "date-fns";
-import { roundDateDown, roundDateUp } from "../../../../utils";
+import { addDays, subDays } from "date-fns";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
 import { FluxStandardAction } from "../../../../typeUtilities";
 import GetStartedCta from "../../../shared/GetStartedCta";
@@ -19,38 +18,11 @@ import { RootState } from "../../../../store";
 import { TIME } from "../../../../constants";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
-import { dayMonthFormatter } from "../../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../../store/eventsSlice";
+import { roundDateDown } from "../../../../utils";
+import { scaleTime } from "d3-scale";
 import { useReducer } from "react";
 import { useSelector } from "react-redux";
-
-const MILLISECONDS_IN_HALF_A_DAY = TIME.millisecondsPerDay / 2;
-
-const getFactors = (n: number): number[] => {
-  const factors = [];
-  for (let i = 1; i <= n; i++) if (!(n % i)) factors.push(i);
-  return factors;
-};
-
-const createXLabels = (domain: [number, number], now: number): string[] => {
-  const numberOfDays = differenceInDays(domain[1], domain[0]);
-  const factors = getFactors(numberOfDays);
-  const factorsValidForLabelCount = factors.filter((n) => n <= 10 && n > 1);
-  const labelCount = Math.max(2, ...factorsValidForLabelCount) + 1;
-
-  const roundFn =
-    now - roundDateDown(new Date(now)).getTime() < MILLISECONDS_IN_HALF_A_DAY
-      ? roundDateUp
-      : roundDateDown;
-
-  return [...Array(labelCount).keys()].map((n) =>
-    dayMonthFormatter.format(
-      roundFn(
-        new Date(domain[0] + ((domain[1] - domain[0]) * n) / (labelCount - 1)),
-      ),
-    ),
-  );
-};
 
 const DATE_RANGE_OPTIONS = [
   "Today",
@@ -183,11 +155,11 @@ export default function Explore() {
       </Paper.Group>
     );
 
-  const domain: [number, number] = [
-    localState.dateFrom.getTime(),
-    dateTo.getTime(),
-  ];
-  const xLabels = createXLabels(domain, dateNow.getTime());
+  const x = scaleTime()
+    .domain([localState.dateFrom.getTime(), dateTo.getTime()])
+    .nice(6);
+  const xTicks = x.ticks(6);
+  const xLabels = xTicks.map(x.tickFormat());
 
   return (
     <Paper.Group>
@@ -228,9 +200,9 @@ export default function Explore() {
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
-            dateFrom={localState.dateFrom}
+            dateFrom={xTicks[0]}
+            dateTo={xTicks.at(-1)!}
             hidePoints
-            dateTo={dateTo}
             xLabels={xLabels}
           />
           <MoodByWeekdayForPeriod
@@ -248,16 +220,16 @@ export default function Explore() {
             dateTo={dateTo}
           />
           <WeatherForPeriod
-            dateFrom={localState.dateFrom}
-            dateTo={dateTo}
+            dateFrom={xTicks[0]}
+            dateTo={xTicks.at(-1)!}
             xLabels={xLabels}
           />
         </>
       ) : null}
       <MoodBySleepForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
       <WeightChartForPeriod
-        dateFrom={localState.dateFrom}
-        dateTo={dateTo}
+        dateFrom={xTicks[0]}
+        dateTo={xTicks.at(-1)!}
         xLabels={xLabels}
       />
       <MeditationImpactForPeriod
