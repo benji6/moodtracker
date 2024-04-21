@@ -93,7 +93,7 @@ def lambda_api_method(
         }
         if authorization
         else {
-            "AuthorizationType": "None",
+            "AuthorizationType": "NONE",
             "Metadata": {
                 "checkov": {
                     "skip": [
@@ -118,9 +118,11 @@ def lambda_api_method(
                     f"arn:aws:apigateway:${{AWS::Region}}:lambda:path/2015-03-31/functions/${{Lambda{pascal_case_name}{title_method}.Arn}}/invocations"
                 ),
             ),
-            ResourceId=ResourceId
-            if ResourceId
-            else Ref(f"ApiGateway{pascal_case_name}Resource"),
+            ResourceId=(
+                ResourceId
+                if ResourceId
+                else Ref(f"ApiGateway{pascal_case_name}Resource")
+            ),
             RestApiId=Ref("ApiGateway"),
             **apigateway_args,
         )
