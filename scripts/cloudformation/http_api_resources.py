@@ -16,6 +16,11 @@ def http_api_resources(template):
                 Sub("${DynamoEventsTable.Arn}/index/serverCreatedAt"),
             ],
         },
+        function_args={
+            # In testing it takes about 1 second to get 1000 events
+            # Limit=1000 is defined in Python
+            "Timeout": 5,
+        },
     )
     lambda_api_method(
         template,

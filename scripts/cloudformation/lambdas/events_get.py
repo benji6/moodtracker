@@ -53,6 +53,9 @@ def handler(event, context):
             # and a key in LastEvaluatedKey to apply in a subsequent operation to continue the operation"
             # Note that API GW payload limit is 10 MB https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html
             # and Lambda payload limit is 6 MB https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+            # In testing it takes about 1 second to fetch 1000 events,
+            # this could vary greatly given events can have very different sizes,
+            # therefore the Lambda timeout is set to a conservative 5 seconds.
             Limit=1000,
             ProjectionExpression="createdAt,payload,serverCreatedAt,#t",
         )
