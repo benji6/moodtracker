@@ -47,7 +47,13 @@ def handler(event, context):
             ExpressionAttributeNames={"#t": "type"},
             IndexName="serverCreatedAt",
             KeyConditionExpression=key_condition_expression,
-            Limit=500,
+            # Limit is set to ensure the lambda does not time out
+            # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/table/query.html "if the processed dataset size exceeds 1 MB before DynamoDB reaches this limit,
+            # it stops the operation and returns the matching values up to the limit,
+            # and a key in LastEvaluatedKey to apply in a subsequent operation to continue the operation"
+            # Note that API GW payload limit is 10 MB https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html
+            # and Lambda payload limit is 6 MB https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html
+            Limit=1000,
             ProjectionExpression="createdAt,payload,serverCreatedAt,#t",
         )
 
