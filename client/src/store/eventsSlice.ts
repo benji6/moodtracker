@@ -143,26 +143,28 @@ export const trackedCategoriesSelector = createSelector(
           }
 
           const allIndex = all.allIds.lastIndexOf(event.payload);
-          if (allIndex === -1) {
+          if (allIndex !== -1) {
+            all.allIds.splice(allIndex, 1);
+            delete all.byId[event.payload];
+          } else
             captureException(
-              Error(`Could not find event to delete: ${JSON.stringify(event)}`),
+              Error(
+                `Could not find event to delete across all tracked categories: ${JSON.stringify(event)}`,
+              ),
             );
-            break;
-          }
-          all.allIds.splice(allIndex, 1);
-          delete all.byId[event.payload];
 
           const categoryIndex = normalizedCategory.allIds.lastIndexOf(
             event.payload,
           );
-          if (categoryIndex === -1) {
+          if (categoryIndex !== -1) {
+            normalizedCategory.allIds.splice(categoryIndex, 1);
+            delete normalizedCategory.byId[event.payload];
+          } else
             captureException(
-              Error(`Could not find event to delete: ${JSON.stringify(event)}`),
+              Error(
+                `Could not find event to delete within ${category} category: ${JSON.stringify(event)}`,
+              ),
             );
-            break;
-          }
-          normalizedCategory.allIds.splice(categoryIndex, 1);
-          delete normalizedCategory.byId[event.payload];
           break;
         }
         case "update": {
