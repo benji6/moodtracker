@@ -33,7 +33,7 @@ export default function DeleteEventDialog({
                 payload: id,
               }),
             );
-            navigate(`/${eventType}/log`);
+            navigate("/");
           }}
         >
           <Icon margin="end" name="trash" />
