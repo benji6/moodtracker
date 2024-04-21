@@ -19,6 +19,11 @@ export const bisectLeft = (xs: string[], x: string, lo = 0) => {
 export const capitalizeFirstLetter = (s: string): string =>
   s && `${s[0].toUpperCase()}${s.toLowerCase().slice(1)}`;
 
+export const compareFunctionForStringSorting = (
+  a: string,
+  b: string,
+): number => (a > b ? 1 : a < b ? -1 : 0);
+
 export const computeAverageMoodInInterval = (
   moods: NormalizedMoods,
   dateFrom: Date,

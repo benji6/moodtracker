@@ -26,6 +26,7 @@ import {
 } from "date-fns";
 import { PayloadAction, createSelector, createSlice } from "@reduxjs/toolkit";
 import {
+  compareFunctionForStringSorting,
   computeAverageMoodInInterval,
   computeMean,
   computeMeanSafe,
@@ -46,9 +47,6 @@ const CATEGORY_MAP = {
   sleeps: "sleep",
   weights: "weight",
 } as const;
-
-const compareFunctionForStringSorting = (a: string, b: string): number =>
-  a > b ? 1 : a < b ? -1 : 0;
 
 interface EventsState {
   allIds: string[];

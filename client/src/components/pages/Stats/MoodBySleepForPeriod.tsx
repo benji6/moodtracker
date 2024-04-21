@@ -1,6 +1,7 @@
 import { Chart, Paper } from "eri";
 import { MOOD_INTEGERS, MOOD_RANGE } from "../../../constants";
 import {
+  compareFunctionForStringSorting,
   computeMean,
   defaultDict,
   getIdsInInterval,
@@ -20,7 +21,7 @@ export default function MoodBySleepForPeriod({ dateFrom, dateTo }: Props) {
     eventsSlice.selectors.minutesSleptByDateAwoke,
   );
   const minutesSleptKeys = getIdsInInterval(
-    Object.keys(minutesSleptByDateAwoke),
+    Object.keys(minutesSleptByDateAwoke).sort(compareFunctionForStringSorting),
     dateFrom,
     dateTo,
   );

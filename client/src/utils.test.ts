@@ -2,6 +2,7 @@ import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 import {
   bisectLeft,
   capitalizeFirstLetter,
+  compareFunctionForStringSorting,
   computeAverageMoodInInterval,
   computeMean,
   computeMeanSafe,
@@ -75,6 +76,20 @@ describe("utils", () => {
     expect(capitalizeFirstLetter("foo")).toBe("Foo");
     expect(capitalizeFirstLetter("fooBar")).toBe("Foobar");
     expect(capitalizeFirstLetter("Foo Bar Baz")).toBe("Foo bar baz");
+  });
+
+  test("compareFunctionForStringSorting", () => {
+    expect(compareFunctionForStringSorting("2020-06-01", "2020-06-01")).toBe(0);
+    expect(compareFunctionForStringSorting("2020-06-01", "2020-05-31")).toBe(1);
+    expect(compareFunctionForStringSorting("2020-06-01", "2020-06-02")).toBe(
+      -1,
+    );
+    expect(
+      compareFunctionForStringSorting("2020-06-01T:00:00", "2020-06-01"),
+    ).toBe(1);
+    expect(
+      compareFunctionForStringSorting("2020-06-01", "2020-06-01T:00:00"),
+    ).toBe(-1);
   });
 
   describe("computeAverageMoodInInterval", () => {
