@@ -1,12 +1,14 @@
 import { TIME } from "../constants";
 
-export const formatMinutesAsTimeStringShort = (minutes: number): string =>
-  [
-    Math.floor(minutes / TIME.minutesPerHour),
-    Math.round(minutes % TIME.minutesPerHour),
+export const formatMinutesAsTimeStringShort = (minutes: number): string => {
+  const roundedMinutes = Math.round(minutes);
+  return [
+    Math.floor(roundedMinutes / TIME.minutesPerHour),
+    Math.round(roundedMinutes % TIME.minutesPerHour),
   ]
     .map((n) => String(n).padStart(2, "0"))
     .join(":");
+};
 
 export const formatMinutesAsTimeStringLong = (minutes: number): string => {
   const roundedMinutes = Math.round(minutes);
@@ -21,4 +23,3 @@ export const formatMinutesAsTimeStringLong = (minutes: number): string => {
     : "";
   return [hoursString, minutesString].filter(Boolean).join(" & ");
 };
-[].map((n) => String(n).padStart(2, "0")).join(":");

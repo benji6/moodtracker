@@ -14,6 +14,9 @@ test("formatMinutesAsTimeStringShort", () => {
   expect(formatMinutesAsTimeStringShort(432)).toBe("07:12");
   expect(formatMinutesAsTimeStringShort(432.49)).toBe("07:12");
   expect(formatMinutesAsTimeStringShort(432.5)).toBe("07:13");
+  expect(formatMinutesAsTimeStringShort(479.5)).toBe("08:00");
+  expect(formatMinutesAsTimeStringShort(480)).toBe("08:00");
+  expect(formatMinutesAsTimeStringShort(480.000001)).toBe("08:00");
   expect(formatMinutesAsTimeStringShort(1439)).toBe("23:59");
 });
 
