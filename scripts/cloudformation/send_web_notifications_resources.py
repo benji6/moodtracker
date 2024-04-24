@@ -27,7 +27,7 @@ def send_web_notifications_resources(template):
             ),
             FunctionName="MoodTrackerWebNotificationsSend",
             Handler="index.handler",
-            Runtime="python3.11",
+            Runtime="python3.12",
             ReservedConcurrentExecutions=1,
             Role=GetAtt("LambdaNotificationsSendRole", "Arn"),
             Timeout=8,
