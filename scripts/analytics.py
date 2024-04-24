@@ -46,9 +46,12 @@ for event in events:
 
     if operation == "create":
         categories[category][event["createdAt"]] = event["payload"]
-    if operation == "delete":
-        del categories[category][event["payload"]]
-    if operation == "update":
+    elif operation == "delete":
+        try:
+            del categories[category][event["payload"]]
+        except KeyError as e:
+            print("Cannot find event to delete: ", e)
+    elif operation == "update":
         categories[category][event["payload"]["id"]] = {
             **categories[category][event["payload"]["id"]],
             **event["payload"],
