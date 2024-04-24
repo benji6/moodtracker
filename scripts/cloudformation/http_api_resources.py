@@ -39,6 +39,7 @@ def http_api_resources(template):
         "usage",
         "GET",
         authorization=False,
+        function_args={"Timeout": 5},
         statement=[
             {
                 "Action": "cognito-idp:ListUsers",
