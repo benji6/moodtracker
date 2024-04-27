@@ -72,13 +72,15 @@ export default function MoodSummary({
           previousValue={previousPeriod?.total}
         />
       )}
-      <MoodSummaryItem
-        currentValue={currentPeriod.standardDeviation}
-        format={oneDecimalPlaceFormatter.format}
-        heading="Mood standard deviation"
-        periodType={periodType}
-        previousValue={previousPeriod?.standardDeviation}
-      />
+      {Boolean(currentPeriod.standardDeviation) && (
+        <MoodSummaryItem
+          currentValue={currentPeriod.standardDeviation}
+          format={oneDecimalPlaceFormatter.format}
+          heading="Mood standard deviation"
+          periodType={periodType}
+          previousValue={previousPeriod?.standardDeviation}
+        />
+      )}
       <MoodSummaryItem
         currentValue={currentPeriod.meanSleep}
         format={formatMinutesAsTimeStringShort}
