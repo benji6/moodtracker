@@ -1,6 +1,6 @@
+import { HIGHLY_CACHED_QUERY_OPTIONS, QUERY_KEYS } from "../../constants";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { AppEventWithLocation } from "../../types";
-import { HIGHLY_CACHED_QUERY_OPTIONS } from "../../constants";
 import eventsSlice from "../../store/eventsSlice";
 import { getReverseGeolocation } from "../../api";
 import { useSelector } from "react-redux";
@@ -29,7 +29,7 @@ export const useReverseGeolocationQuery = ({
 }) =>
   useQuery({
     queryKey: [
-      "reverse-geolocation",
+      QUERY_KEYS.reverseGeolocation,
       roundQueryParameters({ latitude, longitude }),
     ],
     queryFn: getReverseGeolocation,
@@ -37,7 +37,7 @@ export const useReverseGeolocationQuery = ({
   });
 
 type QueryKey = [
-  "reverse-geolocation",
+  typeof QUERY_KEYS.reverseGeolocation,
   { latitude: number; longitude: number },
 ];
 
@@ -49,7 +49,7 @@ export const useReverseGeolocationQueries = (ids: string[]) => {
       const { latitude, longitude } = (eventsById[id] as AppEventWithLocation)
         .payload.location;
       const queryKey: QueryKey = [
-        "reverse-geolocation",
+        QUERY_KEYS.reverseGeolocation,
         roundQueryParameters({ latitude, longitude }),
       ];
       return {

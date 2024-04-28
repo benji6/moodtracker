@@ -1,4 +1,4 @@
-import { HIGHLY_CACHED_QUERY_OPTIONS, TIME } from "../../constants";
+import { HIGHLY_CACHED_QUERY_OPTIONS, QUERY_KEYS, TIME } from "../../constants";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { AppEventWithLocation } from "../../types";
 import eventsSlice from "../../store/eventsSlice";
@@ -40,13 +40,13 @@ export const useWeatherQuery = (queryParameters: {
   longitude: number;
 }) =>
   useQuery({
-    queryKey: ["weather", roundQueryParameters(queryParameters)],
+    queryKey: [QUERY_KEYS.weather, roundQueryParameters(queryParameters)],
     queryFn: fetchWeather,
     ...HIGHLY_CACHED_QUERY_OPTIONS,
   });
 
 type QueryKey = [
-  "weather",
+  typeof QUERY_KEYS.weather,
   { date: number; latitude: string; longitude: string },
 ];
 
@@ -58,7 +58,7 @@ export const useWeatherQueries = (ids: string[]) => {
       const { latitude, longitude } = (eventsById[id] as AppEventWithLocation)
         .payload.location;
       const queryKey: QueryKey = [
-        "weather",
+        QUERY_KEYS.weather,
         roundQueryParameters({ date: new Date(id), latitude, longitude }),
       ];
       return {

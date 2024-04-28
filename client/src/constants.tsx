@@ -58,6 +58,17 @@ export const PATTERNS = {
   noPunctuation: "[\\p{L}\\p{Emoji_Presentation}\\s\\-]*",
 } as const;
 
+// All these keys are purged by default when a user signs out.
+// If there is value in not purging specific keys then make an
+// allowance for that in the signout logic
+export const QUERY_KEYS = {
+  reverseGeolocation: "reverse-geolocation",
+  usage: "usage",
+  weather: "weather",
+  webPushTokens: "web-push-tokens",
+  weeklyEmails: "weekly-emails",
+} as const;
+
 export const TIME = {
   daysPerWeek: 7,
   hoursPerDay: 24,

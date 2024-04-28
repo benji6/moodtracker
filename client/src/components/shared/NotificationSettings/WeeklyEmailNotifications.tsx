@@ -1,3 +1,4 @@
+import { ERRORS, QUERY_KEYS } from "../../../constants";
 import { Spinner, Toggle } from "eri";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -5,12 +6,11 @@ import {
   weeklyEmailsEnable,
   weeklyEmailsGet,
 } from "../../../api";
-import { ERRORS } from "../../../constants";
 import { queryClient } from "../../..";
 
 export default function WeeklyEmailNotifications() {
   const { data, isError, isPending } = useQuery({
-    queryKey: ["weekly-emails"],
+    queryKey: [QUERY_KEYS.weeklyEmails],
     queryFn: weeklyEmailsGet,
   });
 
@@ -19,7 +19,7 @@ export default function WeeklyEmailNotifications() {
       isEnabled ? weeklyEmailsDisable() : weeklyEmailsEnable(),
     onSuccess: () => {
       queryClient.setQueryData<typeof data>(
-        ["weekly-emails"],
+        [QUERY_KEYS.weeklyEmails],
         (isEnabled) => !isEnabled,
       );
     },

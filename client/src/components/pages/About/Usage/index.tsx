@@ -1,5 +1,9 @@
 import { Chart, Paper, Spinner, SubHeading } from "eri";
-import { REPO_ISSUES_URL, WEEKDAY_LABELS_SHORT } from "../../../../constants";
+import {
+  QUERY_KEYS,
+  REPO_ISSUES_URL,
+  WEEKDAY_LABELS_SHORT,
+} from "../../../../constants";
 import { formatDistanceToNow, subDays } from "date-fns";
 import {
   integerFormatter,
@@ -15,7 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function Usage() {
   const { data, error, isError, isPending } = useQuery({
-    queryKey: ["usage"],
+    queryKey: [QUERY_KEYS.usage],
     queryFn: usageGet,
     networkMode: "offlineFirst",
   });

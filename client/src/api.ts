@@ -1,10 +1,10 @@
+import { AWS_CONSTANTS, QUERY_KEYS } from "./constants";
 import { AppEvent, Usage, WeatherApiResponse } from "./types";
 import {
   LocationClient,
   SearchPlaceIndexForPositionCommand,
 } from "@aws-sdk/client-location";
 import { addMinutes, subMinutes } from "date-fns";
-import { AWS_CONSTANTS } from "./constants";
 import { captureException } from "./sentry";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
@@ -62,7 +62,10 @@ export const fetchWeather = async ({
   queryKey: [_, { date, latitude, longitude }],
 }: {
   queryKey: Readonly<
-    ["weather", { date: number; latitude: string; longitude: string }]
+    [
+      typeof QUERY_KEYS.weather,
+      { date: number; latitude: string; longitude: string },
+    ]
   >;
 }): Promise<WeatherApiResponse> => {
   const response = await fetchWithAuth(
@@ -217,7 +220,10 @@ export const getReverseGeolocation = async ({
   queryKey: [_, { latitude, longitude }],
 }: {
   queryKey: Readonly<
-    ["reverse-geolocation", { latitude: number; longitude: number }]
+    [
+      typeof QUERY_KEYS.reverseGeolocation,
+      { latitude: number; longitude: number },
+    ]
   >;
 }) => {
   const locationClient = await getLocationClient();

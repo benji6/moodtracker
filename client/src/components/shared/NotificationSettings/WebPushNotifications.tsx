@@ -1,3 +1,4 @@
+import { ERRORS, QUERY_KEYS } from "../../../constants";
 import { Spinner, Toggle } from "eri";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -9,13 +10,12 @@ import {
   webPushTokensList,
   webPushTokensPut,
 } from "../../../api";
-import { ERRORS } from "../../../constants";
 import { captureException } from "../../../sentry";
 import { queryClient } from "../../..";
 
 export default function WebPushNotifications() {
   const { data, isError, isPending } = useQuery({
-    queryKey: ["web-push-tokens"],
+    queryKey: [QUERY_KEYS.webPushTokens],
     queryFn: webPushTokensList,
   });
   const {
@@ -29,17 +29,23 @@ export default function WebPushNotifications() {
   const deleteMutation = useMutation({
     mutationFn: webPushTokensDelete,
     onSuccess: (_, token) => {
-      queryClient.setQueryData<typeof data>(["web-push-tokens"], (data) => ({
-        tokens: data!.tokens.filter((t) => t.token !== token),
-      }));
+      queryClient.setQueryData<typeof data>(
+        [QUERY_KEYS.webPushTokens],
+        (data) => ({
+          tokens: data!.tokens.filter((t) => t.token !== token),
+        }),
+      );
     },
   });
   const putMutation = useMutation({
     mutationFn: webPushTokensPut,
     onSuccess: (tokenObject) => {
-      queryClient.setQueryData<typeof data>(["web-push-tokens"], (data) => ({
-        tokens: data ? [...data.tokens, tokenObject] : [tokenObject],
-      }));
+      queryClient.setQueryData<typeof data>(
+        [QUERY_KEYS.webPushTokens],
+        (data) => ({
+          tokens: data ? [...data.tokens, tokenObject] : [tokenObject],
+        }),
+      );
     },
   });
 
