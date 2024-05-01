@@ -72,7 +72,7 @@
     "path-browserify": "^1.0.1",
     "prettier": "^3.0.0",
     "process": "^0.11.10",
-    "puppeteer": "^22.3.0",
+    "puppeteer": "^22.7.1",
     "sharp": "^0.31.2",
     "ts-jest": "^29.0.3",
     "typescript": "^5.0.3"
