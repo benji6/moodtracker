@@ -37,21 +37,27 @@ export default function MoodBySleepForPeriod({ dateFrom, dateTo }: Props) {
   );
   if (intersectingKeys.length < 5) return;
 
-  const points = intersectingKeys.map((key) => {
+  const ysByX = defaultDict((): number[] => []);
+  const lineYsByX = defaultDict((): number[] => []);
+  for (const key of intersectingKeys) {
+    const x = minutesSleptByDateAwoke[key] / 60;
     const y = meanMoodsByDay[key];
+
+    ysByX[x].push(y);
+    // Round to nearest 2 for a resolution of 30 minutes
+    lineYsByX[Math.round(x * 2) / 2].push(y);
+  }
+  const points = Object.keys(ysByX).map((x) => {
+    const y = computeMean(ysByX[x]);
     return {
       color: moodToColor(y),
-      x: minutesSleptByDateAwoke[key] / 60,
+      x: Number(x),
       y,
     };
   });
-
-  const ysByX = defaultDict((): number[] => []);
-  // Round to nearest 4 for a resolution of 15 minutes
-  for (const { x, y } of points) ysByX[Math.round(x * 4) / 4].push(y);
-  const linePoints = Object.keys(ysByX).map((x) => ({
+  const linePoints = Object.keys(lineYsByX).map((x) => ({
     x: Number(x),
-    y: computeMean(ysByX[x]),
+    y: computeMean(lineYsByX[x]),
   }));
 
   return (
