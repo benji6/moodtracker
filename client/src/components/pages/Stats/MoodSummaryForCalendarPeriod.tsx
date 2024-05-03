@@ -1,5 +1,5 @@
 import {
-  computeStandardDeviation,
+  computeCompletePopulationStandardDeviation,
   formatIsoDateInLocalTimezone,
 } from "../../../utils";
 import MoodSummary from "../../shared/MoodSummary";
@@ -76,7 +76,8 @@ export default function MoodSummaryForCalendarPeriod({
           meanSleep: meanSleepInPeriod,
           meanWeight: meanWeightInPeriod,
           secondsMeditated: secondsMeditatedInCurrentPeriod,
-          standardDeviation: computeStandardDeviation(moodValues),
+          standardDeviation:
+            computeCompletePopulationStandardDeviation(moodValues),
           total: moodValues.length,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
         }}
@@ -91,7 +92,8 @@ export default function MoodSummaryForCalendarPeriod({
                 meanSleep: meanSleepInPreviousPeriod,
                 meanWeight: meanWeightInPreviousPeriod,
                 secondsMeditated: secondsMeditatedInPreviousPeriod,
-                standardDeviation: computeStandardDeviation(prevMoodValues),
+                standardDeviation:
+                  computeCompletePopulationStandardDeviation(prevMoodValues),
                 total: prevMoodValues.length,
                 worst: prevMoodValues.length
                   ? Math.min(...prevMoodValues)

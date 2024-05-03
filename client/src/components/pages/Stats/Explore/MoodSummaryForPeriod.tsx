@@ -1,4 +1,7 @@
-import { computeMeanSafe, computeStandardDeviation } from "../../../../utils";
+import {
+  computeCompletePopulationStandardDeviation,
+  computeMeanSafe,
+} from "../../../../utils";
 import MoodSummary from "../../../shared/MoodSummary";
 import { Paper } from "eri";
 import { RootState } from "../../../../store";
@@ -40,7 +43,8 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
           meanWeight,
           meanSleep,
           secondsMeditated,
-          standardDeviation: computeStandardDeviation(moodValues),
+          standardDeviation:
+            computeCompletePopulationStandardDeviation(moodValues),
           total: moodValues.length,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
         }}

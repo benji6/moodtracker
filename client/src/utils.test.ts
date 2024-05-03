@@ -4,9 +4,9 @@ import {
   capitalizeFirstLetter,
   compareFunctionForStringSorting,
   computeAverageMoodInInterval,
+  computeCompletePopulationStandardDeviation,
   computeMean,
   computeMeanSafe,
-  computeStandardDeviation,
   convertKelvinToCelcius,
   counter,
   createChartExtent,
@@ -406,23 +406,27 @@ describe("utils", () => {
     );
   });
 
-  describe("computeStandardDeviation", () => {
+  describe("computeCompletePopulationStandardDeviation", () => {
     it("returns undefined when the array is empty", () => {
-      expect(computeStandardDeviation([])).toBeUndefined();
+      expect(computeCompletePopulationStandardDeviation([])).toBeUndefined();
     });
 
     it("returns 0 when the array contains a single item", () => {
-      expect(computeStandardDeviation([5])).toBe(0);
+      expect(computeCompletePopulationStandardDeviation([5])).toBe(0);
     });
 
     it("returns 0 when all items in the array are the same", () => {
-      expect(computeStandardDeviation([5, 5, 5, 5, 5])).toBe(0);
+      expect(computeCompletePopulationStandardDeviation([5, 5, 5, 5, 5])).toBe(
+        0,
+      );
     });
 
     it("returns the correct standard deviation", () => {
       expect(
-        computeStandardDeviation([727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1]),
-      ).toBeCloseTo(420.96);
+        computeCompletePopulationStandardDeviation([
+          727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1,
+        ]),
+      ).toBeCloseTo(384.28);
     });
   });
 

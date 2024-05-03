@@ -112,14 +112,16 @@ export const computeMeanSafe = (xs: number[]): number | undefined => {
   return sum / xs.length;
 };
 
-export const computeStandardDeviation = (xs: number[]): number | undefined => {
+export const computeCompletePopulationStandardDeviation = (
+  xs: number[],
+): number | undefined => {
   if (!xs.length) return;
-  if (xs.length <= 1) return 0;
-
   const mean = computeMean(xs);
   let sumOfSquaredDifferences = 0;
   for (const x of xs) sumOfSquaredDifferences += (x - mean) ** 2;
-  return Math.sqrt(sumOfSquaredDifferences / (xs.length - 1));
+  // For a sample (rather than the complete population),
+  // the denominator would be `(xs.length - 1)`
+  return Math.sqrt(sumOfSquaredDifferences / xs.length);
 };
 
 export const convertKelvinToCelcius = (kelvin: number): number =>
