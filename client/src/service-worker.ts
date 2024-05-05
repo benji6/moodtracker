@@ -27,7 +27,12 @@ const sw: any = self;
 
 const firebaseApp = initializeApp(FIREBASE_CONFIG);
 
-getMessaging(firebaseApp);
+try {
+  getMessaging(firebaseApp);
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.error("Error caught and logged to console:", e);
+}
 
 const rejectAfterTimeout = (t: number): Promise<never> =>
   new Promise((_, reject) =>
