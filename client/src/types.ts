@@ -1,5 +1,3 @@
-import { RequireProperties } from "./typeUtilities";
-
 export type NormalizedTrackedCategory<TrackedCategory> = {
   allIds: string[];
   byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
@@ -110,14 +108,6 @@ export type AppCreateEvent =
   | PayloadEvent<"v1/push-ups/create", PushUps>
   | PayloadEvent<"v1/sleeps/create", Sleep>
   | PayloadEvent<"v1/weights/create", Weight>;
-export type AppEventWithLocation =
-  | PayloadEvent<
-      "v1/meditations/create",
-      RequireProperties<Meditation, "location">
-    >
-  | PayloadEvent<"v1/moods/create", RequireProperties<Mood, "location">>
-  | PayloadEvent<"v1/push-ups/create", RequireProperties<Mood, "location">>
-  | PayloadEvent<"v1/weights/create", RequireProperties<Weight, "location">>;
 
 export type AppUpdateEvent =
   | PayloadEvent<"v1/moods/update", UpdateMood>

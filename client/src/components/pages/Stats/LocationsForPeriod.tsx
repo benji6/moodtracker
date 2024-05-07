@@ -1,5 +1,5 @@
-import { AppEventWithLocation, DeviceGeolocation } from "../../../types";
 import { Paper, SubHeading } from "eri";
+import { DeviceGeolocation } from "../../../types";
 import LocationMap from "../../shared/LocationMap";
 import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
@@ -19,7 +19,14 @@ export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
   const coordinatesToRender = new Set();
   const locationsToRender: [string, DeviceGeolocation][] = [];
   for (const id of eventIdsWithLocationInPeriod) {
-    const { location } = (eventsById[id] as AppEventWithLocation).payload;
+    const { payload } = eventsById[id];
+    if (
+      typeof payload === "string" ||
+      !("location" in payload) ||
+      payload.location === undefined
+    )
+      throw Error("Expected payload to have a location");
+    const { location } = payload;
     const key = `${location.longitude},${location.latitude}`;
     if (coordinatesToRender.has(key)) continue;
     coordinatesToRender.add(key);
