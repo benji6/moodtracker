@@ -22,13 +22,13 @@ describe("push-ups", () => {
 
     beforeEach(async () => {
       await page.goto(URLS.pushUpsAdd);
-      await page.waitForSelector(SELECTORS.pushUpsAddPage);
+      await page.waitForSelector(SELECTORS.eventAddPage);
 
       input = (await page.$(
         SELECTORS.pushUpsValueInput,
       )) as ElementHandle<HTMLInputElement>;
       submitButton = (await page.$(
-        SELECTORS.pushUpsAddSubmitButton,
+        SELECTORS.eventAddSubmitButton,
       )) as ElementHandle<HTMLButtonElement>;
     });
 

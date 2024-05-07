@@ -1,11 +1,12 @@
 import "./style.css";
-import { Button, Icon, Paper, Select, TextField } from "eri";
-import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../../constants";
+import { ERRORS, FIELDS, TIME } from "../../../constants";
+import { Select, TextField } from "eri";
 import { useRef, useState } from "react";
+import AddEvent from "../../shared/AddEvent";
+import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
 import { useDispatch } from "react-redux";
-import useKeyboardSave from "../../hooks/useKeyboardSave";
 import { useNavigate } from "react-router-dom";
 
 export default function AddSleep() {
@@ -14,8 +15,9 @@ export default function AddSleep() {
   const [dateAwokeError, setDateAwokeError] = useState<string | undefined>();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = () => {
-    const formEl = formRef.current!;
+  const onSubmit = () => {
+    const formEl = formRef.current;
+    if (!formEl) return captureException(Error("Form ref is undefined"));
 
     const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
     const minutesSleptEl: HTMLInputElement = formEl[FIELDS.minutesSlept.name];
@@ -42,52 +44,32 @@ export default function AddSleep() {
     navigate("/sleep/log");
   };
 
-  useKeyboardSave(handleSubmit);
-
   const isoDateStringNow = formatIsoDateInLocalTimezone(new Date());
 
   return (
-    <Paper.Group data-test-id={TEST_IDS.sleepAddPage}>
-      <Paper>
-        <h2>Add sleep</h2>
-        <form
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          ref={formRef}
-        >
-          <div className="m-interval-input">
-            <Select {...FIELDS.hoursSlept}>
-              {[...Array(TIME.hoursPerDay)].map((_, i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </Select>
-            <Select {...FIELDS.minutesSlept}>
-              {[...Array(TIME.minutesPerHour)].map((_, i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <TextField
-            {...FIELDS.dateAwoke}
-            defaultValue={isoDateStringNow}
-            error={dateAwokeError}
-            max={isoDateStringNow}
-          />
-          <Button.Group>
-            <Button data-test-id={TEST_IDS.sleepAddSubmitButton}>
-              <Icon margin="end" name="save" />
-              Save
-            </Button>
-          </Button.Group>
-        </form>
-      </Paper>
-    </Paper.Group>
+    <AddEvent eventTypeLabel="sleep" ref={formRef} onSubmit={onSubmit}>
+      <div className="m-interval-input">
+        <Select {...FIELDS.hoursSlept}>
+          {[...Array(TIME.hoursPerDay)].map((_, i) => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
+        </Select>
+        <Select {...FIELDS.minutesSlept}>
+          {[...Array(TIME.minutesPerHour)].map((_, i) => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
+        </Select>
+      </div>
+      <TextField
+        {...FIELDS.dateAwoke}
+        defaultValue={isoDateStringNow}
+        error={dateAwokeError}
+        max={isoDateStringNow}
+      />
+    </AddEvent>
   );
 }

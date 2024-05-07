@@ -26,7 +26,7 @@ describe("unauthed", () => {
     await page.goto(URLS.add);
     await page.waitForSelector(SELECTORS.signInLink);
     expect(page.url().replace(/\/$/, "")).toBe(URLS.origin);
-    expect(await page.$(SELECTORS.addMoodPage)).toBeNull();
+    expect(await page.$(SELECTORS.eventAddPage)).toBeNull();
     expect(await page.title()).toBe(ROOT_DOCUMENT_TITLE);
   });
 });

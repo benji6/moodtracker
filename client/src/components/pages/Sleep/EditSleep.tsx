@@ -1,5 +1,5 @@
 import { Button, Icon, Paper, Select, TextField } from "eri";
-import { ERRORS, FIELDS, TEST_IDS, TIME } from "../../../constants";
+import { ERRORS, FIELDS, TIME } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
@@ -116,7 +116,7 @@ export default function EditSleep() {
             <p className="center negative">{ERRORS.noChanges}</p>
           )}
           <Button.Group>
-            <Button data-test-id={TEST_IDS.sleepAddSubmitButton}>
+            <Button>
               <Icon margin="end" name="save" />
               Save
             </Button>

@@ -25,7 +25,7 @@ describe("sleep", () => {
 
     beforeEach(async () => {
       await page.goto(URLS.sleepAdd);
-      await page.waitForSelector(SELECTORS.sleepAddPage);
+      await page.waitForSelector(SELECTORS.eventAddPage);
       dateAwokeInput = (await page.$(
         SELECTORS.dateAwokeInput,
       )) as ElementHandle<HTMLInputElement>;
@@ -36,7 +36,7 @@ describe("sleep", () => {
         SELECTORS.minutesSleptInput,
       )) as ElementHandle<HTMLInputElement>;
       submitButton = (await page.$(
-        SELECTORS.sleepAddSubmitButton,
+        SELECTORS.eventAddSubmitButton,
       )) as ElementHandle<HTMLButtonElement>;
       const dateAwokeValue = await dateAwokeInput.evaluate((x) => x.value);
       expect(dateAwokeValue).toBe(formatIsoDateInLocalTimezone(new Date()));

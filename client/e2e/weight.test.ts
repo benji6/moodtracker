@@ -22,13 +22,13 @@ describe("weight", () => {
 
     beforeEach(async () => {
       await page.goto(URLS.weightAdd);
-      await page.waitForSelector(SELECTORS.weightAddPage);
+      await page.waitForSelector(SELECTORS.eventAddPage);
 
       input = (await page.$(
         SELECTORS.weightValueInput,
       )) as ElementHandle<HTMLInputElement>;
       submitButton = (await page.$(
-        SELECTORS.weightAddSubmitButton,
+        SELECTORS.eventAddSubmitButton,
       )) as ElementHandle<HTMLButtonElement>;
     });
 

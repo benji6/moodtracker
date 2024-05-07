@@ -22,13 +22,13 @@ describe("mood", () => {
 
     beforeEach(async () => {
       await page.goto(URLS.add);
-      await page.waitForSelector(SELECTORS.addMoodPage);
+      await page.waitForSelector(SELECTORS.eventAddPage);
 
       descriptionInput = (await page.$(
         SELECTORS.descriptionInput,
       )) as ElementHandle<HTMLInputElement>;
       submitButton = (await page.$(
-        SELECTORS.addMoodSubmitButton,
+        SELECTORS.eventAddSubmitButton,
       )) as ElementHandle<HTMLButtonElement>;
     });
 
