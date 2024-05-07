@@ -23,12 +23,13 @@ interface Props {
 
 export default function Nav({ handleNavClose, open }: Props) {
   const hasMoods = useSelector(eventsSlice.selectors.hasMoods);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const hasMeditations = useSelector(eventsSlice.selectors.hasMeditations);
+  const hasPushUps = useSelector(eventsSlice.selectors.hasPushUps);
   const hasSleeps = useSelector(eventsSlice.selectors.hasSleeps);
   const hasWeights = useSelector(eventsSlice.selectors.hasWeights);
   const userEmail = useSelector(userSlice.selectors.email);
   const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleDialogClose = () => {
     setIsDialogOpen(false);
     handleNavClose();
@@ -149,6 +150,26 @@ export default function Nav({ handleNavClose, open }: Props) {
                     <Icon margin="end" name="book" />
                     Log
                   </EriNav.Link>
+                )}
+              </EriNav.SubList>
+              <EriNav.SubList
+                heading={
+                  <span>
+                    <span className="m-nav__icon">💪</span>Push-ups
+                  </span>
+                }
+              >
+                <EriNav.Link onClick={handleNavClose} to="/push-ups/add">
+                  <Icon margin="end" name="plus" />
+                  Add
+                </EriNav.Link>
+                {hasPushUps && (
+                  <>
+                    <EriNav.Link onClick={handleNavClose} to="/push-ups/log">
+                      <Icon margin="end" name="book" />
+                      Log
+                    </EriNav.Link>
+                  </>
                 )}
               </EriNav.SubList>
               <EriNav.SubList

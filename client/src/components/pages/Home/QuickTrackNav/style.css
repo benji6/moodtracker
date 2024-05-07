@@ -1,3 +1,7 @@
+.m-quick-track-nav__icon {
+  margin-inline-end: var(--space-0);
+}
+
 .quick-track-nav__links {
   display: grid;
   gap: var(--space-2);

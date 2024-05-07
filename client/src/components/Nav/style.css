@@ -2,6 +2,10 @@
   margin: var(--space-3) var(--space-3) 0;
 }
 
+.m-nav__icon {
+  margin-inline-end: var(--space-0);
+}
+
 .m-nav__sign-out {
   margin-block: var(--space-2);
 }

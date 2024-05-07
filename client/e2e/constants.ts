@@ -14,6 +14,8 @@ export class URLS {
   static readonly home = `${URLS.origin}/`;
   static readonly meditation = `${URLS.origin}/meditation`;
   static readonly meditationTimer = `${URLS.meditation}/timer`;
+  static readonly pushUpsAdd = `${URLS.origin}/push-ups/add`;
+  static readonly pushUpsLog = `${URLS.origin}/push-ups/log`;
   static readonly resetPassowrd = `${URLS.origin}/reset-password`;
   static readonly sleepAdd = `${URLS.origin}/sleep/add`;
   static readonly sleepLog = `${URLS.origin}/sleep/log`;

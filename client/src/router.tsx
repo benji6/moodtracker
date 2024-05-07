@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import About from "./components/pages/About";
 import AddMood from "./components/pages/Mood/AddMood";
+import AddPushUps from "./components/pages/PushUps/AddPushUps";
 import AddSleep from "./components/pages/Sleep/AddSleep";
 import AddWeight from "./components/pages/Weight/AddWeight";
 import Blog from "./components/pages/Blog";
@@ -12,6 +13,7 @@ import ChangeEmail from "./components/pages/Settings/ChangeEmail";
 import ChangePassword from "./components/pages/Settings/ChangePassword";
 import Day from "./components/pages/Stats/Day";
 import EditMood from "./components/pages/Mood/EditMood";
+import EditPushUps from "./components/pages/PushUps/EditPushUps";
 import EditSleep from "./components/pages/Sleep/EditSleep";
 import EditWeight from "./components/pages/Weight/EditWeight";
 import { ErrorBoundary } from "@sentry/react";
@@ -31,6 +33,7 @@ import OpenEndedMeditation from "./components/pages/Meditation/Meditate/OpenEnde
 import Overview from "./components/pages/Stats/Overview";
 import Page from "./components/shared/Page";
 import PrivacyPolicy from "./components/pages/About/PrivacyPolicy";
+import PushUpsLog from "./components/pages/PushUps/PushUpsLog";
 import { REPO_ISSUES_URL } from "./constants";
 import RedirectHome from "./components/shared/RedirectHome";
 import ResendVerification from "./components/pages/ResendVerification";
@@ -130,6 +133,27 @@ function Root() {
                         />
                       }
                       path="timer"
+                    />
+                  </Route>
+                  <Route path="/push-ups">
+                    <Route element={<RedirectHome />} path="" />
+                    <Route
+                      element={
+                        <Page Component={AddPushUps} title="Add push-ups" />
+                      }
+                      path="add"
+                    />
+                    <Route
+                      element={
+                        <Page Component={EditPushUps} title="Edit push-ups" />
+                      }
+                      path="edit/:id"
+                    />
+                    <Route
+                      element={
+                        <Page Component={PushUpsLog} title="Push-ups log" />
+                      }
+                      path="log"
                     />
                   </Route>
                   <Route path="/sleep">

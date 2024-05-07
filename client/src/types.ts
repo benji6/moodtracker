@@ -11,6 +11,7 @@ export type NormalizedAllCategories = {
     [id: string]: (
       | (Meditation & { type: "meditation" })
       | (Mood & { type: "mood" })
+      | (PushUps & { type: "push-ups" })
       | (Sleep & { type: "sleep" })
       | (Weight & { type: "weight" })
     ) & {
@@ -20,6 +21,7 @@ export type NormalizedAllCategories = {
 };
 export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
+export type NormalizedPushUps = NormalizedTrackedCategory<PushUps>;
 export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
 export type NormalizedWeights = NormalizedTrackedCategory<Weight>;
 
@@ -52,6 +54,10 @@ export interface UpdateMood {
   mood?: number;
 }
 
+interface PushUps {
+  location?: DeviceGeolocation;
+  value: number;
+}
 export interface Weight {
   location?: DeviceGeolocation;
   value: number;
@@ -70,10 +76,16 @@ export interface UpdateSleep extends Sleep {
 }
 
 type EventTypeVersions = "v1";
-export type EventCategoryTypes = "meditation" | "mood" | "sleep" | "weight";
+export type EventCategoryTypes =
+  | "meditation"
+  | "mood"
+  | "push-ups"
+  | "sleep"
+  | "weight";
 export type EventTypeCategories =
   | "meditations"
   | "moods"
+  | "push-ups"
   | "sleeps"
   | "weights";
 type EventTypeOperations = "create" | "update" | "delete";
@@ -95,6 +107,7 @@ type PayloadEvent<Type extends EventType, Payload> = {
 export type AppCreateEvent =
   | PayloadEvent<"v1/meditations/create", Meditation>
   | PayloadEvent<"v1/moods/create", Mood>
+  | PayloadEvent<"v1/push-ups/create", PushUps>
   | PayloadEvent<"v1/sleeps/create", Sleep>
   | PayloadEvent<"v1/weights/create", Weight>;
 export type AppEventWithLocation =
@@ -103,10 +116,12 @@ export type AppEventWithLocation =
       RequireProperties<Meditation, "location">
     >
   | PayloadEvent<"v1/moods/create", RequireProperties<Mood, "location">>
+  | PayloadEvent<"v1/push-ups/create", RequireProperties<Mood, "location">>
   | PayloadEvent<"v1/weights/create", RequireProperties<Weight, "location">>;
 
 export type AppUpdateEvent =
   | PayloadEvent<"v1/moods/update", UpdateMood>
+  | PayloadEvent<"v1/push-ups/update", UpdateWeight>
   | PayloadEvent<"v1/sleeps/update", UpdateSleep>
   | PayloadEvent<"v1/weights/update", UpdateWeight>;
 
@@ -115,6 +130,7 @@ export type AppEvent =
   | AppUpdateEvent
   | PayloadEvent<"v1/meditations/delete", string>
   | PayloadEvent<"v1/moods/delete", string>
+  | PayloadEvent<"v1/push-ups/delete", string>
   | PayloadEvent<"v1/sleeps/delete", string>
   | PayloadEvent<"v1/weights/delete", string>;
 

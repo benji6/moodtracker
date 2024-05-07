@@ -10,12 +10,14 @@ import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventFor
 import eventsSlice from "../../../store/eventsSlice";
 import useKeyboardSave from "../../hooks/useKeyboardSave";
 
-export default function EditWeight() {
+export default function EditPushUps() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState<string | undefined>();
   const { id } = useParams();
-  const weights = useSelector(eventsSlice.selectors.normalizedWeights);
+  const normalizedPushUps = useSelector(
+    eventsSlice.selectors.normalizedPushUps,
+  );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [showNoUpdateError, setShowNoUpdateError] = useState(false);
 
@@ -25,7 +27,7 @@ export default function EditWeight() {
     const formEl = formRef.current!;
     setShowNoUpdateError(false);
 
-    const inputEl: HTMLInputElement = formEl[FIELDS.weight.name];
+    const inputEl: HTMLInputElement = formEl[FIELDS.pushUps.name];
     const { valueAsNumber } = inputEl;
 
     if (inputEl.validity.valueMissing) {
@@ -41,34 +43,34 @@ export default function EditWeight() {
       return;
     }
 
-    if (valueAsNumber === weight.value) return setShowNoUpdateError(true);
+    if (valueAsNumber === pushUps.value) return setShowNoUpdateError(true);
 
     dispatch(
       eventsSlice.actions.add({
-        type: "v1/weights/update",
+        type: "v1/push-ups/update",
         createdAt: new Date().toISOString(),
         // The user is redirected if `id` is not defined
         payload: { id: id!, value: valueAsNumber },
       }),
     );
-    navigate("/weight/log");
+    navigate("/push-ups/log");
   };
   useKeyboardSave(handleSubmit);
 
   if (!id) return <RedirectHome />;
-  const weight = weights.byId[id];
-  if (!weight) return <RedirectHome />;
+  const pushUps = normalizedPushUps.byId[id];
+  if (!pushUps) return <RedirectHome />;
 
   const dateCreated = new Date(id);
 
   return (
     <Paper.Group>
       <Paper>
-        <h2>Edit weight</h2>
+        <h2>Edit push-ups</h2>
         <TimeDisplayForEditEventForm
           dateCreated={dateCreated}
           dateUpdated={
-            weight.updatedAt ? new Date(weight.updatedAt) : undefined
+            pushUps.updatedAt ? new Date(pushUps.updatedAt) : undefined
           }
         />
         <form
@@ -80,8 +82,8 @@ export default function EditWeight() {
           ref={formRef}
         >
           <TextField
-            {...FIELDS.weight}
-            defaultValue={weight.value}
+            {...FIELDS.pushUps}
+            defaultValue={pushUps.value}
             error={error}
           />
           {showNoUpdateError && (
@@ -107,14 +109,16 @@ export default function EditWeight() {
           </Button.Group>
         </form>
         <DeleteEventDialog
-          eventType="weights"
-          eventTypeText="weight"
+          eventType="push-ups"
+          eventTypeText="push-ups"
           id={id}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}
         />
       </Paper>
-      {weight.location && <Location date={dateCreated} {...weight.location} />}
+      {pushUps.location && (
+        <Location date={dateCreated} {...pushUps.location} />
+      )}
     </Paper.Group>
   );
 }

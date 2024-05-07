@@ -2,6 +2,7 @@ import { Card } from "eri";
 import { EventCategoryTypes } from "../../types";
 import MeditationCard from "./MeditationCard";
 import MoodCard from "./MoodCard";
+import PushUpsCard from "./PushUpsCard";
 import SleepCard from "./SleepCard";
 import WeightCard from "./WeightCard";
 import eventsSlice from "../../store/eventsSlice";
@@ -11,6 +12,7 @@ import { useSelector } from "react-redux";
 const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT = {
   meditation: MeditationCard,
   mood: MoodCard,
+  "push-ups": PushUpsCard,
   sleep: SleepCard,
   weight: WeightCard,
 } as const;

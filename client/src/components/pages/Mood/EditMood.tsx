@@ -141,7 +141,8 @@ export default function EditMood() {
           </Button.Group>
         </form>
         <DeleteEventDialog
-          eventType="mood"
+          eventType="moods"
+          eventTypeText="mood"
           id={id}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}

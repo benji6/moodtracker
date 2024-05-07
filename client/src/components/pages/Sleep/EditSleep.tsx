@@ -135,7 +135,8 @@ export default function EditSleep() {
           </Button.Group>
         </form>
         <DeleteEventDialog
-          eventType="sleep"
+          eventType="sleeps"
+          eventTypeText="sleep"
           id={id}
           onClose={() => setIsDialogOpen(false)}
           open={isDialogOpen}

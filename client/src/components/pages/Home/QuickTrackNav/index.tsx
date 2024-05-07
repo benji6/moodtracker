@@ -26,6 +26,10 @@ export function QuickTrackNav() {
           <Icon margin="end" name="bell" />
           Meditate
         </Button>
+        <Button onClick={() => navigate("/push-ups/add")}>
+          <span className="m-quick-track-nav__icon">💪</span>
+          Add push-ups
+        </Button>
       </div>
     </Paper>
   );

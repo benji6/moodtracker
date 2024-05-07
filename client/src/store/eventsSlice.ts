@@ -8,6 +8,7 @@ import {
   NormalizedAllCategories,
   NormalizedMeditations,
   NormalizedMoods,
+  NormalizedPushUps,
   NormalizedSleeps,
   NormalizedWeights,
 } from "../types";
@@ -43,6 +44,7 @@ import { captureException } from "../sentry";
 
 const CATEGORY_MAP = {
   meditations: "meditation",
+  "push-ups": "push-ups",
   moods: "mood",
   sleeps: "sleep",
   weights: "weight",
@@ -85,30 +87,25 @@ const allIdsWithLocationSelector = createSelector(
     }),
 );
 
+interface NormalizedTrackedCategories {
+  all: NormalizedAllCategories;
+  meditations: NormalizedMeditations;
+  moods: NormalizedMoods;
+  "push-ups": NormalizedPushUps;
+  sleeps: NormalizedSleeps;
+  weights: NormalizedWeights;
+}
+
 export const trackedCategoriesSelector = createSelector(
   allIdsSelector,
   byIdSelector,
-  (
-    allIds,
-    byId,
-  ): {
-    all: NormalizedAllCategories;
-    meditations: NormalizedMeditations;
-    moods: NormalizedMoods;
-    sleeps: NormalizedSleeps;
-    weights: NormalizedWeights;
-  } => {
+  (allIds, byId): NormalizedTrackedCategories => {
     const all: NormalizedAllCategories = { allIds: [], byId: {} };
-    const normalizedCategories: {
-      all: NormalizedAllCategories;
-      meditations: NormalizedMeditations;
-      moods: NormalizedMoods;
-      sleeps: NormalizedSleeps;
-      weights: NormalizedWeights;
-    } = {
+    const normalizedCategories: NormalizedTrackedCategories = {
       all,
       meditations: { allIds: [], byId: {} },
       moods: { allIds: [], byId: {} },
+      "push-ups": { allIds: [], byId: {} },
       sleeps: { allIds: [], byId: {} },
       weights: { allIds: [], byId: {} },
     };
@@ -207,6 +204,11 @@ const normalizedMoodsSelector = createSelector(
 const normalizedSleepsSelector = createSelector(
   trackedCategoriesSelector,
   ({ sleeps }) => sleeps,
+);
+
+const normalizedPushUpsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ "push-ups": pushUps }) => pushUps,
 );
 
 const normalizedWeightsSelector = createSelector(
@@ -462,6 +464,7 @@ export default createSlice({
       denormalize,
     ),
     denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
+    denormalizedPushUps: createSelector(normalizedPushUpsSelector, denormalize),
     denormalizedSleeps: denormalizedSleepsSelector,
     denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
     envelopingMoodIds: createSelector(
@@ -487,6 +490,10 @@ export default createSlice({
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
     hasMeditations: createSelector(
       normalizedMeditationsSelector,
+      normalizedStateNotEmpty,
+    ),
+    hasPushUps: createSelector(
+      normalizedPushUpsSelector,
       normalizedStateNotEmpty,
     ),
     hasSleeps: createSelector(
@@ -624,6 +631,7 @@ export default createSlice({
     ),
     normalizedMeditations: normalizedMeditationsSelector,
     normalizedMoods: normalizedMoodsSelector,
+    normalizedPushUps: normalizedPushUpsSelector,
     normalizedSleeps: normalizedSleepsSelector,
     normalizedSleepsSortedByDateAwoke: createSelector(
       normalizedSleepsSelector,
