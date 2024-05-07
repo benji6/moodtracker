@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   eventType: EventTypeCategories;
-  eventTypeText: string;
+  eventTypeLabel: string;
   id: string;
   onClose(): void;
   open: boolean;
@@ -14,7 +14,7 @@ interface Props {
 
 export default function DeleteEventDialog({
   eventType,
-  eventTypeText,
+  eventTypeLabel,
   id,
   onClose,
   open,
@@ -23,7 +23,7 @@ export default function DeleteEventDialog({
   const dispatch = useDispatch();
 
   return (
-    <Dialog onClose={onClose} open={open} title={`Delete ${eventTypeText}?`}>
+    <Dialog onClose={onClose} open={open} title={`Delete ${eventTypeLabel}?`}>
       <Button.Group>
         <Button
           danger

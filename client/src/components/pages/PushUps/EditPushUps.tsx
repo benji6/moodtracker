@@ -1,14 +1,12 @@
-import { Button, Icon, Paper, TextField } from "eri";
 import { ERRORS, FIELDS } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import DeleteEventDialog from "../../shared/DeleteEventDialog";
-import Location from "../../shared/Location";
+import EditEvent from "../../shared/EditEvent";
 import RedirectHome from "../../shared/RedirectHome";
-import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
+import { TextField } from "eri";
+import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
-import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditPushUps() {
   const navigate = useNavigate();
@@ -18,30 +16,21 @@ export default function EditPushUps() {
   const normalizedPushUps = useSelector(
     eventsSlice.selectors.normalizedPushUps,
   );
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [showNoUpdateError, setShowNoUpdateError] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = () => {
-    const formEl = formRef.current!;
+  const onSubmit = () => {
+    const formEl = formRef.current;
+    if (!formEl) return captureException(Error("Form ref is undefined"));
     setShowNoUpdateError(false);
 
     const inputEl: HTMLInputElement = formEl[FIELDS.pushUps.name];
     const { valueAsNumber } = inputEl;
 
-    if (inputEl.validity.valueMissing) {
-      setError(ERRORS.required);
-      return;
-    }
-    if (inputEl.validity.rangeOverflow) {
-      setError(ERRORS.rangeOverflow);
-      return;
-    }
-    if (inputEl.validity.rangeUnderflow) {
-      setError(ERRORS.rangeUnderflow);
-      return;
-    }
+    if (inputEl.validity.valueMissing) return setError(ERRORS.required);
+    if (inputEl.validity.rangeOverflow) return setError(ERRORS.rangeOverflow);
+    if (inputEl.validity.rangeUnderflow) return setError(ERRORS.rangeUnderflow);
 
     if (valueAsNumber === pushUps.value) return setShowNoUpdateError(true);
 
@@ -55,70 +44,27 @@ export default function EditPushUps() {
     );
     navigate("/push-ups/log");
   };
-  useKeyboardSave(handleSubmit);
 
   if (!id) return <RedirectHome />;
   const pushUps = normalizedPushUps.byId[id];
   if (!pushUps) return <RedirectHome />;
 
-  const dateCreated = new Date(id);
-
   return (
-    <Paper.Group>
-      <Paper>
-        <h2>Edit push-ups</h2>
-        <TimeDisplayForEditEventForm
-          dateCreated={dateCreated}
-          dateUpdated={
-            pushUps.updatedAt ? new Date(pushUps.updatedAt) : undefined
-          }
-        />
-        <form
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          ref={formRef}
-        >
-          <TextField
-            {...FIELDS.pushUps}
-            defaultValue={pushUps.value}
-            error={error}
-          />
-          {showNoUpdateError && (
-            <p className="center negative">{ERRORS.noChanges}</p>
-          )}
-          <Button.Group>
-            <Button>
-              <Icon margin="end" name="save" />
-              Save
-            </Button>
-            <Button danger onClick={() => setIsDialogOpen(true)} type="button">
-              <Icon margin="end" name="trash" />
-              Delete
-            </Button>
-            <Button
-              onClick={() => window.history.back()}
-              type="button"
-              variant="secondary"
-            >
-              <Icon margin="end" name="left" />
-              Back
-            </Button>
-          </Button.Group>
-        </form>
-        <DeleteEventDialog
-          eventType="push-ups"
-          eventTypeText="push-ups"
-          id={id}
-          onClose={() => setIsDialogOpen(false)}
-          open={isDialogOpen}
-        />
-      </Paper>
-      {pushUps.location && (
-        <Location date={dateCreated} {...pushUps.location} />
-      )}
-    </Paper.Group>
+    <EditEvent
+      eventType="push-ups"
+      eventTypeLabel="push-ups"
+      id={id}
+      location={pushUps.location}
+      onSubmit={onSubmit}
+      ref={formRef}
+      showNoUpdateError={showNoUpdateError}
+      updatedAt={pushUps.updatedAt}
+    >
+      <TextField
+        {...FIELDS.pushUps}
+        defaultValue={pushUps.value}
+        error={error}
+      />
+    </EditEvent>
   );
 }

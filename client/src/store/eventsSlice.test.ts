@@ -1,5 +1,5 @@
-import eventsSlice, { trackedCategoriesSelector } from "./eventsSlice";
 import store, { RootState } from ".";
+import eventsSlice from "./eventsSlice";
 
 describe("eventsSlice", () => {
   let initialState: RootState["events"];
@@ -36,62 +36,65 @@ describe("eventsSlice", () => {
   describe("trackedCategoriesSelector.all", () => {
     test("initial state", () => {
       expect(
-        trackedCategoriesSelector(eventsSlice.getInitialState()).all,
+        eventsSlice.selectors.trackedCategories({
+          events: eventsSlice.getInitialState(),
+        }).all,
       ).toEqual({ allIds: [], byId: {} });
     });
 
     test("multiple events", () => {
-      const initialState = eventsSlice.getInitialState();
       expect(
-        trackedCategoriesSelector({
-          ...initialState,
-          allIds: [
-            "2024-04-01T00:00:00.000Z",
-            "2024-04-01T01:00:00.000Z",
-            "2024-04-01T02:00:00.000Z",
-            "2024-04-01T03:00:00.000Z",
-            "2024-04-01T04:00:00.000Z",
-            "2024-04-01T05:00:00.000Z",
-            "2024-04-01T06:00:00.000Z",
-          ],
-          byId: {
-            "2024-04-01T00:00:00.000Z": {
-              createdAt: "2024-04-01T00:00:00.000Z",
-              type: "v1/meditations/create",
-              payload: { seconds: 60 },
-            },
-            "2024-04-01T01:00:00.000Z": {
-              createdAt: "2024-04-01T01:00:00.000Z",
-              type: "v1/moods/create",
-              payload: { mood: 7 },
-            },
-            "2024-04-01T02:00:00.000Z": {
-              createdAt: "2024-04-01T02:00:00.000Z",
-              type: "v1/weights/create",
-              payload: { value: 70 },
-            },
-            "2024-04-01T03:00:00.000Z": {
-              createdAt: "2024-04-01T03:00:00.000Z",
-              type: "v1/sleeps/create",
-              payload: { dateAwoke: "2024-04-01", minutesSlept: 480 },
-            },
-            "2024-04-01T04:00:00.000Z": {
-              createdAt: "2024-04-01T04:00:00.000Z",
-              type: "v1/meditations/delete",
-              payload: "2024-04-01T00:00:00.000Z",
-            },
-            "2024-04-01T05:00:00.000Z": {
-              createdAt: "2024-04-01T05:00:00.000Z",
-              type: "v1/moods/update",
-              payload: {
-                id: "2024-04-01T01:00:00.000Z",
-                mood: 8,
+        eventsSlice.selectors.trackedCategories({
+          events: {
+            ...eventsSlice.getInitialState(),
+            allIds: [
+              "2024-04-01T00:00:00.000Z",
+              "2024-04-01T01:00:00.000Z",
+              "2024-04-01T02:00:00.000Z",
+              "2024-04-01T03:00:00.000Z",
+              "2024-04-01T04:00:00.000Z",
+              "2024-04-01T05:00:00.000Z",
+              "2024-04-01T06:00:00.000Z",
+            ],
+            byId: {
+              "2024-04-01T00:00:00.000Z": {
+                createdAt: "2024-04-01T00:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 60 },
               },
-            },
-            "2024-04-01T06:00:00.000Z": {
-              createdAt: "2024-04-01T06:00:00.000Z",
-              type: "v1/meditations/create",
-              payload: { seconds: 90 },
+              "2024-04-01T01:00:00.000Z": {
+                createdAt: "2024-04-01T01:00:00.000Z",
+                type: "v1/moods/create",
+                payload: { mood: 7 },
+              },
+              "2024-04-01T02:00:00.000Z": {
+                createdAt: "2024-04-01T02:00:00.000Z",
+                type: "v1/weights/create",
+                payload: { value: 70 },
+              },
+              "2024-04-01T03:00:00.000Z": {
+                createdAt: "2024-04-01T03:00:00.000Z",
+                type: "v1/sleeps/create",
+                payload: { dateAwoke: "2024-04-01", minutesSlept: 480 },
+              },
+              "2024-04-01T04:00:00.000Z": {
+                createdAt: "2024-04-01T04:00:00.000Z",
+                type: "v1/meditations/delete",
+                payload: "2024-04-01T00:00:00.000Z",
+              },
+              "2024-04-01T05:00:00.000Z": {
+                createdAt: "2024-04-01T05:00:00.000Z",
+                type: "v1/moods/update",
+                payload: {
+                  id: "2024-04-01T01:00:00.000Z",
+                  mood: 8,
+                },
+              },
+              "2024-04-01T06:00:00.000Z": {
+                createdAt: "2024-04-01T06:00:00.000Z",
+                type: "v1/meditations/create",
+                payload: { seconds: 90 },
+              },
             },
           },
         }).all,

@@ -96,7 +96,7 @@ interface NormalizedTrackedCategories {
   weights: NormalizedWeights;
 }
 
-export const trackedCategoriesSelector = createSelector(
+const trackedCategoriesSelector = createSelector(
   allIdsSelector,
   byIdSelector,
   (allIds, byId): NormalizedTrackedCategories => {
@@ -718,5 +718,6 @@ export default createSlice({
       dateToSelector,
       secondsMeditatedInPeriodResultFunction,
     ),
+    trackedCategories: trackedCategoriesSelector,
   },
 });

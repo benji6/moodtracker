@@ -1,14 +1,13 @@
-import { Button, Icon, Paper, Select, TextField } from "eri";
 import { ERRORS, FIELDS, TIME } from "../../../constants";
+import { Select, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import DeleteEventDialog from "../../shared/DeleteEventDialog";
+import EditEvent from "../../shared/EditEvent";
 import RedirectHome from "../../shared/RedirectHome";
-import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
+import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
-import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditSleep() {
   const navigate = useNavigate();
@@ -16,13 +15,13 @@ export default function EditSleep() {
   const [dateAwokeError, setDateAwokeError] = useState<string | undefined>();
   const { id } = useParams();
   const sleeps = useSelector(eventsSlice.selectors.normalizedSleeps);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [showNoUpdateError, setShowNoUpdateError] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = () => {
-    const formEl = formRef.current!;
+  const onSubmit = () => {
+    const formEl = formRef.current;
+    if (!formEl) return captureException(Error("Form ref is undefined"));
     setShowNoUpdateError(false);
 
     const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
@@ -58,90 +57,50 @@ export default function EditSleep() {
     );
     navigate("/sleep/log");
   };
-  useKeyboardSave(handleSubmit);
 
   if (!id) return <RedirectHome />;
   const sleep = sleeps.byId[id];
   if (!sleep) return <RedirectHome />;
 
-  const dateCreated = new Date(id);
-
   return (
-    <Paper.Group>
-      <Paper>
-        <h2>Edit sleep</h2>
-        <TimeDisplayForEditEventForm
-          dateCreated={dateCreated}
-          dateUpdated={sleep.updatedAt ? new Date(sleep.updatedAt) : undefined}
-        />
-        <form
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          ref={formRef}
+    <EditEvent
+      eventType="sleeps"
+      eventTypeLabel="sleep"
+      id={id}
+      location={undefined}
+      onSubmit={onSubmit}
+      ref={formRef}
+      showNoUpdateError={showNoUpdateError}
+      updatedAt={sleep.updatedAt}
+    >
+      <div className="m-interval-input">
+        <Select
+          {...FIELDS.hoursSlept}
+          defaultValue={Math.floor(sleep.minutesSlept / TIME.minutesPerHour)}
         >
-          <div className="m-interval-input">
-            <Select
-              {...FIELDS.hoursSlept}
-              defaultValue={Math.floor(
-                sleep.minutesSlept / TIME.minutesPerHour,
-              )}
-            >
-              {[...Array(TIME.hoursPerDay)].map((_, i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </Select>
-            <Select
-              {...FIELDS.minutesSlept}
-              defaultValue={sleep.minutesSlept % TIME.minutesPerHour}
-            >
-              {[...Array(TIME.minutesPerHour)].map((_, i) => (
-                <option key={i} value={i}>
-                  {i}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <TextField
-            {...FIELDS.dateAwoke}
-            defaultValue={sleep.dateAwoke}
-            error={dateAwokeError}
-            max={formatIsoDateInLocalTimezone(new Date())}
-          />
-          {showNoUpdateError && (
-            <p className="center negative">{ERRORS.noChanges}</p>
-          )}
-          <Button.Group>
-            <Button>
-              <Icon margin="end" name="save" />
-              Save
-            </Button>
-            <Button danger onClick={() => setIsDialogOpen(true)} type="button">
-              <Icon margin="end" name="trash" />
-              Delete
-            </Button>
-            <Button
-              onClick={() => window.history.back()}
-              type="button"
-              variant="secondary"
-            >
-              <Icon margin="end" name="left" />
-              Back
-            </Button>
-          </Button.Group>
-        </form>
-        <DeleteEventDialog
-          eventType="sleeps"
-          eventTypeText="sleep"
-          id={id}
-          onClose={() => setIsDialogOpen(false)}
-          open={isDialogOpen}
-        />
-      </Paper>
-    </Paper.Group>
+          {[...Array(TIME.hoursPerDay)].map((_, i) => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
+        </Select>
+        <Select
+          {...FIELDS.minutesSlept}
+          defaultValue={sleep.minutesSlept % TIME.minutesPerHour}
+        >
+          {[...Array(TIME.minutesPerHour)].map((_, i) => (
+            <option key={i} value={i}>
+              {i}
+            </option>
+          ))}
+        </Select>
+      </div>
+      <TextField
+        {...FIELDS.dateAwoke}
+        defaultValue={sleep.dateAwoke}
+        error={dateAwokeError}
+        max={formatIsoDateInLocalTimezone(new Date())}
+      />
+    </EditEvent>
   );
 }

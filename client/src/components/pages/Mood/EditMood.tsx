@@ -1,17 +1,15 @@
-import { Button, Icon, Paper, RadioButton, TextArea, TextField } from "eri";
 import { ERRORS, FIELDS } from "../../../constants";
+import { RadioButton, TextArea, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-import DeleteEventDialog from "../../shared/DeleteEventDialog";
-import Location from "../../shared/Location";
+import EditEvent from "../../shared/EditEvent";
 import RedirectHome from "../../shared/RedirectHome";
-import TimeDisplayForEditEventForm from "../../shared/TimeDisplayForEditEventForm";
 import { UpdateMood } from "../../../types";
+import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
 import useDarkMode from "../../hooks/useDarkMode";
-import useKeyboardSave from "../../hooks/useKeyboardSave";
 
 export default function EditMood() {
   const navigate = useNavigate();
@@ -19,7 +17,6 @@ export default function EditMood() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [descriptionError, setDescriptionError] = useState<
     string | undefined
   >();
@@ -27,8 +24,10 @@ export default function EditMood() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = () => {
-    const formEl = formRef.current!;
+  const onSubmit = () => {
+    const formEl = formRef.current;
+    if (!formEl) return captureException(Error("Form ref is undefined"));
+    if (!id) return captureException(Error("ID is undefined"));
     setShowNoUpdateError(false);
 
     const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
@@ -39,9 +38,7 @@ export default function EditMood() {
     const descriptionFieldError = descriptionEl.validity.patternMismatch;
     setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
 
-    // There's some code further down that redirects the user
-    // if `id` is not defined
-    const payload: UpdateMood = { id: id! };
+    const payload: UpdateMood = { id };
     let shouldUpdate = false;
 
     const moodValueNumber = Number(moodValue);
@@ -73,82 +70,43 @@ export default function EditMood() {
     );
     navigate("/");
   };
-  useKeyboardSave(handleSubmit);
 
   if (!id) return <RedirectHome />;
   const mood = moods.byId[id];
   if (!mood) return <RedirectHome />;
 
-  const dateCreated = new Date(id);
-
   return (
-    <Paper.Group>
-      <Paper>
-        <h2>Edit mood</h2>
-        <TimeDisplayForEditEventForm
-          dateCreated={dateCreated}
-          dateUpdated={mood.updatedAt ? new Date(mood.updatedAt) : undefined}
-        />
-        <form
-          noValidate
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-          ref={formRef}
-        >
-          <RadioButton.Group label={FIELDS.mood.label}>
-            {[...Array(11)].map((_, i) => (
-              <RadioButton
-                color={darkMode ? moodToColor(i) : undefined}
-                // There is old data where mood is a float between 0 and 10
-                // We handle that by rounding for this input control
-                defaultChecked={Math.round(mood.mood) === i}
-                key={i}
-                name={FIELDS.mood.name}
-                value={i}
-              >
-                {i}
-              </RadioButton>
-            ))}
-          </RadioButton.Group>
-          <TextField
-            {...FIELDS.description}
-            defaultValue={mood.description}
-            error={descriptionError}
-          />
-          <TextArea {...FIELDS.exploration} defaultValue={mood.exploration} />
-          {showNoUpdateError && (
-            <p className="center negative">{ERRORS.noChanges}</p>
-          )}
-          <Button.Group>
-            <Button>
-              <Icon margin="end" name="save" />
-              Save
-            </Button>
-            <Button danger onClick={() => setIsDialogOpen(true)} type="button">
-              <Icon margin="end" name="trash" />
-              Delete
-            </Button>
-            <Button
-              onClick={() => window.history.back()}
-              type="button"
-              variant="secondary"
-            >
-              <Icon margin="end" name="left" />
-              Back
-            </Button>
-          </Button.Group>
-        </form>
-        <DeleteEventDialog
-          eventType="moods"
-          eventTypeText="mood"
-          id={id}
-          onClose={() => setIsDialogOpen(false)}
-          open={isDialogOpen}
-        />
-      </Paper>
-      {mood.location && <Location date={dateCreated} {...mood.location} />}
-    </Paper.Group>
+    <EditEvent
+      eventType="moods"
+      eventTypeLabel="mood"
+      id={id}
+      location={mood.location}
+      onSubmit={onSubmit}
+      ref={formRef}
+      showNoUpdateError={showNoUpdateError}
+      updatedAt={mood.updatedAt}
+    >
+      <RadioButton.Group label={FIELDS.mood.label}>
+        {[...Array(11)].map((_, i) => (
+          <RadioButton
+            color={darkMode ? moodToColor(i) : undefined}
+            // There is old data where mood is a float between 0 and 10
+            // We handle that by rounding for this input control
+            defaultChecked={Math.round(mood.mood) === i}
+            key={i}
+            name={FIELDS.mood.name}
+            value={i}
+          >
+            {i}
+          </RadioButton>
+        ))}
+      </RadioButton.Group>
+      <TextField
+        {...FIELDS.description}
+        defaultValue={mood.description}
+        error={descriptionError}
+      />
+      <TextArea {...FIELDS.exploration} defaultValue={mood.exploration} />
+    </EditEvent>
   );
 }
