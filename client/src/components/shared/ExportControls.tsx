@@ -1,6 +1,6 @@
-import { DenormalizedEvents, EventTypeCategories } from "../../../../types";
+import { DenormalizedEvents, EventTypeCategories } from "../../types";
 import { Button } from "eri";
-import { formatIsoDateInLocalTimezone } from "../../../../utils";
+import { formatIsoDateInLocalTimezone } from "../../utils";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
 

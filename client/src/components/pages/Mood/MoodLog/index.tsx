@@ -24,7 +24,7 @@ import {
 import { initialState, reducer } from "./moodLogReducer";
 import { useReducer, useState } from "react";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
-import ExportControls from "../../Settings/Export/ExportControls";
+import ExportControls from "../../../shared/ExportControls";
 import Fuse from "fuse.js";
 import { Link } from "react-router-dom";
 import MoodCard from "../../../shared/MoodCard";

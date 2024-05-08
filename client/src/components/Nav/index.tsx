@@ -238,10 +238,6 @@ export default function Nav({ handleNavClose, open }: Props) {
                   <Icon margin="end" name="location" />
                   Location
                 </EriNav.Link>
-                <EriNav.Link onClick={handleNavClose} to="/settings/export">
-                  <Icon margin="end" name="download" />
-                  Export data
-                </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}
                   to="/settings/change-password"

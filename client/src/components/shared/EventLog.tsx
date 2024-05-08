@@ -6,7 +6,7 @@ import {
 } from "../../types";
 import { FC, useState } from "react";
 import { capitalizeFirstLetter, mapRight } from "../../utils";
-import ExportControls from "../pages/Settings/Export/ExportControls";
+import ExportControls from "./ExportControls";
 import RedirectHome from "./RedirectHome";
 
 const MAX_ITEMS_PER_PAGE = 10;

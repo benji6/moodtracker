@@ -18,7 +18,6 @@ import EditSleep from "./components/pages/Sleep/EditSleep";
 import EditWeight from "./components/pages/Weight/EditWeight";
 import { ErrorBoundary } from "@sentry/react";
 import Explore from "./components/pages/Stats/Explore";
-import Export from "./components/pages/Settings/Export";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Home from "./components/pages/Home";
 import Layout from "./components/Layout";
@@ -218,10 +217,6 @@ function Root() {
                         />
                       }
                       path="change-password"
-                    />
-                    <Route
-                      element={<Page Component={Export} title="Export data" />}
-                      path="export"
                     />
                     <Route
                       element={
