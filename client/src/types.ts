@@ -23,6 +23,19 @@ export type NormalizedPushUps = NormalizedTrackedCategory<PushUps>;
 export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
 export type NormalizedWeights = NormalizedTrackedCategory<Weight>;
 
+export type NormalizedEvents =
+  | NormalizedMeditations
+  | NormalizedMoods
+  | NormalizedPushUps
+  | NormalizedSleeps
+  | NormalizedWeights;
+export type DenormalizedEvents =
+  | Meditation[]
+  | Mood[]
+  | PushUps[]
+  | Sleep[]
+  | Weight[];
+
 export interface Meditation {
   location?: DeviceGeolocation;
   seconds: number;

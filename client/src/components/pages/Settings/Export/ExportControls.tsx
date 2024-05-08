@@ -1,20 +1,8 @@
-import {
-  EventTypeCategories,
-  Meditation,
-  Mood,
-  Sleep,
-  Weight,
-} from "../../../../types";
+import { DenormalizedEvents, EventTypeCategories } from "../../../../types";
 import { Button } from "eri";
 import { formatIsoDateInLocalTimezone } from "../../../../utils";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
-
-type DenormalizedTrackedCatergories =
-  | Meditation[]
-  | Mood[]
-  | Sleep[]
-  | Weight[];
 
 const createFilename = (
   dataType: EventTypeCategories,
@@ -30,7 +18,7 @@ interface FlattenedDatum {
 
 const downloadCsv = (
   dataType: EventTypeCategories,
-  denormalizedData: DenormalizedTrackedCatergories,
+  denormalizedData: DenormalizedEvents,
 ) => {
   const columns: Set<string> = new Set();
   const flattenedDenormalizedData: FlattenedDatum[] = [];
@@ -64,7 +52,7 @@ const downloadCsv = (
 
 const downloadJson = (
   dataType: EventTypeCategories,
-  denormalizedData: DenormalizedTrackedCatergories,
+  denormalizedData: DenormalizedEvents,
 ) => {
   saveAs(
     new Blob([JSON.stringify(denormalizedData)], {
@@ -76,7 +64,7 @@ const downloadJson = (
 
 interface Props {
   category: EventTypeCategories;
-  denormalizedData: DenormalizedTrackedCatergories;
+  denormalizedData: DenormalizedEvents;
 }
 
 export default function ExportControls({ category, denormalizedData }: Props) {
