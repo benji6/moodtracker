@@ -34,12 +34,7 @@ while "LastEvaluatedKey" in events_table_scan_response:
 
 events.sort(key=operator.itemgetter("createdAt"))
 
-categories = {
-    "meditations": OrderedDict(),
-    "moods": OrderedDict(),
-    "sleeps": OrderedDict(),
-    "weights": OrderedDict(),
-}
+categories = defaultdict(OrderedDict)
 for event in events:
     event["created_at_date"] = date.fromisoformat(event["createdAt"][:10])
     _, category, operation = event["type"].split("/")
