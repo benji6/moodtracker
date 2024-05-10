@@ -1,5 +1,5 @@
 import { Card } from "eri";
-import { EventCategoryTypes } from "../../types";
+import { EventTypeCategories } from "../../types";
 import MeditationCard from "./MeditationCard";
 import MoodCard from "./MoodCard";
 import PushUpsCard from "./PushUpsCard";
@@ -10,11 +10,11 @@ import { mapRight } from "../../utils";
 import { useSelector } from "react-redux";
 
 const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT = {
-  meditation: MeditationCard,
-  mood: MoodCard,
+  meditations: MeditationCard,
+  moods: MoodCard,
   "push-ups": PushUpsCard,
-  sleep: SleepCard,
-  weight: WeightCard,
+  sleeps: SleepCard,
+  weights: WeightCard,
 } as const;
 
 interface Props {
@@ -32,7 +32,7 @@ export default function TrackedCategoriesList({
   const denormalizedTrackedCategories =
     allDenormalizedTrackedCategoriesByDate[isoDateInLocalTimezone];
 
-  const mapFn = ({ id, type }: { id: string; type: EventCategoryTypes }) => {
+  const mapFn = ({ id, type }: { id: string; type: EventTypeCategories }) => {
     const Component = TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT[type];
     return <Component id={id} key={id} />;
   };

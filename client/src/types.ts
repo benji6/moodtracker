@@ -7,11 +7,11 @@ export type NormalizedAllCategories = {
   allIds: string[];
   byId: {
     [id: string]: (
-      | (Meditation & { type: "meditation" })
-      | (Mood & { type: "mood" })
+      | (Meditation & { type: "meditations" })
+      | (Mood & { type: "moods" })
       | (PushUps & { type: "push-ups" })
-      | (Sleep & { type: "sleep" })
-      | (Weight & { type: "weight" })
+      | (Sleep & { type: "sleeps" })
+      | (Weight & { type: "weights" })
     ) & {
       updatedAt?: string;
     };
@@ -87,12 +87,6 @@ export interface UpdateSleep extends Sleep {
 }
 
 type EventTypeVersions = "v1";
-export type EventCategoryTypes =
-  | "meditation"
-  | "mood"
-  | "push-ups"
-  | "sleep"
-  | "weight";
 export type EventTypeCategories =
   | "meditations"
   | "moods"

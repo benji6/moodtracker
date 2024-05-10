@@ -2,7 +2,7 @@ import {
   AppCreateEvent,
   AppEvent,
   AppUpdateEvent,
-  EventCategoryTypes,
+  EventTypeCategories,
   EventTypeTuple,
   Mood,
   NormalizedAllCategories,
@@ -41,14 +41,6 @@ import {
 import { MINIMUM_WORD_CLOUD_WORDS } from "../constants";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
 import { captureException } from "../sentry";
-
-const CATEGORY_MAP = {
-  meditations: "meditation",
-  "push-ups": "push-ups",
-  moods: "mood",
-  sleeps: "sleep",
-  weights: "weight",
-} as const;
 
 interface EventsState {
   allIds: string[];
@@ -124,7 +116,7 @@ const trackedCategoriesSelector = createSelector(
           ).payload;
           all.byId[event.createdAt] = {
             ...normalizedCategory.byId[event.createdAt],
-            type: CATEGORY_MAP[category],
+            type: category,
           } as (typeof all.byId)[string];
           break;
         case "delete": {
@@ -424,7 +416,7 @@ export default createSlice({
         [date: string]:
           | {
               id: string;
-              type: EventCategoryTypes;
+              type: EventTypeCategories;
             }[]
           | undefined;
       } => {
@@ -441,12 +433,12 @@ export default createSlice({
         const byDate = defaultDict(
           (): {
             id: string;
-            type: EventCategoryTypes;
+            type: EventTypeCategories;
           }[] => [],
         );
         for (const x of allDenormalizedTrackedCategories) {
           byDate[
-            x.type === "sleep" ? x.dateAwoke : x.createdAt.slice(0, 10)
+            x.type === "sleeps" ? x.dateAwoke : x.createdAt.slice(0, 10)
           ].push({ id: x.createdAt, type: x.type });
         }
         return { ...byDate };

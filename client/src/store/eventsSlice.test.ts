@@ -108,21 +108,21 @@ describe("eventsSlice", () => {
         byId: {
           "2024-04-01T01:00:00.000Z": {
             mood: 8,
-            type: "mood",
+            type: "moods",
             updatedAt: "2024-04-01T05:00:00.000Z",
           },
           "2024-04-01T02:00:00.000Z": {
-            type: "weight",
+            type: "weights",
             value: 70,
           },
           "2024-04-01T03:00:00.000Z": {
             dateAwoke: "2024-04-01",
             minutesSlept: 480,
-            type: "sleep",
+            type: "sleeps",
           },
           "2024-04-01T06:00:00.000Z": {
             seconds: 90,
-            type: "meditation",
+            type: "meditations",
           },
         },
       });
