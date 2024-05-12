@@ -538,9 +538,9 @@ export default createSlice({
       dateToSelector,
       ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
         computeMeanSafe(
-          getIdsInInterval(allIds, dateFrom, dateTo)
-            .map((id) => byId[id])
-            .map(({ value }) => value),
+          getIdsInInterval(allIds, dateFrom, dateTo).map(
+            (id) => byId[id].value,
+          ),
         ),
     ),
     meditationIdsInPeriod: createSelector(
@@ -709,6 +709,15 @@ export default createSlice({
       dateFromSelector,
       dateToSelector,
       secondsMeditatedInPeriodResultFunction,
+    ),
+    totalPushUpsInPeriod: createSelector(
+      normalizedPushUpsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
+        getIdsInInterval(allIds, dateFrom, dateTo)
+          .map((id) => byId[id].value)
+          .reduce((a, b) => a + b, 0),
     ),
     trackedCategories: trackedCategoriesSelector,
   },

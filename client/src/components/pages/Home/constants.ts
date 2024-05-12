@@ -403,6 +403,7 @@ export const MOOD_SUMMARY_PROPS = {
     secondsMeditated: 1800,
     standardDeviation: 0.52,
     total: 31,
+    totalPushUps: 50,
     worst: 6,
   },
   previousPeriod: {
@@ -412,6 +413,7 @@ export const MOOD_SUMMARY_PROPS = {
     secondsMeditated: 600,
     standardDeviation: 1.02,
     total: 31,
+    totalPushUps: 40,
     worst: 4,
   },
   periodType: "week" as const,

@@ -14,6 +14,7 @@ interface PeriodData {
   secondsMeditated: number;
   standardDeviation?: number;
   total: number;
+  totalPushUps: number;
   worst?: number;
 }
 
@@ -119,6 +120,19 @@ export default function MoodSummary({
                   : TIME.secondsPerMinute)
               : undefined
           }
+        />
+      )}
+      {Boolean(
+        previousPeriod
+          ? currentPeriod.totalPushUps || previousPeriod.totalPushUps
+          : currentPeriod.totalPushUps,
+      ) && (
+        <MoodSummaryItem
+          currentValue={currentPeriod.totalPushUps}
+          displayTrendSentiment
+          heading="Push-ups"
+          periodType={periodType}
+          previousValue={previousPeriod?.totalPushUps}
         />
       )}
     </div>

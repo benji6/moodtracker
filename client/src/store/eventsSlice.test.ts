@@ -2653,8 +2653,117 @@ describe("eventsSlice", () => {
           ).toBe(0);
         });
       });
+    });
 
-      describe("when there are multiple meditations", () => {
+    describe("totalPushUpsInPeriod", () => {
+      describe("when the dateFrom is after the dateTo", () => {
+        it("throws an error", () => {
+          expect(() =>
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              initialState,
+              new Date("2020-07-31T00:00:00.000Z"),
+              new Date("2020-07-30T00:00:00.000Z"),
+            ),
+          ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
+        });
+      });
+
+      describe("when there are 0 push-ups", () => {
+        it("returns 0", () => {
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              initialState,
+              new Date("2020-07-30T00:00:00.000Z"),
+              new Date("2020-07-31T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+        });
+      });
+
+      describe("when there is 1 push-up", () => {
+        let state: RootState;
+
+        beforeEach(() => {
+          state = {
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-07-28T00:00:00.000Z"],
+              byId: {
+                "2020-07-28T00:00:00.000Z": {
+                  createdAt: "2020-07-28T00:00:00.000Z",
+                  type: "v1/push-ups/create",
+                  payload: { value: 1 },
+                },
+              },
+            },
+          };
+        });
+
+        it("returns the total push-ups when the push-up is within the interval", () => {
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-28T00:00:00.000Z"),
+              new Date("2020-07-28T00:00:00.000Z"),
+            ),
+          ).toBe(1);
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-27T00:00:00.000Z"),
+              new Date("2020-07-28T00:00:00.000Z"),
+            ),
+          ).toBe(1);
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-28T00:00:00.000Z"),
+              new Date("2020-07-29T00:00:00.000Z"),
+            ),
+          ).toBe(1);
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-27T00:00:00.000Z"),
+              new Date("2020-07-29T00:00:00.000Z"),
+            ),
+          ).toBe(1);
+        });
+
+        it("returns 0 when the push-up does not lie within the interval", () => {
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-25T00:00:00.000Z"),
+              new Date("2020-07-25T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-24T00:00:00.000Z"),
+              new Date("2020-07-25T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-30T00:00:00.000Z"),
+              new Date("2020-07-30T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+          expect(
+            eventsSlice.selectors.totalPushUpsInPeriod(
+              state,
+              new Date("2020-07-30T00:00:00.000Z"),
+              new Date("2020-07-31T00:00:00.000Z"),
+            ),
+          ).toBe(0);
+        });
+      });
+
+      describe("when there are multiple push-ups", () => {
         let state: RootState;
         let stateB: RootState;
 
@@ -2667,13 +2776,13 @@ describe("eventsSlice", () => {
               byId: {
                 "2020-07-28T00:00:00.000Z": {
                   createdAt: "2020-07-28T00:00:00.000Z",
-                  type: "v1/meditations/create",
-                  payload: { seconds: 120 },
+                  type: "v1/push-ups/create",
+                  payload: { value: 1 },
                 },
                 "2020-07-29T00:00:00.000Z": {
                   createdAt: "2020-07-29T00:00:00.000Z",
-                  type: "v1/meditations/create",
-                  payload: { seconds: 180 },
+                  type: "v1/push-ups/create",
+                  payload: { value: 2 },
                 },
               },
             },
@@ -2687,75 +2796,75 @@ describe("eventsSlice", () => {
               byId: {
                 "2020-07-24T00:00:00.000Z": {
                   createdAt: "2020-07-24T00:00:00.000Z",
-                  type: "v1/meditations/create",
-                  payload: { seconds: 60 },
+                  type: "v1/push-ups/create",
+                  payload: { value: 10 },
                 },
                 "2020-07-28T00:00:00.000Z": {
                   createdAt: "2020-07-28T00:00:00.000Z",
-                  type: "v1/meditations/create",
-                  payload: { seconds: 120 },
+                  type: "v1/push-ups/create",
+                  payload: { value: 20 },
                 },
               },
             },
           };
         });
 
-        it("works with 2 meditations within the interval", () => {
+        it("works with 2 push-ups within the interval", () => {
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               state,
               new Date("2020-07-28T00:00:00.000Z"),
               new Date("2020-07-29T00:00:00.000Z"),
             ),
-          ).toEqual(300);
+          ).toBe(3);
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               state,
               new Date("2020-07-27T00:00:00.000Z"),
               new Date("2020-07-29T00:00:00.000Z"),
             ),
-          ).toEqual(300);
+          ).toBe(3);
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               state,
               new Date("2020-07-28T00:00:00.000Z"),
               new Date("2020-07-30T00:00:00.000Z"),
             ),
-          ).toEqual(300);
+          ).toBe(3);
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               state,
               new Date("2020-07-27T00:00:00.000Z"),
               new Date("2020-08-02T00:00:00.000Z"),
             ),
-          ).toEqual(300);
+          ).toBe(3);
         });
 
         it("works with 2 meditations and only one in the interval", () => {
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               stateB,
               new Date("2020-07-26T00:00:00.000Z"),
               new Date("2020-08-02T00:00:00.000Z"),
             ),
-          ).toEqual(120);
+          ).toBe(20);
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               stateB,
               new Date("2020-07-23T00:00:00.000Z"),
               new Date("2020-07-24T00:00:00.000Z"),
             ),
-          ).toEqual(60);
+          ).toBe(10);
         });
 
         it("works with 2 meditations and both outside the interval", () => {
           expect(
-            eventsSlice.selectors.secondsMeditatedInPeriod(
+            eventsSlice.selectors.totalPushUpsInPeriod(
               stateB,
               new Date("2020-07-25T00:00:00.000Z"),
               new Date("2020-07-27T00:00:00.000Z"),
             ),
-          ).toEqual(0);
+          ).toBe(0);
         });
       });
     });
