@@ -105,6 +105,7 @@ export default function MoodSummary({
               ? TIME.secondsPerHour
               : TIME.secondsPerMinute)
           }
+          displayTrendSentiment
           format={oneDecimalPlaceFormatter.format}
           heading={`${
             currentPeriod.secondsMeditated >= TIME.secondsPerHour
