@@ -11,5 +11,6 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES2022"
-  }
+  },
+  "exclude": ["cypress.config.ts", "cypress", "node_modules"]
 }

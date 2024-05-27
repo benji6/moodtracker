@@ -2,8 +2,9 @@ import {
   WEEK_OPTIONS,
   weekdayNarrowFormatter,
   weekdayShortFormatter,
-} from "./formatters/dateTimeFormatters";
+} from "../formatters/dateTimeFormatters";
 import { addDays, startOfWeek } from "date-fns";
+import testIds from "./testIds";
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
 export const DESCRIPTION_MAX_LENGTH = 32;
@@ -80,45 +81,7 @@ export const TIME = {
   secondsPerYear: 31536000,
 } as const;
 
-export const TEST_IDS = (() => {
-  const keys = [
-    "addMoodRadioButton",
-    "dateAwokeInput",
-    "descriptionInput",
-    "deviceSpecificSettingsDialog",
-    "eventAddPage",
-    "eventAddSubmitButton",
-    "hoursSleptInput",
-    "meditatePage",
-    "meditationCustomTimeInput",
-    "meditationPresetTimeButton",
-    "meditationTimerPage",
-    "minutesSleptInput",
-    "moodCardMood",
-    "moodCardTags",
-    "moodCardTime",
-    "moodList",
-    "navButton",
-    "pushUpsCardTime",
-    "pushUpsCardValue",
-    "pushUpsValueInput",
-    "resetPasswordPage",
-    "signInLink",
-    "signOutButton",
-    "signOutConfirmButton",
-    "sleepCardValue",
-    "statsOverviewPage",
-    "weightCardTime",
-    "weightCardValue",
-    "weightValueInput",
-  ] as const;
-  const testIds = {} as {
-    [k in (typeof keys)[number]]: (typeof keys)[number];
-  };
-  for (const key of keys) testIds[key] = key;
-  return testIds;
-})();
-
+export const TEST_IDS = testIds;
 export const FIELDS = {
   dateAwoke: {
     "data-test-id": TEST_IDS.dateAwokeInput,
