@@ -18,7 +18,7 @@
   },
   "browserslist": "since 2022 and >1%",
   "dependencies": {
-    "@aws-sdk/client-location": "^3.525.0",
+    "@aws-sdk/client-location": "^3.588.0",
     "@aws-sdk/credential-providers": "^3.588.0",
     "@reduxjs/toolkit": "^2.0.1",
     "@sentry/react": "^7.93.0",
