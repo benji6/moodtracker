@@ -40,7 +40,7 @@ export default function EditWeight() {
         payload: { id: id!, value: valueAsNumber },
       }),
     );
-    navigate("/weight/log");
+    navigate("/");
   };
 
   if (!id) return <RedirectHome />;

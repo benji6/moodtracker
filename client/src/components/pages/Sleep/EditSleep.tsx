@@ -55,7 +55,7 @@ export default function EditSleep() {
         },
       }),
     );
-    navigate("/sleep/log");
+    navigate("/");
   };
 
   if (!id) return <RedirectHome />;

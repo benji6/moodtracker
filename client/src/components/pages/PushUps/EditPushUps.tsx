@@ -42,7 +42,7 @@ export default function EditPushUps() {
         payload: { id: id!, value: valueAsNumber },
       }),
     );
-    navigate("/push-ups/log");
+    navigate("/");
   };
 
   if (!id) return <RedirectHome />;
