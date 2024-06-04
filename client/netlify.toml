@@ -1,6 +1,5 @@
 [build]
   command = "npm run build"
-  ignore = "exit 0"
   publish = "dist"
 [[headers]]
   for = "*"
