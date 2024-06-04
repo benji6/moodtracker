@@ -17,3 +17,11 @@ jobs:
             ${{ runner.os }}-node-
       - run: make init/ci
       - run: make test/ci
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          NETLIFY_API_TOKEN: ${{ secrets.NETLIFY_API_TOKEN }}
+        run: |
+          curl -X POST -H 'Authorization: Bearer "$NETLIFY_API_TOKEN"' https://api.netlify.com/api/v1/sites/0d744c93-11e8-4072-85e2-4a168c1ae8ae/builds
