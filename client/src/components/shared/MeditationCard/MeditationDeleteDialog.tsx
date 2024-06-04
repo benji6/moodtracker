@@ -15,7 +15,7 @@ export default function MeditationDeleteDialog({ id, onClose, open }: Props) {
   const dispatch = useDispatch();
 
   return (
-    <Dialog onClose={onClose} open={open} title="Delete log?">
+    <Dialog onClose={onClose} open={open} title="Delete meditation log?">
       {id && (
         <p>
           {dateTimeFormatter.format(new Date(id))} (
