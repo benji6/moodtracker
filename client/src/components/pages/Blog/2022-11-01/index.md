@@ -2,7 +2,7 @@ Long time no blog post! I've been doing all sorts of things in the background on
 
 ![Screenshot showing the fuzzy search functionality](screenshot-1.png "Screenshot showing the fuzzy search functionality")
 
-Another thing I added was the ability to track your weight. Mostly because I wanted to do it for myself. If you're signed in, you can [add your weight here](/weight/add) and view weight charts on your [stats pages](/stats):
+Another thing I added was the ability to track your weight. Mostly because I wanted to do it for myself. If you're signed in, you can [add your weight here](/weights/add) and view weight charts on your [stats pages](/stats):
 
 ![Screenshot showing a weight chart on the stats page](screenshot-2.png "Screenshot showing a weight chart on the stats page")
 

@@ -6,6 +6,7 @@ import {
 import About from "./components/pages/About";
 import AddMood from "./components/pages/Mood/AddMood";
 import AddPushUps from "./components/pages/PushUps/AddPushUps";
+import AddSitUps from "./components/pages/SitUps/AddSitUps";
 import AddSleep from "./components/pages/Sleep/AddSleep";
 import AddWeight from "./components/pages/Weight/AddWeight";
 import Blog from "./components/pages/Blog";
@@ -14,6 +15,7 @@ import ChangePassword from "./components/pages/Settings/ChangePassword";
 import Day from "./components/pages/Stats/Day";
 import EditMood from "./components/pages/Mood/EditMood";
 import EditPushUps from "./components/pages/PushUps/EditPushUps";
+import EditSitUps from "./components/pages/SitUps/EditSitUps";
 import EditSleep from "./components/pages/Sleep/EditSleep";
 import EditWeight from "./components/pages/Weight/EditWeight";
 import { ErrorBoundary } from "@sentry/react";
@@ -40,6 +42,7 @@ import ResetPassword from "./components/pages/ResetPassword";
 import SeeAlso from "./components/pages/SeeAlso";
 import SignIn from "./components/pages/SignIn";
 import SignUp from "./components/pages/SignUp";
+import SitUpsLog from "./components/pages/SitUps/SitUpsLog";
 import SleepLog from "./components/pages/Sleep/SleepLog";
 import { Spinner } from "eri";
 import Usage from "./components/pages/About/Usage";
@@ -155,7 +158,28 @@ function Root() {
                       path="log"
                     />
                   </Route>
-                  <Route path="/sleep">
+                  <Route path="/sit-ups">
+                    <Route element={<RedirectHome />} path="" />
+                    <Route
+                      element={
+                        <Page Component={AddSitUps} title="Add sit-ups" />
+                      }
+                      path="add"
+                    />
+                    <Route
+                      element={
+                        <Page Component={EditSitUps} title="Edit sit-ups" />
+                      }
+                      path="edit/:id"
+                    />
+                    <Route
+                      element={
+                        <Page Component={SitUpsLog} title="Sit-ups log" />
+                      }
+                      path="log"
+                    />
+                  </Route>
+                  <Route path="/sleeps">
                     <Route element={<RedirectHome />} path="" />
                     <Route
                       element={<Page Component={AddSleep} title="Add sleep" />}
@@ -172,7 +196,7 @@ function Root() {
                       path="log"
                     />
                   </Route>
-                  <Route path="/weight">
+                  <Route path="/weights">
                     <Route element={<RedirectHome />} path="" />
                     <Route
                       element={

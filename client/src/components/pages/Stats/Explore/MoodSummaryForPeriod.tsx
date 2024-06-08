@@ -33,6 +33,9 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const totalPushUps = useSelector((state: RootState) =>
     eventsSlice.selectors.totalPushUpsInPeriod(state, dateFrom, dateTo),
   );
+  const totalSitUps = useSelector((state: RootState) =>
+    eventsSlice.selectors.totalSitUpsInPeriod(state, dateFrom, dateTo),
+  );
   return (
     <Paper>
       <h3>Summary</h3>
@@ -50,6 +53,7 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
             computeCompletePopulationStandardDeviation(moodValues),
           total: moodValues.length,
           totalPushUps,
+          totalSitUps,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
         }}
       />

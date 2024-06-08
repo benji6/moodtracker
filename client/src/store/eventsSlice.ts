@@ -9,6 +9,7 @@ import {
   NormalizedMeditations,
   NormalizedMoods,
   NormalizedPushUps,
+  NormalizedSitUps,
   NormalizedSleeps,
   NormalizedWeights,
 } from "../types";
@@ -84,6 +85,7 @@ interface NormalizedTrackedCategories {
   meditations: NormalizedMeditations;
   moods: NormalizedMoods;
   "push-ups": NormalizedPushUps;
+  "sit-ups": NormalizedSitUps;
   sleeps: NormalizedSleeps;
   weights: NormalizedWeights;
 }
@@ -98,6 +100,7 @@ const trackedCategoriesSelector = createSelector(
       meditations: { allIds: [], byId: {} },
       moods: { allIds: [], byId: {} },
       "push-ups": { allIds: [], byId: {} },
+      "sit-ups": { allIds: [], byId: {} },
       sleeps: { allIds: [], byId: {} },
       weights: { allIds: [], byId: {} },
     };
@@ -201,6 +204,11 @@ const normalizedSleepsSelector = createSelector(
 const normalizedPushUpsSelector = createSelector(
   trackedCategoriesSelector,
   ({ "push-ups": pushUps }) => pushUps,
+);
+
+const normalizedSitUpsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ "sit-ups": sitUps }) => sitUps,
 );
 
 const normalizedWeightsSelector = createSelector(
@@ -457,6 +465,7 @@ export default createSlice({
     ),
     denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
     denormalizedPushUps: createSelector(normalizedPushUpsSelector, denormalize),
+    denormalizedSitUps: createSelector(normalizedSitUpsSelector, denormalize),
     denormalizedSleeps: denormalizedSleepsSelector,
     denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
     envelopingMoodIds: createSelector(
@@ -486,6 +495,10 @@ export default createSlice({
     ),
     hasPushUps: createSelector(
       normalizedPushUpsSelector,
+      normalizedStateNotEmpty,
+    ),
+    hasSitUps: createSelector(
+      normalizedSitUpsSelector,
       normalizedStateNotEmpty,
     ),
     hasSleeps: createSelector(
@@ -624,6 +637,7 @@ export default createSlice({
     normalizedMeditations: normalizedMeditationsSelector,
     normalizedMoods: normalizedMoodsSelector,
     normalizedPushUps: normalizedPushUpsSelector,
+    normalizedSitUps: normalizedSitUpsSelector,
     normalizedSleeps: normalizedSleepsSelector,
     normalizedSleepsSortedByDateAwoke: createSelector(
       normalizedSleepsSelector,
@@ -712,6 +726,15 @@ export default createSlice({
     ),
     totalPushUpsInPeriod: createSelector(
       normalizedPushUpsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
+        getIdsInInterval(allIds, dateFrom, dateTo)
+          .map((id) => byId[id].value)
+          .reduce((a, b) => a + b, 0),
+    ),
+    totalSitUpsInPeriod: createSelector(
+      normalizedSitUpsSelector,
       dateFromSelector,
       dateToSelector,
       ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>

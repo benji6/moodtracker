@@ -131,6 +131,16 @@ export const FIELDS = {
     supportiveText: "You can log your sets individually or all together",
     type: "number",
   },
+  sitUps: {
+    "data-test-id": TEST_IDS.sitUpsValueInput,
+    label: "Sit-ups",
+    max: 1000,
+    min: 1,
+    name: "sit-ups",
+    style: { width: "5em" },
+    supportiveText: "You can log your sets individually or all together",
+    type: "number",
+  },
   weight: {
     "data-test-id": TEST_IDS.weightValueInput,
     label: "Weight (kg)",

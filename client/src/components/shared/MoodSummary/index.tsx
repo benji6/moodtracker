@@ -15,6 +15,7 @@ interface PeriodData {
   standardDeviation?: number;
   total: number;
   totalPushUps: number;
+  totalSitUps: number;
   worst?: number;
 }
 
@@ -134,6 +135,19 @@ export default function MoodSummary({
           heading="Push-ups"
           periodType={periodType}
           previousValue={previousPeriod?.totalPushUps}
+        />
+      )}
+      {Boolean(
+        previousPeriod
+          ? currentPeriod.totalSitUps || previousPeriod.totalSitUps
+          : currentPeriod.totalSitUps,
+      ) && (
+        <MoodSummaryItem
+          currentValue={currentPeriod.totalSitUps}
+          displayTrendSentiment
+          heading="Sit-ups"
+          periodType={periodType}
+          previousValue={previousPeriod?.totalSitUps}
         />
       )}
     </div>

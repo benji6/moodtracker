@@ -14,11 +14,11 @@ export function QuickTrackNav() {
           <Icon margin="end" name="heart" />
           Add mood
         </Button>
-        <Button onClick={() => navigate("/sleep/add")}>
+        <Button onClick={() => navigate("/sleeps/add")}>
           <Icon margin="end" name="moon" />
           Add sleep
         </Button>
-        <Button onClick={() => navigate("/weight/add")}>
+        <Button onClick={() => navigate("/weights/add")}>
           <Icon margin="end" name="weight" />
           Add weight
         </Button>
@@ -29,6 +29,10 @@ export function QuickTrackNav() {
         <Button onClick={() => navigate("/push-ups/add")}>
           <span className="m-quick-track-nav__icon">💪</span>
           Add push-ups
+        </Button>
+        <Button onClick={() => navigate("/sit-ups/add")}>
+          <span className="m-quick-track-nav__icon">🏋️</span>
+          Add sit-ups
         </Button>
       </div>
     </Paper>

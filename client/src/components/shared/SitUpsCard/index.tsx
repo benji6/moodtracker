@@ -11,39 +11,41 @@ interface Props {
   id: string;
 }
 
-export default function WeightCard({ id }: Props) {
-  const weights = useSelector(eventsSlice.selectors.normalizedWeights);
-  const weight = weights.byId[id];
+export default function SitUpsCard({ id }: Props) {
+  const normalizedSitUps = useSelector(eventsSlice.selectors.normalizedSitUps);
+  const sitUps = normalizedSitUps.byId[id];
   const navigate = useNavigate();
   const date = new Date(id);
 
   return (
-    <Card onClick={() => navigate(`/weights/edit/${id}`)}>
-      <div className="m-weight-card">
+    <Card onClick={() => navigate(`/sit-ups/edit/${id}`)}>
+      <div className="m-sit-ups-card">
         <div className="center">
-          <b data-test-id={TEST_IDS.weightCardValue}>{weight.value}kg</b>
+          <b data-test-id={TEST_IDS.sitUpsCardValue}>
+            {sitUps.value} sit-up{sitUps.value === 1 ? "" : "s"}
+          </b>
         </div>
         <div>
           <small
-            data-test-id={TEST_IDS.weightCardTime}
+            data-test-id={TEST_IDS.sitUpsCardTime}
             data-time={Math.round(date.getTime() / 1e3)}
           >
             {dateTimeFormatter.format(new Date(id))}
           </small>
         </div>
         <div>
-          {weight.location && (
+          {sitUps.location && (
             <small>
               <LocationString
                 errorFallback={
                   <>
-                    Lat: {weight.location.latitude}
+                    Lat: {sitUps.location.latitude}
                     <br />
-                    Lon: {weight.location.longitude}
+                    Lon: {sitUps.location.longitude}
                   </>
                 }
-                latitude={weight.location.latitude}
-                longitude={weight.location.longitude}
+                latitude={sitUps.location.latitude}
+                longitude={sitUps.location.longitude}
               />
             </small>
           )}

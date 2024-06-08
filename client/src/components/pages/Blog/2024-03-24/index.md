@@ -1,4 +1,4 @@
-You can now [track your sleep](/sleep/add)!
+You can now [track your sleep](/sleeps/add)!
 
 Once you have recorded a few sleeps you will see new charts in [your stats pages](/stats) that show you the relationship between your mood and how much you sleep!
 

@@ -56,7 +56,7 @@
     },
     {
       "name": "Add weight",
-      "url": "/weight/add"
+      "url": "/weights/add"
     },
     {
       "name": "Meditate",

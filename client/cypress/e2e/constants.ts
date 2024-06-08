@@ -16,11 +16,13 @@ export const PATHS = {
   pushUpsAdd: "/push-ups/add",
   pushUpsLog: "/push-ups/log",
   resetPassword: "/reset-password",
-  sleepAdd: "/sleep/add",
-  sleepLog: "/sleep/log",
+  sitUpsAdd: "/sit-ups/add",
+  sitUpsLog: "/sit-ups/log",
+  sleepAdd: "/sleeps/add",
+  sleepLog: "/sleeps/log",
   statsOverview: "/stats",
-  weightAdd: "/weight/add",
-  weightLog: "/weight/log",
+  weightAdd: "/weights/add",
+  weightLog: "/weights/log",
 } as const;
 
 export const ROOT_DOCUMENT_TITLE =

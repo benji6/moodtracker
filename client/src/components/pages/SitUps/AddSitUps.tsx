@@ -8,7 +8,7 @@ import deviceSlice from "../../../store/deviceSlice";
 import eventsSlice from "../../../store/eventsSlice";
 import { useNavigate } from "react-router-dom";
 
-export default function AddWeight() {
+export default function AddSitUps() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState<string | undefined>();
@@ -18,29 +18,29 @@ export default function AddWeight() {
   const onSubmit = () => {
     const formEl = formRef.current;
     if (!formEl) return captureException(Error("Form ref is undefined"));
-
-    const inputEl: HTMLInputElement = formEl[FIELDS.weight.name];
+    const inputEl: HTMLInputElement = formEl[FIELDS.sitUps.name];
     const { valueAsNumber } = inputEl;
 
     if (inputEl.validity.valueMissing) return setError(ERRORS.required);
     if (inputEl.validity.rangeOverflow) return setError(ERRORS.rangeOverflow);
     if (inputEl.validity.rangeUnderflow) return setError(ERRORS.rangeUnderflow);
+    if (inputEl.validity.stepMismatch) return setError(ERRORS.integer);
 
     dispatch(
       eventsSlice.actions.add({
-        type: "v1/weights/create",
+        type: "v1/sit-ups/create",
         createdAt: new Date().toISOString(),
         payload: geolocation
           ? { location: geolocation, value: valueAsNumber }
           : { value: valueAsNumber },
       }),
     );
-    navigate("/weights/log");
+    navigate("/sit-ups/log");
   };
 
   return (
-    <AddEvent eventTypeLabel="weight" ref={formRef} onSubmit={onSubmit}>
-      <TextField {...FIELDS.weight} error={error} />
+    <AddEvent eventTypeLabel="sit-ups" ref={formRef} onSubmit={onSubmit}>
+      <TextField {...FIELDS.sitUps} error={error} />
     </AddEvent>
   );
 }

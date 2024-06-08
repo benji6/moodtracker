@@ -20,6 +20,7 @@ export type NormalizedAllCategories = {
 export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
 export type NormalizedPushUps = NormalizedTrackedCategory<PushUps>;
+export type NormalizedSitUps = NormalizedTrackedCategory<SitUps>;
 export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
 export type NormalizedWeights = NormalizedTrackedCategory<Weight>;
 
@@ -69,6 +70,10 @@ interface PushUps {
   location?: DeviceGeolocation;
   value: number;
 }
+interface SitUps {
+  location?: DeviceGeolocation;
+  value: number;
+}
 export interface Weight {
   location?: DeviceGeolocation;
   value: number;
@@ -91,6 +96,7 @@ export type EventTypeCategories =
   | "meditations"
   | "moods"
   | "push-ups"
+  | "sit-ups"
   | "sleeps"
   | "weights";
 type EventTypeOperations = "create" | "update" | "delete";
@@ -113,12 +119,14 @@ export type AppCreateEvent =
   | PayloadEvent<"v1/meditations/create", Meditation>
   | PayloadEvent<"v1/moods/create", Mood>
   | PayloadEvent<"v1/push-ups/create", PushUps>
+  | PayloadEvent<"v1/sit-ups/create", PushUps>
   | PayloadEvent<"v1/sleeps/create", Sleep>
   | PayloadEvent<"v1/weights/create", Weight>;
 
 export type AppUpdateEvent =
   | PayloadEvent<"v1/moods/update", UpdateMood>
   | PayloadEvent<"v1/push-ups/update", UpdateWeight>
+  | PayloadEvent<"v1/sit-ups/update", UpdateWeight>
   | PayloadEvent<"v1/sleeps/update", UpdateSleep>
   | PayloadEvent<"v1/weights/update", UpdateWeight>;
 
@@ -128,6 +136,7 @@ export type AppEvent =
   | PayloadEvent<"v1/meditations/delete", string>
   | PayloadEvent<"v1/moods/delete", string>
   | PayloadEvent<"v1/push-ups/delete", string>
+  | PayloadEvent<"v1/sit-ups/delete", string>
   | PayloadEvent<"v1/sleeps/delete", string>
   | PayloadEvent<"v1/weights/delete", string>;
 

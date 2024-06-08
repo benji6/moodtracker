@@ -3,6 +3,7 @@ import { EventTypeCategories } from "../../types";
 import MeditationCard from "./MeditationCard";
 import MoodCard from "./MoodCard";
 import PushUpsCard from "./PushUpsCard";
+import SitUpsCard from "./SitUpsCard";
 import SleepCard from "./SleepCard";
 import WeightCard from "./WeightCard";
 import eventsSlice from "../../store/eventsSlice";
@@ -13,6 +14,7 @@ const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT = {
   meditations: MeditationCard,
   moods: MoodCard,
   "push-ups": PushUpsCard,
+  "sit-ups": SitUpsCard,
   sleeps: SleepCard,
   weights: WeightCard,
 } as const;

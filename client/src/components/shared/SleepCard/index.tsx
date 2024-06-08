@@ -18,7 +18,7 @@ export default function SleepCard({ id }: Props) {
   const date = new Date(sleep.dateAwoke);
 
   return (
-    <Card onClick={() => navigate(`/sleep/edit/${id}`)}>
+    <Card onClick={() => navigate(`/sleeps/edit/${id}`)}>
       <div className="m-sleep-card">
         <div>
           <small>

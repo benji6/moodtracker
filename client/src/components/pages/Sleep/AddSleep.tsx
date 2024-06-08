@@ -41,7 +41,7 @@ export default function AddSleep() {
         },
       }),
     );
-    navigate("/sleep/log");
+    navigate("/sleeps/log");
   };
 
   const isoDateStringNow = formatIsoDateInLocalTimezone(new Date());
