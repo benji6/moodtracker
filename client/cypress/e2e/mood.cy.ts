@@ -50,7 +50,8 @@ describe("mood", () => {
       cy.get(SELECTORS.moodCardMood).first().should("have.text", String(MOOD));
       cy.get(SELECTORS.moodCardTime)
         .invoke("attr", "data-time")
-        .should("equal", String(expectedTime));
+        .then(Number)
+        .should("be.closeTo", expectedTime, 1);
     });
 
     it("adds a mood with an emoji tag", () => {

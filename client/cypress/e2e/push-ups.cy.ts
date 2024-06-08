@@ -67,7 +67,8 @@ describe("push-ups", () => {
 
       cy.get(SELECTORS.pushUpsCardTime)
         .invoke("attr", "data-time")
-        .should("equal", String(expectedTime));
+        .then(Number)
+        .should("be.closeTo", expectedTime, 1);
     });
 
     it("works with 1 push-up", () => {

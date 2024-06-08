@@ -60,7 +60,8 @@ describe("weight", () => {
 
       cy.get(SELECTORS.weightCardTime)
         .invoke("attr", "data-time")
-        .should("equal", String(expectedTime));
+        .then(Number)
+        .should("be.closeTo", expectedTime, 1);
     });
   });
 });

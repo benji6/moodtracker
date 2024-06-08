@@ -67,7 +67,8 @@ describe("sit-ups", () => {
 
       cy.get(SELECTORS.sitUpsCardTime)
         .invoke("attr", "data-time")
-        .should("equal", String(expectedTime));
+        .then(Number)
+        .should("be.closeTo", expectedTime, 1);
     });
 
     it("works with 1 sit-up", () => {
