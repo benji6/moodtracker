@@ -1,4 +1,5 @@
 import { Button, Dialog, Icon } from "eri";
+import { EVENT_TYPE_TO_LABEL } from "../../constants";
 import { EventTypeCategories } from "../../types";
 import eventsSlice from "../../store/eventsSlice";
 import { useDispatch } from "react-redux";
@@ -6,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   eventType: EventTypeCategories;
-  eventTypeLabel: string;
   id: string;
   onClose(): void;
   open: boolean;
@@ -14,7 +14,6 @@ interface Props {
 
 export default function DeleteEventDialog({
   eventType,
-  eventTypeLabel,
   id,
   onClose,
   open,
@@ -23,7 +22,11 @@ export default function DeleteEventDialog({
   const dispatch = useDispatch();
 
   return (
-    <Dialog onClose={onClose} open={open} title={`Delete ${eventTypeLabel}?`}>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      title={`Delete ${EVENT_TYPE_TO_LABEL[eventType]}?`}
+    >
       <Button.Group>
         <Button
           danger

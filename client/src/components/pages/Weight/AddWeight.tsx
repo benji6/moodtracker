@@ -39,7 +39,7 @@ export default function AddWeight() {
   };
 
   return (
-    <AddEvent eventTypeLabel="weight" ref={formRef} onSubmit={onSubmit}>
+    <AddEvent eventType="weights" ref={formRef} onSubmit={onSubmit}>
       <TextField {...FIELDS.weight} error={error} />
     </AddEvent>
   );

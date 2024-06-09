@@ -52,7 +52,6 @@ export default function EditPushUps() {
   return (
     <EditEvent
       eventType="push-ups"
-      eventTypeLabel="push-ups"
       id={id}
       location={pushUps.location}
       onSubmit={onSubmit}

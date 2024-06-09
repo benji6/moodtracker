@@ -50,7 +50,6 @@ export default function EditSitUps() {
   return (
     <EditEvent
       eventType="sit-ups"
-      eventTypeLabel="sit-ups"
       id={id}
       location={sitUps.location}
       onSubmit={onSubmit}

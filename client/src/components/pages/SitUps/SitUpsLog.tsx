@@ -14,8 +14,6 @@ export default function SitUpsLog() {
       CardComponent={SitUpsCard}
       denormalizedEvents={denormalizedSitUps}
       eventType="sit-ups"
-      eventTypeLabel="sit-ups"
-      eventTypeLabelPlural="sit-ups"
       normalizedEvents={normalizedSitUps}
     />
   );

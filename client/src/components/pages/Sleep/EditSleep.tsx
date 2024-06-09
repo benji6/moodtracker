@@ -65,7 +65,6 @@ export default function EditSleep() {
   return (
     <EditEvent
       eventType="sleeps"
-      eventTypeLabel="sleep"
       id={id}
       location={undefined}
       onSubmit={onSubmit}

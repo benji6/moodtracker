@@ -16,8 +16,6 @@ export default function WeightLog() {
       CardComponent={WeightCard}
       denormalizedEvents={denormalizedWeights}
       eventType="weights"
-      eventTypeLabel="weight"
-      eventTypeLabelPlural="weights"
       normalizedEvents={normalizedWeights}
     />
   );

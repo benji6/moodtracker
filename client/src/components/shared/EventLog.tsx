@@ -4,6 +4,10 @@ import {
   EventTypeCategories,
   NormalizedEvents,
 } from "../../types";
+import {
+  EVENT_TYPE_TO_LABEL,
+  EVENT_TYPE_TO_LABEL_PLURAL,
+} from "../../constants";
 import { FC, useState } from "react";
 import { capitalizeFirstLetter, mapRight } from "../../utils";
 import ExportControls from "./ExportControls";
@@ -15,8 +19,6 @@ interface Props {
   CardComponent: FC<{ id: string }>;
   denormalizedEvents: DenormalizedEvents;
   eventType: EventTypeCategories;
-  eventTypeLabel: string;
-  eventTypeLabelPlural: string;
   normalizedEvents: NormalizedEvents;
 }
 
@@ -24,8 +26,6 @@ export default function EventLog({
   CardComponent,
   denormalizedEvents,
   eventType,
-  eventTypeLabel,
-  eventTypeLabelPlural,
   normalizedEvents,
 }: Props) {
   const [page, setPage] = useState(0);
@@ -38,10 +38,12 @@ export default function EventLog({
 
   if (!normalizedEvents.allIds.length) return <RedirectHome />;
 
+  const eventTypeLabelPlural = EVENT_TYPE_TO_LABEL_PLURAL[eventType];
+
   return (
     <Paper.Group>
       <Paper>
-        <h2>{capitalizeFirstLetter(eventTypeLabel)} log</h2>
+        <h2>{capitalizeFirstLetter(EVENT_TYPE_TO_LABEL[eventType])} log</h2>
         <h3>
           Export
           <SubHeading>

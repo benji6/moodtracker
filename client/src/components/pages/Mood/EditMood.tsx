@@ -78,7 +78,6 @@ export default function EditMood() {
   return (
     <EditEvent
       eventType="moods"
-      eventTypeLabel="mood"
       id={id}
       location={mood.location}
       onSubmit={onSubmit}

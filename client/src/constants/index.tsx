@@ -4,6 +4,7 @@ import {
   weekdayShortFormatter,
 } from "../formatters/dateTimeFormatters";
 import { addDays, startOfWeek } from "date-fns";
+import { EventTypeCategories } from "../types";
 import testIds from "./testIds";
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
@@ -53,6 +54,28 @@ export const ERRORS = {
   rangeOverflow: "Value is too big, please input something smaller",
   rangeUnderflow: "Value is too small, please input something bigger",
   required: "Required",
+} as const;
+
+export const EVENT_TYPE_TO_LABEL: {
+  [eventType in EventTypeCategories]: string;
+} = {
+  "push-ups": "push-ups",
+  "sit-ups": "sit-ups",
+  meditations: "meditation",
+  moods: "mood",
+  sleeps: "sleep",
+  weights: "weight",
+} as const;
+
+export const EVENT_TYPE_TO_LABEL_PLURAL: {
+  [eventType in EventTypeCategories]: string;
+} = {
+  "push-ups": "push-ups",
+  "sit-ups": "sit-ups",
+  meditations: "meditations",
+  moods: "moods",
+  sleeps: "sleeps",
+  weights: "weights",
 } as const;
 
 export const PATTERNS = {

@@ -16,8 +16,6 @@ export default function SleepLog() {
       CardComponent={SleepCard}
       denormalizedEvents={denormalizedSleeps}
       eventType="sleeps"
-      eventTypeLabel="sleep"
-      eventTypeLabelPlural="sleeps"
       normalizedEvents={normalizedSleeps}
     />
   );

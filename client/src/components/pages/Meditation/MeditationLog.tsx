@@ -16,8 +16,6 @@ export default function MeditationLog() {
       CardComponent={MeditationCard}
       denormalizedEvents={denormalizedMeditations}
       eventType="meditations"
-      eventTypeLabel="meditation"
-      eventTypeLabelPlural="meditations"
       normalizedEvents={normalizedMeditations}
     />
   );

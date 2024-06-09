@@ -16,8 +16,6 @@ export default function PushUpsLog() {
       CardComponent={PushUpsCard}
       denormalizedEvents={denormalizedPushUps}
       eventType="push-ups"
-      eventTypeLabel="push-ups"
-      eventTypeLabelPlural="push-ups"
       normalizedEvents={normalizedPushUps}
     />
   );

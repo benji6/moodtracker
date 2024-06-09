@@ -50,7 +50,6 @@ export default function EditWeight() {
   return (
     <EditEvent
       eventType="weights"
-      eventTypeLabel="weight"
       id={id}
       location={weight.location}
       onSubmit={onSubmit}

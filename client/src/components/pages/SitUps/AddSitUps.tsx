@@ -39,7 +39,7 @@ export default function AddSitUps() {
   };
 
   return (
-    <AddEvent eventTypeLabel="sit-ups" ref={formRef} onSubmit={onSubmit}>
+    <AddEvent eventType="sit-ups" ref={formRef} onSubmit={onSubmit}>
       <TextField {...FIELDS.sitUps} error={error} />
     </AddEvent>
   );

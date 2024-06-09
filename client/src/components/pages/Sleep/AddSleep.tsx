@@ -47,7 +47,7 @@ export default function AddSleep() {
   const isoDateStringNow = formatIsoDateInLocalTimezone(new Date());
 
   return (
-    <AddEvent eventTypeLabel="sleep" ref={formRef} onSubmit={onSubmit}>
+    <AddEvent eventType="sleeps" ref={formRef} onSubmit={onSubmit}>
       <div className="m-interval-input">
         <Select {...FIELDS.hoursSlept}>
           {[...Array(TIME.hoursPerDay)].map((_, i) => (

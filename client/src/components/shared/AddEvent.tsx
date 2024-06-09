@@ -1,18 +1,19 @@
 import { Button, Icon, Paper, SubHeading } from "eri";
+import { EVENT_TYPE_TO_LABEL, TEST_IDS } from "../../constants";
 import { ReactNode, forwardRef } from "react";
+import { EventTypeCategories } from "../../types";
 import LiveLocation from "./LiveLocation";
-import { TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 
 interface Props {
   children: ReactNode;
-  eventTypeLabel: string;
+  eventType: EventTypeCategories;
   onSubmit(): void;
   subheading?: string;
 }
 
 export default forwardRef<HTMLFormElement, Props>(function AddEvent(
-  { children, eventTypeLabel, onSubmit, subheading },
+  { children, eventType, onSubmit, subheading },
   ref,
 ) {
   useKeyboardSave(onSubmit);
@@ -21,7 +22,7 @@ export default forwardRef<HTMLFormElement, Props>(function AddEvent(
     <Paper.Group data-test-id={TEST_IDS.eventAddPage}>
       <Paper>
         <h2>
-          Add {eventTypeLabel}
+          Add {EVENT_TYPE_TO_LABEL[eventType]}
           {subheading && <SubHeading>{subheading}</SubHeading>}
         </h2>
 

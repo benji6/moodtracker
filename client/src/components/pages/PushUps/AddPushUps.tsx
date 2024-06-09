@@ -39,7 +39,7 @@ export default function AddPushUps() {
   };
 
   return (
-    <AddEvent eventTypeLabel="push-ups" ref={formRef} onSubmit={onSubmit}>
+    <AddEvent eventType="push-ups" ref={formRef} onSubmit={onSubmit}>
       <TextField {...FIELDS.pushUps} error={error} />
     </AddEvent>
   );

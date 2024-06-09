@@ -65,7 +65,7 @@ export default function AddMood() {
 
   return (
     <AddEvent
-      eventTypeLabel="mood"
+      eventType="moods"
       ref={formRef}
       onSubmit={onSubmit}
       subheading={`How are you feeling this ${timeOfDay}?`}
