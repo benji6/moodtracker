@@ -133,12 +133,7 @@ export type AppUpdateEvent =
 export type AppEvent =
   | AppCreateEvent
   | AppUpdateEvent
-  | PayloadEvent<"v1/meditations/delete", string>
-  | PayloadEvent<"v1/moods/delete", string>
-  | PayloadEvent<"v1/push-ups/delete", string>
-  | PayloadEvent<"v1/sit-ups/delete", string>
-  | PayloadEvent<"v1/sleeps/delete", string>
-  | PayloadEvent<"v1/weights/delete", string>;
+  | PayloadEvent<`v1/${EventTypeCategories}/delete`, string>;
 
 export interface Settings {
   updatedAt: string;
