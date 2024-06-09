@@ -3,57 +3,58 @@ import {
   Route,
   createBrowserRouter,
 } from "react-router-dom";
-import About from "./components/pages/About";
-import AddMood from "./components/pages/Mood/AddMood";
-import AddPushUps from "./components/pages/PushUps/AddPushUps";
-import AddSitUps from "./components/pages/SitUps/AddSitUps";
-import AddSleep from "./components/pages/Sleep/AddSleep";
-import AddWeight from "./components/pages/Weight/AddWeight";
-import Blog from "./components/pages/Blog";
-import ChangeEmail from "./components/pages/Settings/ChangeEmail";
-import ChangePassword from "./components/pages/Settings/ChangePassword";
-import Day from "./components/pages/Stats/Day";
-import EditMood from "./components/pages/Mood/EditMood";
-import EditPushUps from "./components/pages/PushUps/EditPushUps";
-import EditSitUps from "./components/pages/SitUps/EditSitUps";
-import EditSleep from "./components/pages/Sleep/EditSleep";
-import EditWeight from "./components/pages/Weight/EditWeight";
+import About from "../components/pages/About";
+import AddMood from "../components/pages/Mood/AddMood";
+import AddPushUps from "../components/pages/PushUps/AddPushUps";
+import AddSitUps from "../components/pages/SitUps/AddSitUps";
+import AddSleep from "../components/pages/Sleep/AddSleep";
+import AddWeight from "../components/pages/Weight/AddWeight";
+import Blog from "../components/pages/Blog";
+import ChangeEmail from "../components/pages/Settings/ChangeEmail";
+import ChangePassword from "../components/pages/Settings/ChangePassword";
+import Day from "../components/pages/Stats/Day";
+import EditMood from "../components/pages/Mood/EditMood";
+import EditPushUps from "../components/pages/PushUps/EditPushUps";
+import EditSitUps from "../components/pages/SitUps/EditSitUps";
+import EditSleep from "../components/pages/Sleep/EditSleep";
+import EditWeight from "../components/pages/Weight/EditWeight";
 import { ErrorBoundary } from "@sentry/react";
-import Explore from "./components/pages/Stats/Explore";
-import ForgotPassword from "./components/pages/ForgotPassword";
-import Home from "./components/pages/Home";
-import Layout from "./components/Layout";
-import LocationSettings from "./components/pages/Settings/LocationSettings";
-import Meditate from "./components/pages/Meditation/Meditate";
-import MeditationLog from "./components/pages/Meditation/MeditationLog";
-import MeditationTimer from "./components/pages/Meditation/Meditate/MeditationTimer";
-import Month from "./components/pages/Stats/Month";
-import MoodLog from "./components/pages/Mood/MoodLog";
-import Notifications from "./components/pages/Settings/Notifications";
-import OpenEndedMeditation from "./components/pages/Meditation/Meditate/OpenEndedMeditation";
-import Overview from "./components/pages/Stats/Overview";
-import Page from "./components/shared/Page";
-import PrivacyPolicy from "./components/pages/About/PrivacyPolicy";
-import PushUpsLog from "./components/pages/PushUps/PushUpsLog";
-import { REPO_ISSUES_URL } from "./constants";
-import RedirectHome from "./components/shared/RedirectHome";
-import ResendVerification from "./components/pages/ResendVerification";
-import ResetPassword from "./components/pages/ResetPassword";
-import SeeAlso from "./components/pages/SeeAlso";
-import SignIn from "./components/pages/SignIn";
-import SignUp from "./components/pages/SignUp";
-import SitUpsLog from "./components/pages/SitUps/SitUpsLog";
-import SleepLog from "./components/pages/Sleep/SleepLog";
+import Explore from "../components/pages/Stats/Explore";
+import ForgotPassword from "../components/pages/ForgotPassword";
+import Home from "../components/pages/Home";
+import Layout from "../components/Layout";
+import LocationSettings from "../components/pages/Settings/LocationSettings";
+import Meditate from "../components/pages/Meditation/Meditate";
+import MeditationLog from "../components/pages/Meditation/MeditationLog";
+import MeditationTimer from "../components/pages/Meditation/Meditate/MeditationTimer";
+import Month from "../components/pages/Stats/Month";
+import MoodLog from "../components/pages/Mood/MoodLog";
+import Notifications from "../components/pages/Settings/Notifications";
+import OpenEndedMeditation from "../components/pages/Meditation/Meditate/OpenEndedMeditation";
+import Overview from "../components/pages/Stats/Overview";
+import Page from "../components/shared/Page";
+import PrivacyPolicy from "../components/pages/About/PrivacyPolicy";
+import PushUpsLog from "../components/pages/PushUps/PushUpsLog";
+import { REPO_ISSUES_URL } from "../constants";
+import RedirectHome from "../components/shared/RedirectHome";
+import ResendVerification from "../components/pages/ResendVerification";
+import ResetPassword from "../components/pages/ResetPassword";
+import SeeAlso from "../components/pages/SeeAlso";
+import SignIn from "../components/pages/SignIn";
+import SignUp from "../components/pages/SignUp";
+import SitUpsLog from "../components/pages/SitUps/SitUpsLog";
+import SleepLog from "../components/pages/Sleep/SleepLog";
 import { Spinner } from "eri";
-import Usage from "./components/pages/About/Usage";
-import Verify from "./components/pages/Verify";
-import VerifyNewEmail from "./components/pages/Settings/VerifyNewEmail";
-import Week from "./components/pages/Stats/Week";
-import WeightLog from "./components/pages/Weight/WeightLog";
-import Year from "./components/pages/Stats/Year";
-import appSlice from "./store/appSlice";
+import Usage from "../components/pages/About/Usage";
+import Verify from "../components/pages/Verify";
+import VerifyNewEmail from "../components/pages/Settings/VerifyNewEmail";
+import Week from "../components/pages/Stats/Week";
+import WeightLog from "../components/pages/Weight/WeightLog";
+import Year from "../components/pages/Stats/Year";
+import appSlice from "../store/appSlice";
+import trackedCategoryRoutes from "./trackedCategoryRoutes";
 import { useSelector } from "react-redux";
-import userSlice from "./store/userSlice";
+import userSlice from "../store/userSlice";
 
 function Root() {
   const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
@@ -137,86 +138,32 @@ function Root() {
                       path="timer"
                     />
                   </Route>
-                  <Route path="/push-ups">
-                    <Route element={<RedirectHome />} path="" />
-                    <Route
-                      element={
-                        <Page Component={AddPushUps} title="Add push-ups" />
-                      }
-                      path="add"
-                    />
-                    <Route
-                      element={
-                        <Page Component={EditPushUps} title="Edit push-ups" />
-                      }
-                      path="edit/:id"
-                    />
-                    <Route
-                      element={
-                        <Page Component={PushUpsLog} title="Push-ups log" />
-                      }
-                      path="log"
-                    />
-                  </Route>
-                  <Route path="/sit-ups">
-                    <Route element={<RedirectHome />} path="" />
-                    <Route
-                      element={
-                        <Page Component={AddSitUps} title="Add sit-ups" />
-                      }
-                      path="add"
-                    />
-                    <Route
-                      element={
-                        <Page Component={EditSitUps} title="Edit sit-ups" />
-                      }
-                      path="edit/:id"
-                    />
-                    <Route
-                      element={
-                        <Page Component={SitUpsLog} title="Sit-ups log" />
-                      }
-                      path="log"
-                    />
-                  </Route>
-                  <Route path="/sleeps">
-                    <Route element={<RedirectHome />} path="" />
-                    <Route
-                      element={<Page Component={AddSleep} title="Add sleep" />}
-                      path="add"
-                    />
-                    <Route
-                      element={
-                        <Page Component={EditSleep} title="Edit sleep" />
-                      }
-                      path="edit/:id"
-                    />
-                    <Route
-                      element={<Page Component={SleepLog} title="Sleep log" />}
-                      path="log"
-                    />
-                  </Route>
-                  <Route path="/weights">
-                    <Route element={<RedirectHome />} path="" />
-                    <Route
-                      element={
-                        <Page Component={AddWeight} title="Add weight" />
-                      }
-                      path="add"
-                    />
-                    <Route
-                      element={
-                        <Page Component={EditWeight} title="Edit weight" />
-                      }
-                      path="edit/:id"
-                    />
-                    <Route
-                      element={
-                        <Page Component={WeightLog} title="Weight log" />
-                      }
-                      path="log"
-                    />
-                  </Route>
+                  {[
+                    trackedCategoryRoutes({
+                      AddComponent: AddPushUps,
+                      EditComponent: EditPushUps,
+                      eventType: "push-ups",
+                      LogComponent: PushUpsLog,
+                    }),
+                    trackedCategoryRoutes({
+                      AddComponent: AddSitUps,
+                      EditComponent: EditSitUps,
+                      eventType: "sit-ups",
+                      LogComponent: SitUpsLog,
+                    }),
+                    trackedCategoryRoutes({
+                      AddComponent: AddSleep,
+                      EditComponent: EditSleep,
+                      eventType: "sleeps",
+                      LogComponent: SleepLog,
+                    }),
+                    trackedCategoryRoutes({
+                      AddComponent: AddWeight,
+                      EditComponent: EditWeight,
+                      eventType: "weights",
+                      LogComponent: WeightLog,
+                    }),
+                  ]}
                   <Route path="settings">
                     <Route
                       element={
