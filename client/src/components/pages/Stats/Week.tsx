@@ -92,7 +92,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForWeek dates={[prevDate, date, nextDate]} />
+      <MoodSummaryForWeek date={date} />
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod
