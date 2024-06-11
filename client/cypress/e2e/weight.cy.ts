@@ -54,11 +54,11 @@ describe("weight", () => {
       const expectedTime = Math.round(Date.now() / 1e3);
 
       cy.location("pathname").should("equal", PATHS.weightLog);
-      cy.get(SELECTORS.weightCardValue)
+      cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue}kg`);
 
-      cy.get(SELECTORS.weightCardTime)
+      cy.get(SELECTORS.eventCardTime)
         .invoke("attr", "data-time")
         .then(Number)
         .should("be.closeTo", expectedTime, 1);

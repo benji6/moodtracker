@@ -61,11 +61,11 @@ describe("push-ups", () => {
       const expectedTime = Math.round(Date.now() / 1e3);
       cy.get(SELECTORS.eventAddSubmitButton).click();
       cy.location("pathname").should("equal", PATHS.pushUpsLog);
-      cy.get(SELECTORS.pushUpsCardValue)
+      cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue} push-ups`);
 
-      cy.get(SELECTORS.pushUpsCardTime)
+      cy.get(SELECTORS.eventCardTime)
         .invoke("attr", "data-time")
         .then(Number)
         .should("be.closeTo", expectedTime, 1);
@@ -74,9 +74,7 @@ describe("push-ups", () => {
     it("works with 1 push-up", () => {
       cy.get(SELECTORS.pushUpsValueInput).type("1{enter}");
       cy.location("pathname").should("equal", PATHS.pushUpsLog);
-      cy.get(SELECTORS.pushUpsCardValue)
-        .first()
-        .should("have.text", "1 push-up");
+      cy.get(SELECTORS.eventCardValue).first().should("have.text", "1 push-up");
     });
   });
 });

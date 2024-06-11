@@ -78,6 +78,17 @@ export const EVENT_TYPE_TO_LABEL_PLURAL: {
   weights: "weights",
 } as const;
 
+export const EVENT_TYPE_TO_LABEL_SINGULAR: {
+  [eventType in EventTypeCategories]: string;
+} = {
+  "push-ups": "push-up",
+  "sit-ups": "sit-up",
+  meditations: "meditation",
+  moods: "mood",
+  sleeps: "sleep",
+  weights: "weight",
+} as const;
+
 export const PATTERNS = {
   noPunctuation: "[\\p{L}\\p{Emoji_Presentation}\\s\\-]*",
 } as const;

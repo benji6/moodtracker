@@ -61,11 +61,11 @@ describe("sit-ups", () => {
       const expectedTime = Math.round(Date.now() / 1e3);
       cy.get(SELECTORS.eventAddSubmitButton).click();
       cy.location("pathname").should("equal", PATHS.sitUpsLog);
-      cy.get(SELECTORS.sitUpsCardValue)
+      cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue} sit-ups`);
 
-      cy.get(SELECTORS.sitUpsCardTime)
+      cy.get(SELECTORS.eventCardTime)
         .invoke("attr", "data-time")
         .then(Number)
         .should("be.closeTo", expectedTime, 1);
@@ -74,7 +74,7 @@ describe("sit-ups", () => {
     it("works with 1 sit-up", () => {
       cy.get(SELECTORS.sitUpsValueInput).type("1{enter}");
       cy.location("pathname").should("equal", PATHS.sitUpsLog);
-      cy.get(SELECTORS.sitUpsCardValue).first().should("have.text", "1 sit-up");
+      cy.get(SELECTORS.eventCardValue).first().should("have.text", "1 sit-up");
     });
   });
 });
