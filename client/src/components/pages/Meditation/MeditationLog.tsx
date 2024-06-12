@@ -4,19 +4,16 @@ import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 export default function MeditationLog() {
-  const normalizedMeditations = useSelector(
-    eventsSlice.selectors.normalizedMeditations,
-  );
-  const denormalizedMeditations = useSelector(
-    eventsSlice.selectors.denormalizedMeditations,
-  );
-
   return (
     <EventLog
       CardComponent={MeditationCard}
-      denormalizedEvents={denormalizedMeditations}
+      denormalizedEvents={useSelector(
+        eventsSlice.selectors.denormalizedMeditations,
+      )}
       eventType="meditations"
-      normalizedEvents={normalizedMeditations}
+      normalizedEvents={useSelector(
+        eventsSlice.selectors.normalizedMeditations,
+      )}
     />
   );
 }

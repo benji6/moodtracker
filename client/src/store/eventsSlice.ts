@@ -6,6 +6,7 @@ import {
   EventTypeTuple,
   Mood,
   NormalizedAllCategories,
+  NormalizedLegRaises,
   NormalizedMeditations,
   NormalizedMoods,
   NormalizedPushUps,
@@ -82,6 +83,7 @@ const allIdsWithLocationSelector = createSelector(
 
 interface NormalizedTrackedCategories {
   all: NormalizedAllCategories;
+  "leg-raises": NormalizedLegRaises;
   meditations: NormalizedMeditations;
   moods: NormalizedMoods;
   "push-ups": NormalizedPushUps;
@@ -97,6 +99,7 @@ const trackedCategoriesSelector = createSelector(
     const all: NormalizedAllCategories = { allIds: [], byId: {} };
     const normalizedCategories: NormalizedTrackedCategories = {
       all,
+      "leg-raises": { allIds: [], byId: {} },
       meditations: { allIds: [], byId: {} },
       moods: { allIds: [], byId: {} },
       "push-ups": { allIds: [], byId: {} },
@@ -184,6 +187,11 @@ const trackedCategoriesSelector = createSelector(
 const allNormalizedTrackedCategoriesSelector = createSelector(
   trackedCategoriesSelector,
   ({ all }) => all,
+);
+
+const normalizedLegRaisesSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ "leg-raises": legRaises }) => legRaises,
 );
 
 const normalizedMeditationsSelector = createSelector(
@@ -463,6 +471,10 @@ export default createSlice({
       normalizedMeditationsSelector,
       denormalize,
     ),
+    denormalizedLegRaises: createSelector(
+      normalizedLegRaisesSelector,
+      denormalize,
+    ),
     denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
     denormalizedPushUps: createSelector(normalizedPushUpsSelector, denormalize),
     denormalizedSitUps: createSelector(normalizedSitUpsSelector, denormalize),
@@ -489,6 +501,10 @@ export default createSlice({
       getEnvelopingIds,
     ),
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
+    hasLegRaises: createSelector(
+      normalizedLegRaisesSelector,
+      normalizedStateNotEmpty,
+    ),
     hasMeditations: createSelector(
       normalizedMeditationsSelector,
       normalizedStateNotEmpty,
@@ -634,6 +650,7 @@ export default createSlice({
         return [...descriptionWords].sort((a, b) => a.localeCompare(b));
       },
     ),
+    normalizedLegRaises: normalizedLegRaisesSelector,
     normalizedMeditations: normalizedMeditationsSelector,
     normalizedMoods: normalizedMoodsSelector,
     normalizedPushUps: normalizedPushUpsSelector,
@@ -723,6 +740,15 @@ export default createSlice({
       dateFromSelector,
       dateToSelector,
       secondsMeditatedInPeriodResultFunction,
+    ),
+    totalLegRaisesInPeriod: createSelector(
+      normalizedLegRaisesSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
+        getIdsInInterval(allIds, dateFrom, dateTo)
+          .map((id) => byId[id].value)
+          .reduce((a, b) => a + b, 0),
     ),
     totalPushUpsInPeriod: createSelector(
       normalizedPushUpsSelector,

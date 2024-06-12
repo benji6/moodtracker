@@ -4,19 +4,14 @@ import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 export default function SleepLog() {
-  const normalizedSleeps = useSelector(
-    eventsSlice.selectors.normalizedSleepsSortedByDateAwoke,
-  );
-  const denormalizedSleeps = useSelector(
-    eventsSlice.selectors.denormalizedSleeps,
-  );
-
   return (
     <EventLog
       CardComponent={SleepCard}
-      denormalizedEvents={denormalizedSleeps}
+      denormalizedEvents={useSelector(eventsSlice.selectors.denormalizedSleeps)}
       eventType="sleeps"
-      normalizedEvents={normalizedSleeps}
+      normalizedEvents={useSelector(
+        eventsSlice.selectors.normalizedSleepsSortedByDateAwoke,
+      )}
     />
   );
 }

@@ -4,17 +4,12 @@ import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 export default function SitUpsLog() {
-  const normalizedSitUps = useSelector(eventsSlice.selectors.normalizedSitUps);
-  const denormalizedSitUps = useSelector(
-    eventsSlice.selectors.denormalizedSitUps,
-  );
-
   return (
     <EventLog
       CardComponent={SitUpsCard}
-      denormalizedEvents={denormalizedSitUps}
+      denormalizedEvents={useSelector(eventsSlice.selectors.denormalizedSitUps)}
       eventType="sit-ups"
-      normalizedEvents={normalizedSitUps}
+      normalizedEvents={useSelector(eventsSlice.selectors.normalizedSitUps)}
     />
   );
 }

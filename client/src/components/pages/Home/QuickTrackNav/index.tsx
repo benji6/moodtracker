@@ -1,5 +1,6 @@
 import "./style.css";
 import { Button, Icon, Paper } from "eri";
+import { QuickTrackNavButton } from "./QuickTrackNavButton/QuickTrackNavButton";
 import { TEST_IDS } from "../../../../constants";
 import { useNavigate } from "react-router-dom";
 
@@ -14,26 +15,16 @@ export function QuickTrackNav() {
           <Icon margin="end" name="heart" />
           Add mood
         </Button>
-        <Button onClick={() => navigate("/sleeps/add")}>
-          <Icon margin="end" name="moon" />
-          Add sleep
-        </Button>
-        <Button onClick={() => navigate("/weights/add")}>
-          <Icon margin="end" name="weight" />
-          Add weight
-        </Button>
+        {(["sleeps", "weights"] as const).map((eventType) => (
+          <QuickTrackNavButton key={eventType} eventType={eventType} />
+        ))}
         <Button onClick={() => navigate("/meditation")}>
           <Icon margin="end" name="bell" />
           Meditate
         </Button>
-        <Button onClick={() => navigate("/push-ups/add")}>
-          <span className="m-quick-track-nav__icon">💪</span>
-          Add push-ups
-        </Button>
-        <Button onClick={() => navigate("/sit-ups/add")}>
-          <span className="m-quick-track-nav__icon">🏋️</span>
-          Add sit-ups
-        </Button>
+        {(["push-ups", "sit-ups", "leg-raises"] as const).map((eventType) => (
+          <QuickTrackNavButton key={eventType} eventType={eventType} />
+        ))}
       </div>
     </Paper>
   );

@@ -8,7 +8,7 @@ describe("when unauthed", () => {
   });
 
   it("does not allow access to protected routes", () => {
-    cy.visit(PATHS.moodAdd);
+    cy.visit(PATHS.meditation);
     cy.title().should("equal", ROOT_DOCUMENT_TITLE);
     cy.location("pathname").should("equal", "/");
   });

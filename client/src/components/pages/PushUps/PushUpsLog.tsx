@@ -4,19 +4,14 @@ import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 export default function PushUpsLog() {
-  const normalizedPushUps = useSelector(
-    eventsSlice.selectors.normalizedPushUps,
-  );
-  const denormalizedPushUps = useSelector(
-    eventsSlice.selectors.denormalizedPushUps,
-  );
-
   return (
     <EventLog
       CardComponent={PushUpsCard}
-      denormalizedEvents={denormalizedPushUps}
+      denormalizedEvents={useSelector(
+        eventsSlice.selectors.denormalizedPushUps,
+      )}
       eventType="push-ups"
-      normalizedEvents={normalizedPushUps}
+      normalizedEvents={useSelector(eventsSlice.selectors.normalizedPushUps)}
     />
   );
 }

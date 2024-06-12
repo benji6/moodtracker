@@ -12,17 +12,8 @@ export const ERRORS = {
 export const PATHS = {
   meditation: "/meditation",
   meditationTimer: "/meditation/timer",
-  moodAdd: "/add",
-  pushUpsAdd: "/push-ups/add",
-  pushUpsLog: "/push-ups/log",
   resetPassword: "/reset-password",
-  sitUpsAdd: "/sit-ups/add",
-  sitUpsLog: "/sit-ups/log",
-  sleepAdd: "/sleeps/add",
-  sleepLog: "/sleeps/log",
   statsOverview: "/stats",
-  weightAdd: "/weights/add",
-  weightLog: "/weights/log",
 } as const;
 
 export const ROOT_DOCUMENT_TITLE =

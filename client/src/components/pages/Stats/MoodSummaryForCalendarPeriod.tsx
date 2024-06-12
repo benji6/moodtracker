@@ -43,6 +43,12 @@ export default function MoodSummaryForCalendarPeriod({
   const secondsMeditatedInPreviousPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.secondsMeditatedInPeriod(state, date0, date1),
   );
+  const totalLegRaisesInCurrentPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.totalLegRaisesInPeriod(state, date1, date2),
+  );
+  const totalLegRaisesInPreviousPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.totalLegRaisesInPeriod(state, date0, date1),
+  );
   const totalPushUpsInCurrentPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.totalPushUpsInPeriod(state, date1, date2),
   );
@@ -91,6 +97,7 @@ export default function MoodSummaryForCalendarPeriod({
           standardDeviation:
             computeCompletePopulationStandardDeviation(moodValues),
           total: moodValues.length,
+          totalLegRaises: totalLegRaisesInCurrentPeriod,
           totalPushUps: totalPushUpsInCurrentPeriod,
           totalSitUps: totalSitUpsInCurrentPeriod,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
@@ -109,6 +116,7 @@ export default function MoodSummaryForCalendarPeriod({
                 standardDeviation:
                   computeCompletePopulationStandardDeviation(prevMoodValues),
                 total: prevMoodValues.length,
+                totalLegRaises: totalLegRaisesInPreviousPeriod,
                 totalPushUps: totalPushUpsInPreviousPeriod,
                 totalSitUps: totalSitUpsInPreviousPeriod,
                 worst: prevMoodValues.length

@@ -1,4 +1,4 @@
-import { ERRORS, PATHS, SELECTORS } from "./constants";
+import { ERRORS, SELECTORS } from "./constants";
 
 describe("weight", () => {
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe("weight", () => {
 
   describe("adding a weight", () => {
     beforeEach(() => {
-      cy.visit(PATHS.weightAdd);
+      cy.visit("/weights/add");
       cy.get(SELECTORS.eventAddPage);
     });
 
@@ -53,7 +53,7 @@ describe("weight", () => {
       cy.get(SELECTORS.weightValueInput).type(`${testValue}{enter}`);
       const expectedTime = Math.round(Date.now() / 1e3);
 
-      cy.location("pathname").should("equal", PATHS.weightLog);
+      cy.location("pathname").should("equal", "/weights/log");
       cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue}kg`);

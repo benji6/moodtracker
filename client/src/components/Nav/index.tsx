@@ -25,6 +25,7 @@ interface Props {
 export default function Nav({ handleNavClose, open }: Props) {
   const hasMoods = useSelector(eventsSlice.selectors.hasMoods);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const hasLegRaises = useSelector(eventsSlice.selectors.hasLegRaises);
   const hasMeditations = useSelector(eventsSlice.selectors.hasMeditations);
   const hasPushUps = useSelector(eventsSlice.selectors.hasPushUps);
   const hasSitUps = useSelector(eventsSlice.selectors.hasSitUps);
@@ -95,23 +96,11 @@ export default function Nav({ handleNavClose, open }: Props) {
               </EriNav.SubList>
               <TrackedCategorySubList
                 eventType="sleeps"
-                heading={
-                  <>
-                    <Icon margin="end" name="moon" />
-                    Sleep
-                  </>
-                }
                 onClick={handleNavClose}
                 showLog={hasSleeps}
               />
               <TrackedCategorySubList
                 eventType="weights"
-                heading={
-                  <>
-                    <Icon margin="end" name="weight" />
-                    Weight
-                  </>
-                }
                 onClick={handleNavClose}
                 showLog={hasWeights}
               />
@@ -136,23 +125,18 @@ export default function Nav({ handleNavClose, open }: Props) {
               </EriNav.SubList>
               <TrackedCategorySubList
                 eventType="push-ups"
-                heading={
-                  <>
-                    <span className="m-nav__icon">💪</span>Push-ups
-                  </>
-                }
                 onClick={handleNavClose}
                 showLog={hasPushUps}
               />
               <TrackedCategorySubList
                 eventType="sit-ups"
-                heading={
-                  <>
-                    <span className="m-nav__icon">🏋️</span>Sit-ups
-                  </>
-                }
                 onClick={handleNavClose}
                 showLog={hasSitUps}
+              />
+              <TrackedCategorySubList
+                eventType="leg-raises"
+                onClick={handleNavClose}
+                showLog={hasLegRaises}
               />
               <EriNav.SubList
                 heading={

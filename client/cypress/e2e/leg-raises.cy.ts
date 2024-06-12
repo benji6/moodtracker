@@ -1,14 +1,14 @@
 import { ERRORS, SELECTORS } from "./constants";
 
-describe("push-ups", () => {
+describe("leg raises", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit("/push-ups/add");
+    cy.visit("/leg-raises/add");
   });
 
-  describe("adding push-ups", () => {
+  describe("adding leg raises", () => {
     beforeEach(() => {
-      cy.visit("/push-ups/add");
+      cy.visit("/leg-raises/add");
       cy.get(SELECTORS.eventAddPage);
     });
 
@@ -22,8 +22,8 @@ describe("push-ups", () => {
     });
 
     it("errors when provided with text instead of number", () => {
-      cy.get(SELECTORS.pushUpsValueInput).type("a{enter}");
-      cy.get(SELECTORS.pushUpsValueInput).should("have.value", "");
+      cy.get(SELECTORS.legRaisesValueInput).type("a{enter}");
+      cy.get(SELECTORS.legRaisesValueInput).should("have.value", "");
       cy.get('[data-eri-id="field-error"]').should("have.length", 1);
       cy.get('[data-eri-id="field-error"]').should(
         "have.text",
@@ -32,7 +32,7 @@ describe("push-ups", () => {
     });
 
     it("errors when range overflows", () => {
-      cy.get(SELECTORS.pushUpsValueInput).type("1001{enter}");
+      cy.get(SELECTORS.legRaisesValueInput).type("1001{enter}");
       cy.get('[data-eri-id="field-error"]').should("have.length", 1);
       cy.get('[data-eri-id="field-error"]').should(
         "have.text",
@@ -41,7 +41,7 @@ describe("push-ups", () => {
     });
 
     it("errors when range underflows", () => {
-      cy.get(SELECTORS.pushUpsValueInput).type("0{enter}");
+      cy.get(SELECTORS.legRaisesValueInput).type("0{enter}");
       cy.get('[data-eri-id="field-error"]').should("have.length", 1);
       cy.get('[data-eri-id="field-error"]').should(
         "have.text",
@@ -50,20 +50,20 @@ describe("push-ups", () => {
     });
 
     it("errors when value is not an integer", () => {
-      cy.get(SELECTORS.pushUpsValueInput).type("20.1{enter}");
+      cy.get(SELECTORS.legRaisesValueInput).type("20.1{enter}");
       cy.get('[data-eri-id="field-error"]').should("have.length", 1);
       cy.get('[data-eri-id="field-error"]').should("have.text", ERRORS.integer);
     });
 
     it("works when value is valid", () => {
       const testValue = "20";
-      cy.get(SELECTORS.pushUpsValueInput).type(testValue);
+      cy.get(SELECTORS.legRaisesValueInput).type(testValue);
       const expectedTime = Math.round(Date.now() / 1e3);
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", "/push-ups/log");
+      cy.location("pathname").should("equal", "/leg-raises/log");
       cy.get(SELECTORS.eventCardValue)
         .first()
-        .should("have.text", `${testValue} push-ups`);
+        .should("have.text", `${testValue} leg raises`);
 
       cy.get(SELECTORS.eventCardTime)
         .invoke("attr", "data-time")
@@ -71,10 +71,12 @@ describe("push-ups", () => {
         .should("be.closeTo", expectedTime, 1);
     });
 
-    it("works with 1 push-up", () => {
-      cy.get(SELECTORS.pushUpsValueInput).type("1{enter}");
-      cy.location("pathname").should("equal", "/push-ups/log");
-      cy.get(SELECTORS.eventCardValue).first().should("have.text", "1 push-up");
+    it("works with 1 leg raise", () => {
+      cy.get(SELECTORS.legRaisesValueInput).type("1{enter}");
+      cy.location("pathname").should("equal", "/leg-raises/log");
+      cy.get(SELECTORS.eventCardValue)
+        .first()
+        .should("have.text", "1 leg raise");
     });
   });
 });

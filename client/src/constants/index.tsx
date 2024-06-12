@@ -4,7 +4,6 @@ import {
   weekdayShortFormatter,
 } from "../formatters/dateTimeFormatters";
 import { addDays, startOfWeek } from "date-fns";
-import { EventTypeCategories } from "../types";
 import testIds from "./testIds";
 
 export const BUILD_TIME = process.env.BUILD_TIME!;
@@ -54,39 +53,6 @@ export const ERRORS = {
   rangeOverflow: "Value is too big, please input something smaller",
   rangeUnderflow: "Value is too small, please input something bigger",
   required: "Required",
-} as const;
-
-export const EVENT_TYPE_TO_LABEL: {
-  [eventType in EventTypeCategories]: string;
-} = {
-  "push-ups": "push-ups",
-  "sit-ups": "sit-ups",
-  meditations: "meditation",
-  moods: "mood",
-  sleeps: "sleep",
-  weights: "weight",
-} as const;
-
-export const EVENT_TYPE_TO_LABEL_PLURAL: {
-  [eventType in EventTypeCategories]: string;
-} = {
-  "push-ups": "push-ups",
-  "sit-ups": "sit-ups",
-  meditations: "meditations",
-  moods: "moods",
-  sleeps: "sleeps",
-  weights: "weights",
-} as const;
-
-export const EVENT_TYPE_TO_LABEL_SINGULAR: {
-  [eventType in EventTypeCategories]: string;
-} = {
-  "push-ups": "push-up",
-  "sit-ups": "sit-up",
-  meditations: "meditation",
-  moods: "mood",
-  sleeps: "sleep",
-  weights: "weight",
 } as const;
 
 export const PATTERNS = {
@@ -145,6 +111,16 @@ export const FIELDS = {
     "data-test-id": TEST_IDS.hoursSleptInput,
     label: "Hours slept",
     name: "hours-slept",
+  },
+  legRaises: {
+    "data-test-id": TEST_IDS.legRaisesValueInput,
+    label: "Leg raises",
+    max: 1000,
+    min: 1,
+    name: "leg-raises",
+    style: { width: "5em" },
+    supportiveText: "You can log your sets individually or all together",
+    type: "number",
   },
   minutesSlept: {
     "data-test-id": TEST_IDS.minutesSleptInput,

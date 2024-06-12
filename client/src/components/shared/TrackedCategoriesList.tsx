@@ -1,5 +1,7 @@
 import { Card } from "eri";
+import { ComponentType } from "react";
 import { EventTypeCategories } from "../../types";
+import LegRaisesCard from "./LegRaisesCard";
 import MeditationCard from "./MeditationCard";
 import MoodCard from "./MoodCard";
 import PushUpsCard from "./PushUpsCard";
@@ -10,9 +12,12 @@ import eventsSlice from "../../store/eventsSlice";
 import { mapRight } from "../../utils";
 import { useSelector } from "react-redux";
 
-const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT = {
+const TRACKED_CATEGORY_TYPE_TO_CARD_COMPONENT: {
+  [eventType in EventTypeCategories]: ComponentType<{ id: string }>;
+} = {
   meditations: MeditationCard,
   moods: MoodCard,
+  "leg-raises": LegRaisesCard,
   "push-ups": PushUpsCard,
   "sit-ups": SitUpsCard,
   sleeps: SleepCard,

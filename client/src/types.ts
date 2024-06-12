@@ -9,20 +9,26 @@ export type NormalizedAllCategories = {
     [id: string]: (
       | (Meditation & { type: "meditations" })
       | (Mood & { type: "moods" })
-      | (PushUps & { type: "push-ups" })
       | (Sleep & { type: "sleeps" })
-      | (Weight & { type: "weights" })
+      | (ValueAndLocationEvent & { type: "leg-raises" })
+      | (ValueAndLocationEvent & { type: "push-ups" })
+      | (ValueAndLocationEvent & { type: "sit-ups" })
+      | (ValueAndLocationEvent & { type: "weights" })
     ) & {
       updatedAt?: string;
     };
   };
 };
+export type NormalizedLegRaises =
+  NormalizedTrackedCategory<ValueAndLocationEvent>;
 export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
-export type NormalizedPushUps = NormalizedTrackedCategory<PushUps>;
-export type NormalizedSitUps = NormalizedTrackedCategory<SitUps>;
+export type NormalizedPushUps =
+  NormalizedTrackedCategory<ValueAndLocationEvent>;
+export type NormalizedSitUps = NormalizedTrackedCategory<ValueAndLocationEvent>;
 export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
-export type NormalizedWeights = NormalizedTrackedCategory<Weight>;
+export type NormalizedWeights =
+  NormalizedTrackedCategory<ValueAndLocationEvent>;
 
 export type NormalizedEvents =
   | NormalizedMeditations
@@ -33,9 +39,8 @@ export type NormalizedEvents =
 export type DenormalizedEvents =
   | Meditation[]
   | Mood[]
-  | PushUps[]
-  | Sleep[]
-  | Weight[];
+  | ValueAndLocationEvent[]
+  | Sleep[];
 
 export interface Meditation {
   location?: DeviceGeolocation;
@@ -66,19 +71,12 @@ export interface UpdateMood {
   mood?: number;
 }
 
-interface PushUps {
+interface ValueAndLocationEvent {
   location?: DeviceGeolocation;
   value: number;
 }
-interface SitUps {
-  location?: DeviceGeolocation;
-  value: number;
-}
-export interface Weight {
-  location?: DeviceGeolocation;
-  value: number;
-}
-export interface UpdateWeight {
+
+interface ValueUpdateEvent {
   id: string;
   value: number;
 }
@@ -93,6 +91,7 @@ export interface UpdateSleep extends Sleep {
 
 type EventTypeVersions = "v1";
 export type EventTypeCategories =
+  | "leg-raises"
   | "meditations"
   | "moods"
   | "push-ups"
@@ -116,19 +115,21 @@ type PayloadEvent<Type extends EventType, Payload> = {
 };
 
 export type AppCreateEvent =
+  | PayloadEvent<"v1/leg-raises/create", ValueAndLocationEvent>
   | PayloadEvent<"v1/meditations/create", Meditation>
   | PayloadEvent<"v1/moods/create", Mood>
-  | PayloadEvent<"v1/push-ups/create", PushUps>
-  | PayloadEvent<"v1/sit-ups/create", PushUps>
+  | PayloadEvent<"v1/push-ups/create", ValueAndLocationEvent>
+  | PayloadEvent<"v1/sit-ups/create", ValueAndLocationEvent>
   | PayloadEvent<"v1/sleeps/create", Sleep>
-  | PayloadEvent<"v1/weights/create", Weight>;
+  | PayloadEvent<"v1/weights/create", ValueAndLocationEvent>;
 
 export type AppUpdateEvent =
+  | PayloadEvent<"v1/leg-raises/update", ValueUpdateEvent>
   | PayloadEvent<"v1/moods/update", UpdateMood>
-  | PayloadEvent<"v1/push-ups/update", UpdateWeight>
-  | PayloadEvent<"v1/sit-ups/update", UpdateWeight>
+  | PayloadEvent<"v1/push-ups/update", ValueUpdateEvent>
+  | PayloadEvent<"v1/sit-ups/update", ValueUpdateEvent>
   | PayloadEvent<"v1/sleeps/update", UpdateSleep>
-  | PayloadEvent<"v1/weights/update", UpdateWeight>;
+  | PayloadEvent<"v1/weights/update", ValueUpdateEvent>;
 
 export type AppEvent =
   | AppCreateEvent

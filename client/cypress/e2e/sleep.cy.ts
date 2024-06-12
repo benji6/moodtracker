@@ -1,4 +1,4 @@
-import { ERRORS, PATHS, SELECTORS } from "./constants";
+import { ERRORS, SELECTORS } from "./constants";
 
 const formatIsoDateInLocalTimezone = (date: Date): string =>
   `${String(date.getFullYear())}-${String(date.getMonth() + 1).padStart(
@@ -9,12 +9,12 @@ const formatIsoDateInLocalTimezone = (date: Date): string =>
 describe("sleep", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(PATHS.sleepAdd);
+    cy.visit("/sleeps/add");
   });
 
   describe("adding a sleep", () => {
     beforeEach(() => {
-      cy.visit(PATHS.sleepAdd);
+      cy.visit("/sleeps/add");
       cy.get(SELECTORS.eventAddPage);
       cy.get(SELECTORS.dateAwokeInput).should(
         "have.value",
@@ -51,7 +51,7 @@ describe("sleep", () => {
       cy.get(SELECTORS.hoursSleptInput).select("8");
       cy.get(SELECTORS.minutesSleptInput).select("10");
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", PATHS.sleepLog);
+      cy.location("pathname").should("equal", "/sleeps/log");
       cy.get(SELECTORS.sleepCardValue)
         .first()
         .should("have.text", "8 hours & 10 minutes");

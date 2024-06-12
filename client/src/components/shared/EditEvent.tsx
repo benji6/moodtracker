@@ -1,8 +1,9 @@
 import { Button, Icon, Paper } from "eri";
 import { DeviceGeolocation, EventTypeCategories } from "../../types";
-import { ERRORS, EVENT_TYPE_TO_LABEL } from "../../constants";
 import { ReactNode, forwardRef, useState } from "react";
 import DeleteEventDialog from "./DeleteEventDialog";
+import { ERRORS } from "../../constants";
+import { EVENT_TYPE_TO_LABEL } from "../../constants/eventTypeMappings";
 import Location from "./Location";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import { formatDistanceToNow } from "date-fns";

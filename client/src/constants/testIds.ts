@@ -9,6 +9,7 @@ export default (() => {
     "eventCardTime",
     "eventCardValue",
     "hoursSleptInput",
+    "legRaisesValueInput",
     "meditatePage",
     "meditationCustomTimeInput",
     "meditationPresetTimeButton",

@@ -1,14 +1,14 @@
-import { ERRORS, PATHS, SELECTORS } from "./constants";
+import { ERRORS, SELECTORS } from "./constants";
 
 describe("sit-ups", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(PATHS.sitUpsAdd);
+    cy.visit("/sit-ups/add");
   });
 
   describe("adding sit-ups", () => {
     beforeEach(() => {
-      cy.visit(PATHS.sitUpsAdd);
+      cy.visit("/sit-ups/add");
       cy.get(SELECTORS.eventAddPage);
     });
 
@@ -60,7 +60,7 @@ describe("sit-ups", () => {
       cy.get(SELECTORS.sitUpsValueInput).type(testValue);
       const expectedTime = Math.round(Date.now() / 1e3);
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", PATHS.sitUpsLog);
+      cy.location("pathname").should("equal", "/sit-ups/log");
       cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue} sit-ups`);
@@ -73,7 +73,7 @@ describe("sit-ups", () => {
 
     it("works with 1 sit-up", () => {
       cy.get(SELECTORS.sitUpsValueInput).type("1{enter}");
-      cy.location("pathname").should("equal", PATHS.sitUpsLog);
+      cy.location("pathname").should("equal", "/sit-ups/log");
       cy.get(SELECTORS.eventCardValue).first().should("have.text", "1 sit-up");
     });
   });

@@ -7,7 +7,7 @@ import {
 import {
   EVENT_TYPE_TO_LABEL,
   EVENT_TYPE_TO_LABEL_PLURAL,
-} from "../../constants";
+} from "../../constants/eventTypeMappings";
 import { FC, useState } from "react";
 import { capitalizeFirstLetter, mapRight } from "../../utils";
 import ExportControls from "./ExportControls";

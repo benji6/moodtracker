@@ -1,4 +1,4 @@
-import { ERRORS, PATHS, SELECTORS } from "./constants";
+import { ERRORS, SELECTORS } from "./constants";
 
 describe("mood", () => {
   beforeEach(() => {
@@ -7,7 +7,7 @@ describe("mood", () => {
 
   describe("adding a mood", () => {
     beforeEach(() => {
-      cy.visit(PATHS.moodAdd);
+      cy.visit("/add");
       cy.get(SELECTORS.eventAddPage);
     });
 

@@ -3,10 +3,10 @@ import { DeviceGeolocation, EventTypeCategories } from "../../../types";
 import {
   EVENT_TYPE_TO_LABEL_PLURAL,
   EVENT_TYPE_TO_LABEL_SINGULAR,
-  TEST_IDS,
-} from "../../../constants";
+} from "../../../constants/eventTypeMappings";
 import { Card } from "eri";
 import LocationString from "../LocationString";
+import { TEST_IDS } from "../../../constants";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 

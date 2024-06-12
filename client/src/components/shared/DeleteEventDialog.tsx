@@ -1,5 +1,5 @@
 import { Button, Dialog, Icon } from "eri";
-import { EVENT_TYPE_TO_LABEL } from "../../constants";
+import { EVENT_TYPE_TO_LABEL } from "../../constants/eventTypeMappings";
 import { EventTypeCategories } from "../../types";
 import eventsSlice from "../../store/eventsSlice";
 import { useDispatch } from "react-redux";

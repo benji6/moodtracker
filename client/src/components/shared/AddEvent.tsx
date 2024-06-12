@@ -1,8 +1,9 @@
 import { Button, Icon, Paper, SubHeading } from "eri";
-import { EVENT_TYPE_TO_LABEL, TEST_IDS } from "../../constants";
 import { ReactNode, forwardRef } from "react";
+import { EVENT_TYPE_TO_LABEL } from "../../constants/eventTypeMappings";
 import { EventTypeCategories } from "../../types";
 import LiveLocation from "./LiveLocation";
+import { TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 
 interface Props {

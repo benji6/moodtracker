@@ -30,6 +30,9 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const secondsMeditated = useSelector((state: RootState) =>
     eventsSlice.selectors.secondsMeditatedInPeriod(state, dateFrom, dateTo),
   );
+  const totalLegRaises = useSelector((state: RootState) =>
+    eventsSlice.selectors.totalLegRaisesInPeriod(state, dateFrom, dateTo),
+  );
   const totalPushUps = useSelector((state: RootState) =>
     eventsSlice.selectors.totalPushUpsInPeriod(state, dateFrom, dateTo),
   );
@@ -52,6 +55,7 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
           standardDeviation:
             computeCompletePopulationStandardDeviation(moodValues),
           total: moodValues.length,
+          totalLegRaises,
           totalPushUps,
           totalSitUps,
           worst: moodValues.length ? Math.min(...moodValues) : undefined,

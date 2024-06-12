@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { EVENT_TYPE_TO_LABEL } from "../constants";
+import { EVENT_TYPE_TO_LABEL } from "../constants/eventTypeMappings";
 import { EventTypeCategories } from "../types";
 import Page from "../components/shared/Page";
 import RedirectHome from "../components/shared/RedirectHome";

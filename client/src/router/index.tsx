@@ -4,6 +4,7 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import About from "../components/pages/About";
+import AddLegRaises from "../components/pages/LegRaises/AddLegRaises";
 import AddMood from "../components/pages/Mood/AddMood";
 import AddPushUps from "../components/pages/PushUps/AddPushUps";
 import AddSitUps from "../components/pages/SitUps/AddSitUps";
@@ -13,6 +14,7 @@ import Blog from "../components/pages/Blog";
 import ChangeEmail from "../components/pages/Settings/ChangeEmail";
 import ChangePassword from "../components/pages/Settings/ChangePassword";
 import Day from "../components/pages/Stats/Day";
+import EditLegRaises from "../components/pages/LegRaises/EditLegRaises";
 import EditMood from "../components/pages/Mood/EditMood";
 import EditPushUps from "../components/pages/PushUps/EditPushUps";
 import EditSitUps from "../components/pages/SitUps/EditSitUps";
@@ -23,6 +25,7 @@ import Explore from "../components/pages/Stats/Explore";
 import ForgotPassword from "../components/pages/ForgotPassword";
 import Home from "../components/pages/Home";
 import Layout from "../components/Layout";
+import LegRaisesLog from "../components/pages/LegRaises/LegRaisesLog";
 import LocationSettings from "../components/pages/Settings/LocationSettings";
 import Meditate from "../components/pages/Meditation/Meditate";
 import MeditationLog from "../components/pages/Meditation/MeditationLog";
@@ -139,6 +142,12 @@ function Root() {
                     />
                   </Route>
                   {[
+                    trackedCategoryRoutes({
+                      AddComponent: AddLegRaises,
+                      EditComponent: EditLegRaises,
+                      eventType: "leg-raises",
+                      LogComponent: LegRaisesLog,
+                    }),
                     trackedCategoryRoutes({
                       AddComponent: AddPushUps,
                       EditComponent: EditPushUps,
