@@ -39,14 +39,16 @@ interface Props {
 }
 
 function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
   const allDenormalizedTrackedCategoriesByDate = useSelector(
     eventsSlice.selectors.allDenormalizedTrackedCategoriesByDate,
   );
   const isoDateInLocalTimezone = formatIsoDateInLocalTimezone(date);
   const denormalizedTrackedCategories =
     allDenormalizedTrackedCategoriesByDate[isoDateInLocalTimezone];
-  const moodIds = moodIdsByDate[isoDateInLocalTimezone];
+  const hasMoodIds: boolean = Boolean(
+    denormalizedTrackedCategories?.filter(({ type }) => type === "moods")
+      .length,
+  );
   const startOfWeekDate = startOfWeek(date, WEEK_OPTIONS);
 
   const xLabels: string[] = [];
@@ -101,30 +103,36 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
-      {moodIds && (
-        <MoodChartForPeriod
-          dateFrom={date}
-          dateTo={nextDate}
-          xAxisTitle="Time"
-          xLabels={xLabels}
-        />
-      )}
-      <WeightChartForPeriod
-        dateFrom={date}
-        dateTo={nextDate}
-        xLabels={xLabels}
-      />
-      <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
-      <WeatherForPeriod dateFrom={date} dateTo={nextDate} xLabels={xLabels} />
-      <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
       {denormalizedTrackedCategories ? (
-        <Paper>
-          <h3>Events</h3>
-          <TrackedCategoriesList
-            isoDateInLocalTimezone={isoDateInLocalTimezone}
+        <>
+          <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
+          {hasMoodIds && (
+            <MoodChartForPeriod
+              dateFrom={date}
+              dateTo={nextDate}
+              xAxisTitle="Time"
+              xLabels={xLabels}
+            />
+          )}
+          <WeightChartForPeriod
+            dateFrom={date}
+            dateTo={nextDate}
+            xLabels={xLabels}
           />
-        </Paper>
+          <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
+          <WeatherForPeriod
+            dateFrom={date}
+            dateTo={nextDate}
+            xLabels={xLabels}
+          />
+          <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
+          <Paper>
+            <h3>Events</h3>
+            <TrackedCategoriesList
+              isoDateInLocalTimezone={isoDateInLocalTimezone}
+            />
+          </Paper>
+        </>
       ) : (
         <Paper>
           <p>Nothing logged on this day.</p>
