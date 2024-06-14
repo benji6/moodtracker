@@ -1,6 +1,6 @@
 import { Button, Icon, Paper, SubHeading } from "eri";
 import { ReactNode, forwardRef } from "react";
-import { EVENT_TYPE_TO_LABEL } from "../../constants/eventTypeMappings";
+import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import { EventTypeCategories } from "../../types";
 import LiveLocation from "./LiveLocation";
 import { TEST_IDS } from "../../constants";
@@ -23,7 +23,7 @@ export default forwardRef<HTMLFormElement, Props>(function AddEvent(
     <Paper.Group data-test-id={TEST_IDS.eventAddPage}>
       <Paper>
         <h2>
-          Add {EVENT_TYPE_TO_LABEL[eventType]}
+          Add {EVENT_TYPE_TO_LABELS[eventType].default}
           {subheading && <SubHeading>{subheading}</SubHeading>}
         </h2>
 

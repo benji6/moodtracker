@@ -1,5 +1,5 @@
 import { Button, Dialog, Icon } from "eri";
-import { EVENT_TYPE_TO_LABEL } from "../../constants/eventTypeMappings";
+import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import { EventTypeCategories } from "../../types";
 import eventsSlice from "../../store/eventsSlice";
 import { useDispatch } from "react-redux";
@@ -25,7 +25,7 @@ export default function DeleteEventDialog({
     <Dialog
       onClose={onClose}
       open={open}
-      title={`Delete ${EVENT_TYPE_TO_LABEL[eventType]}?`}
+      title={`Delete ${EVENT_TYPE_TO_LABELS[eventType].default}?`}
     >
       <Button.Group>
         <Button

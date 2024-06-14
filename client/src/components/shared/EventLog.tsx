@@ -4,12 +4,9 @@ import {
   EventTypeCategories,
   NormalizedEvents,
 } from "../../types";
-import {
-  EVENT_TYPE_TO_LABEL,
-  EVENT_TYPE_TO_LABEL_PLURAL,
-} from "../../constants/eventTypeMappings";
 import { FC, useState } from "react";
 import { capitalizeFirstLetter, mapRight } from "../../utils";
+import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import ExportControls from "./ExportControls";
 import RedirectHome from "./RedirectHome";
 
@@ -38,12 +35,14 @@ export default function EventLog({
 
   if (!normalizedEvents.allIds.length) return <RedirectHome />;
 
-  const eventTypeLabelPlural = EVENT_TYPE_TO_LABEL_PLURAL[eventType];
+  const eventTypeLabelPlural = EVENT_TYPE_TO_LABELS[eventType].plural;
 
   return (
     <Paper.Group>
       <Paper>
-        <h2>{capitalizeFirstLetter(EVENT_TYPE_TO_LABEL[eventType])} log</h2>
+        <h2>
+          {capitalizeFirstLetter(EVENT_TYPE_TO_LABELS[eventType].default)} log
+        </h2>
         <h3>
           Export
           <SubHeading>

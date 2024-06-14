@@ -1,10 +1,7 @@
 import "./style.css";
 import { DeviceGeolocation, EventTypeCategories } from "../../../types";
-import {
-  EVENT_TYPE_TO_LABEL_PLURAL,
-  EVENT_TYPE_TO_LABEL_SINGULAR,
-} from "../../../constants/eventTypeMappings";
 import { Card } from "eri";
+import EVENT_TYPE_TO_LABELS from "../../../constants/eventTypeToLabels";
 import LocationString from "../LocationString";
 import { TEST_IDS } from "../../../constants";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
@@ -37,9 +34,9 @@ export default function EventCard({
             {units
               ? units
               : ` ${
-                  (value === 1
-                    ? EVENT_TYPE_TO_LABEL_SINGULAR
-                    : EVENT_TYPE_TO_LABEL_PLURAL)[eventType]
+                  EVENT_TYPE_TO_LABELS[eventType][
+                    value === 1 ? "singular" : "plural"
+                  ]
                 }`}
           </b>
         </div>

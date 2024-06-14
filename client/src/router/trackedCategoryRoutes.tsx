@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { EVENT_TYPE_TO_LABEL } from "../constants/eventTypeMappings";
+import EVENT_TYPE_TO_LABELS from "../constants/eventTypeToLabels";
 import { EventTypeCategories } from "../types";
 import Page from "../components/shared/Page";
 import RedirectHome from "../components/shared/RedirectHome";
@@ -19,7 +19,7 @@ export default function trackedCategoryRoutes({
   eventType,
   LogComponent,
 }: Props) {
-  const eventTypeLabel = EVENT_TYPE_TO_LABEL[eventType];
+  const eventTypeLabel = EVENT_TYPE_TO_LABELS[eventType].default;
 
   return (
     <Route path={`/${eventType}`}>

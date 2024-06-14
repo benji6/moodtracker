@@ -3,7 +3,7 @@ import { DeviceGeolocation, EventTypeCategories } from "../../types";
 import { ReactNode, forwardRef, useState } from "react";
 import DeleteEventDialog from "./DeleteEventDialog";
 import { ERRORS } from "../../constants";
-import { EVENT_TYPE_TO_LABEL } from "../../constants/eventTypeMappings";
+import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import Location from "./Location";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import { formatDistanceToNow } from "date-fns";
@@ -30,7 +30,7 @@ export default forwardRef<HTMLFormElement, Props>(function EditEvent(
   const dateCreated = new Date(id);
   const dateUpdated = updatedAt ? new Date(updatedAt) : undefined;
 
-  const eventLabel = EVENT_TYPE_TO_LABEL[eventType];
+  const eventLabel = EVENT_TYPE_TO_LABELS[eventType].default;
 
   return (
     <Paper.Group>

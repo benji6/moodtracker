@@ -1,9 +1,6 @@
 import "./style.css";
-import {
-  EVENT_TYPE_TO_ICON,
-  EVENT_TYPE_TO_LABEL,
-} from "../../../constants/eventTypeMappings";
 import { Nav as EriNav, Icon } from "eri";
+import EVENT_TYPE_TO_LABELS from "../../../constants/eventTypeToLabels";
 import { EventTypeCategories } from "../../../types";
 import { capitalizeFirstLetter } from "../../../utils";
 
@@ -21,9 +18,9 @@ export default function TrackedCategorySubList({
       heading={
         <span>
           <span className="m-tracked-category-sub-list__icon">
-            {EVENT_TYPE_TO_ICON[eventType]}
+            {EVENT_TYPE_TO_LABELS[eventType].icon}
           </span>
-          {capitalizeFirstLetter(EVENT_TYPE_TO_LABEL[eventType])}
+          {capitalizeFirstLetter(EVENT_TYPE_TO_LABELS[eventType].default)}
         </span>
       }
     >

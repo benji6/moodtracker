@@ -1,9 +1,6 @@
 import "./style.css";
-import {
-  EVENT_TYPE_TO_ICON,
-  EVENT_TYPE_TO_LABEL,
-} from "../../../../../constants/eventTypeMappings";
 import { Button } from "eri";
+import EVENT_TYPE_TO_LABELS from "../../../../../constants/eventTypeToLabels";
 import { EventTypeCategories } from "../../../../../types";
 import { useNavigate } from "react-router-dom";
 
@@ -16,9 +13,9 @@ export function QuickTrackNavButton({ eventType }: Props) {
   return (
     <Button onClick={() => navigate(`/${eventType}/add`)}>
       <span className="m-quick-track-nav-button__icon">
-        {EVENT_TYPE_TO_ICON[eventType]}
+        {EVENT_TYPE_TO_LABELS[eventType].icon}
       </span>
-      Add {EVENT_TYPE_TO_LABEL[eventType]}
+      Add {EVENT_TYPE_TO_LABELS[eventType].default}
     </Button>
   );
 }
