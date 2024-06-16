@@ -36,7 +36,8 @@ export default function AddSleep() {
         createdAt: new Date().toISOString(),
         payload: {
           minutesSlept:
-            Number(hoursSleptEl.value) * 60 + Number(minutesSleptEl.value),
+            Number(hoursSleptEl.value) * TIME.minutesPerHour +
+            Number(minutesSleptEl.value),
           dateAwoke: dateAwokeEl.value,
         },
       }),

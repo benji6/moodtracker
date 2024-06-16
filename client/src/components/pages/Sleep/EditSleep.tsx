@@ -36,7 +36,8 @@ export default function EditSleep() {
     if (!dateAwokeEl.validity.valid) return;
 
     const minutesSlept =
-      Number(hoursSleptEl.value) * 60 + Number(minutesSleptEl.value);
+      Number(hoursSleptEl.value) * TIME.minutesPerHour +
+      Number(minutesSleptEl.value);
     if (
       minutesSlept === sleep.minutesSlept &&
       dateAwokeEl.value === sleep.dateAwoke
