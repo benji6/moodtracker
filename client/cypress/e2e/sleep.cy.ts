@@ -9,7 +9,6 @@ const formatIsoDateInLocalTimezone = (date: Date): string =>
 describe("sleep", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit("/sleeps/add");
   });
 
   describe("adding a sleep", () => {

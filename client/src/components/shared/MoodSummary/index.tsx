@@ -1,16 +1,21 @@
 import "./style.css";
+import {
+  formatMetersAsMetersOrKilometers,
+  oneDecimalPlaceFormatter,
+} from "../../../formatters/numberFormatters";
 import MoodSummaryItem from "./MoodSummaryItem";
 import { TIME } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatMinutesAsTimeStringShort } from "../../../formatters/formatMinutesAsTimeString";
-import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
 
 interface PeriodData {
   best?: number;
   mean?: number;
-  meanWeight?: number;
   meanSleep?: number;
+  meanWeight?: number;
+  runMeters: number;
+  runSeconds: number;
   secondsMeditated: number;
   standardDeviation?: number;
   total: number;
@@ -119,6 +124,49 @@ export default function MoodSummary({
             previousPeriod
               ? previousPeriod.secondsMeditated /
                 (currentPeriod.secondsMeditated >= TIME.secondsPerHour
+                  ? TIME.secondsPerHour
+                  : TIME.secondsPerMinute)
+              : undefined
+          }
+        />
+      )}
+      {Boolean(
+        previousPeriod
+          ? currentPeriod.runMeters || previousPeriod.runMeters
+          : currentPeriod.runMeters,
+      ) && (
+        <MoodSummaryItem
+          currentValue={currentPeriod.runMeters}
+          displayTrendSentiment
+          heading="Distance ran"
+          format={formatMetersAsMetersOrKilometers}
+          periodType={periodType}
+          previousValue={previousPeriod?.runMeters}
+        />
+      )}
+      {Boolean(
+        previousPeriod
+          ? currentPeriod.runSeconds || previousPeriod.runSeconds
+          : currentPeriod.runSeconds,
+      ) && (
+        <MoodSummaryItem
+          currentValue={
+            currentPeriod.runSeconds /
+            (currentPeriod.runSeconds >= TIME.secondsPerHour
+              ? TIME.secondsPerHour
+              : TIME.secondsPerMinute)
+          }
+          displayTrendSentiment
+          heading={`${
+            currentPeriod.runSeconds >= TIME.secondsPerHour
+              ? "Hours"
+              : "Minutes"
+          } ran`}
+          periodType={periodType}
+          previousValue={
+            previousPeriod
+              ? previousPeriod.runSeconds /
+                (currentPeriod.runSeconds >= TIME.secondsPerHour
                   ? TIME.secondsPerHour
                   : TIME.secondsPerMinute)
               : undefined

@@ -1,0 +1,7 @@
+.m-run-card {
+  align-items: center;
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+}

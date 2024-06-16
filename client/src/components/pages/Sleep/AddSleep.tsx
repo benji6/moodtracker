@@ -1,8 +1,8 @@
-import "./style.css";
 import { ERRORS, FIELDS, TIME } from "../../../constants";
 import { Select, TextField } from "eri";
 import { useRef, useState } from "react";
 import AddEvent from "../../shared/AddEvent";
+import IntervalInput from "../../shared/IntervalInput";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
@@ -49,7 +49,7 @@ export default function AddSleep() {
 
   return (
     <AddEvent eventType="sleeps" ref={formRef} onSubmit={onSubmit}>
-      <div className="m-interval-input">
+      <IntervalInput>
         <Select {...FIELDS.hoursSlept}>
           {[...Array(TIME.hoursPerDay)].map((_, i) => (
             <option key={i} value={i}>
@@ -64,7 +64,7 @@ export default function AddSleep() {
             </option>
           ))}
         </Select>
-      </div>
+      </IntervalInput>
       <TextField
         {...FIELDS.dateAwoke}
         defaultValue={isoDateStringNow}

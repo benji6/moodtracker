@@ -7,6 +7,7 @@ import About from "../components/pages/About";
 import AddLegRaises from "../components/pages/LegRaises/AddLegRaises";
 import AddMood from "../components/pages/Mood/AddMood";
 import AddPushUps from "../components/pages/PushUps/AddPushUps";
+import AddRun from "../components/pages/Run/AddRun";
 import AddSitUps from "../components/pages/SitUps/AddSitUps";
 import AddSleep from "../components/pages/Sleep/AddSleep";
 import AddWeight from "../components/pages/Weight/AddWeight";
@@ -17,6 +18,7 @@ import Day from "../components/pages/Stats/Day";
 import EditLegRaises from "../components/pages/LegRaises/EditLegRaises";
 import EditMood from "../components/pages/Mood/EditMood";
 import EditPushUps from "../components/pages/PushUps/EditPushUps";
+import EditRun from "../components/pages/Run/EditRun";
 import EditSitUps from "../components/pages/SitUps/EditSitUps";
 import EditSleep from "../components/pages/Sleep/EditSleep";
 import EditWeight from "../components/pages/Weight/EditWeight";
@@ -42,6 +44,7 @@ import { REPO_ISSUES_URL } from "../constants";
 import RedirectHome from "../components/shared/RedirectHome";
 import ResendVerification from "../components/pages/ResendVerification";
 import ResetPassword from "../components/pages/ResetPassword";
+import RunLog from "../components/pages/Run/RunLog";
 import SeeAlso from "../components/pages/SeeAlso";
 import SignIn from "../components/pages/SignIn";
 import SignUp from "../components/pages/SignUp";
@@ -159,6 +162,12 @@ function Root() {
                       EditComponent: EditSitUps,
                       eventType: "sit-ups",
                       LogComponent: SitUpsLog,
+                    }),
+                    trackedCategoryRoutes({
+                      AddComponent: AddRun,
+                      EditComponent: EditRun,
+                      eventType: "runs",
+                      LogComponent: RunLog,
                     }),
                     trackedCategoryRoutes({
                       AddComponent: AddSleep,

@@ -107,6 +107,29 @@ export const FIELDS = {
     supportiveText:
       "Use this space as a journal to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
   },
+  runMeters: {
+    "data-test-id": TEST_IDS.runMetersInput,
+    label: "Meters",
+    // A marathon is 42.195 km
+    max: 5e4,
+    min: 1,
+    name: "meters",
+    optional: true,
+    style: { width: "5em" },
+    type: "number",
+  },
+  runMinutes: {
+    "data-test-id": TEST_IDS.runMinutesInput,
+    label: "Minutes",
+    name: "minutes",
+    optional: true,
+  },
+  runSeconds: {
+    "data-test-id": TEST_IDS.runSecondsInput,
+    label: "Seconds",
+    name: "seconds",
+    optional: true,
+  },
   hoursSlept: {
     "data-test-id": TEST_IDS.hoursSleptInput,
     label: "Hours slept",

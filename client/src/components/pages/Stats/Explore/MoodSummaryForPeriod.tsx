@@ -27,6 +27,12 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
   const meanWeight = useSelector((state: RootState) =>
     eventsSlice.selectors.meanWeightInPeriod(state, dateFrom, dateTo),
   );
+  const runMeters = useSelector((state: RootState) =>
+    eventsSlice.selectors.runMetersInPeriod(state, dateFrom, dateTo),
+  );
+  const runSeconds = useSelector((state: RootState) =>
+    eventsSlice.selectors.runSecondsInPeriod(state, dateFrom, dateTo),
+  );
   const secondsMeditated = useSelector((state: RootState) =>
     eventsSlice.selectors.secondsMeditatedInPeriod(state, dateFrom, dateTo),
   );
@@ -51,6 +57,8 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
           mean: computeMeanSafe(moodValues),
           meanWeight,
           meanSleep,
+          runMeters,
+          runSeconds,
           secondsMeditated,
           standardDeviation:
             computeCompletePopulationStandardDeviation(moodValues),

@@ -10,6 +10,7 @@ import {
   NormalizedMeditations,
   NormalizedMoods,
   NormalizedPushUps,
+  NormalizedRuns,
   NormalizedSitUps,
   NormalizedSleeps,
   NormalizedWeights,
@@ -88,6 +89,7 @@ interface NormalizedTrackedCategories {
   moods: NormalizedMoods;
   "push-ups": NormalizedPushUps;
   "sit-ups": NormalizedSitUps;
+  runs: NormalizedRuns;
   sleeps: NormalizedSleeps;
   weights: NormalizedWeights;
 }
@@ -103,6 +105,7 @@ const trackedCategoriesSelector = createSelector(
       meditations: { allIds: [], byId: {} },
       moods: { allIds: [], byId: {} },
       "push-ups": { allIds: [], byId: {} },
+      runs: { allIds: [], byId: {} },
       "sit-ups": { allIds: [], byId: {} },
       sleeps: { allIds: [], byId: {} },
       weights: { allIds: [], byId: {} },
@@ -193,32 +196,30 @@ const normalizedLegRaisesSelector = createSelector(
   trackedCategoriesSelector,
   ({ "leg-raises": legRaises }) => legRaises,
 );
-
 const normalizedMeditationsSelector = createSelector(
   trackedCategoriesSelector,
   ({ meditations }) => meditations,
 );
-
 const normalizedMoodsSelector = createSelector(
   trackedCategoriesSelector,
   ({ moods }) => moods,
 );
-
 const normalizedSleepsSelector = createSelector(
   trackedCategoriesSelector,
   ({ sleeps }) => sleeps,
 );
-
 const normalizedPushUpsSelector = createSelector(
   trackedCategoriesSelector,
   ({ "push-ups": pushUps }) => pushUps,
 );
-
+const normalizedRunsSelector = createSelector(
+  trackedCategoriesSelector,
+  ({ runs }) => runs,
+);
 const normalizedSitUpsSelector = createSelector(
   trackedCategoriesSelector,
   ({ "sit-ups": sitUps }) => sitUps,
 );
-
 const normalizedWeightsSelector = createSelector(
   trackedCategoriesSelector,
   ({ weights }) => weights,
@@ -477,6 +478,7 @@ export default createSlice({
     ),
     denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
     denormalizedPushUps: createSelector(normalizedPushUpsSelector, denormalize),
+    denormalizedRuns: createSelector(normalizedRunsSelector, denormalize),
     denormalizedSitUps: createSelector(normalizedSitUpsSelector, denormalize),
     denormalizedSleeps: denormalizedSleepsSelector,
     denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
@@ -513,6 +515,7 @@ export default createSlice({
       normalizedPushUpsSelector,
       normalizedStateNotEmpty,
     ),
+    hasRuns: createSelector(normalizedRunsSelector, normalizedStateNotEmpty),
     hasSitUps: createSelector(
       normalizedSitUpsSelector,
       normalizedStateNotEmpty,
@@ -654,6 +657,7 @@ export default createSlice({
     normalizedMeditations: normalizedMeditationsSelector,
     normalizedMoods: normalizedMoodsSelector,
     normalizedPushUps: normalizedPushUpsSelector,
+    normalizedRuns: normalizedRunsSelector,
     normalizedSitUps: normalizedSitUpsSelector,
     normalizedSleeps: normalizedSleepsSelector,
     normalizedSleepsSortedByDateAwoke: createSelector(
@@ -733,6 +737,32 @@ export default createSlice({
         }
 
         return normalizedTotalSeconds;
+      },
+    ),
+    runMetersInPeriod: createSelector(
+      normalizedRunsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date): number => {
+        let sum = 0;
+        for (const id of getIdsInInterval(allIds, dateFrom, dateTo)) {
+          const { meters } = byId[id];
+          if (meters) sum += meters;
+        }
+        return sum;
+      },
+    ),
+    runSecondsInPeriod: createSelector(
+      normalizedRunsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date): number => {
+        let sum = 0;
+        for (const id of getIdsInInterval(allIds, dateFrom, dateTo)) {
+          const { seconds } = byId[id];
+          if (seconds) sum += seconds;
+        }
+        return sum;
       },
     ),
     secondsMeditatedInPeriod: createSelector(

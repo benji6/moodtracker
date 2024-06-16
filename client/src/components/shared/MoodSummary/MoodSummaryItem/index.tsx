@@ -46,9 +46,7 @@ export default function MoodSummaryItem({
   return (
     <Card color={color}>
       <div className="m-mood-summary-item">
-        <div>
-          <b>{heading}</b>
-        </div>
+        <div className="m-mood-summary-item__heading">{heading}</div>
         <div className="m-mood-summary-item__value">
           {format(currentValue)}
           {units}
@@ -60,24 +58,22 @@ export default function MoodSummaryItem({
         )}
         {difference !== undefined && (
           <div className="m-mood-summary-item__trend">
-            <small>
-              {difference < 0 ? (
-                <span className={displayTrendSentiment ? "negative" : ""}>
-                  <Icon draw margin="end" name="down" />
-                </span>
-              ) : difference > 0 ? (
-                <span className={displayTrendSentiment ? "positive" : ""}>
-                  <Icon draw margin="end" name="up" />
-                </span>
-              ) : (
-                <Icon draw margin="end" name="minus" />
-              )}
-              {difference
-                ? `${format(Math.abs(difference))}${units ?? ""}
+            {difference < 0 ? (
+              <span className={displayTrendSentiment ? "negative" : ""}>
+                <Icon draw margin="end" name="down" />
+              </span>
+            ) : difference > 0 ? (
+              <span className={displayTrendSentiment ? "positive" : ""}>
+                <Icon draw margin="end" name="up" />
+              </span>
+            ) : (
+              <Icon draw margin="end" name="minus" />
+            )}
+            {difference
+              ? `${format(Math.abs(difference))}${units ?? ""}
                 ${difference < 0 ? "less" : "more"} than `
-                : "The same as "}
-              previous {` ${periodType}`}
-            </small>
+              : "The same as "}
+            previous {` ${periodType}`}
           </div>
         )}
       </div>

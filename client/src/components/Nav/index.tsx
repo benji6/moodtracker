@@ -28,6 +28,7 @@ export default function Nav({ handleNavClose, open }: Props) {
   const hasLegRaises = useSelector(eventsSlice.selectors.hasLegRaises);
   const hasMeditations = useSelector(eventsSlice.selectors.hasMeditations);
   const hasPushUps = useSelector(eventsSlice.selectors.hasPushUps);
+  const hasRuns = useSelector(eventsSlice.selectors.hasRuns);
   const hasSitUps = useSelector(eventsSlice.selectors.hasSitUps);
   const hasSleeps = useSelector(eventsSlice.selectors.hasSleeps);
   const hasWeights = useSelector(eventsSlice.selectors.hasWeights);
@@ -123,6 +124,11 @@ export default function Nav({ handleNavClose, open }: Props) {
                   </EriNav.Link>
                 )}
               </EriNav.SubList>
+              <TrackedCategorySubList
+                eventType="runs"
+                onClick={handleNavClose}
+                showLog={hasRuns}
+              />
               <TrackedCategorySubList
                 eventType="push-ups"
                 onClick={handleNavClose}

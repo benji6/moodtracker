@@ -37,6 +37,18 @@ export default function MoodSummaryForCalendarPeriod({
   const meanWeightInPreviousPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meanWeightInPeriod(state, date0, date1),
   );
+  const runMetersInCurrentPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.runMetersInPeriod(state, date1, date2),
+  );
+  const runMetersInPreviousPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.runMetersInPeriod(state, date0, date1),
+  );
+  const runSecondsInCurrentPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.runSecondsInPeriod(state, date1, date2),
+  );
+  const runSecondsInPreviousPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.runSecondsInPeriod(state, date0, date1),
+  );
   const secondsMeditatedInCurrentPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.secondsMeditatedInPeriod(state, date1, date2),
   );
@@ -91,6 +103,8 @@ export default function MoodSummaryForCalendarPeriod({
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: meanMoodByDate[formatIsoDateInLocalTimezone(date1)],
+          runMeters: runMetersInCurrentPeriod,
+          runSeconds: runSecondsInCurrentPeriod,
           meanSleep: meanSleepInPeriod,
           meanWeight: meanWeightInPeriod,
           secondsMeditated: secondsMeditatedInCurrentPeriod,
@@ -112,6 +126,8 @@ export default function MoodSummaryForCalendarPeriod({
                 mean: meanMoodByDate[formatIsoDateInLocalTimezone(date0)],
                 meanSleep: meanSleepInPreviousPeriod,
                 meanWeight: meanWeightInPreviousPeriod,
+                runMeters: runMetersInPreviousPeriod,
+                runSeconds: runSecondsInPreviousPeriod,
                 secondsMeditated: secondsMeditatedInPreviousPeriod,
                 standardDeviation:
                   computeCompletePopulationStandardDeviation(prevMoodValues),

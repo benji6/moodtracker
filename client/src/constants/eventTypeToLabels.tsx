@@ -5,19 +5,21 @@ import LegRaisesCard from "../components/shared/LegRaisesCard";
 import MeditationCard from "../components/shared/MeditationCard";
 import MoodCard from "../components/shared/MoodCard";
 import PushUpsCard from "../components/shared/PushUpsCard";
+import RunCard from "../components/shared/RunCard";
 import SitUpsCard from "../components/shared/SitUpsCard";
 import SleepCard from "../components/shared/SleepCard";
 import WeightCard from "../components/shared/WeightCard";
 
-const EVENT_TYPE_TO_LABELS: {
-  [eventType in EventTypeCategories]: {
+const EVENT_TYPE_TO_LABELS: Record<
+  EventTypeCategories,
+  {
     CardComponent: ComponentType<{ id: string }>;
     default: string;
     icon: ReactNode;
     plural: string;
     singular: string;
-  };
-} = {
+  }
+> = {
   "leg-raises": {
     CardComponent: LegRaisesCard,
     default: "leg raises",
@@ -31,6 +33,13 @@ const EVENT_TYPE_TO_LABELS: {
     icon: "💪",
     plural: "push-ups",
     singular: "push-up",
+  },
+  runs: {
+    CardComponent: RunCard,
+    default: "run",
+    icon: "🏃",
+    plural: "runs",
+    singular: "run",
   },
   "sit-ups": {
     CardComponent: SitUpsCard,

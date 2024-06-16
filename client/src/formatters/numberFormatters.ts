@@ -46,6 +46,22 @@ export const integerPercentFormatter = Intl.NumberFormat(undefined, {
   style: "percent",
 });
 
+const meterFormatter = Intl.NumberFormat(undefined, {
+  style: "unit",
+  unit: "meter",
+});
+
+const kilometerFormatter = new Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 1,
+  style: "unit",
+  unit: "kilometer",
+});
+
+export const formatMetersAsMetersOrKilometers = (meters: number) =>
+  meters < 1000
+    ? meterFormatter.format(meters)
+    : kilometerFormatter.format(meters / 1000);
+
 export const twoDecimalPlacesFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,

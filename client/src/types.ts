@@ -9,6 +9,7 @@ export type NormalizedAllCategories = {
     [id: string]: (
       | (Meditation & { type: "meditations" })
       | (Mood & { type: "moods" })
+      | (Run & { type: "runs" })
       | (Sleep & { type: "sleeps" })
       | (ValueAndLocationEvent & { type: "leg-raises" })
       | (ValueAndLocationEvent & { type: "push-ups" })
@@ -25,6 +26,7 @@ export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
 export type NormalizedMoods = NormalizedTrackedCategory<Mood>;
 export type NormalizedPushUps =
   NormalizedTrackedCategory<ValueAndLocationEvent>;
+export type NormalizedRuns = NormalizedTrackedCategory<Run>;
 export type NormalizedSitUps = NormalizedTrackedCategory<ValueAndLocationEvent>;
 export type NormalizedSleeps = NormalizedTrackedCategory<Sleep>;
 export type NormalizedWeights =
@@ -34,11 +36,13 @@ export type NormalizedEvents =
   | NormalizedMeditations
   | NormalizedMoods
   | NormalizedPushUps
+  | NormalizedRuns
   | NormalizedSleeps
   | NormalizedWeights;
 export type DenormalizedEvents =
   | Meditation[]
   | Mood[]
+  | Run[]
   | ValueAndLocationEvent[]
   | Sleep[];
 
@@ -71,6 +75,30 @@ export interface UpdateMood {
   mood?: number;
 }
 
+export type Run =
+  | {
+      location?: DeviceGeolocation;
+      meters: number;
+      seconds?: number;
+    }
+  | {
+      location?: DeviceGeolocation;
+      meters?: number;
+      seconds: number;
+    };
+
+export type UpdateRun =
+  | {
+      id: string;
+      meters: number;
+      seconds?: number;
+    }
+  | {
+      id: string;
+      meters?: number;
+      seconds: number;
+    };
+
 interface ValueAndLocationEvent {
   location?: DeviceGeolocation;
   value: number;
@@ -95,6 +123,7 @@ export type EventTypeCategories =
   | "meditations"
   | "moods"
   | "push-ups"
+  | "runs"
   | "sit-ups"
   | "sleeps"
   | "weights";
@@ -119,6 +148,7 @@ export type AppCreateEvent =
   | PayloadEvent<"v1/meditations/create", Meditation>
   | PayloadEvent<"v1/moods/create", Mood>
   | PayloadEvent<"v1/push-ups/create", ValueAndLocationEvent>
+  | PayloadEvent<"v1/runs/create", Run>
   | PayloadEvent<"v1/sit-ups/create", ValueAndLocationEvent>
   | PayloadEvent<"v1/sleeps/create", Sleep>
   | PayloadEvent<"v1/weights/create", ValueAndLocationEvent>;
@@ -127,6 +157,7 @@ export type AppUpdateEvent =
   | PayloadEvent<"v1/leg-raises/update", ValueUpdateEvent>
   | PayloadEvent<"v1/moods/update", UpdateMood>
   | PayloadEvent<"v1/push-ups/update", ValueUpdateEvent>
+  | PayloadEvent<"v1/runs/update", UpdateRun>
   | PayloadEvent<"v1/sit-ups/update", ValueUpdateEvent>
   | PayloadEvent<"v1/sleeps/update", UpdateSleep>
   | PayloadEvent<"v1/weights/update", ValueUpdateEvent>;

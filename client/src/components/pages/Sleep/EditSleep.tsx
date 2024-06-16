@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import EditEvent from "../../shared/EditEvent";
+import IntervalInput from "../../shared/IntervalInput";
 import RedirectHome from "../../shared/RedirectHome";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
@@ -73,7 +74,7 @@ export default function EditSleep() {
       showNoUpdateError={showNoUpdateError}
       updatedAt={sleep.updatedAt}
     >
-      <div className="m-interval-input">
+      <IntervalInput>
         <Select
           {...FIELDS.hoursSlept}
           defaultValue={Math.floor(sleep.minutesSlept / TIME.minutesPerHour)}
@@ -94,7 +95,7 @@ export default function EditSleep() {
             </option>
           ))}
         </Select>
-      </div>
+      </IntervalInput>
       <TextField
         {...FIELDS.dateAwoke}
         defaultValue={sleep.dateAwoke}

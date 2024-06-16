@@ -22,9 +22,11 @@ export function QuickTrackNav() {
           <Icon margin="end" name="bell" />
           Meditate
         </Button>
-        {(["push-ups", "sit-ups", "leg-raises"] as const).map((eventType) => (
-          <QuickTrackNavButton key={eventType} eventType={eventType} />
-        ))}
+        {(["runs", "push-ups", "sit-ups", "leg-raises"] as const).map(
+          (eventType) => (
+            <QuickTrackNavButton key={eventType} eventType={eventType} />
+          ),
+        )}
       </div>
     </Paper>
   );

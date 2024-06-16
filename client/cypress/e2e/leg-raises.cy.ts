@@ -3,7 +3,6 @@ import { ERRORS, SELECTORS } from "./constants";
 describe("leg raises", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit("/leg-raises/add");
   });
 
   describe("adding leg raises", () => {
