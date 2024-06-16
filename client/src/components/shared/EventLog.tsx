@@ -4,23 +4,21 @@ import {
   EventTypeCategories,
   NormalizedEvents,
 } from "../../types";
-import { FC, useState } from "react";
 import { capitalizeFirstLetter, mapRight } from "../../utils";
 import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import ExportControls from "./ExportControls";
 import RedirectHome from "./RedirectHome";
+import { useState } from "react";
 
 const MAX_ITEMS_PER_PAGE = 10;
 
 interface Props {
-  CardComponent: FC<{ id: string }>;
   denormalizedEvents: DenormalizedEvents;
   eventType: EventTypeCategories;
   normalizedEvents: NormalizedEvents;
 }
 
 export default function EventLog({
-  CardComponent,
   denormalizedEvents,
   eventType,
   normalizedEvents,
@@ -35,7 +33,8 @@ export default function EventLog({
 
   if (!normalizedEvents.allIds.length) return <RedirectHome />;
 
-  const eventTypeLabelPlural = EVENT_TYPE_TO_LABELS[eventType].plural;
+  const { CardComponent, plural: eventTypeLabelPlural } =
+    EVENT_TYPE_TO_LABELS[eventType];
 
   return (
     <Paper.Group>
