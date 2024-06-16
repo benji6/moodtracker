@@ -22,7 +22,7 @@ export default function trackedCategoryRoutes({
   const eventTypeLabel = EVENT_TYPE_TO_LABELS[eventType].default;
 
   return (
-    <Route path={`/${eventType}`}>
+    <Route path={`/${eventType}`} key={eventType}>
       <Route element={<RedirectHome />} path="" />
       <Route
         element={
