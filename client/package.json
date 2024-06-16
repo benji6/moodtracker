@@ -14,7 +14,7 @@
     "test:lint": "eslint --ext js,ts,tsx .",
     "test:types": "tsc --noEmit",
     "test:unit": "TZ=UTC jest src",
-    "test-ci": "run-p test:audit test:fmt test:types test:unit"
+    "test-ci": "run-p test:audit test:fmt test:lint test:types test:unit"
   },
   "browserslist": "since 2022 and >1%",
   "dependencies": {
