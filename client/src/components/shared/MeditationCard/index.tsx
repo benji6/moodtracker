@@ -1,9 +1,5 @@
 import "./style.css";
 import { Button, Card, Icon } from "eri";
-import {
-  floatDegreeFormatter,
-  integerMeterFormatter,
-} from "../../../formatters/numberFormatters";
 import LocationString from "../LocationString";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
@@ -32,24 +28,17 @@ export default function MeditationCard({ id }: Props) {
                 <>
                   <br />
                   <LocationString
+                    errorFallback={
+                      <>
+                        Lat: {meditation.location.latitude}
+                        <br />
+                        Lon: {meditation.location.longitude}
+                      </>
+                    }
                     latitude={meditation.location.latitude}
                     longitude={meditation.location.longitude}
                     successPostfix={<br />}
                   />
-                  Latitude:{" "}
-                  {floatDegreeFormatter.format(meditation.location.latitude)}
-                  <br />
-                  Longitude:{" "}
-                  {floatDegreeFormatter.format(meditation.location.longitude)}
-                  {meditation.location.altitude && (
-                    <>
-                      <br />
-                      Altitude:{" "}
-                      {integerMeterFormatter.format(
-                        meditation.location.altitude,
-                      )}
-                    </>
-                  )}
                 </>
               )}
             </small>
