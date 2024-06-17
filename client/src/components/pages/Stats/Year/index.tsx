@@ -25,10 +25,10 @@ import MoodChartForPeriod from "../MoodChartForPeriod";
 import MoodCloud from "../MoodCloud";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
-import MoodSummaryForYear from "../MoodSummaryForYear";
 import PrevNextControls from "../../../shared/PrevNextControls";
 import { RootState } from "../../../../store";
 import SleepByMonthForPeriod from "./SleepByMonthForPeriod";
+import SummaryForYear from "../SummaryForYear";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import eventsSlice from "../../../../store/eventsSlice";
@@ -112,7 +112,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForYear dates={[prevDate, date, nextDate]} />
+      <SummaryForYear dates={[prevDate, date, nextDate]} />
       <MoodChartForPeriod
         centerXAxisLabels
         dateFrom={date}

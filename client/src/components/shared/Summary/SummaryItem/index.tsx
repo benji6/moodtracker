@@ -15,7 +15,7 @@ interface Props {
   units?: "kg";
 }
 
-export default function MoodSummaryItem({
+export default function SummaryItem({
   currentValue,
   displayTrendSentiment = false,
   format = integerFormatter.format,
@@ -45,19 +45,19 @@ export default function MoodSummaryItem({
 
   return (
     <Card color={color}>
-      <div className="m-mood-summary-item">
-        <div className="m-mood-summary-item__heading">{heading}</div>
-        <div className="m-mood-summary-item__value">
+      <div className="m-summary-item">
+        <div className="m-summary-item__heading">{heading}</div>
+        <div className="m-summary-item__value">
           {format(currentValue)}
           {units}
         </div>
         {isMood && (
-          <div className="m-mood-summary-item__mood-bar">
+          <div className="m-summary-item__mood-bar">
             <MoodBar mood={currentValue} />
           </div>
         )}
         {difference !== undefined && (
-          <div className="m-mood-summary-item__trend">
+          <div className="m-summary-item__trend">
             {difference < 0 ? (
               <span className={displayTrendSentiment ? "negative" : ""}>
                 <Icon draw margin="end" name="down" />

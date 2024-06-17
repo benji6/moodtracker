@@ -33,9 +33,9 @@ import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodCloud from "./MoodCloud";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import MoodSummaryForMonth from "./MoodSummaryForMonth";
 import PrevNextControls from "../../shared/PrevNextControls";
 import { RootState } from "../../../store";
+import SummaryForMonth from "./SummaryForMonth";
 import WeatherForPeriod from "./WeatherForPeriod";
 import WeightChartForPeriod from "./WeightChartForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
@@ -103,7 +103,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForMonth dates={[prevDate, date, nextDate]} />
+      <SummaryForMonth dates={[prevDate, date, nextDate]} />
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod

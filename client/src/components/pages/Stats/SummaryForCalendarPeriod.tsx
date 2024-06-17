@@ -2,10 +2,10 @@ import {
   computeCompletePopulationStandardDeviation,
   formatIsoDateInLocalTimezone,
 } from "../../../utils";
-import MoodSummary from "../../shared/MoodSummary";
 import { Paper } from "eri";
 import { ReactNode } from "react";
 import { RootState } from "../../../store";
+import Summary from "../../shared/Summary";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
@@ -18,7 +18,7 @@ interface Props {
   periodType: "day" | "month" | "week" | "year";
 }
 
-export default function MoodSummaryForCalendarPeriod({
+export default function SummaryForCalendarPeriod({
   dates: [date0, date1, date2],
   heading = "Summary",
   meanMoodByDate,
@@ -99,7 +99,7 @@ export default function MoodSummaryForCalendarPeriod({
   return (
     <Paper>
       <h3>{heading}</h3>
-      <MoodSummary
+      <Summary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: meanMoodByDate[formatIsoDateInLocalTimezone(date1)],

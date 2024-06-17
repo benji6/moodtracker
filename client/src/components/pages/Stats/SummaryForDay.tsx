@@ -1,18 +1,18 @@
 import { ComponentProps } from "react";
-import MoodSummaryForCalendarPeriod from "./MoodSummaryForCalendarPeriod";
+import SummaryForCalendarPeriod from "./SummaryForCalendarPeriod";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
-export default function MoodSummaryForDay(
+export default function SummaryForDay(
   props: Pick<
-    ComponentProps<typeof MoodSummaryForCalendarPeriod>,
+    ComponentProps<typeof SummaryForCalendarPeriod>,
     "dates" | "heading"
   >,
 ) {
   const meanMoods = useSelector(eventsSlice.selectors.meanMoodsByDay);
 
   return (
-    <MoodSummaryForCalendarPeriod
+    <SummaryForCalendarPeriod
       {...props}
       meanMoodByDate={meanMoods}
       periodType="day"

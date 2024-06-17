@@ -7,7 +7,7 @@ import {
   MOOD_BY_WEATHER_PROPS,
   MOOD_BY_WEEKDAY_PROPS,
   MOOD_FREQUENCY_PROPS,
-  MOOD_SUMMARY_PROPS,
+  SUMMARY_PROPS,
   WORD_CLOUD_PROPS,
 } from "./constants";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ import MoodByWeatherChart from "../../shared/MoodByWeatherChart";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import MoodChart from "../../shared/MoodChart";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
-import MoodSummary from "../../shared/MoodSummary";
+import Summary from "../../shared/Summary";
 
 const addMoodImgSrc = String(
   new URL("../Blog/2020-12-30/screenshot-1.png?as=avif", import.meta.url),
@@ -77,7 +77,7 @@ export default function NotSignedIn() {
         />
         <h3>Review on a daily, weekly, monthly or yearly basis</h3>
         <p>Opt in to receive weekly email updates.</p>
-        <MoodSummary {...MOOD_SUMMARY_PROPS} showMeditationStatsOverride />
+        <Summary {...SUMMARY_PROPS} showMeditationStatsOverride />
         <h3>See how your mood fluctuates by day of the week</h3>
         <p>
           MoodTracker can analyze your data over time to give you insights about

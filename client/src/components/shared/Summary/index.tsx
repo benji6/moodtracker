@@ -3,7 +3,7 @@ import {
   formatMetersAsMetersOrKilometers,
   oneDecimalPlaceFormatter,
 } from "../../../formatters/numberFormatters";
-import MoodSummaryItem from "./MoodSummaryItem";
+import SummaryItem from "./SummaryItem";
 import { TIME } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatMinutesAsTimeStringShort } from "../../../formatters/formatMinutesAsTimeString";
@@ -32,7 +32,7 @@ interface Props {
   showMeditationStatsOverride?: boolean;
 }
 
-export default function MoodSummary({
+export default function Summary({
   currentPeriod,
   periodType,
   previousPeriod,
@@ -46,8 +46,8 @@ export default function MoodSummary({
   );
 
   return (
-    <div className="m-mood-summary">
-      <MoodSummaryItem
+    <div className="m-summary">
+      <SummaryItem
         currentValue={currentPeriod.mean}
         format={oneDecimalPlaceFormatter.format}
         displayTrendSentiment
@@ -56,7 +56,7 @@ export default function MoodSummary({
         periodType={periodType}
         previousValue={previousPeriod?.mean}
       />
-      <MoodSummaryItem
+      <SummaryItem
         currentValue={currentPeriod.best}
         displayTrendSentiment
         heading="Best mood"
@@ -64,7 +64,7 @@ export default function MoodSummary({
         periodType={periodType}
         previousValue={previousPeriod?.best}
       />
-      <MoodSummaryItem
+      <SummaryItem
         currentValue={currentPeriod.worst}
         displayTrendSentiment
         heading="Worst mood"
@@ -73,7 +73,7 @@ export default function MoodSummary({
         previousValue={previousPeriod?.worst}
       />
       {showTotalMoodsRecorded && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={currentPeriod.total}
           heading="Moods recorded"
           periodType={periodType}
@@ -81,7 +81,7 @@ export default function MoodSummary({
         />
       )}
       {Boolean(currentPeriod.standardDeviation) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={currentPeriod.standardDeviation}
           format={oneDecimalPlaceFormatter.format}
           heading="Mood standard deviation"
@@ -89,14 +89,14 @@ export default function MoodSummary({
           previousValue={previousPeriod?.standardDeviation}
         />
       )}
-      <MoodSummaryItem
+      <SummaryItem
         currentValue={currentPeriod.meanSleep}
         format={formatMinutesAsTimeStringShort}
         heading={periodType === "day" ? "Sleep" : " Average sleep"}
         periodType={periodType}
         previousValue={previousPeriod?.meanSleep}
       />
-      <MoodSummaryItem
+      <SummaryItem
         currentValue={currentPeriod.meanWeight}
         format={oneDecimalPlaceFormatter.format}
         heading="Average weight"
@@ -105,7 +105,7 @@ export default function MoodSummary({
         units="kg"
       />
       {(showMeditationStatsOverride || showMeditationStats) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={
             currentPeriod.secondsMeditated /
             (currentPeriod.secondsMeditated >= TIME.secondsPerHour
@@ -135,7 +135,7 @@ export default function MoodSummary({
           ? currentPeriod.runMeters || previousPeriod.runMeters
           : currentPeriod.runMeters,
       ) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={currentPeriod.runMeters}
           displayTrendSentiment
           heading="Distance ran"
@@ -149,7 +149,7 @@ export default function MoodSummary({
           ? currentPeriod.runSeconds || previousPeriod.runSeconds
           : currentPeriod.runSeconds,
       ) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={
             currentPeriod.runSeconds /
             (currentPeriod.runSeconds >= TIME.secondsPerHour
@@ -178,7 +178,7 @@ export default function MoodSummary({
           ? currentPeriod.totalPushUps || previousPeriod.totalPushUps
           : currentPeriod.totalPushUps,
       ) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={currentPeriod.totalPushUps}
           displayTrendSentiment
           heading="Push-ups"
@@ -191,7 +191,7 @@ export default function MoodSummary({
           ? currentPeriod.totalSitUps || previousPeriod.totalSitUps
           : currentPeriod.totalSitUps,
       ) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={currentPeriod.totalSitUps}
           displayTrendSentiment
           heading="Sit-ups"
@@ -204,7 +204,7 @@ export default function MoodSummary({
           ? currentPeriod.totalLegRaises || previousPeriod.totalLegRaises
           : currentPeriod.totalLegRaises,
       ) && (
-        <MoodSummaryItem
+        <SummaryItem
           currentValue={currentPeriod.totalLegRaises}
           displayTrendSentiment
           heading="Leg raises"

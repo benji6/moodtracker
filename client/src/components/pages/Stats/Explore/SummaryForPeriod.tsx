@@ -2,9 +2,9 @@ import {
   computeCompletePopulationStandardDeviation,
   computeMeanSafe,
 } from "../../../../utils";
-import MoodSummary from "../../../shared/MoodSummary";
 import { Paper } from "eri";
 import { RootState } from "../../../../store";
+import Summary from "../../../shared/Summary";
 import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ interface Props {
   dateTo: Date;
 }
 
-export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
+export default function SummaryForPeriod({ dateFrom, dateTo }: Props) {
   const moodValues = useSelector((state: RootState) =>
     eventsSlice.selectors.moodsInPeriod(state, dateFrom, dateTo),
   ).map(({ mood }) => mood);
@@ -51,7 +51,7 @@ export default function MoodSummaryForPeriod({ dateFrom, dateTo }: Props) {
       {!moodValues.length && !moodValues.length && meanWeight === undefined && (
         <p>No data for the selected period</p>
       )}
-      <MoodSummary
+      <Summary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
           mean: computeMeanSafe(moodValues),

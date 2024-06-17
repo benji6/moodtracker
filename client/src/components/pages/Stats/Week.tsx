@@ -23,10 +23,10 @@ import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodCloud from "./MoodCloud";
 import MoodFrequencyForPeriod from "./MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import MoodSummaryForWeek from "./MoodSummaryForWeek";
 import PrevNextControls from "../../shared/PrevNextControls";
 import { RootState } from "../../../store";
 import SleepChartForWeek from "./SleepChartForWeek";
+import SummaryForWeek from "./SummaryForWeek";
 import { TIME } from "../../../constants";
 import WeatherForPeriod from "./WeatherForPeriod";
 import WeightChartForPeriod from "./WeightChartForPeriod";
@@ -92,7 +92,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <MoodSummaryForWeek date={date} />
+      <SummaryForWeek date={date} />
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod

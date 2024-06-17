@@ -3,9 +3,9 @@ import { formatIsoDateInLocalTimezone, roundDateDown } from "../../../utils";
 import DeviceSetupDialog from "./DeviceSetupDialog";
 import GetStartedCta from "../../shared/GetStartedCta";
 import { Link } from "react-router-dom";
-import MoodSummaryForWeek from "../Stats/MoodSummaryForWeek";
 import NotSignedIn from "./NotSignedIn";
 import { QuickTrackNav } from "./QuickTrackNav";
+import SummaryForWeek from "../Stats/SummaryForWeek";
 import TrackedCategoriesByDay from "./TrackedCategoriesByDay";
 import { WEEK_OPTIONS } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
@@ -34,7 +34,7 @@ export default function Home() {
         moods.allIds.length ? (
           <>
             <QuickTrackNav />
-            <MoodSummaryForWeek
+            <SummaryForWeek
               heading={
                 <Link
                   to={`/stats/weeks/${formatIsoDateInLocalTimezone(

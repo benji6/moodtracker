@@ -13,8 +13,8 @@ import MoodChartForPeriod from "../MoodChartForPeriod";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
-import MoodSummaryForPeriod from "./MoodSummaryForPeriod";
 import { RootState } from "../../../../store";
+import SummaryForPeriod from "./SummaryForPeriod";
 import { TIME } from "../../../../constants";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
@@ -193,7 +193,7 @@ export default function Explore() {
           }
         />
       </Paper>
-      <MoodSummaryForPeriod
+      <SummaryForPeriod
         dateFrom={localState.dateFrom}
         dateTo={localState.displayDateTo}
       />

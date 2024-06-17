@@ -18,8 +18,8 @@ import LocationsForPeriod from "./LocationsForPeriod";
 import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
-import MoodSummaryForDay from "./MoodSummaryForDay";
 import PrevNextControls from "../../shared/PrevNextControls";
+import SummaryForDay from "./SummaryForDay";
 import { TIME } from "../../../constants";
 import TrackedCategoriesList from "../../shared/TrackedCategoriesList";
 import WeatherForPeriod from "./WeatherForPeriod";
@@ -105,7 +105,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       </Paper>
       {denormalizedTrackedCategories ? (
         <>
-          <MoodSummaryForDay dates={[prevDate, date, nextDate]} />
+          <SummaryForDay dates={[prevDate, date, nextDate]} />
           {hasMoodIds && (
             <MoodChartForPeriod
               dateFrom={date}

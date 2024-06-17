@@ -395,7 +395,7 @@ export const MOOD_FREQUENCY_PROPS = {
   data: [0, 0, 0, 0, 1, 4, 9, 18, 7, 1, 0],
 };
 
-export const MOOD_SUMMARY_PROPS = {
+export const SUMMARY_PROPS = {
   currentPeriod: {
     best: 9,
     mean: 7.8,
