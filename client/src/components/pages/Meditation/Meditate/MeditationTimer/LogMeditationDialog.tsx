@@ -1,6 +1,6 @@
 import { Button, Dialog } from "eri";
 import { TIME } from "../../../../../constants";
-import formatDurationFromSeconds from "../../../../../formatters/formatDurationFromSeconds";
+import { formatSecondsToDurationStringLong } from "../../../../../formatters/formatDuration";
 import { memo } from "react";
 
 interface Props {
@@ -29,7 +29,7 @@ function LogMeditationDialog({
       </p>
       <p>
         Would you like to log{" "}
-        <b>{formatDurationFromSeconds(secondsMeditated)}</b>?
+        <b>{formatSecondsToDurationStringLong(secondsMeditated)}</b>?
       </p>
       <Button.Group>
         <Button onClick={onLog}>Log</Button>

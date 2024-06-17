@@ -1,12 +1,12 @@
 import "./style.css";
 import {
-  formatMetersAsMetersOrKilometers,
-  oneDecimalPlaceFormatter,
-} from "../../../formatters/numberFormatters";
+  formatMinutesToDurationStringShort,
+  formatSecondsToOneNumberWithUnits,
+} from "../../../formatters/formatDuration";
 import SummaryItem from "./SummaryItem";
-import { TIME } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
-import { formatMinutesAsTimeStringShort } from "../../../formatters/formatMinutesAsTimeString";
+import { formatMetersToOneNumberWithUnits } from "../../../formatters/formatDistance";
+import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
 
 interface PeriodData {
@@ -91,7 +91,7 @@ export default function Summary({
       )}
       <SummaryItem
         currentValue={currentPeriod.meanSleep}
-        format={formatMinutesAsTimeStringShort}
+        format={formatMinutesToDurationStringShort}
         heading={periodType === "day" ? "Sleep" : " Average sleep"}
         periodType={periodType}
         previousValue={previousPeriod?.meanSleep}
@@ -106,28 +106,12 @@ export default function Summary({
       />
       {(showMeditationStatsOverride || showMeditationStats) && (
         <SummaryItem
-          currentValue={
-            currentPeriod.secondsMeditated /
-            (currentPeriod.secondsMeditated >= TIME.secondsPerHour
-              ? TIME.secondsPerHour
-              : TIME.secondsPerMinute)
-          }
+          currentValue={currentPeriod.secondsMeditated}
           displayTrendSentiment
-          format={oneDecimalPlaceFormatter.format}
-          heading={`${
-            currentPeriod.secondsMeditated >= TIME.secondsPerHour
-              ? "Hours"
-              : "Minutes"
-          } meditated`}
+          format={formatSecondsToOneNumberWithUnits}
+          heading="Meditation time"
           periodType={periodType}
-          previousValue={
-            previousPeriod
-              ? previousPeriod.secondsMeditated /
-                (currentPeriod.secondsMeditated >= TIME.secondsPerHour
-                  ? TIME.secondsPerHour
-                  : TIME.secondsPerMinute)
-              : undefined
-          }
+          previousValue={previousPeriod?.secondsMeditated}
         />
       )}
       {Boolean(
@@ -138,8 +122,8 @@ export default function Summary({
         <SummaryItem
           currentValue={currentPeriod.runMeters}
           displayTrendSentiment
-          heading="Distance ran"
-          format={formatMetersAsMetersOrKilometers}
+          heading="Run distance"
+          format={formatMetersToOneNumberWithUnits}
           periodType={periodType}
           previousValue={previousPeriod?.runMeters}
         />
@@ -150,27 +134,12 @@ export default function Summary({
           : currentPeriod.runSeconds,
       ) && (
         <SummaryItem
-          currentValue={
-            currentPeriod.runSeconds /
-            (currentPeriod.runSeconds >= TIME.secondsPerHour
-              ? TIME.secondsPerHour
-              : TIME.secondsPerMinute)
-          }
+          currentValue={currentPeriod.runSeconds}
           displayTrendSentiment
-          heading={`${
-            currentPeriod.runSeconds >= TIME.secondsPerHour
-              ? "Hours"
-              : "Minutes"
-          } ran`}
+          format={formatSecondsToOneNumberWithUnits}
+          heading="Run time"
           periodType={periodType}
-          previousValue={
-            previousPeriod
-              ? previousPeriod.runSeconds /
-                (currentPeriod.runSeconds >= TIME.secondsPerHour
-                  ? TIME.secondsPerHour
-                  : TIME.secondsPerMinute)
-              : undefined
-          }
+          previousValue={previousPeriod?.runSeconds}
         />
       )}
       {Boolean(

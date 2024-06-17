@@ -4,7 +4,7 @@ import LocationString from "../LocationString";
 import { TEST_IDS } from "../../../constants";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
-import { formatMetersAsMetersOrKilometers } from "../../../formatters/numberFormatters";
+import { formatMetersToOneNumberWithUnits } from "../../../formatters/formatDistance";
 import { formatSecondsAsTime } from "../../../utils";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -26,7 +26,7 @@ export default function RunCard({ id }: Props) {
         <div className="center">
           {event.meters !== undefined && (
             <b data-test-id={TEST_IDS.runCardDistance}>
-              {formatMetersAsMetersOrKilometers(event.meters)}
+              {formatMetersToOneNumberWithUnits(event.meters)}
             </b>
           )}
           {event.meters !== undefined && event.seconds !== undefined && <br />}

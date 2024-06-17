@@ -3,7 +3,6 @@ import {
   formatKelvinToCelcius,
   integerDegreeFormatter,
   integerFormatter,
-  integerMeterFormatter,
   integerPercentFormatter,
   twoDecimalPlacesFormatter,
 } from "../../../../formatters/numberFormatters";
@@ -11,6 +10,7 @@ import { ComponentProps } from "react";
 import { ERRORS } from "../../../../constants";
 import WeatherIconGrid from "./WeatherIconGrid";
 import { capitalizeFirstLetter } from "../../../../utils";
+import { integerMeterFormatter } from "../../../../formatters/formatDistance";
 import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useWeatherQuery } from "../../../hooks/weatherHooks";
 

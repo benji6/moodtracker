@@ -3,7 +3,7 @@ import { Card } from "eri";
 import { TEST_IDS } from "../../../constants";
 import { dateFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
-import { formatMinutesAsTimeStringLong } from "../../../formatters/formatMinutesAsTimeString";
+import { formatMinutesToDurationStringLong } from "../../../formatters/formatDuration";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -24,7 +24,7 @@ export default function SleepCard({ id }: Props) {
           <small>
             Slept for:{" "}
             <b data-test-id={TEST_IDS.sleepCardValue}>
-              {formatMinutesAsTimeStringLong(sleep.minutesSlept)}
+              {formatMinutesToDurationStringLong(sleep.minutesSlept)}
             </b>
           </small>
         </div>

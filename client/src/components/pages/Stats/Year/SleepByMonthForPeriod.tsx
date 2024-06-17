@@ -2,7 +2,7 @@ import { Chart, Paper } from "eri";
 import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
 import { formatIsoMonthInLocalTimezone } from "../../../../utils";
-import { formatMinutesAsTimeStringLong } from "../../../../formatters/formatMinutesAsTimeString";
+import { formatMinutesToDurationStringLong } from "../../../../formatters/formatDuration";
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -33,7 +33,7 @@ export default function SleepByMonthForPeriod({ dateFrom, dateTo }: Props) {
       title:
         minutesSlept === undefined
           ? undefined
-          : formatMinutesAsTimeStringLong(minutesSlept),
+          : formatMinutesToDurationStringLong(minutesSlept),
       y: minutesSlept === undefined ? undefined : minutesSlept / 60,
     };
   });

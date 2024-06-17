@@ -1,11 +1,9 @@
-import {
-  floatDegreeFormatter,
-  integerMeterFormatter,
-} from "../../../formatters/numberFormatters";
 import LocationMap from "../LocationMap";
 import LocationString from "../LocationString";
 import { Paper } from "eri";
 import Weather from "./Weather";
+import { floatDegreeFormatter } from "../../../formatters/numberFormatters";
+import { integerMeterFormatter } from "../../../formatters/formatDistance";
 
 interface Props {
   altitude?: number;

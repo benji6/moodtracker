@@ -35,32 +35,10 @@ export const floatDegreeFormatter = Intl.NumberFormat(undefined, {
   unit: "degree",
 });
 
-export const integerMeterFormatter = Intl.NumberFormat(undefined, {
-  maximumFractionDigits: 0,
-  style: "unit",
-  unit: "meter",
-});
-
 export const integerPercentFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0,
   style: "percent",
 });
-
-const meterFormatter = Intl.NumberFormat(undefined, {
-  style: "unit",
-  unit: "meter",
-});
-
-const kilometerFormatter = new Intl.NumberFormat(undefined, {
-  maximumFractionDigits: 1,
-  style: "unit",
-  unit: "kilometer",
-});
-
-export const formatMetersAsMetersOrKilometers = (meters: number) =>
-  meters < 1000
-    ? meterFormatter.format(meters)
-    : kilometerFormatter.format(meters / 1000);
 
 export const twoDecimalPlacesFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,

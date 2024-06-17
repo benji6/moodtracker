@@ -12,7 +12,7 @@ import {
 import MoodCell from "../../../shared/MoodCell";
 import { Usage } from "../../../../types";
 import UsageTable from "./UsageTable";
-import formatDurationFromSeconds from "../../../../formatters/formatDurationFromSeconds";
+import { formatSecondsToDurationStringLong } from "../../../../formatters/formatDuration";
 import { monthYearShortFormatter } from "../../../../formatters/dateTimeFormatters";
 import { usageGet } from "../../../../api";
 import { useQuery } from "@tanstack/react-query";
@@ -223,7 +223,7 @@ export default function Usage() {
             ],
             [
               "Total time meditated by all users over the last 30 days",
-              formatDurationFromSeconds(
+              formatSecondsToDurationStringLong(
                 data.usage.last30Days.meditationSeconds,
               ),
             ],
