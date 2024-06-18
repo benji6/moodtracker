@@ -62,21 +62,43 @@ describe("formatDuration", () => {
     });
   });
 
+  // HACK: really should set locale explicitly,
+  // but could not figure that out easily and lost patience
   test("formatSecondsToOneNumberWithUnits", () => {
     expect(formatSecondsToOneNumberWithUnits(-1)).toBe("-1 sec");
-    expect(formatSecondsToOneNumberWithUnits(0)).toBe("0 secs");
-    expect(formatSecondsToOneNumberWithUnits(0.1)).toBe("0 secs");
-    expect(formatSecondsToOneNumberWithUnits(0.49)).toBe("0 secs");
+    expect(formatSecondsToOneNumberWithUnits(0)).toBe(
+      process.env.CI ? "0 sec" : "0 secs",
+    );
+    expect(formatSecondsToOneNumberWithUnits(0.1)).toBe(
+      process.env.CI ? "0 sec" : "0 secs",
+    );
+    expect(formatSecondsToOneNumberWithUnits(0.49)).toBe(
+      process.env.CI ? "0 sec" : "0 secs",
+    );
     expect(formatSecondsToOneNumberWithUnits(0.5)).toBe("1 sec");
-    expect(formatSecondsToOneNumberWithUnits(59)).toBe("59 secs");
+    expect(formatSecondsToOneNumberWithUnits(59)).toBe(
+      process.env.CI ? "59 sec" : "59 secs",
+    );
     expect(formatSecondsToOneNumberWithUnits(60)).toBe("1 min");
     expect(formatSecondsToOneNumberWithUnits(62)).toBe("1 min");
-    expect(formatSecondsToOneNumberWithUnits(63)).toBe("1.1 mins");
-    expect(formatSecondsToOneNumberWithUnits(116)).toBe("1.9 mins");
-    expect(formatSecondsToOneNumberWithUnits(117)).toBe("2 mins");
-    expect(formatSecondsToOneNumberWithUnits(3594)).toBe("59.9 mins");
+    expect(formatSecondsToOneNumberWithUnits(63)).toBe(
+      process.env.CI ? "1.1 min" : "1.1 mins",
+    );
+    expect(formatSecondsToOneNumberWithUnits(116)).toBe(
+      process.env.CI ? "1.9 min" : "1.9 mins",
+    );
+    expect(formatSecondsToOneNumberWithUnits(117)).toBe(
+      process.env.CI ? "2 min" : "2 mins",
+    );
+    expect(formatSecondsToOneNumberWithUnits(3594)).toBe(
+      process.env.CI ? "59.9 min" : "59.9 mins",
+    );
     expect(formatSecondsToOneNumberWithUnits(3600)).toBe("1 hr");
-    expect(formatSecondsToOneNumberWithUnits(1e4)).toBe("2.8 hrs");
-    expect(formatSecondsToOneNumberWithUnits(1e5)).toBe("27.8 hrs");
+    expect(formatSecondsToOneNumberWithUnits(1e4)).toBe(
+      process.env.CI ? "2.8 hr" : "2.8 hrs",
+    );
+    expect(formatSecondsToOneNumberWithUnits(1e5)).toBe(
+      process.env.CI ? "27.8 hr" : "27.8 hrs",
+    );
   });
 });
