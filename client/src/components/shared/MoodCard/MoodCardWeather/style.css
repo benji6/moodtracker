@@ -1,6 +1,9 @@
 .m-mood-card-weather {
   align-items: center;
   display: flex;
+  /* Display is set to flex by EventCard parent component.
+  Setting flex-basis to auto means this will not expand horizontally */
+  flex-basis: auto !important;
   flex-direction: column;
   font-size: var(--font-size-0);
   gap: var(--space-0);
