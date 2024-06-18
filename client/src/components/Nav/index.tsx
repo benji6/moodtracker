@@ -89,7 +89,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                   Add
                 </EriNav.Link>
                 {hasMoods && (
-                  <EriNav.Link onClick={handleNavClose} to="/mood/log">
+                  <EriNav.Link onClick={handleNavClose} to="/moods/log">
                     <Icon margin="end" name="book" />
                     Log
                   </EriNav.Link>

@@ -1,5 +1,11 @@
 .m-event-card {
   align-items: center;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  gap: var(--space-1);
+  justify-content: space-between;
+  text-align: center;
+}
+
+.m-event-card > :not(:first-child) {
+  flex-basis: 100%;
 }

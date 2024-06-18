@@ -1,4 +1,4 @@
-import EventCard from "./EventCard";
+import ValueEventCard from "./ValueEventCard";
 import eventsSlice from "../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ export default function LegRaisesCard({ id }: Props) {
   const event = normalizedEvents.byId[id];
 
   return (
-    <EventCard
+    <ValueEventCard
       eventType="leg-raises"
       id={id}
       location={event.location}

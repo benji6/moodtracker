@@ -1,5 +1,11 @@
 .m-meditation-card {
   align-items: center;
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  display: flex;
+  gap: var(--space-1);
+  justify-content: space-between;
+  text-align: center;
+}
+
+.m-meditation-card > :not(:first-child) {
+  flex-basis: 100%;
 }

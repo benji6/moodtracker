@@ -101,11 +101,11 @@ function Root() {
                     element={<Page Component={AddMood} title="Add mood" />}
                     path="/add"
                   />
-                  <Route
-                    element={<Page Component={EditMood} title="Edit mood" />}
-                    path="/edit/:id"
-                  />
-                  <Route path="/mood">
+                  <Route path="/moods">
+                    <Route
+                      element={<Page Component={EditMood} title="Edit mood" />}
+                      path="edit/:id"
+                    />
                     <Route
                       element={<Page Component={MoodLog} title="Mood log" />}
                       path="log"

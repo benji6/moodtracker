@@ -1,23 +1,16 @@
-.m-mood-card {
-  align-items: center;
-  column-gap: var(--space-1);
-  display: grid;
-  grid-auto-columns: 5em 1fr auto;
-}
-
-.m-mood-card > :first-child:last-child {
-  grid-column-end: span 3;
-}
-
 .m-mood-card__exploration {
+  /* Display is set to flex by EventCard parent component.
+  Setting flex-basis to 1000% means this is free to expand horizontally */
+  flex-basis: 1000% !important;
   grid-column-start: 2;
   line-height: 1;
+  margin: 0;
   word-break: break-word;
 }
 
 .m-mood-card__heading {
   line-height: 1;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .m-mood-card__time {
