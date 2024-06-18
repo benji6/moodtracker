@@ -7,17 +7,17 @@ import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 
 interface Props {
   eventType: EventTypeCategories;
+  format?(n: number): string;
   id: string;
-  units?: string;
   location?: DeviceGeolocation;
   value: number;
 }
 
 export default function ValueEventCard({
   eventType,
+  format,
   id,
   location,
-  units,
   value,
 }: Props) {
   const date = new Date(id);
@@ -26,10 +26,9 @@ export default function ValueEventCard({
     <EventCard eventType={eventType} id={id}>
       <div>
         <b data-test-id={TEST_IDS.eventCardValue}>
-          {value}
-          {units
-            ? units
-            : ` ${
+          {format
+            ? format(value)
+            : `${value} ${
                 EVENT_TYPE_TO_LABELS[eventType][
                   value === 1 ? "singular" : "plural"
                 ]

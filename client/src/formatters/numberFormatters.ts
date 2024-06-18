@@ -14,6 +14,12 @@ export const integerFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 0,
 });
 
+export const kilogramFormatter = Intl.NumberFormat(undefined, {
+  maximumFractionDigits: 1,
+  style: "unit",
+  unit: "kilogram",
+});
+
 export const oneDecimalPlaceFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 1,
   minimumFractionDigits: 1,

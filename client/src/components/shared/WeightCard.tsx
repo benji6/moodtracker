@@ -1,5 +1,6 @@
 import ValueEventCard from "./ValueEventCard";
 import eventsSlice from "../../store/eventsSlice";
+import { kilogramFormatter } from "../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -13,9 +14,9 @@ export default function WeightCard({ id }: Props) {
   return (
     <ValueEventCard
       eventType="weights"
+      format={(n) => kilogramFormatter.format(n)}
       id={id}
       location={weight.location}
-      units="kg"
       value={weight.value}
     />
   );

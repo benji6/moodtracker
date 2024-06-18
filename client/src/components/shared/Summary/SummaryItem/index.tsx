@@ -12,7 +12,6 @@ interface Props {
   isMood?: boolean;
   periodType?: "day" | "month" | "week" | "year";
   previousValue?: number;
-  units?: "kg";
 }
 
 export default function SummaryItem({
@@ -23,7 +22,6 @@ export default function SummaryItem({
   isMood = false,
   periodType,
   previousValue,
-  units,
 }: Props) {
   if (currentValue === undefined) return;
   const round = (n: number): number =>
@@ -47,10 +45,7 @@ export default function SummaryItem({
     <Card color={color}>
       <div className="m-summary-item">
         <div className="m-summary-item__heading">{heading}</div>
-        <div className="m-summary-item__value">
-          {format(currentValue)}
-          {units}
-        </div>
+        <div className="m-summary-item__value">{format(currentValue)}</div>
         {isMood && (
           <div className="m-summary-item__mood-bar">
             <MoodBar mood={currentValue} />
@@ -70,7 +65,7 @@ export default function SummaryItem({
               <Icon draw margin="end" name="minus" />
             )}
             {difference
-              ? `${format(Math.abs(difference))}${units ?? ""}
+              ? `${format(Math.abs(difference))}
                 ${difference < 0 ? "less" : "more"} than `
               : "The same as "}
             previous {` ${periodType}`}

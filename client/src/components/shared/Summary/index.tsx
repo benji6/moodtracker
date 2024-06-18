@@ -3,10 +3,13 @@ import {
   formatMinutesToDurationStringShort,
   formatSecondsToOneNumberWithUnits,
 } from "../../../formatters/formatDuration";
+import {
+  kilogramFormatter,
+  oneDecimalPlaceFormatter,
+} from "../../../formatters/numberFormatters";
 import SummaryItem from "./SummaryItem";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatMetersToOneNumberWithUnits } from "../../../formatters/formatDistance";
-import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
 
 interface PeriodData {
@@ -98,11 +101,10 @@ export default function Summary({
       />
       <SummaryItem
         currentValue={currentPeriod.meanWeight}
-        format={oneDecimalPlaceFormatter.format}
+        format={kilogramFormatter.format}
         heading="Average weight"
         periodType={periodType}
         previousValue={previousPeriod?.meanWeight}
-        units="kg"
       />
       {(showMeditationStatsOverride || showMeditationStats) && (
         <SummaryItem

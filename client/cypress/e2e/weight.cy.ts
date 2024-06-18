@@ -56,7 +56,7 @@ describe("weight", () => {
       cy.location("pathname").should("equal", "/weights/log");
       cy.get(SELECTORS.eventCardValue)
         .first()
-        .should("have.text", `${testValue}kg`);
+        .should("have.text", `${testValue} kg`);
 
       cy.get(SELECTORS.eventCardTime)
         .invoke("attr", "data-time")
