@@ -10,12 +10,5 @@ export default function SitUpsCard({ id }: Props) {
   const normalizedSitUps = useSelector(eventsSlice.selectors.normalizedSitUps);
   const sitUps = normalizedSitUps.byId[id];
 
-  return (
-    <ValueEventCard
-      eventType="sit-ups"
-      id={id}
-      location={sitUps.location}
-      value={sitUps.value}
-    />
-  );
+  return <ValueEventCard eventType="sit-ups" id={id} value={sitUps.value} />;
 }

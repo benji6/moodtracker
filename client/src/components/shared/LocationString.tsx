@@ -39,7 +39,7 @@ export default function LocationString({
 
   return (
     <>
-      {locationName}
+      <span className="nowrap">{locationName}</span>
       {successPostfix ?? null}
     </>
   );

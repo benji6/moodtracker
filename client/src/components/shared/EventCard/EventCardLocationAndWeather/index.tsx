@@ -1,5 +1,6 @@
 import "./style.css";
 import { Icon, Spinner } from "eri";
+import LocationString from "../../LocationString";
 import { formatKelvinToCelcius } from "../../../../formatters/numberFormatters";
 import { getWeatherDisplayData } from "../../../../utils";
 import { useWeatherQuery } from "../../../hooks/weatherHooks";
@@ -10,7 +11,11 @@ interface Props {
   longitude: number;
 }
 
-export default function MoodCardWeather({ date, latitude, longitude }: Props) {
+export default function EventCardLocationAndWeather({
+  date,
+  latitude,
+  longitude,
+}: Props) {
   const { data, isError, isPending } = useWeatherQuery({
     date,
     latitude,
@@ -21,7 +26,7 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
 
   if (isPending)
     return (
-      <div className="m-mood-card-weather m-mood-card-weather--spinner">
+      <div className="m-event-card-location-and-weather">
         <Spinner margin={false} />
       </div>
     );
@@ -37,7 +42,7 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
   });
 
   return (
-    <div className="m-mood-card-weather">
+    <div className="m-event-card-location-and-weather">
       {weatherIconData && (
         <>
           <Icon color={weatherColor} draw name={iconName} size="3" />
@@ -45,6 +50,18 @@ export default function MoodCardWeather({ date, latitude, longitude }: Props) {
             {weatherData.temp && formatKelvinToCelcius(weatherData.temp)}
           </div>
         </>
+      )}
+      {location && (
+        <LocationString
+          errorFallback={
+            <>
+              <span className="nowrap">Lat: {latitude}</span>
+              <span className="nowrap">Lon: {longitude}</span>
+            </>
+          }
+          latitude={latitude}
+          longitude={longitude}
+        />
       )}
     </div>
   );

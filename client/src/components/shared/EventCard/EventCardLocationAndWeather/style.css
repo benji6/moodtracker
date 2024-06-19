@@ -1,4 +1,4 @@
-.m-mood-card-weather {
+.m-event-card-location-and-weather {
   align-items: center;
   display: flex;
   /* Display is set to flex by EventCard parent component.
@@ -6,6 +6,5 @@
   flex-basis: auto !important;
   flex-direction: column;
   font-size: var(--font-size-0);
-  gap: var(--space-0);
   grid-column-start: 3;
 }

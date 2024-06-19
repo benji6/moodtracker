@@ -1,5 +1,4 @@
 import EventCard from "./EventCard";
-import LocationString from "./LocationString";
 import { TEST_IDS } from "../../constants";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import eventsSlice from "../../store/eventsSlice";
@@ -15,7 +14,6 @@ export default function RunCard({ id }: Props) {
   const normalizedEvents = useSelector(eventsSlice.selectors.normalizedRuns);
   const event = normalizedEvents.byId[id];
   const date = new Date(id);
-  const { location } = event;
 
   return (
     <EventCard eventType="runs" id={id}>
@@ -39,23 +37,6 @@ export default function RunCard({ id }: Props) {
         >
           {dateTimeFormatter.format(date)}
         </small>
-      </div>
-      <div>
-        {location && (
-          <small>
-            <LocationString
-              errorFallback={
-                <>
-                  Lat: {location.latitude}
-                  <br />
-                  Lon: {location.longitude}
-                </>
-              }
-              latitude={location.latitude}
-              longitude={location.longitude}
-            />
-          </small>
-        )}
       </div>
     </EventCard>
   );

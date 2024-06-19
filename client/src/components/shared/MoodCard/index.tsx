@@ -1,7 +1,5 @@
 import "./style.css";
 import EventCard from "../EventCard";
-import LocationString from "../LocationString";
-import MoodCardWeather from "./MoodCardWeather";
 import { SubHeading } from "eri";
 import { TEST_IDS } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
@@ -15,7 +13,7 @@ interface Props {
 export default function MoodCard({ id }: Props) {
   const date = new Date(id);
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const { description, exploration, location, mood } = normalizedMoods.byId[id];
+  const { description, exploration, mood } = normalizedMoods.byId[id];
 
   return (
     <EventCard eventType="moods" id={id}>
@@ -41,30 +39,12 @@ export default function MoodCard({ id }: Props) {
           >
             {timeFormatter.format(date)}
           </small>
-          {location && (
-            <>
-              <br />
-              <small>
-                <LocationString
-                  latitude={location.latitude}
-                  longitude={location.longitude}
-                />
-              </small>
-            </>
-          )}
         </p>
       </div>
       {exploration && (
         <p className="m-mood-card__exploration pre-line">
           <small>{exploration}</small>
         </p>
-      )}
-      {location && (
-        <MoodCardWeather
-          date={date}
-          latitude={location.latitude}
-          longitude={location.longitude}
-        />
       )}
     </EventCard>
   );

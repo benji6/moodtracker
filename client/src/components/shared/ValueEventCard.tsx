@@ -1,7 +1,6 @@
-import { DeviceGeolocation, EventTypeCategories } from "../../types";
 import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import EventCard from "./EventCard";
-import LocationString from "./LocationString";
+import { EventTypeCategories } from "../../types";
 import { TEST_IDS } from "../../constants";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 
@@ -9,7 +8,6 @@ interface Props {
   eventType: EventTypeCategories;
   format?(n: number): string;
   id: string;
-  location?: DeviceGeolocation;
   value: number;
 }
 
@@ -17,7 +15,6 @@ export default function ValueEventCard({
   eventType,
   format,
   id,
-  location,
   value,
 }: Props) {
   const date = new Date(id);
@@ -42,23 +39,6 @@ export default function ValueEventCard({
         >
           {dateTimeFormatter.format(date)}
         </small>
-      </div>
-      <div>
-        {location && (
-          <small>
-            <LocationString
-              errorFallback={
-                <>
-                  Lat: {location.latitude}
-                  <br />
-                  Lon: {location.longitude}
-                </>
-              }
-              latitude={location.latitude}
-              longitude={location.longitude}
-            />
-          </small>
-        )}
       </div>
     </EventCard>
   );

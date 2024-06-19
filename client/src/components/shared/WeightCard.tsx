@@ -16,7 +16,6 @@ export default function WeightCard({ id }: Props) {
       eventType="weights"
       format={(n) => kilogramFormatter.format(n)}
       id={id}
-      location={weight.location}
       value={weight.value}
     />
   );

@@ -12,12 +12,5 @@ export default function PushUpsCard({ id }: Props) {
   );
   const pushUps = normalizedPushUps.byId[id];
 
-  return (
-    <ValueEventCard
-      eventType="push-ups"
-      id={id}
-      location={pushUps.location}
-      value={pushUps.value}
-    />
-  );
+  return <ValueEventCard eventType="push-ups" id={id} value={pushUps.value} />;
 }

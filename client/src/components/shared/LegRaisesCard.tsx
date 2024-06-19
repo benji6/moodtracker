@@ -12,12 +12,5 @@ export default function LegRaisesCard({ id }: Props) {
   );
   const event = normalizedEvents.byId[id];
 
-  return (
-    <ValueEventCard
-      eventType="leg-raises"
-      id={id}
-      location={event.location}
-      value={event.value}
-    />
-  );
+  return <ValueEventCard eventType="leg-raises" id={id} value={event.value} />;
 }
