@@ -10,18 +10,19 @@ import { useSelector } from "react-redux";
 
 interface Props {
   children: ReactNode;
+  color?: string;
   eventType: EventTypeCategories;
   id: string;
 }
 
-export default function EventCard({ children, eventType, id }: Props) {
+export default function EventCard({ children, color, eventType, id }: Props) {
   const navigate = useNavigate();
   const event = useSelector(
     eventsSlice.selectors.allNormalizedTrackedCategories,
   ).byId[id];
 
   return (
-    <Card onClick={() => navigate(`/${eventType}/edit/${id}`)}>
+    <Card color={color} onClick={() => navigate(`/${eventType}/edit/${id}`)}>
       <div className="m-event-card">
         <div className="m-event-card__icon">
           {EVENT_TYPE_TO_LABELS[eventType].icon}
