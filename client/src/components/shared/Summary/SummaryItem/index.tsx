@@ -1,5 +1,7 @@
 import "./style.css";
 import { Card, Icon } from "eri";
+import EVENT_TYPE_TO_LABELS from "../../../../constants/eventTypeToLabels";
+import { EventTypeCategories } from "../../../../types";
 import MoodBar from "../../MoodBar";
 import { integerFormatter } from "../../../../formatters/numberFormatters";
 import { moodToColor } from "../../../../utils";
@@ -7,9 +9,9 @@ import { moodToColor } from "../../../../utils";
 interface Props {
   currentValue?: number;
   displayTrendSentiment?: boolean;
+  eventType: EventTypeCategories;
   format?(n: number): string;
   heading: string;
-  isMood?: boolean;
   periodType?: "day" | "month" | "week" | "year";
   previousValue?: number;
 }
@@ -17,9 +19,9 @@ interface Props {
 export default function SummaryItem({
   currentValue,
   displayTrendSentiment = false,
+  eventType,
   format = integerFormatter.format,
   heading,
-  isMood = false,
   periodType,
   previousValue,
 }: Props) {
@@ -35,7 +37,7 @@ export default function SummaryItem({
       : round(roundedCurrentValue - roundedPreviousValue);
 
   let color = "var(--color-balance)";
-  if (isMood) color = moodToColor(currentValue);
+  if (eventType === "moods") color = moodToColor(currentValue);
   else if (displayTrendSentiment && difference) {
     if (difference > 0) color = "var(--color-positive)";
     else color = "var(--color-negative)";
@@ -44,9 +46,14 @@ export default function SummaryItem({
   return (
     <Card color={color}>
       <div className="m-summary-item">
-        <div className="m-summary-item__heading">{heading}</div>
+        <div className="m-summary-item__heading">
+          <span className="m-summary-item__icon">
+            {EVENT_TYPE_TO_LABELS[eventType].icon}
+          </span>
+          {heading}
+        </div>
         <div className="m-summary-item__value">{format(currentValue)}</div>
-        {isMood && (
+        {eventType === "moods" && (
           <div className="m-summary-item__mood-bar">
             <MoodBar mood={currentValue} />
           </div>

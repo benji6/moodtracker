@@ -9,6 +9,11 @@
   font-weight: var(--font-weight-bold);
 }
 
+.m-summary-item__icon {
+  color: var(--color);
+  margin-right: var(--space-0);
+}
+
 .m-summary-item__mood-bar {
   margin-block: var(--space-1);
 }

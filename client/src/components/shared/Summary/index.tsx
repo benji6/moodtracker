@@ -44,48 +44,38 @@ export default function Summary({
   const showMeditationStats: boolean =
     useSelector(eventsSlice.selectors.hasMeditations) &&
     Boolean(currentPeriod.secondsMeditated || previousPeriod?.secondsMeditated);
-  const showTotalMoodsRecorded: boolean = Boolean(
-    currentPeriod.total || previousPeriod?.total,
-  );
 
   return (
     <div className="m-summary">
       <SummaryItem
         currentValue={currentPeriod.mean}
+        eventType="moods"
         format={oneDecimalPlaceFormatter.format}
         displayTrendSentiment
         heading="Average mood"
-        isMood
         periodType={periodType}
         previousValue={previousPeriod?.mean}
       />
       <SummaryItem
         currentValue={currentPeriod.best}
         displayTrendSentiment
+        eventType="moods"
         heading="Best mood"
-        isMood
         periodType={periodType}
         previousValue={previousPeriod?.best}
       />
       <SummaryItem
         currentValue={currentPeriod.worst}
         displayTrendSentiment
+        eventType="moods"
         heading="Worst mood"
-        isMood
         periodType={periodType}
         previousValue={previousPeriod?.worst}
       />
-      {showTotalMoodsRecorded && (
-        <SummaryItem
-          currentValue={currentPeriod.total}
-          heading="Moods recorded"
-          periodType={periodType}
-          previousValue={previousPeriod?.total}
-        />
-      )}
       {Boolean(currentPeriod.standardDeviation) && (
         <SummaryItem
           currentValue={currentPeriod.standardDeviation}
+          eventType="moods"
           format={oneDecimalPlaceFormatter.format}
           heading="Mood standard deviation"
           periodType={periodType}
@@ -94,6 +84,7 @@ export default function Summary({
       )}
       <SummaryItem
         currentValue={currentPeriod.meanSleep}
+        eventType="sleeps"
         format={formatMinutesToDurationStringShort}
         heading={periodType === "day" ? "Sleep" : " Average sleep"}
         periodType={periodType}
@@ -101,6 +92,7 @@ export default function Summary({
       />
       <SummaryItem
         currentValue={currentPeriod.meanWeight}
+        eventType="weights"
         format={kilogramFormatter.format}
         heading="Average weight"
         periodType={periodType}
@@ -109,6 +101,7 @@ export default function Summary({
       {(showMeditationStatsOverride || showMeditationStats) && (
         <SummaryItem
           currentValue={currentPeriod.secondsMeditated}
+          eventType="meditations"
           displayTrendSentiment
           format={formatSecondsToOneNumberWithUnits}
           heading="Meditation time"
@@ -124,6 +117,7 @@ export default function Summary({
         <SummaryItem
           currentValue={currentPeriod.runMeters}
           displayTrendSentiment
+          eventType="runs"
           heading="Run distance"
           format={formatMetersToOneNumberWithUnits}
           periodType={periodType}
@@ -138,6 +132,7 @@ export default function Summary({
         <SummaryItem
           currentValue={currentPeriod.runSeconds}
           displayTrendSentiment
+          eventType="runs"
           format={formatSecondsToOneNumberWithUnits}
           heading="Run time"
           periodType={periodType}
@@ -152,6 +147,7 @@ export default function Summary({
         <SummaryItem
           currentValue={currentPeriod.totalPushUps}
           displayTrendSentiment
+          eventType="push-ups"
           heading="Push-ups"
           periodType={periodType}
           previousValue={previousPeriod?.totalPushUps}
@@ -165,6 +161,7 @@ export default function Summary({
         <SummaryItem
           currentValue={currentPeriod.totalSitUps}
           displayTrendSentiment
+          eventType="sit-ups"
           heading="Sit-ups"
           periodType={periodType}
           previousValue={previousPeriod?.totalSitUps}
@@ -178,6 +175,7 @@ export default function Summary({
         <SummaryItem
           currentValue={currentPeriod.totalLegRaises}
           displayTrendSentiment
+          eventType="leg-raises"
           heading="Leg raises"
           periodType={periodType}
           previousValue={previousPeriod?.totalLegRaises}
