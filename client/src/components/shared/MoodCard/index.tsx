@@ -5,7 +5,6 @@ import MoodCardWeather from "./MoodCardWeather";
 import { SubHeading } from "eri";
 import { TEST_IDS } from "../../../constants";
 import eventsSlice from "../../../store/eventsSlice";
-import { moodToColor } from "../../../utils";
 import { timeFormatter } from "../../../formatters/dateTimeFormatters";
 import { useSelector } from "react-redux";
 
@@ -19,7 +18,7 @@ export default function MoodCard({ id }: Props) {
   const { description, exploration, location, mood } = normalizedMoods.byId[id];
 
   return (
-    <EventCard color={moodToColor(mood)} eventType="moods" id={id}>
+    <EventCard eventType="moods" id={id}>
       <div>
         <h3 className="m-mood-card__heading">
           <span data-test-id={TEST_IDS.moodCardMood}>

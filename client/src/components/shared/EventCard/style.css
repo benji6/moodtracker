@@ -9,3 +9,7 @@
 .m-event-card > :not(:first-child) {
   flex-basis: 100%;
 }
+
+.m-event-card__icon {
+  color: var(--color);
+}
