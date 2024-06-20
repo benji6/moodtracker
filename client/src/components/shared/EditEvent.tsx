@@ -30,12 +30,14 @@ export default forwardRef<HTMLFormElement, Props>(function EditEvent(
   const dateCreated = new Date(id);
   const dateUpdated = updatedAt ? new Date(updatedAt) : undefined;
 
-  const eventLabel = EVENT_TYPE_TO_LABELS[eventType].default;
+  const { default: label, icon } = EVENT_TYPE_TO_LABELS[eventType];
 
   return (
     <Paper.Group>
       <Paper>
-        <h2>Edit {eventLabel}</h2>
+        <h2>
+          {icon} Edit {label}
+        </h2>
         <p>
           <small>
             Created: {dateTimeFormatter.format(dateCreated)} (

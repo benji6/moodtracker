@@ -6,6 +6,7 @@ import {
   TEST_IDS,
   TIME,
 } from "../../../../constants";
+import EVENT_TYPE_TO_LABELS from "../../../../constants/eventTypeToLabels";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -27,7 +28,7 @@ export default function Meditate() {
   return (
     <Paper.Group data-test-id={TEST_IDS.meditatePage}>
       <Paper>
-        <h2>Meditate</h2>
+        <h2>{EVENT_TYPE_TO_LABELS.meditations.icon} Meditate</h2>
         <p>
           This is a place where you can meditate. Select a preset time, enter a
           custom time or meditate freely with no fixed time. Once your

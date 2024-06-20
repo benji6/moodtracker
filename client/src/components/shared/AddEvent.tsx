@@ -19,11 +19,13 @@ export default forwardRef<HTMLFormElement, Props>(function AddEvent(
 ) {
   useKeyboardSave(onSubmit);
 
+  const { default: label, icon } = EVENT_TYPE_TO_LABELS[eventType];
+
   return (
     <Paper.Group data-test-id={TEST_IDS.eventAddPage}>
       <Paper>
         <h2>
-          Add {EVENT_TYPE_TO_LABELS[eventType].default}
+          {icon} Add {label}
           {subheading && <SubHeading>{subheading}</SubHeading>}
         </h2>
 
