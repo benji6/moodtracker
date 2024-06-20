@@ -1,7 +1,7 @@
 import "./style.css";
 import { Card } from "eri";
-import EVENT_TYPE_TO_LABELS from "../../../constants/eventTypeToLabels";
 import EventCardLocationAndWeather from "./EventCardLocationAndWeather";
+import EventIcon from "../EventIcon";
 import { EventTypeCategories } from "../../../types";
 import { ReactNode } from "react";
 import eventsSlice from "../../../store/eventsSlice";
@@ -25,7 +25,7 @@ export default function EventCard({ children, color, eventType, id }: Props) {
     <Card color={color} onClick={() => navigate(`/${eventType}/edit/${id}`)}>
       <div className="m-event-card">
         <div className="m-event-card__icon">
-          {EVENT_TYPE_TO_LABELS[eventType].icon}
+          <EventIcon eventType={eventType} />
         </div>
         {children}
         {"location" in event && event.location && (

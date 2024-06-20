@@ -4,6 +4,7 @@ import { ReactNode, forwardRef, useState } from "react";
 import DeleteEventDialog from "./DeleteEventDialog";
 import { ERRORS } from "../../constants";
 import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
+import EventIcon from "./EventIcon";
 import Location from "./Location";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import { formatDistanceToNow } from "date-fns";
@@ -30,13 +31,13 @@ export default forwardRef<HTMLFormElement, Props>(function EditEvent(
   const dateCreated = new Date(id);
   const dateUpdated = updatedAt ? new Date(updatedAt) : undefined;
 
-  const { default: label, icon } = EVENT_TYPE_TO_LABELS[eventType];
+  const { default: label } = EVENT_TYPE_TO_LABELS[eventType];
 
   return (
     <Paper.Group>
       <Paper>
         <h2>
-          {icon} Edit {label}
+          <EventIcon eventType={eventType} /> Edit {label}
         </h2>
         <p>
           <small>

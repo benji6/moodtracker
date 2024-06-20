@@ -1,6 +1,6 @@
 import "./style.css";
 import { Button, Icon, Paper } from "eri";
-import { QuickTrackNavButton } from "./QuickTrackNavButton/QuickTrackNavButton";
+import { QuickTrackNavButton } from "./QuickTrackNavButton";
 import { TEST_IDS } from "../../../../constants";
 import { useNavigate } from "react-router-dom";
 

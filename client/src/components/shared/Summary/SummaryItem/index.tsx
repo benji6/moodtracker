@@ -1,6 +1,6 @@
 import "./style.css";
 import { Card, Icon } from "eri";
-import EVENT_TYPE_TO_LABELS from "../../../../constants/eventTypeToLabels";
+import EventIcon from "../../EventIcon";
 import { EventTypeCategories } from "../../../../types";
 import MoodBar from "../../MoodBar";
 import { integerFormatter } from "../../../../formatters/numberFormatters";
@@ -48,7 +48,7 @@ export default function SummaryItem({
       <div className="m-summary-item">
         <div className="m-summary-item__heading">
           <span className="m-summary-item__icon">
-            {EVENT_TYPE_TO_LABELS[eventType].icon}
+            <EventIcon eventType={eventType} margin="end" />
           </span>
           {heading}
         </div>

@@ -1,6 +1,6 @@
 import "./style.css";
 import { Button, Card, Icon } from "eri";
-import EVENT_TYPE_TO_LABELS from "../../../constants/eventTypeToLabels";
+import EventIcon from "../EventIcon";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
@@ -21,7 +21,9 @@ export default function MeditationCard({ id }: Props) {
     <>
       <Card>
         <div className="m-meditation-card">
-          <div>{EVENT_TYPE_TO_LABELS.meditations.icon}</div>
+          <div>
+            <EventIcon eventType="meditations" />
+          </div>
           <div>
             <small>{dateTimeFormatter.format(new Date(id))}</small>
           </div>
