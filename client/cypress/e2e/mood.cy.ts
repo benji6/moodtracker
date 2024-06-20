@@ -7,7 +7,7 @@ describe("mood", () => {
 
   describe("adding a mood", () => {
     beforeEach(() => {
-      cy.visit("/add");
+      cy.visit("/moods/add");
       cy.get(SELECTORS.eventAddPage);
     });
 

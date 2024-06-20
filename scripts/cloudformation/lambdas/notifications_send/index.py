@@ -37,7 +37,9 @@ def handler(event, context):
         webpush=messaging.WebpushConfig(
             headers=None,
             data=None,
-            fcm_options=messaging.WebpushFCMOptions("https://moodtracker.link/add"),
+            fcm_options=messaging.WebpushFCMOptions(
+                "https://moodtracker.link/moods/add"
+            ),
             notification=messaging.WebpushNotification(
                 badge="https://moodtracker.link/icons/icon-without-css.svg",
                 body="Add your mood today",

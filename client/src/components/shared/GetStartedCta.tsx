@@ -11,7 +11,7 @@ export default function GetStartedCta() {
       <NotificationSettings />
       <h3>Get started adding moods</h3>
       <Button.Group>
-        <Button onClick={() => navigate(`/add`)} type="button">
+        <Button onClick={() => navigate(`/moods/add`)} type="button">
           Add your first mood!
         </Button>
       </Button.Group>

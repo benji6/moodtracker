@@ -11,7 +11,7 @@ export function QuickTrackNav() {
     <Paper data-test-id={TEST_IDS.moodList}>
       <h2>Home</h2>
       <div className="quick-track-nav__links">
-        <Button onClick={() => navigate("/add")}>
+        <Button onClick={() => navigate("/moods/add")}>
           <Icon margin="end" name="heart" />
           Add mood
         </Button>

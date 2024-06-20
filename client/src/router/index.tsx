@@ -97,20 +97,6 @@ function Root() {
               />
               {userIsSignedIn ? (
                 <>
-                  <Route
-                    element={<Page Component={AddMood} title="Add mood" />}
-                    path="/add"
-                  />
-                  <Route path="/moods">
-                    <Route
-                      element={<Page Component={EditMood} title="Edit mood" />}
-                      path="edit/:id"
-                    />
-                    <Route
-                      element={<Page Component={MoodLog} title="Mood log" />}
-                      path="log"
-                    />
-                  </Route>
                   <Route path="/meditation">
                     <Route
                       element={<Page Component={Meditate} title="Meditate" />}
@@ -145,6 +131,12 @@ function Root() {
                     />
                   </Route>
                   {[
+                    trackedCategoryRoutes({
+                      AddComponent: AddMood,
+                      EditComponent: EditMood,
+                      eventType: "moods",
+                      LogComponent: MoodLog,
+                    }),
                     trackedCategoryRoutes({
                       AddComponent: AddLegRaises,
                       EditComponent: EditLegRaises,

@@ -109,7 +109,8 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       ) : (
         <Paper>
           <p>
-            No mood data for this week, <Link to="/add">add a mood here</Link>!
+            No mood data for this week,{" "}
+            <Link to="/moods/add">add a mood here</Link>!
           </p>
         </Paper>
       )}

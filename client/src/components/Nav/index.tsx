@@ -84,7 +84,7 @@ export default function Nav({ handleNavClose, open }: Props) {
                   </span>
                 }
               >
-                <EriNav.Link onClick={handleNavClose} to="/add">
+                <EriNav.Link onClick={handleNavClose} to="/moods/add">
                   <Icon margin="end" name="plus" />
                   Add
                 </EriNav.Link>

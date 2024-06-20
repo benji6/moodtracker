@@ -48,7 +48,7 @@ export default function Layout() {
           <QuickNav.Link aria-label="Meditate" to="/meditation">
             <Icon name="bell" size="3" />
           </QuickNav.Link>
-          <QuickNav.Link aria-label="Add new mood" to="/add">
+          <QuickNav.Link aria-label="Add new mood" to="/moods/add">
             <Icon name="heart" size="3" />
           </QuickNav.Link>
         </QuickNav>

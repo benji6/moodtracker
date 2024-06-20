@@ -52,15 +52,19 @@
   "shortcuts": [
     {
       "name": "Add mood",
-      "url": "/add"
-    },
-    {
-      "name": "Add weight",
-      "url": "/weights/add"
+      "url": "/moods/add"
     },
     {
       "name": "Meditate",
       "url": "/meditation"
+    },
+    {
+      "name": "Add sleep",
+      "url": "/sleeps/add"
+    },
+    {
+      "name": "Add weight",
+      "url": "/weights/add"
     },
     {
       "name": "View stats",

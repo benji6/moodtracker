@@ -1,6 +1,6 @@
 For some time now you've been able to record your location against anything you record in MoodTracker. This functionality can be configured on the [location settings page](/settings/location) when you're signed in. Now MoodTracker can fetch the weather for each location and time where you recorded something.
 
-You can see this data when you [add](/add) or edit moods (or anything else) when you're signed in:
+You can see this data when you [add](/moods/add) or edit moods (or anything else) when you're signed in:
 
 ![Screenshot showing weather stats when adding a mood](screenshot-1.png "Screenshot showing weather stats when adding a mood")
 
