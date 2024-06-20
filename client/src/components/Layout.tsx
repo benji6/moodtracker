@@ -1,6 +1,5 @@
 import { Nav as EriNav, Header, Icon, QuickNav } from "eri";
 import { Link, Outlet } from "react-router-dom";
-import AddMoodFab from "./shared/AddMoodFab";
 import Nav from "./Nav";
 import { TEST_IDS } from "../constants";
 import useEvents from "./hooks/useEvents";
@@ -38,7 +37,6 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
-      <AddMoodFab hide={!userIsSignedIn} />
       {userIsSignedIn && (
         <QuickNav>
           <QuickNav.Link aria-label="Home" to="/">
