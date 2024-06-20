@@ -13,7 +13,7 @@ export default function DeviceSetupDialog() {
 
   return (
     <Dialog
-      data-test-id={TEST_IDS.deviceSpecificSettingsDialog}
+      data-test-id={TEST_IDS.deviceSetupDialog}
       open={userHasManuallySignedIn}
       title="Check your device-specific settings"
       onClose={() => dispatch(appSlice.actions.dismissNewSignInUi())}

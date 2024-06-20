@@ -21,7 +21,7 @@ Cypress.Commands.add("login", () => {
         { log: false },
       );
       cy.get('form button[type="submit"]').click();
-      cy.get(`${SELECTORS.deviceSpecificSettingsDialog} .close-button`).click();
+      cy.get(`${SELECTORS.deviceSetupDialog} .close-button`).click();
     },
     { cacheAcrossSpecs: true },
   );

@@ -3,7 +3,7 @@ export default (() => {
     "addMoodRadioButton",
     "dateAwokeInput",
     "descriptionInput",
-    "deviceSpecificSettingsDialog",
+    "deviceSetupDialog",
     "eventAddPage",
     "eventAddSubmitButton",
     "eventCardTime",
