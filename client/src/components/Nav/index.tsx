@@ -11,6 +11,7 @@ import SyncState from "./SyncState";
 import { TEST_IDS } from "../../constants";
 import TrackedCategorySubList from "./TrackedCategorySubList";
 import { WEEK_OPTIONS } from "../../formatters/dateTimeFormatters";
+import appSlice from "../../store/appSlice";
 import eventsSlice from "../../store/eventsSlice";
 import { startOfWeek } from "date-fns";
 import { useSelector } from "react-redux";
@@ -38,6 +39,8 @@ export default function Nav({ handleNavClose, open }: Props) {
     setIsDialogOpen(false);
     handleNavClose();
   };
+  const eventTypeTracking = useSelector(appSlice.selectors.eventTypeTracking);
+  const isMeditationTrackingEnabled = eventTypeTracking.meditations;
 
   const now = new Date();
 
@@ -105,25 +108,29 @@ export default function Nav({ handleNavClose, open }: Props) {
                 onClick={handleNavClose}
                 showLog={hasWeights}
               />
-              <EriNav.SubList
-                heading={
-                  <span>
-                    <Icon margin="end" name="bell" />
-                    Meditation
-                  </span>
-                }
-              >
-                <EriNav.Link onClick={handleNavClose} to="/meditation">
-                  <Icon margin="end" name="plus" />
-                  Add
-                </EriNav.Link>
-                {hasMeditations && (
-                  <EriNav.Link onClick={handleNavClose} to="/meditation/log">
-                    <Icon margin="end" name="book" />
-                    Log
-                  </EriNav.Link>
-                )}
-              </EriNav.SubList>
+              {(isMeditationTrackingEnabled || hasMeditations) && (
+                <EriNav.SubList
+                  heading={
+                    <span>
+                      <Icon margin="end" name="bell" />
+                      Meditation
+                    </span>
+                  }
+                >
+                  {isMeditationTrackingEnabled && (
+                    <EriNav.Link onClick={handleNavClose} to="/meditation">
+                      <Icon margin="end" name="plus" />
+                      Add
+                    </EriNav.Link>
+                  )}
+                  {hasMeditations && (
+                    <EriNav.Link onClick={handleNavClose} to="/meditation/log">
+                      <Icon margin="end" name="book" />
+                      Log
+                    </EriNav.Link>
+                  )}
+                </EriNav.SubList>
+              )}
               <TrackedCategorySubList
                 eventType="runs"
                 onClick={handleNavClose}
@@ -209,6 +216,10 @@ export default function Nav({ handleNavClose, open }: Props) {
                 <EriNav.Link onClick={handleNavClose} to="/settings/location">
                   <Icon margin="end" name="location" />
                   Location
+                </EriNav.Link>
+                <EriNav.Link onClick={handleNavClose} to="/settings/events">
+                  <Icon margin="end" name="chart" />
+                  Events
                 </EriNav.Link>
                 <EriNav.Link
                   onClick={handleNavClose}

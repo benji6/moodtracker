@@ -23,6 +23,7 @@ import EditSitUps from "../components/pages/SitUps/EditSitUps";
 import EditSleep from "../components/pages/Sleep/EditSleep";
 import EditWeight from "../components/pages/Weight/EditWeight";
 import { ErrorBoundary } from "@sentry/react";
+import EventSettings from "../components/pages/Settings/EventSettings";
 import Explore from "../components/pages/Stats/Explore";
 import ForgotPassword from "../components/pages/ForgotPassword";
 import Home from "../components/pages/Home";
@@ -198,6 +199,12 @@ function Root() {
                         />
                       }
                       path="change-password"
+                    />
+                    <Route
+                      element={
+                        <Page Component={EventSettings} title="Events" />
+                      }
+                      path="events"
                     />
                     <Route
                       element={

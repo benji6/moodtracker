@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog } from "eri";
+import EventTrackingSettings from "../../shared/EventTrackingSettings";
 import LocationToggle from "../../shared/LocationToggle";
 import { TEST_IDS } from "../../../constants";
 import WebPushNotifications from "../../shared/NotificationSettings/WebPushNotifications";
@@ -22,6 +23,8 @@ export default function DeviceSetupDialog() {
       <WebPushNotifications />
       <h4 style={{ marginTop: 0 }}>Location settings</h4>
       <LocationToggle />
+      <h4>Event settings</h4>
+      <EventTrackingSettings />
     </Dialog>
   );
 }

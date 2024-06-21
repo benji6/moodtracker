@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
+import { EventTypeCategories } from "../../types";
 import appSlice from "../../store/appSlice";
 import { captureException } from "../../sentry";
 import eventsSlice from "../../store/eventsSlice";
@@ -23,6 +24,7 @@ export default function useStorage() {
   const userId = useSelector(userSlice.selectors.id);
   const userLoading = useSelector(userSlice.selectors.loading);
   const dispatch = useDispatch();
+  const eventTypeTracking = useSelector(appSlice.selectors.eventTypeTracking);
 
   const lastUserId = useRef<string | undefined>();
 
@@ -48,7 +50,7 @@ export default function useStorage() {
       if (!userId) return dispatch(appSlice.actions.storageLoaded());
       try {
         const result = await Promise.race([
-          storage.getEventsAndSettings(userId),
+          storage.getUserDataAndSettings(userId),
           new Promise((resolve) => setTimeout(resolve, 5e3)),
         ]);
         if (result === undefined) {
@@ -56,16 +58,29 @@ export default function useStorage() {
           captureException(error);
           throw error;
         }
-        const [events, settings] = result as Awaited<
-          ReturnType<typeof storage.getEventsAndSettings>
+        const [events, eventTrackingDisabledKeys, settings] = result as Awaited<
+          ReturnType<typeof storage.getUserDataAndSettings>
         >;
         if (events) dispatch(eventsSlice.actions.loadFromStorage(events));
+        if (eventTrackingDisabledKeys)
+          dispatch(appSlice.actions.loadFromStorage(eventTrackingDisabledKeys));
         if (settings) dispatch(settingsSlice.actions.loadFromStorage(settings));
       } finally {
         dispatch(appSlice.actions.storageLoaded());
       }
     })();
   }, [dispatch, isStorageLoading, userId, userLoading]);
+
+  // save event tracking settings
+  useEffect(() => {
+    if (isStorageLoading || !userId) return;
+    storage.setEventTrackingDisabledKeys(
+      userId,
+      Object.entries(eventTypeTracking)
+        .filter(([_, enabled]) => !enabled)
+        .map(([eventType]) => eventType as EventTypeCategories),
+    );
+  }, [eventTypeTracking, isStorageLoading, userId]);
 
   // save events & settings
   useEffect(() => {

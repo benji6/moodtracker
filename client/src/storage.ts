@@ -1,6 +1,6 @@
+import { EventTypeCategories, Settings } from "./types";
 import { del, get, getMany, set, setMany } from "idb-keyval";
 import { EventsStateToStore } from "./store/eventsSlice";
-import { Settings } from "./types";
 import { UserDetails } from "./store/userSlice";
 
 const APPLICATION_NAME = "moodtracker";
@@ -8,6 +8,8 @@ const USER_KEY = `${APPLICATION_NAME}:user`;
 
 const makeEventsKey = (userId: string): string =>
   `${APPLICATION_NAME}:${userId}:events`;
+const makeEventTrackingDisabledKeysKey = (userId: string): string =>
+  `${APPLICATION_NAME}:${userId}:event-tracking-disabled-keys`;
 const makeSettingsKey = (userId: string): string =>
   `${APPLICATION_NAME}:${userId}:settings`;
 
@@ -17,12 +19,22 @@ export default {
   setEvents: (userId: string, events: EventsStateToStore): Promise<void> =>
     set(makeEventsKey(userId), events),
 
+  // event tracking
+  setEventTrackingDisabledKeys: (
+    userId: string,
+    eventTypes: EventTypeCategories[],
+  ): Promise<void> => {
+    if (eventTypes.length)
+      return set(makeEventTrackingDisabledKeysKey(userId), eventTypes);
+    return del(makeEventTrackingDisabledKeysKey(userId));
+  },
+
   // user
   deleteUser: (): Promise<void> => del(USER_KEY),
   getUser: (): Promise<UserDetails | undefined> => get(USER_KEY),
   setUser: (user: UserDetails): Promise<void> => set(USER_KEY, user),
 
-  // events & settings
+  // multiple
   setEventsAndSettings: (
     userId: string,
     events: EventsStateToStore,
@@ -32,10 +44,24 @@ export default {
       [makeEventsKey(userId), events],
       [makeSettingsKey(userId), settings],
     ]),
-  getEventsAndSettings: (
+  getUserDataAndSettings: (
     userId: string,
-  ): Promise<[EventsStateToStore | undefined, Settings | undefined]> =>
-    getMany([makeEventsKey(userId), makeSettingsKey(userId)]) as Promise<
-      [EventsStateToStore | undefined, Settings | undefined]
+  ): Promise<
+    [
+      EventsStateToStore | undefined,
+      EventTypeCategories[] | undefined,
+      Settings | undefined,
+    ]
+  > =>
+    getMany([
+      makeEventsKey(userId),
+      makeEventTrackingDisabledKeysKey(userId),
+      makeSettingsKey(userId),
+    ]) as Promise<
+      [
+        EventsStateToStore | undefined,
+        EventTypeCategories[] | undefined,
+        Settings | undefined,
+      ]
     >,
 };
