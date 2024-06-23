@@ -6,6 +6,6 @@
   text-align: center;
 }
 
-.m-meditation-card > :not(:first-child) {
+.m-meditation-card > :not(:where(:first-child, :last-child)) {
   flex-basis: 100%;
 }
