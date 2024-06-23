@@ -17,7 +17,7 @@ export default function MoodCard({ id }: Props) {
   const { description, exploration, mood } = normalizedMoods.byId[id];
 
   return (
-    <EventCard color={moodToColor(mood)} eventType="moods" id={id}>
+    <EventCard color={moodToColor(mood)} eventType="moods" hideDateTime id={id}>
       <div>
         <h3 className="m-mood-card__heading">
           <span data-test-id={TEST_IDS.moodCardMood}>{mood}</span>

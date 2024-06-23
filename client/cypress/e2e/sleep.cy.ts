@@ -53,7 +53,7 @@ describe("sleep", () => {
       cy.location("pathname").should("equal", "/sleeps/log");
       cy.get(SELECTORS.sleepCardValue)
         .first()
-        .should("have.text", "8 hours & 10 minutes");
+        .should("have.text", "8 hr & 10 min");
     });
   });
 });

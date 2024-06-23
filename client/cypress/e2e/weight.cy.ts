@@ -58,7 +58,7 @@ describe("weight", () => {
         .first()
         .should("have.text", `${testValue} kg`);
 
-      cy.get(SELECTORS.eventCardTime)
+      cy.get(SELECTORS.eventCardDateTime)
         .invoke("attr", "data-time")
         .then(Number)
         .should("be.closeTo", expectedTime, 1);

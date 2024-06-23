@@ -6,8 +6,9 @@
   text-align: center;
 }
 
-.m-event-card > :not(:first-child) {
-  flex-basis: 100%;
+.m-event-card
+  > :not(:where(.m-event-card__icon, :last-child:not(:nth-child(2)))) {
+  flex-grow: 1;
 }
 
 .m-event-card__icon {

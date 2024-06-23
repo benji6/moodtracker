@@ -2,7 +2,7 @@ import EventCard from "./EventCard";
 import { TEST_IDS } from "../../constants";
 import { dateFormatter } from "../../formatters/dateTimeFormatters";
 import eventsSlice from "../../store/eventsSlice";
-import { formatMinutesToDurationStringLong } from "../../formatters/formatDuration";
+import { formatMinutesToDurationStringShort } from "../../formatters/formatDuration";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -20,7 +20,7 @@ export default function SleepCard({ id }: Props) {
         <small>
           Slept for:{" "}
           <b data-test-id={TEST_IDS.sleepCardValue}>
-            {formatMinutesToDurationStringLong(sleep.minutesSlept)}
+            {formatMinutesToDurationStringShort(sleep.minutesSlept)}
           </b>
         </small>
       </div>

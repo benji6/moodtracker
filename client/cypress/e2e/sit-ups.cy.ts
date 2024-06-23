@@ -64,7 +64,7 @@ describe("sit-ups", () => {
         .first()
         .should("have.text", `${testValue} sit-ups`);
 
-      cy.get(SELECTORS.eventCardTime)
+      cy.get(SELECTORS.eventCardDateTime)
         .invoke("attr", "data-time")
         .then(Number)
         .should("be.closeTo", expectedTime, 1);

@@ -44,18 +44,24 @@ const secondFormatterLong = Intl.NumberFormat(undefined, {
   unitDisplay: "long",
 });
 
-export const formatMinutesToDurationStringLong = (minutes: number): string => {
-  const roundedMinutes = Math.round(minutes);
-  if (!roundedMinutes) return minuteFormatterLong.format(roundedMinutes);
-  const minutesComponent = Math.round(roundedMinutes % TIME.minutesPerHour);
-  const hoursComponent = Math.floor(roundedMinutes / TIME.minutesPerHour);
-  return [
-    hoursComponent && hourFormatterLong.format(hoursComponent),
-    minutesComponent && minuteFormatterLong.format(minutesComponent),
-  ]
-    .filter(Boolean)
-    .join(" & ");
-};
+const makeFormatMinutesToDurationString =
+  (minuteFormatter: Intl.NumberFormat, hourFormatter: Intl.NumberFormat) =>
+  (minutes: number): string => {
+    const roundedMinutes = Math.round(minutes);
+    if (!roundedMinutes) return minuteFormatter.format(roundedMinutes);
+    const minutesComponent = Math.round(roundedMinutes % TIME.minutesPerHour);
+    const hoursComponent = Math.floor(roundedMinutes / TIME.minutesPerHour);
+    return [
+      hoursComponent && hourFormatter.format(hoursComponent),
+      minutesComponent && minuteFormatter.format(minutesComponent),
+    ]
+      .filter(Boolean)
+      .join(" & ");
+  };
+export const formatMinutesToDurationStringLong =
+  makeFormatMinutesToDurationString(minuteFormatterLong, hourFormatterLong);
+export const formatMinutesToDurationStringShort =
+  makeFormatMinutesToDurationString(minuteFormatter, hourFormatter);
 
 export const formatSecondsAsTime = (seconds: number): string =>
   `${String(Math.floor(seconds / TIME.secondsPerMinute)).padStart(
@@ -63,25 +69,43 @@ export const formatSecondsAsTime = (seconds: number): string =>
     "0",
   )}:${String(Math.floor(seconds % TIME.secondsPerMinute)).padStart(2, "0")}`;
 
-export const formatSecondsToDurationStringLong = (seconds: number): string => {
-  const roundedSeconds = Math.round(seconds);
-  if (!roundedSeconds) return secondFormatterLong.format(roundedSeconds);
+const makeFormatSecondsToDurationString =
+  (
+    secondFormatter: Intl.NumberFormat,
+    minuteFormatter: Intl.NumberFormat,
+    hourFormatter: Intl.NumberFormat,
+  ) =>
+  (seconds: number): string => {
+    const roundedSeconds = Math.round(seconds);
+    if (!roundedSeconds) return secondFormatter.format(roundedSeconds);
 
-  const secondsComponent = Math.round(roundedSeconds % TIME.secondsPerMinute);
-  const minutesComponent = Math.floor(
-    (roundedSeconds % TIME.secondsPerHour) / TIME.secondsPerMinute,
+    const secondsComponent = Math.round(roundedSeconds % TIME.secondsPerMinute);
+    const minutesComponent = Math.floor(
+      (roundedSeconds % TIME.secondsPerHour) / TIME.secondsPerMinute,
+    );
+    const hoursComponent = Math.floor(roundedSeconds / TIME.secondsPerHour);
+    const components = [
+      hoursComponent && hourFormatter.format(hoursComponent),
+      minutesComponent && minuteFormatter.format(minutesComponent),
+      secondsComponent && secondFormatter.format(secondsComponent),
+    ].filter(Boolean);
+
+    if (components.length === 3)
+      return `${components[0]}, ${components[1]} & ${components[2]}`;
+    return components.join(" & ");
+  };
+export const formatSecondsToDurationStringLong =
+  makeFormatSecondsToDurationString(
+    secondFormatterLong,
+    minuteFormatterLong,
+    hourFormatterLong,
   );
-  const hoursComponent = Math.floor(roundedSeconds / TIME.secondsPerHour);
-  const components = [
-    hoursComponent && hourFormatterLong.format(hoursComponent),
-    minutesComponent && minuteFormatterLong.format(minutesComponent),
-    secondsComponent && secondFormatterLong.format(secondsComponent),
-  ].filter(Boolean);
-
-  if (components.length === 3)
-    return `${components[0]}, ${components[1]} & ${components[2]}`;
-  return components.join(" & ");
-};
+export const formatSecondsToDurationStringShort =
+  makeFormatSecondsToDurationString(
+    secondFormatter,
+    minuteFormatter,
+    hourFormatter,
+  );
 
 export const formatSecondsToOneNumberWithUnits = (seconds: number): string =>
   seconds < TIME.secondsPerMinute

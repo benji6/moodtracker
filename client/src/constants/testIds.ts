@@ -6,7 +6,7 @@ export default (() => {
     "deviceSetupDialog",
     "eventAddPage",
     "eventAddSubmitButton",
-    "eventCardTime",
+    "eventCardDateTime",
     "eventCardValue",
     "hoursSleptInput",
     "legRaisesValueInput",

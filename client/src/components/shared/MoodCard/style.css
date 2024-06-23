@@ -1,7 +1,8 @@
 .m-mood-card__exploration {
   /* Display is set to flex by EventCard parent component.
-  Setting flex-basis to 1000% means this is free to expand horizontally */
-  flex-basis: 1000% !important;
+  Setting flex-basis to 100% means this will try to take up
+  as much horizontal space as possible*/
+  flex-basis: 100% !important;
   grid-column-start: 2;
   line-height: 1;
   margin: 0;

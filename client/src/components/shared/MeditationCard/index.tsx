@@ -4,7 +4,7 @@ import EventIcon from "../EventIcon";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
-import { formatSecondsAsTime } from "../../../formatters/formatDuration";
+import { formatSecondsToDurationStringShort } from "../../../formatters/formatDuration";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
@@ -28,7 +28,7 @@ export default function MeditationCard({ id }: Props) {
             <small>{dateTimeFormatter.format(new Date(id))}</small>
           </div>
           <div className="center">
-            <b>{formatSecondsAsTime(meditation.seconds)}</b>
+            <b>{formatSecondsToDurationStringShort(meditation.seconds)}</b>
           </div>
           <div>
             <Button

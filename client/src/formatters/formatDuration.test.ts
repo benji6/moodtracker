@@ -1,12 +1,32 @@
 import {
   formatMinutesAsTime,
   formatMinutesToDurationStringLong,
+  formatMinutesToDurationStringShort,
   formatSecondsAsTime,
   formatSecondsToDurationStringLong,
+  formatSecondsToDurationStringShort,
   formatSecondsToOneNumberWithUnits,
 } from "./formatDuration";
 
 describe("formatDuration", () => {
+  test("formatMinutesToDurationStringShort", () => {
+    expect(formatMinutesToDurationStringShort(0)).toBe("0 mins");
+    expect(formatMinutesToDurationStringShort(0.49)).toBe("0 mins");
+    expect(formatMinutesToDurationStringShort(0.5)).toBe("1 min");
+    expect(formatMinutesToDurationStringShort(1)).toBe("1 min");
+    expect(formatMinutesToDurationStringShort(2)).toBe("2 mins");
+    expect(formatMinutesToDurationStringShort(59)).toBe("59 mins");
+    expect(formatMinutesToDurationStringShort(60)).toBe("1 hr");
+    expect(formatMinutesToDurationStringShort(61)).toBe("1 hr & 1 min");
+    expect(formatMinutesToDurationStringShort(62)).toBe("1 hr & 2 mins");
+    expect(formatMinutesToDurationStringShort(119)).toBe("1 hr & 59 mins");
+    expect(formatMinutesToDurationStringShort(120)).toBe("2 hrs");
+    expect(formatMinutesToDurationStringShort(121)).toBe("2 hrs & 1 min");
+    expect(formatMinutesToDurationStringShort(122)).toBe("2 hrs & 2 mins");
+    expect(formatMinutesToDurationStringShort(432)).toBe("7 hrs & 12 mins");
+    expect(formatMinutesToDurationStringShort(432.123)).toBe("7 hrs & 12 mins");
+    expect(formatMinutesToDurationStringShort(1439)).toBe("23 hrs & 59 mins");
+  });
   test("formatMinutesToDurationStringLong", () => {
     expect(formatMinutesToDurationStringLong(0)).toBe("0 minutes");
     expect(formatMinutesToDurationStringLong(0.49)).toBe("0 minutes");
@@ -70,6 +90,22 @@ describe("formatDuration", () => {
     test("with 12345 second", () => {
       expect(formatSecondsToDurationStringLong(12345)).toBe(
         "3 hours, 25 minutes & 45 seconds",
+      );
+    });
+  });
+
+  describe("formatSecondsToDurationStringShort", () => {
+    test("with 0 seconds", () => {
+      expect(formatSecondsToDurationStringShort(0)).toBe("0 secs");
+    });
+
+    test("with 1 second", () => {
+      expect(formatSecondsToDurationStringShort(1)).toBe("1 sec");
+    });
+
+    test("with 12345 second", () => {
+      expect(formatSecondsToDurationStringShort(12345)).toBe(
+        "3 hrs, 25 mins & 45 secs",
       );
     });
   });

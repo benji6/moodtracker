@@ -1,6 +1,5 @@
 import EventCard from "./EventCard";
 import { TEST_IDS } from "../../constants";
-import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import eventsSlice from "../../store/eventsSlice";
 import { formatMetersToOneNumberWithUnits } from "../../formatters/formatDistance";
 import { formatSecondsAsTime } from "../../formatters/formatDuration";
@@ -13,7 +12,6 @@ interface Props {
 export default function RunCard({ id }: Props) {
   const normalizedEvents = useSelector(eventsSlice.selectors.normalizedRuns);
   const event = normalizedEvents.byId[id];
-  const date = new Date(id);
 
   return (
     <EventCard eventType="runs" id={id}>
@@ -29,14 +27,6 @@ export default function RunCard({ id }: Props) {
             {formatSecondsAsTime(event.seconds)}
           </b>
         )}
-      </div>
-      <div>
-        <small
-          data-test-id={TEST_IDS.eventCardTime}
-          data-time={Math.round(date.getTime() / 1e3)}
-        >
-          {dateTimeFormatter.format(date)}
-        </small>
       </div>
     </EventCard>
   );

@@ -7,5 +7,5 @@
 }
 
 .m-meditation-card > :not(:where(:first-child, :last-child)) {
-  flex-basis: 100%;
+  flex-grow: 1;
 }
