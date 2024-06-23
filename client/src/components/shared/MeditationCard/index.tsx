@@ -4,7 +4,7 @@ import EventIcon from "../EventIcon";
 import MeditationDeleteDialog from "./MeditationDeleteDialog";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
-import { formatSecondsAsTime } from "../../../utils";
+import { formatSecondsAsTime } from "../../../formatters/formatDuration";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 

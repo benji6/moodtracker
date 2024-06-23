@@ -3,7 +3,7 @@ import { TEST_IDS } from "../../constants";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import eventsSlice from "../../store/eventsSlice";
 import { formatMetersToOneNumberWithUnits } from "../../formatters/formatDistance";
-import { formatSecondsAsTime } from "../../utils";
+import { formatSecondsAsTime } from "../../formatters/formatDuration";
 import { useSelector } from "react-redux";
 
 interface Props {

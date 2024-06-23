@@ -1,7 +1,7 @@
 import "./style.css";
 import { Button, Icon, Paper } from "eri";
 import Dimmer from "../../Dimmer";
-import { formatSecondsAsTime } from "../../../../../../utils";
+import { formatSecondsAsTime } from "../../../../../../formatters/formatDuration";
 import { memo } from "react";
 
 interface Props {

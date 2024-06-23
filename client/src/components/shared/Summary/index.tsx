@@ -1,6 +1,6 @@
 import "./style.css";
 import {
-  formatMinutesToDurationStringShort,
+  formatMinutesAsTime,
   formatSecondsToOneNumberWithUnits,
 } from "../../../formatters/formatDuration";
 import {
@@ -85,7 +85,7 @@ export default function Summary({
       <SummaryItem
         currentValue={currentPeriod.meanSleep}
         eventType="sleeps"
-        format={formatMinutesToDurationStringShort}
+        format={formatMinutesAsTime}
         heading={periodType === "day" ? "Sleep" : " Average sleep"}
         periodType={periodType}
         previousValue={previousPeriod?.meanSleep}

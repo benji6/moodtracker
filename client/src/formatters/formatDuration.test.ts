@@ -1,6 +1,7 @@
 import {
+  formatMinutesAsTime,
   formatMinutesToDurationStringLong,
-  formatMinutesToDurationStringShort,
+  formatSecondsAsTime,
   formatSecondsToDurationStringLong,
   formatSecondsToOneNumberWithUnits,
 } from "./formatDuration";
@@ -29,26 +30,37 @@ describe("formatDuration", () => {
     );
   });
 
-  test("formatMinutesToDurationStringShort", () => {
-    expect(formatMinutesToDurationStringShort(0)).toBe("00:00");
-    expect(formatMinutesToDurationStringShort(1)).toBe("00:01");
-    expect(formatMinutesToDurationStringShort(59)).toBe("00:59");
-    expect(formatMinutesToDurationStringShort(60)).toBe("01:00");
-    expect(formatMinutesToDurationStringShort(61)).toBe("01:01");
-    expect(formatMinutesToDurationStringShort(119)).toBe("01:59");
-    expect(formatMinutesToDurationStringShort(120)).toBe("02:00");
-    expect(formatMinutesToDurationStringShort(432)).toBe("07:12");
-    expect(formatMinutesToDurationStringShort(432.49)).toBe("07:12");
-    expect(formatMinutesToDurationStringShort(432.5)).toBe("07:13");
-    expect(formatMinutesToDurationStringShort(479.5)).toBe("08:00");
-    expect(formatMinutesToDurationStringShort(480)).toBe("08:00");
-    expect(formatMinutesToDurationStringShort(480.000001)).toBe("08:00");
-    expect(formatMinutesToDurationStringShort(1439)).toBe("23:59");
+  test("formatMinutesAsTime", () => {
+    expect(formatMinutesAsTime(0)).toBe("00:00");
+    expect(formatMinutesAsTime(1)).toBe("00:01");
+    expect(formatMinutesAsTime(59)).toBe("00:59");
+    expect(formatMinutesAsTime(60)).toBe("01:00");
+    expect(formatMinutesAsTime(61)).toBe("01:01");
+    expect(formatMinutesAsTime(119)).toBe("01:59");
+    expect(formatMinutesAsTime(120)).toBe("02:00");
+    expect(formatMinutesAsTime(432)).toBe("07:12");
+    expect(formatMinutesAsTime(432.49)).toBe("07:12");
+    expect(formatMinutesAsTime(432.5)).toBe("07:13");
+    expect(formatMinutesAsTime(479.5)).toBe("08:00");
+    expect(formatMinutesAsTime(480)).toBe("08:00");
+    expect(formatMinutesAsTime(480.000001)).toBe("08:00");
+    expect(formatMinutesAsTime(1439)).toBe("23:59");
+  });
+
+  test("formatSecondsAsTime", () => {
+    expect(formatSecondsAsTime(0)).toBe("00:00");
+    expect(formatSecondsAsTime(1)).toBe("00:01");
+    expect(formatSecondsAsTime(59)).toBe("00:59");
+    expect(formatSecondsAsTime(60)).toBe("01:00");
+    expect(formatSecondsAsTime(123)).toBe("02:03");
+    expect(formatSecondsAsTime(600)).toBe("10:00");
+    expect(formatSecondsAsTime(6001)).toBe("100:01");
+    expect(formatSecondsAsTime(60011)).toBe("1000:11");
   });
 
   describe("formatSecondsToDurationStringLong", () => {
     test("with 0 seconds", () => {
-      expect(formatSecondsToDurationStringLong(0)).toBe("N/A");
+      expect(formatSecondsToDurationStringLong(0)).toBe("0 seconds");
     });
 
     test("with 1 second", () => {
@@ -57,7 +69,7 @@ describe("formatDuration", () => {
 
     test("with 12345 second", () => {
       expect(formatSecondsToDurationStringLong(12345)).toBe(
-        "3 hours 25 minutes 45 seconds",
+        "3 hours, 25 minutes & 45 seconds",
       );
     });
   });

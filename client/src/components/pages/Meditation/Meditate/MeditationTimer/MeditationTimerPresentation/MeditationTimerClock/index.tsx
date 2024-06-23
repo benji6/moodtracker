@@ -1,5 +1,5 @@
 import "./style.css";
-import { formatSecondsAsTime } from "../../../../../../../utils";
+import { formatSecondsAsTime } from "../../../../../../../formatters/formatDuration";
 
 const RING_THICKNESS = 1 / 9;
 const RADIUS = 2 / 5 - RING_THICKNESS / 2;
