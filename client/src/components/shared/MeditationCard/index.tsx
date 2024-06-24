@@ -25,10 +25,10 @@ export default function MeditationCard({ id }: Props) {
             <EventIcon eventType="meditations" />
           </div>
           <div>
-            <small>{dateTimeFormatter.format(new Date(id))}</small>
-          </div>
-          <div className="center">
             <b>{formatSecondsToDurationStringShort(meditation.seconds)}</b>
+          </div>
+          <div>
+            <small>{dateTimeFormatter.format(new Date(id))}</small>
           </div>
           <div>
             <Button
