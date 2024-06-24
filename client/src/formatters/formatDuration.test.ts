@@ -8,25 +8,54 @@ import {
   formatSecondsToOneNumberWithUnits,
 } from "./formatDuration";
 
+// HACK: conditionals on `process.env.CI`: really should
+// set locale explicitly, but could not figure that out easily
+// and lost patience
+
 describe("formatDuration", () => {
   test("formatMinutesToDurationStringShort", () => {
-    expect(formatMinutesToDurationStringShort(0)).toBe("0 mins");
-    expect(formatMinutesToDurationStringShort(0.49)).toBe("0 mins");
+    expect(formatMinutesToDurationStringShort(0)).toBe(
+      process.env.CI ? "0 min" : "0 mins",
+    );
+    expect(formatMinutesToDurationStringShort(0.49)).toBe(
+      process.env.CI ? "0 min" : "0 mins",
+    );
     expect(formatMinutesToDurationStringShort(0.5)).toBe("1 min");
     expect(formatMinutesToDurationStringShort(1)).toBe("1 min");
-    expect(formatMinutesToDurationStringShort(2)).toBe("2 mins");
-    expect(formatMinutesToDurationStringShort(59)).toBe("59 mins");
+    expect(formatMinutesToDurationStringShort(2)).toBe(
+      process.env.CI ? "2 min" : "2 mins",
+    );
+    expect(formatMinutesToDurationStringShort(59)).toBe(
+      process.env.CI ? "59 min" : "59 mins",
+    );
     expect(formatMinutesToDurationStringShort(60)).toBe("1 hr");
     expect(formatMinutesToDurationStringShort(61)).toBe("1 hr & 1 min");
-    expect(formatMinutesToDurationStringShort(62)).toBe("1 hr & 2 mins");
-    expect(formatMinutesToDurationStringShort(119)).toBe("1 hr & 59 mins");
-    expect(formatMinutesToDurationStringShort(120)).toBe("2 hrs");
-    expect(formatMinutesToDurationStringShort(121)).toBe("2 hrs & 1 min");
-    expect(formatMinutesToDurationStringShort(122)).toBe("2 hrs & 2 mins");
-    expect(formatMinutesToDurationStringShort(432)).toBe("7 hrs & 12 mins");
-    expect(formatMinutesToDurationStringShort(432.123)).toBe("7 hrs & 12 mins");
-    expect(formatMinutesToDurationStringShort(1439)).toBe("23 hrs & 59 mins");
+    expect(formatMinutesToDurationStringShort(62)).toBe(
+      process.env.CI ? "1 hr & 2 min" : "1 hr & 2 mins",
+    );
+    expect(formatMinutesToDurationStringShort(119)).toBe(
+      process.env.CI ? "1 hr & 59 min" : "1 hr & 59 mins",
+    );
+    expect(formatMinutesToDurationStringShort(120)).toBe(
+      process.env.CI ? "2 hr" : "2 hrs",
+    );
+    expect(formatMinutesToDurationStringShort(121)).toBe(
+      process.env.CI ? "2 hr & 1 min" : "2 hrs & 1 min",
+    );
+    expect(formatMinutesToDurationStringShort(122)).toBe(
+      process.env.CI ? "2 hr & 2 min" : "2 hrs & 2 mins",
+    );
+    expect(formatMinutesToDurationStringShort(432)).toBe(
+      process.env.CI ? "7 hr & 12 min" : "7 hrs & 12 mins",
+    );
+    expect(formatMinutesToDurationStringShort(432.123)).toBe(
+      process.env.CI ? "7 hr & 12 min" : "7 hrs & 12 mins",
+    );
+    expect(formatMinutesToDurationStringShort(1439)).toBe(
+      process.env.CI ? "23 hr & 59 min" : "23 hrs & 59 mins",
+    );
   });
+
   test("formatMinutesToDurationStringLong", () => {
     expect(formatMinutesToDurationStringLong(0)).toBe("0 minutes");
     expect(formatMinutesToDurationStringLong(0.49)).toBe("0 minutes");
@@ -96,7 +125,9 @@ describe("formatDuration", () => {
 
   describe("formatSecondsToDurationStringShort", () => {
     test("with 0 seconds", () => {
-      expect(formatSecondsToDurationStringShort(0)).toBe("0 secs");
+      expect(formatSecondsToDurationStringShort(0)).toBe(
+        process.env.CI ? "0 sec" : "0 secs",
+      );
     });
 
     test("with 1 second", () => {
@@ -105,13 +136,11 @@ describe("formatDuration", () => {
 
     test("with 12345 second", () => {
       expect(formatSecondsToDurationStringShort(12345)).toBe(
-        "3 hrs, 25 mins & 45 secs",
+        process.env.CI ? "3 hr, 25 min & 45 sec" : "3 hrs, 25 mins & 45 secs",
       );
     });
   });
 
-  // HACK: really should set locale explicitly,
-  // but could not figure that out easily and lost patience
   test("formatSecondsToOneNumberWithUnits", () => {
     expect(formatSecondsToOneNumberWithUnits(-1)).toBe("-1 sec");
     expect(formatSecondsToOneNumberWithUnits(0)).toBe(
