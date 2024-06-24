@@ -5,6 +5,10 @@ import { dateFormatter } from "../../../formatters/dateTimeFormatters";
 import { marked } from "marked";
 
 const BLOG_POSTS = {
+  "2024-06-24": {
+    title: "New things you can track",
+    url: new URL("2024-06-24/index.md", import.meta.url),
+  },
   "2024-03-24": {
     title: "New feature - sleep tracking",
     url: new URL("2024-03-24/index.md", import.meta.url),
