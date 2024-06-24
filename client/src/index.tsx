@@ -1,6 +1,5 @@
 import "./sentry";
 import "eri/dist/index.css";
-import "./serviceWorkerRegistrationPromise";
 import "./firebase";
 import * as ReactDOM from "react-dom/client";
 import {
@@ -20,6 +19,11 @@ import router from "./router";
 import store from "./store";
 
 export const queryClient = new QueryClient();
+
+navigator.serviceWorker.register(
+  new URL("service-worker.ts", import.meta.url),
+  { type: "module" },
+);
 
 navigator.storage.estimate().then((estimate) => {
   if (

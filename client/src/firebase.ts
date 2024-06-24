@@ -7,7 +7,6 @@ import {
 } from "firebase/messaging";
 import { FIREBASE_CONFIG } from "./constants";
 import { initializeApp } from "firebase/app";
-import serviceWorkerRegistrationPromise from "./serviceWorkerRegistrationPromise";
 
 const PUBLIC_VAPID_KEY =
   "BBhO8kx_ynJrYpotsDiOmkL46BWjWyDkKmaa9OntpGZV3rNM9Vc1fycZQpCUcF01pgHeIFXC2Sy7fFdmD82Hz9g";
@@ -32,7 +31,7 @@ const messagingPromise: Promise<Messaging | void> = isSupported().then(
 );
 
 export const getRegistrationToken = async (): Promise<string> => {
-  const serviceWorkerRegistration = await serviceWorkerRegistrationPromise;
+  const serviceWorkerRegistration = await navigator.serviceWorker.ready;
   const messaging = await messagingPromise;
   if (!messaging)
     throw Error("Firebase messaging is not supported in this browser");
