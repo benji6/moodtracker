@@ -22,7 +22,9 @@ export default function Home() {
   const eventsHasLoadedFromServer = useSelector(
     eventsSlice.selectors.hasLoadedFromServer,
   );
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const { allIds } = useSelector(
+    eventsSlice.selectors.allNormalizedTrackedCategories,
+  );
   const userIsSignedIn = useSelector(userSlice.selectors.isSignedIn);
   const dateToday = roundDateDown(new Date());
 
@@ -31,7 +33,7 @@ export default function Home() {
   return (
     <Paper.Group>
       {eventsHasLoadedFromServer ? (
-        moods.allIds.length ? (
+        allIds.length ? (
           <>
             <QuickTrackNav />
             <SummaryForWeek
