@@ -27,7 +27,6 @@ export default function WeeklyEmailNotifications() {
 
   return (
     <>
-      <h3>Weekly email updates</h3>
       <p>
         Opt in to receive an email update every Monday morning with your own
         personal weekly mood report.

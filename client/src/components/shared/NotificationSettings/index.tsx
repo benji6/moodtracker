@@ -6,6 +6,7 @@ export default function NotificationSettings() {
     <>
       <h3>Daily push notifications</h3>
       <WebPushNotifications />
+      <h3>Weekly email updates</h3>
       <WeeklyEmailNotifications />
     </>
   );
