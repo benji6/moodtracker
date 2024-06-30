@@ -50,7 +50,7 @@ describe("sleep", () => {
       cy.get(SELECTORS.hoursSleptInput).select("8");
       cy.get(SELECTORS.minutesSleptInput).select("10");
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", "/sleeps/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.sleepCardValue)
         .first()
         .should("have.text", "8 hr & 10 min");

@@ -9,13 +9,14 @@ import Location from "./Location";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import { formatDistanceToNow } from "date-fns";
 import useKeyboardSave from "../hooks/useKeyboardSave";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
   eventType: EventTypeCategories;
   id: string;
   location: DeviceGeolocation | undefined;
-  onSubmit(): void;
+  onSubmit(): true | void; // `true` if successful, otherwise `void`;
   showNoUpdateError: boolean;
   updatedAt: string | undefined;
 }
@@ -25,8 +26,11 @@ export default forwardRef<HTMLFormElement, Props>(function EditEvent(
   ref,
 ) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  useKeyboardSave(onSubmit);
+  const navigate = useNavigate();
+  const handleSubmit = () => {
+    if (onSubmit()) navigate("/");
+  };
+  useKeyboardSave(handleSubmit);
 
   const dateCreated = new Date(id);
   const dateUpdated = updatedAt ? new Date(updatedAt) : undefined;
@@ -58,7 +62,7 @@ export default forwardRef<HTMLFormElement, Props>(function EditEvent(
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit();
+            handleSubmit();
           }}
           ref={ref}
         >

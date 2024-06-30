@@ -1,7 +1,6 @@
 import { ERRORS, FIELDS } from "../../../constants";
 import { RadioButton, TextArea, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import EditEvent from "../../shared/EditEvent";
 import RedirectHome from "../../shared/RedirectHome";
@@ -10,9 +9,9 @@ import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
 import useDarkMode from "../../hooks/useDarkMode";
+import { useParams } from "react-router-dom";
 
 export default function EditMood() {
-  const navigate = useNavigate();
   const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -21,55 +20,7 @@ export default function EditMood() {
     string | undefined
   >();
   const [showNoUpdateError, setShowNoUpdateError] = useState(false);
-
   const formRef = useRef<HTMLFormElement>(null);
-
-  const onSubmit = () => {
-    const formEl = formRef.current;
-    if (!formEl) return captureException(Error("Form ref is undefined"));
-    if (!id) return captureException(Error("ID is undefined"));
-    setShowNoUpdateError(false);
-
-    const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
-    const descriptionValue = descriptionEl.value;
-    const explorationValue: string = formEl[FIELDS.exploration.name].value;
-    const moodValue: string = formEl[FIELDS.mood.name].value;
-
-    const descriptionFieldError = descriptionEl.validity.patternMismatch;
-    setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
-
-    const payload: UpdateMood = { id };
-    let shouldUpdate = false;
-
-    const moodValueNumber = Number(moodValue);
-    if (moodValueNumber !== mood.mood) {
-      payload.mood = moodValueNumber;
-      shouldUpdate = true;
-    }
-
-    const trimmedDescriptionValue = descriptionValue.trim();
-    if (trimmedDescriptionValue !== mood.description) {
-      payload.description = trimmedDescriptionValue;
-      shouldUpdate = true;
-    }
-
-    const trimmedExplorationValue = explorationValue.trim();
-    if (trimmedExplorationValue !== mood.exploration) {
-      payload.exploration = explorationValue.trim();
-      shouldUpdate = true;
-    }
-
-    if (!shouldUpdate) return setShowNoUpdateError(true);
-
-    dispatch(
-      eventsSlice.actions.add({
-        type: "v1/moods/update",
-        createdAt: new Date().toISOString(),
-        payload,
-      }),
-    );
-    navigate("/");
-  };
 
   if (!id) return <RedirectHome />;
   const mood = moods.byId[id];
@@ -80,7 +31,60 @@ export default function EditMood() {
       eventType="moods"
       id={id}
       location={mood.location}
-      onSubmit={onSubmit}
+      onSubmit={(): true | void => {
+        const formEl = formRef.current;
+        if (!formEl) {
+          captureException(Error("Form ref is undefined"));
+          return;
+        }
+        if (!id) {
+          captureException(Error("ID is undefined"));
+          return;
+        }
+        setShowNoUpdateError(false);
+
+        const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
+        const descriptionValue = descriptionEl.value;
+        const explorationValue: string = formEl[FIELDS.exploration.name].value;
+        const moodValue: string = formEl[FIELDS.mood.name].value;
+
+        const descriptionFieldError = descriptionEl.validity.patternMismatch;
+        setDescriptionError(
+          descriptionFieldError ? ERRORS.specialCharacters : "",
+        );
+
+        const payload: UpdateMood = { id };
+        let shouldUpdate = false;
+
+        const moodValueNumber = Number(moodValue);
+        if (moodValueNumber !== mood.mood) {
+          payload.mood = moodValueNumber;
+          shouldUpdate = true;
+        }
+
+        const trimmedDescriptionValue = descriptionValue.trim();
+        if (trimmedDescriptionValue !== mood.description) {
+          payload.description = trimmedDescriptionValue;
+          shouldUpdate = true;
+        }
+
+        const trimmedExplorationValue = explorationValue.trim();
+        if (trimmedExplorationValue !== mood.exploration) {
+          payload.exploration = explorationValue.trim();
+          shouldUpdate = true;
+        }
+
+        if (!shouldUpdate) return setShowNoUpdateError(true);
+
+        dispatch(
+          eventsSlice.actions.add({
+            type: "v1/moods/update",
+            createdAt: new Date().toISOString(),
+            payload,
+          }),
+        );
+        return true;
+      }}
       ref={formRef}
       showNoUpdateError={showNoUpdateError}
       updatedAt={mood.updatedAt}

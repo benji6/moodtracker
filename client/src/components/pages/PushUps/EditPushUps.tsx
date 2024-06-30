@@ -1,15 +1,14 @@
 import { ERRORS, FIELDS } from "../../../constants";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import EditEvent from "../../shared/EditEvent";
 import RedirectHome from "../../shared/RedirectHome";
 import { TextField } from "eri";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
+import { useParams } from "react-router-dom";
 
 export default function EditPushUps() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState<string | undefined>();
   const { id } = useParams();
@@ -20,31 +19,6 @@ export default function EditPushUps() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const onSubmit = () => {
-    const formEl = formRef.current;
-    if (!formEl) return captureException(Error("Form ref is undefined"));
-    setShowNoUpdateError(false);
-
-    const inputEl: HTMLInputElement = formEl[FIELDS.pushUps.name];
-    const { valueAsNumber } = inputEl;
-
-    if (inputEl.validity.valueMissing) return setError(ERRORS.required);
-    if (inputEl.validity.rangeOverflow) return setError(ERRORS.rangeOverflow);
-    if (inputEl.validity.rangeUnderflow) return setError(ERRORS.rangeUnderflow);
-
-    if (valueAsNumber === pushUps.value) return setShowNoUpdateError(true);
-
-    dispatch(
-      eventsSlice.actions.add({
-        type: "v1/push-ups/update",
-        createdAt: new Date().toISOString(),
-        // The user is redirected if `id` is not defined
-        payload: { id: id!, value: valueAsNumber },
-      }),
-    );
-    navigate("/");
-  };
-
   if (!id) return <RedirectHome />;
   const pushUps = normalizedPushUps.byId[id];
   if (!pushUps) return <RedirectHome />;
@@ -54,7 +28,34 @@ export default function EditPushUps() {
       eventType="push-ups"
       id={id}
       location={pushUps.location}
-      onSubmit={onSubmit}
+      onSubmit={(): true | void => {
+        const formEl = formRef.current;
+        if (!formEl) {
+          captureException(Error("Form ref is undefined"));
+          return;
+        }
+        setShowNoUpdateError(false);
+
+        const inputEl: HTMLInputElement = formEl[FIELDS.pushUps.name];
+        const { valueAsNumber } = inputEl;
+
+        if (inputEl.validity.valueMissing) return setError(ERRORS.required);
+        if (inputEl.validity.rangeOverflow)
+          return setError(ERRORS.rangeOverflow);
+        if (inputEl.validity.rangeUnderflow)
+          return setError(ERRORS.rangeUnderflow);
+
+        if (valueAsNumber === pushUps.value) return setShowNoUpdateError(true);
+
+        dispatch(
+          eventsSlice.actions.add({
+            type: "v1/push-ups/update",
+            createdAt: new Date().toISOString(),
+            payload: { id, value: valueAsNumber },
+          }),
+        );
+        return true;
+      }}
       ref={formRef}
       showNoUpdateError={showNoUpdateError}
       updatedAt={pushUps.updatedAt}

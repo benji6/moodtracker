@@ -1,7 +1,6 @@
 import { ERRORS, FIELDS, TIME } from "../../../constants";
 import { Select, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import { useRef, useState } from "react";
 import EditEvent from "../../shared/EditEvent";
 import IntervalInput from "../../shared/IntervalInput";
@@ -9,9 +8,9 @@ import RedirectHome from "../../shared/RedirectHome";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
+import { useParams } from "react-router-dom";
 
 export default function EditSleep() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [dateAwokeError, setDateAwokeError] = useState<string | undefined>();
   const { id } = useParams();
@@ -19,46 +18,6 @@ export default function EditSleep() {
   const [showNoUpdateError, setShowNoUpdateError] = useState(false);
 
   const formRef = useRef<HTMLFormElement>(null);
-
-  const onSubmit = () => {
-    const formEl = formRef.current;
-    if (!formEl) return captureException(Error("Form ref is undefined"));
-    setShowNoUpdateError(false);
-
-    const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
-    const minutesSleptEl: HTMLInputElement = formEl[FIELDS.minutesSlept.name];
-
-    const dateAwokeEl: HTMLInputElement = formEl[FIELDS.dateAwoke.name];
-    if (dateAwokeEl.validity.valueMissing) setDateAwokeError(ERRORS.required);
-    else if (dateAwokeEl.validity.rangeOverflow)
-      setDateAwokeError(ERRORS.rangeOverflow);
-    else setDateAwokeError(undefined);
-
-    if (!dateAwokeEl.validity.valid) return;
-
-    const minutesSlept =
-      Number(hoursSleptEl.value) * TIME.minutesPerHour +
-      Number(minutesSleptEl.value);
-    if (
-      minutesSlept === sleep.minutesSlept &&
-      dateAwokeEl.value === sleep.dateAwoke
-    )
-      return setShowNoUpdateError(true);
-
-    dispatch(
-      eventsSlice.actions.add({
-        type: "v1/sleeps/update",
-        createdAt: new Date().toISOString(),
-        // The user is redirected if `id` is not defined
-        payload: {
-          dateAwoke: dateAwokeEl.value,
-          id: id!,
-          minutesSlept,
-        },
-      }),
-    );
-    navigate("/");
-  };
 
   if (!id) return <RedirectHome />;
   const sleep = sleeps.byId[id];
@@ -69,7 +28,49 @@ export default function EditSleep() {
       eventType="sleeps"
       id={id}
       location={undefined}
-      onSubmit={onSubmit}
+      onSubmit={(): true | void => {
+        const formEl = formRef.current;
+        if (!formEl) {
+          captureException(Error("Form ref is undefined"));
+          return;
+        }
+        setShowNoUpdateError(false);
+
+        const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
+        const minutesSleptEl: HTMLInputElement =
+          formEl[FIELDS.minutesSlept.name];
+
+        const dateAwokeEl: HTMLInputElement = formEl[FIELDS.dateAwoke.name];
+        if (dateAwokeEl.validity.valueMissing)
+          setDateAwokeError(ERRORS.required);
+        else if (dateAwokeEl.validity.rangeOverflow)
+          setDateAwokeError(ERRORS.rangeOverflow);
+        else setDateAwokeError(undefined);
+
+        if (!dateAwokeEl.validity.valid) return;
+
+        const minutesSlept =
+          Number(hoursSleptEl.value) * TIME.minutesPerHour +
+          Number(minutesSleptEl.value);
+        if (
+          minutesSlept === sleep.minutesSlept &&
+          dateAwokeEl.value === sleep.dateAwoke
+        )
+          return setShowNoUpdateError(true);
+
+        dispatch(
+          eventsSlice.actions.add({
+            type: "v1/sleeps/update",
+            createdAt: new Date().toISOString(),
+            payload: {
+              dateAwoke: dateAwokeEl.value,
+              id,
+              minutesSlept,
+            },
+          }),
+        );
+        return true;
+      }}
       ref={formRef}
       showNoUpdateError={showNoUpdateError}
       updatedAt={sleep.updatedAt}
