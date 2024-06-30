@@ -4,6 +4,8 @@
 from datetime import datetime, timedelta, timezone
 
 import boto3
+from boto3.dynamodb.conditions import Key
+from datetime import datetime, timedelta, timezone
 
 today = datetime.now(timezone.utc).date()
 last_monday = today - timedelta(days=today.weekday() + 7)
@@ -60,7 +62,8 @@ PROJECTION_EXPRESSION = "userId"
 USER_POOL_ID = "us-east-1_rdB8iu5X4"
 
 dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table("moodtracker_weekly_emails")
+events_table = dynamodb.Table("moodtracker_events")
+weekly_emails_table = dynamodb.Table("moodtracker_weekly_emails")
 cognito_client = boto3.client("cognito-idp")
 ses_client = boto3.client("sesv2")
 
@@ -95,27 +98,50 @@ def send_email(user_id):
     )
 
 
-def send_emails(scan_response):
-    for item in scan_response["Items"]:
+def handler(event, context):
+    print("Beginning weekly emails table scan...")
+    weekly_emails_response = weekly_emails_table.scan(
+        ProjectionExpression=PROJECTION_EXPRESSION
+    )
+    weekly_emails_user_ids = [x["userId"] for x in weekly_emails_response["Items"]]
+    while "LastEvaluatedKey" in weekly_emails_response:
+        weekly_emails_response = weekly_emails_table.scan(
+            ExclusiveStartKey=weekly_emails_response["LastEvaluatedKey"],
+            ProjectionExpression="userId",
+        )
+        for x in weekly_emails_response["Items"]:
+            weekly_emails_user_ids.append(x["userId"])
+
+    print("Weekly emails table scan completed, disabling emails for inactive users...")
+    user_ids_to_email = []
+    for user_id in weekly_emails_user_ids:
+        if events_table.query(
+            IndexName="serverCreatedAt",
+            KeyConditionExpression=Key("userId").eq(user_id)
+            & Key("serverCreatedAt").gte(
+                (datetime.now(timezone.utc) - timedelta(90)).isoformat()
+            ),
+            Limit=1,
+        )["Count"]:
+            user_ids_to_email.append(user_id)
+        else:
+            print(
+                "Deleting the following userId from moodtracker_weekly_emails:", user_id
+            )
+            try:
+                weekly_emails_table.delete_item(Key={"userId": user_id})
+            except Exception as e:
+                print("Failed to delete userId:", user_id)
+                print(e)
+    print(
+        "Total inactive users deleted from moodtracker_weekly_emails:",
+        len(weekly_emails_user_ids) - len(user_ids_to_email),
+    )
+    print("Total emails to send:", len(user_ids_to_email))
+
+    print("Sending emails...")
+    for user_id in user_ids_to_email:
         try:
-            send_email(item["userId"])
+            send_email(user_id)
         except Exception as e:
             print(e)
-
-
-def handler(event, context):
-    print("Table scan")
-    response = table.scan(ProjectionExpression=PROJECTION_EXPRESSION)
-    print("Send emails")
-    send_emails(response)
-    last_evaluated_key = response.get("LastEvaluatedKey")
-
-    while last_evaluated_key:
-        print("Table scan")
-        response = table.scan(
-            ExclusiveStartKey=last_evaluated_key,
-            ProjectionExpression=PROJECTION_EXPRESSION,
-        )
-        print("Send emails")
-        send_emails(response)
-        last_evaluated_key = response.get("LastEvaluatedKey")

@@ -17,11 +17,11 @@ eval aws cloudformation wait change-set-create-complete --change-set-name $chang
 
 echo "🍄 Change set created successfully! 🍄"
 
-echo "\nVIEW the change set:"
+echo "VIEW the change set:"
 echo "aws cloudformation describe-change-set --change-set-name $changesetid --query 'Changes[*].ResourceChange.{Action:Action,Resource:ResourceType,ResourceId:LogicalResourceId,ReplacementNeeded:Replacement}'"
 
-echo "\nDELETE the change set:"
+echo "DELETE the change set:"
 echo "aws cloudformation delete-change-set --change-set-name $changesetid | cat"
 
-echo "\nEXECUTE the change set:"
+echo "EXECUTE the change set:"
 echo "aws cloudformation execute-change-set --change-set-name $changesetid | cat && aws cloudformation wait stack-update-complete --stack-name moodtracker && aws cloudformation describe-stacks --query 'Stacks[0].Outputs' --stack-name moodtracker | cat"

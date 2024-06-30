@@ -1,4 +1,4 @@
-from troposphere import events, GetAtt, Ref, ses
+from troposphere import events, GetAtt, Ref, ses, Sub
 from modules import lambda_function, lambda_role, lambda_permission
 
 
@@ -44,9 +44,17 @@ def send_weekly_email_resources(template):
                 "Resource": GetAtt("CognitoUserPool", "Arn"),
             },
             {
-                "Action": "dynamodb:Scan",
+                "Action": ["dynamodb:DeleteItem", "dynamodb:Scan"],
                 "Effect": "Allow",
                 "Resource": GetAtt("DynamoWeeklyEmailsTable", "Arn"),
+            },
+            {
+                "Action": "dynamodb:Query",
+                "Effect": "Allow",
+                "Resource": [
+                    GetAtt("DynamoEventsTable", "Arn"),
+                    Sub("${DynamoEventsTable.Arn}/index/serverCreatedAt"),
+                ],
             },
             {
                 "Action": "ses:SendEmail",
