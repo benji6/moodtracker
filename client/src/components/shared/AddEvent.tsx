@@ -6,11 +6,12 @@ import { EventTypeCategories } from "../../types";
 import LiveLocation from "./LiveLocation";
 import { TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   children: ReactNode;
   eventType: EventTypeCategories;
-  onSubmit(): void;
+  onSubmit(): true | void; // `true` if successful, otherwise `void`;
   subheading?: string;
 }
 
@@ -18,7 +19,11 @@ export default forwardRef<HTMLFormElement, Props>(function AddEvent(
   { children, eventType, onSubmit, subheading },
   ref,
 ) {
-  useKeyboardSave(onSubmit);
+  const navigate = useNavigate();
+  const handleSubmit = () => {
+    if (onSubmit()) navigate("/");
+  };
+  useKeyboardSave(handleSubmit);
 
   const { default: label } = EVENT_TYPE_TO_LABELS[eventType];
 
@@ -34,7 +39,7 @@ export default forwardRef<HTMLFormElement, Props>(function AddEvent(
           noValidate
           onSubmit={(e) => {
             e.preventDefault();
-            onSubmit();
+            handleSubmit();
           }}
           ref={ref}
         >

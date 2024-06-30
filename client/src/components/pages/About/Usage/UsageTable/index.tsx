@@ -2,10 +2,10 @@ import "./style.css";
 import { ReactNode } from "react";
 
 interface Props {
-  data: [string, ReactNode][];
+  children: ReactNode;
 }
 
-export default function UsageTable({ data }: Props) {
+export default function UsageTable({ children }: Props) {
   return (
     <table className="m-usage-table">
       <thead>
@@ -14,14 +14,7 @@ export default function UsageTable({ data }: Props) {
           <th>Value</th>
         </tr>
       </thead>
-      <tbody>
-        {data.map(([k, v]) => (
-          <tr key={k}>
-            <td>{k}</td>
-            {typeof v === "object" ? v : <td>{v}</td>}
-          </tr>
-        ))}
-      </tbody>
+      <tbody>{children}</tbody>
     </table>
   );
 }

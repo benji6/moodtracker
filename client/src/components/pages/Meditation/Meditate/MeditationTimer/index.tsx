@@ -87,7 +87,7 @@ export default function MeditationTimer() {
         payload,
       }),
     );
-    navigate("/meditation/log");
+    navigate("/");
   }, [
     dispatch,
     geolocation,

@@ -111,8 +111,9 @@ def handler(event, context):
         )
         for x in weekly_emails_response["Items"]:
             weekly_emails_user_ids.append(x["userId"])
+    print("Total rows in moodtracker_weekly_emails:", len(weekly_emails_user_ids))
 
-    print("Weekly emails table scan completed, disabling emails for inactive users...")
+    print("Disabling emails for inactive users...")
     user_ids_to_email = []
     for user_id in weekly_emails_user_ids:
         if events_table.query(

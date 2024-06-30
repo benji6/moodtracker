@@ -53,7 +53,7 @@ describe("weight", () => {
       cy.get(SELECTORS.weightValueInput).type(`${testValue}{enter}`);
       const expectedTime = Math.round(Date.now() / 1e3);
 
-      cy.location("pathname").should("equal", "/weights/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue} kg`);

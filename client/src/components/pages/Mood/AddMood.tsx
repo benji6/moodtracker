@@ -9,10 +9,8 @@ import deviceSlice from "../../../store/deviceSlice";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
 import useDarkMode from "../../hooks/useDarkMode";
-import { useNavigate } from "react-router-dom";
 
 export default function AddMood() {
-  const navigate = useNavigate();
   const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = useState<string | undefined>();
@@ -21,37 +19,6 @@ export default function AddMood() {
   >();
   const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const formRef = useRef<HTMLFormElement>(null);
-
-  const onSubmit = () => {
-    const formEl = formRef.current;
-    if (!formEl) return captureException(Error("Form ref is undefined"));
-
-    const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
-    const descriptionValue = descriptionEl.value;
-    const explorationValue: string = formEl[FIELDS.exploration.name].value;
-    const moodValue: string = formEl[FIELDS.mood.name].value;
-
-    if (!moodValue) setMoodError(ERRORS.required);
-
-    const descriptionFieldError = descriptionEl.validity.patternMismatch;
-    setDescriptionError(descriptionFieldError ? ERRORS.specialCharacters : "");
-
-    if (descriptionFieldError || !moodValue) return;
-
-    const payload: Mood = { mood: Number(moodValue) };
-    if (descriptionValue) payload.description = descriptionValue.trim();
-    if (explorationValue) payload.exploration = explorationValue.trim();
-    if (geolocation) payload.location = geolocation;
-
-    dispatch(
-      eventsSlice.actions.add({
-        type: "v1/moods/create",
-        createdAt: new Date().toISOString(),
-        payload,
-      }),
-    );
-    navigate("/");
-  };
 
   const currentHour = new Date().getHours();
   const timeOfDay =
@@ -67,7 +34,41 @@ export default function AddMood() {
     <AddEvent
       eventType="moods"
       ref={formRef}
-      onSubmit={onSubmit}
+      onSubmit={(): true | void => {
+        const formEl = formRef.current;
+        if (!formEl) {
+          captureException(Error("Form ref is undefined"));
+          return;
+        }
+
+        const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
+        const descriptionValue = descriptionEl.value;
+        const explorationValue: string = formEl[FIELDS.exploration.name].value;
+        const moodValue: string = formEl[FIELDS.mood.name].value;
+
+        if (!moodValue) setMoodError(ERRORS.required);
+
+        const descriptionFieldError = descriptionEl.validity.patternMismatch;
+        setDescriptionError(
+          descriptionFieldError ? ERRORS.specialCharacters : "",
+        );
+
+        if (descriptionFieldError || !moodValue) return;
+
+        const payload: Mood = { mood: Number(moodValue) };
+        if (descriptionValue) payload.description = descriptionValue.trim();
+        if (explorationValue) payload.exploration = explorationValue.trim();
+        if (geolocation) payload.location = geolocation;
+
+        dispatch(
+          eventsSlice.actions.add({
+            type: "v1/moods/create",
+            createdAt: new Date().toISOString(),
+            payload,
+          }),
+        );
+        return true;
+      }}
       subheading={`How are you feeling this ${timeOfDay}?`}
     >
       <RadioButton.Group

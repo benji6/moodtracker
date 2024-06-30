@@ -44,7 +44,7 @@ describe("run", () => {
 
     it("works when only provided with distance", () => {
       cy.get(SELECTORS.runMetersInput).type("1234{enter}");
-      cy.location("pathname").should("equal", "/runs/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.runCardDistance).first().should("have.text", "1.2 km");
     });
 
@@ -52,7 +52,7 @@ describe("run", () => {
       cy.get(SELECTORS.runMinutesInput).select("9");
       cy.get(SELECTORS.runSecondsInput).select("30");
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", "/runs/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.runCardTime).first().should("have.text", "09:30");
     });
 
@@ -60,7 +60,7 @@ describe("run", () => {
       cy.get(SELECTORS.runMetersInput).type("123");
       cy.get(SELECTORS.runMinutesInput).select("10");
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", "/runs/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.runCardDistance).first().should("have.text", "123 m");
       cy.get(SELECTORS.runCardTime).first().should("have.text", "10:00");
     });

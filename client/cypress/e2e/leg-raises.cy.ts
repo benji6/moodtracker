@@ -59,7 +59,7 @@ describe("leg raises", () => {
       cy.get(SELECTORS.legRaisesValueInput).type(testValue);
       const expectedTime = Math.round(Date.now() / 1e3);
       cy.get(SELECTORS.eventAddSubmitButton).click();
-      cy.location("pathname").should("equal", "/leg-raises/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", `${testValue} leg raises`);
@@ -72,7 +72,7 @@ describe("leg raises", () => {
 
     it("works with 1 leg raise", () => {
       cy.get(SELECTORS.legRaisesValueInput).type("1{enter}");
-      cy.location("pathname").should("equal", "/leg-raises/log");
+      cy.location("pathname").should("equal", "/");
       cy.get(SELECTORS.eventCardValue)
         .first()
         .should("have.text", "1 leg raise");

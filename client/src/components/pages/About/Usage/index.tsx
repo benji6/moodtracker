@@ -209,68 +209,79 @@ export default function Usage() {
       )}
       <Paper>
         <h3>Miscellaneous usage stats</h3>
-        <UsageTable
-          data={[
-            [
-              "Average mood for all users over the last 7 days",
-              // eslint-disable-next-line react/jsx-key
-              <MoodCell mood={data.usage.meanMoodInLast7Days} />,
-            ],
-            [
-              "Average mood for all users over the last 30 days",
-              // eslint-disable-next-line react/jsx-key
-              <MoodCell mood={data.usage.last30Days.meanMood} />,
-            ],
-            [
-              "Total time meditated by all users over the last 30 days",
-              formatSecondsToDurationStringLong(
+        <UsageTable>
+          <tr>
+            <td>Average mood for all users over the last 7 days</td>
+            <MoodCell mood={data.usage.meanMoodInLast7Days} />
+          </tr>
+          <tr>
+            <td>Average mood for all users over the last 30 days</td>
+            <MoodCell mood={data.usage.last30Days.meanMood} />
+          </tr>
+          <tr>
+            <td>Total time meditated by all users over the last 30 days</td>
+            <td>
+              {formatSecondsToDurationStringLong(
                 data.usage.last30Days.meditationSeconds,
-              ),
-            ],
-            [
-              "Total events recorded over the last 30 days",
-              data.usage.last30Days.eventCount,
-            ],
-          ]}
-        />
+              )}
+            </td>
+          </tr>
+          <tr>
+            <td>Total events recorded over the last 30 days</td>
+            <td>{data.usage.last30Days.eventCount}</td>
+          </tr>
+        </UsageTable>
       </Paper>
       <Paper>
         <h3>Miscellaneous user stats</h3>
-        <UsageTable
-          data={[
-            [
-              "Retention of users since a month ago",
-              percentFormatter.format(data.usage.CRR),
-            ],
-            [
-              "Number of devices with push notifications enabled",
-              data.usage.totalWebPushTokens,
-            ],
-            [
-              "Users who are signed up to weekly emails",
-              data.usage.usersWithWeeklyEmails,
-            ],
-            [
-              "Active users who have logged a meditation over the last 30 days",
-              formatAsPercentageOfMaus(data.usage.meditationMAUs),
-            ],
-            [
-              "Active users who have logged a sleep over the last 30 days",
-              data.usage.sleepMAUs
+        <UsageTable>
+          <tr>
+            <td>Retention of users since a month ago</td>
+            <td>{percentFormatter.format(data.usage.CRR)}</td>
+          </tr>
+          <tr>
+            <td>Number of devices with push notifications enabled</td>
+            <td>{data.usage.totalWebPushTokens}</td>
+          </tr>
+          <tr>
+            <td>
+              Users who are signed up to weekly emails <br />
+              <small>
+                Emails will be disabled automatically after 90 days of
+                inactivity
+              </small>
+            </td>
+            <td>{data.usage.usersWithWeeklyEmails}</td>
+          </tr>
+          <tr>
+            <td>
+              Active users who have logged a meditation over the last 30 days
+            </td>
+            <td>{formatAsPercentageOfMaus(data.usage.meditationMAUs)}</td>
+          </tr>
+          <tr>
+            <td>Active users who have logged a sleep over the last 30 days</td>
+            <td>
+              {data.usage.sleepMAUs
                 ? formatAsPercentageOfMaus(data.usage.sleepMAUs)
-                : 0,
-            ],
-            [
-              "Active users who have logged a weight over the last 30 days",
-              formatAsPercentageOfMaus(data.usage.weightMAUs),
-            ],
-            [
-              "Active users who have logged their location over the last 30 days",
-              formatAsPercentageOfMaus(data.usage.locationMAUs),
-            ],
-            ["Total confirmed users", data.usage.confirmedUsers],
-          ]}
-        />
+                : 0}
+            </td>
+          </tr>
+          <tr>
+            <td>Active users who have logged a weight over the last 30 days</td>
+            <td>{formatAsPercentageOfMaus(data.usage.weightMAUs)}</td>
+          </tr>
+          <tr>
+            <td>
+              Active users who have logged their location over the last 30 days
+            </td>
+            <td>{formatAsPercentageOfMaus(data.usage.locationMAUs)}</td>
+          </tr>
+          <tr>
+            <td>Total confirmed users</td>
+            <td>{data.usage.confirmedUsers}</td>
+          </tr>
+        </UsageTable>
       </Paper>
     </Paper.Group>
   );
