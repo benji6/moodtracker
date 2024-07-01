@@ -1,8 +1,9 @@
 [tool.poetry]
-name = "moodtracker-analytics"
+name = "moodtracker-scripts"
 version = "0.1.0"
 description = ""
 authors = ["Your Name <you@example.com>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"

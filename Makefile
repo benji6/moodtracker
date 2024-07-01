@@ -2,6 +2,10 @@
 analytics:
 	@cd scripts && poetry run python3 ./analytics.py
 
+# Deletes old users that have never logged any data
+cleanup_zombie_users:
+	@cd scripts && poetry run python3 ./cleanup_zombie_users.py
+
 # Makes notifications_send.zip
 scripts/cloudformation/lambdas/notifications_send.zip: scripts/cloudformation/lambdas/notifications_send/*
 	@cd scripts/cloudformation/lambdas/notifications_send &&\
@@ -77,4 +81,4 @@ test: cloudformation/test
 test/ci:
 	@cd client && npm run test-ci && echo "🍄 All tests pass! 🍄"
 
-.PHONY: analytics cloudformation/test deploy deploy/dry-run deploy/notifications_send help init init/ci stack-policy start test test/ci
+.PHONY: analytics cleanup_zombie_users cloudformation/test deploy deploy/dry-run deploy/notifications_send help init init/ci stack-policy start test test/ci
