@@ -31,12 +31,11 @@ const messagingPromise: Promise<Messaging | void> = isSupported().then(
 );
 
 export const getRegistrationToken = async (): Promise<string> => {
-  const serviceWorkerRegistration = await navigator.serviceWorker.ready;
   const messaging = await messagingPromise;
   if (!messaging)
     throw Error("Firebase messaging is not supported in this browser");
   return getToken(messaging, {
-    serviceWorkerRegistration,
+    serviceWorkerRegistration: await navigator.serviceWorker.ready,
     vapidKey: PUBLIC_VAPID_KEY,
   });
 };

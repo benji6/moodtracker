@@ -20,10 +20,11 @@ import store from "./store";
 
 export const queryClient = new QueryClient();
 
-navigator.serviceWorker.register(
-  new URL("service-worker.ts", import.meta.url),
-  { type: "module" },
-);
+if ("serviceWorker" in navigator)
+  navigator.serviceWorker.register(
+    new URL("service-worker.ts", import.meta.url),
+    { type: "module" },
+  );
 
 navigator.storage.estimate().then((estimate) => {
   if (
