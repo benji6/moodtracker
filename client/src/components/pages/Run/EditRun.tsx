@@ -71,7 +71,8 @@ export default function EditRun() {
 
         const payload = { id } as UpdateRun;
         if (formMeters !== event.meters) payload.meters = formMeters;
-        if (formSeconds !== event.seconds) payload.seconds = formSeconds;
+        if (formSeconds !== event.seconds)
+          payload.seconds = formSeconds ?? null;
 
         dispatch(
           eventsSlice.actions.add({
@@ -95,7 +96,7 @@ export default function EditRun() {
         <Select
           {...FIELDS.runMinutes}
           defaultValue={
-            event.seconds === undefined
+            event.seconds == null
               ? undefined
               : Math.floor(event.seconds / TIME.secondsPerMinute)
           }
@@ -110,7 +111,7 @@ export default function EditRun() {
         <Select
           {...FIELDS.runSeconds}
           defaultValue={
-            event.seconds === undefined
+            event.seconds == null
               ? undefined
               : event.seconds % TIME.secondsPerMinute
           }

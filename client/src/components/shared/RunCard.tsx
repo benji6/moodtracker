@@ -22,7 +22,7 @@ export default function RunCard({ id }: Props) {
           </b>
         )}
         {event.meters !== undefined && event.seconds !== undefined && <br />}
-        {event.seconds !== undefined && (
+        {event.seconds != undefined && (
           <b data-test-id={TEST_IDS.runCardTime}>
             {formatSecondsAsTime(event.seconds)}
           </b>

@@ -923,7 +923,7 @@ describe("eventsSlice", () => {
             payload: {
               id: "2024-07-22T08:00:00.000Z",
               meters: 1e3,
-              seconds: undefined,
+              seconds: null,
             },
           }),
         );
@@ -932,6 +932,7 @@ describe("eventsSlice", () => {
           byId: {
             "2024-07-22T08:00:00.000Z": {
               meters: 1e3,
+              seconds: null,
               updatedAt: "2024-07-22T09:00:00.000Z",
             },
           },

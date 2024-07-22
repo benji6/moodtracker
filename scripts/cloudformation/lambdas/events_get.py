@@ -77,7 +77,7 @@ def handler(event, context):
                         k: float(v) if isinstance(v, Decimal) else v
                         for k, v in payload["location"].items()
                     }
-                if "seconds" in payload:
+                if isinstance(payload.get("seconds"), Decimal):
                     payload["seconds"] = int(payload["seconds"])
                 for k, v in payload.items():
                     if isinstance(v, Decimal):

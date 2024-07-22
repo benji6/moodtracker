@@ -169,11 +169,23 @@ const trackedCategoriesSelector = createSelector(
 
           // for reasons that are beyond my energy to investigate there is
           // a runtime error if you try to update the data object directly
-          all.byId[payload.id] = {
-            ...all.byId[payload.id],
-            ...rest,
-            updatedAt: event.createdAt,
-          };
+          const previousEventVersion = all.byId[payload.id];
+          if (previousEventVersion.type === "meditations")
+            all.byId[payload.id] = {
+              ...previousEventVersion,
+              // meditations have a `second` property which cannot be `null`
+              // but runs have a `seconds` property which can
+              // TypeScript doesn't know that `rest` cannot have `null` `seconds` and apply to a meditation simultaneously
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ...(rest as any),
+              updatedAt: event.createdAt,
+            };
+          else
+            all.byId[payload.id] = {
+              ...previousEventVersion,
+              ...rest,
+              updatedAt: event.createdAt,
+            };
           normalizedCategory.byId[payload.id] = {
             ...normalizedCategory.byId[payload.id],
             ...rest,

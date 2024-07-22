@@ -79,24 +79,24 @@ export type Run =
   | {
       location?: DeviceGeolocation;
       meters: number;
-      seconds?: number;
+      seconds?: number | null;
     }
   | {
       location?: DeviceGeolocation;
       meters?: number;
-      seconds: number;
+      seconds: number | null;
     };
 
 export type UpdateRun =
   | {
       id: string;
       meters: number;
-      seconds?: number;
+      seconds?: number | null;
     }
   | {
       id: string;
       meters?: number;
-      seconds: number;
+      seconds: number | null;
     };
 
 interface ValueAndLocationEvent {
