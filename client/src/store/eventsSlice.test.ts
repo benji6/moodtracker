@@ -897,6 +897,48 @@ describe("eventsSlice", () => {
       });
     });
 
+    describe("normalizedRuns", () => {
+      test("updating by removing the time", () => {
+        expect(eventsSlice.selectors.normalizedRuns(store.getState())).toEqual({
+          allIds: [],
+          byId: {},
+        });
+
+        store.dispatch(
+          eventsSlice.actions.add({
+            type: "v1/runs/create",
+            createdAt: "2024-07-22T08:00:00.000Z",
+            payload: { meters: 1e3, seconds: 321 },
+          }),
+        );
+        expect(eventsSlice.selectors.normalizedRuns(store.getState())).toEqual({
+          allIds: ["2024-07-22T08:00:00.000Z"],
+          byId: { "2024-07-22T08:00:00.000Z": { meters: 1e3, seconds: 321 } },
+        });
+
+        store.dispatch(
+          eventsSlice.actions.add({
+            type: "v1/runs/update",
+            createdAt: "2024-07-22T09:00:00.000Z",
+            payload: {
+              id: "2024-07-22T08:00:00.000Z",
+              meters: 1e3,
+              seconds: undefined,
+            },
+          }),
+        );
+        expect(eventsSlice.selectors.normalizedRuns(store.getState())).toEqual({
+          allIds: ["2024-07-22T08:00:00.000Z"],
+          byId: {
+            "2024-07-22T08:00:00.000Z": {
+              meters: 1e3,
+              updatedAt: "2024-07-22T09:00:00.000Z",
+            },
+          },
+        });
+      });
+    });
+
     describe("normalizedWeights", () => {
       test("when there are no events", () => {
         expect(eventsSlice.selectors.normalizedWeights(initialState)).toEqual({
