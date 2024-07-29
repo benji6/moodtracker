@@ -4,8 +4,8 @@ import { Meditation } from "../../../../../types";
 import OpenEndedMeditationPresentation from "./OpenEndedMeditationPresentation";
 import deviceSlice from "../../../../../store/deviceSlice";
 import eventsSlice from "../../../../../store/eventsSlice";
-import { noSleep } from "../nosleep";
 import { useNavigate } from "react-router-dom";
+import useWakeLock from "../../../../hooks/useWakeLock";
 
 export default function OpenEndedMeditation() {
   const [secondsElapsed, setSecondsElapsed] = useState(0);
@@ -16,6 +16,7 @@ export default function OpenEndedMeditation() {
   const navigate = useNavigate();
   const initialTime = useRef(Date.now());
   const roundedSecondsElapsed = Math.round(secondsElapsed);
+  const wakeLock = useWakeLock();
 
   const onDim = useCallback(() => setIsDimmerEnabled(true), []);
   const onFinishAndLog = useCallback(() => {
@@ -32,22 +33,20 @@ export default function OpenEndedMeditation() {
     navigate("/");
   }, [dispatch, geolocation, navigate, roundedSecondsElapsed]);
   const onPause = useCallback(() => {
-    noSleep.disable();
+    wakeLock.disable();
     setIsPaused(true);
-  }, []);
+  }, [wakeLock]);
   const onPlay = useCallback(() => {
-    noSleep.enable();
+    wakeLock.enable();
     initialTime.current = Date.now() - roundedSecondsElapsed * 1e3;
     setIsPaused(false);
-  }, [roundedSecondsElapsed]);
+  }, [roundedSecondsElapsed, wakeLock]);
   const onUndim = useCallback(() => setIsDimmerEnabled(false), []);
 
   useEffect(() => {
-    noSleep.enable();
-    return () => {
-      noSleep.disable();
-    };
-  }, []);
+    wakeLock.enable();
+    return () => void wakeLock.disable();
+  }, [wakeLock]);
 
   useEffect(() => {
     let abort = false;

@@ -13,8 +13,8 @@ import MeditationTimerPresentation from "./MeditationTimerPresentation";
 import { captureException } from "../../../../../sentry";
 import deviceSlice from "../../../../../store/deviceSlice";
 import eventsSlice from "../../../../../store/eventsSlice";
-import { noSleep } from "../nosleep";
 import useBell from "./useBell";
+import useWakeLock from "../../../../hooks/useWakeLock";
 
 export default function MeditationTimer() {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ export default function MeditationTimer() {
   const [searchParams] = useSearchParams();
   const [localState, localDispatch] = useReducer(reducer, initialState);
   const bell = useBell();
+  const wakeLock = useWakeLock();
 
   const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const timerDurationInSeconds = Number(
@@ -41,15 +42,15 @@ export default function MeditationTimer() {
     navigate("/meditation");
   }, [navigate]);
   const onPause = useCallback(() => {
-    noSleep.disable();
+    wakeLock.disable();
     localDispatch({ payload: "PAUSED", type: "timerState/set" });
-  }, []);
+  }, [wakeLock]);
   const onPlay = useCallback(() => {
-    noSleep.enable();
+    wakeLock.enable();
     initialTime.current =
       Date.now() + roundedSecondsRemaining * 1e3 - timerDurationInSeconds * 1e3;
     localDispatch({ payload: "TIMING", type: "timerState/set" });
-  }, [roundedSecondsRemaining, timerDurationInSeconds]);
+  }, [roundedSecondsRemaining, timerDurationInSeconds, wakeLock]);
   const onUndim = useCallback(
     () => localDispatch({ payload: false, type: "isDimmerEnabled/set" }),
     [],
@@ -97,12 +98,12 @@ export default function MeditationTimer() {
   ]);
 
   useEffect(() => {
-    noSleep.enable();
+    wakeLock.enable();
     return () => {
       bell?.stop();
-      noSleep.disable();
+      wakeLock.disable();
     };
-  }, [bell]);
+  }, [bell, wakeLock]);
 
   useEffect(() => {
     let abort = false;
@@ -121,7 +122,7 @@ export default function MeditationTimer() {
 
       localDispatch({ payload: new Date(), type: "timeFinished/set" });
       bell?.start();
-      noSleep.disable();
+      wakeLock.disable();
     });
     return () => void (abort = true);
   }, [
@@ -129,6 +130,7 @@ export default function MeditationTimer() {
     localState.isDimmerEnabled,
     timerDurationInSeconds,
     localState.timerState,
+    wakeLock,
   ]);
 
   useBeforeUnload(useCallback((e) => e.preventDefault(), []));
