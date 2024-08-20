@@ -103,7 +103,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <SummaryForMonth dates={[prevDate, date, nextDate]} />
+      <SummaryForMonth date={date} />
       {moodIdsInPeriod.length ? (
         <>
           <MoodChartForPeriod

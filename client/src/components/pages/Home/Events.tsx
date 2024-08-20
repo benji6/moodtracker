@@ -1,23 +1,19 @@
-import { formatIsoDateInLocalTimezone, roundDateDown } from "../../../utils";
+import { formatIsoMonthInLocalTimezone, roundDateDown } from "../../../utils";
 import { Link } from "react-router-dom";
-import SummaryForWeek from "../Stats/SummaryForWeek";
+import SummaryForMonth from "../Stats/SummaryForMonth";
 import TrackedCategoriesByDay from "./TrackedCategoriesByDay";
-import { WEEK_OPTIONS } from "../../../formatters/dateTimeFormatters";
-import { startOfWeek } from "date-fns";
 
 export default function Events() {
   const dateToday = roundDateDown(new Date());
 
   return (
     <>
-      <SummaryForWeek
+      <SummaryForMonth
         heading={
           <Link
-            to={`/stats/weeks/${formatIsoDateInLocalTimezone(
-              startOfWeek(dateToday, WEEK_OPTIONS),
-            )}`}
+            to={`/stats/months/${formatIsoMonthInLocalTimezone(dateToday)}`}
           >
-            This week&apos;s summary
+            This month&apos;s summary
           </Link>
         }
         date={dateToday}
