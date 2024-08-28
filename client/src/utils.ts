@@ -6,14 +6,14 @@ import { NormalizedMoods } from "./types";
 import { captureException } from "./sentry";
 import { interpolateHcl } from "d3-interpolate";
 
-export const bisectLeft = (xs: string[], x: string, lo = 0) => {
-  let hi = xs.length;
-  while (lo < hi) {
-    const mid = (lo + hi) >> 1;
-    if (xs[mid] < x) lo = mid + 1;
-    else hi = mid;
+export const bisectLeft = (xs: string[], x: string, left = 0) => {
+  let right = xs.length - 1;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (xs[mid] < x) left = mid + 1;
+    else right = mid - 1;
   }
-  return lo;
+  return left;
 };
 
 export const capitalizeFirstLetter = (s: string): string =>
