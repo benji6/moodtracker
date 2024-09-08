@@ -3,7 +3,7 @@ import { Paper, SubHeading, Toggle, WordCloud } from "eri";
 import {
   computeMean,
   counter,
-  getNormalizedTagsFromDescription,
+  getNormalizedWordCloudWords,
 } from "../../../utils";
 import { differenceInSeconds, sub } from "date-fns";
 import { RootState } from "../../../store";
@@ -23,6 +23,7 @@ interface Props {
 export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const [includeExploration, setIncludeExploration] = useState(false);
   const [shouldRemoveSharedWords, setShouldRemoveSharedWords] = useState(true);
   const meditationIdsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
@@ -31,8 +32,8 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   if (!meditationIdsInPeriod.length || !moods.allIds.length) return;
 
   const moodChanges: number[] = [];
-  let wordsBeforeList: string[] = [];
-  let wordsAfterList: string[] = [];
+  const wordsBeforeList: string[] = [];
+  const wordsAfterList: string[] = [];
   let i = 0;
   for (const meditationId of meditationIdsInPeriod) {
     for (; i < moods.allIds.length; i++) {
@@ -62,13 +63,17 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
       moodChanges.push(moodAfter.mood - moodBefore.mood);
 
       if (moodBefore.description)
-        wordsBeforeList = wordsBeforeList.concat(
-          getNormalizedTagsFromDescription(moodBefore.description),
-        );
+        for (const word of getNormalizedWordCloudWords(moodBefore.description))
+          wordsBeforeList.push(word);
+      if (includeExploration && moodBefore.exploration)
+        for (const word of getNormalizedWordCloudWords(moodBefore.exploration))
+          wordsBeforeList.push(word);
       if (moodAfter.description)
-        wordsAfterList = wordsAfterList.concat(
-          getNormalizedTagsFromDescription(moodAfter.description),
-        );
+        for (const word of getNormalizedWordCloudWords(moodAfter.description))
+          wordsAfterList.push(word);
+      if (includeExploration && moodAfter.exploration)
+        for (const word of getNormalizedWordCloudWords(moodAfter.exploration))
+          wordsAfterList.push(word);
       break;
     }
   }
@@ -135,6 +140,11 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
         Object.keys(filteredWordsBefore).length >= MINIMUM_WORD_CLOUD_WORDS && (
           <>
             <h4>Mood clouds</h4>
+            <Toggle
+              checked={includeExploration}
+              label="Include mood journal words (by default only mood tags are included)"
+              onChange={() => setIncludeExploration(!includeExploration)}
+            />
             <Toggle
               checked={shouldRemoveSharedWords}
               label="Filter out moods that are shared between both clouds"

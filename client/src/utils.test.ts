@@ -18,7 +18,7 @@ import {
   formatIsoYearInLocalTimezone,
   getEnvelopingIds,
   getIdsInInterval,
-  getNormalizedTagsFromDescription,
+  getNormalizedWordCloudWords,
   getWeatherDisplayData,
   getWeekdayIndex,
   mapRight,
@@ -679,15 +679,19 @@ describe("utils", () => {
   });
 
   test("getNormalizedDescriptionWordsFromMood", () => {
-    expect(getNormalizedTagsFromDescription("")).toEqual([]);
-    expect(getNormalizedTagsFromDescription("   ")).toEqual([]);
-    expect(getNormalizedTagsFromDescription("pikachu")).toEqual(["Pikachu"]);
-    expect(getNormalizedTagsFromDescription("   pikachu   ")).toEqual([
+    expect(getNormalizedWordCloudWords("")).toEqual([]);
+    expect(getNormalizedWordCloudWords("   ")).toEqual([]);
+    expect(getNormalizedWordCloudWords("pikachu")).toEqual(["Pikachu"]);
+    expect(getNormalizedWordCloudWords("   pikachu   ")).toEqual(["Pikachu"]);
+    expect(getNormalizedWordCloudWords("  Bulbasaur pIkaChu  🙂   ")).toEqual([
+      "Bulbasaur",
+      "Pikachu",
+      "🙂",
+    ]);
+    expect(getNormalizedWordCloudWords("   pi.k,a;c:hu!   ")).toEqual([
       "Pikachu",
     ]);
-    expect(
-      getNormalizedTagsFromDescription("  Bulbasaur pIkaChu  🙂   "),
-    ).toEqual(["Bulbasaur", "Pikachu", "🙂"]);
+    expect(getNormalizedWordCloudWords("   pika-chu   ")).toEqual(["Pika-chu"]);
   });
 
   test("formatIsoDateInLocalTimezone", () => {

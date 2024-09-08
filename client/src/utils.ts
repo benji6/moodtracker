@@ -5,6 +5,7 @@ import { Icon } from "eri";
 import { NormalizedMoods } from "./types";
 import { captureException } from "./sentry";
 import { interpolateHcl } from "d3-interpolate";
+import { removeStopwords } from "stopword";
 
 export const bisectLeft = (xs: string[], x: string, left = 0) => {
   let right = xs.length - 1;
@@ -157,15 +158,15 @@ export const defaultDict = <V>(createDefaultValue: () => V) =>
     },
   });
 
-export const getNormalizedTagsFromDescription = (
-  description: string,
-): string[] => {
-  const descriptions: string[] = [];
-  for (const word of description.split(/\s+/)) {
+export const getNormalizedWordCloudWords = (string: string): string[] => {
+  const words: string[] = [];
+  for (const word of removeStopwords(
+    string.replace(/[!"(),./:;?[\]{|}]/g, "").split(/\s+/),
+  )) {
     if (!word) continue;
-    descriptions.push(capitalizeFirstLetter(word));
+    words.push(capitalizeFirstLetter(word));
   }
-  return descriptions;
+  return words;
 };
 
 // Hard to name, but will return all moods within

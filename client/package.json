@@ -41,6 +41,7 @@
     "react-dom": "^18.1.0",
     "react-redux": "^9.0.4",
     "react-router-dom": "^6.23.0",
+    "stopword": "^3.1.1",
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
@@ -55,6 +56,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.2.8",
     "@types/react-redux": "^7.1.27",
+    "@types/stopword": "^2.0.3",
     "@types/topojson-client": "^3.1.1",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.8.0",

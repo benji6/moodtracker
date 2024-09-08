@@ -39,7 +39,7 @@ import {
   formatIsoDateInLocalTimezone,
   getEnvelopingIds,
   getIdsInInterval,
-  getNormalizedTagsFromDescription,
+  getNormalizedWordCloudWords,
 } from "../utils";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../constants";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
@@ -317,6 +317,12 @@ const denormalizedSleepsSelector = createSelector(
   normalizedSleepsSelector,
   denormalize,
 );
+const includeExplorationSelector = (
+  _state: EventsState,
+  _dateFrom: Date,
+  _dateTo: Date,
+  includeExploration: boolean,
+): boolean => includeExploration;
 const minutesSleptByDateAwokeSelector = createSelector(
   denormalizedSleepsSelector,
   (sleeps) => {
@@ -598,10 +604,12 @@ export default createSlice({
       normalizedMoodsSelector,
       dateFromSelector,
       dateToSelector,
+      includeExplorationSelector,
       (
         normalizedMoods,
         dateFrom: Date,
         dateTo: Date,
+        includeExploration: boolean,
       ): { [word: string]: number } | undefined => {
         const moodsInPeriod = moodsInPeriodResultFunction(
           normalizedMoods,
@@ -609,20 +617,20 @@ export default createSlice({
           dateTo,
         );
 
-        const words: { [word: string]: number } = {};
-        for (const { description } of moodsInPeriod) {
-          const normalizedDescriptionWords = description
-            ? getNormalizedTagsFromDescription(description)
-            : [];
-          for (const caseNormalizedWord of normalizedDescriptionWords) {
-            if (words[caseNormalizedWord]) words[caseNormalizedWord] += 1;
-            else words[caseNormalizedWord] = 1;
+        const words = defaultDict(Number);
+        for (const { description = "", exploration = "" } of moodsInPeriod) {
+          const allWords = includeExploration
+            ? [description, exploration].join(" ")
+            : description;
+          const normalizedWords = getNormalizedWordCloudWords(allWords);
+          for (const caseNormalizedWord of normalizedWords) {
+            words[caseNormalizedWord] += 1;
           }
         }
 
         return Object.keys(words).length < MINIMUM_WORD_CLOUD_WORDS
           ? undefined
-          : words;
+          : { ...words };
       },
     ),
     // some code may depend on the fact that the array
@@ -657,7 +665,7 @@ export default createSlice({
           const id = normalizedMoods.allIds[i];
           const { description } = normalizedMoods.byId[id];
           const normalizedWords = description
-            ? getNormalizedTagsFromDescription(description)
+            ? getNormalizedWordCloudWords(description)
             : [];
           for (let j = 0; j < normalizedWords.length; j++)
             descriptionWords.add(normalizedWords[j]);

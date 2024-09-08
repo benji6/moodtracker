@@ -18,12 +18,22 @@ interface Props {
 
 export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
   const [filterOutPreviousPeriod, setFilterOutPreviousPeriod] = useState(false);
+  const [includeExploration, setIncludeExploration] = useState(false);
 
+  const currentPeriodAllWords = useSelector((state: RootState) =>
+    eventsSlice.selectors.moodCloudWords(
+      state,
+      currentPeriod.dateFrom,
+      currentPeriod.dateTo,
+      true,
+    ),
+  );
   const currentPeriodWords = useSelector((state: RootState) =>
     eventsSlice.selectors.moodCloudWords(
       state,
       currentPeriod.dateFrom,
       currentPeriod.dateTo,
+      includeExploration,
     ),
   );
   const previousPeriodWords = useSelector((state: RootState) =>
@@ -31,12 +41,13 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
       state,
       previousPeriod.dateFrom,
       previousPeriod.dateTo,
+      includeExploration,
     ),
   );
 
   if (
-    !currentPeriodWords ||
-    Object.keys(currentPeriodWords).length < MINIMUM_WORD_CLOUD_WORDS
+    !currentPeriodAllWords ||
+    Object.keys(currentPeriodAllWords).length < MINIMUM_WORD_CLOUD_WORDS
   )
     return;
 
@@ -59,6 +70,11 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
       <h3>
         Mood cloud<SubHeading>Created from the mood tags you record</SubHeading>
       </h3>
+      <Toggle
+        checked={includeExploration}
+        label="Include mood journal words (by default only mood tags are included)"
+        onChange={() => setIncludeExploration(!includeExploration)}
+      />
       {previousPeriodWords &&
         Object.keys(filteredWords).length >= MINIMUM_WORD_CLOUD_WORDS && (
           <Toggle
@@ -69,10 +85,16 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
             }
           />
         )}
-      <WordCloud
-        aria-label="Word cloud displaying mood descriptions"
-        words={filterOutPreviousPeriod ? filteredWords : currentPeriodWords}
-      />
+      {currentPeriodWords ? (
+        <WordCloud
+          aria-label="Word cloud displaying mood descriptions"
+          words={filterOutPreviousPeriod ? filteredWords : currentPeriodWords}
+        />
+      ) : (
+        <p>
+          <small>No words, try toggling to include mood journal words</small>
+        </p>
+      )}
     </Paper>
   );
 }
