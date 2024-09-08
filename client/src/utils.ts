@@ -128,7 +128,7 @@ export const convertKelvinToCelcius = (kelvin: number): number =>
   kelvin - 273.15;
 
 export const counter = (xs: string[]): { [word: string]: number } => {
-  const count = defaultDict(() => 0);
+  const count = defaultDict(Number);
   for (const x of xs) count[x] += 1;
   return { ...count };
 };

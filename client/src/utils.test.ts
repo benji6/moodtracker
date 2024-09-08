@@ -440,6 +440,12 @@ describe("utils", () => {
       numberDefaultDict["a"] += 1;
       expect({ ...numberDefaultDict }).toEqual({ a: 1 });
     });
+    test("default to Number", () => {
+      const numberDefaultDict = defaultDict(Number);
+      expect({ ...numberDefaultDict }).toEqual({});
+      numberDefaultDict["a"] += 1;
+      expect({ ...numberDefaultDict }).toEqual({ a: 1 });
+    });
 
     test("default to array", () => {
       const arrayDefaultDict = defaultDict((): number[] => []);

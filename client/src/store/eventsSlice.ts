@@ -320,7 +320,7 @@ const denormalizedSleepsSelector = createSelector(
 const minutesSleptByDateAwokeSelector = createSelector(
   denormalizedSleepsSelector,
   (sleeps) => {
-    const sleepByDateAwoke = defaultDict(() => 0);
+    const sleepByDateAwoke = defaultDict(Number);
     for (const { dateAwoke, minutesSlept } of sleeps)
       sleepByDateAwoke[dateAwoke] += minutesSlept;
     return { ...sleepByDateAwoke };
