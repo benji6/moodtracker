@@ -1,3 +1,9 @@
+.m-button-grid {
+  display: grid;
+  gap: var(--space-1);
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+}
+
 .m-year__calendar-button {
   transition-property: background-color;
 }
