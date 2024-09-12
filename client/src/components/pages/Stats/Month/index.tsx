@@ -1,28 +1,31 @@
-import "./style.css";
-import { Icon, Paper } from "eri";
+import { Icon, Paper, SubHeading } from "eri";
 import { ReactElement, useState } from "react";
 import StatsViewControls, {
   ActiveView,
 } from "../../../shared/StatsViewControls";
-import { addMonths, addYears } from "date-fns";
+import { addDays, addMonths, differenceInCalendarDays } from "date-fns";
 import {
-  monthNarrowFormatter,
+  dayMonthFormatter,
+  monthLongFormatter,
   yearFormatter,
 } from "../../../../formatters/dateTimeFormatters";
+import {
+  formatIsoMonthInLocalTimezone,
+  formatIsoYearInLocalTimezone,
+} from "../../../../utils";
 import { Link } from "react-router-dom";
 import LocationsForPeriod from "../LocationsForPeriod";
-import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MoodBySleepForPeriod from "../MoodBySleepForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
-import MoodViewForYear from "./MoodViewForYear";
+import MoodViewForMonth from "./MoodViewForMonth";
 import PrevNextControls from "../../../shared/PrevNextControls";
-import SleepByMonthForPeriod from "./SleepByMonthForPeriod";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
-import { formatIsoYearInLocalTimezone } from "../../../../utils";
 import withStatsPage from "../../../hocs/withStatsPage";
+
+const X_LABELS_COUNT = 5;
 
 interface Props {
   date: Date;
@@ -32,11 +35,17 @@ interface Props {
   showPrevious: boolean;
 }
 
-function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
+function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const [activeView, setActiveView] = useState<ActiveView>("mood");
-  const xLabels: string[] = [...Array(12).keys()].map((n) =>
-    monthNarrowFormatter.format(addMonths(date, n)),
-  );
+  const monthLength = differenceInCalendarDays(nextDate, date);
+
+  const xLabels: string[] = [];
+  for (let i = 0; i < X_LABELS_COUNT; i++)
+    xLabels.push(
+      dayMonthFormatter.format(
+        addDays(date, Math.round((i * monthLength) / (X_LABELS_COUNT - 1))),
+      ),
+    );
 
   let view: ReactElement;
   switch (activeView) {
@@ -49,16 +58,11 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       );
       break;
     case "meditation":
-      view = (
-        <>
-          <MeditationByMonthForPeriod dateFrom={date} dateTo={nextDate} />
-          <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />
-        </>
-      );
+      view = <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />;
       break;
     case "mood":
       view = (
-        <MoodViewForYear
+        <MoodViewForMonth
           date={date}
           nextDate={nextDate}
           prevDate={prevDate}
@@ -67,12 +71,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
       );
       break;
     case "sleep":
-      view = (
-        <>
-          <SleepByMonthForPeriod dateFrom={date} dateTo={nextDate} />
-          <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />
-        </>
-      );
+      view = <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />;
       break;
     case "weather":
       view = (
@@ -98,20 +97,27 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   return (
     <Paper.Group>
       <Paper>
-        <h2>{yearFormatter.format(date)}</h2>
+        <h2>
+          {monthLongFormatter.format(date)}
+          <SubHeading>
+            <Link to={`../../years/${formatIsoYearInLocalTimezone(date)}`}>
+              {yearFormatter.format(date)}
+            </Link>
+          </SubHeading>
+        </h2>
         <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
-            <Link to={`../${formatIsoYearInLocalTimezone(prevDate)}`}>
+            <Link to={`../${formatIsoMonthInLocalTimezone(prevDate)}`}>
               <Icon margin="end" name="left" />
-              {yearFormatter.format(prevDate)}
+              {monthLongFormatter.format(prevDate)}
             </Link>
           ) : (
             <span />
           )}
           {showNext && (
-            <Link to={`../${formatIsoYearInLocalTimezone(nextDate)}`}>
-              {yearFormatter.format(nextDate)}
+            <Link to={`../${formatIsoMonthInLocalTimezone(nextDate)}`}>
+              {monthLongFormatter.format(nextDate)}
               <Icon margin="start" name="right" />
             </Link>
           )}
@@ -124,7 +130,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
 }
 
 export default withStatsPage({
-  addPeriod: addYears,
-  Component: Year,
-  dateRegex: /^\d{4}$/,
+  addPeriod: addMonths,
+  dateRegex: /^\d{4}-\d{2}$/,
+  Component: Month,
 });
