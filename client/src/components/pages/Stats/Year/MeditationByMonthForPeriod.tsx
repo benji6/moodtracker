@@ -21,15 +21,15 @@ export default function MeditationByMonthForPeriod({
   dateFrom,
   dateTo,
 }: Props) {
-  const meditationIdsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
+  const hasMeditationsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMeditationsInPeriod(state, dateFrom, dateTo),
   );
   const noramlizedTotalSecondsMeditatedByMonth = useSelector(
     eventsSlice.selectors.normalizedTotalSecondsMeditatedByMonth,
   );
   const navigate = useNavigate();
 
-  if (!meditationIdsInPeriod.length) return null;
+  if (!hasMeditationsInPeriod) return null;
 
   const months = eachMonthOfInterval({ start: dateFrom, end: dateTo }).slice(
     0,

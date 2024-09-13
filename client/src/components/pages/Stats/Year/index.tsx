@@ -117,7 +117,11 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
           )}
         </PrevNextControls>
       </Paper>
-      <StatsViewControls onActiveViewChange={setActiveView} />
+      <StatsViewControls
+        dateFrom={date}
+        dateTo={nextDate}
+        onActiveViewChange={setActiveView}
+      />
       {view}
     </Paper.Group>
   );

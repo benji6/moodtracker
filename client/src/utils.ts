@@ -205,9 +205,21 @@ export const getIdsInInterval = (
   const fromIso = dateFrom.toISOString();
   const toIso = dateTo.toISOString();
   const i = bisectLeft(ids, fromIso);
-  const j = bisectLeft(ids, toIso, i);
   if (toIso < ids[i]) return [];
+  const j = bisectLeft(ids, toIso, i);
   return ids.slice(i, j + 1);
+};
+
+export const hasIdsInInterval = (
+  ids: string[],
+  dateFrom: Date,
+  dateTo: Date,
+): boolean => {
+  if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
+  const fromIso = dateFrom.toISOString();
+  const toIso = dateTo.toISOString();
+  const i = bisectLeft(ids, fromIso);
+  return toIso >= ids[i];
 };
 
 export const getWeatherDisplayData = ({

@@ -21,6 +21,7 @@ import {
   getNormalizedWordCloudWords,
   getWeatherDisplayData,
   getWeekdayIndex,
+  hasIdsInInterval,
   mapRight,
   moodToColor,
   roundDateDown,
@@ -666,6 +667,70 @@ describe("utils", () => {
           new Date("2020-09-03T00:00:00"),
         ),
       ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
+    });
+  });
+
+  describe("hasIdsInInterval", () => {
+    it("throws an error when the dateFrom is after the dateTo", () => {
+      expect(() =>
+        hasIdsInInterval(
+          [],
+          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00"),
+        ),
+      ).not.toThrow();
+      expect(() =>
+        hasIdsInInterval(
+          [],
+          new Date("2020-09-01T00:00:01"),
+          new Date("2020-09-01T00:00:00"),
+        ),
+      ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
+    });
+
+    it("returns false when there are no mood IDs provided", () => {
+      expect(
+        hasIdsInInterval(
+          [],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00"),
+        ),
+      ).toBe(false);
+    });
+
+    it("returns false when there are no moods within the interval", () => {
+      expect(
+        hasIdsInInterval(
+          ["2020-09-01T23:59:59Z", "2020-09-03T00:00:01Z"],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00"),
+        ),
+      ).toBe(false);
+    });
+
+    it("returns true when all moods are within the interval", () => {
+      expect(
+        hasIdsInInterval(
+          ["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00"),
+        ),
+      ).toBe(true);
+    });
+
+    it("returns true when some moods are within the interval", () => {
+      expect(
+        hasIdsInInterval(
+          [
+            "2020-09-01T23:59:59Z",
+            "2020-09-02T00:00:00Z",
+            "2020-09-03T00:00:00Z",
+            "2020-09-03T00:00:01Z",
+          ],
+          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-03T00:00:00"),
+        ),
+      ).toBe(true);
     });
   });
 

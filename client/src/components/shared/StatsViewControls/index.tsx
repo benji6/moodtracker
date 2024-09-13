@@ -1,7 +1,10 @@
 import { Button, Icon, Paper } from "eri";
 import { useEffect, useState } from "react";
 import EventIcon from "../EventIcon";
+import { RootState } from "../../../store";
 import { capitalizeFirstLetter } from "../../../utils";
+import eventsSlice from "../../../store/eventsSlice";
+import { useSelector } from "react-redux";
 
 export type ActiveView =
   | "location"
@@ -12,11 +15,20 @@ export type ActiveView =
   | "weight";
 
 interface Props {
+  dateFrom: Date;
+  dateTo: Date;
   onActiveViewChange: (activeView: ActiveView) => void;
 }
 
-export default function StatsViewControls({ onActiveViewChange }: Props) {
+export default function StatsViewControls({
+  dateFrom,
+  dateTo,
+  onActiveViewChange,
+}: Props) {
   const [activeView, setActiveView] = useState<ActiveView>("mood");
+  const hasMeditationsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMeditationsInPeriod(state, dateFrom, dateTo),
+  );
 
   useEffect(
     () => onActiveViewChange(activeView),
@@ -54,16 +66,18 @@ export default function StatsViewControls({ onActiveViewChange }: Props) {
               icon: <EventIcon eventType="weights" margin="end" />,
             },
           ] as const
-        ).map(({ icon, view }) => (
-          <Button
-            key={view}
-            onClick={() => setActiveView(view)}
-            variant={activeView === view ? "primary" : "secondary"}
-          >
-            {icon}
-            {capitalizeFirstLetter(view)}
-          </Button>
-        ))}
+        )
+          .filter(({ view }) => hasMeditationsInPeriod || view !== "meditation")
+          .map(({ icon, view }) => (
+            <Button
+              key={view}
+              onClick={() => setActiveView(view)}
+              variant={activeView === view ? "primary" : "secondary"}
+            >
+              {icon}
+              {capitalizeFirstLetter(view)}
+            </Button>
+          ))}
       </div>
     </Paper>
   );

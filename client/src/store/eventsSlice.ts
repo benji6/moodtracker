@@ -40,6 +40,7 @@ import {
   getEnvelopingIds,
   getIdsInInterval,
   getNormalizedWordCloudWords,
+  hasIdsInInterval,
 } from "../utils";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../constants";
 import { WEEK_OPTIONS } from "../formatters/dateTimeFormatters";
@@ -528,6 +529,13 @@ export default createSlice({
     hasMeditations: createSelector(
       normalizedMeditationsSelector,
       normalizedStateNotEmpty,
+    ),
+    hasMeditationsInPeriod: createSelector(
+      normalizedMeditationsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date) =>
+        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     hasPushUps: createSelector(
       normalizedPushUpsSelector,
