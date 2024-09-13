@@ -38,7 +38,7 @@ export default function About() {
         <h3>Updates</h3>
         <Version />
         <p>
-          Check out <Link to="/blog">our blog</Link> for major feature
+          Check out <Link to="/blog">the blog</Link> for major feature
           announcements.
         </p>
         <p>

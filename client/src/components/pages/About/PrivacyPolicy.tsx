@@ -44,7 +44,7 @@ export default function PrivacyPolicy() {
             on GitHub
           </a>
           . We will announce any significant policy changes on{" "}
-          <Link to="/blog">our blog</Link>.
+          <Link to="/blog">the blog</Link>.
         </p>
         <h3>Questions</h3>
         <p>
