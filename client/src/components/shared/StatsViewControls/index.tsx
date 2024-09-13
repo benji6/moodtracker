@@ -29,6 +29,13 @@ export default function StatsViewControls({
   const hasMeditationsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.hasMeditationsInPeriod(state, dateFrom, dateTo),
   );
+  const hasEventsWithLocationInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasEventsWithLocationInPeriod(
+      state,
+      dateFrom,
+      dateTo,
+    ),
+  );
 
   useEffect(
     () => onActiveViewChange(activeView),
@@ -46,10 +53,6 @@ export default function StatsViewControls({
               icon: <EventIcon eventType="moods" margin="end" />,
             },
             {
-              view: "meditation",
-              icon: <EventIcon eventType="meditations" margin="end" />,
-            },
-            {
               view: "location",
               icon: <Icon name="location" margin="end" />,
             },
@@ -65,9 +68,16 @@ export default function StatsViewControls({
               view: "weight",
               icon: <EventIcon eventType="weights" margin="end" />,
             },
+            {
+              view: "meditation",
+              icon: <EventIcon eventType="meditations" margin="end" />,
+            },
           ] as const
         )
           .filter(({ view }) => hasMeditationsInPeriod || view !== "meditation")
+          .filter(
+            ({ view }) => hasEventsWithLocationInPeriod || view !== "location",
+          )
           .map(({ icon, view }) => (
             <Button
               key={view}

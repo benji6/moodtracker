@@ -429,6 +429,12 @@ export default createSlice({
   selectors: {
     allIds: allIdsSelector,
     byId: byIdSelector,
+    hasEventsWithLocationInPeriod: createSelector(
+      allIdsWithLocationSelector,
+      dateFromSelector,
+      dateToSelector,
+      hasIdsInInterval,
+    ),
     hasLoadedFromServer: (state: EventsState) => state.hasLoadedFromServer,
     idsToSync: (state: EventsState) => state.idsToSync,
     idsWithLocationInPeriod: createSelector(
