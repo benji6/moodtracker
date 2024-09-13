@@ -8,11 +8,11 @@ import { interpolateHcl } from "d3-interpolate";
 import { removeStopwords } from "stopword";
 
 export const bisectLeft = (xs: string[], x: string, left = 0) => {
-  let right = xs.length - 1;
-  while (left <= right) {
+  let right = xs.length;
+  while (left < right) {
     const mid = Math.floor((left + right) / 2);
     if (xs[mid] < x) left = mid + 1;
-    else right = mid - 1;
+    else right = mid;
   }
   return left;
 };

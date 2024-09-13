@@ -39,7 +39,7 @@ describe("utils", () => {
 
     const testArray = [
       "2015",
-      "2016",
+      "2017",
       "2017",
       "2018",
       "2019",
@@ -53,6 +53,8 @@ describe("utils", () => {
 
     expect(bisectLeft(testArray, "2014")).toBe(0);
     expect(bisectLeft(testArray, "2015")).toBe(0);
+    expect(bisectLeft(testArray, "2016")).toBe(1);
+    expect(bisectLeft(testArray, "2017")).toBe(1);
     expect(bisectLeft(testArray, "2020")).toBe(5);
     expect(bisectLeft(testArray, "2025")).toBe(10);
     expect(bisectLeft(testArray, "2026")).toBe(11);
