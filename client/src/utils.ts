@@ -202,12 +202,12 @@ export const getIdsInInterval = (
   dateTo: Date,
 ): typeof ids => {
   if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
+  const idsInInterval: typeof ids = [];
   const fromIso = dateFrom.toISOString();
   const toIso = dateTo.toISOString();
-  const i = bisectLeft(ids, fromIso);
-  if (toIso < ids[i]) return [];
-  const j = bisectLeft(ids, toIso, i);
-  return ids.slice(i, j + 1);
+  let i = bisectLeft(ids, fromIso);
+  while (i < ids.length && ids[i] <= toIso) idsInInterval.push(ids[i++]);
+  return idsInInterval;
 };
 
 export const hasIdsInInterval = (

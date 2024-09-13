@@ -404,7 +404,7 @@ describe("utils", () => {
 
   test("createDateFromLocalDateString", () => {
     expect(createDateFromLocalDateString("2021-01-01")).toEqual(
-      new Date("2021-01-01T00:00:00"),
+      new Date("2021-01-01T00:00:00.000Z"),
     );
   });
 
@@ -465,75 +465,75 @@ describe("utils", () => {
       expect(() =>
         getEnvelopingIds(
           [],
-          new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
         ),
       ).not.toThrow();
       expect(() =>
         getEnvelopingIds(
           [],
-          new Date("2020-09-01T00:00:01"),
-          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:01.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
         ),
       ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
 
     it("returns the first ID when the range is before the mood ID range", () => {
       const allIds = [
-        "2020-10-04T00:00:00",
-        "2020-10-05T00:00:00",
-        "2020-10-06T00:00:00",
+        "2020-10-04T00:00:00.000Z",
+        "2020-10-05T00:00:00.000Z",
+        "2020-10-06T00:00:00.000Z",
       ];
       expect(
         getEnvelopingIds(
           allIds,
-          new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-02T00:00:00"),
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-02T00:00:00.000Z"),
         ),
-      ).toEqual(["2020-10-04T00:00:00"]);
+      ).toEqual(["2020-10-04T00:00:00.000Z"]);
     });
 
     it("returns the last ID when the range is after the mood ID range", () => {
       const allIds = [
-        "2020-10-04T00:00:00",
-        "2020-10-05T00:00:00",
-        "2020-10-06T00:00:00",
+        "2020-10-04T00:00:00.000Z",
+        "2020-10-05T00:00:00.000Z",
+        "2020-10-06T00:00:00.000Z",
       ];
       expect(
         getEnvelopingIds(
           allIds,
-          new Date("2020-11-01T00:00:00"),
-          new Date("2020-11-02T00:00:00"),
+          new Date("2020-11-01T00:00:00.000Z"),
+          new Date("2020-11-02T00:00:00.000Z"),
         ),
-      ).toEqual(["2020-10-06T00:00:00"]);
+      ).toEqual(["2020-10-06T00:00:00.000Z"]);
     });
 
     it("returns all IDs when the date range encompasses all IDs", () => {
       const allIds = [
-        "2020-10-04T00:00:00",
-        "2020-10-05T00:00:00",
-        "2020-10-06T00:00:00",
+        "2020-10-04T00:00:00.000Z",
+        "2020-10-05T00:00:00.000Z",
+        "2020-10-06T00:00:00.000Z",
       ];
       expect(
         getEnvelopingIds(
           allIds,
-          new Date("2020-10-01T00:00:00"),
-          new Date("2020-10-31T00:00:00"),
+          new Date("2020-10-01T00:00:00.000Z"),
+          new Date("2020-10-31T00:00:00.000Z"),
         ),
       ).toEqual(allIds);
     });
 
     it("returns all IDs when the date range is equal to the mood IDs range", () => {
       const allIds = [
-        "2020-10-04T00:00:00",
-        "2020-10-05T00:00:00",
-        "2020-10-06T00:00:00",
+        "2020-10-04T00:00:00.000Z",
+        "2020-10-05T00:00:00.000Z",
+        "2020-10-06T00:00:00.000Z",
       ];
       expect(
         getEnvelopingIds(
           allIds,
-          new Date("2020-10-04T00:00:00"),
-          new Date("2020-10-06T00:00:00"),
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
         ),
       ).toEqual(allIds);
     });
@@ -611,15 +611,15 @@ describe("utils", () => {
       expect(() =>
         getIdsInInterval(
           [],
-          new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
         ),
       ).not.toThrow();
       expect(() =>
         getIdsInInterval(
           [],
-          new Date("2020-09-01T00:00:01"),
-          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:01.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
         ),
       ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
@@ -628,8 +628,8 @@ describe("utils", () => {
       expect(
         getIdsInInterval(
           [],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
       ).toEqual([]);
     });
@@ -637,9 +637,9 @@ describe("utils", () => {
     it("returns an empty array when there are no moods within the interval", () => {
       expect(
         getIdsInInterval(
-          ["2020-09-01T23:59:59Z", "2020-09-03T00:00:01Z"],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          ["2020-09-01T23:59:59.000Z", "2020-09-03T00:00:01.000Z"],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
       ).toEqual([]);
     });
@@ -647,26 +647,26 @@ describe("utils", () => {
     it("returns all moods when all moods are within the interval", () => {
       expect(
         getIdsInInterval(
-          ["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          ["2020-09-02T00:00:00.000Z", "2020-09-03T00:00:00.000Z"],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
-      ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
+      ).toEqual(["2020-09-02T00:00:00.000Z", "2020-09-03T00:00:00.000Z"]);
     });
 
     it("only returns moods that are within the interval", () => {
       expect(
         getIdsInInterval(
           [
-            "2020-09-01T23:59:59Z",
-            "2020-09-02T00:00:00Z",
-            "2020-09-03T00:00:00Z",
-            "2020-09-03T00:00:01Z",
+            "2020-09-01T23:59:59.000Z",
+            "2020-09-02T00:00:00.000Z",
+            "2020-09-03T00:00:00.000Z",
+            "2020-09-03T00:00:01.000Z",
           ],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
-      ).toEqual(["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"]);
+      ).toEqual(["2020-09-02T00:00:00.000Z", "2020-09-03T00:00:00.000Z"]);
     });
   });
 
@@ -675,15 +675,15 @@ describe("utils", () => {
       expect(() =>
         hasIdsInInterval(
           [],
-          new Date("2020-09-01T00:00:00"),
-          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
         ),
       ).not.toThrow();
       expect(() =>
         hasIdsInInterval(
           [],
-          new Date("2020-09-01T00:00:01"),
-          new Date("2020-09-01T00:00:00"),
+          new Date("2020-09-01T00:00:01.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
         ),
       ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
     });
@@ -692,8 +692,8 @@ describe("utils", () => {
       expect(
         hasIdsInInterval(
           [],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
       ).toBe(false);
     });
@@ -701,9 +701,9 @@ describe("utils", () => {
     it("returns false when there are no moods within the interval", () => {
       expect(
         hasIdsInInterval(
-          ["2020-09-01T23:59:59Z", "2020-09-03T00:00:01Z"],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          ["2020-09-01T23:59:59.000Z", "2020-09-03T00:00:01.000Z"],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
       ).toBe(false);
     });
@@ -711,9 +711,9 @@ describe("utils", () => {
     it("returns true when all moods are within the interval", () => {
       expect(
         hasIdsInInterval(
-          ["2020-09-02T00:00:00Z", "2020-09-03T00:00:00Z"],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          ["2020-09-02T00:00:00.000Z", "2020-09-03T00:00:00.000Z"],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
       ).toBe(true);
     });
@@ -722,13 +722,13 @@ describe("utils", () => {
       expect(
         hasIdsInInterval(
           [
-            "2020-09-01T23:59:59Z",
-            "2020-09-02T00:00:00Z",
-            "2020-09-03T00:00:00Z",
-            "2020-09-03T00:00:01Z",
+            "2020-09-01T23:59:59.000Z",
+            "2020-09-02T00:00:00.000Z",
+            "2020-09-03T00:00:00.000Z",
+            "2020-09-03T00:00:01.000Z",
           ],
-          new Date("2020-09-02T00:00:00"),
-          new Date("2020-09-03T00:00:00"),
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
         ),
       ).toBe(true);
     });
@@ -762,15 +762,15 @@ describe("utils", () => {
   });
 
   test("formatIsoDateInLocalTimezone", () => {
-    expect(formatIsoDateInLocalTimezone(new Date("2020-09-01T00:00:00"))).toBe(
-      "2020-09-01",
-    );
+    expect(
+      formatIsoDateInLocalTimezone(new Date("2020-09-01T00:00:00.000Z")),
+    ).toBe("2020-09-01");
     expect(formatIsoDateInLocalTimezone(new Date("2020-09-30T23:59:59"))).toBe(
       "2020-09-30",
     );
-    expect(formatIsoDateInLocalTimezone(new Date("2020-10-01T00:00:01"))).toBe(
-      "2020-10-01",
-    );
+    expect(
+      formatIsoDateInLocalTimezone(new Date("2020-10-01T00:00:01.000Z")),
+    ).toBe("2020-10-01");
   });
 
   test("formatIsoDateHourInLocalTimezone", () => {
@@ -778,7 +778,7 @@ describe("utils", () => {
       formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:01:01")),
     ).toBe("2021-02-14T00:00:00.000Z");
     expect(
-      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:00:00")),
+      formatIsoDateHourInLocalTimezone(new Date("2021-02-14T00:00:00.000Z")),
     ).toBe("2021-02-14T00:00:00.000Z");
     expect(
       formatIsoDateHourInLocalTimezone(new Date("2021-02-13T23:59:59")),
@@ -786,38 +786,38 @@ describe("utils", () => {
   });
 
   test("formatIsoMonthInLocalTimezone", () => {
-    expect(formatIsoMonthInLocalTimezone(new Date("2020-09-01T00:00:00"))).toBe(
-      "2020-09",
-    );
+    expect(
+      formatIsoMonthInLocalTimezone(new Date("2020-09-01T00:00:00.000Z")),
+    ).toBe("2020-09");
     expect(formatIsoMonthInLocalTimezone(new Date("2020-09-30T23:59:59"))).toBe(
       "2020-09",
     );
-    expect(formatIsoMonthInLocalTimezone(new Date("2020-10-01T00:00:00"))).toBe(
-      "2020-10",
-    );
+    expect(
+      formatIsoMonthInLocalTimezone(new Date("2020-10-01T00:00:00.000Z")),
+    ).toBe("2020-10");
   });
 
   test("formatIsoYearInLocalTimezone", () => {
-    expect(formatIsoYearInLocalTimezone(new Date("2020-01-01T00:00:00"))).toBe(
-      "2020",
-    );
+    expect(
+      formatIsoYearInLocalTimezone(new Date("2020-01-01T00:00:00.000Z")),
+    ).toBe("2020");
     expect(formatIsoYearInLocalTimezone(new Date("2020-12-31T23:59:59"))).toBe(
       "2020",
     );
-    expect(formatIsoYearInLocalTimezone(new Date("2021-01-01T00:00:00"))).toBe(
-      "2021",
-    );
+    expect(
+      formatIsoYearInLocalTimezone(new Date("2021-01-01T00:00:00.000Z")),
+    ).toBe("2021");
   });
 
   test("getWeekdayIndex", () => {
-    expect(getWeekdayIndex(new Date("2020-09-01T00:00:00"))).toBe(1);
-    expect(getWeekdayIndex(new Date("2020-09-02T00:00:00"))).toBe(2);
-    expect(getWeekdayIndex(new Date("2020-09-03T00:00:00"))).toBe(3);
-    expect(getWeekdayIndex(new Date("2020-09-04T00:00:00"))).toBe(4);
-    expect(getWeekdayIndex(new Date("2020-09-05T00:00:00"))).toBe(5);
-    expect(getWeekdayIndex(new Date("2020-09-06T00:00:00"))).toBe(6);
-    expect(getWeekdayIndex(new Date("2020-09-07T00:00:00"))).toBe(0);
-    expect(getWeekdayIndex(new Date("2020-09-08T00:00:00"))).toBe(1);
+    expect(getWeekdayIndex(new Date("2020-09-01T00:00:00.000Z"))).toBe(1);
+    expect(getWeekdayIndex(new Date("2020-09-02T00:00:00.000Z"))).toBe(2);
+    expect(getWeekdayIndex(new Date("2020-09-03T00:00:00.000Z"))).toBe(3);
+    expect(getWeekdayIndex(new Date("2020-09-04T00:00:00.000Z"))).toBe(4);
+    expect(getWeekdayIndex(new Date("2020-09-05T00:00:00.000Z"))).toBe(5);
+    expect(getWeekdayIndex(new Date("2020-09-06T00:00:00.000Z"))).toBe(6);
+    expect(getWeekdayIndex(new Date("2020-09-07T00:00:00.000Z"))).toBe(0);
+    expect(getWeekdayIndex(new Date("2020-09-08T00:00:00.000Z"))).toBe(1);
   });
 
   test("mapRight", () => {
