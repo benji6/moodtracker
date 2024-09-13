@@ -143,8 +143,8 @@ export default function Explore() {
   );
 
   const dateTo = addDays(localState.displayDateTo, 1);
-  const moodIdsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsInPeriod(state, localState.dateFrom, dateTo),
+  const hasMoodsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMoodsInPeriod(state, localState.dateFrom, dateTo),
   );
 
   if (!eventsHasLoadedFromServer) return <Spinner />;
@@ -197,7 +197,7 @@ export default function Explore() {
         dateFrom={localState.dateFrom}
         dateTo={localState.displayDateTo}
       />
-      {moodIdsInPeriod.length ? (
+      {hasMoodsInPeriod && (
         <>
           <MoodChartForPeriod
             dateFrom={xTicks[0]}
@@ -225,7 +225,7 @@ export default function Explore() {
             xLabels={xLabels}
           />
         </>
-      ) : null}
+      )}
       <MoodBySleepForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
       <WeightChartForPeriod
         dateFrom={xTicks[0]}

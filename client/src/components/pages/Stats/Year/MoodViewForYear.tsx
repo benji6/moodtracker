@@ -32,8 +32,8 @@ export default function MoodViewForYear({
   nextDate,
   xLabels,
 }: Props) {
-  const moodIdsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
+  const hasMoodsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMoodsInPeriod(state, date, nextDate),
   );
   const navigate = useNavigate();
   const meanMoodsByMonth = useSelector(eventsSlice.selectors.meanMoodsByMonth);
@@ -83,7 +83,7 @@ export default function MoodViewForYear({
         hidePoints
         xLabels={xLabels}
       />
-      {moodIdsInPeriod.length ? (
+      {hasMoodsInPeriod ? (
         <>
           <Paper>
             <h3>
@@ -99,7 +99,7 @@ export default function MoodViewForYear({
           <p>No mood data for this year.</p>
         </Paper>
       )}
-      {Boolean(moodIdsInPeriod.length) && (
+      {hasMoodsInPeriod && (
         <>
           <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />

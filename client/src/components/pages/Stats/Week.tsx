@@ -43,8 +43,8 @@ interface Props {
 }
 
 function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const moodIdsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
+  const hasMoodsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMoodsInPeriod(state, date, nextDate),
   );
 
   const lastDayOfWeek = subDays(nextDate, 1);
@@ -93,7 +93,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </PrevNextControls>
       </Paper>
       <SummaryForWeek date={date} />
-      {moodIdsInPeriod.length ? (
+      {hasMoodsInPeriod ? (
         <>
           <MoodChartForPeriod
             centerXAxisLabels
@@ -115,7 +115,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         </Paper>
       )}
       <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
-      {moodIdsInPeriod.length ? (
+      {hasMoodsInPeriod && (
         <>
           <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodByWeekdayForPeriod
@@ -124,7 +124,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             dateTo={nextDate}
           />
         </>
-      ) : null}
+      )}
       <SleepChartForWeek dateFrom={date} />
       <MoodBySleepForPeriod dateFrom={date} dateTo={nextDate} />
       <WeightChartForPeriod

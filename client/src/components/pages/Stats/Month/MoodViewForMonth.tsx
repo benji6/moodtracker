@@ -35,8 +35,8 @@ export default function MoodViewForMonth({
   nextDate,
   xLabels,
 }: Props) {
-  const moodIdsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsInPeriod(state, date, nextDate),
+  const hasMoodsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMoodsInPeriod(state, date, nextDate),
   );
   const meanMoodsByWeek = useSelector(eventsSlice.selectors.meanMoodsByWeek);
   const weeks = Object.keys(meanMoodsByWeek);
@@ -49,7 +49,7 @@ export default function MoodViewForMonth({
   return (
     <>
       <SummaryForMonth date={date} />
-      {moodIdsInPeriod.length ? (
+      {hasMoodsInPeriod ? (
         <>
           <MoodChartForPeriod
             dateFrom={date}

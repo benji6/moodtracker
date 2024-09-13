@@ -528,6 +528,13 @@ export default createSlice({
       getEnvelopingIds,
     ),
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
+    hasMoodsInPeriod: createSelector(
+      normalizedMoodsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date) =>
+        hasIdsInInterval(allIds, dateFrom, dateTo),
+    ),
     hasLegRaises: createSelector(
       normalizedLegRaisesSelector,
       normalizedStateNotEmpty,
@@ -556,9 +563,23 @@ export default createSlice({
       normalizedSleepsSelector,
       normalizedStateNotEmpty,
     ),
+    hasSleepsInPeriod: createSelector(
+      normalizedSleepsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date) =>
+        hasIdsInInterval(allIds, dateFrom, dateTo),
+    ),
     hasWeights: createSelector(
       normalizedWeightsSelector,
       normalizedStateNotEmpty,
+    ),
+    hasWeightsInPeriod: createSelector(
+      normalizedWeightsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date) =>
+        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     meanDailySleepDurationInPeriod: createSelector(
       minutesSleptByDateAwokeSelector,
@@ -657,13 +678,6 @@ export default createSlice({
           moodsByDate[formatIsoDateInLocalTimezone(new Date(id))].push(id);
         return { ...moodsByDate };
       },
-    ),
-    moodIdsInPeriod: createSelector(
-      normalizedMoodsSelector,
-      dateFromSelector,
-      dateToSelector,
-      ({ allIds }, dateFrom: Date, dateTo: Date): string[] =>
-        getIdsInInterval(allIds, dateFrom, dateTo),
     ),
     moodsInPeriod: createSelector(
       normalizedMoodsSelector,
