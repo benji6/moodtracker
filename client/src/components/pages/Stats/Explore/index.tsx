@@ -1,4 +1,8 @@
 import { Paper, Select, Spinner } from "eri";
+import { ReactElement, useReducer, useState } from "react";
+import StatsViewControls, {
+  ActiveView,
+} from "../../../shared/StatsViewControls";
 import { addDays, subDays } from "date-fns";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
 import { FluxStandardAction } from "../../../../typeUtilities";
@@ -20,7 +24,6 @@ import WeightChartForPeriod from "../WeightChartForPeriod";
 import eventsSlice from "../../../../store/eventsSlice";
 import { roundDateDown } from "../../../../utils";
 import { scaleTime } from "d3-scale";
-import { useReducer } from "react";
 import { useSelector } from "react-redux";
 
 const DATE_RANGE_OPTIONS = [
@@ -47,6 +50,7 @@ interface State {
 }
 
 export default function Explore() {
+  const [activeView, setActiveView] = useState<ActiveView>("mood");
   const dateNow = new Date();
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const allNormalizedTrackedCategories = useSelector(
@@ -160,6 +164,83 @@ export default function Explore() {
   const xTicks = x.ticks(6);
   const xLabels = xTicks.map(x.tickFormat());
 
+  let view: ReactElement;
+  switch (activeView) {
+    case "location":
+      view = (
+        <LocationForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+      );
+      break;
+    case "meditation":
+      view = (
+        <MeditationImpactForPeriod
+          dateFrom={localState.dateFrom}
+          dateTo={dateTo}
+        />
+      );
+      break;
+    case "mood":
+      view = (
+        <>
+          <SummaryForPeriod
+            dateFrom={localState.dateFrom}
+            dateTo={localState.displayDateTo}
+          />
+          {hasMoodsInPeriod && (
+            <>
+              <MoodChartForPeriod
+                dateFrom={xTicks[0]}
+                dateTo={xTicks.at(-1)!}
+                hidePoints
+                xLabels={xLabels}
+              />
+              <MoodByWeekdayForPeriod
+                dateFrom={localState.dateFrom}
+                dateTo={dateTo}
+              />
+              <MoodByHourForPeriod
+                dateFrom={localState.dateFrom}
+                dateTo={dateTo}
+              />
+              <MoodCloudForPeriod
+                dateFrom={localState.dateFrom}
+                dateTo={dateTo}
+              />
+              <MoodFrequencyForPeriod
+                dateFrom={localState.dateFrom}
+                dateTo={dateTo}
+              />
+            </>
+          )}
+        </>
+      );
+      break;
+    case "sleep":
+      view = (
+        <MoodBySleepForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+      );
+      break;
+    case "weather":
+      view = (
+        <WeatherForPeriod
+          centerXAxisLabels
+          dateFrom={localState.dateFrom}
+          dateTo={dateTo}
+          xLabels={xLabels}
+        />
+      );
+      break;
+    case "weight":
+      view = (
+        <WeightChartForPeriod
+          centerXAxisLabels
+          dateFrom={localState.dateFrom}
+          dateTo={dateTo}
+          xLabels={xLabels}
+        />
+      );
+  }
+
   return (
     <Paper.Group>
       <Paper>
@@ -192,47 +273,12 @@ export default function Explore() {
           }
         />
       </Paper>
-      <SummaryForPeriod
-        dateFrom={localState.dateFrom}
-        dateTo={localState.displayDateTo}
-      />
-      {hasMoodsInPeriod && (
-        <>
-          <MoodChartForPeriod
-            dateFrom={xTicks[0]}
-            dateTo={xTicks.at(-1)!}
-            hidePoints
-            xLabels={xLabels}
-          />
-          <MoodByWeekdayForPeriod
-            dateFrom={localState.dateFrom}
-            dateTo={dateTo}
-          />
-          <MoodByHourForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
-          <MoodCloudForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
-          <MoodFrequencyForPeriod
-            dateFrom={localState.dateFrom}
-            dateTo={dateTo}
-          />
-          <LocationForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
-          ;
-          <WeatherForPeriod
-            dateFrom={xTicks[0]}
-            dateTo={xTicks.at(-1)!}
-            xLabels={xLabels}
-          />
-        </>
-      )}
-      <MoodBySleepForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
-      <WeightChartForPeriod
-        dateFrom={xTicks[0]}
-        dateTo={xTicks.at(-1)!}
-        xLabels={xLabels}
-      />
-      <MeditationImpactForPeriod
+      <StatsViewControls
         dateFrom={localState.dateFrom}
         dateTo={dateTo}
+        onActiveViewChange={setActiveView}
       />
+      {view}
     </Paper.Group>
   );
 }
