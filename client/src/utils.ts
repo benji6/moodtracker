@@ -188,12 +188,11 @@ export const getEnvelopingIds = (
   const fromIso = dateFrom.toISOString();
   const toIso = dateTo.toISOString();
 
-  const i = bisectLeft(ids, fromIso);
-  const j = bisectLeft(ids, toIso, i);
-  return ids.slice(
-    Math.max(i - 1, 0),
-    Math.min(j + 2 - Number(i === j), ids.length + 1),
-  );
+  const envelopingIds = [];
+  let i = Math.max(bisectLeft(ids, fromIso) - 1, 0);
+  while (i < ids.length && ids[i] <= toIso) envelopingIds.push(ids[i++]);
+  if (i < ids.length) envelopingIds.push(ids[i]);
+  return envelopingIds;
 };
 
 export const getIdsInInterval = (
