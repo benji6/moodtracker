@@ -7,6 +7,7 @@ import {
 import { ComponentProps } from "react";
 import MoodByWeekdayChart from "../../shared/MoodByWeekdayChart";
 import { Paper } from "eri";
+import { RootState } from "../../../store";
 import { addDays } from "date-fns";
 import eventsSlice from "../../../store/eventsSlice";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +24,13 @@ export default function MoodByWeekdayForPeriod({
   dateFrom,
   dateTo,
 }: Props) {
+  const hasMoodsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasMoodsInPeriod(state, dateFrom, dateTo),
+  );
   const meanMoodByDay = useSelector(eventsSlice.selectors.meanMoodsByDay);
   const navigate = useNavigate();
+
+  if (!hasMoodsInPeriod) return;
 
   const moodsByWeekdayIndex: (number[] | undefined)[] = [
     ...Array(TIME.daysPerWeek),

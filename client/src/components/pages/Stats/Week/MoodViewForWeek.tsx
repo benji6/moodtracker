@@ -42,6 +42,13 @@ export default function MoodViewForWeek({
             currentPeriod={{ dateFrom: date, dateTo: nextDate }}
             previousPeriod={{ dateFrom: prevDate, dateTo: date }}
           />
+          <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
+          <MoodByWeekdayForPeriod
+            canDrillDown
+            dateFrom={date}
+            dateTo={nextDate}
+          />
         </>
       ) : (
         <Paper>
@@ -50,17 +57,6 @@ export default function MoodViewForWeek({
             <Link to="/moods/add">add a mood here</Link>!
           </p>
         </Paper>
-      )}
-      <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
-      {hasMoodsInPeriod && (
-        <>
-          <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
-          <MoodByWeekdayForPeriod
-            canDrillDown
-            dateFrom={date}
-            dateTo={nextDate}
-          />
-        </>
       )}
     </>
   );

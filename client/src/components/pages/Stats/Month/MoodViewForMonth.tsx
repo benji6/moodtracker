@@ -114,7 +114,10 @@ export default function MoodViewForMonth({
         </>
       ) : (
         <Paper>
-          <p>No mood data for this month.</p>
+          <p>
+            No mood data for this month,{" "}
+            <Link to="/moods/add">add a mood here</Link>!
+          </p>
         </Paper>
       )}
     </>

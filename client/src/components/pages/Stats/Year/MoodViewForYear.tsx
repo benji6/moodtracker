@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom";
 import { Paper, SubHeading } from "eri";
 import {
   formatIsoDateInLocalTimezone,
@@ -16,7 +17,6 @@ import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
 import { monthLongFormatter } from "../../../../formatters/dateTimeFormatters";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -76,15 +76,15 @@ export default function MoodViewForYear({
   return (
     <>
       <SummaryForYear dates={[prevDate, date, nextDate]} />
-      <MoodChartForPeriod
-        centerXAxisLabels
-        dateFrom={date}
-        dateTo={nextDate}
-        hidePoints
-        xLabels={xLabels}
-      />
       {hasMoodsInPeriod ? (
         <>
+          <MoodChartForPeriod
+            centerXAxisLabels
+            dateFrom={date}
+            dateTo={nextDate}
+            hidePoints
+            xLabels={xLabels}
+          />
           <Paper>
             <h3>
               Calendar view
@@ -93,23 +93,22 @@ export default function MoodViewForYear({
             <div className="m-year__calendar-grid">{calendars}</div>
           </Paper>
           <MoodByMonthForPeriod dateFrom={date} dateTo={nextDate} />
-        </>
-      ) : (
-        <Paper>
-          <p>No mood data for this year.</p>
-        </Paper>
-      )}
-      {hasMoodsInPeriod && (
-        <>
           <MoodByWeekdayForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodByHourForPeriod dateFrom={date} dateTo={nextDate} />
           <MoodCloud
             currentPeriod={{ dateFrom: date, dateTo: nextDate }}
             previousPeriod={{ dateFrom: prevDate, dateTo: date }}
           />
+          <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
         </>
+      ) : (
+        <Paper>
+          <p>
+            No mood data for this year,{" "}
+            <Link to="/moods/add">add a mood here</Link>!.
+          </p>
+        </Paper>
       )}
-      <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
     </>
   );
 }

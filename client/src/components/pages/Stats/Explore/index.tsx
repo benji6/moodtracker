@@ -16,7 +16,6 @@ import MoodChartForPeriod from "../MoodChartForPeriod";
 import MoodCloudForPeriod from "../MoodCloudForPeriod";
 import MoodFrequencyForPeriod from "../MoodFrequencyForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
-import { RootState } from "../../../../store";
 import SummaryForPeriod from "./SummaryForPeriod";
 import { TIME } from "../../../../constants";
 import WeatherForPeriod from "../WeatherForPeriod";
@@ -146,9 +145,6 @@ export default function Explore() {
   );
 
   const dateTo = addDays(localState.displayDateTo, 1);
-  const hasMoodsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.hasMoodsInPeriod(state, localState.dateFrom, dateTo),
-  );
 
   if (!eventsHasLoadedFromServer) return <Spinner />;
   if (!moods.allIds.length)
@@ -186,32 +182,22 @@ export default function Explore() {
             dateFrom={localState.dateFrom}
             dateTo={localState.displayDateTo}
           />
-          {hasMoodsInPeriod && (
-            <>
-              <MoodChartForPeriod
-                dateFrom={xTicks[0]}
-                dateTo={xTicks.at(-1)!}
-                hidePoints
-                xLabels={xLabels}
-              />
-              <MoodByWeekdayForPeriod
-                dateFrom={localState.dateFrom}
-                dateTo={dateTo}
-              />
-              <MoodByHourForPeriod
-                dateFrom={localState.dateFrom}
-                dateTo={dateTo}
-              />
-              <MoodCloudForPeriod
-                dateFrom={localState.dateFrom}
-                dateTo={dateTo}
-              />
-              <MoodFrequencyForPeriod
-                dateFrom={localState.dateFrom}
-                dateTo={dateTo}
-              />
-            </>
-          )}
+          <MoodChartForPeriod
+            dateFrom={xTicks[0]}
+            dateTo={xTicks.at(-1)!}
+            hidePoints
+            xLabels={xLabels}
+          />
+          <MoodByWeekdayForPeriod
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
+          />
+          <MoodByHourForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+          <MoodCloudForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+          <MoodFrequencyForPeriod
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
+          />
         </>
       );
       break;
