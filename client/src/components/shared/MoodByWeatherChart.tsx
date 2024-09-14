@@ -17,7 +17,7 @@ interface Props {
 export default function MoodByWeatherChart({ data }: Props) {
   return (
     <>
-      <h4>Average mood by weather</h4>
+      <h3>Average mood by weather</h3>
       <Chart.ColumnChart
         aria-label="Chart displaying average mood for different weather types"
         data={data.map(

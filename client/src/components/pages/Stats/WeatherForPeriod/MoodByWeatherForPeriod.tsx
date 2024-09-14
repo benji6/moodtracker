@@ -1,13 +1,14 @@
+import { Icon, Paper } from "eri";
 import {
   defaultDict,
   getWeatherDisplayData,
   moodToColor,
 } from "../../../../utils";
 import { ComponentProps } from "react";
-import { Icon } from "eri";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
 import { RootState } from "../../../../store";
+import WeatherLoadingStatus from "./WeatherLoadingStatus";
 import eventsSlice from "../../../../store/eventsSlice";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
@@ -75,5 +76,11 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
 
   if (!data.length) return;
 
-  return <MoodByWeatherChart data={data} />;
+  return (
+    <Paper>
+      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+      <MoodByWeatherChart data={data} />{" "}
+      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+    </Paper>
+  );
 }

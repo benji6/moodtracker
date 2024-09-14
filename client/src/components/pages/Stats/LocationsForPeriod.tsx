@@ -39,7 +39,11 @@ export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
     <Paper>
       <h3>
         Location
-        <SubHeading>Location of all data you have tracked</SubHeading>
+        <SubHeading>
+          Location of all data you have tracked (
+          {eventIdsWithLocationInPeriod.length} location
+          {eventIdsWithLocationInPeriod.length === 1 ? "" : "s"})
+        </SubHeading>
       </h3>
       <LocationMap>
         {locationsToRender.map(([id, location]) => (

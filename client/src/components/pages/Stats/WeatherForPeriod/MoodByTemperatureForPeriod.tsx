@@ -1,6 +1,8 @@
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
+import { Paper } from "eri";
 import { RootState } from "../../../../store";
+import WeatherLoadingStatus from "./WeatherLoadingStatus";
 import { convertKelvinToCelcius } from "../../../../utils";
 import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -87,9 +89,12 @@ export default function MoodByTemperatureForPeriod({
     .sort(([a], [b]) => a - b);
 
   return (
-    <MoodByTemperatureChart
-      coarseGrainedData={coarseGrainedDataToRender}
-      fineGrainedData={fineGrainedDataToRender}
-    />
+    <Paper>
+      <MoodByTemperatureChart
+        coarseGrainedData={coarseGrainedDataToRender}
+        fineGrainedData={fineGrainedDataToRender}
+      />
+      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+    </Paper>
   );
 }

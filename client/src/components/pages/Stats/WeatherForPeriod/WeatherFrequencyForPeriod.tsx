@@ -1,6 +1,8 @@
-import { Chart, Icon } from "eri";
+import { Chart, Icon, Paper, SubHeading } from "eri";
 import { ComponentProps } from "react";
+import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import { RootState } from "../../../../store";
+import WeatherLoadingStatus from "./WeatherLoadingStatus";
 import eventsSlice from "../../../../store/eventsSlice";
 import { getWeatherDisplayData } from "../../../../utils";
 import { useSelector } from "react-redux";
@@ -62,8 +64,24 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
   if (!frequencyChartData.length) return;
 
   return (
-    <>
-      <h4>Weather frequency</h4>
+    <Paper>
+      <h3>
+        Weather frequency
+        <SubHeading>
+          {eventIdsWithLocationInPeriod.length} location
+          {eventIdsWithLocationInPeriod.length > 1 ? "s" : ""} recorded for this
+          period
+          {eventIdsWithLocationInPeriod.length <
+            MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && (
+            <>
+              {" "}
+              (some weather charts will not be visible unless you have at least{" "}
+              {MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS} locations)
+            </>
+          )}
+        </SubHeading>
+      </h3>
+      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
       <Chart.ColumnChart
         aria-label="Chart displaying the frequency at which different weather types were recorded"
         data={frequencyChartData}
@@ -71,6 +89,6 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
         xAxisTitle="Weather"
         yAxisTitle="Count"
       />
-    </>
+    </Paper>
   );
 }

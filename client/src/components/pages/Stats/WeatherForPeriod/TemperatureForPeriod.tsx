@@ -1,6 +1,7 @@
+import { Chart, Paper } from "eri";
 import { convertKelvinToCelcius, createChartExtent } from "../../../../utils";
-import { Chart } from "eri";
 import { RootState } from "../../../../store";
+import WeatherLoadingStatus from "./WeatherLoadingStatus";
 import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 import { useWeatherQueries } from "../../../hooks/weatherHooks";
@@ -48,8 +49,8 @@ export default function TemperatureForPeriod({
         : "small";
 
   return (
-    <>
-      <h4>Temperature chart</h4>
+    <Paper>
+      <h3>Temperature chart</h3>
       <Chart.LineChart
         aria-label="Chart displaying temperature against time"
         centerXAxisLabels={centerXAxisLabels}
@@ -69,6 +70,7 @@ export default function TemperatureForPeriod({
           thickness={chartVariation === "medium" ? 2 : undefined}
         />
       </Chart.LineChart>
-    </>
+      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+    </Paper>
   );
 }

@@ -13,7 +13,7 @@ export default function MoodByTemperatureChart({
 }: Props) {
   return (
     <>
-      <h4>Average mood by temperature</h4>
+      <h3>Average mood by temperature</h3>
       <Chart.LineChart
         aria-label="Chart displaying average mood by temperature"
         domain={createChartExtent(coarseGrainedData.map(([x]) => x))}
