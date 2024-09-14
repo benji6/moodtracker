@@ -46,6 +46,24 @@ export default function StatsViewControls({
     eventsSlice.selectors.hasWeightsInPeriod(state, dateFrom, dateTo),
   );
 
+  useEffect(() => {
+    if (
+      (!hasEventsWithLocationInPeriod &&
+        (activeView === "location" || activeView === "weather")) ||
+      (!hasMeditationsInPeriod && activeView === "meditation") ||
+      (!hasSleepsInPeriod && activeView === "sleep") ||
+      (!hasWeightsInPeriod && activeView === "weight")
+    )
+      setActiveView("mood");
+  }, [
+    activeView,
+    hasEventsWithLocationInPeriod,
+    hasMeditationsInPeriod,
+    hasSleepsInPeriod,
+    hasWeightsInPeriod,
+    onActiveViewChange,
+  ]);
+
   useEffect(
     () => onActiveViewChange(activeView),
     [activeView, onActiveViewChange],
