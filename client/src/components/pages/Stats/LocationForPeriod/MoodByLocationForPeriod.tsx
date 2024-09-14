@@ -1,10 +1,10 @@
 import { Paper, Spinner } from "eri";
-import MoodByLocationTable from "../../shared/MoodByLocationTable";
-import { RootState } from "../../../store";
-import { captureException } from "../../../sentry";
-import eventsSlice from "../../../store/eventsSlice";
-import { integerPercentFormatter } from "../../../formatters/numberFormatters";
-import { useReverseGeolocationQueries } from "../../hooks/reverseGeolocationHooks";
+import MoodByLocationTable from "../../../shared/MoodByLocationTable";
+import { RootState } from "../../../../store";
+import { captureException } from "../../../../sentry";
+import eventsSlice from "../../../../store/eventsSlice";
+import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
+import { useReverseGeolocationQueries } from "../../../hooks/reverseGeolocationHooks";
 import { useSelector } from "react-redux";
 
 interface Props {

@@ -1,8 +1,8 @@
 import { Paper, SubHeading } from "eri";
-import { DeviceGeolocation } from "../../../types";
-import LocationMap from "../../shared/LocationMap";
-import { RootState } from "../../../store";
-import eventsSlice from "../../../store/eventsSlice";
+import { DeviceGeolocation } from "../../../../types";
+import LocationMap from "../../../shared/LocationMap";
+import { RootState } from "../../../../store";
+import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   dateTo: Date;
 }
 
-export default function LocationsForPeriod({ dateFrom, dateTo }: Props) {
+export default function LocationMapForPeriod({ dateFrom, dateTo }: Props) {
   const eventsById = useSelector(eventsSlice.selectors.byId);
   const eventIdsWithLocationInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.idsWithLocationInPeriod(state, dateFrom, dateTo),

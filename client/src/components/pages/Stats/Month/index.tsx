@@ -14,9 +14,8 @@ import {
   formatIsoYearInLocalTimezone,
 } from "../../../../utils";
 import { Link } from "react-router-dom";
-import LocationsForPeriod from "../LocationsForPeriod";
+import LocationForPeriod from "../LocationForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
-import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MoodBySleepForPeriod from "../MoodBySleepForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import MoodViewForMonth from "./MoodViewForMonth";
@@ -50,12 +49,7 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   let view: ReactElement;
   switch (activeView) {
     case "location":
-      view = (
-        <>
-          <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
-          <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
-        </>
-      );
+      view = <LocationForPeriod dateFrom={date} dateTo={nextDate} />;
       break;
     case "meditation":
       view = <MeditationImpactForPeriod dateFrom={date} dateTo={nextDate} />;

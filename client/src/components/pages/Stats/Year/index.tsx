@@ -10,10 +10,9 @@ import {
   yearFormatter,
 } from "../../../../formatters/dateTimeFormatters";
 import { Link } from "react-router-dom";
-import LocationsForPeriod from "../LocationsForPeriod";
+import LocationForPeriod from "../LocationForPeriod";
 import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
-import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MoodBySleepForPeriod from "../MoodBySleepForPeriod";
 import MoodGradientForPeriod from "../MoodGradientForPeriod";
 import MoodViewForYear from "./MoodViewForYear";
@@ -41,12 +40,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   let view: ReactElement;
   switch (activeView) {
     case "location":
-      view = (
-        <>
-          <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
-          <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
-        </>
-      );
+      view = <LocationForPeriod dateFrom={date} dateTo={nextDate} />;
       break;
     case "meditation":
       view = (

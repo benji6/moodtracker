@@ -14,8 +14,7 @@ import {
   formatIsoYearInLocalTimezone,
 } from "../../../utils";
 import { Link } from "react-router-dom";
-import LocationsForPeriod from "./LocationsForPeriod";
-import MoodByLocationForPeriod from "./MoodByLocationForPeriod";
+import LocationForPeriod from "./LocationForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import PrevNextControls from "../../shared/PrevNextControls";
@@ -119,13 +118,12 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             dateTo={nextDate}
             xLabels={xLabels}
           />
-          <MoodByLocationForPeriod dateFrom={date} dateTo={nextDate} />
+          <LocationForPeriod dateFrom={date} dateTo={nextDate} />;
           <WeatherForPeriod
             dateFrom={date}
             dateTo={nextDate}
             xLabels={xLabels}
           />
-          <LocationsForPeriod dateFrom={date} dateTo={nextDate} />
           <Paper>
             <h3>Events</h3>
             <TrackedCategoriesList

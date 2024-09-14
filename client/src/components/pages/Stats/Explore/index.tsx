@@ -3,10 +3,9 @@ import { addDays, subDays } from "date-fns";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
 import { FluxStandardAction } from "../../../../typeUtilities";
 import GetStartedCta from "../../../shared/GetStartedCta";
-import LocationsForPeriod from "../LocationsForPeriod";
+import LocationForPeriod from "../LocationForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
-import MoodByLocationForPeriod from "../MoodByLocationForPeriod";
 import MoodBySleepForPeriod from "../MoodBySleepForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodChartForPeriod from "../MoodChartForPeriod";
@@ -215,10 +214,8 @@ export default function Explore() {
             dateFrom={localState.dateFrom}
             dateTo={dateTo}
           />
-          <MoodByLocationForPeriod
-            dateFrom={localState.dateFrom}
-            dateTo={dateTo}
-          />
+          <LocationForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+          ;
           <WeatherForPeriod
             dateFrom={xTicks[0]}
             dateTo={xTicks.at(-1)!}
@@ -236,7 +233,6 @@ export default function Explore() {
         dateFrom={localState.dateFrom}
         dateTo={dateTo}
       />
-      <LocationsForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
     </Paper.Group>
   );
 }
