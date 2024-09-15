@@ -28,17 +28,20 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
   let errorCount = 0;
   let loadingCount = 0;
   let successCount = 0;
-
   for (let i = 0; i < reverseGeolocationResults.length; i++) {
-    const result = reverseGeolocationResults[i];
-    const { mood, location } =
-      normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
-    if (result.isError) errorCount++;
-    else if (result.isPending) loadingCount++;
-    const { data } = result;
-    if (!data) continue;
+    const { data, status } = reverseGeolocationResults[i];
+    if (status === "error") {
+      errorCount++;
+      continue;
+    }
+    if (status === "pending") {
+      loadingCount++;
+      continue;
+    }
     successCount++;
 
+    const { mood, location } =
+      normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
     const Place = data?.Results?.[0]?.Place;
     const locationName = Place?.Municipality ?? Place?.Label;
     if (!locationName) {
