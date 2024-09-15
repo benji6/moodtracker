@@ -81,7 +81,7 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
           )}
         </SubHeading>
       </h3>
-      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+      <WeatherLoadingStatus weatherResults={weatherResults} />
       <Chart.ColumnChart
         aria-label="Chart displaying the frequency at which different weather types were recorded"
         data={frequencyChartData}

@@ -78,9 +78,8 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
 
   return (
     <Paper>
-      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
-      <MoodByWeatherChart data={data} />{" "}
-      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+      <MoodByWeatherChart data={data} />
+      <WeatherLoadingStatus weatherResults={weatherResults} />
     </Paper>
   );
 }

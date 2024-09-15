@@ -94,7 +94,7 @@ export default function MoodByTemperatureForPeriod({
         coarseGrainedData={coarseGrainedDataToRender}
         fineGrainedData={fineGrainedDataToRender}
       />
-      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+      <WeatherLoadingStatus weatherResults={weatherResults} />
     </Paper>
   );
 }

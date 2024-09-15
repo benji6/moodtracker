@@ -1,20 +1,13 @@
-import { RootState } from "../../../../store";
 import { Spinner } from "eri";
-import eventsSlice from "../../../../store/eventsSlice";
+import { UseQueryResult } from "@tanstack/react-query";
+import { WeatherApiResponse } from "../../../../types";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
-import { useSelector } from "react-redux";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
-  dateFrom: Date;
-  dateTo: Date;
+  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
 }
 
-export default function WeatherLoadingStatus({ dateFrom, dateTo }: Props) {
-  const eventIdsWithLocationInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.idsWithLocationInPeriod(state, dateFrom, dateTo),
-  );
-  const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
+export default function WeatherLoadingStatus({ weatherResults }: Props) {
   let errorCount = 0;
   let loadingCount = 0;
   let successCount = 0;
@@ -22,9 +15,7 @@ export default function WeatherLoadingStatus({ dateFrom, dateTo }: Props) {
     const result = weatherResults[i];
     if (result.isError) errorCount++;
     else if (result.isPending) loadingCount++;
-    const { data } = result;
-    if (!data) continue;
-    successCount++;
+    else if (result.data) successCount++;
   }
 
   if (!loadingCount && !errorCount) return;
@@ -37,7 +28,7 @@ export default function WeatherLoadingStatus({ dateFrom, dateTo }: Props) {
             <Spinner inline margin="end" />
             Fetching weather data (may require an internet connection)...{" "}
             {integerPercentFormatter.format(
-              successCount / eventIdsWithLocationInPeriod.length,
+              successCount / weatherResults.length,
             )}
           </>
         )}
@@ -45,9 +36,7 @@ export default function WeatherLoadingStatus({ dateFrom, dateTo }: Props) {
         {Boolean(errorCount) && (
           <span className="negative">
             Could not fetch weather for{" "}
-            {integerPercentFormatter.format(
-              errorCount / eventIdsWithLocationInPeriod.length,
-            )}{" "}
+            {integerPercentFormatter.format(errorCount / weatherResults.length)}{" "}
             of locations, please try again later
           </span>
         )}

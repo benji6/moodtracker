@@ -70,7 +70,7 @@ export default function TemperatureForPeriod({
           thickness={chartVariation === "medium" ? 2 : undefined}
         />
       </Chart.LineChart>
-      <WeatherLoadingStatus dateFrom={dateFrom} dateTo={dateTo} />
+      <WeatherLoadingStatus weatherResults={weatherResults} />
     </Paper>
   );
 }
