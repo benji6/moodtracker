@@ -1,25 +1,21 @@
 import { Chart, Icon, Paper, SubHeading } from "eri";
 import { ComponentProps } from "react";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
-import { RootState } from "../../../../store";
+import { UseQueryResult } from "@tanstack/react-query";
+import { WeatherApiResponse } from "../../../../types";
 import WeatherLoadingStatus from "./WeatherLoadingStatus";
-import eventsSlice from "../../../../store/eventsSlice";
 import { getWeatherDisplayData } from "../../../../utils";
-import { useSelector } from "react-redux";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
-  dateFrom: Date;
-  dateTo: Date;
+  eventIds: string[];
+  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
 }
 
-export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
-  const eventIdsWithLocationInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.idsWithLocationInPeriod(state, dateFrom, dateTo),
-  );
-  const weatherResults = useWeatherQueries(eventIdsWithLocationInPeriod);
-
-  if (!eventIdsWithLocationInPeriod.length) return;
+export default function WeatherFrequencyForPeriod({
+  eventIds,
+  weatherResults,
+}: Props) {
+  if (!eventIds.length) return;
 
   const chartData: { [nameAndColor: string]: number } = {};
   for (const { data } of weatherResults) {
@@ -68,11 +64,9 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
       <h3>
         Weather frequency
         <SubHeading>
-          {eventIdsWithLocationInPeriod.length} location
-          {eventIdsWithLocationInPeriod.length > 1 ? "s" : ""} recorded for this
-          period
-          {eventIdsWithLocationInPeriod.length <
-            MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && (
+          {eventIds.length} location
+          {eventIds.length > 1 ? "s" : ""} recorded for this period
+          {eventIds.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS && (
             <>
               {" "}
               (some weather charts will not be visible unless you have at least{" "}
@@ -81,7 +75,6 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
           )}
         </SubHeading>
       </h3>
-      <WeatherLoadingStatus weatherResults={weatherResults} />
       <Chart.ColumnChart
         aria-label="Chart displaying the frequency at which different weather types were recorded"
         data={frequencyChartData}
@@ -89,6 +82,7 @@ export default function WeatherFrequencyForPeriod({ dateFrom, dateTo }: Props) {
         xAxisTitle="Weather"
         yAxisTitle="Count"
       />
+      <WeatherLoadingStatus weatherResults={weatherResults} />
     </Paper>
   );
 }

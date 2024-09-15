@@ -1,32 +1,25 @@
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByTemperatureChart from "../../../shared/MoodByTemperatureChart";
 import { Paper } from "eri";
-import { RootState } from "../../../../store";
+import { UseQueryResult } from "@tanstack/react-query";
+import { WeatherApiResponse } from "../../../../types";
 import WeatherLoadingStatus from "./WeatherLoadingStatus";
 import { convertKelvinToCelcius } from "../../../../utils";
 import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
-  dateFrom: Date;
-  dateTo: Date;
+  moodIds: string[];
+  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
 }
 
 export default function MoodByTemperatureForPeriod({
-  dateFrom,
-  dateTo,
+  moodIds,
+  weatherResults,
 }: Props) {
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const moodIdsWithLocationInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsWithLocationInPeriod(state, dateFrom, dateTo),
-  );
-  const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 
-  if (
-    moodIdsWithLocationInPeriod.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS
-  )
-    return;
+  if (moodIds.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS) return;
 
   const fineGrainedData: {
     [celcius: string]: {
@@ -46,7 +39,7 @@ export default function MoodByTemperatureForPeriod({
     const { data } = result;
     if (!data) continue;
     const celcius = convertKelvinToCelcius(data.data[0].temp);
-    const { mood } = normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
+    const { mood } = normalizedMoods.byId[moodIds[i]];
     fineGrainedData[celcius] =
       celcius in fineGrainedData
         ? {

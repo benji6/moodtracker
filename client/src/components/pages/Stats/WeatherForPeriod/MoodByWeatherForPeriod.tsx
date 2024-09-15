@@ -7,29 +7,25 @@ import {
 import { ComponentProps } from "react";
 import { MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS } from "./constants";
 import MoodByWeatherChart from "../../../shared/MoodByWeatherChart";
-import { RootState } from "../../../../store";
+import { UseQueryResult } from "@tanstack/react-query";
+import { WeatherApiResponse } from "../../../../types";
 import WeatherLoadingStatus from "./WeatherLoadingStatus";
 import eventsSlice from "../../../../store/eventsSlice";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
-  dateFrom: Date;
-  dateTo: Date;
+  moodIds: string[];
+  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
 }
 
-export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
+export default function MoodByWeatherForPeriod({
+  moodIds,
+  weatherResults,
+}: Props) {
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const moodIdsWithLocationInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsWithLocationInPeriod(state, dateFrom, dateTo),
-  );
-  const weatherResults = useWeatherQueries(moodIdsWithLocationInPeriod);
 
-  if (
-    moodIdsWithLocationInPeriod.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS
-  )
-    return;
+  if (moodIds.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS) return;
 
   const chartData = defaultDict(() => ({ moodCount: 0, sumOfMoods: 0 }));
   for (let i = 0; i < weatherResults.length; i++) {
@@ -37,7 +33,7 @@ export default function MoodByWeatherForPeriod({ dateFrom, dateTo }: Props) {
     const { data } = result;
     if (!data) continue;
     const [weatherData] = data.data;
-    const { mood } = normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
+    const { mood } = normalizedMoods.byId[moodIds[i]];
     for (const { id: weatherId } of weatherData.weather) {
       const { iconName, label, weatherColor } = getWeatherDisplayData({
         isDaytime: true,

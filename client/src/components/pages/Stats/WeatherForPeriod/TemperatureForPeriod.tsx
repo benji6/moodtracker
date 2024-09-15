@@ -1,15 +1,15 @@
 import { Chart, Paper } from "eri";
 import { convertKelvinToCelcius, createChartExtent } from "../../../../utils";
-import { RootState } from "../../../../store";
+import { UseQueryResult } from "@tanstack/react-query";
+import { WeatherApiResponse } from "../../../../types";
 import WeatherLoadingStatus from "./WeatherLoadingStatus";
-import eventsSlice from "../../../../store/eventsSlice";
-import { useSelector } from "react-redux";
-import { useWeatherQueries } from "../../../hooks/weatherHooks";
 
 interface Props {
   centerXAxisLabels: boolean;
   dateFrom: Date;
   dateTo: Date;
+  eventIds: string[];
+  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
   xLabels: string[];
 }
 
@@ -17,14 +17,11 @@ export default function TemperatureForPeriod({
   centerXAxisLabels,
   dateFrom,
   dateTo,
+  eventIds,
+  weatherResults,
   xLabels,
 }: Props) {
-  const envelopingEventIdsWithLocation = useSelector((state: RootState) =>
-    eventsSlice.selectors.envelopingIdsWithLocation(state, dateFrom, dateTo),
-  );
-  const weatherResults = useWeatherQueries(envelopingEventIdsWithLocation);
-
-  if (!envelopingEventIdsWithLocation.length) return;
+  if (!eventIds.length) return;
 
   const temperatures: number[] = [];
   const chartData: [number, number][] = [];
@@ -34,10 +31,7 @@ export default function TemperatureForPeriod({
     if (!data) continue;
     const celcius = convertKelvinToCelcius(data.data[0].temp);
     temperatures.push(celcius);
-    chartData.push([
-      new Date(envelopingEventIdsWithLocation[i]).getTime(),
-      celcius,
-    ]);
+    chartData.push([new Date(eventIds[i]).getTime(), celcius]);
   }
   if (chartData.length < 2) return;
 
