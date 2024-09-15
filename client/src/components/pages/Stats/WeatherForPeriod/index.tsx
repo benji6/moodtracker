@@ -2,6 +2,8 @@ import MoodByTemperatureForPeriod from "./MoodByTemperatureForPeriod";
 import MoodByWeatherForPeriod from "./MoodByWeatherForPeriod";
 import { RootState } from "../../../../store";
 import TemperatureForPeriod from "./TemperatureForPeriod";
+import { UseQueryResult } from "@tanstack/react-query";
+import { WeatherApiResponse } from "../../../../types";
 import WeatherFrequencyForPeriod from "./WeatherFrequencyForPeriod";
 import eventsSlice from "../../../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -26,21 +28,40 @@ export default function WeatherForPeriod({
   );
   const eventIdsWithLocationInPeriod = [];
   const moodIdsWithLocationInPeriod = [];
+
   const weatherResultsForEnvelopingEvents = useWeatherQueries(
     envelopingEventIdsWithLocation,
   );
+  const weatherResultsDataForEnvelopingEvents = [];
+  const weatherResultStatusesForEnvelopingEvents: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  > = [];
 
-  const weatherResultsForEventsInPeriod = [];
-  const weatherResultsForMoodsInPeriod = [];
+  const weatherResultsDataForEventsInPeriod = [];
+  const weatherResultStatusesForEventsInPeriod: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  > = [];
+
+  const weatherResultsDataForMoodsInPeriod = [];
+  const weatherResultStatusesForMoodsInPeriod: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  > = [];
   for (let i = 0; i < envelopingEventIdsWithLocation.length; i++) {
     const id = envelopingEventIdsWithLocation[i];
-    const weatherResult = weatherResultsForEnvelopingEvents[i];
+
+    // Reading status (and maybe data - I only tested status)
+    // is expensive so we are minimizing this operation
+    const { data, status } = weatherResultsForEnvelopingEvents[i];
+    weatherResultStatusesForEnvelopingEvents.push(status);
+    weatherResultsDataForEnvelopingEvents.push(data);
     if (id < dateFrom.toISOString() || id > dateTo.toISOString()) continue;
     eventIdsWithLocationInPeriod.push(id);
-    weatherResultsForEventsInPeriod.push(weatherResult);
+    weatherResultStatusesForEventsInPeriod.push(status);
+    weatherResultsDataForEventsInPeriod.push(data);
     if (id in normalizedMoods.byId) {
       moodIdsWithLocationInPeriod.push(id);
-      weatherResultsForMoodsInPeriod.push(weatherResult);
+      weatherResultStatusesForMoodsInPeriod.push(status);
+      weatherResultsDataForMoodsInPeriod.push(data);
     }
   }
 
@@ -48,22 +69,26 @@ export default function WeatherForPeriod({
     <>
       <WeatherFrequencyForPeriod
         eventIds={eventIdsWithLocationInPeriod}
-        weatherResults={weatherResultsForEventsInPeriod}
+        weatherResultsData={weatherResultsDataForEventsInPeriod}
+        weatherResultStatuses={weatherResultStatusesForEventsInPeriod}
       />
       <MoodByWeatherForPeriod
         moodIds={moodIdsWithLocationInPeriod}
-        weatherResults={weatherResultsForMoodsInPeriod}
+        weatherResultsData={weatherResultsDataForMoodsInPeriod}
+        weatherResultStatuses={weatherResultStatusesForMoodsInPeriod}
       />
       <MoodByTemperatureForPeriod
         moodIds={moodIdsWithLocationInPeriod}
-        weatherResults={weatherResultsForMoodsInPeriod}
+        weatherResultsData={weatherResultsDataForMoodsInPeriod}
+        weatherResultStatuses={weatherResultStatusesForMoodsInPeriod}
       />
       <TemperatureForPeriod
         centerXAxisLabels={centerXAxisLabels}
         dateFrom={dateFrom}
         dateTo={dateTo}
         eventIds={envelopingEventIdsWithLocation}
-        weatherResults={weatherResultsForEnvelopingEvents}
+        weatherResultsData={weatherResultsDataForEnvelopingEvents}
+        weatherResultStatuses={weatherResultStatusesForEnvelopingEvents}
         xLabels={xLabels}
       />
     </>

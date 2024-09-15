@@ -16,21 +16,24 @@ import { useSelector } from "react-redux";
 
 interface Props {
   moodIds: string[];
-  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
+  weatherResultsData: Array<UseQueryResult<WeatherApiResponse, Error>["data"]>;
+  weatherResultStatuses: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  >;
 }
 
 export default function MoodByWeatherForPeriod({
   moodIds,
-  weatherResults,
+  weatherResultsData,
+  weatherResultStatuses,
 }: Props) {
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
 
   if (moodIds.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS) return;
 
   const chartData = defaultDict(() => ({ moodCount: 0, sumOfMoods: 0 }));
-  for (let i = 0; i < weatherResults.length; i++) {
-    const result = weatherResults[i];
-    const { data } = result;
+  for (let i = 0; i < weatherResultsData.length; i++) {
+    const data = weatherResultsData[i];
     if (!data) continue;
     const [weatherData] = data.data;
     const { mood } = normalizedMoods.byId[moodIds[i]];
@@ -75,7 +78,7 @@ export default function MoodByWeatherForPeriod({
   return (
     <Paper>
       <MoodByWeatherChart data={data} />
-      <WeatherLoadingStatus weatherResults={weatherResults} />
+      <WeatherLoadingStatus weatherResultStatuses={weatherResultStatuses} />
     </Paper>
   );
 }

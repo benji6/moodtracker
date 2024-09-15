@@ -8,17 +8,21 @@ import { getWeatherDisplayData } from "../../../../utils";
 
 interface Props {
   eventIds: string[];
-  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
+  weatherResultsData: Array<UseQueryResult<WeatherApiResponse, Error>["data"]>;
+  weatherResultStatuses: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  >;
 }
 
 export default function WeatherFrequencyForPeriod({
   eventIds,
-  weatherResults,
+  weatherResultsData,
+  weatherResultStatuses,
 }: Props) {
   if (!eventIds.length) return;
 
   const chartData: { [nameAndColor: string]: number } = {};
-  for (const { data } of weatherResults) {
+  for (const data of weatherResultsData) {
     if (!data) continue;
     const [weatherData] = data.data;
     for (const { id: weatherId } of weatherData.weather) {
@@ -82,7 +86,7 @@ export default function WeatherFrequencyForPeriod({
         xAxisTitle="Weather"
         yAxisTitle="Count"
       />
-      <WeatherLoadingStatus weatherResults={weatherResults} />
+      <WeatherLoadingStatus weatherResultStatuses={weatherResultStatuses} />
     </Paper>
   );
 }

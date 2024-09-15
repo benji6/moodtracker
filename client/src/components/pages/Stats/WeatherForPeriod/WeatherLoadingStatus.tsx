@@ -4,18 +4,26 @@ import { WeatherApiResponse } from "../../../../types";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 
 interface Props {
-  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
+  weatherResultStatuses: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  >;
 }
 
-export default function WeatherLoadingStatus({ weatherResults }: Props) {
+export default function WeatherLoadingStatus({ weatherResultStatuses }: Props) {
   let errorCount = 0;
   let loadingCount = 0;
   let successCount = 0;
-  for (let i = 0; i < weatherResults.length; i++) {
-    const result = weatherResults[i];
-    if (result.isError) errorCount++;
-    else if (result.isPending) loadingCount++;
-    else if (result.data) successCount++;
+  for (const status of weatherResultStatuses) {
+    switch (status) {
+      case "error":
+        errorCount++;
+        break;
+      case "pending":
+        loadingCount++;
+        break;
+      case "success":
+        successCount++;
+    }
   }
 
   if (!loadingCount && !errorCount) return;
@@ -28,7 +36,7 @@ export default function WeatherLoadingStatus({ weatherResults }: Props) {
             <Spinner inline margin="end" />
             Fetching weather data (may require an internet connection)...{" "}
             {integerPercentFormatter.format(
-              successCount / weatherResults.length,
+              successCount / weatherResultStatuses.length,
             )}
           </>
         )}
@@ -36,7 +44,9 @@ export default function WeatherLoadingStatus({ weatherResults }: Props) {
         {Boolean(errorCount) && (
           <span className="negative">
             Could not fetch weather for{" "}
-            {integerPercentFormatter.format(errorCount / weatherResults.length)}{" "}
+            {integerPercentFormatter.format(
+              errorCount / weatherResultStatuses.length,
+            )}{" "}
             of locations, please try again later
           </span>
         )}

@@ -9,7 +9,10 @@ interface Props {
   dateFrom: Date;
   dateTo: Date;
   eventIds: string[];
-  weatherResults: UseQueryResult<WeatherApiResponse, Error>[];
+  weatherResultsData: Array<UseQueryResult<WeatherApiResponse, Error>["data"]>;
+  weatherResultStatuses: Array<
+    UseQueryResult<WeatherApiResponse, Error>["status"]
+  >;
   xLabels: string[];
 }
 
@@ -18,16 +21,16 @@ export default function TemperatureForPeriod({
   dateFrom,
   dateTo,
   eventIds,
-  weatherResults,
+  weatherResultsData,
+  weatherResultStatuses,
   xLabels,
 }: Props) {
   if (!eventIds.length) return;
 
   const temperatures: number[] = [];
   const chartData: [number, number][] = [];
-  for (let i = 0; i < weatherResults.length; i++) {
-    const result = weatherResults[i];
-    const { data } = result;
+  for (let i = 0; i < weatherResultsData.length; i++) {
+    const data = weatherResultsData[i];
     if (!data) continue;
     const celcius = convertKelvinToCelcius(data.data[0].temp);
     temperatures.push(celcius);
@@ -64,7 +67,7 @@ export default function TemperatureForPeriod({
           thickness={chartVariation === "medium" ? 2 : undefined}
         />
       </Chart.LineChart>
-      <WeatherLoadingStatus weatherResults={weatherResults} />
+      <WeatherLoadingStatus weatherResultStatuses={weatherResultStatuses} />
     </Paper>
   );
 }
