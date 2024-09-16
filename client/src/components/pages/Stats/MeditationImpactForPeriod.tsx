@@ -78,7 +78,12 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     }
   }
 
-  if (!moodChanges.length) return;
+  if (moodChanges.length)
+    return (
+      <Paper>
+        <p>Not enough data to assess meditation impact for this period</p>
+      </Paper>
+    );
 
   const averageMoodChangeAfterMeditation = computeMean(moodChanges);
 
