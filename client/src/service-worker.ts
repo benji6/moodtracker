@@ -34,16 +34,8 @@ try {
   console.error("Error caught and logged to console:", e);
 }
 
-const rejectAfterTimeout = (t: number): Promise<never> =>
-  new Promise((_, reject) =>
-    setTimeout(() => reject(Error(`Timed out after ${t}ms`)), t),
-  );
-
 const customFetch = async (request: Request): Promise<Response> => {
-  const response = await Promise.race([
-    fetch(request),
-    rejectAfterTimeout(1e3),
-  ]);
+  const response = await fetch(request, { signal: AbortSignal.timeout(1e3) });
   const { status } = response;
   if (status >= 500 && status < 600) throw Error(String(status));
   return response;

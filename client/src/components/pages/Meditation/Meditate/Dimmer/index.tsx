@@ -19,28 +19,33 @@ export default function Dimmer({ enabled, onUndim }: Props) {
   }, [enabled]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent): void => {
-      if (document.fullscreenElement) {
-        e.preventDefault();
-        document.exitFullscreen();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
+    const controller = new AbortController();
+
+    window.addEventListener(
+      "keydown",
+      (e) => {
+        if (document.fullscreenElement) {
+          e.preventDefault();
+          document.exitFullscreen();
+        }
+      },
+      { signal: controller.signal },
+    );
 
     // When the escape key is pressed in fullscreen mode
     // the browser uses it to exit fullscreen mode and
     // it is not captured by the keydown handler.
     // so any key press will exit fullscreen mode and
     // app state will be handled by `handleExitFullscreen`
-    const handleExitFullscreen = () => {
-      if (!document.fullscreenElement) onUndim();
-    };
-    document.addEventListener("fullscreenchange", handleExitFullscreen);
+    document.addEventListener(
+      "fullscreenchange",
+      () => {
+        if (!document.fullscreenElement) onUndim();
+      },
+      { signal: controller.signal },
+    );
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("fullscreenchange", handleExitFullscreen);
-    };
+    return () => controller.abort();
   }, [onUndim]);
 
   return createPortal(
