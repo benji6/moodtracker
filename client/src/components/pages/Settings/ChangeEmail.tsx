@@ -62,6 +62,7 @@ export default function ChangeEmail() {
         >
           <TextField
             autoComplete="email"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             error={fieldError}
             label="New email address"

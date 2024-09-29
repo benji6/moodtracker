@@ -31,15 +31,15 @@ export default function EditMood() {
       eventType="moods"
       id={id}
       location={mood.location}
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
         if (!id) {
           captureException(Error("ID is undefined"));
-          return;
+          return false;
         }
         setShowNoUpdateError(false);
 
@@ -74,7 +74,10 @@ export default function EditMood() {
           shouldUpdate = true;
         }
 
-        if (!shouldUpdate) return setShowNoUpdateError(true);
+        if (!shouldUpdate) {
+          setShowNoUpdateError(true);
+          return false;
+        }
 
         dispatch(
           eventsSlice.actions.add({

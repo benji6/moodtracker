@@ -73,7 +73,11 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
           ? createDateFromLocalDateString(datum.dateString)
           : undefined;
 
-        return small || !datum || date! > now || date! < firstMoodDate ? (
+        return small ||
+          !date ||
+          !datum ||
+          date > now ||
+          date < firstMoodDate ? (
           <div
             key={i}
             className="m-mood-calendar-for-month__day"
@@ -82,7 +86,7 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
           />
         ) : (
           <button
-            aria-label={`View stats for ${dateFormatter.format(date!)}`}
+            aria-label={`View stats for ${dateFormatter.format(date)}`}
             key={i}
             className="m-mood-calendar-for-month__day"
             onClick={() => navigate(`/stats/days/${datum.dateString}`)}

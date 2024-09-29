@@ -23,7 +23,9 @@ export default function MoodGradientForPeriod({ dateFrom, dateTo }: Props) {
   if (envelopingMoodIds.length < 2) return;
 
   const firstTime = new Date(envelopingMoodIds[0]).getTime();
-  const lastTime = new Date(envelopingMoodIds.at(-1)!).getTime();
+  const lastTime = new Date(
+    envelopingMoodIds[envelopingMoodIds.length - 1],
+  ).getTime();
 
   let background = `linear-gradient(0.25turn`;
 

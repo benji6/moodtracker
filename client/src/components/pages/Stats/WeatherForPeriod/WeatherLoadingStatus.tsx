@@ -4,9 +4,7 @@ import { WeatherApiResponse } from "../../../../types";
 import { integerPercentFormatter } from "../../../../formatters/numberFormatters";
 
 interface Props {
-  weatherResultStatuses: Array<
-    UseQueryResult<WeatherApiResponse, Error>["status"]
-  >;
+  weatherResultStatuses: UseQueryResult<WeatherApiResponse, Error>["status"][];
 }
 
 export default function WeatherLoadingStatus({ weatherResultStatuses }: Props) {

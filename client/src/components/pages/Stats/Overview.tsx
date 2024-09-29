@@ -30,7 +30,7 @@ export default function Overview() {
         <h2>Overview</h2>
         <MoodGradientForPeriod
           dateFrom={new Date(moods.allIds[0])}
-          dateTo={new Date(moods.allIds.at(-1)!)}
+          dateTo={new Date(moods.allIds[moods.allIds.length - 1])}
         />
       </Paper>
       <Weeks />

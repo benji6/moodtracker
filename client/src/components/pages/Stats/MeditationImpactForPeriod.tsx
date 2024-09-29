@@ -99,7 +99,9 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     const beforeCount = wordsBefore[word];
 
     if (afterCount === beforeCount) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete filteredWordsAfter[word];
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete filteredWordsBefore[word];
       continue;
     }
@@ -107,10 +109,12 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     const lowestCount = Math.min(afterCount, beforeCount);
 
     if (afterCount === lowestCount) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete filteredWordsAfter[word];
       filteredWordsBefore[word] -= lowestCount;
     }
     if (beforeCount === lowestCount) {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete filteredWordsBefore[word];
       filteredWordsAfter[word] -= lowestCount;
     }

@@ -44,7 +44,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
   const isoDateInLocalTimezone = formatIsoDateInLocalTimezone(date);
   const denormalizedTrackedCategories =
     allDenormalizedTrackedCategoriesByDate[isoDateInLocalTimezone];
-  const hasMoodIds: boolean = Boolean(
+  const hasMoodIds = Boolean(
     denormalizedTrackedCategories?.filter(({ type }) => type === "moods")
       .length,
   );

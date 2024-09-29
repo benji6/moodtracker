@@ -59,6 +59,7 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
 
       const previousCount = previousPeriodWords[word];
       if (previousCount >= count) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete filteredWords[word];
         continue;
       }

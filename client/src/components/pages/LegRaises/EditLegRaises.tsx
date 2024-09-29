@@ -28,25 +28,34 @@ export default function EditLegRaises() {
       eventType="leg-raises"
       id={id}
       location={legRaises.location}
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
         setShowNoUpdateError(false);
 
         const inputEl: HTMLInputElement = formEl[FIELDS.legRaises.name];
         const { valueAsNumber } = inputEl;
 
-        if (inputEl.validity.valueMissing) return setError(ERRORS.required);
-        if (inputEl.validity.rangeOverflow)
-          return setError(ERRORS.rangeOverflow);
-        if (inputEl.validity.rangeUnderflow)
-          return setError(ERRORS.rangeUnderflow);
+        if (inputEl.validity.valueMissing) {
+          setError(ERRORS.required);
+          return false;
+        }
+        if (inputEl.validity.rangeOverflow) {
+          setError(ERRORS.rangeOverflow);
+          return false;
+        }
+        if (inputEl.validity.rangeUnderflow) {
+          setError(ERRORS.rangeUnderflow);
+          return false;
+        }
 
-        if (valueAsNumber === legRaises.value)
-          return setShowNoUpdateError(true);
+        if (valueAsNumber === legRaises.value) {
+          setShowNoUpdateError(true);
+          return false;
+        }
 
         dispatch(
           eventsSlice.actions.add({

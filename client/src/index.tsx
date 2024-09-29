@@ -40,7 +40,9 @@ navigator.storage.estimate().then((estimate) => {
   );
 });
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const rootEl = document.getElementById("root");
+if (!rootEl) throw Error("no root element");
+ReactDOM.createRoot(rootEl).render(
   <StrictMode>
     <Provider store={store}>
       <PersistQueryClientProvider

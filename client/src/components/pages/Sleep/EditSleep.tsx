@@ -28,11 +28,11 @@ export default function EditSleep() {
       eventType="sleeps"
       id={id}
       location={undefined}
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
         setShowNoUpdateError(false);
 
@@ -47,7 +47,7 @@ export default function EditSleep() {
           setDateAwokeError(ERRORS.rangeOverflow);
         else setDateAwokeError(undefined);
 
-        if (!dateAwokeEl.validity.valid) return;
+        if (!dateAwokeEl.validity.valid) return false;
 
         const minutesSlept =
           Number(hoursSleptEl.value) * TIME.minutesPerHour +
@@ -55,8 +55,10 @@ export default function EditSleep() {
         if (
           minutesSlept === sleep.minutesSlept &&
           dateAwokeEl.value === sleep.dateAwoke
-        )
-          return setShowNoUpdateError(true);
+        ) {
+          setShowNoUpdateError(true);
+          return false;
+        }
 
         dispatch(
           eventsSlice.actions.add({

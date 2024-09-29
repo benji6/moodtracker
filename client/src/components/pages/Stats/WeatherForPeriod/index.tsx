@@ -33,19 +33,22 @@ export default function WeatherForPeriod({
     envelopingEventIdsWithLocation,
   );
   const weatherResultsDataForEnvelopingEvents = [];
-  const weatherResultStatusesForEnvelopingEvents: Array<
-    UseQueryResult<WeatherApiResponse, Error>["status"]
-  > = [];
+  const weatherResultStatusesForEnvelopingEvents: UseQueryResult<
+    WeatherApiResponse,
+    Error
+  >["status"][] = [];
 
   const weatherResultsDataForEventsInPeriod = [];
-  const weatherResultStatusesForEventsInPeriod: Array<
-    UseQueryResult<WeatherApiResponse, Error>["status"]
-  > = [];
+  const weatherResultStatusesForEventsInPeriod: UseQueryResult<
+    WeatherApiResponse,
+    Error
+  >["status"][] = [];
 
   const weatherResultsDataForMoodsInPeriod = [];
-  const weatherResultStatusesForMoodsInPeriod: Array<
-    UseQueryResult<WeatherApiResponse, Error>["status"]
-  > = [];
+  const weatherResultStatusesForMoodsInPeriod: UseQueryResult<
+    WeatherApiResponse,
+    Error
+  >["status"][] = [];
   for (let i = 0; i < envelopingEventIdsWithLocation.length; i++) {
     const id = envelopingEventIdsWithLocation[i];
 

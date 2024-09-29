@@ -16,7 +16,7 @@ interface Props {
   eventType: EventTypeCategories;
   id: string;
   location: DeviceGeolocation | undefined;
-  onSubmit(): true | void; // `true` if successful, otherwise `void`;
+  onSubmit(): boolean; // `true` if successful, otherwise `false`;
   showNoUpdateError: boolean;
   updatedAt: string | undefined;
 }

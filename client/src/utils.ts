@@ -36,7 +36,9 @@ export const computeAverageMoodInInterval = (
   }
 
   const earliestMoodTime = new Date(moods.allIds[0]).getTime();
-  const latestMoodTime = new Date(moods.allIds.at(-1)!).getTime();
+  const latestMoodTime = new Date(
+    moods.allIds[moods.allIds.length - 1],
+  ).getTime();
 
   const d0 = dateFrom.getTime();
   const d1 = dateTo.getTime();
@@ -103,13 +105,15 @@ export const computeAverageMoodInInterval = (
 
 export const computeMean = (xs: number[]): number => {
   if (!xs.length) throw Error("Need at least one number to compute mean");
-  return computeMeanSafe(xs)!;
+  const mean = computeMeanSafe(xs);
+  if (mean === undefined) throw Error("mean cannot be undefined");
+  return mean;
 };
 
 export const computeMeanSafe = (xs: number[]): number | undefined => {
   if (!xs.length) return;
   let sum = 0;
-  for (let i = 0; i < xs.length; i++) sum += xs[i];
+  for (const x of xs) sum += x;
   return sum / xs.length;
 };
 
@@ -128,7 +132,7 @@ export const computeCompletePopulationStandardDeviation = (
 export const convertKelvinToCelcius = (kelvin: number): number =>
   kelvin - 273.15;
 
-export const counter = (xs: string[]): { [word: string]: number } => {
+export const counter = (xs: string[]): Record<string, number> => {
   const count = defaultDict(Number);
   for (const x of xs) count[x] += 1;
   return { ...count };
@@ -151,7 +155,7 @@ export const createDateFromLocalDateString = (dateString: string) =>
   new Date(`${dateString}T00:00:00`);
 
 export const defaultDict = <V>(createDefaultValue: () => V) =>
-  new Proxy<{ [k: string]: V }>(Object.create(null), {
+  new Proxy<Record<string, V>>(Object.create(null), {
     get: (target, key: string): V => {
       if (!Object.hasOwn(target, key)) target[key] = createDefaultValue();
       return target[key];

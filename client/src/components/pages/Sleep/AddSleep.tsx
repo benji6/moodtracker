@@ -18,11 +18,11 @@ export default function AddSleep() {
   return (
     <AddEvent
       eventType="sleeps"
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
 
         const hoursSleptEl: HTMLInputElement = formEl[FIELDS.hoursSlept.name];
@@ -36,7 +36,7 @@ export default function AddSleep() {
           setDateAwokeError(ERRORS.rangeOverflow);
         else setDateAwokeError(undefined);
 
-        if (!dateAwokeEl.validity.valid) return;
+        if (!dateAwokeEl.validity.valid) return false;
 
         dispatch(
           eventsSlice.actions.add({

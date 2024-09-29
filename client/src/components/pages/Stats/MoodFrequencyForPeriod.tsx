@@ -1,4 +1,4 @@
-import { MOOD_INTEGERS, MOOD_RANGE } from "../../../constants";
+import { MOOD_INTEGERS } from "../../../constants";
 import MoodFrequencyChart from "../../shared/MoodFrequencyChart";
 import { Paper } from "eri";
 import { RootState } from "../../../store";
@@ -17,18 +17,16 @@ export default function MoodFrequencyForPeriod({ dateFrom, dateTo }: Props) {
 
   if (!moodsInPeriod.length) return;
 
-  const moodCounter = new Map(MOOD_INTEGERS.map((n) => [MOOD_RANGE[0] + n, 0]));
-
+  const moodCounter = MOOD_INTEGERS.map(() => 0);
   for (const { mood } of moodsInPeriod) {
-    // handle old data stored in decimal format
-    const rounded = Math.round(mood);
-    moodCounter.set(rounded, moodCounter.get(rounded)! + 1);
+    // round to handle old data stored in decimal format
+    moodCounter[Math.round(mood)] += 1;
   }
 
   return (
     <Paper>
       <h3>Mood frequency</h3>
-      <MoodFrequencyChart data={[...moodCounter.values()]} />
+      <MoodFrequencyChart data={moodCounter} />
     </Paper>
   );
 }

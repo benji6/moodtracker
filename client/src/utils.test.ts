@@ -434,7 +434,7 @@ describe("utils", () => {
 
   describe("defaultDict", () => {
     test("has no prototype keys", () => {
-      const x = defaultDict(() => {});
+      const x = defaultDict(() => void 0);
       expect("toString" in x).toBe(false);
     });
     test("default to 0", () => {
@@ -453,6 +453,7 @@ describe("utils", () => {
     test("default to array", () => {
       const arrayDefaultDict = defaultDict((): number[] => []);
       expect({ ...arrayDefaultDict }).toEqual({});
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       arrayDefaultDict["a"];
       expect({ ...arrayDefaultDict }).toEqual({ a: [] });
       arrayDefaultDict["b"].push(1);

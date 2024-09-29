@@ -16,7 +16,7 @@ interface Bell {
   stop(): void;
 }
 
-export default function useBell(): Bell | void {
+export default function useBell(): Bell | undefined {
   const bellRef = useRef<Bell>();
   const hasBeenActive = useHasBeenActive();
 

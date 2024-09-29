@@ -59,7 +59,7 @@ const fetchWithAuthAndRetry = async (
 };
 
 export const fetchWeather = async ({
-  queryKey: [_, { date, latitude, longitude }],
+  queryKey: [, { date, latitude, longitude }],
 }: {
   queryKey: Readonly<
     [
@@ -129,8 +129,10 @@ export const usageGet = async (): Promise<{ expires: Date; usage: Usage }> => {
   const response = await fetch(USAGE_URI);
   if (!response.ok) throw Error(String(response.status));
   const usage = await response.json();
+  const expiresHeader = response.headers.get("expires");
+  if (!expiresHeader) throw Error("missing expires header");
   return {
-    expires: new Date(response.headers.get("expires")!),
+    expires: new Date(expiresHeader),
     usage,
   };
 };
@@ -217,7 +219,7 @@ const getLocationClient = (() => {
 })();
 
 export const getReverseGeolocation = async ({
-  queryKey: [_, { latitude, longitude }],
+  queryKey: [, { latitude, longitude }],
 }: {
   queryKey: Readonly<
     [

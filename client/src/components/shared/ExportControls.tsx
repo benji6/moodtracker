@@ -12,15 +12,13 @@ const createFilename = (
     new Date(),
   )}.${extension}`;
 
-interface FlattenedDatum {
-  [k: string]: number | string;
-}
+type FlattenedDatum = Record<string, number | string>;
 
 const downloadCsv = (
   dataType: EventTypeCategories,
   denormalizedData: DenormalizedEvents,
 ) => {
-  const columns: Set<string> = new Set();
+  const columns = new Set<string>();
   const flattenedDenormalizedData: FlattenedDatum[] = [];
 
   for (const datum of denormalizedData) {

@@ -1,7 +1,7 @@
-const { favicons } = require("favicons");
-const fs = require("fs").promises;
-const path = require("path");
-const { SOURCE_PATH } = require("./constants");
+import { SOURCE_PATH } from "./constants.mjs";
+import { favicons } from "favicons";
+import { promises as fs } from "fs";
+import path from "path";
 
 const iconsDirPath = path.join(SOURCE_PATH, "icons");
 const iconPath = path.join(iconsDirPath, "icon-without-css.svg");

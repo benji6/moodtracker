@@ -1,12 +1,13 @@
-export type NormalizedTrackedCategory<TrackedCategory> = {
+export interface NormalizedTrackedCategory<TrackedCategory> {
   allIds: string[];
-  byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
-};
+  byId: Record<string, TrackedCategory & { updatedAt?: string }>;
+}
 
-export type NormalizedAllCategories = {
+export interface NormalizedAllCategories {
   allIds: string[];
-  byId: {
-    [id: string]: (
+  byId: Record<
+    string,
+    (
       | (Meditation & { type: "meditations" })
       | (Mood & { type: "moods" })
       | (Run & { type: "runs" })
@@ -17,9 +18,9 @@ export type NormalizedAllCategories = {
       | (ValueAndLocationEvent & { type: "weights" })
     ) & {
       updatedAt?: string;
-    };
-  };
-};
+    }
+  >;
+}
 export type NormalizedLegRaises =
   NormalizedTrackedCategory<ValueAndLocationEvent>;
 export type NormalizedMeditations = NormalizedTrackedCategory<Meditation>;
@@ -137,11 +138,11 @@ export type EventTypeTuple = [
   EventTypeOperations,
 ];
 
-type PayloadEvent<Type extends EventType, Payload> = {
+interface PayloadEvent<Type extends EventType, Payload> {
   createdAt: string;
   payload: Payload;
   type: Type;
-};
+}
 
 export type AppCreateEvent =
   | PayloadEvent<"v1/leg-raises/create", ValueAndLocationEvent>
@@ -173,9 +174,10 @@ export interface Settings {
 }
 
 export interface Usage {
-  byMonth?: {
-    [month: string]: { users: { confirmed: number; unconfirmed: number } };
-  };
+  byMonth?: Record<
+    string,
+    { users: { confirmed: number; unconfirmed: number } }
+  >;
   confirmedUsers: number;
   CRR: number;
   DAUs: number;

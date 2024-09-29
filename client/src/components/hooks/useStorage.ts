@@ -77,7 +77,7 @@ export default function useStorage() {
     storage.setEventTrackingDisabledKeys(
       userId,
       Object.entries(eventTypeTracking)
-        .filter(([_, enabled]) => !enabled)
+        .filter(([, enabled]) => !enabled)
         .map(([eventType]) => eventType as EventTypeCategories),
     );
   }, [eventTypeTracking, isStorageLoading, userId]);

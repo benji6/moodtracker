@@ -34,11 +34,11 @@ export default function AddMood() {
     <AddEvent
       eventType="moods"
       ref={formRef}
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
 
         const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
@@ -53,7 +53,7 @@ export default function AddMood() {
           descriptionFieldError ? ERRORS.specialCharacters : "",
         );
 
-        if (descriptionFieldError || !moodValue) return;
+        if (descriptionFieldError || !moodValue) return false;
 
         const payload: Mood = { mood: Number(moodValue) };
         if (descriptionValue) payload.description = descriptionValue.trim();

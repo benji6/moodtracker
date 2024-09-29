@@ -73,7 +73,7 @@ function Root() {
         <p className="center">
           Oops something went wrong! The error should be reported automatically,
           but please do{" "}
-          <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
+          <a href={REPO_ISSUES_URL} rel="noopener noreferrer" target="_blank">
             raise an issue on GitHub
           </a>{" "}
           to ensure it gets looked at.

@@ -2,7 +2,7 @@ import MoodCell from "./MoodCell";
 import { computeMean } from "../../utils";
 
 interface Props {
-  moodsByLocation: { [location: string]: number[] };
+  moodsByLocation: Record<string, number[]>;
 }
 
 export default function MoodByLocationTable({ moodsByLocation }: Props) {

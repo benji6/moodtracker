@@ -6,7 +6,9 @@ interface Props {
 }
 
 export default function Marker({ latitude, longitude }: Props) {
-  const [x, y] = projection([longitude, latitude])!;
+  const projectionResult = projection([longitude, latitude]);
+  if (!projectionResult) throw Error("projectionResult is null");
+  const [x, y] = projectionResult;
 
   return (
     <g transform={`translate(${x}, ${y})`}>

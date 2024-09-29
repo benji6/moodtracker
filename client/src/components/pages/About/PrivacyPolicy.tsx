@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
         <h3>Tl;dr</h3>
         <p>
           This project is{" "}
-          <a href={REPO_URL} rel="noopener" target="_blank">
+          <a href={REPO_URL} rel="noopener noreferrer" target="_blank">
             open source
           </a>{" "}
           so we are totally transparent about how we store your data securely.
@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
         </p>
         <p>
           We also collect data on errors and crashes that we send to a{" "}
-          <a href="https://sentry.io" rel="noopener" target="_blank">
+          <a href="https://sentry.io" rel="noopener noreferrer" target="_blank">
             3rd party development tool
           </a>
           . This typically does not include any user data.
@@ -40,7 +40,7 @@ export default function PrivacyPolicy() {
           We may update this policy in the future if regulations or practices
           change. Because the project is open source you can view the history of
           this policy{" "}
-          <a href={REPO_URL} rel="noopener" target="_blank">
+          <a href={REPO_URL} rel="noopener noreferrer" target="_blank">
             on GitHub
           </a>
           . We will announce any significant policy changes on{" "}
@@ -50,7 +50,7 @@ export default function PrivacyPolicy() {
         <p>
           If you have any questions or feedback on this policy then please feel
           free to{" "}
-          <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
+          <a href={REPO_ISSUES_URL} rel="noopener noreferrer" target="_blank">
             raise an issue on GitHub
           </a>
           .

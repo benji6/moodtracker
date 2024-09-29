@@ -16,10 +16,8 @@ import { useSelector } from "react-redux";
 
 interface Props {
   moodIds: string[];
-  weatherResultsData: Array<UseQueryResult<WeatherApiResponse, Error>["data"]>;
-  weatherResultStatuses: Array<
-    UseQueryResult<WeatherApiResponse, Error>["status"]
-  >;
+  weatherResultsData: UseQueryResult<WeatherApiResponse, Error>["data"][];
+  weatherResultStatuses: UseQueryResult<WeatherApiResponse, Error>["status"][];
 }
 
 export default function MoodByWeatherForPeriod({

@@ -122,8 +122,7 @@ export default function MoodLog() {
 
   if (filteredMoodIds.length) {
     let moodsSum = 0;
-    for (let i = 0; i < filteredMoodIds.length; i++)
-      moodsSum += moods.byId[filteredMoodIds[i]].mood;
+    for (const id of filteredMoodIds) moodsSum += moods.byId[id].mood;
     averageMood = moodsSum / filteredMoodIds.length;
   }
 
@@ -261,7 +260,7 @@ export default function MoodLog() {
                   dateTo={addDays(day, 1)}
                 />
                 <Card.Group>
-                  {mapRight(ids!, (id) => (
+                  {mapRight(ids, (id) => (
                     <MoodCard id={id} key={id} />
                   ))}
                 </Card.Group>

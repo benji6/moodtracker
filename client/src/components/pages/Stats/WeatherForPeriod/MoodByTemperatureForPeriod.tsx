@@ -10,10 +10,8 @@ import { useSelector } from "react-redux";
 
 interface Props {
   moodIds: string[];
-  weatherResultsData: Array<UseQueryResult<WeatherApiResponse, Error>["data"]>;
-  weatherResultStatuses: Array<
-    UseQueryResult<WeatherApiResponse, Error>["status"]
-  >;
+  weatherResultsData: UseQueryResult<WeatherApiResponse, Error>["data"][];
+  weatherResultStatuses: UseQueryResult<WeatherApiResponse, Error>["status"][];
 }
 
 export default function MoodByTemperatureForPeriod({
@@ -25,18 +23,20 @@ export default function MoodByTemperatureForPeriod({
 
   if (moodIds.length < MINIMUM_LOCATION_COUNT_FOR_MEAN_CHARTS) return;
 
-  const fineGrainedData: {
-    [celcius: string]: {
+  const fineGrainedData: Record<
+    string,
+    {
       moodCount: number;
       sumOfMoods: number;
-    };
-  } = {};
-  const coarseGrainedData: {
-    [celcius: string]: {
+    }
+  > = {};
+  const coarseGrainedData: Record<
+    string,
+    {
       moodCount: number;
       sumOfMoods: number;
-    };
-  } = {};
+    }
+  > = {};
 
   for (let i = 0; i < weatherResultsData.length; i++) {
     const data = weatherResultsData[i];

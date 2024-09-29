@@ -12,9 +12,7 @@ import { useSelector } from "react-redux";
 interface Props {
   dates: [Date, Date, Date];
   heading?: ReactNode;
-  meanMoodByDate: {
-    [date: string]: number | undefined;
-  };
+  meanMoodByDate: Record<string, number | undefined>;
   periodType: "day" | "month" | "week" | "year";
 }
 

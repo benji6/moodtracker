@@ -23,7 +23,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
 
   if (!moodIdsWithLocationInPeriod.length) return;
 
-  const moodsByLocation: { [location: string]: number[] } = {};
+  const moodsByLocation: Record<string, number[]> = {};
 
   let errorCount = 0;
   let loadingCount = 0;
@@ -45,7 +45,8 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
     const Place = data?.Results?.[0]?.Place;
     const locationName = Place?.Municipality ?? Place?.Label;
     if (!locationName) {
-      const { latitude, longitude } = location!;
+      if (!location) throw Error("location should be defined");
+      const { latitude, longitude } = location;
       captureException(
         Error(
           `Failed to derive location name for ${JSON.stringify({

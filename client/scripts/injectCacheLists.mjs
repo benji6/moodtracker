@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs").promises;
-const { BUILD_PATH } = require("./constants");
+import { BUILD_PATH } from "./constants.mjs";
+import { promises as fs } from "fs";
+import path from "path";
 
 const ignoreSet = new Set(["index.html", "robots.txt", "service-worker.js"]);
 

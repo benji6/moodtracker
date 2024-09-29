@@ -5,22 +5,27 @@ import { getMessaging } from "firebase/messaging/sw";
 import { initializeApp } from "firebase/app";
 
 const CACHE_NAME = "v1";
-const CACHE_FIRST_CACHE =
-  process.env.NODE_ENV === "production"
-    ? process.env.CACHE_FIRST_CACHE!.split(",")
-    : [];
-const NETWORK_FIRST_CACHE =
-  process.env.NODE_ENV === "production"
-    ? process.env.NETWORK_FIRST_CACHE!.split(",")
-    : [];
+const INJECTED_CACHE_FIRST_CACHE = process.env.CACHE_FIRST_CACHE;
+const INJECTED_NETWORK_FIRST_CACHE = process.env.NETWORK_FIRST_CACHE;
 
-const cacheList = [...CACHE_FIRST_CACHE, ...NETWORK_FIRST_CACHE];
+let cacheFirstCache: string[] = [];
+let networkFirstCache: string[] = [];
+if (process.env.NODE_ENV === "production") {
+  if (INJECTED_CACHE_FIRST_CACHE === undefined)
+    throw Error("INJECTED_CACHE_FIRST_CACHE is undefined");
+  cacheFirstCache = INJECTED_CACHE_FIRST_CACHE.split(",");
+  if (INJECTED_NETWORK_FIRST_CACHE === undefined)
+    throw Error("INJECTED_NETWORK_FIRST_CACHE is undefined");
+  networkFirstCache = INJECTED_NETWORK_FIRST_CACHE.split(",");
+}
+
+const cacheList = [...cacheFirstCache, ...networkFirstCache];
 const cacheSet = new Set(cacheList);
 const cacheFirstSetWithFullUrls = new Set(
-  CACHE_FIRST_CACHE.map((path) => String(new URL(path, location.origin))),
+  cacheFirstCache.map((path) => String(new URL(path, location.origin))),
 );
 const networkFirstSetWithFullUrls = new Set(
-  NETWORK_FIRST_CACHE.map((path) => String(new URL(path, location.origin))),
+  networkFirstCache.map((path) => String(new URL(path, location.origin))),
 );
 
 const sw: any = self;
@@ -30,7 +35,6 @@ const firebaseApp = initializeApp(FIREBASE_CONFIG);
 try {
   getMessaging(firebaseApp);
 } catch (e) {
-  // eslint-disable-next-line no-console
   console.error("Error caught and logged to console:", e);
 }
 

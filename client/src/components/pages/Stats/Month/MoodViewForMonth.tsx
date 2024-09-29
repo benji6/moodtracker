@@ -97,7 +97,7 @@ export default function MoodViewForMonth({
                             dateTo={addWeeks(week, 1)}
                           />
                         </td>
-                        <MoodCell mood={meanMoodsByWeek[dateString]!} />
+                        <MoodCell mood={meanMoodsByWeek[dateString]} />
                       </tr>
                     );
                   })}

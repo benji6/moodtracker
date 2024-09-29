@@ -48,7 +48,7 @@ import { captureException } from "../sentry";
 
 interface EventsState {
   allIds: string[];
-  byId: { [id: string]: AppEvent };
+  byId: Record<string, AppEvent>;
 
   // Is false until initial load from server succeeds or errors.
   // This allows us to display a loading spinner when switching users.
@@ -114,7 +114,7 @@ const trackedCategoriesSelector = createSelector(
 
     for (const id of allIds) {
       const event = byId[id];
-      const [_, category, operation] = event.type.split("/") as EventTypeTuple;
+      const [, category, operation] = event.type.split("/") as EventTypeTuple;
       const normalizedCategory = normalizedCategories[category];
 
       switch (operation) {
@@ -142,6 +142,7 @@ const trackedCategoriesSelector = createSelector(
           const allIndex = all.allIds.lastIndexOf(event.payload);
           if (allIndex !== -1) {
             all.allIds.splice(allIndex, 1);
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete all.byId[event.payload];
           } else
             captureException(
@@ -155,6 +156,7 @@ const trackedCategoriesSelector = createSelector(
           );
           if (categoryIndex !== -1) {
             normalizedCategory.allIds.splice(categoryIndex, 1);
+            // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
             delete normalizedCategory.byId[event.payload];
           } else
             captureException(
@@ -166,7 +168,8 @@ const trackedCategoriesSelector = createSelector(
         }
         case "update": {
           const { payload } = event as AppUpdateEvent;
-          const { id: _, ...rest } = payload;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { id, ...rest } = payload;
 
           // for reasons that are beyond my energy to investigate there is
           // a runtime error if you try to update the data object directly
@@ -252,47 +255,40 @@ const makeMeanMoodsByPeriodSelector = (
   addPeriods: (date: Date, n: number) => Date,
   createId = formatIsoDateInLocalTimezone,
 ) =>
-  createSelector(
-    normalizedMoodsSelector,
-    (moods): { [date: string]: number } => {
-      const meanMoods: { [date: string]: number } = {};
+  createSelector(normalizedMoodsSelector, (moods): Record<string, number> => {
+    const meanMoods: Record<string, number> = {};
 
-      if (!moods.allIds.length) return meanMoods;
+    if (!moods.allIds.length) return meanMoods;
 
-      const periods = eachPeriodOfInterval({
-        start: new Date(moods.allIds[0]),
-        end: new Date(moods.allIds.at(-1)!),
-      });
+    const periods = eachPeriodOfInterval({
+      start: new Date(moods.allIds[0]),
+      end: new Date(moods.allIds[moods.allIds.length - 1]),
+    });
 
-      const finalPeriod = addPeriods(periods.at(-1)!, 1);
+    const finalPeriod = addPeriods(periods[periods.length - 1], 1);
 
-      if (moods.allIds.length === 1) {
-        meanMoods[createId(periods[0])] = moods.byId[moods.allIds[0]].mood;
-        return meanMoods;
-      }
-
-      periods.push(finalPeriod);
-
-      for (let i = 1; i < periods.length; i++) {
-        const p0 = periods[i - 1];
-        const p1 = periods[i];
-        const averageMoodInInterval = computeAverageMoodInInterval(
-          moods,
-          p0,
-          p1,
-        );
-        if (averageMoodInInterval !== undefined)
-          meanMoods[createId(p0)] = averageMoodInInterval;
-      }
-
+    if (moods.allIds.length === 1) {
+      meanMoods[createId(periods[0])] = moods.byId[moods.allIds[0]].mood;
       return meanMoods;
-    },
-  );
+    }
+
+    periods.push(finalPeriod);
+
+    for (let i = 1; i < periods.length; i++) {
+      const p0 = periods[i - 1];
+      const p1 = periods[i];
+      const averageMoodInInterval = computeAverageMoodInInterval(moods, p0, p1);
+      if (averageMoodInInterval !== undefined)
+        meanMoods[createId(p0)] = averageMoodInInterval;
+    }
+
+    return meanMoods;
+  });
 
 const getLastEvent = (normalizedState: EventsState): AppEvent => {
   if (!normalizedState.allIds.length)
     throw Error("Error: `allIds` must have length > 0");
-  const lastId = normalizedState.allIds.at(-1)!;
+  const lastId = normalizedState.allIds[normalizedState.allIds.length - 1];
   return normalizedState.byId[lastId];
 };
 
@@ -301,7 +297,7 @@ const denormalize = <TrackedCategory>({
   byId,
 }: {
   allIds: string[];
-  byId: { [id: string]: TrackedCategory & { updatedAt?: string } };
+  byId: Record<string, TrackedCategory & { updatedAt?: string }>;
 }) => allIds.map((id) => ({ ...byId[id], createdAt: id }));
 
 const normalizedStateNotEmpty = ({ allIds }: { allIds: string[] }) =>
@@ -454,14 +450,14 @@ export default createSlice({
       allNormalizedTrackedCategoriesSelector,
       (
         normalizedTrackedCategories,
-      ): {
-        [date: string]:
-          | {
-              id: string;
-              type: EventTypeCategories;
-            }[]
-          | undefined;
-      } => {
+      ): Record<
+        string,
+        | {
+            id: string;
+            type: EventTypeCategories;
+          }[]
+        | undefined
+      > => {
         const allDenormalizedTrackedCategories = denormalize(
           normalizedTrackedCategories,
         ).sort((a, b) =>
@@ -645,7 +641,7 @@ export default createSlice({
         dateFrom: Date,
         dateTo: Date,
         includeExploration: boolean,
-      ): { [word: string]: number } | undefined => {
+      ): Record<string, number> | undefined => {
         const moodsInPeriod = moodsInPeriodResultFunction(
           normalizedMoods,
           dateFrom,
@@ -672,7 +668,7 @@ export default createSlice({
     // value in the returned object cannot be empty
     moodIdsByDate: createSelector(
       normalizedMoodsSelector,
-      ({ allIds }): { [date: string]: string[] } => {
+      ({ allIds }): Record<string, string[]> => {
         const moodsByDate = defaultDict((): string[] => []);
         for (const id of allIds)
           moodsByDate[formatIsoDateInLocalTimezone(new Date(id))].push(id);
@@ -689,14 +685,13 @@ export default createSlice({
       normalizedMoodsSelector,
       (normalizedMoods): string[] => {
         const descriptionWords = new Set<string>();
-        for (let i = 0; i < normalizedMoods.allIds.length; i++) {
-          const id = normalizedMoods.allIds[i];
+        for (const id of normalizedMoods.allIds) {
           const { description } = normalizedMoods.byId[id];
           const normalizedWords = description
             ? getNormalizedWordCloudWords(description)
             : [];
-          for (let j = 0; j < normalizedWords.length; j++)
-            descriptionWords.add(normalizedWords[j]);
+          for (const normalizedWord of normalizedWords)
+            descriptionWords.add(normalizedWord);
         }
         return [...descriptionWords].sort((a, b) => a.localeCompare(b));
       },
@@ -747,20 +742,24 @@ export default createSlice({
         normalizedMeditations,
       ): {
         allIds: string[];
-        byId: { [k: string]: number | undefined };
+        byId: Record<string, number | undefined>;
       } => {
         const allIds: string[] = [];
-        const byId: { [k: string]: number } = {};
+        const byId: Record<string, number> = {};
         const normalizedTotalSeconds = { allIds, byId };
 
         if (!normalizedMeditations.allIds.length) return normalizedTotalSeconds;
 
         const periods = eachMonthOfInterval({
           start: new Date(normalizedMeditations.allIds[0]),
-          end: new Date(normalizedMeditations.allIds.at(-1)!),
+          end: new Date(
+            normalizedMeditations.allIds[
+              normalizedMeditations.allIds.length - 1
+            ],
+          ),
         });
 
-        const finalPeriod = addMonths(periods.at(-1)!, 1);
+        const finalPeriod = addMonths(periods[periods.length - 1], 1);
 
         if (normalizedMeditations.allIds.length === 1) {
           const id = formatIsoDateInLocalTimezone(periods[0]);

@@ -31,9 +31,12 @@ export default function WebPushNotifications() {
     onSuccess: (_, token) => {
       queryClient.setQueryData<typeof data>(
         [QUERY_KEYS.webPushTokens],
-        (data) => ({
-          tokens: data!.tokens.filter((t) => t.token !== token),
-        }),
+        (data) => {
+          if (!data) throw Error("data is undefined");
+          return {
+            tokens: data.tokens.filter((t) => t.token !== token),
+          };
+        },
       );
     },
   });

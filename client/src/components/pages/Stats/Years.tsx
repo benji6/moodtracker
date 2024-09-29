@@ -52,7 +52,7 @@ export default function Years() {
                     dateTo={addYears(year, 1)}
                   />
                 </td>
-                <MoodCell mood={meanMoodsByYear[dateString]!} />
+                <MoodCell mood={meanMoodsByYear[dateString]} />
               </tr>
             );
           })}

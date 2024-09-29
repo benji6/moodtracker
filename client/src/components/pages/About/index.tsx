@@ -17,12 +17,12 @@ export default function About() {
         <h3>Open source</h3>
         <p>
           You can find the source code{" "}
-          <a href={REPO_URL} rel="noopener" target="_blank">
+          <a href={REPO_URL} rel="noopener noreferrer" target="_blank">
             here
           </a>{" "}
           and if you have any ideas 💡, feedback 🗣️ or bugs 🐛 you can raise
           them{" "}
-          <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
+          <a href={REPO_ISSUES_URL} rel="noopener noreferrer" target="_blank">
             here
           </a>
           .
@@ -30,7 +30,11 @@ export default function About() {
         <p>
           The UI was put together using an open source component library I built
           called{" "}
-          <a href={`${GH_USER_URL}/eri`} rel="noopener" target="_blank">
+          <a
+            href={`${GH_USER_URL}/eri`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             Eri
           </a>
           .
@@ -43,7 +47,11 @@ export default function About() {
         </p>
         <p>
           Check out the{" "}
-          <a href={`${REPO_URL}/commits/master`} rel="noopener" target="_blank">
+          <a
+            href={`${REPO_URL}/commits/master`}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             commit log
           </a>{" "}
           for an overview of all source code changes.
@@ -74,15 +82,27 @@ export default function About() {
         <ul>
           <li>
             Open source icons from{" "}
-            <a href="https://feathericons.com" rel="noopener" target="_blank">
+            <a
+              href="https://feathericons.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               Feather
             </a>{" "}
             (MIT),{" "}
-            <a href="https://tabler-icons.io" rel="noopener" target="_blank">
+            <a
+              href="https://tabler-icons.io"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               tabler icons
             </a>{" "}
             (MIT) &{" "}
-            <a href="https://iconoir.com" rel="noopener" target="_blank">
+            <a
+              href="https://iconoir.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               iconoir
             </a>{" "}
             (MIT)
@@ -91,7 +111,7 @@ export default function About() {
             Open source meditation bell from{" "}
             <a
               href="https://freesound.org/people/fauxpress/sounds/42095"
-              rel="noopener"
+              rel="noopener noreferrer"
               target="_blank"
             >
               Freesound
@@ -100,7 +120,7 @@ export default function About() {
           </li>
           <li>
             A lot of open source software projects (
-            <a href={REPO_URL} rel="noopener" target="_blank">
+            <a href={REPO_URL} rel="noopener noreferrer" target="_blank">
               see GitHub for details
             </a>
             )

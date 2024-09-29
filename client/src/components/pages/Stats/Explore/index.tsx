@@ -184,7 +184,7 @@ export default function Explore() {
           />
           <MoodChartForPeriod
             dateFrom={xTicks[0]}
-            dateTo={xTicks.at(-1)!}
+            dateTo={xTicks[xTicks.length - 1]}
             hidePoints
             xLabels={xLabels}
           />

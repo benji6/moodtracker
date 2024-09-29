@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 interface Props {
   children: ReactNode;
   eventType: EventTypeCategories;
-  onSubmit(): true | void; // `true` if successful, otherwise `void`;
+  onSubmit(): boolean; // `true` if successful, otherwise `false`;
   subheading?: string;
 }
 

@@ -29,23 +29,26 @@ export default function EditRun() {
       eventType="runs"
       id={id}
       location={event.location}
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
 
         setShowNoUpdateError(false);
 
         const metersInputEl: HTMLInputElement = formEl[FIELDS.runMeters.name];
-        if (metersInputEl.validity.rangeOverflow)
-          return setMetersError(ERRORS.rangeOverflow);
-        else if (metersInputEl.validity.rangeUnderflow)
-          return setMetersError(ERRORS.rangeUnderflow);
-        else if (metersInputEl.validity.stepMismatch)
-          return setMetersError(ERRORS.integer);
-        else setMetersError(undefined);
+        if (metersInputEl.validity.rangeOverflow) {
+          setMetersError(ERRORS.rangeOverflow);
+          return false;
+        } else if (metersInputEl.validity.rangeUnderflow) {
+          setMetersError(ERRORS.rangeUnderflow);
+          return false;
+        } else if (metersInputEl.validity.stepMismatch) {
+          setMetersError(ERRORS.integer);
+          return false;
+        } else setMetersError(undefined);
 
         const minutesInputEl: HTMLInputElement = formEl[FIELDS.runMinutes.name];
         const secondsInputEl: HTMLInputElement = formEl[FIELDS.runSeconds.name];
@@ -53,9 +56,10 @@ export default function EditRun() {
           !metersInputEl.value &&
           minutesInputEl.value === "0" &&
           secondsInputEl.value === "0"
-        )
-          return setFormError(true);
-        else setFormError(false);
+        ) {
+          setFormError(true);
+          return false;
+        } else setFormError(false);
 
         const formMeters: number | undefined = metersInputEl.value
           ? metersInputEl.valueAsNumber
@@ -66,8 +70,10 @@ export default function EditRun() {
             : Number(minutesInputEl.value) * TIME.secondsPerMinute +
               Number(secondsInputEl.value);
 
-        if (formMeters === event.meters && formSeconds === event.seconds)
-          return setShowNoUpdateError(true);
+        if (formMeters === event.meters && formSeconds === event.seconds) {
+          setShowNoUpdateError(true);
+          return false;
+        }
 
         const payload = { id } as UpdateRun;
         if (formMeters !== event.meters) payload.meters = formMeters;

@@ -8,7 +8,11 @@ export default function SeeAlso() {
         <p>Here are some other things I&apos;ve made that you might like:</p>
         <ul>
           <li>
-            <a href="https://webnotes.link" rel="noopener" target="_blank">
+            <a
+              href="https://webnotes.link"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               Webnotes
             </a>{" "}
             is a free and open source web app that lets you create and manage
@@ -18,7 +22,7 @@ export default function SeeAlso() {
           <li>
             <a
               href="https://meditation-timer.netlify.app"
-              rel="noopener"
+              rel="noopener noreferrer"
               target="_blank"
             >
               Meditate

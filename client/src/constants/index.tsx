@@ -6,7 +6,8 @@ import {
 import { addDays, startOfWeek } from "date-fns";
 import testIds from "./testIds";
 
-export const BUILD_TIME = process.env.BUILD_TIME!;
+if (!process.env.BUILD_TIME) throw Error("BUILD_TIME is undefined");
+export const BUILD_TIME = process.env.BUILD_TIME;
 export const DESCRIPTION_MAX_LENGTH = 32;
 export const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDJUEfQvbke4ImRxqW5KwijugRKCzXw4BY",
@@ -44,7 +45,7 @@ export const ERRORS = {
     <>
       Something went wrong. This looks like a problem on our side. We will look
       into it. Please try again later. If the problem persists then{" "}
-      <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
+      <a href={REPO_ISSUES_URL} rel="noopener noreferrer" target="_blank">
         raise an issue on GitHub
       </a>
     </>

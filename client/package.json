@@ -1,19 +1,19 @@
 {
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheLists",
+    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheLists.mjs",
     "build:parcel": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') CACHE_FIRST_CACHE=CACHE_FIRST_CACHE NETWORK_FIRST_CACHE=NETWORK_FIRST_CACHE parcel build src/index.html",
     "build:robots": "touch dist/robots.txt",
-    "fmt": "npm run test:lint --fix && prettier -u --write '**/*'",
-    "icons": "node scripts/icons",
+    "fmt": "npm run test:lint -- --fix && prettier -u --write '**/*'",
+    "icons": "node scripts/icons.mjs",
     "start": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') parcel src/index.html --open",
     "test": "run-p test:*",
     "test:audit": "npm audit --audit-level=critical",
     "test:e2e": "cypress run",
     "test:fmt": "prettier --check -u '**/*'",
-    "test:lint": "eslint --ext js,ts,tsx .",
+    "test:lint": "eslint",
     "test:types": "tsc --noEmit",
-    "test:unit": "TZ=UTC jest src",
+    "test:unit": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') TZ=UTC jest src",
     "test-ci": "run-p test:audit test:fmt test:lint test:types test:unit"
   },
   "browserslist": "since 2022 and >1%",
@@ -45,11 +45,13 @@
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "@parcel/packager-raw-url": "^2.7.0",
     "@parcel/transformer-webmanifest": "^2.7.0",
     "@types/d3-geo": "^3.0.2",
     "@types/d3-interpolate": "^3.0.1",
     "@types/d3-scale": "^4.0.8",
+    "@types/eslint__js": "^8.42.3",
     "@types/file-saver": "^2.0.1",
     "@types/jest": "^29.5.7",
     "@types/papaparse": "^5.3.8",
@@ -58,16 +60,13 @@
     "@types/react-redux": "^7.1.27",
     "@types/stopword": "^2.0.3",
     "@types/topojson-client": "^3.1.1",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.8.0",
     "buffer": "^5.7.1",
     "cypress": "^13.10.0",
-    "eslint": "^8.33.0",
+    "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-cypress": "^3.2.0",
     "eslint-plugin-jsx-a11y": "^6.6.0",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.5.0",
     "favicons": "^7.1.2",
     "jest": "^29.6.4",
     "npm-run-all": "^4.1.5",
@@ -77,6 +76,7 @@
     "process": "^0.11.10",
     "sharp": "^0.31.2",
     "ts-jest": "^29.0.3",
-    "typescript": "^5.0.3"
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.7.0"
   }
 }

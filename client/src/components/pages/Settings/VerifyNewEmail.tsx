@@ -101,6 +101,7 @@ export default function VerifyNewEmail() {
             >
               <TextField
                 autoComplete="off"
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus
                 error={fieldError}
                 label="Verification code"

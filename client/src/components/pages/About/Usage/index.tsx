@@ -62,7 +62,11 @@ export default function Usage() {
             <p className="negative">
               Error fetching the latest usage statistics. Something has gone
               wrong on our side, if the problem persists feel free to{" "}
-              <a href={REPO_ISSUES_URL} rel="noopener" target="_blank">
+              <a
+                href={REPO_ISSUES_URL}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 raise an issue on GitHub
               </a>
               .

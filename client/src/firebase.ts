@@ -13,13 +13,15 @@ const PUBLIC_VAPID_KEY =
 
 const firebaseApp = initializeApp(FIREBASE_CONFIG);
 
-const messagingPromise: Promise<Messaging | void> = isSupported().then(
+const messagingPromise: Promise<Messaging | undefined> = isSupported().then(
   (supported) => {
     if (!supported) return;
     const messaging = getMessaging(firebaseApp);
     onMessage(messaging, (payload) => {
-      const notification = payload.notification!;
-      new Notification(notification.title!, {
+      const notification = payload.notification;
+      if (!notification) throw Error("notification is undefined");
+      if (!notification.title) throw Error("notification.title is undefined");
+      new Notification(notification.title, {
         badge: notification.icon,
         icon: notification.icon,
         body: notification.body,

@@ -20,21 +20,24 @@ export default function AddRun() {
     <AddEvent
       eventType="runs"
       ref={formRef}
-      onSubmit={(): true | void => {
+      onSubmit={(): boolean => {
         const formEl = formRef.current;
         if (!formEl) {
           captureException(Error("Form ref is undefined"));
-          return;
+          return false;
         }
 
         const metersInputEl: HTMLInputElement = formEl[FIELDS.runMeters.name];
-        if (metersInputEl.validity.rangeOverflow)
-          return setMetersError(ERRORS.rangeOverflow);
-        else if (metersInputEl.validity.rangeUnderflow)
-          return setMetersError(ERRORS.rangeUnderflow);
-        else if (metersInputEl.validity.stepMismatch)
-          return setMetersError(ERRORS.integer);
-        else setMetersError(undefined);
+        if (metersInputEl.validity.rangeOverflow) {
+          setMetersError(ERRORS.rangeOverflow);
+          return false;
+        } else if (metersInputEl.validity.rangeUnderflow) {
+          setMetersError(ERRORS.rangeUnderflow);
+          return false;
+        } else if (metersInputEl.validity.stepMismatch) {
+          setMetersError(ERRORS.integer);
+          return false;
+        } else setMetersError(undefined);
 
         const minutesInputEl: HTMLInputElement = formEl[FIELDS.runMinutes.name];
         const secondsInputEl: HTMLInputElement = formEl[FIELDS.runSeconds.name];
@@ -42,9 +45,10 @@ export default function AddRun() {
           !metersInputEl.value &&
           minutesInputEl.value === "0" &&
           secondsInputEl.value === "0"
-        )
-          return setFormError(true);
-        else setFormError(false);
+        ) {
+          setFormError(true);
+          return false;
+        } else setFormError(false);
 
         const payload = {} as Run;
         if (geolocation) payload.location = geolocation;
