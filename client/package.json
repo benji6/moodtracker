@@ -77,6 +77,6 @@
     "sharp": "^0.31.2",
     "ts-jest": "^29.0.3",
     "typescript": "^5.6.2",
-    "typescript-eslint": "^8.7.0"
+    "typescript-eslint": "^8.8.0"
   }
 }
