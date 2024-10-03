@@ -8,7 +8,10 @@ import {
 import { differenceInSeconds, sub } from "date-fns";
 import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
-import { oneDecimalPlaceFormatter } from "../../../formatters/numberFormatters";
+import {
+  oneDecimalPlaceFormatter,
+  percentFormatter,
+} from "../../../formatters/numberFormatters";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 
@@ -29,9 +32,15 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
   );
 
-  if (!meditationIdsInPeriod.length || !moods.allIds.length) return;
+  if (!meditationIdsInPeriod.length || !moods.allIds.length)
+    return (
+      <Paper>
+        <p>Not enough data to assess meditation impact for this period</p>
+      </Paper>
+    );
 
-  const moodChanges: number[] = [];
+  const moodsBefore: number[] = [];
+  const moodsAfter: number[] = [];
   const wordsBeforeList: string[] = [];
   const wordsAfterList: string[] = [];
   let i = 0;
@@ -60,7 +69,8 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
 
       if (differenceBefore > SECONDS || differenceAfter > SECONDS) break;
 
-      moodChanges.push(moodAfter.mood - moodBefore.mood);
+      moodsBefore.push(moodBefore.mood);
+      moodsAfter.push(moodAfter.mood);
 
       if (moodBefore.description)
         for (const word of getNormalizedWordCloudWords(moodBefore.description))
@@ -78,14 +88,16 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
     }
   }
 
-  if (moodChanges.length)
+  if (!moodsBefore.length)
     return (
       <Paper>
         <p>Not enough data to assess meditation impact for this period</p>
       </Paper>
     );
 
-  const averageMoodChangeAfterMeditation = computeMean(moodChanges);
+  const averageMoodBefore = computeMean(moodsBefore);
+  const averageMoodAfter = computeMean(moodsAfter);
+  const averageMoodChangeAfterMeditation = averageMoodAfter - averageMoodBefore;
 
   const wordsAfter = counter(wordsAfterList);
   const wordsBefore = counter(wordsBeforeList);
@@ -139,7 +151,11 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
               {oneDecimalPlaceFormatter.format(
                 Math.abs(averageMoodChangeAfterMeditation),
               )}{" "}
-              {averageMoodChangeAfterMeditation > 0 ? "higher" : "lower"}
+              (
+              {percentFormatter.format(
+                averageMoodChangeAfterMeditation / averageMoodBefore,
+              )}
+              ) {averageMoodChangeAfterMeditation > 0 ? "higher" : "lower"}
             </b>{" "}
             than the mood you recorded before.
           </>
