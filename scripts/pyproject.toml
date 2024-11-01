@@ -9,7 +9,7 @@ readme = "README.md"
 python = "^3.8"
 boto3 = "^1"
 checkov = "^3.2.10"
-troposphere = {extras = ["policy"], version = "^4.8.2"}
+troposphere = {extras = ["policy"], version = "^4.8.3"}
 
 [tool.poetry.dev-dependencies]
 
