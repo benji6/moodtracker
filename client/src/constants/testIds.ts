@@ -36,9 +36,7 @@ export default (() => {
     "statsOverviewPage",
     "weightValueInput",
   ] as const;
-  const testIds = {} as {
-    [k in (typeof keys)[number]]: (typeof keys)[number];
-  };
+  const testIds = {} as Record<(typeof keys)[number], (typeof keys)[number]>;
   for (const key of keys) testIds[key] = key;
   return testIds;
 })();
