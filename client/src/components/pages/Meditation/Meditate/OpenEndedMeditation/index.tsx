@@ -33,19 +33,19 @@ export default function OpenEndedMeditation() {
     navigate("/");
   }, [dispatch, geolocation, navigate, roundedSecondsElapsed]);
   const onPause = useCallback(() => {
-    wakeLock.disable();
+    wakeLock?.disable();
     setIsPaused(true);
   }, [wakeLock]);
   const onPlay = useCallback(() => {
-    wakeLock.enable();
+    wakeLock?.enable();
     initialTime.current = Date.now() - roundedSecondsElapsed * 1e3;
     setIsPaused(false);
   }, [roundedSecondsElapsed, wakeLock]);
   const onUndim = useCallback(() => setIsDimmerEnabled(false), []);
 
   useEffect(() => {
-    wakeLock.enable();
-    return () => void wakeLock.disable();
+    wakeLock?.enable();
+    return () => void wakeLock?.disable();
   }, [wakeLock]);
 
   useEffect(() => {

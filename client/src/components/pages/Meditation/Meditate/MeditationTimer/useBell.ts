@@ -33,11 +33,11 @@ export default function useBell(): Bell | undefined {
 
     bellRef.current = {
       async start() {
-        stop();
+        this.stop();
         bufferSource = audioContext.createBufferSource();
         bufferSource.connect(audioContext.destination);
         bufferSource.buffer = await audioBufferPromise;
-        bufferSource.onended = stop;
+        bufferSource.onended = () => this.stop();
         bufferSource.start();
       },
       stop() {

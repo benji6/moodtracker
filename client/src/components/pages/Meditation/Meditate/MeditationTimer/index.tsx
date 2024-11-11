@@ -42,11 +42,11 @@ export default function MeditationTimer() {
     navigate("/meditation");
   }, [navigate]);
   const onPause = useCallback(() => {
-    wakeLock.disable();
+    wakeLock?.disable();
     localDispatch({ payload: "PAUSED", type: "timerState/set" });
   }, [wakeLock]);
   const onPlay = useCallback(() => {
-    wakeLock.enable();
+    wakeLock?.enable();
     initialTime.current =
       Date.now() + roundedSecondsRemaining * 1e3 - timerDurationInSeconds * 1e3;
     localDispatch({ payload: "TIMING", type: "timerState/set" });
@@ -98,10 +98,10 @@ export default function MeditationTimer() {
   ]);
 
   useEffect(() => {
-    wakeLock.enable();
+    wakeLock?.enable();
     return () => {
       bell?.stop();
-      wakeLock.disable();
+      wakeLock?.disable();
     };
   }, [bell, wakeLock]);
 
@@ -122,7 +122,7 @@ export default function MeditationTimer() {
 
       localDispatch({ payload: new Date(), type: "timeFinished/set" });
       bell?.start();
-      wakeLock.disable();
+      wakeLock?.disable();
     });
     return () => void (abort = true);
   }, [
