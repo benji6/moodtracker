@@ -1,6 +1,15 @@
+.quick-track-nav__heading {
+  display: flex;
+  justify-content: space-between;
+}
+
 .quick-track-nav__links {
   display: grid;
   gap: var(--space-2);
   grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
   justify-content: center;
+}
+
+.quick-track-nav__settings-icon {
+  font-size: var(--font-size-1);
 }

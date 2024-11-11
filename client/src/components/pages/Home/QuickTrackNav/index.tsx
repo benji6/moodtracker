@@ -3,7 +3,7 @@ import { Button, Icon, Paper } from "eri";
 import { QuickTrackNavButton } from "./QuickTrackNavButton";
 import { TEST_IDS } from "../../../../constants";
 import appSlice from "../../../../store/appSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export function QuickTrackNav() {
@@ -12,7 +12,14 @@ export function QuickTrackNav() {
 
   return (
     <Paper data-test-id={TEST_IDS.moodList}>
-      <h2>Home</h2>
+      <h2 className="quick-track-nav__heading">
+        Home
+        <div className="quick-track-nav__settings-icon">
+          <Link to="/settings/events">
+            <Icon name="settings" />
+          </Link>
+        </div>
+      </h2>
       <div className="quick-track-nav__links">
         {(["moods", "sleeps", "weights"] as const)
           .filter((eventType) => eventTypeTracking[eventType])
