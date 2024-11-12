@@ -16,7 +16,7 @@
     "test:unit": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') TZ=UTC jest src",
     "test-ci": "run-p test:audit test:fmt test:lint test:types test:unit"
   },
-  "browserslist": "since 2022 and >1%",
+  "browserslist": "defaults and since 2023",
   "dependencies": {
     "@aws-sdk/client-location": "^3.588.0",
     "@aws-sdk/credential-providers": "^3.682.0",

@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2022"
+    "target": "ES2023"
   },
   "exclude": ["cypress.config.ts", "cypress", "node_modules"]
 }
