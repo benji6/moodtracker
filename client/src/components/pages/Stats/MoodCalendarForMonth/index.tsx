@@ -62,7 +62,7 @@ export default function MoodCalendarForMonth({ month, small }: Props) {
             datum === undefined
               ? "none"
               : datum.mood === undefined
-                ? "var(--color-balance-less)"
+                ? "var(--color-balance)"
                 : moodToColor(datum.mood),
         };
         const formattedMood =

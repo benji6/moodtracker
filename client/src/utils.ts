@@ -238,7 +238,7 @@ export const getWeatherDisplayData = ({
 } => {
   let iconName: ComponentProps<typeof Icon>["name"] = "cloud";
   let label = "Clouds";
-  let weatherColor = "var(--color-balance-more)";
+  let weatherColor = "var(--color-balance)";
 
   if (weatherId) {
     if (weatherId < 300) {

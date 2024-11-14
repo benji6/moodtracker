@@ -52,7 +52,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 600}) 1`]
 {
   "iconName": "snow",
   "label": "Snow",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -60,7 +60,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 622}) 1`]
 {
   "iconName": "snow",
   "label": "Snow",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -68,7 +68,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 701}) 1`]
 {
   "iconName": "fog",
   "label": "Fog/Haze/Dust",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -76,7 +76,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 762}) 1`]
 {
   "iconName": "fog",
   "label": "Fog/Haze/Dust",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -124,7 +124,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 803}) 1`]
 {
   "iconName": "cloud",
   "label": "Clouds",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -132,7 +132,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": false, "weatherId": 804}) 1`]
 {
   "iconName": "cloud",
   "label": "Clouds",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -188,7 +188,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 600}) 1`] 
 {
   "iconName": "snow",
   "label": "Snow",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -196,7 +196,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 622}) 1`] 
 {
   "iconName": "snow",
   "label": "Snow",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -204,7 +204,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 701}) 1`] 
 {
   "iconName": "fog",
   "label": "Fog/Haze/Dust",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -212,7 +212,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 762}) 1`] 
 {
   "iconName": "fog",
   "label": "Fog/Haze/Dust",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -260,7 +260,7 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 803}) 1`] 
 {
   "iconName": "cloud",
   "label": "Clouds",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;
 
@@ -268,6 +268,6 @@ exports[`utils getWeatherDisplayData({"isDaytime": true, "weatherId": 804}) 1`] 
 {
   "iconName": "cloud",
   "label": "Clouds",
-  "weatherColor": "var(--color-balance-more)",
+  "weatherColor": "var(--color-balance)",
 }
 `;

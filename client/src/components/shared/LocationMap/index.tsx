@@ -27,9 +27,9 @@ export default function LocationMap({ children }: Props) {
         {features.map((d, i) => (
           <path
             d={path(d) ?? undefined}
-            fill="var(--color-balance-less)"
+            fill="var(--color-balance)"
             key={`geo-${i}`}
-            stroke="var(--color-balance-more)"
+            stroke="var(--color-figure-less)"
           />
         ))}
       </g>
