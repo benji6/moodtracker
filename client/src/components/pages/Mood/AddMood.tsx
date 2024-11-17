@@ -9,8 +9,10 @@ import deviceSlice from "../../../store/deviceSlice";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
 import useDarkMode from "../../hooks/useDarkMode";
+import { useMoodTagsEnabled } from "../../hooks/useMoodTagsEnabled";
 
 export default function AddMood() {
+  const moodTagsEnabled = useMoodTagsEnabled();
   const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = useState<string | undefined>();
@@ -41,14 +43,17 @@ export default function AddMood() {
           return false;
         }
 
-        const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
-        const descriptionValue = descriptionEl.value;
+        const descriptionEl: HTMLInputElement | undefined =
+          formEl[FIELDS.description.name];
+        const descriptionValue = descriptionEl?.value;
         const explorationValue: string = formEl[FIELDS.exploration.name].value;
         const moodValue: string = formEl[FIELDS.mood.name].value;
 
         if (!moodValue) setMoodError(ERRORS.required);
 
-        const descriptionFieldError = descriptionEl.validity.patternMismatch;
+        const descriptionFieldError = descriptionEl
+          ? descriptionEl.validity.patternMismatch
+          : false;
         setDescriptionError(
           descriptionFieldError ? ERRORS.specialCharacters : "",
         );
@@ -90,7 +95,9 @@ export default function AddMood() {
           </RadioButton>
         ))}
       </RadioButton.Group>
-      <TextField {...FIELDS.description} error={descriptionError} />
+      {moodTagsEnabled && (
+        <TextField {...FIELDS.description} error={descriptionError} />
+      )}
       <TextArea {...FIELDS.exploration} />
     </AddEvent>
   );

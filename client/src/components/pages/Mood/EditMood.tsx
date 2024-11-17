@@ -10,8 +10,10 @@ import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
 import useDarkMode from "../../hooks/useDarkMode";
 import { useParams } from "react-router-dom";
+import { useMoodTagsEnabled } from "../../hooks/useMoodTagsEnabled";
 
 export default function EditMood() {
+  const moodTagsEnabled = useMoodTagsEnabled();
   const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -43,12 +45,15 @@ export default function EditMood() {
         }
         setShowNoUpdateError(false);
 
-        const descriptionEl: HTMLInputElement = formEl[FIELDS.description.name];
-        const descriptionValue = descriptionEl.value;
+        const descriptionEl: HTMLInputElement | undefined =
+          formEl[FIELDS.description.name];
+        const descriptionValue = descriptionEl?.value;
         const explorationValue: string = formEl[FIELDS.exploration.name].value;
         const moodValue: string = formEl[FIELDS.mood.name].value;
 
-        const descriptionFieldError = descriptionEl.validity.patternMismatch;
+        const descriptionFieldError = descriptionEl
+          ? descriptionEl.validity.patternMismatch
+          : false;
         setDescriptionError(
           descriptionFieldError ? ERRORS.specialCharacters : "",
         );
@@ -62,8 +67,11 @@ export default function EditMood() {
           shouldUpdate = true;
         }
 
-        const trimmedDescriptionValue = descriptionValue.trim();
-        if (trimmedDescriptionValue !== mood.description) {
+        const trimmedDescriptionValue = descriptionValue?.trim();
+        if (
+          trimmedDescriptionValue !== undefined &&
+          trimmedDescriptionValue !== mood.description
+        ) {
           payload.description = trimmedDescriptionValue;
           shouldUpdate = true;
         }
@@ -107,11 +115,13 @@ export default function EditMood() {
           </RadioButton>
         ))}
       </RadioButton.Group>
-      <TextField
-        {...FIELDS.description}
-        defaultValue={mood.description}
-        error={descriptionError}
-      />
+      {(moodTagsEnabled || mood.description) && (
+        <TextField
+          {...FIELDS.description}
+          defaultValue={mood.description}
+          error={descriptionError}
+        />
+      )}
       <TextArea {...FIELDS.exploration} defaultValue={mood.exploration} />
     </EditEvent>
   );

@@ -5,6 +5,7 @@ import {
 } from "../formatters/dateTimeFormatters";
 import { addDays, startOfWeek } from "date-fns";
 import testIds from "./testIds";
+import { Link } from "react-router-dom";
 
 if (!process.env.BUILD_TIME) throw Error("BUILD_TIME is undefined");
 export const BUILD_TIME = process.env.BUILD_TIME;
@@ -102,12 +103,18 @@ export const FIELDS = {
     supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). For example, "pensive" or "happy excited". These words will be used in your word clouds.`,
   },
   exploration: {
-    label: "Mood journal",
+    label: "Journal",
     name: "exploration",
     optional: true,
     rows: 5,
-    supportiveText:
-      "Use this space as a journal to explore how you're feeling, why you're feeling that way and what's going on in your life right now",
+    supportiveText: (
+      <>
+        Use this space however you like! You could drop a couple words that
+        describe how you&apos;re feeling, or you could write a full journal
+        entry. Once you&apos;ve logged enough words, you&apos;ll be able to see
+        word clouds in your <Link to="/stats">stats pages</Link>.
+      </>
+    ),
   },
   runMeters: {
     "data-test-id": TEST_IDS.runMetersInput,
