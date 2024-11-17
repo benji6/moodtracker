@@ -98,9 +98,10 @@ export default function MoodLog() {
       const fuse = new Fuse(filteredMoods, {
         distance: Infinity,
         includeScore: true,
-        keys: [{ name: "description", weight: 2 }, "exploration"],
+        keys: ["description", "exploration"],
         shouldSort: false,
         threshold: 0.25,
+        useExtendedSearch: true,
       });
 
       const result = fuse.search(localState.searchString);
@@ -158,7 +159,15 @@ export default function MoodLog() {
               <div className="slide-in">
                 <TextField
                   label="Search"
-                  supportiveText="Fuzzy search across mood tags and journal entries"
+                  supportiveText=<>
+                    Search is fuzzy by default, use double quotes for phrases
+                    (e.g. &quot;I am happy&quot;) and prefix with = for exact
+                    matches (e.g. =happy). See{" "}
+                    <a href="https://www.fusejs.io/examples.html#extended-search">
+                      Fuse.js docs
+                    </a>{" "}
+                    for details on how to create more advanced searches.
+                  </>
                   onChange={(e) =>
                     localDispatch({
                       payload: e.target.value,
