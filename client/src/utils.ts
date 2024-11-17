@@ -7,6 +7,84 @@ import { captureException } from "./sentry";
 import { interpolateHcl } from "d3-interpolate";
 import { removeStopwords } from "stopword";
 
+const BESPOKE_STOP_WORDS = new Set([
+  "-",
+  "Ain't",
+  "Aren't",
+  "Around",
+  "Bit",
+  "Couldn't",
+  "Day's",
+  "Day",
+  "Days",
+  "Didn't",
+  "Does",
+  "Doesn't",
+  "Doing",
+  "Don't",
+  "Else's",
+  "Etc",
+  "Even",
+  "Find",
+  "Go",
+  "Going",
+  "Gonna",
+  "Hadn't",
+  "Haven't",
+  "He'd",
+  "He's",
+  "Here's",
+  "I'd",
+  "I'll",
+  "I'm",
+  "I've",
+  "Isn't",
+  "It'll",
+  "It's",
+  "Just",
+  "Let's",
+  "Lot",
+  "Lots",
+  "Next",
+  "Night's",
+  "Night",
+  "No",
+  "Not",
+  "People's",
+  "Peoples'",
+  "Really",
+  "See",
+  "She'll",
+  "She's",
+  "She",
+  "So",
+  "Something",
+  "That'll",
+  "That's",
+  "There's",
+  "They'll",
+  "They're",
+  "They've",
+  "Thing",
+  "Things",
+  "Though",
+  "Today's",
+  "Today",
+  "Tomorrow",
+  "Wasn't",
+  "We'd",
+  "We'll",
+  "We're",
+  "We've",
+  "Went",
+  "Weren't",
+  "What's",
+  "When's",
+  "Wouldn't",
+  "Yesterday",
+  "You're",
+]);
+
 export const bisectLeft = (xs: string[], x: string, left = 0) => {
   let right = xs.length;
   while (left < right) {
@@ -167,8 +245,10 @@ export const getNormalizedWordCloudWords = (string: string): string[] => {
   for (const word of removeStopwords(
     string.replace(/[!"(),./:;?[\]{|}]/g, "").split(/\s+/),
   )) {
-    if (!word) continue;
-    words.push(capitalizeFirstLetter(word));
+    if (!word || word.match(/^[0-9&]+$/)) continue;
+    const capitalizedWord = capitalizeFirstLetter(word);
+    if (BESPOKE_STOP_WORDS.has(capitalizedWord)) continue;
+    words.push(capitalizedWord);
   }
   return words;
 };
