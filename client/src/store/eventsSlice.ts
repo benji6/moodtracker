@@ -681,21 +681,6 @@ export default createSlice({
       dateToSelector,
       moodsInPeriodResultFunction,
     ),
-    normalizedDescriptionWords: createSelector(
-      normalizedMoodsSelector,
-      (normalizedMoods): string[] => {
-        const descriptionWords = new Set<string>();
-        for (const id of normalizedMoods.allIds) {
-          const { description } = normalizedMoods.byId[id];
-          const normalizedWords = description
-            ? getNormalizedWordCloudWords(description)
-            : [];
-          for (const normalizedWord of normalizedWords)
-            descriptionWords.add(normalizedWord);
-        }
-        return [...descriptionWords].sort((a, b) => a.localeCompare(b));
-      },
-    ),
     normalizedLegRaises: normalizedLegRaisesSelector,
     normalizedMeditations: normalizedMeditationsSelector,
     normalizedMoods: normalizedMoodsSelector,

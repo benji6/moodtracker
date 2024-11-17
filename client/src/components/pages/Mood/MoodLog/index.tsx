@@ -1,6 +1,5 @@
 import {
   Card,
-  ComboBox,
   Pagination,
   Paper,
   Select,
@@ -8,11 +7,7 @@ import {
   TextField,
   Toggle,
 } from "eri";
-import {
-  DESCRIPTION_MAX_LENGTH,
-  FIELDS,
-  MOOD_INTEGERS,
-} from "../../../../constants";
+import { FIELDS, MOOD_INTEGERS } from "../../../../constants";
 import {
   createDateFromLocalDateString,
   defaultDict,
@@ -53,20 +48,11 @@ export default function MoodLog() {
   );
   const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
   const [localState, localDispatch] = useReducer(reducer, initialState);
-  const normalizedDescriptionWords = useSelector(
-    eventsSlice.selectors.normalizedDescriptionWords,
-  );
   const dateNow = new Date();
   const [dateTo, setDateTo] = useState(roundDateUp(dateNow));
   const [dateFrom, setDateFrom] = useState(
     roundDateDown(new Date(moods.allIds[0])),
   );
-
-  const filterDescriptions = localState.filterDescription
-    .trim()
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean);
 
   const filterFeatureAvailable = moods.allIds.length >= 5;
 
@@ -80,19 +66,7 @@ export default function MoodLog() {
         return false;
 
       const date = new Date(mood.createdAt);
-      if (date < dateFrom || date > dateTo) return false;
-
-      if (filterDescriptions.length) {
-        const normalizedMoodDescription = mood.description?.toLowerCase();
-        if (
-          !filterDescriptions.every((description) =>
-            normalizedMoodDescription?.includes(description),
-          )
-        )
-          return false;
-      }
-
-      return true;
+      return date >= dateFrom && date <= dateTo;
     });
     if (localState.searchString) {
       const fuse = new Fuse(filteredMoods, {
@@ -177,21 +151,6 @@ export default function MoodLog() {
                   required={false}
                   type="search"
                   value={localState.searchString}
-                />
-                <ComboBox
-                  label={FIELDS.description.label}
-                  supportiveText="Search for a specific mood tag"
-                  maxLength={DESCRIPTION_MAX_LENGTH}
-                  onChange={(e) =>
-                    localDispatch({
-                      payload: e.target.value,
-                      type: "filterDescription/set",
-                    })
-                  }
-                  options={normalizedDescriptionWords}
-                  required={false}
-                  type="search"
-                  value={localState.filterDescription}
                 />
                 <Select
                   label={FIELDS.mood.label}

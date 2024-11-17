@@ -7,15 +7,6 @@ const createState = (props?: Partial<State>): State => ({
 
 describe("MoodLog", () => {
   describe("reducer", () => {
-    test("filterDescription/set", () => {
-      expect(
-        reducer(createState({ filterDescription: "foo", page: 3 }), {
-          payload: "bar",
-          type: "filterDescription/set",
-        }),
-      ).toEqual(createState({ filterDescription: "bar", page: 0 }));
-    });
-
     test("filterExploration/set", () => {
       expect(
         reducer(createState({ searchString: "foo", page: 3 }), {
@@ -56,7 +47,6 @@ describe("MoodLog", () => {
 
       beforeEach(() => {
         state = {
-          filterDescription: "foo",
           searchString: "bar",
           filterMood: 5,
           page: 3,

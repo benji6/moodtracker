@@ -8,7 +8,6 @@ import testIds from "./testIds";
 
 if (!process.env.BUILD_TIME) throw Error("BUILD_TIME is undefined");
 export const BUILD_TIME = process.env.BUILD_TIME;
-export const DESCRIPTION_MAX_LENGTH = 32;
 export const FIREBASE_CONFIG = {
   apiKey: "AIzaSyDJUEfQvbke4ImRxqW5KwijugRKCzXw4BY",
   appId: "1:189351604256:web:35457f768494fdf7e14c45",
@@ -83,6 +82,8 @@ export const TIME = {
 } as const;
 
 export const TEST_IDS = testIds;
+
+const DESCRIPTION_MAX_LENGTH = 32;
 export const FIELDS = {
   dateAwoke: {
     "data-test-id": TEST_IDS.dateAwokeInput,
