@@ -314,12 +314,6 @@ const denormalizedSleepsSelector = createSelector(
   normalizedSleepsSelector,
   denormalize,
 );
-const includeExplorationSelector = (
-  _state: EventsState,
-  _dateFrom: Date,
-  _dateTo: Date,
-  includeExploration: boolean,
-): boolean => includeExploration;
 const minutesSleptByDateAwokeSelector = createSelector(
   denormalizedSleepsSelector,
   (sleeps) => {
@@ -635,12 +629,10 @@ export default createSlice({
       normalizedMoodsSelector,
       dateFromSelector,
       dateToSelector,
-      includeExplorationSelector,
       (
         normalizedMoods,
         dateFrom: Date,
         dateTo: Date,
-        includeExploration: boolean,
       ): Record<string, number> | undefined => {
         const moodsInPeriod = moodsInPeriodResultFunction(
           normalizedMoods,
@@ -649,14 +641,13 @@ export default createSlice({
         );
 
         const words = defaultDict(Number);
-        for (const { description = "", exploration = "" } of moodsInPeriod) {
-          const allWords = includeExploration
-            ? [description, exploration].join(" ")
-            : description;
-          const normalizedWords = getNormalizedWordCloudWords(allWords);
-          for (const caseNormalizedWord of normalizedWords) {
-            words[caseNormalizedWord] += 1;
-          }
+        for (const { description, exploration } of moodsInPeriod) {
+          if (description)
+            for (const w of getNormalizedWordCloudWords(description))
+              words[w] += 1;
+          if (exploration)
+            for (const w of getNormalizedWordCloudWords(exploration))
+              words[w] += 1;
         }
 
         return Object.keys(words).length < MINIMUM_WORD_CLOUD_WORDS
