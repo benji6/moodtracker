@@ -4,6 +4,7 @@ import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   currentPeriod: {
@@ -18,6 +19,7 @@ interface Props {
 
 export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
   const [filterOutPreviousPeriod, setFilterOutPreviousPeriod] = useState(false);
+  const navigate = useNavigate();
 
   const currentPeriodWords = useSelector((state: RootState) =>
     eventsSlice.selectors.moodCloudWords(
@@ -73,6 +75,15 @@ export default function MoodCloud({ currentPeriod, previousPeriod }: Props) {
       {currentPeriodWords ? (
         <WordCloud
           aria-label="Word cloud displaying mood descriptions"
+          onWordClick={(word) =>
+            navigate(
+              `/moods/log?${new URLSearchParams({
+                dateFrom: currentPeriod.dateFrom.toISOString(),
+                dateTo: currentPeriod.dateTo.toISOString(),
+                q: `'${word}`,
+              })}`,
+            )
+          }
           words={filterOutPreviousPeriod ? filteredWords : currentPeriodWords}
         />
       ) : (

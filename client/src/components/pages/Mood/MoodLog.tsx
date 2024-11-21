@@ -145,8 +145,8 @@ export default function MoodLog() {
                   label="Search"
                   supportiveText=<>
                     Search is fuzzy by default, use double quotes for phrases
-                    (e.g. &quot;I am happy&quot;) and prefix with = for exact
-                    matches (e.g. =happy). See{" "}
+                    (e.g. &quot;I am happy&quot;) and prefix with &apos; for
+                    exact matches (e.g. &apos;happy). See{" "}
                     <a href="https://www.fusejs.io/examples.html#extended-search">
                       Fuse.js docs
                     </a>{" "}
