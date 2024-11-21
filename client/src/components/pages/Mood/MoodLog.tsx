@@ -62,6 +62,7 @@ export default function MoodLog() {
     : roundDateUp(dateNow);
 
   useEffect(() => {
+    if (searchParams.has("dateFrom") && searchParams.has("dateTo")) return;
     setSearchParams(
       new URLSearchParams({
         dateFrom: dateFrom.toISOString(),
