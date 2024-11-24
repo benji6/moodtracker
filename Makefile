@@ -26,6 +26,8 @@ infra/cloudformation.yml: scripts/cloudformation/*.py scripts/cloudformation/**/
 
 # Builds and validates the CloudFormation template
 cloudformation/test: infra/cloudformation.yml
+	@cd scripts && poetry run cfn-lint ../infra/cloudformation.yml
+	@echo "🍄 CloudFormation template linted successfully! 🍄"
 	@aws s3 cp --quiet infra/cloudformation.yml s3://moodtracker-cloudformation
 	@echo "🍄 CloudFormation template uploaded to S3 successfully! 🍄"
 	@./bin/test-cloudformation.sh
@@ -66,7 +68,7 @@ init/ci:
 
 # Updates the CloudFormation stack policy
 stack-policy:
-	@aws cloudformation set-stack-policy --stack-name moodtracker --stack-policy-body file://infra/stack-policy.json | cat
+	@aws cloudformation set-stack-policy --stack-name moodtracker --stack-policy-body file://infra/stack-policy.json
 	@echo "🍄 CloudFormation stack policy updated successfully! 🍄"
 
 # Run the project locally
