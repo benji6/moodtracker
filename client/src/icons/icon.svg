@@ -1,23 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" >
   <style>
     :root {
-      --m-icon-color: hsl(210,100%,22%);
+      color-scheme: light dark;
     }
     feDropShadow {
-      flood-color: #000;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --m-icon-color: hsl(195,100%,66.7%);
-      }
-      feDropShadow {
-        flood-color: hsl(195,100%,50%);
-      }
+      flood-color: light-dark(#000, hsl(195,100%,50%));
     }
   </style>
   <defs>
     <linearGradient id="gradient">
-      <stop offset="25%" stop-color="var(--m-icon-color)"/>
+      <stop offset="25%" stop-color="light-dark(hsl(210,100%,22%), hsl(195,100%,66.7%))"/>
       <stop offset="95%" stop-color="hsl(210,100%,44.35%)"/>
     </linearGradient>
     <filter id="shadow">

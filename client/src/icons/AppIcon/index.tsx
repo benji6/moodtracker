@@ -5,13 +5,16 @@ export default function AppIcon(props: HtmlHTMLAttributes<SVGElement>) {
   return (
     <svg
       {...props}
-      className="m-icon"
+      className="m-app-icon"
       viewBox="0 0 1 1"
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
         <linearGradient id="gradient">
-          <stop offset="25%" stopColor="var(--m-icon-color)" />
+          <stop
+            offset="25%"
+            stopColor="light-dark(hsl(210, 100%, 22%), hsl(195, 100%, 66.7%))"
+          />
           <stop offset="95%" stopColor="hsl(210,100%,44.35%)" />
         </linearGradient>
         <filter id="shadow">

@@ -22,7 +22,7 @@
   grid-template-columns: 2.5em 1fr;
 }
 
-.m-profile > .m-icon {
+.m-profile > .m-app-icon {
   grid-row-end: span 2;
 }
 

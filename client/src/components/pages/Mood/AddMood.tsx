@@ -8,12 +8,10 @@ import { captureException } from "../../../sentry";
 import deviceSlice from "../../../store/deviceSlice";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
-import useDarkMode from "../../hooks/useDarkMode";
 import { useMoodTagsEnabled } from "../../hooks/useMoodTagsEnabled";
 
 export default function AddMood() {
   const moodTagsEnabled = useMoodTagsEnabled();
-  const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = useState<string | undefined>();
   const [descriptionError, setDescriptionError] = useState<
@@ -85,7 +83,7 @@ export default function AddMood() {
       >
         {[...Array(11)].map((_, i) => (
           <RadioButton
-            color={darkMode ? moodToColor(i) : undefined}
+            color={`light-dark(var(--color-theme), ${moodToColor(i)})`}
             data-test-id={TEST_IDS.addMoodRadioButton}
             key={i}
             name={FIELDS.mood.name}

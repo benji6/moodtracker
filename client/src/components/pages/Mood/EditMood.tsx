@@ -8,13 +8,11 @@ import { UpdateMood } from "../../../types";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
-import useDarkMode from "../../hooks/useDarkMode";
 import { useParams } from "react-router-dom";
 import { useMoodTagsEnabled } from "../../hooks/useMoodTagsEnabled";
 
 export default function EditMood() {
   const moodTagsEnabled = useMoodTagsEnabled();
-  const darkMode = useDarkMode();
   const dispatch = useDispatch();
   const { id } = useParams();
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
@@ -103,7 +101,7 @@ export default function EditMood() {
       <RadioButton.Group label={FIELDS.mood.label}>
         {[...Array(11)].map((_, i) => (
           <RadioButton
-            color={darkMode ? moodToColor(i) : undefined}
+            color={`light-dark(var(--color-theme), ${moodToColor(i)})`}
             // There is old data where mood is a float between 0 and 10
             // We handle that by rounding for this input control
             defaultChecked={Math.round(mood.mood) === i}
