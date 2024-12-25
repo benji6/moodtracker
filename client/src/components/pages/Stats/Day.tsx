@@ -38,12 +38,12 @@ interface Props {
 }
 
 function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
-  const allDenormalizedTrackedCategoriesByDate = useSelector(
-    eventsSlice.selectors.allDenormalizedTrackedCategoriesByDate,
+  const allDenormalizedTrackedCategoriesByLocalDate = useSelector(
+    eventsSlice.selectors.allDenormalizedTrackedCategoriesByLocalDate,
   );
   const isoDateInLocalTimezone = formatIsoDateInLocalTimezone(date);
   const denormalizedTrackedCategories =
-    allDenormalizedTrackedCategoriesByDate[isoDateInLocalTimezone];
+    allDenormalizedTrackedCategoriesByLocalDate[isoDateInLocalTimezone];
   const hasMoodIds = Boolean(
     denormalizedTrackedCategories?.filter(({ type }) => type === "moods")
       .length,

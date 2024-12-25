@@ -13,7 +13,9 @@ const DAYS_PER_PAGE = 7;
 
 export default function TrackedCategoriesByDay() {
   const dates = Object.keys(
-    useSelector(eventsSlice.selectors.allDenormalizedTrackedCategoriesByDate),
+    useSelector(
+      eventsSlice.selectors.allDenormalizedTrackedCategoriesByLocalDate,
+    ),
   );
   const [page, setPage] = useState(0);
 

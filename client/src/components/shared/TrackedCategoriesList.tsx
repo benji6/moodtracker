@@ -14,11 +14,11 @@ export default function TrackedCategoriesList({
   isoDateInLocalTimezone,
   reverse = false,
 }: Props) {
-  const allDenormalizedTrackedCategoriesByDate = useSelector(
-    eventsSlice.selectors.allDenormalizedTrackedCategoriesByDate,
+  const allDenormalizedTrackedCategoriesByLocalDate = useSelector(
+    eventsSlice.selectors.allDenormalizedTrackedCategoriesByLocalDate,
   );
   const denormalizedTrackedCategories =
-    allDenormalizedTrackedCategoriesByDate[isoDateInLocalTimezone];
+    allDenormalizedTrackedCategoriesByLocalDate[isoDateInLocalTimezone];
 
   const mapFn = ({ id, type }: { id: string; type: EventTypeCategories }) => {
     const { CardComponent } = EVENT_TYPE_TO_LABELS[type];

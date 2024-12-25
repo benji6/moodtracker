@@ -440,7 +440,7 @@ export default createSlice({
     syncToServerError: (state: EventsState) => state.syncToServerError,
     allIdsWithLocation: allIdsWithLocationSelector,
     allNormalizedTrackedCategories: allNormalizedTrackedCategoriesSelector,
-    allDenormalizedTrackedCategoriesByDate: createSelector(
+    allDenormalizedTrackedCategoriesByLocalDate: createSelector(
       allNormalizedTrackedCategoriesSelector,
       (
         normalizedTrackedCategories,
@@ -470,7 +470,9 @@ export default createSlice({
         );
         for (const x of allDenormalizedTrackedCategories) {
           byDate[
-            x.type === "sleeps" ? x.dateAwoke : x.createdAt.slice(0, 10)
+            x.type === "sleeps"
+              ? x.dateAwoke
+              : formatIsoDateInLocalTimezone(new Date(x.createdAt))
           ].push({ id: x.createdAt, type: x.type });
         }
         return { ...byDate };
