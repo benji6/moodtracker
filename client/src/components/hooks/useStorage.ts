@@ -26,7 +26,7 @@ export default function useStorage() {
   const dispatch = useDispatch();
   const eventTypeTracking = useSelector(appSlice.selectors.eventTypeTracking);
 
-  const lastUserId = useRef<string | undefined>();
+  const lastUserId = useRef<string>(undefined);
 
   // handle user sign out
   if (lastUserId.current && !userId) {

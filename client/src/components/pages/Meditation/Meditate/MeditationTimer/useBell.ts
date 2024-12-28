@@ -17,7 +17,7 @@ interface Bell {
 }
 
 export default function useBell(): Bell | undefined {
-  const bellRef = useRef<Bell>();
+  const bellRef = useRef<Bell>(undefined);
   const hasBeenActive = useHasBeenActive();
 
   useEffect(() => {

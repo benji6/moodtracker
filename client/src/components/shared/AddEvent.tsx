@@ -1,5 +1,5 @@
 import { Button, Icon, Paper, SubHeading } from "eri";
-import { ReactNode, forwardRef } from "react";
+import { ReactNode } from "react";
 import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import EventIcon from "./EventIcon";
 import { EventTypeCategories } from "../../types";
@@ -12,13 +12,17 @@ interface Props {
   children: ReactNode;
   eventType: EventTypeCategories;
   onSubmit(): boolean; // `true` if successful, otherwise `false`;
+  ref: React.ForwardedRef<HTMLFormElement>;
   subheading?: string;
 }
 
-export default forwardRef<HTMLFormElement, Props>(function AddEvent(
-  { children, eventType, onSubmit, subheading },
+export default function AddEvent({
+  children,
+  eventType,
+  onSubmit,
+  subheading,
   ref,
-) {
+}: Props) {
   const navigate = useNavigate();
   const handleSubmit = () => {
     if (onSubmit()) navigate("/");
@@ -55,4 +59,4 @@ export default forwardRef<HTMLFormElement, Props>(function AddEvent(
       <LiveLocation />
     </Paper.Group>
   );
-});
+}

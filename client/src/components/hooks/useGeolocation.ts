@@ -12,7 +12,7 @@ export default function useGeolocation() {
   const dispatch = useDispatch();
   const hasBeenActive = useHasBeenActive();
 
-  const idRef = useRef<number | undefined>();
+  const idRef = useRef<number>(undefined);
 
   useEffect(() => {
     if (!hasBeenActive) return;

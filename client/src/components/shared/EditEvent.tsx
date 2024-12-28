@@ -1,6 +1,6 @@
 import { Button, Icon, Paper } from "eri";
 import { DeviceGeolocation, EventTypeCategories } from "../../types";
-import { ReactNode, forwardRef, useState } from "react";
+import { ReactNode, useState } from "react";
 import DeleteEventDialog from "./DeleteEventDialog";
 import { ERRORS } from "../../constants";
 import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
@@ -17,14 +17,21 @@ interface Props {
   id: string;
   location: DeviceGeolocation | undefined;
   onSubmit(): boolean; // `true` if successful, otherwise `false`;
+  ref: React.ForwardedRef<HTMLFormElement>;
   showNoUpdateError: boolean;
   updatedAt: string | undefined;
 }
 
-export default forwardRef<HTMLFormElement, Props>(function EditEvent(
-  { children, eventType, id, location, onSubmit, showNoUpdateError, updatedAt },
+export default function EditEvent({
+  children,
+  eventType,
+  id,
+  location,
+  onSubmit,
   ref,
-) {
+  showNoUpdateError,
+  updatedAt,
+}: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = () => {
@@ -99,4 +106,4 @@ export default forwardRef<HTMLFormElement, Props>(function EditEvent(
       {location && <Location date={dateCreated} {...location} />}
     </Paper.Group>
   );
-});
+}

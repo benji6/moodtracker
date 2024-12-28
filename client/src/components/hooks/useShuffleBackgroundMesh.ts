@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 export function useShuffleBackgroundMesh() {
   const { pathname } = useLocation();
-  const lastPathnameRef = useRef<string | undefined>();
+  const lastPathnameRef = useRef<string>(undefined);
   useEffect(() => {
     if (
       lastPathnameRef.current !== undefined &&

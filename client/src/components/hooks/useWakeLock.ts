@@ -7,7 +7,7 @@ interface WakeLock {
 
 export default function useWakeLock(): WakeLock | undefined {
   const [wakeLockSentinel, setWakeLockSentinel] = useState<WakeLockSentinel>();
-  const wakeLockRef = useRef<WakeLock>();
+  const wakeLockRef = useRef<WakeLock>(undefined);
 
   const enable = useCallback(() => {
     if (wakeLockSentinel && !wakeLockSentinel.released) return;
