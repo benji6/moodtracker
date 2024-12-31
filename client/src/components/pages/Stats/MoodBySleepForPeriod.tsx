@@ -30,17 +30,18 @@ export default function MoodBySleepForPeriod({ dateFrom, dateTo }: Props) {
     dateFrom,
     dateTo,
   );
-  if (minutesSleptKeys.length < 2 || meanMoodsKeys.length < 2) return;
+  const notEnoughDataEl = (
+    <Paper>
+      <p>Not enough data to assess sleep impact for this period</p>
+    </Paper>
+  );
+  if (minutesSleptKeys.length < 2 || meanMoodsKeys.length < 2)
+    return notEnoughDataEl;
   const meanMoodsKeysSet = new Set(meanMoodsKeys);
   const intersectingKeys = minutesSleptKeys.filter((key) =>
     meanMoodsKeysSet.has(key),
   );
-  if (intersectingKeys.length < 5)
-    return (
-      <Paper>
-        <p>Not enough data to assess sleep impact for this period</p>
-      </Paper>
-    );
+  if (intersectingKeys.length < 5) return notEnoughDataEl;
 
   const ysByX = defaultDict((): number[] => []);
   const lineYsByX = defaultDict((): number[] => []);
