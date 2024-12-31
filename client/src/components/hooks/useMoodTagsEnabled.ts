@@ -13,7 +13,6 @@ const ENABLED_USER_IDS = new Set([
   "9d3a4f25-06c8-4bb7-a088-a514a7865ec4",
   "b1e6254c-9569-4600-b9f9-9ca085624e40",
   "cb4f6e4d-53b6-441b-ba73-876db28e743f",
-  "cfc0d3ca-346c-4582-b99b-23497f217c32",
   "e5635efd-9a99-41a2-a576-b6f5f69ccfbe",
   "f36b9e7d-4d76-4e82-9108-99b17becf37d",
 ]);
