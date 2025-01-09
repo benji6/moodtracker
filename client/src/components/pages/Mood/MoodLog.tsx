@@ -133,7 +133,7 @@ export default function MoodLog() {
         </h3>
         <ExportControls category="moods" denormalizedData={denormalizedMoods} />
         {filterFeatureAvailable && (
-          <>
+          <search>
             <h3>Search</h3>
             <Toggle
               checked={shouldShowFilter}
@@ -220,7 +220,7 @@ export default function MoodLog() {
                 </table>
               </div>
             )}
-          </>
+          </search>
         )}
       </Paper>
       {filteredMoodsGroupedByDay.length ? (
