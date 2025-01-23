@@ -24,6 +24,7 @@ import eventsSlice from "../../../../store/eventsSlice";
 import { roundDateDown } from "../../../../utils";
 import { scaleTime } from "d3-scale";
 import { useSelector } from "react-redux";
+import ExerciseForPeriod from "../ExerciseForPeriod";
 
 const DATE_RANGE_OPTIONS = [
   "Today",
@@ -162,6 +163,11 @@ export default function Explore() {
 
   let view: ReactElement;
   switch (activeView) {
+    case "exercise":
+      view = (
+        <ExerciseForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+      );
+      break;
     case "location":
       view = (
         <LocationForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />

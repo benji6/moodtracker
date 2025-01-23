@@ -19,9 +19,8 @@ interface PeriodData {
   meanWeight?: number;
   runMeters: number;
   runSeconds: number;
-  secondsMeditated: number;
+  secondsMeditated?: number;
   standardDeviation?: number;
-  total: number;
   totalLegRaises: number;
   totalPushUps: number;
   totalSitUps: number;

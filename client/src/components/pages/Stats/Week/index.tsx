@@ -28,6 +28,7 @@ import { TIME } from "../../../../constants";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import withStatsPage from "../../../hocs/withStatsPage";
+import ExerciseForPeriod from "../ExerciseForPeriod";
 
 interface Props {
   date: Date;
@@ -48,6 +49,9 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
 
   let view: ReactElement;
   switch (activeView) {
+    case "exercise":
+      view = <ExerciseForPeriod dateFrom={date} dateTo={nextDate} />;
+      break;
     case "location":
       view = <LocationForPeriod dateFrom={date} dateTo={nextDate} />;
       break;

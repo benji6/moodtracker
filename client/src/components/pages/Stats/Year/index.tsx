@@ -22,6 +22,7 @@ import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import { formatIsoYearInLocalTimezone } from "../../../../utils";
 import withStatsPage from "../../../hocs/withStatsPage";
+import PushUpsByMonthForPeriod from "./PushUpsByMonthForPeriod";
 
 interface Props {
   date: Date;
@@ -39,6 +40,9 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
 
   let view: ReactElement;
   switch (activeView) {
+    case "exercise":
+      view = <PushUpsByMonthForPeriod dateFrom={date} dateTo={nextDate} />;
+      break;
     case "location":
       view = <LocationForPeriod dateFrom={date} dateTo={nextDate} />;
       break;

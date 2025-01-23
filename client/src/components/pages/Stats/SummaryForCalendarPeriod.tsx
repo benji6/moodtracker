@@ -108,7 +108,6 @@ export default function SummaryForCalendarPeriod({
           secondsMeditated: secondsMeditatedInCurrentPeriod,
           standardDeviation:
             computeCompletePopulationStandardDeviation(moodValues),
-          total: moodValues.length,
           totalLegRaises: totalLegRaisesInCurrentPeriod,
           totalPushUps: totalPushUpsInCurrentPeriod,
           totalSitUps: totalSitUpsInCurrentPeriod,
@@ -129,7 +128,6 @@ export default function SummaryForCalendarPeriod({
                 secondsMeditated: secondsMeditatedInPreviousPeriod,
                 standardDeviation:
                   computeCompletePopulationStandardDeviation(prevMoodValues),
-                total: prevMoodValues.length,
                 totalLegRaises: totalLegRaisesInPreviousPeriod,
                 totalPushUps: totalPushUpsInPreviousPeriod,
                 totalSitUps: totalSitUpsInPreviousPeriod,

@@ -7,6 +7,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 
 export type ActiveView =
+  | "exercise"
   | "location"
   | "meditation"
   | "mood"
@@ -38,6 +39,9 @@ export default function StatsViewControls({
   );
   const hasMoodsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.hasMoodsInPeriod(state, dateFrom, dateTo),
+  );
+  const hasPushUpsInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasPushUpsInPeriod(state, dateFrom, dateTo),
   );
   const hasSleepsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.hasSleepsInPeriod(state, dateFrom, dateTo),
@@ -75,6 +79,11 @@ export default function StatsViewControls({
     buttons.push({
       view: "mood",
       icon: <EventIcon eventType="moods" margin="end" />,
+    });
+  if (hasPushUpsInPeriod)
+    buttons.push({
+      view: "exercise",
+      icon: <EventIcon eventType="runs" margin="end" />,
     });
   if (hasEventsWithLocationInPeriod) {
     buttons.push({

@@ -546,6 +546,13 @@ export default createSlice({
       normalizedPushUpsSelector,
       normalizedStateNotEmpty,
     ),
+    hasPushUpsInPeriod: createSelector(
+      normalizedPushUpsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds }, dateFrom: Date, dateTo: Date) =>
+        hasIdsInInterval(allIds, dateFrom, dateTo),
+    ),
     hasRuns: createSelector(normalizedRunsSelector, normalizedStateNotEmpty),
     hasSitUps: createSelector(
       normalizedSitUpsSelector,
@@ -713,6 +720,60 @@ export default createSlice({
     meanMoodsByYear: makeMeanMoodsByPeriodSelector(
       eachYearOfInterval,
       addYears,
+    ),
+    normalizedTotalPushUpsByMonth: createSelector(
+      normalizedPushUpsSelector,
+      (
+        normalizedPushUps,
+      ): {
+        allIds: string[];
+        byId: Record<string, number | undefined>;
+      } => {
+        const allIds: string[] = [];
+        const byId: Record<string, number> = {};
+        const normalizedTotalPushUps = { allIds, byId };
+
+        if (!normalizedPushUps.allIds.length) return normalizedTotalPushUps;
+
+        const periods = eachMonthOfInterval({
+          start: new Date(normalizedPushUps.allIds[0]),
+          end: new Date(
+            normalizedPushUps.allIds[normalizedPushUps.allIds.length - 1],
+          ),
+        });
+
+        const finalPeriod = addMonths(periods[periods.length - 1], 1);
+
+        if (normalizedPushUps.allIds.length === 1) {
+          const id = formatIsoDateInLocalTimezone(periods[0]);
+          allIds.push(id);
+          byId[id] = normalizedPushUps.byId[normalizedPushUps.allIds[0]].value;
+          return normalizedTotalPushUps;
+        }
+
+        periods.push(finalPeriod);
+
+        for (let i = 1; i < periods.length; i++) {
+          const p0 = periods[i - 1];
+          const p1 = periods[i];
+          const id = formatIsoDateInLocalTimezone(p0);
+          allIds.push(id);
+
+          const foo = (
+            { allIds, byId }: NormalizedPushUps,
+            dateFrom: Date,
+            dateTo: Date,
+          ): number => {
+            let sum = 0;
+            for (const id of getIdsInInterval(allIds, dateFrom, dateTo))
+              sum += byId[id].value;
+            return sum;
+          };
+          byId[id] = foo(normalizedPushUps, p0, p1);
+        }
+
+        return normalizedTotalPushUps;
+      },
     ),
     normalizedTotalSecondsMeditatedByMonth: createSelector(
       normalizedMeditationsSelector,

@@ -23,6 +23,7 @@ import PrevNextControls from "../../../shared/PrevNextControls";
 import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import withStatsPage from "../../../hocs/withStatsPage";
+import ExerciseForPeriod from "../ExerciseForPeriod";
 
 const X_LABELS_COUNT = 5;
 
@@ -48,6 +49,9 @@ function Month({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
 
   let view: ReactElement;
   switch (activeView) {
+    case "exercise":
+      view = <ExerciseForPeriod dateFrom={date} dateTo={nextDate} />;
+      break;
     case "location":
       view = <LocationForPeriod dateFrom={date} dateTo={nextDate} />;
       break;

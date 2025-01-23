@@ -48,9 +48,15 @@ export default function SummaryForPeriod({ dateFrom, dateTo }: Props) {
   return (
     <Paper>
       <h3>Summary</h3>
-      {!moodValues.length && !moodValues.length && meanWeight === undefined && (
-        <p>No data for the selected period</p>
-      )}
+      {!moodValues.length &&
+        !meanSleep &&
+        !meanWeight &&
+        !runMeters &&
+        !runSeconds &&
+        !secondsMeditated &&
+        !totalPushUps &&
+        !totalSitUps &&
+        !totalLegRaises && <p>No data for the selected period</p>}
       <Summary
         currentPeriod={{
           best: moodValues.length ? Math.max(...moodValues) : undefined,
@@ -62,7 +68,6 @@ export default function SummaryForPeriod({ dateFrom, dateTo }: Props) {
           secondsMeditated,
           standardDeviation:
             computeCompletePopulationStandardDeviation(moodValues),
-          total: moodValues.length,
           totalLegRaises,
           totalPushUps,
           totalSitUps,
