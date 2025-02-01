@@ -92,7 +92,7 @@ export default function SummaryForCalendarPeriod({
     !secondsMeditatedInCurrentPeriod &&
     !secondsMeditatedInPreviousPeriod
   )
-    return null;
+    return;
 
   return (
     <Paper>

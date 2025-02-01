@@ -111,7 +111,7 @@ export default function StatsViewControls({
       icon: <EventIcon eventType="meditations" margin="end" />,
     });
 
-  if (!buttons.length) return null;
+  if (!buttons.length) return;
 
   return (
     <Paper>

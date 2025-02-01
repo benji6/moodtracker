@@ -352,6 +352,62 @@ const initialState: EventsState = {
   nextCursor: undefined,
 };
 
+const createHasEventIdsInPeriodSelector = (
+  normalizedSelector: (state: EventsState) => { allIds: string[] },
+) =>
+  createSelector(
+    normalizedSelector,
+    dateFromSelector,
+    dateToSelector,
+    ({ allIds }, dateFrom: Date, dateTo: Date) =>
+      hasIdsInInterval(allIds, dateFrom, dateTo),
+  );
+
+const createNormalizedTotalsByMonthSelector = <T>(
+  normalizedSelector: (state: EventsState) => {
+    allIds: string[];
+    byId: Record<string, T>;
+  },
+  getValue: (item: T) => number,
+) =>
+  createSelector(normalizedSelector, (normalizedData) => {
+    const allIds: string[] = [];
+    const byId: Record<string, number> = {};
+    const normalizedTotals = { allIds, byId };
+
+    if (!normalizedData.allIds.length) return normalizedTotals;
+
+    const periods = eachMonthOfInterval({
+      start: new Date(normalizedData.allIds[0]),
+      end: new Date(normalizedData.allIds[normalizedData.allIds.length - 1]),
+    });
+
+    const finalPeriod = addMonths(periods[periods.length - 1], 1);
+
+    if (normalizedData.allIds.length === 1) {
+      const id = formatIsoDateInLocalTimezone(periods[0]);
+      allIds.push(id);
+      byId[id] = getValue(normalizedData.byId[normalizedData.allIds[0]]);
+      return normalizedTotals;
+    }
+
+    periods.push(finalPeriod);
+
+    for (let i = 1; i < periods.length; i++) {
+      const p0 = periods[i - 1];
+      const p1 = periods[i];
+      const id = formatIsoDateInLocalTimezone(p0);
+      allIds.push(id);
+
+      let sum = 0;
+      for (const id of getIdsInInterval(normalizedData.allIds, p0, p1))
+        sum += getValue(normalizedData.byId[id]);
+      byId[id] = sum;
+    }
+
+    return normalizedTotals;
+  });
+
 export default createSlice({
   name: "events",
   initialState,
@@ -520,12 +576,8 @@ export default createSlice({
       getEnvelopingIds,
     ),
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
-    hasMoodsInPeriod: createSelector(
+    hasMoodsInPeriod: createHasEventIdsInPeriodSelector(
       normalizedMoodsSelector,
-      dateFromSelector,
-      dateToSelector,
-      ({ allIds }, dateFrom: Date, dateTo: Date) =>
-        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     hasLegRaises: createSelector(
       normalizedLegRaisesSelector,
@@ -535,25 +587,26 @@ export default createSlice({
       normalizedMeditationsSelector,
       normalizedStateNotEmpty,
     ),
-    hasMeditationsInPeriod: createSelector(
+    hasMeditationsInPeriod: createHasEventIdsInPeriodSelector(
       normalizedMeditationsSelector,
-      dateFromSelector,
-      dateToSelector,
-      ({ allIds }, dateFrom: Date, dateTo: Date) =>
-        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     hasPushUps: createSelector(
       normalizedPushUpsSelector,
       normalizedStateNotEmpty,
     ),
-    hasPushUpsInPeriod: createSelector(
+    hasPushUpsInPeriod: createHasEventIdsInPeriodSelector(
       normalizedPushUpsSelector,
-      dateFromSelector,
-      dateToSelector,
-      ({ allIds }, dateFrom: Date, dateTo: Date) =>
-        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     hasRuns: createSelector(normalizedRunsSelector, normalizedStateNotEmpty),
+    hasRunDistanceInPeriod: createSelector(
+      normalizedRunsSelector,
+      dateFromSelector,
+      dateToSelector,
+      ({ allIds, byId }, dateFrom: Date, dateTo: Date) =>
+        getIdsInInterval(allIds, dateFrom, dateTo).some(
+          (id) => byId[id].meters,
+        ),
+    ),
     hasSitUps: createSelector(
       normalizedSitUpsSelector,
       normalizedStateNotEmpty,
@@ -562,23 +615,15 @@ export default createSlice({
       normalizedSleepsSelector,
       normalizedStateNotEmpty,
     ),
-    hasSleepsInPeriod: createSelector(
+    hasSleepsInPeriod: createHasEventIdsInPeriodSelector(
       normalizedSleepsSelector,
-      dateFromSelector,
-      dateToSelector,
-      ({ allIds }, dateFrom: Date, dateTo: Date) =>
-        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     hasWeights: createSelector(
       normalizedWeightsSelector,
       normalizedStateNotEmpty,
     ),
-    hasWeightsInPeriod: createSelector(
+    hasWeightsInPeriod: createHasEventIdsInPeriodSelector(
       normalizedWeightsSelector,
-      dateFromSelector,
-      dateToSelector,
-      ({ allIds }, dateFrom: Date, dateTo: Date) =>
-        hasIdsInInterval(allIds, dateFrom, dateTo),
     ),
     meanDailySleepDurationInPeriod: createSelector(
       minutesSleptByDateAwokeSelector,
@@ -721,110 +766,19 @@ export default createSlice({
       eachYearOfInterval,
       addYears,
     ),
-    normalizedTotalPushUpsByMonth: createSelector(
+    normalizedTotalPushUpsByMonth: createNormalizedTotalsByMonthSelector(
       normalizedPushUpsSelector,
-      (
-        normalizedPushUps,
-      ): {
-        allIds: string[];
-        byId: Record<string, number | undefined>;
-      } => {
-        const allIds: string[] = [];
-        const byId: Record<string, number> = {};
-        const normalizedTotalPushUps = { allIds, byId };
-
-        if (!normalizedPushUps.allIds.length) return normalizedTotalPushUps;
-
-        const periods = eachMonthOfInterval({
-          start: new Date(normalizedPushUps.allIds[0]),
-          end: new Date(
-            normalizedPushUps.allIds[normalizedPushUps.allIds.length - 1],
-          ),
-        });
-
-        const finalPeriod = addMonths(periods[periods.length - 1], 1);
-
-        if (normalizedPushUps.allIds.length === 1) {
-          const id = formatIsoDateInLocalTimezone(periods[0]);
-          allIds.push(id);
-          byId[id] = normalizedPushUps.byId[normalizedPushUps.allIds[0]].value;
-          return normalizedTotalPushUps;
-        }
-
-        periods.push(finalPeriod);
-
-        for (let i = 1; i < periods.length; i++) {
-          const p0 = periods[i - 1];
-          const p1 = periods[i];
-          const id = formatIsoDateInLocalTimezone(p0);
-          allIds.push(id);
-
-          const foo = (
-            { allIds, byId }: NormalizedPushUps,
-            dateFrom: Date,
-            dateTo: Date,
-          ): number => {
-            let sum = 0;
-            for (const id of getIdsInInterval(allIds, dateFrom, dateTo))
-              sum += byId[id].value;
-            return sum;
-          };
-          byId[id] = foo(normalizedPushUps, p0, p1);
-        }
-
-        return normalizedTotalPushUps;
-      },
+      (item) => item.value,
     ),
-    normalizedTotalSecondsMeditatedByMonth: createSelector(
-      normalizedMeditationsSelector,
-      (
-        normalizedMeditations,
-      ): {
-        allIds: string[];
-        byId: Record<string, number | undefined>;
-      } => {
-        const allIds: string[] = [];
-        const byId: Record<string, number> = {};
-        const normalizedTotalSeconds = { allIds, byId };
-
-        if (!normalizedMeditations.allIds.length) return normalizedTotalSeconds;
-
-        const periods = eachMonthOfInterval({
-          start: new Date(normalizedMeditations.allIds[0]),
-          end: new Date(
-            normalizedMeditations.allIds[
-              normalizedMeditations.allIds.length - 1
-            ],
-          ),
-        });
-
-        const finalPeriod = addMonths(periods[periods.length - 1], 1);
-
-        if (normalizedMeditations.allIds.length === 1) {
-          const id = formatIsoDateInLocalTimezone(periods[0]);
-          allIds.push(id);
-          byId[id] =
-            normalizedMeditations.byId[normalizedMeditations.allIds[0]].seconds;
-          return normalizedTotalSeconds;
-        }
-
-        periods.push(finalPeriod);
-
-        for (let i = 1; i < periods.length; i++) {
-          const p0 = periods[i - 1];
-          const p1 = periods[i];
-          const id = formatIsoDateInLocalTimezone(p0);
-          allIds.push(id);
-          byId[id] = secondsMeditatedInPeriodResultFunction(
-            normalizedMeditations,
-            p0,
-            p1,
-          );
-        }
-
-        return normalizedTotalSeconds;
-      },
+    normalizedTotalRunDistanceByMonth: createNormalizedTotalsByMonthSelector(
+      normalizedRunsSelector,
+      (item) => item.meters ?? 0,
     ),
+    normalizedTotalSecondsMeditatedByMonth:
+      createNormalizedTotalsByMonthSelector(
+        normalizedMeditationsSelector,
+        (item) => item.seconds,
+      ),
     runMetersInPeriod: createSelector(
       normalizedRunsSelector,
       dateFromSelector,

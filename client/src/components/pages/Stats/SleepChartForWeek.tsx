@@ -28,7 +28,7 @@ export default function SleepChartForWeek({ dateFrom }: Props) {
     });
   }
 
-  if (data.every(({ minutesSlept }) => minutesSlept === undefined)) return null;
+  if (data.every(({ minutesSlept }) => minutesSlept === undefined)) return;
 
   return (
     <Paper>

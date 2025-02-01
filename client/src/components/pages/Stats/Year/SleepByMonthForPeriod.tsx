@@ -38,7 +38,7 @@ export default function SleepByMonthForPeriod({ dateFrom, dateTo }: Props) {
     };
   });
 
-  if (data.every(({ y }) => y === undefined)) return null;
+  if (data.every(({ y }) => y === undefined)) return;
   return (
     <Paper>
       <h3>Average sleep by month</h3>

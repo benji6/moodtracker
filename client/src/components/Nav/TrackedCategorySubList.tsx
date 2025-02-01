@@ -19,7 +19,7 @@ export default function TrackedCategorySubList({
 
   const isTrackingEnabled = eventTypeTracking[eventType];
 
-  if (!isTrackingEnabled && !showLog) return null;
+  if (!isTrackingEnabled && !showLog) return;
 
   return (
     <EriNav.SubList

@@ -4,12 +4,13 @@ export const integerMeterFormatter = Intl.NumberFormat(undefined, {
   unit: "meter",
 });
 
-const kilometerFormatter = new Intl.NumberFormat(undefined, {
+const kilometerFormatter = Intl.NumberFormat(undefined, {
   maximumFractionDigits: 1,
   style: "unit",
   unit: "kilometer",
 });
+
 export const formatMetersToOneNumberWithUnits = (meters: number) =>
   meters < 1000
     ? integerMeterFormatter.format(meters)
-    : kilometerFormatter.format(meters / 1000);
+    : kilometerFormatter.format(meters / 1e3);

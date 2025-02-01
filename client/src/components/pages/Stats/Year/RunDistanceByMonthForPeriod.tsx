@@ -4,32 +4,32 @@ import {
   formatIsoMonthInLocalTimezone,
 } from "../../../../utils";
 import { RootState } from "../../../../store";
-import { TIME } from "../../../../constants";
 import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
-import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import EventIcon from "../../../shared/EventIcon";
+import { formatMetersToOneNumberWithUnits } from "../../../../formatters/formatDistance";
 
 interface Props {
   dateFrom: Date;
   dateTo: Date;
 }
 
-export default function MeditationByMonthForPeriod({
+export default function RunDistanceByMonthForPeriod({
   dateFrom,
   dateTo,
 }: Props) {
-  const hasMeditationsInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.hasMeditationsInPeriod(state, dateFrom, dateTo),
+  const hasRunDistanceInPeriod = useSelector((state: RootState) =>
+    eventsSlice.selectors.hasRunDistanceInPeriod(state, dateFrom, dateTo),
   );
-  const noramlizedTotalSecondsMeditatedByMonth = useSelector(
-    eventsSlice.selectors.normalizedTotalSecondsMeditatedByMonth,
+  const noramlizedTotalRunDistanceByMonth = useSelector(
+    eventsSlice.selectors.normalizedTotalRunDistanceByMonth,
   );
   const navigate = useNavigate();
 
-  if (!hasMeditationsInPeriod) return;
+  if (!hasRunDistanceInPeriod) return;
 
   const months = eachMonthOfInterval({ start: dateFrom, end: dateTo }).slice(
     0,
@@ -38,12 +38,15 @@ export default function MeditationByMonthForPeriod({
 
   return (
     <Paper>
-      <h3>Hours meditated by month</h3>
+      <h3>
+        <EventIcon eventType="runs" margin="end" />
+        Total run distance by month
+      </h3>
       <Chart.ColumnChart
-        aria-label="Chart displaying hours meditated by month"
+        aria-label="Chart displaying total run distance by month"
         data={months.map((month) => {
-          const secondsMeditated =
-            noramlizedTotalSecondsMeditatedByMonth.byId[
+          const totalMeters =
+            noramlizedTotalRunDistanceByMonth.byId[
               formatIsoDateInLocalTimezone(month)
             ] ?? 0;
           const label = monthShortFormatter.format(month);
@@ -52,15 +55,13 @@ export default function MeditationByMonthForPeriod({
             label: label,
             onClick: () =>
               navigate(`/stats/months/${formatIsoMonthInLocalTimezone(month)}`),
-            title: `Hours meditated: ${oneDecimalPlaceFormatter.format(
-              secondsMeditated / TIME.secondsPerHour,
-            )}`,
-            y: (secondsMeditated ?? 0) / TIME.secondsPerHour,
+            title: formatMetersToOneNumberWithUnits(totalMeters),
+            y: totalMeters / 1e3,
           };
         })}
         rotateXLabels
         xAxisTitle="Month"
-        yAxisTitle="Hours meditated"
+        yAxisTitle="Kilometers"
       />
     </Paper>
   );
