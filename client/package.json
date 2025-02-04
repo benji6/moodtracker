@@ -34,6 +34,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^11.0.1",
     "fuse.js": "^7.0.0",
+    "i18n-iso-countries": "^7.13.0",
     "idb-keyval": "^6.2.0",
     "marked": "^15.0.0",
     "papaparse": "^5.3.1",
