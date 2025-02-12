@@ -30,9 +30,8 @@ const networkFirstSetWithFullUrls = new Set(
 
 const sw: any = self;
 
-const firebaseApp = initializeApp(FIREBASE_CONFIG);
-
 try {
+  const firebaseApp = initializeApp(FIREBASE_CONFIG);
   getMessaging(firebaseApp);
 } catch (e) {
   console.error("Error caught and logged to console:", e);
