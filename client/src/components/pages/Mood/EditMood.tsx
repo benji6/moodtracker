@@ -9,10 +9,8 @@ import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
 import { useParams } from "react-router-dom";
-import { useMoodTagsEnabled } from "../../hooks/useMoodTagsEnabled";
 
 export default function EditMood() {
-  const moodTagsEnabled = useMoodTagsEnabled();
   const dispatch = useDispatch();
   const { id } = useParams();
   const moods = useSelector(eventsSlice.selectors.normalizedMoods);
@@ -113,7 +111,7 @@ export default function EditMood() {
           </RadioButton>
         ))}
       </RadioButton.Group>
-      {(moodTagsEnabled || mood.description) && (
+      {mood.description && (
         <TextField
           {...FIELDS.description}
           defaultValue={mood.description}

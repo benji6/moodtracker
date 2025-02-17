@@ -2,12 +2,12 @@ export default (() => {
   const keys = [
     "addMoodRadioButton",
     "dateAwokeInput",
-    "descriptionInput",
     "deviceSetupDialog",
     "eventAddPage",
     "eventAddSubmitButton",
     "eventCardDateTime",
     "eventCardValue",
+    "explorationInput",
     "hoursSleptInput",
     "legRaisesValueInput",
     "meditatePage",

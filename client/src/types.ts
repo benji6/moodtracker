@@ -64,6 +64,7 @@ export interface DeviceGeolocation {
 }
 
 export interface Mood {
+  // `description` is deprecated and is retained for backwards compatibility
   description?: string;
   exploration?: string;
   location?: DeviceGeolocation;

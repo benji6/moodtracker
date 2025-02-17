@@ -1,5 +1,5 @@
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
-import { RadioButton, TextArea, TextField } from "eri";
+import { RadioButton, TextArea } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState } from "react";
 import AddEvent from "../../shared/AddEvent";
@@ -8,15 +8,10 @@ import { captureException } from "../../../sentry";
 import deviceSlice from "../../../store/deviceSlice";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
-import { useMoodTagsEnabled } from "../../hooks/useMoodTagsEnabled";
 
 export default function AddMood() {
-  const moodTagsEnabled = useMoodTagsEnabled();
   const dispatch = useDispatch();
   const [moodError, setMoodError] = useState<string | undefined>();
-  const [descriptionError, setDescriptionError] = useState<
-    string | undefined
-  >();
   const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -41,25 +36,15 @@ export default function AddMood() {
           return false;
         }
 
-        const descriptionEl: HTMLInputElement | undefined =
-          formEl[FIELDS.description.name];
-        const descriptionValue = descriptionEl?.value;
         const explorationValue: string = formEl[FIELDS.exploration.name].value;
         const moodValue: string = formEl[FIELDS.mood.name].value;
 
-        if (!moodValue) setMoodError(ERRORS.required);
-
-        const descriptionFieldError = descriptionEl
-          ? descriptionEl.validity.patternMismatch
-          : false;
-        setDescriptionError(
-          descriptionFieldError ? ERRORS.specialCharacters : "",
-        );
-
-        if (descriptionFieldError || !moodValue) return false;
+        if (!moodValue) {
+          setMoodError(ERRORS.required);
+          return false;
+        }
 
         const payload: Mood = { mood: Number(moodValue) };
-        if (descriptionValue) payload.description = descriptionValue.trim();
         if (explorationValue) payload.exploration = explorationValue.trim();
         if (geolocation) payload.location = geolocation;
 
@@ -93,9 +78,6 @@ export default function AddMood() {
           </RadioButton>
         ))}
       </RadioButton.Group>
-      {moodTagsEnabled && (
-        <TextField {...FIELDS.description} error={descriptionError} />
-      )}
       <TextArea {...FIELDS.exploration} />
     </AddEvent>
   );

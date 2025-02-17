@@ -94,7 +94,6 @@ export const FIELDS = {
   },
   description: {
     autoComplete: "on",
-    "data-test-id": TEST_IDS.descriptionInput,
     label: "Mood tags",
     maxLength: DESCRIPTION_MAX_LENGTH,
     name: "description",
@@ -103,6 +102,7 @@ export const FIELDS = {
     supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). For example, "pensive" or "happy excited". These words will be used in your word clouds.`,
   },
   exploration: {
+    "data-test-id": TEST_IDS.explorationInput,
     label: "Journal",
     name: "exploration",
     optional: true,

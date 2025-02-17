@@ -22,22 +22,6 @@ describe("mood", () => {
       cy.get('[data-eri-id="field-error"]').should("not.exist");
     });
 
-    it("errors when description is not valid", () => {
-      cy.get(SELECTORS.descriptionInput).type('hello"world{enter}');
-      cy.get('[data-eri-id="field-error"]').should("have.length", 2);
-      cy.get('[data-eri-id="field-error"]')
-        .last()
-        .should("have.text", ERRORS.specialCharacters);
-
-      cy.get(SELECTORS.descriptionInput).clear();
-      cy.get(SELECTORS.descriptionInput).type("hello world{enter}");
-      cy.get('[data-eri-id="field-error"]').should("have.length", 1);
-      cy.get('[data-eri-id="field-error"]').should(
-        "have.text",
-        ERRORS.required,
-      );
-    });
-
     it("adds a mood with only a mood value", () => {
       const MOOD = Math.floor(Math.random() * 11);
       cy.get(`${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`).click({
@@ -54,12 +38,12 @@ describe("mood", () => {
         .should("be.closeTo", expectedTime, 1);
     });
 
-    it("adds a mood with an emoji tag", () => {
+    it("adds a mood with an emoji in the journal section", () => {
       const MOOD = Math.floor(Math.random() * 11);
       cy.get(`${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`).click({
         force: true,
       });
-      cy.get(SELECTORS.descriptionInput).type("🧪");
+      cy.get(SELECTORS.explorationInput).type("🧪");
       cy.get(SELECTORS.eventAddSubmitButton).click();
       cy.get(SELECTORS.moodList);
       cy.location("pathname").should("equal", "/");
