@@ -2,7 +2,7 @@
 analytics:
 	@cd scripts && poetry run python3 ./analytics.py
 
-# Deletes old users that have never logged any data
+# Deletes users that were created a long time ago and never logged any data
 cleanup_zombie_users:
 	@cd scripts && poetry run python3 ./cleanup_zombie_users.py
 
