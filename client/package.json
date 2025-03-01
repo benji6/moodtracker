@@ -63,7 +63,7 @@
     "@types/topojson-client": "^3.1.1",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
-    "cypress": "^14.0.0",
+    "cypress": "^14.1.0",
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-cypress": "^4.1.0",
