@@ -26,19 +26,22 @@ if ("serviceWorker" in navigator)
     { type: "module" },
   );
 
-navigator.storage.estimate().then((estimate) => {
-  if (
-    estimate.usage === undefined ||
-    estimate.quota === undefined ||
-    estimate.usage < estimate.quota / 2
-  )
-    return;
-  captureException(
-    Error(
-      `Storage ${percentFormatter.format(estimate.usage / estimate.quota)} full: ${estimate.usage}`,
-    ),
-  );
-});
+// Added to Safari 17 released 2023-09-18 https://developer.mozilla.org/en-US/docs/Web/API/StorageManager/estimate#browser_compatibility
+// TODO: remove when this query returns nothing https://browserslist.dev/?q=aW9zIDwxNyBhbmQgPjAuMSU%3D
+if ("estimate" in navigator.storage)
+  navigator.storage.estimate().then((estimate) => {
+    if (
+      estimate.usage === undefined ||
+      estimate.quota === undefined ||
+      estimate.usage < estimate.quota / 2
+    )
+      return;
+    captureException(
+      Error(
+        `Storage ${percentFormatter.format(estimate.usage / estimate.quota)} full: ${estimate.usage}`,
+      ),
+    );
+  });
 
 const rootEl = document.getElementById("root");
 if (!rootEl) throw Error("no root element");
