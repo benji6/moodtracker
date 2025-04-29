@@ -7,7 +7,7 @@ import { RootState } from "../../../../store";
 import { eachMonthOfInterval } from "date-fns";
 import eventsSlice from "../../../../store/eventsSlice";
 import { monthShortFormatter } from "../../../../formatters/dateTimeFormatters";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import EventIcon from "../../../shared/EventIcon";
 import { formatMetersToOneNumberWithUnits } from "../../../../formatters/formatDistance";

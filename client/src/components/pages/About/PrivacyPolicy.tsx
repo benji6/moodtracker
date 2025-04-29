@@ -1,5 +1,5 @@
 import { REPO_ISSUES_URL, REPO_URL } from "../../../constants";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { Paper } from "eri";
 
 export default function PrivacyPolicy() {

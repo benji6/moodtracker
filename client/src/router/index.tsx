@@ -2,7 +2,7 @@ import {
   Routes as ReactRouterRoutes,
   Route,
   createBrowserRouter,
-} from "react-router-dom";
+} from "react-router";
 import About from "../components/pages/About";
 import AddLegRaises from "../components/pages/LegRaises/AddLegRaises";
 import AddMood from "../components/pages/Mood/AddMood";

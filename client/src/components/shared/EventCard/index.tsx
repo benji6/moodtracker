@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 import { TEST_IDS } from "../../../constants";
 import { dateTimeFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 interface Props {

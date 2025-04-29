@@ -1,5 +1,5 @@
 import { Nav as EriNav, Header, Icon, QuickNav } from "eri";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router";
 import Nav from "./Nav";
 import { TEST_IDS } from "../constants";
 import useEvents from "./hooks/useEvents";

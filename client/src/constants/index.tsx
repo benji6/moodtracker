@@ -5,7 +5,7 @@ import {
 } from "../formatters/dateTimeFormatters";
 import { addDays, startOfWeek } from "date-fns";
 import testIds from "./testIds";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 if (!process.env.BUILD_TIME) throw Error("BUILD_TIME is undefined");
 export const BUILD_TIME = process.env.BUILD_TIME;

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { shuffleBackgroundMesh } from "eri";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 export function useShuffleBackgroundMesh() {
   const { pathname } = useLocation();

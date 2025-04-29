@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { Paper, SubHeading } from "eri";
 import {
   formatIsoDateInLocalTimezone,

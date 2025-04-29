@@ -8,7 +8,7 @@ import { UpdateMood } from "../../../types";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { moodToColor } from "../../../utils";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export default function EditMood() {
   const dispatch = useDispatch();

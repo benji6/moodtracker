@@ -1,5 +1,5 @@
 import { formatIsoMonthInLocalTimezone, roundDateDown } from "../../../utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import SummaryForMonth from "../Stats/SummaryForMonth";
 import TrackedCategoriesByDay from "./TrackedCategoriesByDay";
 

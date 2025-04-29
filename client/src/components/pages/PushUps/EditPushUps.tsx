@@ -6,7 +6,7 @@ import RedirectHome from "../../shared/RedirectHome";
 import { TextField } from "eri";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export default function EditPushUps() {
   const dispatch = useDispatch();

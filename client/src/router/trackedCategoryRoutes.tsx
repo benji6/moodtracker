@@ -3,7 +3,7 @@ import EVENT_TYPE_TO_LABELS from "../constants/eventTypeToLabels";
 import { EventTypeCategories } from "../types";
 import Page from "../components/shared/Page";
 import RedirectHome from "../components/shared/RedirectHome";
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 import { capitalizeFirstLetter } from "../utils";
 
 interface Props {

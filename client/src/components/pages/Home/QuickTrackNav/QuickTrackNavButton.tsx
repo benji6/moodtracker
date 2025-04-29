@@ -2,7 +2,7 @@ import { Button } from "eri";
 import EVENT_TYPE_TO_LABELS from "../../../../constants/eventTypeToLabels";
 import EventIcon from "../../../shared/EventIcon";
 import { EventTypeCategories } from "../../../../types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface Props {
   eventType: EventTypeCategories;

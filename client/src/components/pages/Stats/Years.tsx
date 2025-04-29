@@ -4,7 +4,7 @@ import {
   formatIsoYearInLocalTimezone,
   mapRight,
 } from "../../../utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import MoodCell from "../../shared/MoodCell";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { addYears } from "date-fns";

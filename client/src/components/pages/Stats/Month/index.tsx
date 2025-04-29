@@ -13,7 +13,7 @@ import {
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
 } from "../../../../utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import LocationForPeriod from "../LocationForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";
 import MoodBySleepForPeriod from "../MoodBySleepForPeriod";

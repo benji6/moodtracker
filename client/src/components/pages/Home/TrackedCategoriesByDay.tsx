@@ -1,6 +1,6 @@
 import { Pagination, Paper } from "eri";
 import { createDateFromLocalDateString, mapRight } from "../../../utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
 import TrackedCategoriesList from "../../shared/TrackedCategoriesList";
 import { addDays } from "date-fns";

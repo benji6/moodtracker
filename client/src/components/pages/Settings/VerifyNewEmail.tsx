@@ -1,6 +1,6 @@
 import { Button, Paper, TextField } from "eri";
 import { FormEvent, ReactNode, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router";
 import { refreshSession, verifyNewEmail } from "../../../cognito";
 import { ERRORS } from "../../../constants";
 import { NEW_EMAIL_SEARCH_PARAM_KEY } from "./constants";

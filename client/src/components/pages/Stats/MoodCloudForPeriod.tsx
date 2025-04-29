@@ -3,7 +3,7 @@ import { MINIMUM_WORD_CLOUD_WORDS } from "../../../constants";
 import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface Props {
   dateFrom: Date;

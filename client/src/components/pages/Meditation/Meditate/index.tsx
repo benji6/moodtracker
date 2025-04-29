@@ -7,7 +7,7 @@ import {
   TIME,
 } from "../../../../constants";
 import EventIcon from "../../../shared/EventIcon";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useState } from "react";
 
 const MAX_MINUTES = 180;

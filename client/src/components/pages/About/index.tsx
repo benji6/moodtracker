@@ -5,7 +5,7 @@ import {
   REPO_URL,
 } from "../../../constants";
 import { Paper, ShareButton } from "eri";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Version from "../../shared/Version";
 
 export default function About() {

@@ -1,9 +1,5 @@
 import { initialState, reducer } from "./reducer";
-import {
-  useBeforeUnload,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useBeforeUnload, useNavigate, useSearchParams } from "react-router";
 import { useCallback, useEffect, useReducer, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LogMeditationDialog from "./LogMeditationDialog";

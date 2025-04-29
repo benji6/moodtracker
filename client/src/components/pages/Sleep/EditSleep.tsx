@@ -8,7 +8,7 @@ import RedirectHome from "../../shared/RedirectHome";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
 import { formatIsoDateInLocalTimezone } from "../../../utils";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export default function EditSleep() {
   const dispatch = useDispatch();

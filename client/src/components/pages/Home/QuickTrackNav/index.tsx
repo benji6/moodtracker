@@ -3,7 +3,7 @@ import { Button, Icon, Paper } from "eri";
 import { QuickTrackNavButton } from "./QuickTrackNavButton";
 import { TEST_IDS } from "../../../../constants";
 import appSlice from "../../../../store/appSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 export function QuickTrackNav() {

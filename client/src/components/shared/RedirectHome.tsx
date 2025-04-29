@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function RedirectHome() {
   const navigate = useNavigate();
-  useEffect(() => navigate("/"));
+  useEffect(() => void navigate("/"));
   return null;
 }

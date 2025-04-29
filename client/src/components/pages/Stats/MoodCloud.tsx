@@ -4,7 +4,7 @@ import { RootState } from "../../../store";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface Props {
   currentPeriod: {

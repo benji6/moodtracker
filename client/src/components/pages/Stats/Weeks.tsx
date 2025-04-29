@@ -9,7 +9,7 @@ import {
   formatIsoDateInLocalTimezone,
   mapRight,
 } from "../../../utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import MoodCell from "../../shared/MoodCell";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import eventsSlice from "../../../store/eventsSlice";

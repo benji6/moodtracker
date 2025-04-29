@@ -1,6 +1,6 @@
 import { Paper, Spinner } from "eri";
 import GetStartedCta from "../../shared/GetStartedCta";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import Months from "./Months";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
 import { TEST_IDS } from "../../../constants";

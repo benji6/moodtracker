@@ -1,5 +1,5 @@
 import { Button, Paper } from "eri";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 export default function GetStartedCta() {
   const navigate = useNavigate();

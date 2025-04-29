@@ -6,7 +6,7 @@ import { EventTypeCategories } from "../../types";
 import LiveLocation from "./LiveLocation";
 import { TEST_IDS } from "../../constants";
 import useKeyboardSave from "../hooks/useKeyboardSave";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface Props {
   children: ReactNode;

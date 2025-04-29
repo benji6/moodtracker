@@ -10,7 +10,7 @@ import {
 import { del, get, set } from "idb-keyval";
 import { Provider } from "react-redux";
 import { QueryClient } from "@tanstack/react-query";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router";
 import { StrictMode } from "react";
 import { captureException } from "./sentry";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";

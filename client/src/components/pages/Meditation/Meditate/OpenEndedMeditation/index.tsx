@@ -4,7 +4,7 @@ import { Meditation } from "../../../../../types";
 import OpenEndedMeditationPresentation from "./OpenEndedMeditationPresentation";
 import deviceSlice from "../../../../../store/deviceSlice";
 import eventsSlice from "../../../../../store/eventsSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import useWakeLock from "../../../../hooks/useWakeLock";
 
 export default function OpenEndedMeditation() {

@@ -9,7 +9,7 @@ import Location from "./Location";
 import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import { formatDistanceToNow } from "date-fns";
 import useKeyboardSave from "../hooks/useKeyboardSave";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 interface Props {
   children: ReactNode;

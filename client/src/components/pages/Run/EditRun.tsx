@@ -8,7 +8,7 @@ import RedirectHome from "../../shared/RedirectHome";
 import { UpdateRun } from "../../../types";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 export default function EditRun() {
   const dispatch = useDispatch();

@@ -10,7 +10,7 @@ import {
   SUMMARY_PROPS,
   WORD_CLOUD_PROPS,
 } from "./constants";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { MOODTRACKER_DESCRIPTION, TEST_IDS } from "../../../constants";
 import LocationMap from "../../shared/LocationMap";
 import MeditationTimerClock from "../Meditation/Meditate/MeditationTimer/MeditationTimerPresentation/MeditationTimerClock";

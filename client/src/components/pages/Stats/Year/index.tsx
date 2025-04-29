@@ -9,7 +9,7 @@ import {
   monthNarrowFormatter,
   yearFormatter,
 } from "../../../../formatters/dateTimeFormatters";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import LocationForPeriod from "../LocationForPeriod";
 import MeditationByMonthForPeriod from "./MeditationByMonthForPeriod";
 import MeditationImpactForPeriod from "../MeditationImpactForPeriod";

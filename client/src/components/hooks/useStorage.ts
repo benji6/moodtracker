@@ -6,7 +6,7 @@ import { captureException } from "../../sentry";
 import eventsSlice from "../../store/eventsSlice";
 import settingsSlice from "../../store/settingsSlice";
 import storage from "../../storage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import userSlice from "../../store/userSlice";
 
 export default function useStorage() {

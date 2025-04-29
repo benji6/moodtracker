@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import DateRangeSelector from "../../shared/DateRangeSelector";
 import ExportControls from "../../shared/ExportControls";
 import Fuse from "fuse.js";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router";
 import MoodCard from "../../shared/MoodCard";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
 import OptionalMoodCell from "../Home/OptionalMoodCell";

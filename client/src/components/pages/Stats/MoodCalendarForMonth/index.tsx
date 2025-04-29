@@ -11,7 +11,7 @@ import { WEEKDAY_LABELS_NARROW } from "../../../../constants";
 import { dateFormatter } from "../../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../../store/eventsSlice";
 import { oneDecimalPlaceFormatter } from "../../../../formatters/numberFormatters";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { ERRORS } from "../../constants";
 import { SignInPage } from "eri";
 import appSlice from "../../store/appSlice";

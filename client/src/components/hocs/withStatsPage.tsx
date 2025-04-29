@@ -5,7 +5,7 @@ import RedirectHome from "../shared/RedirectHome";
 import { createDateFromLocalDateString } from "../../utils";
 import eventsSlice from "../../store/eventsSlice";
 import { isValid } from "date-fns";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 
 // TODO probably a nicer way of writing this

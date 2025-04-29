@@ -7,7 +7,7 @@ import {
   createDateFromLocalDateString,
   formatIsoDateInLocalTimezone,
 } from "../../../../utils";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import MoodByHourForPeriod from "../MoodByHourForPeriod";
 import MoodByWeekdayForPeriod from "../MoodByWeekdayForPeriod";
 import MoodCalendarForMonth from "../MoodCalendarForMonth";
