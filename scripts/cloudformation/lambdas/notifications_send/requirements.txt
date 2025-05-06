@@ -1,1 +1,1 @@
-firebase_admin==6.7.0
+firebase_admin==6.8.0
