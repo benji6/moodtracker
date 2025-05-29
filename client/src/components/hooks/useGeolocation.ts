@@ -1,6 +1,7 @@
+import { captureException } from "../../sentry";
+import { DeviceGeolocation } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
-import { DeviceGeolocation } from "../../types";
 import deviceSlice from "../../store/deviceSlice";
 import settingsSlice from "../../store/settingsSlice";
 import useHasBeenActive from "./useHasBeenActive";
@@ -44,6 +45,9 @@ export default function useGeolocation() {
 
         dispatch(deviceSlice.actions.setGeolocation(geolocation));
       },
+      captureException,
+      // 10 seconds: `maximumAge` units are milliseconds
+      { maximumAge: 1e4 },
     );
   }, [dispatch, hasBeenActive, shouldRecordLocation]);
 }
