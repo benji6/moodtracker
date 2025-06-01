@@ -46,7 +46,7 @@
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
+    "@eslint/js": "^9.28.0",
     "@parcel/packager-raw-url": "^2.7.0",
     "@parcel/transformer-webmanifest": "^2.7.0",
     "@types/d3-geo": "^3.0.2",
