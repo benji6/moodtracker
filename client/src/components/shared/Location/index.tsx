@@ -49,7 +49,7 @@ export default function Location({
                 <td>Longitude</td>
                 <td>{floatDegreeFormatter.format(longitude)}</td>
               </tr>
-              {altitude && (
+              {altitude !== undefined && (
                 <tr>
                   <td>Altitude</td>
                   <td>{integerMeterFormatter.format(altitude)}</td>
