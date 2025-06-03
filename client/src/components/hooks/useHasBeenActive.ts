@@ -7,9 +7,7 @@ interface UserActivation {
 
 let userActivation: UserActivation;
 
-if ("userActivation" in navigator)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  userActivation = (navigator as any).userActivation;
+if ("userActivation" in navigator) userActivation = navigator.userActivation;
 else {
   // https://html.spec.whatwg.org/multipage/interaction.html#activation-triggering-input-event
   const ACTIVATION_TRIGGERING_INPUT_EVENTS: readonly Event["type"][] = [
