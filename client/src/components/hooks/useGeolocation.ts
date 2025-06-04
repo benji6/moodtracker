@@ -4,19 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 import deviceSlice from "../../store/deviceSlice";
 import settingsSlice from "../../store/settingsSlice";
-import useHasBeenActive from "./useHasBeenActive";
 
 export default function useGeolocation() {
   const shouldRecordLocation = useSelector(
     settingsSlice.selectors.recordLocation,
   );
   const dispatch = useDispatch();
-  const hasBeenActive = useHasBeenActive();
 
   const idRef = useRef<number>(undefined);
 
   useEffect(() => {
-    if (!hasBeenActive) return;
     if (!shouldRecordLocation) {
       if (idRef.current !== undefined)
         navigator.geolocation.clearWatch(idRef.current);
@@ -49,5 +46,5 @@ export default function useGeolocation() {
       // 10 seconds: `maximumAge` units are milliseconds
       { maximumAge: 1e4 },
     );
-  }, [dispatch, hasBeenActive, shouldRecordLocation]);
+  }, [dispatch, shouldRecordLocation]);
 }
