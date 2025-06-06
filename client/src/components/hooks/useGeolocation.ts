@@ -20,32 +20,28 @@ export default function useGeolocation() {
       dispatch(deviceSlice.actions.clear());
       return;
     }
-    const positionCallback: PositionCallback = ({
-      coords: { accuracy, altitude, altitudeAccuracy, latitude, longitude },
-    }) => {
-      const geolocation: DeviceGeolocation = {
-        // meters
-        accuracy: Math.round(accuracy),
-        // Should be accurate to around 10 meters https://en.wikipedia.org/wiki/Decimal_degrees#Precision
-        // This should be sufficient given the accuracy value is typically in excess of that
-        latitude: Number(latitude.toFixed(4)),
-        longitude: Number(longitude.toFixed(4)),
-      };
-      if (altitude !== null) {
-        geolocation.altitude = Math.round(altitude);
-        if (altitudeAccuracy !== null)
-          geolocation.altitudeAccuracy = Math.round(altitudeAccuracy);
-      }
-      dispatch(deviceSlice.actions.setGeolocation(geolocation));
-    };
-    navigator.geolocation.getCurrentPosition(
-      positionCallback,
-      captureException,
-      // 10 seconds: `maximumAge` units are milliseconds
-      { maximumAge: 1e4 },
-    );
     idRef.current = navigator.geolocation.watchPosition(
-      positionCallback,
+      ({
+        coords: { accuracy, altitude, altitudeAccuracy, latitude, longitude },
+      }) => {
+        const geolocation: DeviceGeolocation = {
+          // meters
+          accuracy: Math.round(accuracy),
+
+          // Should be accurate to around 10 meters https://en.wikipedia.org/wiki/Decimal_degrees#Precision
+          // This should be sufficient given the accuracy value is typically in excess of that
+          latitude: Number(latitude.toFixed(4)),
+          longitude: Number(longitude.toFixed(4)),
+        };
+
+        if (altitude !== null) {
+          geolocation.altitude = Math.round(altitude);
+          if (altitudeAccuracy !== null)
+            geolocation.altitudeAccuracy = Math.round(altitudeAccuracy);
+        }
+
+        dispatch(deviceSlice.actions.setGeolocation(geolocation));
+      },
       captureException,
       // 10 seconds: `maximumAge` units are milliseconds
       { maximumAge: 1e4 },
