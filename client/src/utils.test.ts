@@ -351,7 +351,7 @@ describe("utils", () => {
   };
 
   test("computeMean", () => {
-    expect(() => computeMean([])).toThrowError(
+    expect(() => computeMean([])).toThrow(
       Error("Need at least one number to compute mean"),
     );
     sharedMeanTests(computeMean);
@@ -380,10 +380,10 @@ describe("utils", () => {
   });
 
   test("createChartExtent", () => {
-    expect(() => createChartExtent([])).toThrowError(
+    expect(() => createChartExtent([])).toThrow(
       Error("`createChartExtent` requires at least 2 values but received 0"),
     );
-    expect(() => createChartExtent([0])).toThrowError(
+    expect(() => createChartExtent([0])).toThrow(
       "`createChartExtent` requires at least 2 values but received 1",
     );
     expect(createChartExtent([0, 0])).toEqual([-5, 5]);
