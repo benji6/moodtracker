@@ -229,8 +229,8 @@ export interface WeatherApiResponse {
       feels_like: number;
       humidity: number;
       pressure: number;
-      rain?: number;
-      snow?: number;
+      rain?: { "1h": number };
+      snow?: { "1h": number };
       sunrise: number;
       sunset: number;
       temp: number;
