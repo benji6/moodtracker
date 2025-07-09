@@ -13,6 +13,7 @@ import { capitalizeFirstLetter } from "../../../../utils";
 import { integerMeterFormatter } from "../../../../formatters/formatDistance";
 import { timeFormatter } from "../../../../formatters/dateTimeFormatters";
 import { useWeatherQuery } from "../../../hooks/weatherHooks";
+import WeatherTableRow from "./WeatherTableRow";
 
 interface Props {
   date: Date;
@@ -68,12 +69,7 @@ export default function Weather({ date, latitude, longitude }: Props) {
                 {(
                   Object.entries(weatherData) as Entries<typeof weatherData>
                 ).map(([k, v]) => {
-                  if (k === "dt") return null;
-
-                  // This removes the `weather` property
-                  // It is done this way to help TypeScript understand the types
-                  // It relies on all other properties being numbers (currently true)
-                  if (typeof v !== "number") return;
+                  if (k === "dt" || !v) return;
 
                   const name =
                     k === "uvi"
@@ -109,56 +105,60 @@ export default function Weather({ date, latitude, longitude }: Props) {
                         "The strength of sunburn-producing ultraviolet radiation";
                   }
 
-                  let displayValue: number | string = v;
-                  switch (k) {
-                    case "clouds":
-                    case "humidity":
-                      displayValue = integerPercentFormatter.format(v / 100);
-                      break;
-                    case "dew_point":
-                    case "feels_like":
-                    case "temp":
-                      displayValue = formatKelvinToCelcius(v);
-                      break;
-                    case "pressure":
-                      displayValue = `${integerFormatter.format(v)} hPa`;
-                      break;
-                    case "rain":
-                    case "snow":
-                      // I haven't seen the actual API data and don't know what precision this number has
-                      displayValue = `${integerFormatter.format(v)} mm/hour`;
-                      break;
-                    case "sunrise":
-                    case "sunset":
-                      displayValue = timeFormatter.format(new Date(v * 1e3));
-                      break;
-                    case "visibility":
-                      displayValue = integerMeterFormatter.format(v);
-                      break;
-                    case "wind_deg":
-                      displayValue = integerDegreeFormatter.format(v);
-                      break;
-                    case "wind_speed":
-                    case "wind_gust":
-                      displayValue = `${twoDecimalPlacesFormatter.format(
-                        v,
-                      )} m/s`;
+                  if (typeof v === "number") {
+                    let displayValue = String(v);
+                    switch (k) {
+                      case "clouds":
+                      case "humidity":
+                        displayValue = integerPercentFormatter.format(v / 100);
+                        break;
+                      case "dew_point":
+                      case "feels_like":
+                      case "temp":
+                        displayValue = formatKelvinToCelcius(v);
+                        break;
+                      case "pressure":
+                        displayValue = `${integerFormatter.format(v)} hPa`;
+                        break;
+                      case "sunrise":
+                      case "sunset":
+                        displayValue = timeFormatter.format(new Date(v * 1e3));
+                        break;
+                      case "visibility":
+                        displayValue = integerMeterFormatter.format(v);
+                        break;
+                      case "wind_deg":
+                        displayValue = integerDegreeFormatter.format(v);
+                        break;
+                      case "wind_speed":
+                      case "wind_gust":
+                        displayValue = `${twoDecimalPlacesFormatter.format(
+                          v,
+                        )} m/s`;
+                    }
+
+                    return (
+                      <WeatherTableRow
+                        displayValue={displayValue}
+                        iconName={iconName}
+                        key={k}
+                        name={name}
+                        supportiveText={supportiveText}
+                      />
+                    );
                   }
 
-                  return (
-                    <tr key={k}>
-                      <td>
-                        <Icon margin="end" name={iconName} />
-                        {name}
-                        {supportiveText && (
-                          <small>
-                            <div>{supportiveText}</div>
-                          </small>
-                        )}
-                      </td>
-                      <td className="nowrap">{displayValue}</td>
-                    </tr>
-                  );
+                  if ("1h" in v) {
+                    return (
+                      <WeatherTableRow
+                        displayValue={`${twoDecimalPlacesFormatter.format(v["1h"])} mm/hour`}
+                        iconName={iconName}
+                        key={k}
+                        name={name}
+                        supportiveText={supportiveText}
+                      />
+                    );
+                  }
                 })}
               </tbody>
             </table>
