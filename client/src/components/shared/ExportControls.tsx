@@ -41,9 +41,16 @@ const downloadCsv = (
   }
 
   saveAs(
-    new Blob([unparse(flattenedDenormalizedData, { columns: [...columns] })], {
-      type: "text/csv",
-    }),
+    new Blob(
+      [
+        unparse(flattenedDenormalizedData, {
+          columns: [...columns].sort((a, b) => a.localeCompare(b)),
+        }),
+      ],
+      {
+        type: "text/csv",
+      },
+    ),
     createFilename(dataType, "csv"),
   );
 };

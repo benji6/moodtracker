@@ -127,11 +127,22 @@ export default function MoodLog() {
         <h3>
           Export
           <SubHeading>
-            Export all your moods (choose CSV format if you want to load your
-            data into a spreadsheet)
+            Export {shouldShowFilter || "all"} your{" "}
+            {shouldShowFilter && "filtered"} moods (choose CSV format if you
+            want to load your data into a spreadsheet)
           </SubHeading>
         </h3>
-        <ExportControls category="moods" denormalizedData={denormalizedMoods} />
+        <ExportControls
+          category="moods"
+          denormalizedData={
+            shouldShowFilter
+              ? filteredMoodIds.map((id) => ({
+                  createdAt: id,
+                  ...moods.byId[id],
+                }))
+              : denormalizedMoods
+          }
+        />
         {filterFeatureAvailable && (
           <search>
             <h3>Search</h3>
