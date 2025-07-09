@@ -41,11 +41,11 @@ export type NormalizedEvents =
   | NormalizedSleeps
   | NormalizedWeights;
 export type DenormalizedEvents =
-  | Meditation[]
-  | Mood[]
-  | Run[]
-  | ValueAndLocationEvent[]
-  | Sleep[];
+  | (Meditation & { createdAt: string })[]
+  | (Mood & { createdAt: string })[]
+  | (Run & { createdAt: string })[]
+  | (ValueAndLocationEvent & { createdAt: string })[]
+  | (Sleep & { createdAt: string })[];
 
 export interface Meditation {
   location?: DeviceGeolocation;
