@@ -197,9 +197,8 @@ export const FIELDS = {
 } as const;
 
 export const HIGHLY_CACHED_QUERY_OPTIONS = {
-  cacheTime: Infinity,
   networkMode: "offlineFirst",
-  staleTime: TIME.secondsPerYear * 1e3,
+  staleTime: Infinity,
 } as const;
 
 const now = Date.now();

@@ -18,7 +18,9 @@ import { percentFormatter } from "./formatters/numberFormatters";
 import router from "./router";
 import store from "./store";
 
-export const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: { queries: { gcTime: Infinity } },
+});
 
 if ("serviceWorker" in navigator)
   navigator.serviceWorker.register(
