@@ -52,27 +52,47 @@ type QueryKey = [
 export const useWeatherQueries = (ids: string[]) => {
   const eventsById = useSelector(eventsSlice.selectors.byId);
 
-  return useQueries({
-    queries: ids.map((id) => {
-      const { payload } = eventsById[id];
-      if (
-        typeof payload === "string" ||
-        !("location" in payload) ||
-        payload.location === undefined
-      )
-        throw Error("Expected payload to have a location");
-      const {
-        location: { latitude, longitude },
-      } = payload;
-      const queryKey: QueryKey = [
-        QUERY_KEYS.weather,
-        roundQueryParameters({ date: new Date(id), latitude, longitude }),
-      ];
-      return {
-        ...HIGHLY_CACHED_QUERY_OPTIONS,
-        queryKey,
-        queryFn: fetchWeather,
-      };
-    }),
+  const queryKeys = ids.map((id) => {
+    const { payload } = eventsById[id];
+    if (
+      typeof payload === "string" ||
+      !("location" in payload) ||
+      payload.location === undefined
+    )
+      throw Error("Expected payload to have a location");
+    const {
+      location: { latitude, longitude },
+    } = payload;
+    const queryKey: QueryKey = [
+      QUERY_KEYS.weather,
+      roundQueryParameters({ date: new Date(id), latitude, longitude }),
+    ];
+    return {
+      queryKey,
+      queryKeyString: `${queryKey[1].date},${queryKey[1].latitude},${queryKey[1].longitude}`,
+    };
+  });
+
+  const queryStringToIndex = new Map<string, number>();
+  const uniqueQueryKeys: QueryKey[] = [];
+  for (const { queryKey, queryKeyString } of queryKeys) {
+    if (queryStringToIndex.has(queryKeyString)) continue;
+    queryStringToIndex.set(queryKeyString, uniqueQueryKeys.length);
+    uniqueQueryKeys.push(queryKey);
+  }
+
+  // `useQueries` does not support duplicate query keys, hence we filter them out
+  const results = useQueries({
+    queries: uniqueQueryKeys.map((queryKey) => ({
+      ...HIGHLY_CACHED_QUERY_OPTIONS,
+      queryKey,
+      queryFn: fetchWeather,
+    })),
+  });
+
+  return queryKeys.map(({ queryKeyString }) => {
+    const index = queryStringToIndex.get(queryKeyString);
+    if (index === undefined) throw Error("Expected index to be defined");
+    return results[index];
   });
 };
