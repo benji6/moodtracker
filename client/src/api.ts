@@ -60,7 +60,7 @@ const fetchWithAuthAndRetry = async (
 };
 
 export const fetchWeather = async ({
-  queryKey: [, { date, latitude, longitude }],
+  queryKey: [, { date: timestamp, latitude, longitude }],
 }: {
   queryKey: Readonly<
     [
@@ -69,11 +69,25 @@ export const fetchWeather = async ({
     ]
   >;
 }): Promise<WeatherApiResponse> => {
+  const storedWeather = await storage.getWeather({
+    latitude,
+    longitude,
+    timestamp,
+  });
+  if (storedWeather) return storedWeather;
   const response = await fetchWithAuth(
-    `${WEATHER_URI}?lat=${latitude}&lon=${longitude}&t=${date}`,
+    `${WEATHER_URI}?lat=${latitude}&lon=${longitude}&t=${timestamp}`,
   );
   if (!response.ok) throw Error(String(response.status));
-  return response.json();
+  const weather = await response.json();
+  // Some of these cached weathers will never be retrieved
+  // because we fetch weather on the add event pages before events are saved.
+  // Probably very few of these will not be retrieved again,
+  // so we don't need to worry about the cache growing too large.
+  // In future we could clean the cache up or just wait for
+  // https://github.com/TanStack/query/issues/8604 to be resolved
+  storage.setWeather({ latitude, longitude, timestamp }, weather);
+  return weather;
 };
 
 export const fetchWeatherBatch = async ({

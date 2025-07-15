@@ -1,8 +1,14 @@
-import { DenormalizedEvents, EventTypeCategories } from "../../types";
+import {
+  DenormalizedEvents,
+  EventTypeCategories,
+  WeatherApiResponse,
+} from "../../types";
 import { Button } from "eri";
 import { formatIsoDateInLocalTimezone } from "../../utils";
 import { saveAs } from "file-saver";
 import { unparse } from "papaparse";
+import { useWeatherQueries } from "../hooks/weatherHooks";
+import getDataForRenderingWeather from "./Location/Weather/getDataForRenderingWeather";
 
 const createFilename = (
   dataType: EventTypeCategories,
@@ -17,6 +23,7 @@ type FlattenedDatum = Record<string, number | string>;
 const downloadCsv = (
   dataType: EventTypeCategories,
   denormalizedData: DenormalizedEvents,
+  weatherData: Record<string, WeatherApiResponse>,
 ) => {
   const columns = new Set<string>();
   const flattenedDenormalizedData: FlattenedDatum[] = [];
@@ -37,6 +44,18 @@ const downloadCsv = (
         columns.add(flattenedKey);
       }
     }
+
+    const weather = weatherData[datum.createdAt]?.data?.[0];
+    if (weather) {
+      for (const { name, displayValue } of getDataForRenderingWeather(
+        weather,
+      )) {
+        const flattenedKey = `weather:${name}`;
+        flattenedDatum[flattenedKey] = displayValue;
+        columns.add(flattenedKey);
+      }
+    }
+
     flattenedDenormalizedData.push(flattenedDatum);
   }
 
@@ -58,11 +77,24 @@ const downloadCsv = (
 const downloadJson = (
   dataType: EventTypeCategories,
   denormalizedData: DenormalizedEvents,
+  weatherData: Record<string, WeatherApiResponse>,
 ) => {
   saveAs(
-    new Blob([JSON.stringify(denormalizedData)], {
-      type: "application/json",
-    }),
+    new Blob(
+      [
+        JSON.stringify(
+          denormalizedData.map((datum) => {
+            const weather = weatherData[datum.createdAt];
+            return weather?.data?.[0]
+              ? { ...datum, weather: weather.data[0] }
+              : datum;
+          }),
+        ),
+      ],
+      {
+        type: "application/json",
+      },
+    ),
     createFilename(dataType, "json"),
   );
 };
@@ -73,16 +105,32 @@ interface Props {
 }
 
 export default function ExportControls({ category, denormalizedData }: Props) {
+  const eventsWithLocation = denormalizedData.filter((d) => "location" in d);
+  const weatherResults = useWeatherQueries(
+    eventsWithLocation.map(({ createdAt }) => createdAt),
+  );
+
+  const eventIdToWeather: Record<string, WeatherApiResponse> = {};
+  for (let i = 0; i < weatherResults.length; i++) {
+    const weather = weatherResults[i];
+    if (weather?.data)
+      eventIdToWeather[eventsWithLocation[i].createdAt] = weather;
+  }
+
   return denormalizedData.length ? (
     <Button.Group>
       <Button
-        onClick={() => downloadCsv(category, denormalizedData)}
+        onClick={() =>
+          downloadCsv(category, denormalizedData, eventIdToWeather)
+        }
         type="button"
       >
         Export as CSV
       </Button>
       <Button
-        onClick={() => downloadJson(category, denormalizedData)}
+        onClick={() =>
+          downloadJson(category, denormalizedData, eventIdToWeather)
+        }
         type="button"
         variant="secondary"
       >

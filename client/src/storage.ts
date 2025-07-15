@@ -52,6 +52,16 @@ export default {
     );
     return delMany(weatherKeys);
   },
+  getWeather: ({
+    latitude,
+    longitude,
+    timestamp,
+  }: {
+    latitude: string;
+    longitude: string;
+    timestamp: number;
+  }): Promise<WeatherApiResponse | undefined> =>
+    get(makeWeatherKey({ latitude, longitude, timestamp })),
   getWeathers: (
     parameterList: {
       latitude: string;
