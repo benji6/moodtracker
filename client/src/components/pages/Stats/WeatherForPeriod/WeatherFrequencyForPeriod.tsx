@@ -8,7 +8,7 @@ import { getWeatherDisplayData } from "../../../../utils";
 
 interface Props {
   eventIds: string[];
-  weatherResultsData: UseQueryResult<WeatherApiResponse, Error>["data"][];
+  weatherResultsData: (WeatherApiResponse | undefined)[];
   weatherResultStatuses: UseQueryResult<WeatherApiResponse, Error>["status"][];
 }
 

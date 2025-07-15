@@ -5,6 +5,7 @@ import { getRegistrationToken } from "./firebase";
 import { queryClient } from ".";
 import { userPool } from "./cognito";
 import { webPushTokensDelete } from "./api";
+import storage from "./storage";
 
 export default async function signOut(currentUser = userPool.getCurrentUser()) {
   const { state } = await navigator.permissions.query({
@@ -39,4 +40,6 @@ export default async function signOut(currentUser = userPool.getCurrentUser()) {
     if (k === "reverseGeolocation" || k === "usage") continue;
     queryClient.removeQueries({ queryKey: [v] });
   }
+
+  return storage.deleteWeathers();
 }

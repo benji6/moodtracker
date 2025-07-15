@@ -8,6 +8,7 @@ import { addMinutes, subMinutes } from "date-fns";
 import { captureException } from "./sentry";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
+import storage from "./storage";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
@@ -73,6 +74,36 @@ export const fetchWeather = async ({
   );
   if (!response.ok) throw Error(String(response.status));
   return response.json();
+};
+
+export const fetchWeatherBatch = async ({
+  queryKey: [, parameters],
+}: {
+  queryKey: [
+    string,
+    {
+      latitude: string;
+      longitude: string;
+      timestamp: number;
+    }[],
+  ];
+}) => {
+  const storedWeathers = await storage.getWeathers(parameters);
+  return Promise.all(
+    parameters.map(
+      ({ latitude, longitude, timestamp }, index) =>
+        storedWeathers[index] ??
+        fetchWeather({
+          queryKey: [
+            QUERY_KEYS.weather,
+            { date: timestamp, latitude, longitude },
+          ],
+        }).then((weather) => {
+          storage.setWeather({ latitude, longitude, timestamp }, weather);
+          return weather;
+        }),
+    ),
+  );
 };
 
 // events queries do not use react-query so they are made with retry

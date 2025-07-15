@@ -32,19 +32,26 @@ export default function WeatherForPeriod({
   const weatherResultsForEnvelopingEvents = useWeatherQueries(
     envelopingEventIdsWithLocation,
   );
-  const weatherResultsDataForEnvelopingEvents = [];
+  const weatherResultsDataForEnvelopingEvents: (
+    | WeatherApiResponse
+    | undefined
+  )[] = [];
   const weatherResultStatusesForEnvelopingEvents: UseQueryResult<
     WeatherApiResponse,
     Error
   >["status"][] = [];
 
-  const weatherResultsDataForEventsInPeriod = [];
+  const weatherResultsDataForEventsInPeriod: (
+    | WeatherApiResponse
+    | undefined
+  )[] = [];
   const weatherResultStatusesForEventsInPeriod: UseQueryResult<
     WeatherApiResponse,
     Error
   >["status"][] = [];
 
-  const weatherResultsDataForMoodsInPeriod = [];
+  const weatherResultsDataForMoodsInPeriod: (WeatherApiResponse | undefined)[] =
+    [];
   const weatherResultStatusesForMoodsInPeriod: UseQueryResult<
     WeatherApiResponse,
     Error
@@ -54,7 +61,8 @@ export default function WeatherForPeriod({
 
     // Reading status (and maybe data - I only tested status)
     // is expensive so we are minimizing this operation
-    const { data, status } = weatherResultsForEnvelopingEvents[i];
+    const data = weatherResultsForEnvelopingEvents[i];
+    const status = weatherResultsForEnvelopingEvents[i] ? "success" : "pending";
     weatherResultStatusesForEnvelopingEvents.push(status);
     weatherResultsDataForEnvelopingEvents.push(data);
     if (id < dateFrom.toISOString() || id > dateTo.toISOString()) continue;
