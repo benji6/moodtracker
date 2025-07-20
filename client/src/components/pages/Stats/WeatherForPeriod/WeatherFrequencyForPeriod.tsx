@@ -59,8 +59,6 @@ export default function WeatherFrequencyForPeriod({
       return yDifference || a.text.localeCompare(b.text);
     });
 
-  if (!frequencyChartData.length) return;
-
   return (
     <Paper>
       <h3>
@@ -77,13 +75,15 @@ export default function WeatherFrequencyForPeriod({
           )}
         </SubHeading>
       </h3>
-      <Chart.ColumnChart
-        aria-label="Chart displaying the frequency at which different weather types were recorded"
-        data={frequencyChartData}
-        rotateXLabels
-        xAxisTitle="Weather"
-        yAxisTitle="Count"
-      />
+      {Boolean(frequencyChartData.length) && (
+        <Chart.ColumnChart
+          aria-label="Chart displaying the frequency at which different weather types were recorded"
+          data={frequencyChartData}
+          rotateXLabels
+          xAxisTitle="Weather"
+          yAxisTitle="Count"
+        />
+      )}
       <WeatherLoadingStatus weatherResultStatuses={weatherResultStatuses} />
     </Paper>
   );

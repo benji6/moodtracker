@@ -71,8 +71,6 @@ export default function MoodByWeatherForPeriod({
       return yDifference || a.labelText.localeCompare(b.labelText);
     });
 
-  if (!data.length) return;
-
   return (
     <Paper>
       <MoodByWeatherChart data={data} />

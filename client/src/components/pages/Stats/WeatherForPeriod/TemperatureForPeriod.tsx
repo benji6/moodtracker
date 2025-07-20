@@ -23,7 +23,7 @@ export default function TemperatureForPeriod({
   weatherResultStatuses,
   xLabels,
 }: Props) {
-  if (!eventIds.length) return;
+  if (!eventIds.length || weatherResultsData.length < 2) return;
 
   const temperatures: number[] = [];
   const chartData: [number, number][] = [];
@@ -34,7 +34,6 @@ export default function TemperatureForPeriod({
     temperatures.push(celcius);
     chartData.push([new Date(eventIds[i]).getTime(), celcius]);
   }
-  if (chartData.length < 2) return;
 
   const chartVariation: "small" | "medium" | "large" =
     chartData.length >= 128
@@ -46,25 +45,27 @@ export default function TemperatureForPeriod({
   return (
     <Paper>
       <h3>Temperature chart</h3>
-      <Chart.LineChart
-        aria-label="Chart displaying temperature against time"
-        centerXAxisLabels={centerXAxisLabels}
-        domain={[dateFrom.getTime(), dateTo.getTime()]}
-        points={
-          chartVariation === "small"
-            ? chartData.map(([x, y]) => ({ x, y }))
-            : undefined
-        }
-        range={createChartExtent(temperatures)}
-        xAxisLabels={xLabels}
-        xAxisTitle="Month"
-        yAxisTitle="Temperature (°C)"
-      >
-        <Chart.Line
-          data={chartData}
-          thickness={chartVariation === "medium" ? 2 : undefined}
-        />
-      </Chart.LineChart>
+      {chartData.length >= 2 && (
+        <Chart.LineChart
+          aria-label="Chart displaying temperature against time"
+          centerXAxisLabels={centerXAxisLabels}
+          domain={[dateFrom.getTime(), dateTo.getTime()]}
+          points={
+            chartVariation === "small"
+              ? chartData.map(([x, y]) => ({ x, y }))
+              : undefined
+          }
+          range={createChartExtent(temperatures)}
+          xAxisLabels={xLabels}
+          xAxisTitle="Month"
+          yAxisTitle="Temperature (°C)"
+        >
+          <Chart.Line
+            data={chartData}
+            thickness={chartVariation === "medium" ? 2 : undefined}
+          />
+        </Chart.LineChart>
+      )}
       <WeatherLoadingStatus weatherResultStatuses={weatherResultStatuses} />
     </Paper>
   );
