@@ -2841,7 +2841,7 @@ describe("eventsSlice", () => {
           ).toBe(3);
         });
 
-        it("works with 2 meditations and only one in the interval", () => {
+        it("works with 2 events and only one in the interval", () => {
           expect(
             eventsSlice.selectors.totalPushUpsInPeriod(
               stateB,
@@ -2858,7 +2858,7 @@ describe("eventsSlice", () => {
           ).toBe(10);
         });
 
-        it("works with 2 meditations and both outside the interval", () => {
+        it("works with 2 events and both outside the interval", () => {
           expect(
             eventsSlice.selectors.totalPushUpsInPeriod(
               stateB,
