@@ -272,11 +272,10 @@ export const getEnvelopingIds = (
   const fromIso = dateFrom.toISOString();
   const toIso = dateTo.toISOString();
 
-  const envelopingIds = [];
-  let i = Math.max(bisectLeft(ids, fromIso) - 1, 0);
-  while (i < ids.length && ids[i] <= toIso) envelopingIds.push(ids[i++]);
-  if (i < ids.length) envelopingIds.push(ids[i]);
-  return envelopingIds;
+  const i = Math.max(bisectLeft(ids, fromIso) - 1, 0);
+  const j = bisectLeft(ids, toIso, i);
+
+  return ids.slice(i, j + Number(ids[j] <= toIso) + Number(j < ids.length));
 };
 
 export const getIdsInInterval = (
@@ -285,12 +284,13 @@ export const getIdsInInterval = (
   dateTo: Date,
 ): typeof ids => {
   if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
-  const idsInInterval: typeof ids = [];
+
   const fromIso = dateFrom.toISOString();
   const toIso = dateTo.toISOString();
-  let i = bisectLeft(ids, fromIso);
-  while (i < ids.length && ids[i] <= toIso) idsInInterval.push(ids[i++]);
-  return idsInInterval;
+
+  const i = bisectLeft(ids, fromIso);
+  const j = bisectLeft(ids, toIso, i);
+  return ids.slice(i, j + Number(ids[j] <= toIso));
 };
 
 export const hasIdsInInterval = (
