@@ -118,21 +118,24 @@ export const computeAverageMoodInInterval = (
     moods.allIds[moods.allIds.length - 1],
   ).getTime();
 
-  const d0 = dateFrom.getTime();
-  const d1 = dateTo.getTime();
+  const fromTimestamp = dateFrom.getTime();
+  const toTimestamp = dateTo.getTime();
 
-  if (d1 < d0) {
+  if (toTimestamp < fromTimestamp) {
     captureException(Error("`dateFrom` must be equal to or before `dateTo`"));
     return;
   }
-  if (d0 > latestMoodTime || d1 < earliestMoodTime) return;
+  if (fromTimestamp > latestMoodTime || toTimestamp < earliestMoodTime) return;
 
   if (moods.allIds.length === 1) return moods.byId[moods.allIds[0]].mood;
-  if (d1 === earliestMoodTime) return moods.byId[dateTo.toISOString()].mood;
-  if (d0 === latestMoodTime) return moods.byId[dateFrom.toISOString()].mood;
+  if (toTimestamp === earliestMoodTime)
+    return moods.byId[dateTo.toISOString()].mood;
+  if (fromTimestamp === latestMoodTime)
+    return moods.byId[dateFrom.toISOString()].mood;
 
   const maxArea =
-    (Math.min(d1, latestMoodTime) - Math.max(d0, earliestMoodTime)) *
+    (Math.min(toTimestamp, latestMoodTime) -
+      Math.max(fromTimestamp, earliestMoodTime)) *
     MOOD_EXTENT;
 
   let area = 0;
@@ -148,29 +151,29 @@ export const computeAverageMoodInInterval = (
     const t1 = new Date(id1).getTime();
     const mood1 = moods.byId[id1].mood;
 
-    if (t0 < d0 && t1 > d1) {
+    if (t0 < fromTimestamp && t1 > toTimestamp) {
       area += trapeziumArea(
-        mood0 + ((mood1 - mood0) * (d0 - t0)) / (t1 - t0),
-        mood0 + ((mood1 - mood0) * (d1 - t0)) / (t1 - t0),
-        d1 - d0,
+        mood0 + ((mood1 - mood0) * (fromTimestamp - t0)) / (t1 - t0),
+        mood0 + ((mood1 - mood0) * (toTimestamp - t0)) / (t1 - t0),
+        toTimestamp - fromTimestamp,
       );
       continue;
     }
 
-    if (t0 < d0) {
+    if (t0 < fromTimestamp) {
       area += trapeziumArea(
-        mood1 + ((mood0 - mood1) * (t1 - d0)) / (t1 - t0),
+        mood1 + ((mood0 - mood1) * (t1 - fromTimestamp)) / (t1 - t0),
         mood1,
-        t1 - d0,
+        t1 - fromTimestamp,
       );
       continue;
     }
 
-    if (t1 > d1) {
+    if (t1 > toTimestamp) {
       area += trapeziumArea(
         mood0,
-        mood0 + ((mood1 - mood0) * (d1 - t0)) / (t1 - t0),
-        d1 - t0,
+        mood0 + ((mood1 - mood0) * (toTimestamp - t0)) / (t1 - t0),
+        toTimestamp - t0,
       );
       break;
     }
