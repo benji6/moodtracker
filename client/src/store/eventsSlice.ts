@@ -95,7 +95,7 @@ interface NormalizedTrackedCategories {
   weights: NormalizedWeights;
 }
 
-const trackedCategoriesSelector = createSelector(
+export const trackedCategoriesSelector = createSelector(
   allIdsSelector,
   byIdSelector,
   (allIds, byId): NormalizedTrackedCategories => {
@@ -838,6 +838,5 @@ export default createSlice({
           .map((id) => byId[id].value)
           .reduce((a, b) => a + b, 0),
     ),
-    trackedCategories: trackedCategoriesSelector,
   },
 });
