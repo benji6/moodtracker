@@ -494,7 +494,6 @@ export default createSlice({
     nextCursor: (state: EventsState) => state.nextCursor,
     syncFromServerError: (state: EventsState) => state.syncFromServerError,
     syncToServerError: (state: EventsState) => state.syncToServerError,
-    allIdsWithLocation: allIdsWithLocationSelector,
     allNormalizedTrackedCategories: allNormalizedTrackedCategoriesSelector,
     allDenormalizedTrackedCategoriesByLocalDate: createSelector(
       allNormalizedTrackedCategoriesSelector,
