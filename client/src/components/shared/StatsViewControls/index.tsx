@@ -112,6 +112,10 @@ export default function StatsViewControls({
     });
 
   if (!buttons.length) return;
+  if (buttons.length === 1) {
+    if (activeView !== buttons[0].view) setActiveView(buttons[0].view);
+    return;
+  }
 
   return (
     <Paper>
