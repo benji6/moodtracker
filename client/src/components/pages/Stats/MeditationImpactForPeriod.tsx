@@ -25,14 +25,19 @@ interface Props {
 
 export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const meditations = useSelector(eventsSlice.selectors.normalizedMeditations);
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const denormalizedMoodsOrderedByExperiencedAt = useSelector(
+    eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
+  );
   const [includeExploration, setIncludeExploration] = useState(false);
   const [shouldRemoveSharedWords, setShouldRemoveSharedWords] = useState(true);
   const meditationIdsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
   );
 
-  if (!meditationIdsInPeriod.length || !moods.allIds.length)
+  if (
+    !meditationIdsInPeriod.length ||
+    !denormalizedMoodsOrderedByExperiencedAt.length
+  )
     return (
       <Paper>
         <p>Not enough data to assess meditation impact for this period</p>
@@ -45,12 +50,10 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const wordsAfterList: string[] = [];
   let i = 0;
   for (const meditationId of meditationIdsInPeriod) {
-    for (; i < moods.allIds.length; i++) {
-      const moodAfterId = moods.allIds[i];
-      if (moodAfterId < meditationId || i === 0) continue;
-      const moodBeforeId = moods.allIds[i - 1];
-      const moodBefore = moods.byId[moodBeforeId];
-      const moodAfter = moods.byId[moodAfterId];
+    for (; i < denormalizedMoodsOrderedByExperiencedAt.length; i++) {
+      const moodAfter = denormalizedMoodsOrderedByExperiencedAt[i];
+      if (moodAfter.experiencedAt < meditationId || i === 0) continue;
+      const moodBefore = denormalizedMoodsOrderedByExperiencedAt[i - 1];
       const meditationLogDate = new Date(meditationId);
       const meditationStartDate = sub(meditationLogDate, {
         seconds: meditations.byId[meditationId].seconds,
@@ -60,10 +63,10 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
       // rounds values down (i.e. a 4.4 hour difference is returned as 4 hours).
       const differenceBefore = differenceInSeconds(
         meditationStartDate,
-        new Date(moodBeforeId),
+        new Date(moodBefore.experiencedAt),
       );
       const differenceAfter = differenceInSeconds(
-        new Date(moodAfterId),
+        new Date(moodAfter.experiencedAt),
         meditationLogDate,
       );
 

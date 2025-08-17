@@ -16,15 +16,21 @@ interface Props {
 }
 
 export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
-  const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const moodIdsWithLocationInPeriod = useSelector((state: RootState) =>
-    eventsSlice.selectors.moodIdsWithLocationInPeriod(state, dateFrom, dateTo),
+  const moodsWithLocationOrderedByExperiencedAtInPeriod = useSelector(
+    (state: RootState) =>
+      eventsSlice.selectors.moodsWithLocationOrderedByExperiencedAtInPeriod(
+        state,
+        dateFrom,
+        dateTo,
+      ),
   );
   const reverseGeolocationResults = useReverseGeolocationQueries(
-    moodIdsWithLocationInPeriod,
+    moodsWithLocationOrderedByExperiencedAtInPeriod.map(
+      (mood) => mood.createdAt,
+    ),
   );
 
-  if (!moodIdsWithLocationInPeriod.length) return;
+  if (!moodsWithLocationOrderedByExperiencedAtInPeriod.length) return;
 
   const moodsByCountry = defaultDict<number[]>(() => []);
   const moodsByLocation = defaultDict<number[]>(() => []);
@@ -45,7 +51,7 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
     successCount++;
 
     const { mood, location } =
-      normalizedMoods.byId[moodIdsWithLocationInPeriod[i]];
+      moodsWithLocationOrderedByExperiencedAtInPeriod[i];
     const Place = data?.Results?.[0]?.Place;
     const locationName = Place?.Municipality ?? Place?.Label;
     if (!locationName) {
@@ -108,7 +114,8 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
               <Spinner inline margin="end" />
               Fetching location data (may require an internet connection)...{" "}
               {integerPercentFormatter.format(
-                successCount / moodIdsWithLocationInPeriod.length,
+                successCount /
+                  moodsWithLocationOrderedByExperiencedAtInPeriod.length,
               )}
             </>
           )}
@@ -117,7 +124,8 @@ export default function MoodByLocationForPeriod({ dateFrom, dateTo }: Props) {
             <span className="negative">
               Could not fetch location for{" "}
               {integerPercentFormatter.format(
-                errorCount / moodIdsWithLocationInPeriod.length,
+                errorCount /
+                  moodsWithLocationOrderedByExperiencedAtInPeriod.length,
               )}{" "}
               of moods, please try again later
             </span>

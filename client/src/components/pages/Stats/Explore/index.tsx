@@ -52,7 +52,7 @@ interface State {
 export default function Explore() {
   const [activeView, setActiveView] = useState<ActiveView>("mood");
   const dateNow = new Date();
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
   const allNormalizedTrackedCategories = useSelector(
     eventsSlice.selectors.allNormalizedTrackedCategories,
   );
@@ -148,7 +148,7 @@ export default function Explore() {
   const dateTo = addDays(localState.displayDateTo, 1);
 
   if (!eventsHasLoadedFromServer) return <Spinner />;
-  if (!moods.allIds.length)
+  if (!normalizedMoods.allIds.length)
     return (
       <Paper.Group>
         <GetStartedCta />

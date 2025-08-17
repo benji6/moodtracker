@@ -893,6 +893,326 @@ describe("eventsSlice", () => {
       });
     });
 
+    describe("envelopingDenormalizedMoodsOrderedByExperiencedAt", () => {
+      test("when there are no events", () => {
+        expect(
+          eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+            initialState,
+            new Date("2020-10-10T00:00:00.000Z"),
+            new Date("2020-10-11T00:00:00.000Z"),
+          ),
+        ).toEqual([]);
+      });
+
+      test("when there are no moods in the date range", () => {
+        expect(
+          eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: ["2020-10-05T08:00:00.000Z"],
+                byId: {
+                  "2020-10-05T08:00:00.000Z": {
+                    createdAt: "2020-10-05T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 5 },
+                  },
+                },
+              },
+            },
+            new Date("2020-10-10T00:00:00.000Z"),
+            new Date("2020-10-11T00:00:00.000Z"),
+          ),
+        ).toEqual([
+          {
+            createdAt: "2020-10-05T08:00:00.000Z",
+            experiencedAt: "2020-10-05T08:00:00.000Z",
+            mood: 5,
+          },
+        ]);
+      });
+
+      test("when there are moods within the date range", () => {
+        expect(
+          eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: [
+                  "2020-10-09T08:00:00.000Z",
+                  "2020-10-10T08:00:00.000Z",
+                  "2020-10-11T08:00:00.000Z",
+                  "2020-10-12T08:00:00.000Z",
+                ],
+                byId: {
+                  "2020-10-09T08:00:00.000Z": {
+                    createdAt: "2020-10-09T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 4 },
+                  },
+                  "2020-10-10T08:00:00.000Z": {
+                    createdAt: "2020-10-10T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 5 },
+                  },
+                  "2020-10-11T08:00:00.000Z": {
+                    createdAt: "2020-10-11T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 6 },
+                  },
+                  "2020-10-12T08:00:00.000Z": {
+                    createdAt: "2020-10-12T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 7 },
+                  },
+                },
+              },
+            },
+            new Date("2020-10-10T00:00:00.000Z"),
+            new Date("2020-10-11T23:59:59.999Z"),
+          ),
+        ).toEqual([
+          {
+            createdAt: "2020-10-09T08:00:00.000Z",
+            experiencedAt: "2020-10-09T08:00:00.000Z",
+            mood: 4,
+          },
+          {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            experiencedAt: "2020-10-10T08:00:00.000Z",
+            mood: 5,
+          },
+          {
+            createdAt: "2020-10-11T08:00:00.000Z",
+            experiencedAt: "2020-10-11T08:00:00.000Z",
+            mood: 6,
+          },
+          {
+            createdAt: "2020-10-12T08:00:00.000Z",
+            experiencedAt: "2020-10-12T08:00:00.000Z",
+            mood: 7,
+          },
+        ]);
+      });
+
+      test("with experiencedAt timestamps", () => {
+        expect(
+          eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: [
+                  "2020-10-09T08:00:00.000Z",
+                  "2020-10-10T08:00:00.000Z",
+                  "2020-10-11T08:00:00.000Z",
+                  "2020-10-12T08:00:00.000Z",
+                ],
+                byId: {
+                  "2020-10-09T08:00:00.000Z": {
+                    createdAt: "2020-10-09T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: {
+                      mood: 4,
+                      experiencedAt: "2020-10-09T07:30:00.000Z",
+                    },
+                  },
+                  "2020-10-10T08:00:00.000Z": {
+                    createdAt: "2020-10-10T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: {
+                      mood: 5,
+                      experiencedAt: "2020-10-10T09:15:00.000Z",
+                    },
+                  },
+                  "2020-10-11T08:00:00.000Z": {
+                    createdAt: "2020-10-11T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: {
+                      mood: 6,
+                      experiencedAt: "2020-10-11T10:45:00.000Z",
+                    },
+                  },
+                  "2020-10-12T08:00:00.000Z": {
+                    createdAt: "2020-10-12T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: {
+                      mood: 7,
+                      experiencedAt: "2020-10-12T11:30:00.000Z",
+                    },
+                  },
+                },
+              },
+            },
+            new Date("2020-10-10T00:00:00.000Z"),
+            new Date("2020-10-11T23:59:59.999Z"),
+          ),
+        ).toEqual([
+          {
+            createdAt: "2020-10-09T08:00:00.000Z",
+            experiencedAt: "2020-10-09T07:30:00.000Z",
+            mood: 4,
+          },
+          {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            experiencedAt: "2020-10-10T09:15:00.000Z",
+            mood: 5,
+          },
+          {
+            createdAt: "2020-10-11T08:00:00.000Z",
+            experiencedAt: "2020-10-11T10:45:00.000Z",
+            mood: 6,
+          },
+          {
+            createdAt: "2020-10-12T08:00:00.000Z",
+            experiencedAt: "2020-10-12T11:30:00.000Z",
+            mood: 7,
+          },
+        ]);
+      });
+
+      test("with mood updates", () => {
+        expect(
+          eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: [
+                  "2020-10-09T08:00:00.000Z",
+                  "2020-10-10T08:00:00.000Z",
+                  "2020-10-11T08:00:00.000Z",
+                  "2020-10-12T08:00:00.000Z",
+                  "2020-10-12T09:00:00.000Z",
+                ],
+                byId: {
+                  "2020-10-09T08:00:00.000Z": {
+                    createdAt: "2020-10-09T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 4 },
+                  },
+                  "2020-10-10T08:00:00.000Z": {
+                    createdAt: "2020-10-10T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 5 },
+                  },
+                  "2020-10-11T08:00:00.000Z": {
+                    createdAt: "2020-10-11T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 6 },
+                  },
+                  "2020-10-12T08:00:00.000Z": {
+                    createdAt: "2020-10-12T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 7 },
+                  },
+                  "2020-10-12T09:00:00.000Z": {
+                    createdAt: "2020-10-12T09:00:00.000Z",
+                    type: "v1/moods/update",
+                    payload: {
+                      id: "2020-10-11T08:00:00.000Z",
+                      mood: 8,
+                    },
+                  },
+                },
+              },
+            },
+            new Date("2020-10-10T00:00:00.000Z"),
+            new Date("2020-10-11T23:59:59.999Z"),
+          ),
+        ).toEqual([
+          {
+            createdAt: "2020-10-09T08:00:00.000Z",
+            experiencedAt: "2020-10-09T08:00:00.000Z",
+            mood: 4,
+          },
+          {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            experiencedAt: "2020-10-10T08:00:00.000Z",
+            mood: 5,
+          },
+          {
+            createdAt: "2020-10-11T08:00:00.000Z",
+            experiencedAt: "2020-10-11T08:00:00.000Z",
+            mood: 8,
+            updatedAt: "2020-10-12T09:00:00.000Z",
+          },
+          {
+            createdAt: "2020-10-12T08:00:00.000Z",
+            experiencedAt: "2020-10-12T08:00:00.000Z",
+            mood: 7,
+          },
+        ]);
+      });
+
+      test("with deleted moods", () => {
+        expect(
+          eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+            {
+              ...initialState,
+              events: {
+                ...initialState.events,
+                allIds: [
+                  "2020-10-09T08:00:00.000Z",
+                  "2020-10-10T08:00:00.000Z",
+                  "2020-10-11T08:00:00.000Z",
+                  "2020-10-12T08:00:00.000Z",
+                  "2020-10-12T09:00:00.000Z",
+                ],
+                byId: {
+                  "2020-10-09T08:00:00.000Z": {
+                    createdAt: "2020-10-09T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 4 },
+                  },
+                  "2020-10-10T08:00:00.000Z": {
+                    createdAt: "2020-10-10T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 5 },
+                  },
+                  "2020-10-11T08:00:00.000Z": {
+                    createdAt: "2020-10-11T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 6 },
+                  },
+                  "2020-10-12T08:00:00.000Z": {
+                    createdAt: "2020-10-12T08:00:00.000Z",
+                    type: "v1/moods/create",
+                    payload: { mood: 7 },
+                  },
+                  "2020-10-12T09:00:00.000Z": {
+                    createdAt: "2020-10-12T09:00:00.000Z",
+                    type: "v1/moods/delete",
+                    payload: "2020-10-11T08:00:00.000Z",
+                  },
+                },
+              },
+            },
+            new Date("2020-10-10T00:00:00.000Z"),
+            new Date("2020-10-11T23:59:59.999Z"),
+          ),
+        ).toEqual([
+          {
+            createdAt: "2020-10-09T08:00:00.000Z",
+            experiencedAt: "2020-10-09T08:00:00.000Z",
+            mood: 4,
+          },
+          {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            experiencedAt: "2020-10-10T08:00:00.000Z",
+            mood: 5,
+          },
+          {
+            createdAt: "2020-10-12T08:00:00.000Z",
+            experiencedAt: "2020-10-12T08:00:00.000Z",
+            mood: 7,
+          },
+        ]);
+      });
+    });
+
     describe("normalizedRuns", () => {
       test("updating by removing the time", () => {
         expect(eventsSlice.selectors.normalizedRuns(store.getState())).toEqual({
@@ -1091,16 +1411,18 @@ describe("eventsSlice", () => {
       });
     });
 
-    describe("denormalizedMoods", () => {
+    describe("denormalizedMoodsOrderedByExperiencedAt", () => {
       test("when there are no events", () => {
-        expect(eventsSlice.selectors.denormalizedMoods(initialState)).toEqual(
-          [],
-        );
+        expect(
+          eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt(
+            initialState,
+          ),
+        ).toEqual([]);
       });
 
       test("with a single create event", () => {
         expect(
-          eventsSlice.selectors.denormalizedMoods({
+          eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1114,12 +1436,56 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual([{ createdAt: "2020-10-10T08:00:00.000Z", mood: 5 }]);
+        ).toEqual([
+          {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            experiencedAt: "2020-10-10T08:00:00.000Z",
+            mood: 5,
+          },
+        ]);
+      });
+
+      test("with experiencedAt", () => {
+        expect(
+          eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt({
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
+              byId: {
+                "2020-10-10T08:00:00.000Z": {
+                  createdAt: "2020-10-10T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 4 },
+                },
+                "2020-10-11T08:00:00.000Z": {
+                  createdAt: "2020-10-11T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: {
+                    experiencedAt: "2020-10-10T07:59:00.001Z",
+                    mood: 6,
+                  },
+                },
+              },
+            },
+          }),
+        ).toEqual([
+          {
+            createdAt: "2020-10-11T08:00:00.000Z",
+            experiencedAt: "2020-10-10T07:59:00.001Z",
+            mood: 6,
+          },
+          {
+            createdAt: "2020-10-10T08:00:00.000Z",
+            experiencedAt: "2020-10-10T08:00:00.000Z",
+            mood: 4,
+          },
+        ]);
       });
 
       test("with a delete event", () => {
         expect(
-          eventsSlice.selectors.denormalizedMoods({
+          eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1147,12 +1513,18 @@ describe("eventsSlice", () => {
               },
             },
           }),
-        ).toEqual([{ createdAt: "2020-10-10T08:01:00.000Z", mood: 8 }]);
+        ).toEqual([
+          {
+            createdAt: "2020-10-10T08:01:00.000Z",
+            experiencedAt: "2020-10-10T08:01:00.000Z",
+            mood: 8,
+          },
+        ]);
       });
 
       test("with an update event that changes all event properties", () => {
         expect(
-          eventsSlice.selectors.denormalizedMoods({
+          eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1204,6 +1576,7 @@ describe("eventsSlice", () => {
         ).toEqual([
           {
             createdAt: "2020-10-10T08:01:00.000Z",
+            experiencedAt: "2020-10-10T08:01:00.000Z",
             description: "joy",
             exploration: "bar",
             mood: 10,
@@ -1211,6 +1584,7 @@ describe("eventsSlice", () => {
           },
           {
             createdAt: "2020-10-10T08:03:00.000Z",
+            experiencedAt: "2020-10-10T08:03:00.000Z",
             mood: 7,
           },
         ]);
@@ -1218,7 +1592,7 @@ describe("eventsSlice", () => {
 
       test("with an update event that changes a single property", () => {
         expect(
-          eventsSlice.selectors.denormalizedMoods({
+          eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt({
             ...initialState,
             events: {
               ...initialState.events,
@@ -1256,6 +1630,7 @@ describe("eventsSlice", () => {
         ).toEqual([
           {
             createdAt: "2020-10-10T08:01:00.000Z",
+            experiencedAt: "2020-10-10T08:01:00.000Z",
             description: "joy",
             exploration: "foo",
             mood: 8,
@@ -1263,6 +1638,7 @@ describe("eventsSlice", () => {
           },
           {
             createdAt: "2020-10-10T08:03:00.000Z",
+            experiencedAt: "2020-10-10T08:03:00.000Z",
             mood: 7,
           },
         ]);
@@ -1676,7 +2052,7 @@ describe("eventsSlice", () => {
         ).toEqual({ "2020-10-10": ["2020-10-10T08:00:00.000Z"] });
       });
 
-      test("with 3 events and a deleted event", () => {
+      test("with multiple events including a deleted event and an experiencedAt event", () => {
         expect(
           eventsSlice.selectors.moodIdsByDate({
             ...initialState,
@@ -1688,6 +2064,7 @@ describe("eventsSlice", () => {
                 "2020-10-11T08:00:00.000Z",
                 "2020-10-11T08:02:00.000Z",
                 "2020-10-13T08:00:00.000Z",
+                "2020-10-13T09:00:00.000Z",
               ],
               byId: {
                 "2020-10-10T07:00:00.000Z": {
@@ -1715,12 +2092,21 @@ describe("eventsSlice", () => {
                   type: "v1/moods/create",
                   payload: { mood: 7 },
                 },
+                "2020-10-13T09:00:00.000Z": {
+                  createdAt: "2020-10-13T09:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: {
+                    experiencedAt: "2020-10-10T07:30:00.000Z",
+                    mood: 9,
+                  },
+                },
               },
             },
           }),
         ).toEqual({
           "2020-10-10": [
             "2020-10-10T07:00:00.000Z",
+            "2020-10-13T09:00:00.000Z",
             "2020-10-10T08:00:00.000Z",
           ],
           "2020-10-13": ["2020-10-13T08:00:00.000Z"],
@@ -2862,6 +3248,85 @@ describe("eventsSlice", () => {
               new Date("2020-07-27T00:00:00.000Z"),
             ),
           ).toBe(0);
+        });
+      });
+    });
+
+    describe("allDenormalizedTrackedCategoriesByLocalDate", () => {
+      describe("mood sorting logic", () => {
+        test("sorts moods by experiencedAt when available, falling back to createdAt", () => {
+          const state: RootState = {
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: [
+                "2020-10-10T08:00:00.000Z",
+                "2020-10-10T09:00:00.000Z",
+                "2020-10-10T10:00:00.000Z",
+                "2020-10-11T08:00:00.000Z",
+                "2020-10-12T09:00:00.000Z",
+              ],
+              byId: {
+                "2020-10-10T08:00:00.000Z": {
+                  createdAt: "2020-10-10T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 1 },
+                },
+                "2020-10-10T09:00:00.000Z": {
+                  createdAt: "2020-10-10T09:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: {
+                    mood: 2,
+                    experiencedAt: "2020-10-10T06:00:00.000Z",
+                  },
+                },
+                "2020-10-10T10:00:00.000Z": {
+                  createdAt: "2020-10-10T10:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: {
+                    mood: 3,
+                    experiencedAt: "2020-10-09T11:00:00.000Z",
+                  },
+                },
+                "2020-10-10T11:00:00.000Z": {
+                  createdAt: "2020-10-10T11:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 4 },
+                },
+                "2020-10-11T08:00:00.000Z": {
+                  createdAt: "2020-10-11T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: {
+                    mood: 5,
+                    experiencedAt: "2020-10-10T05:00:00.000Z",
+                  },
+                },
+                "2020-10-12T09:00:00.000Z": {
+                  createdAt: "2020-10-12T09:00:00.000Z",
+                  type: "v1/sleeps/create",
+                  payload: {
+                    minutesSlept: 480,
+                    dateAwoke: "2020-10-10",
+                  },
+                },
+              },
+            },
+          };
+
+          const result =
+            eventsSlice.selectors.allDenormalizedTrackedCategoriesByLocalDate(
+              state,
+            );
+
+          expect(result).toEqual({
+            "2020-10-09": [{ id: "2020-10-10T10:00:00.000Z", type: "moods" }],
+            "2020-10-10": [
+              { id: "2020-10-12T09:00:00.000Z", type: "sleeps" },
+              { id: "2020-10-11T08:00:00.000Z", type: "moods" },
+              { id: "2020-10-10T09:00:00.000Z", type: "moods" },
+              { id: "2020-10-10T08:00:00.000Z", type: "moods" },
+            ],
+          });
         });
       });
     });

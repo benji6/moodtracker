@@ -102,6 +102,14 @@ export const FIELDS = {
     pattern: PATTERNS.noPunctuation,
     supportiveText: `Add one or more words separated by spaces to describe your mood (${DESCRIPTION_MAX_LENGTH} characters max). For example, "pensive" or "happy excited". These words will be used in your word clouds.`,
   },
+  experiencedAt: {
+    "data-test-id": TEST_IDS.experiencedAtInput,
+    label: "Date experienced",
+    name: "mood-experienced-at",
+    optional: true,
+    supportiveText: "Leave blank to use current date and time",
+    type: "datetime-local",
+  },
   exploration: {
     "data-test-id": TEST_IDS.explorationInput,
     label: "Journal",

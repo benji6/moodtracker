@@ -12,19 +12,22 @@ interface Props {
 const NO_DATA_COLOR = "var(--color-balance)";
 
 export default function MoodGradientForPeriod({ dateFrom, dateTo }: Props) {
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const fromTime = dateFrom.getTime();
   const toTime = dateTo.getTime();
   const timeInterval = toTime - fromTime;
-  const envelopingMoodIds = useSelector((state: RootState) =>
-    eventsSlice.selectors.envelopingMoodIds(state, dateFrom, dateTo),
+  const envelopingMoods = useSelector((state: RootState) =>
+    eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+      state,
+      dateFrom,
+      dateTo,
+    ),
   );
 
-  if (envelopingMoodIds.length < 2) return;
+  if (envelopingMoods.length < 2) return;
 
-  const firstTime = new Date(envelopingMoodIds[0]).getTime();
+  const firstTime = new Date(envelopingMoods[0].experiencedAt).getTime();
   const lastTime = new Date(
-    envelopingMoodIds[envelopingMoodIds.length - 1],
+    envelopingMoods[envelopingMoods.length - 1].experiencedAt,
   ).getTime();
 
   let background = `linear-gradient(0.25turn`;
@@ -33,10 +36,10 @@ export default function MoodGradientForPeriod({ dateFrom, dateTo }: Props) {
     const percentage = ((firstTime - fromTime) / timeInterval) * 100;
     background += `,${NO_DATA_COLOR} ${percentage - 0.01}%`;
   }
-  for (const id of envelopingMoodIds) {
-    const time = new Date(id).getTime();
+  for (const { experiencedAt, mood } of envelopingMoods) {
+    const time = new Date(experiencedAt).getTime();
     const percentage = ((time - fromTime) / timeInterval) * 100;
-    background += `,${moodToColor(moods.byId[id].mood)} ${percentage}%`;
+    background += `,${moodToColor(mood)} ${percentage}%`;
   }
   if (lastTime < toTime) {
     const percentage = ((lastTime - fromTime) / timeInterval) * 100;

@@ -39,20 +39,22 @@ export default function withStatsPage({
     const eventsHasLoadedFromServer = useSelector(
       eventsSlice.selectors.hasLoadedFromServer,
     );
-    const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+    const moods = useSelector(
+      eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
+    );
 
     if (!dateStr || !dateRegex.test(dateStr)) return <RedirectHome />;
     const date = adjustDate(createDateFromLocalDateString(dateStr));
     if (!isValid(date)) return <RedirectHome />;
     if (!eventsHasLoadedFromServer) return <Spinner />;
-    if (!moods.allIds.length)
+    if (!moods.length)
       return (
         <Paper.Group>
           <GetStartedCta />
         </Paper.Group>
       );
 
-    const firstMoodDate = new Date(moods.allIds[0]);
+    const firstMoodDate = new Date(moods[0].experiencedAt);
     const nextDate = addPeriod(date, 1);
 
     return (

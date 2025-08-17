@@ -22,18 +22,22 @@ export default function MoodChartForPeriod({
   xAxisTitle,
   xLabels,
 }: Props) {
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const domain: [number, number] = [dateFrom.getTime(), dateTo.getTime()];
-  const envelopingMoodIds = useSelector((state: RootState) =>
-    eventsSlice.selectors.envelopingMoodIds(state, dateFrom, dateTo),
+  const envelopingMoods = useSelector((state: RootState) =>
+    eventsSlice.selectors.envelopingDenormalizedMoodsOrderedByExperiencedAt(
+      state,
+      dateFrom,
+      dateTo,
+    ),
   );
 
-  if (envelopingMoodIds.length < 2) return;
+  if (envelopingMoods.length < 2) return;
 
-  const data: [number, number][] = envelopingMoodIds.map((id) => {
-    const mood = moods.byId[id];
-    return [new Date(id).getTime(), mood.mood];
-  });
+  const data: [number, number][] = envelopingMoods.map(
+    ({ experiencedAt, mood }) => {
+      return [new Date(experiencedAt).getTime(), mood];
+    },
+  );
 
   return (
     <Paper>
@@ -43,10 +47,7 @@ export default function MoodChartForPeriod({
         data={data}
         domain={domain}
         hidePoints={hidePoints}
-        trendlinePoints={computeTrendlinePoints(
-          { ...moods, allIds: envelopingMoodIds },
-          domain,
-        )}
+        trendlinePoints={computeTrendlinePoints(envelopingMoods, domain)}
         xAxisTitle={xAxisTitle}
         xLabels={xLabels}
       />

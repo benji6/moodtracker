@@ -20,12 +20,16 @@ interface Props {
 }
 
 export default function MoodCalendarForMonth({ month, small }: Props) {
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const denormalizedMoodsOrderedByExperiencedAt = useSelector(
+    eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
+  );
   const meanMoodByDay = useSelector(eventsSlice.selectors.meanMoodsByDay);
   const navigate = useNavigate();
 
   const now = new Date();
-  const firstMoodDate = roundDateDown(new Date(moods.allIds[0]));
+  const firstMoodDate = roundDateDown(
+    new Date(denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt),
+  );
 
   // undefined represents padding before the month
   // undefined mood represents days that have no average mood

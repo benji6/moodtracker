@@ -5,6 +5,7 @@ import {
   EventTypeCategories,
   EventTypeTuple,
   Mood,
+  DenormalizedMoodWithExperiencedAt,
   NormalizedAllCategories,
   NormalizedLegRaises,
   NormalizedMeditations,
@@ -38,7 +39,9 @@ import {
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
   getEnvelopingIds,
+  getEnvelopingIndices,
   getIdsInInterval,
+  getIndicesInInterval,
   getNormalizedWordCloudWords,
   hasIdsInInterval,
 } from "../utils";
@@ -71,17 +74,6 @@ export type EventsStateToStore = Omit<
 
 const allIdsSelector = (state: EventsState) => state.allIds;
 const byIdSelector = (state: EventsState) => state.byId;
-const allIdsWithLocationSelector = createSelector(
-  allIdsSelector,
-  byIdSelector,
-  (allIds, byId) =>
-    allIds.filter((id) => {
-      const { payload } = byId[id];
-      return (
-        typeof payload !== "string" && "location" in payload && payload.location
-      );
-    }),
-);
 
 interface NormalizedTrackedCategories {
   all: NormalizedAllCategories;
@@ -207,6 +199,40 @@ const allNormalizedTrackedCategoriesSelector = createSelector(
   trackedCategoriesSelector,
   ({ all }) => all,
 );
+const allTrackedCategoryIdsOrderedByExperiencedAtSelector = createSelector(
+  allNormalizedTrackedCategoriesSelector,
+  ({ allIds, byId }) => {
+    return allIds
+      .map((id) => {
+        const event = byId[id];
+
+        return {
+          id,
+          experiencedAt:
+            // `dateAwoke` does not include a time string which means sleeps will be sorted before all other events on a given day
+            // because sort is stable, moods and sleeps will have a secondary sort on `id`
+            ("experiencedAt" in event && event.experiencedAt) ||
+            ("dateAwoke" in event && event.dateAwoke) ||
+            id,
+          type: event.type,
+        };
+      })
+      .sort((a, b) =>
+        compareFunctionForStringSorting(a.experiencedAt, b.experiencedAt),
+      );
+  },
+);
+const allIdsWithLocationOrderedByExperiencedAtSelector = createSelector(
+  allTrackedCategoryIdsOrderedByExperiencedAtSelector,
+  byIdSelector,
+  (idsOrderedByExperiencedAt, byId) =>
+    idsOrderedByExperiencedAt.filter(({ id }) => {
+      const { payload } = byId[id];
+      return (
+        typeof payload !== "string" && "location" in payload && payload.location
+      );
+    }),
+);
 
 const normalizedLegRaisesSelector = createSelector(
   trackedCategoriesSelector,
@@ -241,57 +267,6 @@ const normalizedWeightsSelector = createSelector(
   ({ weights }) => weights,
 );
 
-const moodIdsWithLocationSelector = createSelector(
-  normalizedMoodsSelector,
-  ({ allIds, byId }): string[] =>
-    allIds.filter((id) => {
-      const mood = byId[id];
-      return "location" in mood && mood.location;
-    }),
-);
-
-const makeMeanMoodsByPeriodSelector = (
-  eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
-  addPeriods: (date: Date, n: number) => Date,
-  createId = formatIsoDateInLocalTimezone,
-) =>
-  createSelector(normalizedMoodsSelector, (moods): Record<string, number> => {
-    const meanMoods: Record<string, number> = {};
-
-    if (!moods.allIds.length) return meanMoods;
-
-    const periods = eachPeriodOfInterval({
-      start: new Date(moods.allIds[0]),
-      end: new Date(moods.allIds[moods.allIds.length - 1]),
-    });
-
-    const finalPeriod = addPeriods(periods[periods.length - 1], 1);
-
-    if (moods.allIds.length === 1) {
-      meanMoods[createId(periods[0])] = moods.byId[moods.allIds[0]].mood;
-      return meanMoods;
-    }
-
-    periods.push(finalPeriod);
-
-    for (let i = 1; i < periods.length; i++) {
-      const p0 = periods[i - 1];
-      const p1 = periods[i];
-      const averageMoodInInterval = computeAverageMoodInInterval(moods, p0, p1);
-      if (averageMoodInInterval !== undefined)
-        meanMoods[createId(p0)] = averageMoodInInterval;
-    }
-
-    return meanMoods;
-  });
-
-const getLastEvent = (normalizedState: EventsState): AppEvent => {
-  if (!normalizedState.allIds.length)
-    throw Error("Error: `allIds` must have length > 0");
-  const lastId = normalizedState.allIds[normalizedState.allIds.length - 1];
-  return normalizedState.byId[lastId];
-};
-
 const denormalize = <TrackedCategory>({
   allIds,
   byId,
@@ -299,6 +274,87 @@ const denormalize = <TrackedCategory>({
   allIds: string[];
   byId: Record<string, TrackedCategory & { updatedAt?: string }>;
 }) => allIds.map((id) => ({ ...byId[id], createdAt: id }));
+
+const denormalizedMoodsSelector = createSelector(
+  normalizedMoodsSelector,
+  denormalize,
+);
+
+const denormalizedMoodsOrderedByExperiencedAtSelector = createSelector(
+  denormalizedMoodsSelector,
+  (moods): DenormalizedMoodWithExperiencedAt[] => {
+    const experiencedAtToMoods = defaultDict<
+      DenormalizedMoodWithExperiencedAt[]
+    >(() => []);
+    for (const mood of moods) {
+      experiencedAtToMoods[mood.experiencedAt ?? mood.createdAt].push({
+        ...mood,
+        experiencedAt: mood.experiencedAt ?? mood.createdAt,
+      });
+    }
+    // because sort is stable moods with an earlier ID will be first
+    const experiencedAts = Object.keys(experiencedAtToMoods).sort(
+      compareFunctionForStringSorting,
+    );
+    return Object.values(experiencedAts).flatMap(
+      (id) => experiencedAtToMoods[id],
+    );
+  },
+);
+
+const moodsWithLocationOrderedByExperiencedAtSelector = createSelector(
+  denormalizedMoodsOrderedByExperiencedAtSelector,
+  (moods) => moods.filter((mood) => mood.location),
+);
+
+const makeMeanMoodsByPeriodSelector = (
+  eachPeriodOfInterval: ({ start, end }: Interval) => Date[],
+  addPeriods: (date: Date, n: number) => Date,
+  createId = formatIsoDateInLocalTimezone,
+) =>
+  createSelector(
+    denormalizedMoodsOrderedByExperiencedAtSelector,
+    (moods): Record<string, number> => {
+      const meanMoods: Record<string, number> = {};
+
+      if (!moods.length) return meanMoods;
+
+      const periods = eachPeriodOfInterval({
+        start: new Date(moods[0].experiencedAt),
+        end: new Date(moods[moods.length - 1].experiencedAt),
+      });
+
+      const finalPeriod = addPeriods(periods[periods.length - 1], 1);
+
+      if (moods.length === 1) {
+        meanMoods[createId(periods[0])] = moods[0].mood;
+        return meanMoods;
+      }
+
+      periods.push(finalPeriod);
+
+      for (let i = 1; i < periods.length; i++) {
+        const p0 = periods[i - 1];
+        const p1 = periods[i];
+        const averageMoodInInterval = computeAverageMoodInInterval(
+          moods,
+          p0,
+          p1,
+        );
+        if (averageMoodInInterval !== undefined)
+          meanMoods[createId(p0)] = averageMoodInInterval;
+      }
+
+      return meanMoods;
+    },
+  );
+
+const getLastEvent = (normalizedState: EventsState): AppEvent => {
+  if (!normalizedState.allIds.length)
+    throw Error("Error: `allIds` must have length > 0");
+  const lastId = normalizedState.allIds[normalizedState.allIds.length - 1];
+  return normalizedState.byId[lastId];
+};
 
 const normalizedStateNotEmpty = ({ allIds }: { allIds: string[] }) =>
   Boolean(allIds.length);
@@ -328,7 +384,20 @@ const moodsInPeriodResultFunction = (
   { allIds, byId }: NormalizedMoods,
   dateFrom: Date,
   dateTo: Date,
-): Mood[] => getIdsInInterval(allIds, dateFrom, dateTo).map((id) => byId[id]);
+): Mood[] => {
+  const experiencedAtToMoods = defaultDict<Mood[]>(() => []);
+  for (const id of allIds) {
+    const mood = byId[id];
+    experiencedAtToMoods[mood.experiencedAt ?? id].push(mood);
+  }
+  // because sort is stable so moods with an earlier ID will be first
+  const experiencedAts = Object.keys(experiencedAtToMoods).sort(
+    compareFunctionForStringSorting,
+  );
+  return getIdsInInterval(experiencedAts, dateFrom, dateTo).flatMap(
+    (id) => experiencedAtToMoods[id],
+  );
+};
 const secondsMeditatedInPeriodResultFunction = (
   { allIds, byId }: NormalizedMeditations,
   dateFrom: Date,
@@ -476,18 +545,30 @@ export default createSlice({
     allIds: allIdsSelector,
     byId: byIdSelector,
     hasEventsWithLocationInPeriod: createSelector(
-      allIdsWithLocationSelector,
+      allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      hasIdsInInterval,
+      (idsOrderedByExperiencedAt, dateFrom, dateTo) =>
+        hasIdsInInterval(
+          idsOrderedByExperiencedAt.map(({ experiencedAt }) => experiencedAt),
+          dateFrom,
+          dateTo,
+        ),
     ),
     hasLoadedFromServer: (state: EventsState) => state.hasLoadedFromServer,
     idsToSync: (state: EventsState) => state.idsToSync,
     idsWithLocationInPeriod: createSelector(
-      allIdsWithLocationSelector,
+      allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      getIdsInInterval,
+      (idsOrderedByExperiencedAt, dateFrom, dateTo) => {
+        const [i, j] = getIndicesInInterval(
+          idsOrderedByExperiencedAt.map(({ experiencedAt }) => experiencedAt),
+          dateFrom,
+          dateTo,
+        );
+        return idsOrderedByExperiencedAt.slice(i, j).map(({ id }) => id);
+      },
     ),
     isSyncingFromServer: (state: EventsState) => state.isSyncingFromServer,
     isSyncingToServer: (state: EventsState) => state.isSyncingToServer,
@@ -496,9 +577,9 @@ export default createSlice({
     syncToServerError: (state: EventsState) => state.syncToServerError,
     allNormalizedTrackedCategories: allNormalizedTrackedCategoriesSelector,
     allDenormalizedTrackedCategoriesByLocalDate: createSelector(
-      allNormalizedTrackedCategoriesSelector,
+      allTrackedCategoryIdsOrderedByExperiencedAtSelector,
       (
-        normalizedTrackedCategories,
+        idsOrderedByExperiencedAt,
       ): Record<
         string,
         | {
@@ -507,38 +588,34 @@ export default createSlice({
           }[]
         | undefined
       > => {
-        const allDenormalizedTrackedCategories = denormalize(
-          normalizedTrackedCategories,
-        ).sort((a, b) =>
-          // `dateAwoke` does not include a time string which means sleeps will be sorted before all other events on a given day
-          // because sort is stable, sleeps will have a secondary sort on `dateCreated`
-          compareFunctionForStringSorting(
-            "dateAwoke" in a ? a.dateAwoke : a.createdAt,
-            "dateAwoke" in b ? b.dateAwoke : b.createdAt,
-          ),
-        );
         const byDate = defaultDict(
           (): {
             id: string;
             type: EventTypeCategories;
           }[] => [],
         );
-        for (const x of allDenormalizedTrackedCategories) {
-          byDate[
-            x.type === "sleeps"
-              ? x.dateAwoke
-              : formatIsoDateInLocalTimezone(new Date(x.createdAt))
-          ].push({ id: x.createdAt, type: x.type });
-        }
+        for (const { experiencedAt, id, type } of idsOrderedByExperiencedAt)
+          byDate[formatIsoDateInLocalTimezone(new Date(experiencedAt))].push({
+            id,
+            type,
+          });
         return { ...byDate };
       },
     ),
-    moodIdsWithLocation: moodIdsWithLocationSelector,
-    moodIdsWithLocationInPeriod: createSelector(
-      moodIdsWithLocationSelector,
+    moodsWithLocationOrderedByExperiencedAt:
+      moodsWithLocationOrderedByExperiencedAtSelector,
+    moodsWithLocationOrderedByExperiencedAtInPeriod: createSelector(
+      moodsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      getIdsInInterval,
+      (moods, dateFrom, dateTo) => {
+        const [i, j] = getIndicesInInterval(
+          moods.map((mood) => mood.experiencedAt),
+          dateFrom,
+          dateTo,
+        );
+        return moods.slice(i, j);
+      },
     ),
     denormalizedMeditations: createSelector(
       normalizedMeditationsSelector,
@@ -548,18 +625,25 @@ export default createSlice({
       normalizedLegRaisesSelector,
       denormalize,
     ),
-    denormalizedMoods: createSelector(normalizedMoodsSelector, denormalize),
+    denormalizedMoodsOrderedByExperiencedAt:
+      denormalizedMoodsOrderedByExperiencedAtSelector,
     denormalizedPushUps: createSelector(normalizedPushUpsSelector, denormalize),
     denormalizedRuns: createSelector(normalizedRunsSelector, denormalize),
     denormalizedSitUps: createSelector(normalizedSitUpsSelector, denormalize),
     denormalizedSleeps: denormalizedSleepsSelector,
     denormalizedWeights: createSelector(normalizedWeightsSelector, denormalize),
-    envelopingMoodIds: createSelector(
-      normalizedMoodsSelector,
+    envelopingDenormalizedMoodsOrderedByExperiencedAt: createSelector(
+      denormalizedMoodsOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      ({ allIds }, dateFrom, dateTo) =>
-        getEnvelopingIds(allIds, dateFrom, dateTo),
+      (moods, dateFrom, dateTo) => {
+        const [i, j] = getEnvelopingIndices(
+          moods.map((mood) => mood.experiencedAt),
+          dateFrom,
+          dateTo,
+        );
+        return moods.slice(i, j);
+      },
     ),
     envelopingWeightIds: createSelector(
       normalizedWeightsSelector,
@@ -569,14 +653,33 @@ export default createSlice({
         getEnvelopingIds(allIds, dateFrom, dateTo),
     ),
     envelopingIdsWithLocation: createSelector(
-      allIdsWithLocationSelector,
+      allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      getEnvelopingIds,
+      (idsWithLocationOrderedByExperiencedAt, dateFrom, dateTo) => {
+        const [i, j] = getEnvelopingIndices(
+          idsWithLocationOrderedByExperiencedAt.map(
+            ({ experiencedAt }) => experiencedAt,
+          ),
+          dateFrom,
+          dateTo,
+        );
+        return idsWithLocationOrderedByExperiencedAt
+          .slice(i, j)
+          .map(({ id }) => id);
+      },
     ),
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
-    hasMoodsInPeriod: createHasEventIdsInPeriodSelector(
-      normalizedMoodsSelector,
+    hasMoodsInPeriod: createSelector(
+      denormalizedMoodsOrderedByExperiencedAtSelector,
+      dateFromSelector,
+      dateToSelector,
+      (moods, dateFrom, dateTo) =>
+        hasIdsInInterval(
+          moods.map((mood) => mood.experiencedAt),
+          dateFrom,
+          dateTo,
+        ),
     ),
     hasLegRaises: createSelector(
       normalizedLegRaisesSelector,
@@ -711,11 +814,13 @@ export default createSlice({
     // some code may depend on the fact that the array
     // value in the returned object cannot be empty
     moodIdsByDate: createSelector(
-      normalizedMoodsSelector,
-      ({ allIds }): Record<string, string[]> => {
+      denormalizedMoodsOrderedByExperiencedAtSelector,
+      (moods): Record<string, string[]> => {
         const moodsByDate = defaultDict((): string[] => []);
-        for (const id of allIds)
-          moodsByDate[formatIsoDateInLocalTimezone(new Date(id))].push(id);
+        for (const { createdAt, experiencedAt } of moods)
+          moodsByDate[
+            formatIsoDateInLocalTimezone(new Date(experiencedAt))
+          ].push(createdAt);
         return { ...moodsByDate };
       },
     ),

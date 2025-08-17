@@ -28,26 +28,28 @@ import { addDays } from "date-fns";
 import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
+import { DenormalizedMoodWithExperiencedAt } from "../../../types";
 
 const DAYS_PER_PAGE = 7;
 
-const groupMoodIdsByDay = (
-  moodIds: string[],
+const groupMoodsByDay = (
+  moods: DenormalizedMoodWithExperiencedAt[],
 ): [dateStr: string, moodIds: string[]][] => {
   const moodsByDate = defaultDict((): string[] => []);
-  for (const id of moodIds)
-    moodsByDate[formatIsoDateInLocalTimezone(new Date(id))].push(id);
+  for (const mood of moods)
+    moodsByDate[
+      formatIsoDateInLocalTimezone(new Date(mood.experiencedAt))
+    ].push(mood.createdAt);
   return Object.entries(moodsByDate);
 };
 
 export default function MoodLog() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
   const [shouldShowFilter, setShouldShowFilter] = useState(
     Boolean(searchParams.size),
   );
-  const denormalizedMoods = useSelector(
-    eventsSlice.selectors.denormalizedMoods,
+  const denormalizedMoodsOrderedByExperiencedAt = useSelector(
+    eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
   );
   const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
   const dateNow = new Date();
@@ -55,7 +57,9 @@ export default function MoodLog() {
   const dateFromParam = searchParams.get("dateFrom");
   const dateFrom: Date = dateFromParam
     ? new Date(dateFromParam)
-    : roundDateDown(new Date(moods.allIds[0]));
+    : roundDateDown(
+        new Date(denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt),
+      );
   const dateToParam = searchParams.get("dateTo");
   const dateTo: Date = dateToParam
     ? new Date(dateToParam)
@@ -72,15 +76,16 @@ export default function MoodLog() {
     );
   }, []);
 
-  const filterFeatureAvailable = moods.allIds.length >= 5;
+  const filterFeatureAvailable =
+    denormalizedMoodsOrderedByExperiencedAt.length >= 5;
 
-  let filteredMoodIds = moods.allIds;
+  let filteredMoods = denormalizedMoodsOrderedByExperiencedAt;
   if (shouldShowFilter) {
-    let filteredMoods = denormalizedMoods.filter((mood) => {
+    filteredMoods = denormalizedMoodsOrderedByExperiencedAt.filter((mood) => {
       const moodQuery = searchParams.get("mood");
       if (moodQuery && mood.mood !== Number(moodQuery)) return false;
 
-      const date = new Date(mood.createdAt);
+      const date = new Date(mood.experiencedAt);
       return date >= dateFrom && date <= dateTo;
     });
     const searchQuery = searchParams.get("q");
@@ -96,11 +101,10 @@ export default function MoodLog() {
       const result = fuse.search(searchQuery);
       filteredMoods = result.map(({ item }) => item);
     }
-    filteredMoodIds = filteredMoods.map(({ createdAt }) => createdAt);
   }
 
   const filteredMoodsGroupedByDay = shouldShowFilter
-    ? groupMoodIdsByDay(filteredMoodIds)
+    ? groupMoodsByDay(filteredMoods)
     : Object.entries(moodIdsByDate);
 
   const pageCount = Math.max(
@@ -110,10 +114,10 @@ export default function MoodLog() {
 
   let averageMood: undefined | number;
 
-  if (filteredMoodIds.length) {
+  if (filteredMoods.length) {
     let moodsSum = 0;
-    for (const id of filteredMoodIds) moodsSum += moods.byId[id].mood;
-    averageMood = moodsSum / filteredMoodIds.length;
+    for (const mood of filteredMoods) moodsSum += mood.mood;
+    averageMood = moodsSum / filteredMoods.length;
   }
 
   const endIndex =
@@ -136,11 +140,8 @@ export default function MoodLog() {
           category="moods"
           denormalizedData={
             shouldShowFilter
-              ? filteredMoodIds.map((id) => ({
-                  createdAt: id,
-                  ...moods.byId[id],
-                }))
-              : denormalizedMoods
+              ? filteredMoods
+              : denormalizedMoodsOrderedByExperiencedAt
           }
         />
         {filterFeatureAvailable && (
@@ -221,7 +222,7 @@ export default function MoodLog() {
                   <tbody>
                     <tr>
                       <td>Total moods</td>
-                      <td>{filteredMoodIds.length}</td>
+                      <td>{filteredMoods.length}</td>
                     </tr>
                     <tr>
                       <td>Average mood</td>

@@ -7,6 +7,7 @@ export default (() => {
     "eventAddSubmitButton",
     "eventCardDateTime",
     "eventCardValue",
+    "experiencedAtInput",
     "explorationInput",
     "hoursSleptInput",
     "legRaisesValueInput",

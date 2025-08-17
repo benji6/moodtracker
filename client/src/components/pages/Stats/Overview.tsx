@@ -13,9 +13,11 @@ export default function Overview() {
   const eventsHasLoadedFromServer = useSelector(
     eventsSlice.selectors.hasLoadedFromServer,
   );
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const denormalizedMoodsOrderedByExperiencedAt = useSelector(
+    eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
+  );
 
-  if (!moods.allIds.length)
+  if (!denormalizedMoodsOrderedByExperiencedAt.length)
     return (
       <Paper.Group>
         <GetStartedCta />
@@ -29,8 +31,16 @@ export default function Overview() {
       <Paper>
         <h2>Overview</h2>
         <MoodGradientForPeriod
-          dateFrom={new Date(moods.allIds[0])}
-          dateTo={new Date(moods.allIds[moods.allIds.length - 1])}
+          dateFrom={
+            new Date(denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt)
+          }
+          dateTo={
+            new Date(
+              denormalizedMoodsOrderedByExperiencedAt[
+                denormalizedMoodsOrderedByExperiencedAt.length - 1
+              ].experiencedAt,
+            )
+          }
         />
       </Paper>
       <Weeks />

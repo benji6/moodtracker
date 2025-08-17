@@ -50,5 +50,30 @@ describe("mood", () => {
       cy.get(SELECTORS.moodCardMood).first().should("have.text", String(MOOD));
       cy.get(SELECTORS.moodCardTags).first().should("have.text", "🧪");
     });
+
+    it("adds a mood with `experienceAt` 1 day ago", () => {
+      const MOOD = Math.floor(Math.random() * 11);
+      cy.get(`${SELECTORS.addMoodRadioButton}[value="${MOOD}"]`).click({
+        force: true,
+      });
+      const experiencedAt = new Date();
+      experiencedAt.setDate(experiencedAt.getDate() - 1);
+      experiencedAt.setSeconds(0);
+      experiencedAt.setMilliseconds(0);
+      cy.get(SELECTORS.experiencedAtInput).type(
+        `${experiencedAt.getFullYear()}-${String(experiencedAt.getMonth() + 1).padStart(2, "0")}-${String(
+          experiencedAt.getDate(),
+        ).padStart(
+          2,
+          "0",
+        )}T${String(experiencedAt.getHours()).padStart(2, "0")}:${String(experiencedAt.getMinutes()).padStart(2, "0")}`,
+      );
+      cy.get(SELECTORS.eventAddSubmitButton).click();
+      cy.get(SELECTORS.moodList);
+      cy.location("pathname").should("equal", "/");
+      cy.get(SELECTORS.moodCardTime).get(
+        `[data-time="${experiencedAt.getTime() / 1e3}"]`,
+      );
+    });
   });
 });

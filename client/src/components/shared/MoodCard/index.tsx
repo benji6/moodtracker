@@ -12,9 +12,10 @@ interface Props {
 }
 
 export default function MoodCard({ id }: Props) {
-  const date = new Date(id);
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const { description, exploration, mood } = normalizedMoods.byId[id];
+  const { description, experiencedAt, exploration, mood } =
+    normalizedMoods.byId[id];
+  const date = new Date(experiencedAt ?? id);
 
   return (
     <EventCard color={moodToColor(mood)} eventType="moods" hideDateTime id={id}>

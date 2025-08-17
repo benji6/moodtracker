@@ -2,7 +2,7 @@ import { MOOD_EXTENT, TIME } from "./constants";
 import { addDays, getDay, set } from "date-fns";
 import { ComponentProps } from "react";
 import { Icon } from "eri";
-import { NormalizedMoods } from "./types";
+import { DenormalizedMoodWithExperiencedAt, NormalizedMoods } from "./types";
 import { captureException } from "./sentry";
 import { interpolateHcl } from "d3-interpolate";
 import { removeStopwords } from "stopword";
@@ -104,52 +104,57 @@ export const compareFunctionForStringSorting = (
 ): number => (a > b ? 1 : a < b ? -1 : 0);
 
 export const computeAverageMoodInInterval = (
-  moods: NormalizedMoods,
+  moods: DenormalizedMoodWithExperiencedAt[],
   dateFrom: Date,
   dateTo: Date,
 ): number | undefined => {
-  if (!moods.allIds.length) {
+  if (!moods.length) {
     captureException(Error("No moods"));
     return;
   }
-
-  const earliestMoodTime = new Date(moods.allIds[0]).getTime();
-  const latestMoodTime = new Date(
-    moods.allIds[moods.allIds.length - 1],
-  ).getTime();
-
   const fromTimestamp = dateFrom.getTime();
   const toTimestamp = dateTo.getTime();
-
   if (toTimestamp < fromTimestamp) {
     captureException(Error("`dateFrom` must be equal to or before `dateTo`"));
     return;
   }
-  if (fromTimestamp > latestMoodTime || toTimestamp < earliestMoodTime) return;
 
-  if (moods.allIds.length === 1) return moods.byId[moods.allIds[0]].mood;
-  if (toTimestamp === earliestMoodTime)
-    return moods.byId[dateTo.toISOString()].mood;
-  if (fromTimestamp === latestMoodTime)
-    return moods.byId[dateFrom.toISOString()].mood;
+  const earliestMood = moods[0];
+  const latestMood = moods[moods.length - 1];
+
+  const earliestMoodTimestamp = new Date(earliestMood.experiencedAt).getTime();
+  const latestMoodTimestamp = new Date(latestMood.experiencedAt).getTime();
+
+  if (
+    fromTimestamp > latestMoodTimestamp ||
+    toTimestamp < earliestMoodTimestamp
+  )
+    return;
+
+  if (moods.length === 1) return earliestMood.mood;
+  if (toTimestamp === earliestMoodTimestamp) return earliestMood.mood;
+  if (fromTimestamp === latestMoodTimestamp) return latestMood.mood;
 
   const maxArea =
-    (Math.min(toTimestamp, latestMoodTime) -
-      Math.max(fromTimestamp, earliestMoodTime)) *
+    (Math.min(toTimestamp, latestMoodTimestamp) -
+      Math.max(fromTimestamp, earliestMoodTimestamp)) *
     MOOD_EXTENT;
 
   let area = 0;
 
-  const relevantMoodIds = getEnvelopingIds(moods.allIds, dateFrom, dateTo);
+  const [i, j] = getEnvelopingIndices(
+    moods.map((m) => m.experiencedAt),
+    dateFrom,
+    dateTo,
+  );
+  const relevantMoods = moods.slice(i, j);
 
-  for (let j = 1; j < relevantMoodIds.length; j++) {
-    const id0 = relevantMoodIds[j - 1];
-    const t0 = new Date(id0).getTime();
-    const mood0 = moods.byId[id0].mood;
+  for (let j = 1; j < relevantMoods.length; j++) {
+    const t0 = new Date(relevantMoods[j - 1].experiencedAt).getTime();
+    const mood0 = relevantMoods[j - 1].mood;
 
-    const id1 = relevantMoodIds[j];
-    const t1 = new Date(id1).getTime();
-    const mood1 = moods.byId[id1].mood;
+    const t1 = new Date(relevantMoods[j].experiencedAt).getTime();
+    const mood1 = relevantMoods[j].mood;
 
     if (t0 < fromTimestamp && t1 > toTimestamp) {
       area += trapeziumArea(
@@ -256,14 +261,14 @@ export const getNormalizedWordCloudWords = (string: string): string[] => {
   return words;
 };
 
-// Hard to name, but will return all moods within
-// date range and if they exist will also include
-// first mood before range and first mood after range
-export const getEnvelopingIds = (
+// Hard to name, but will return 2 indices that can be used with slice:
+// the index of the element before the first element within the range
+// and the of the element 2 indices after the last element within the range
+export const getEnvelopingIndices = (
   ids: NormalizedMoods["allIds"],
   dateFrom: Date,
   dateTo: Date,
-): NormalizedMoods["allIds"] => {
+): [number, number] => {
   if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
 
   // We use these ISO-8601 strings to do string comparison of dates.
@@ -277,15 +282,28 @@ export const getEnvelopingIds = (
 
   const i = Math.max(bisectLeft(ids, fromIso) - 1, 0);
   const j = bisectLeft(ids, toIso, i);
-
-  return ids.slice(i, j + Number(ids[j] <= toIso) + Number(j < ids.length));
+  return [i, j + Number(ids[j] <= toIso) + Number(j < ids.length)];
 };
-
-export const getIdsInInterval = (
-  ids: string[],
+// Hard to name, but will return all moods within
+// date range and if they exist will also include
+// first mood before range and first mood after range
+export const getEnvelopingIds = (
+  ids: NormalizedMoods["allIds"],
   dateFrom: Date,
   dateTo: Date,
-): typeof ids => {
+): NormalizedMoods["allIds"] => {
+  const [i, j] = getEnvelopingIndices(ids, dateFrom, dateTo);
+  return ids.slice(i, j);
+};
+
+// Will return 2 indices that can be used as arguments for slice:
+// the index of the first element within the range
+// and the index after the index of the last element within the range
+export const getIndicesInInterval = (
+  ids: NormalizedMoods["allIds"],
+  dateFrom: Date,
+  dateTo: Date,
+): [number, number] => {
   if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
 
   const fromIso = dateFrom.toISOString();
@@ -293,7 +311,16 @@ export const getIdsInInterval = (
 
   const i = bisectLeft(ids, fromIso);
   const j = bisectLeft(ids, toIso, i);
-  return ids.slice(i, j + Number(ids[j] <= toIso));
+
+  return [i, j + Number(ids[j] <= toIso)];
+};
+export const getIdsInInterval = (
+  ids: string[],
+  dateFrom: Date,
+  dateTo: Date,
+): typeof ids => {
+  const [i, j] = getIndicesInInterval(ids, dateFrom, dateTo);
+  return ids.slice(i, j);
 };
 
 export const hasIdsInInterval = (
@@ -378,6 +405,12 @@ export const formatIsoDateInLocalTimezone = (date: Date): string =>
     2,
     "0",
   )}`;
+
+export const formatIsoDateHourMinuteInLocalTimezone = (date: Date): string =>
+  `${formatIsoDateInLocalTimezone(date)}T${String(date.getHours()).padStart(
+    2,
+    "0",
+  )}:${String(date.getMinutes()).padStart(2, "0")}`;
 
 export const formatIsoDateHourInLocalTimezone = (date: Date): string =>
   `${formatIsoDateInLocalTimezone(date)}T${String(date.getHours()).padStart(

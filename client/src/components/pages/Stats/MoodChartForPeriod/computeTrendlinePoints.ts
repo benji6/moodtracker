@@ -1,17 +1,21 @@
-import { NormalizedMoods } from "../../../../types";
+import { DenormalizedMoodWithExperiencedAt } from "../../../../types";
 import { computeAverageMoodInInterval } from "../../../../utils";
 
 const TRENDLINE_POINTS_COUNT = 32;
 const TRENDLINE_MOVING_AVERAGE_PERIOD_COUNT = 3;
 
 export default function computeTrendlinePoints(
-  moods: NormalizedMoods,
+  moodsOrderedByExperiencedAt: DenormalizedMoodWithExperiencedAt[],
   domain: [number, number],
 ): [number, number][] {
   const period = (domain[1] - domain[0]) / TRENDLINE_POINTS_COUNT;
-  const earliestMoodTime = new Date(moods.allIds[0]).getTime();
+  const earliestMoodTime = new Date(
+    moodsOrderedByExperiencedAt[0].experiencedAt,
+  ).getTime();
   const latestMoodTime = new Date(
-    moods.allIds[moods.allIds.length - 1],
+    moodsOrderedByExperiencedAt[
+      moodsOrderedByExperiencedAt.length - 1
+    ].experiencedAt,
   ).getTime();
 
   const trendlinePoints: [number, number][] = [];
@@ -24,7 +28,7 @@ export default function computeTrendlinePoints(
     if (trendlineX < earliestMoodTime) continue;
     if (trendlineX > latestMoodTime) break;
     const mood = computeAverageMoodInInterval(
-      moods,
+      moodsOrderedByExperiencedAt,
       new Date(t0),
       new Date(t1),
     );

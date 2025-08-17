@@ -40,9 +40,10 @@ export type NormalizedEvents =
   | NormalizedRuns
   | NormalizedSleeps
   | NormalizedWeights;
+type DenormalizedMood = Mood & { createdAt: string };
 export type DenormalizedEvents =
   | (Meditation & { createdAt: string })[]
-  | (Mood & { createdAt: string })[]
+  | DenormalizedMood[]
   | (Run & { createdAt: string })[]
   | (ValueAndLocationEvent & { createdAt: string })[]
   | (Sleep & { createdAt: string })[];
@@ -66,16 +67,21 @@ export interface DeviceGeolocation {
 export interface Mood {
   // `description` is deprecated and is retained for backwards compatibility
   description?: string;
+  experiencedAt?: string;
   exploration?: string;
   location?: DeviceGeolocation;
   mood: number;
 }
 export interface UpdateMood {
   description?: string;
+  experiencedAt?: string;
   exploration?: string;
   id: string;
   mood?: number;
 }
+
+export type DenormalizedMoodWithExperiencedAt = DenormalizedMood &
+  Required<Pick<DenormalizedMood, "experiencedAt">>;
 
 export type Run =
   | {

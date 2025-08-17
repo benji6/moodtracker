@@ -1,5 +1,5 @@
 import { ERRORS, FIELDS, TEST_IDS } from "../../../constants";
-import { RadioButton, TextArea } from "eri";
+import { RadioButton, TextArea, TextField } from "eri";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef, useState } from "react";
 import AddEvent from "../../shared/AddEvent";
@@ -7,7 +7,10 @@ import { Mood } from "../../../types";
 import { captureException } from "../../../sentry";
 import deviceSlice from "../../../store/deviceSlice";
 import eventsSlice from "../../../store/eventsSlice";
-import { moodToColor } from "../../../utils";
+import {
+  formatIsoDateHourMinuteInLocalTimezone,
+  moodToColor,
+} from "../../../utils";
 
 export default function AddMood() {
   const dispatch = useDispatch();
@@ -45,6 +48,11 @@ export default function AddMood() {
         }
 
         const payload: Mood = { mood: Number(moodValue) };
+        const experiencedAtValue: string =
+          formEl[FIELDS.experiencedAt.name].value;
+        if (experiencedAtValue)
+          payload.experiencedAt = new Date(experiencedAtValue).toISOString();
+
         if (explorationValue) payload.exploration = explorationValue.trim();
         if (geolocation) payload.location = geolocation;
 
@@ -78,6 +86,10 @@ export default function AddMood() {
           </RadioButton>
         ))}
       </RadioButton.Group>
+      <TextField
+        {...FIELDS.experiencedAt}
+        max={formatIsoDateHourMinuteInLocalTimezone(new Date())}
+      />
       <TextArea {...FIELDS.exploration} />
     </AddEvent>
   );

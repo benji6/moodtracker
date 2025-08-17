@@ -13,6 +13,7 @@ import {
   createDateFromLocalDateString,
   defaultDict,
   formatIsoDateHourInLocalTimezone,
+  formatIsoDateHourMinuteInLocalTimezone,
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
@@ -99,10 +100,13 @@ describe("utils", () => {
       it("returns undefined", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-31T00:00:00.000Z"),
             new Date("2020-07-30T00:00:00.000Z"),
           ),
@@ -114,10 +118,7 @@ describe("utils", () => {
       it("returns undefined", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: [],
-              byId: {},
-            },
+            [],
             new Date("2020-07-30T00:00:00.000Z"),
             new Date("2020-07-31T00:00:00.000Z"),
           ),
@@ -129,40 +130,52 @@ describe("utils", () => {
       it("returns an average mood when the mood intersects with the interval", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-28T00:00:00.000Z"),
             new Date("2020-07-28T00:00:00.000Z"),
           ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-27T00:00:00.000Z"),
             new Date("2020-07-28T00:00:00.000Z"),
           ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-28T00:00:00.000Z"),
             new Date("2020-07-29T00:00:00.000Z"),
           ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-27T00:00:00.000Z"),
             new Date("2020-07-29T00:00:00.000Z"),
           ),
@@ -172,40 +185,52 @@ describe("utils", () => {
       it("returns undefined when the mood does not intersect with the interval", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-25T00:00:00.000Z"),
             new Date("2020-07-25T00:00:00.000Z"),
           ),
         ).toBeUndefined();
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-24T00:00:00.000Z"),
             new Date("2020-07-25T00:00:00.000Z"),
           ),
         ).toBeUndefined();
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-30T00:00:00.000Z"),
             new Date("2020-07-30T00:00:00.000Z"),
           ),
         ).toBeUndefined();
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z"],
-              byId: { "2020-07-28T00:00:00.000Z": { mood: 5 } },
-            },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-30T00:00:00.000Z"),
             new Date("2020-07-31T00:00:00.000Z"),
           ),
@@ -217,54 +242,95 @@ describe("utils", () => {
       it("works with 2 moods in the interval", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
-              byId: {
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
-                "2020-07-29T00:00:00.000Z": { mood: 7 },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
               },
-            },
+              {
+                createdAt: "2020-07-29T00:00:00.000Z",
+                experiencedAt: "2020-07-29T00:00:00.000Z",
+                mood: 7,
+              },
+            ],
             new Date("2020-07-28T00:00:00.000Z"),
             new Date("2020-07-29T00:00:00.000Z"),
           ),
         ).toEqual(6);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
-              byId: {
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
-                "2020-07-29T00:00:00.000Z": { mood: 7 },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
               },
-            },
+              {
+                createdAt: "2020-07-29T00:00:00.000Z",
+                experiencedAt: "2020-07-29T00:00:00.000Z",
+                mood: 7,
+              },
+            ],
             new Date("2020-07-27T00:00:00.000Z"),
             new Date("2020-07-29T00:00:00.000Z"),
           ),
         ).toEqual(6);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
-              byId: {
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
-                "2020-07-29T00:00:00.000Z": { mood: 7 },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
               },
-            },
+              {
+                createdAt: "2020-07-29T00:00:00.000Z",
+                experiencedAt: "2020-07-29T00:00:00.000Z",
+                mood: 7,
+              },
+            ],
             new Date("2020-07-28T00:00:00.000Z"),
             new Date("2020-07-30T00:00:00.000Z"),
           ),
         ).toEqual(6);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-28T00:00:00.000Z", "2020-07-29T00:00:00.000Z"],
-              byId: {
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
-                "2020-07-29T00:00:00.000Z": { mood: 7 },
+            [
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
               },
-            },
+              {
+                createdAt: "2020-07-29T00:00:00.000Z",
+                experiencedAt: "2020-07-29T00:00:00.000Z",
+                mood: 7,
+              },
+            ],
             new Date("2020-07-27T00:00:00.000Z"),
             new Date("2020-08-02T00:00:00.000Z"),
+          ),
+        ).toEqual(6);
+      });
+
+      it("uses `experiencedAt` instead of `createdAt`", () => {
+        expect(
+          computeAverageMoodInInterval(
+            [
+              {
+                createdAt: "2020-01-01T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+              {
+                createdAt: "2020-02-01T00:00:00.000Z",
+                experiencedAt: "2020-07-29T00:00:00.000Z",
+                mood: 7,
+              },
+            ],
+            new Date("2020-07-27T00:00:00.000Z"),
+            new Date("2020-07-29T00:00:00.000Z"),
           ),
         ).toEqual(6);
       });
@@ -272,52 +338,72 @@ describe("utils", () => {
       it("works with 2 moods and only one in the interval", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
-              byId: {
-                "2020-07-24T00:00:00.000Z": { mood: 4 },
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
+            [
+              {
+                createdAt: "2020-07-24T00:00:00.000Z",
+                experiencedAt: "2020-07-24T00:00:00.000Z",
+                mood: 4,
               },
-            },
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-26T00:00:00.000Z"),
             new Date("2020-08-02T00:00:00.000Z"),
           ),
         ).toEqual(4.75);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
-              byId: {
-                "2020-07-24T00:00:00.000Z": { mood: 4 },
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
+            [
+              {
+                createdAt: "2020-07-24T00:00:00.000Z",
+                experiencedAt: "2020-07-24T00:00:00.000Z",
+                mood: 4,
               },
-            },
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-23T00:00:00.000Z"),
             new Date("2020-07-24T00:00:00.000Z"),
           ),
         ).toEqual(4);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
-              byId: {
-                "2020-07-24T00:00:00.000Z": { mood: 4 },
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
+            [
+              {
+                createdAt: "2020-07-24T00:00:00.000Z",
+                experiencedAt: "2020-07-24T00:00:00.000Z",
+                mood: 4,
               },
-            },
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-28T00:00:00.000Z"),
             new Date("2020-08-02T00:00:00.000Z"),
           ),
         ).toEqual(5);
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
-              byId: {
-                "2020-07-24T00:00:00.000Z": { mood: 4 },
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
+            [
+              {
+                createdAt: "2020-07-24T00:00:00.000Z",
+                experiencedAt: "2020-07-24T00:00:00.000Z",
+                mood: 4,
               },
-            },
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-20T00:00:00.000Z"),
             new Date("2020-07-25T00:00:00.000Z"),
           ),
@@ -327,13 +413,18 @@ describe("utils", () => {
       it("works with 2 moods and both outside the interval", () => {
         expect(
           computeAverageMoodInInterval(
-            {
-              allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
-              byId: {
-                "2020-07-24T00:00:00.000Z": { mood: 4 },
-                "2020-07-28T00:00:00.000Z": { mood: 5 },
+            [
+              {
+                createdAt: "2020-07-24T00:00:00.000Z",
+                experiencedAt: "2020-07-24T00:00:00.000Z",
+                mood: 4,
               },
-            },
+              {
+                createdAt: "2020-07-28T00:00:00.000Z",
+                experiencedAt: "2020-07-28T00:00:00.000Z",
+                mood: 5,
+              },
+            ],
             new Date("2020-07-25T00:00:00.000Z"),
             new Date("2020-07-27T00:00:00.000Z"),
           ),
@@ -760,6 +851,22 @@ describe("utils", () => {
       "Pikachu",
     ]);
     expect(getNormalizedWordCloudWords("   pika-chu   ")).toEqual(["Pika-chu"]);
+  });
+
+  test("formatIsoDateHourMinuteInLocalTimezone", () => {
+    expect(
+      formatIsoDateHourMinuteInLocalTimezone(
+        new Date("2020-09-01T01:00:00.000Z"),
+      ),
+    ).toBe("2020-09-01T01:00");
+    expect(
+      formatIsoDateHourMinuteInLocalTimezone(new Date("2020-09-30T23:59:59")),
+    ).toBe("2020-09-30T23:59");
+    expect(
+      formatIsoDateHourMinuteInLocalTimezone(
+        new Date("2020-10-01T00:01:01.000Z"),
+      ),
+    ).toBe("2020-10-01T00:01");
   });
 
   test("formatIsoDateInLocalTimezone", () => {

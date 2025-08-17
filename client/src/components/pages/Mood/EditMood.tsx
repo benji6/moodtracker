@@ -7,21 +7,28 @@ import RedirectHome from "../../shared/RedirectHome";
 import { UpdateMood } from "../../../types";
 import { captureException } from "../../../sentry";
 import eventsSlice from "../../../store/eventsSlice";
-import { moodToColor } from "../../../utils";
+import {
+  formatIsoDateHourMinuteInLocalTimezone,
+  formatIsoDateInLocalTimezone,
+  moodToColor,
+} from "../../../utils";
 import { useParams } from "react-router";
 
 export default function EditMood() {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
   const [descriptionError, setDescriptionError] = useState<
     string | undefined
   >();
   const [showNoUpdateError, setShowNoUpdateError] = useState(false);
+  const [experiencedAtError, setExperiencedAtError] = useState<
+    string | undefined
+  >();
   const formRef = useRef<HTMLFormElement>(null);
 
   if (!id) return <RedirectHome />;
-  const mood = moods.byId[id];
+  const mood = normalizedMoods.byId[id];
   if (!mood) return <RedirectHome />;
 
   return (
@@ -39,6 +46,13 @@ export default function EditMood() {
           captureException(Error("ID is undefined"));
           return false;
         }
+        const experiencedAtValue: string =
+          formEl[FIELDS.experiencedAt.name].value;
+        if (mood.experiencedAt && !experiencedAtValue) {
+          setExperiencedAtError(ERRORS.required);
+          return false;
+        }
+
         setShowNoUpdateError(false);
 
         const descriptionEl: HTMLInputElement | undefined =
@@ -60,6 +74,11 @@ export default function EditMood() {
         const moodValueNumber = Number(moodValue);
         if (moodValueNumber !== mood.mood) {
           payload.mood = moodValueNumber;
+          shouldUpdate = true;
+        }
+
+        if (experiencedAtValue !== mood.experiencedAt) {
+          payload.experiencedAt = new Date(experiencedAtValue).toISOString();
           shouldUpdate = true;
         }
 
@@ -111,6 +130,18 @@ export default function EditMood() {
           </RadioButton>
         ))}
       </RadioButton.Group>
+      <TextField
+        {...FIELDS.experiencedAt}
+        max={`${formatIsoDateInLocalTimezone(new Date(id))}T23:59`}
+        defaultValue={
+          mood.experiencedAt
+            ? formatIsoDateHourMinuteInLocalTimezone(
+                new Date(mood.experiencedAt),
+              )
+            : undefined
+        }
+        error={experiencedAtError}
+      />
       {mood.description && (
         <TextField
           {...FIELDS.description}

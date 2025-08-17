@@ -4,14 +4,18 @@ describe("MoodChartForPeriod", () => {
   test("computeTrendlinePoints", () => {
     expect(
       computeTrendlinePoints(
-        {
-          allIds: ["2020-07-24T00:00:00.000Z", "2020-07-28T00:00:00.000Z"],
-          byId: {
-            "2020-07-24T00:00:00.000Z": { mood: 4 },
-            "2020-07-28T00:00:00.000Z": { mood: 5 },
+        [
+          {
+            createdAt: "2020-07-24T00:00:00.000Z",
+            experiencedAt: "2020-07-24T00:00:00.000Z",
+            mood: 4,
           },
-        },
-
+          {
+            createdAt: "2020-07-28T00:00:00.000Z",
+            experiencedAt: "2020-07-28T00:00:00.000Z",
+            mood: 5,
+          },
+        ],
         [
           new Date("2020-07-25T00:00:00.000Z").getTime(),
           new Date("2020-07-27T00:00:00.000Z").getTime(),

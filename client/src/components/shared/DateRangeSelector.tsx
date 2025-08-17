@@ -21,7 +21,9 @@ export default function DateRangeSelector({
   setDateFrom,
   setDateTo,
 }: Props) {
-  const moods = useSelector(eventsSlice.selectors.normalizedMoods);
+  const denormalizedMoodsOrderedByExperiencedAt = useSelector(
+    eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
+  );
   const maxDate = roundDateUp(new Date());
 
   return (
@@ -29,7 +31,9 @@ export default function DateRangeSelector({
       <DateField
         label="From"
         max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
-        min={formatIsoDateInLocalTimezone(new Date(moods.allIds[0]))}
+        min={formatIsoDateInLocalTimezone(
+          new Date(denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt),
+        )}
         onChange={(e) => {
           let { valueAsDate: date } = e.target;
           if (!date) return;
@@ -37,7 +41,12 @@ export default function DateRangeSelector({
           if (timezoneOffset) date = addMinutes(date, date.getTimezoneOffset());
           if (
             date < roundDateDown(dateTo) &&
-            date >= roundDateDown(new Date(moods.allIds[0]))
+            date >=
+              roundDateDown(
+                new Date(
+                  denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt,
+                ),
+              )
           )
             setDateFrom(date);
         }}
