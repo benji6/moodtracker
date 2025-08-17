@@ -80,6 +80,9 @@ export default function WebPushNotifications() {
       captureException(tokenError);
     }
   }
+  if (!("Notification" in window))
+    registrationTokenErrorMessage =
+      "This browser does not support push notifications";
 
   const isSomethingLoading =
     isPending ||
@@ -102,7 +105,7 @@ export default function WebPushNotifications() {
       </p>
       <Toggle
         checked={isEnabled}
-        disabled={isSomethingLoading}
+        disabled={!("Notification" in window) || isSomethingLoading}
         error={
           registrationTokenErrorMessage ??
           (putMutation.isError || isError ? ERRORS.network : undefined)
