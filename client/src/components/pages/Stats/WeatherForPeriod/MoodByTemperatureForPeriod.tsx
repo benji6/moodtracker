@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 interface Props {
   moodIds: string[];
-  weatherResultsData: (WeatherApiResponse | undefined)[];
+  weatherResultsData: UseQueryResult<WeatherApiResponse, Error>["data"][];
   weatherResultStatuses: UseQueryResult<WeatherApiResponse, Error>["status"][];
 }
 

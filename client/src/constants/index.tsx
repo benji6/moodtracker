@@ -67,7 +67,6 @@ export const QUERY_KEYS = {
   reverseGeolocation: "reverse-geolocation",
   usage: "usage",
   weather: "weather",
-  weatherBatch: "weather-batch",
   webPushTokens: "web-push-tokens",
   weeklyEmails: "weekly-emails",
 } as const;

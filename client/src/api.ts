@@ -8,7 +8,6 @@ import { addMinutes, subMinutes } from "date-fns";
 import { captureException } from "./sentry";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { getIdToken } from "./cognito";
-import storage from "./storage";
 
 const API_URI = "/api";
 const EVENTS_URI = `${API_URI}/events`;
@@ -69,55 +68,11 @@ export const fetchWeather = async ({
     ]
   >;
 }): Promise<WeatherApiResponse> => {
-  const storedWeather = await storage.getWeather({
-    latitude,
-    longitude,
-    timestamp,
-  });
-  if (storedWeather) return storedWeather;
   const response = await fetchWithAuth(
     `${WEATHER_URI}?lat=${latitude}&lon=${longitude}&t=${timestamp}`,
   );
   if (!response.ok) throw Error(String(response.status));
-  const weather = await response.json();
-  // Some of these cached weathers will never be retrieved
-  // because we fetch weather on the add event pages before events are saved.
-  // Probably very few of these will not be retrieved again,
-  // so we don't need to worry about the cache growing too large.
-  // In future we could clean the cache up or just wait for
-  // https://github.com/TanStack/query/issues/8604 to be resolved
-  storage.setWeather({ latitude, longitude, timestamp }, weather);
-  return weather;
-};
-
-export const fetchWeatherBatch = async ({
-  queryKey: [, parameters],
-}: {
-  queryKey: [
-    string,
-    {
-      latitude: string;
-      longitude: string;
-      timestamp: number;
-    }[],
-  ];
-}) => {
-  const storedWeathers = await storage.getWeathers(parameters);
-  return Promise.all(
-    parameters.map(
-      ({ latitude, longitude, timestamp }, index) =>
-        storedWeathers[index] ??
-        fetchWeather({
-          queryKey: [
-            QUERY_KEYS.weather,
-            { date: timestamp, latitude, longitude },
-          ],
-        }).then((weather) => {
-          storage.setWeather({ latitude, longitude, timestamp }, weather);
-          return weather;
-        }),
-    ),
-  );
+  return response.json();
 };
 
 // events queries do not use react-query so they are made with retry

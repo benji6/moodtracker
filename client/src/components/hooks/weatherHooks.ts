@@ -1,9 +1,8 @@
 import { HIGHLY_CACHED_QUERY_OPTIONS, QUERY_KEYS, TIME } from "../../constants";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import eventsSlice from "../../store/eventsSlice";
-import { fetchWeather, fetchWeatherBatch } from "../../api";
+import { fetchWeather } from "../../api";
 import { useSelector } from "react-redux";
-import { WeatherApiResponse } from "../../types";
 
 const getUnixTimestampRoundedToNearestHourAndInPast = (date: Date) => {
   const roundedTime =
@@ -50,9 +49,7 @@ type QueryKey = [
   { date: number; latitude: string; longitude: string },
 ];
 
-export const useWeatherQueries = (
-  ids: string[],
-): (WeatherApiResponse | undefined)[] => {
+export const useWeatherQueries = (ids: string[]) => {
   const eventsById = useSelector(eventsSlice.selectors.byId);
 
   const queryKeys = ids.map((id) => {
@@ -76,10 +73,6 @@ export const useWeatherQueries = (
     };
   });
 
-  // TODO: switch back to using `useQueries` instead of `fetchWeatherBatch` when https://github.com/TanStack/query/issues/8604 is resolved.
-  // This code used to use `useQueries` but it hit serious performance issues.
-  // Deduplicating the queries was needed because it did not support duplicate query keys.
-  // We should aim to revert to `useQueries` if/when the performance issue is resolved so the deduplicatoin logic is left in place for now.
   const queryStringToIndex = new Map<string, number>();
   const uniqueQueryKeys: QueryKey[] = [];
   for (const { queryKey, queryKeyString } of queryKeys) {
@@ -88,24 +81,18 @@ export const useWeatherQueries = (
     uniqueQueryKeys.push(queryKey);
   }
 
-  const results: UseQueryResult<WeatherApiResponse[], Error> = useQuery({
-    queryKey: [
-      QUERY_KEYS.weatherBatch,
-      uniqueQueryKeys.map(([, { latitude, longitude, date: timestamp }]) => ({
-        latitude,
-        longitude,
-        timestamp,
-      })),
-    ],
-    queryFn: fetchWeatherBatch,
-    ...HIGHLY_CACHED_QUERY_OPTIONS,
-    staleTime: TIME.millisecondsPerDay,
-    gcTime: TIME.millisecondsPerDay,
+  // `useQueries` does not support duplicate query keys, hence we filter them out
+  const results = useQueries({
+    queries: uniqueQueryKeys.map((queryKey) => ({
+      ...HIGHLY_CACHED_QUERY_OPTIONS,
+      queryKey,
+      queryFn: fetchWeather,
+    })),
   });
 
   return queryKeys.map(({ queryKeyString }) => {
     const index = queryStringToIndex.get(queryKeyString);
     if (index === undefined) throw Error("Expected index to be defined");
-    return results.data?.[index];
+    return results[index];
   });
 };

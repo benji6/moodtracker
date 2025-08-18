@@ -112,7 +112,7 @@ export default function ExportControls({ category, denormalizedData }: Props) {
 
   const eventIdToWeather: Record<string, WeatherApiResponse> = {};
   for (let i = 0; i < weatherResults.length; i++) {
-    const weather = weatherResults[i];
+    const weather = weatherResults[i].data;
     if (weather?.data)
       eventIdToWeather[eventsWithLocation[i].createdAt] = weather;
   }
