@@ -77,7 +77,7 @@ export default function EditMood() {
           shouldUpdate = true;
         }
 
-        if (experiencedAtValue !== mood.experiencedAt) {
+        if (experiencedAtValue !== (mood.experiencedAt ?? "")) {
           payload.experiencedAt = new Date(experiencedAtValue).toISOString();
           shouldUpdate = true;
         }
