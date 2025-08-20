@@ -8,15 +8,17 @@ import WeeklyEmailNotifications from "../../shared/NotificationSettings/WeeklyEm
 import appSlice from "../../../store/appSlice";
 
 export default function ReviewSettingsDialog() {
-  const userHasManuallySignedIn = useSelector(
-    appSlice.selectors.showNewSignInUi,
-  );
+  const showNewSignInUI = useSelector(appSlice.selectors.showNewSignInUi);
   const dispatch = useDispatch();
+
+  // The children of Dialog have a number of side-effects including network calls
+  // so don't render them if the Dialog is not open
+  if (!showNewSignInUI) return;
 
   return (
     <Dialog
       data-test-id={TEST_IDS.deviceSetupDialog}
-      open={userHasManuallySignedIn}
+      open={showNewSignInUI}
       title="Review your settings"
       onClose={() => dispatch(appSlice.actions.dismissNewSignInUi())}
     >
