@@ -38,11 +38,12 @@ import {
   defaultDict,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
+  getEnvelopingEvents,
   getEnvelopingIds,
-  getEnvelopingIndices,
+  getEventsInInterval,
   getIdsInInterval,
-  getIndicesInInterval,
   getNormalizedWordCloudWords,
+  hasEventsInInterval,
   hasIdsInInterval,
 } from "../utils";
 import { MINIMUM_WORD_CLOUD_WORDS } from "../constants";
@@ -548,12 +549,7 @@ export default createSlice({
       allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      (idsOrderedByExperiencedAt, dateFrom, dateTo) =>
-        hasIdsInInterval(
-          idsOrderedByExperiencedAt.map(({ experiencedAt }) => experiencedAt),
-          dateFrom,
-          dateTo,
-        ),
+      hasEventsInInterval,
     ),
     hasLoadedFromServer: (state: EventsState) => state.hasLoadedFromServer,
     idsToSync: (state: EventsState) => state.idsToSync,
@@ -561,14 +557,10 @@ export default createSlice({
       allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      (idsOrderedByExperiencedAt, dateFrom, dateTo) => {
-        const [i, j] = getIndicesInInterval(
-          idsOrderedByExperiencedAt.map(({ experiencedAt }) => experiencedAt),
-          dateFrom,
-          dateTo,
-        );
-        return idsOrderedByExperiencedAt.slice(i, j).map(({ id }) => id);
-      },
+      (idsOrderedByExperiencedAt, dateFrom, dateTo) =>
+        getEventsInInterval(idsOrderedByExperiencedAt, dateFrom, dateTo).map(
+          ({ id }) => id,
+        ),
     ),
     isSyncingFromServer: (state: EventsState) => state.isSyncingFromServer,
     isSyncingToServer: (state: EventsState) => state.isSyncingToServer,
@@ -608,14 +600,7 @@ export default createSlice({
       moodsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      (moods, dateFrom, dateTo) => {
-        const [i, j] = getIndicesInInterval(
-          moods.map((mood) => mood.experiencedAt),
-          dateFrom,
-          dateTo,
-        );
-        return moods.slice(i, j);
-      },
+      getEventsInInterval,
     ),
     denormalizedMeditations: createSelector(
       normalizedMeditationsSelector,
@@ -636,14 +621,7 @@ export default createSlice({
       denormalizedMoodsOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      (moods, dateFrom, dateTo) => {
-        const [i, j] = getEnvelopingIndices(
-          moods.map((mood) => mood.experiencedAt),
-          dateFrom,
-          dateTo,
-        );
-        return moods.slice(i, j);
-      },
+      getEnvelopingEvents,
     ),
     envelopingWeightIds: createSelector(
       normalizedWeightsSelector,
@@ -656,30 +634,19 @@ export default createSlice({
       allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      (idsWithLocationOrderedByExperiencedAt, dateFrom, dateTo) => {
-        const [i, j] = getEnvelopingIndices(
-          idsWithLocationOrderedByExperiencedAt.map(
-            ({ experiencedAt }) => experiencedAt,
-          ),
+      (idsWithLocationOrderedByExperiencedAt, dateFrom, dateTo) =>
+        getEnvelopingEvents(
+          idsWithLocationOrderedByExperiencedAt,
           dateFrom,
           dateTo,
-        );
-        return idsWithLocationOrderedByExperiencedAt
-          .slice(i, j)
-          .map(({ id }) => id);
-      },
+        ).map(({ id }) => id),
     ),
     hasMoods: createSelector(normalizedMoodsSelector, normalizedStateNotEmpty),
     hasMoodsInPeriod: createSelector(
       denormalizedMoodsOrderedByExperiencedAtSelector,
       dateFromSelector,
       dateToSelector,
-      (moods, dateFrom, dateTo) =>
-        hasIdsInInterval(
-          moods.map((mood) => mood.experiencedAt),
-          dateFrom,
-          dateTo,
-        ),
+      hasEventsInInterval,
     ),
     hasLegRaises: createSelector(
       normalizedLegRaisesSelector,

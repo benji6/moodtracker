@@ -1,6 +1,8 @@
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 import {
   bisectLeft,
+  bisectLeftOnExperiencedAt,
+  bisectRightOnExperiencedAt,
   capitalizeFirstLetter,
   compareFunctionForStringSorting,
   computeAverageMoodInInterval,
@@ -17,11 +19,14 @@ import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
   formatIsoYearInLocalTimezone,
+  getEnvelopingEvents,
   getEnvelopingIds,
+  getEventsInInterval,
   getIdsInInterval,
   getNormalizedWordCloudWords,
   getWeatherDisplayData,
   getWeekdayIndex,
+  hasEventsInInterval,
   hasIdsInInterval,
   mapRight,
   moodToColor,
@@ -70,6 +75,300 @@ describe("utils", () => {
     expect(bisectLeft(testArray, "2027", 100)).toBe(100);
     expect(bisectLeft(testArray, "2020", 4)).toBe(5);
     expect(bisectLeft(testArray, "2020", 5)).toBe(5);
+  });
+
+  describe("bisectLeftOnExperiencedAt", () => {
+    test("with empty array", () => {
+      expect(bisectLeftOnExperiencedAt([], "2020-01-01T00:00:00.000Z")).toBe(0);
+    });
+
+    test("with single element", () => {
+      const singleItem = [{ experiencedAt: "2020-06-15T12:00:00.000Z" }];
+      expect(
+        bisectLeftOnExperiencedAt(singleItem, "2020-01-01T00:00:00.000Z"),
+      ).toBe(0);
+      expect(
+        bisectLeftOnExperiencedAt(singleItem, "2020-06-15T12:00:00.000Z"),
+      ).toBe(0);
+      expect(
+        bisectLeftOnExperiencedAt(singleItem, "2020-12-31T23:59:59.999Z"),
+      ).toBe(1);
+    });
+
+    describe("with multiple elements", () => {
+      const testArray = [
+        { experiencedAt: "2020-01-15T08:00:00.000Z" },
+        { experiencedAt: "2020-03-20T14:30:00.000Z" },
+        { experiencedAt: "2020-03-20T14:30:00.000Z" },
+        { experiencedAt: "2020-06-10T09:15:00.000Z" },
+        { experiencedAt: "2020-08-05T16:45:00.000Z" },
+        { experiencedAt: "2020-10-12T11:20:00.000Z" },
+        { experiencedAt: "2020-12-25T00:00:00.000Z" },
+        { experiencedAt: "2021-02-14T13:30:00.000Z" },
+        { experiencedAt: "2021-05-01T10:00:00.000Z" },
+        { experiencedAt: "2021-08-15T17:45:00.000Z" },
+        { experiencedAt: "2021-12-31T23:59:59.999Z" },
+      ];
+
+      test("searching before first element", () => {
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2019-12-31T23:59:59.999Z"),
+        ).toBe(0);
+      });
+
+      test("searching for exact matches", () => {
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-01-15T08:00:00.000Z"),
+        ).toBe(0);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-03-20T14:30:00.000Z"),
+        ).toBe(1);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z"),
+        ).toBe(5);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2021-12-31T23:59:59.999Z"),
+        ).toBe(10);
+      });
+
+      test("searching between elements", () => {
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-02-01T00:00:00.000Z"),
+        ).toBe(1);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-07-01T12:00:00.000Z"),
+        ).toBe(4);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2021-01-01T00:00:00.000Z"),
+        ).toBe(7);
+      });
+
+      test("searching after last element", () => {
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2022-01-01T00:00:00.000Z"),
+        ).toBe(11);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2025-12-31T23:59:59.999Z"),
+        ).toBe(11);
+      });
+
+      test("with left parameter (start searching from a specific index)", () => {
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2019-12-31T23:59:59.999Z", 1),
+        ).toBe(1);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-01-15T08:00:00.000Z", 2),
+        ).toBe(2);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z", 100),
+        ).toBe(100);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2021-12-31T23:59:59.999Z", 100),
+        ).toBe(100);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2022-01-01T00:00:00.000Z", 100),
+        ).toBe(100);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z", 4),
+        ).toBe(5);
+        expect(
+          bisectLeftOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z", 5),
+        ).toBe(5);
+      });
+    });
+
+    test("with objects that have additional properties", () => {
+      const moodArray = [
+        {
+          experiencedAt: "2020-01-01T10:00:00.000Z",
+          mood: 5,
+          createdAt: "2020-01-01T10:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-01-02T15:30:00.000Z",
+          mood: 7,
+          createdAt: "2020-01-02T15:31:00.000Z",
+        },
+        {
+          experiencedAt: "2020-01-03T20:15:00.000Z",
+          mood: 3,
+          createdAt: "2020-01-03T20:16:00.000Z",
+        },
+      ];
+
+      expect(
+        bisectLeftOnExperiencedAt(moodArray, "2019-12-31T23:59:59.999Z"),
+      ).toBe(0);
+      expect(
+        bisectLeftOnExperiencedAt(moodArray, "2020-01-01T10:00:00.000Z"),
+      ).toBe(0);
+      expect(
+        bisectLeftOnExperiencedAt(moodArray, "2020-01-02T00:00:00.000Z"),
+      ).toBe(1);
+      expect(
+        bisectLeftOnExperiencedAt(moodArray, "2020-01-02T15:30:00.000Z"),
+      ).toBe(1);
+      expect(
+        bisectLeftOnExperiencedAt(moodArray, "2020-01-03T20:15:00.000Z"),
+      ).toBe(2);
+      expect(
+        bisectLeftOnExperiencedAt(moodArray, "2020-01-04T00:00:00.000Z"),
+      ).toBe(3);
+    });
+  });
+
+  describe("bisectRightOnExperiencedAt", () => {
+    test("with empty array", () => {
+      expect(bisectRightOnExperiencedAt([], "2020-01-01T00:00:00.000Z")).toBe(
+        0,
+      );
+    });
+
+    test("with single element", () => {
+      const singleItem = [{ experiencedAt: "2020-06-15T12:00:00.000Z" }];
+      expect(
+        bisectRightOnExperiencedAt(singleItem, "2020-01-01T00:00:00.000Z"),
+      ).toBe(0);
+      expect(
+        bisectRightOnExperiencedAt(singleItem, "2020-06-15T12:00:00.000Z"),
+      ).toBe(1);
+      expect(
+        bisectRightOnExperiencedAt(singleItem, "2020-12-31T23:59:59.999Z"),
+      ).toBe(1);
+    });
+
+    describe("with multiple elements (sorted array)", () => {
+      const testArray = [
+        { experiencedAt: "2020-01-15T08:00:00.000Z" },
+        { experiencedAt: "2020-03-20T14:30:00.000Z" },
+        { experiencedAt: "2020-03-20T14:30:00.000Z" }, // Duplicate to test equal values
+        { experiencedAt: "2020-06-10T09:15:00.000Z" },
+        { experiencedAt: "2020-08-05T16:45:00.000Z" },
+        { experiencedAt: "2020-10-12T11:20:00.000Z" },
+        { experiencedAt: "2020-12-25T00:00:00.000Z" },
+        { experiencedAt: "2021-02-14T13:30:00.000Z" },
+        { experiencedAt: "2021-05-01T10:00:00.000Z" },
+        { experiencedAt: "2021-08-15T17:45:00.000Z" },
+        { experiencedAt: "2021-12-31T23:59:59.999Z" },
+      ];
+
+      test("searching before first element", () => {
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2019-12-31T23:59:59.999Z"),
+        ).toBe(0);
+      });
+
+      test("searching for exact matches", () => {
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-01-15T08:00:00.000Z"),
+        ).toBe(1);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-03-20T14:30:00.000Z"),
+        ).toBe(3);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z"),
+        ).toBe(6);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2021-12-31T23:59:59.999Z"),
+        ).toBe(11);
+      });
+
+      test("searching between elements", () => {
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-02-01T00:00:00.000Z"),
+        ).toBe(1);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-07-01T12:00:00.000Z"),
+        ).toBe(4);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2021-01-01T00:00:00.000Z"),
+        ).toBe(7);
+      });
+
+      test("searching after last element", () => {
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2022-01-01T00:00:00.000Z"),
+        ).toBe(11);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2025-12-31T23:59:59.999Z"),
+        ).toBe(11);
+      });
+
+      test("with left parameter (start searching from a specific index)", () => {
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2019-12-31T23:59:59.999Z", 1),
+        ).toBe(1);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-01-15T08:00:00.000Z", 2),
+        ).toBe(2);
+        expect(
+          bisectRightOnExperiencedAt(
+            testArray,
+            "2020-10-12T11:20:00.000Z",
+            100,
+          ),
+        ).toBe(100);
+        expect(
+          bisectRightOnExperiencedAt(
+            testArray,
+            "2021-12-31T23:59:59.999Z",
+            100,
+          ),
+        ).toBe(100);
+        expect(
+          bisectRightOnExperiencedAt(
+            testArray,
+            "2022-01-01T00:00:00.000Z",
+            100,
+          ),
+        ).toBe(100);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z", 4),
+        ).toBe(6);
+        expect(
+          bisectRightOnExperiencedAt(testArray, "2020-10-12T11:20:00.000Z", 5),
+        ).toBe(6);
+      });
+    });
+
+    test("with objects that have additional properties", () => {
+      const moodArray = [
+        {
+          experiencedAt: "2020-01-01T10:00:00.000Z",
+          mood: 5,
+          createdAt: "2020-01-01T10:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-01-02T15:30:00.000Z",
+          mood: 7,
+          createdAt: "2020-01-02T15:31:00.000Z",
+        },
+        {
+          experiencedAt: "2020-01-03T20:15:00.000Z",
+          mood: 3,
+          createdAt: "2020-01-03T20:16:00.000Z",
+        },
+      ];
+
+      expect(
+        bisectRightOnExperiencedAt(moodArray, "2019-12-31T23:59:59.999Z"),
+      ).toBe(0);
+      expect(
+        bisectRightOnExperiencedAt(moodArray, "2020-01-01T10:00:00.000Z"),
+      ).toBe(1);
+      expect(
+        bisectRightOnExperiencedAt(moodArray, "2020-01-02T00:00:00.000Z"),
+      ).toBe(1);
+      expect(
+        bisectRightOnExperiencedAt(moodArray, "2020-01-02T15:30:00.000Z"),
+      ).toBe(2);
+      expect(
+        bisectRightOnExperiencedAt(moodArray, "2020-01-03T20:15:00.000Z"),
+      ).toBe(3);
+      expect(
+        bisectRightOnExperiencedAt(moodArray, "2020-01-04T00:00:00.000Z"),
+      ).toBe(3);
+    });
   });
 
   test("capitalizeFirstLetter", () => {
@@ -698,6 +997,264 @@ describe("utils", () => {
     });
   });
 
+  describe("getEnvelopingEvents", () => {
+    it("throws an error when the dateFrom is after the dateTo", () => {
+      expect(() =>
+        getEnvelopingEvents(
+          [],
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
+        ),
+      ).not.toThrow();
+      expect(() =>
+        getEnvelopingEvents(
+          [],
+          new Date("2020-09-01T00:00:01.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
+        ),
+      ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
+    });
+
+    it("returns the first event when the range is before the event range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-02T00:00:00.000Z"),
+        ),
+      ).toEqual([{ experiencedAt: "2020-10-04T00:00:00.000Z" }]);
+    });
+
+    it("returns the last event when the range is after the event range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-11-01T00:00:00.000Z"),
+          new Date("2020-11-02T00:00:00.000Z"),
+        ),
+      ).toEqual([{ experiencedAt: "2020-10-06T00:00:00.000Z" }]);
+    });
+
+    it("returns all events when the date range encompasses all events", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-10-01T00:00:00.000Z"),
+          new Date("2020-10-31T00:00:00.000Z"),
+        ),
+      ).toEqual(events);
+    });
+
+    it("returns all events when the date range is equal to the event range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual(events);
+    });
+
+    it("returns first event before range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-04T00:00:01.000Z" },
+        { experiencedAt: "2020-10-04T00:00:02.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-10-04T00:00:02.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        { experiencedAt: "2020-10-04T00:00:01.000Z" },
+        { experiencedAt: "2020-10-04T00:00:02.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+      ]);
+    });
+
+    it("returns first event after range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:01.000Z" },
+        { experiencedAt: "2020-10-06T00:00:02.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:01.000Z" },
+      ]);
+    });
+
+    it("returns first event before range and first event after range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-04T00:00:01.000Z" },
+        { experiencedAt: "2020-10-04T00:00:02.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:01.000Z" },
+        { experiencedAt: "2020-10-06T00:00:02.000Z" },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-10-04T00:00:02.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        { experiencedAt: "2020-10-04T00:00:01.000Z" },
+        { experiencedAt: "2020-10-04T00:00:02.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:01.000Z" },
+      ]);
+    });
+
+    it("works with events that have additional properties", () => {
+      const events = [
+        {
+          experiencedAt: "2020-10-04T00:00:00.000Z",
+          mood: 5,
+          createdAt: "2020-10-04T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-05T00:00:00.000Z",
+          mood: 7,
+          createdAt: "2020-10-05T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-06T00:00:00.000Z",
+          mood: 3,
+          createdAt: "2020-10-06T00:01:00.000Z",
+        },
+      ];
+      expect(
+        getEnvelopingEvents(
+          events,
+          new Date("2020-10-05T00:00:00.000Z"),
+          new Date("2020-10-05T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        {
+          experiencedAt: "2020-10-04T00:00:00.000Z",
+          mood: 5,
+          createdAt: "2020-10-04T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-05T00:00:00.000Z",
+          mood: 7,
+          createdAt: "2020-10-05T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-06T00:00:00.000Z",
+          mood: 3,
+          createdAt: "2020-10-06T00:01:00.000Z",
+        },
+      ]);
+    });
+
+    it("returns empty array when no events are provided", () => {
+      expect(
+        getEnvelopingEvents(
+          [],
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-05T00:00:00.000Z"),
+        ),
+      ).toEqual([]);
+    });
+
+    describe("handling duplicate experiencedAt values", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z", id: 1 },
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 2 },
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 3 },
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 4 },
+        { experiencedAt: "2020-10-06T00:00:00.000Z", id: 5 },
+        { experiencedAt: "2020-10-07T00:00:00.000Z", id: 6 },
+      ];
+
+      test("range that includes duplicates", () => {
+        expect(
+          getEnvelopingEvents(
+            events,
+            new Date("2020-10-05T00:00:00.000Z"),
+            new Date("2020-10-05T00:00:00.000Z"),
+          ),
+        ).toEqual([
+          { experiencedAt: "2020-10-04T00:00:00.000Z", id: 1 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 2 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 3 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 4 },
+          { experiencedAt: "2020-10-06T00:00:00.000Z", id: 5 },
+        ]);
+      });
+
+      test("range that spans across duplicates", () => {
+        expect(
+          getEnvelopingEvents(
+            events,
+            new Date("2020-10-04T12:00:00.000Z"),
+            new Date("2020-10-05T12:00:00.000Z"),
+          ),
+        ).toEqual([
+          { experiencedAt: "2020-10-04T00:00:00.000Z", id: 1 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 2 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 3 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 4 },
+          { experiencedAt: "2020-10-06T00:00:00.000Z", id: 5 },
+        ]);
+      });
+
+      test("range that starts and ends on duplicate values", () => {
+        expect(
+          getEnvelopingEvents(
+            events,
+            new Date("2020-10-05T00:00:00.000Z"),
+            new Date("2020-10-05T00:00:00.000Z"),
+          ),
+        ).toEqual([
+          { experiencedAt: "2020-10-04T00:00:00.000Z", id: 1 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 2 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 3 },
+          { experiencedAt: "2020-10-05T00:00:00.000Z", id: 4 },
+          { experiencedAt: "2020-10-06T00:00:00.000Z", id: 5 },
+        ]);
+      });
+    });
+  });
+
   describe("getIdsInInterval", () => {
     it("throws an error when the dateFrom is after the dateTo", () => {
       expect(() =>
@@ -762,6 +1319,200 @@ describe("utils", () => {
     });
   });
 
+  describe("getEventsInInterval", () => {
+    it("throws an error when the dateFrom is after the dateTo", () => {
+      expect(() =>
+        getEventsInInterval(
+          [],
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
+        ),
+      ).not.toThrow();
+      expect(() =>
+        getEventsInInterval(
+          [],
+          new Date("2020-09-01T00:00:01.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
+        ),
+      ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
+    });
+
+    it("returns an empty array when there are no events provided", () => {
+      expect(
+        getEventsInInterval(
+          [],
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-05T00:00:00.000Z"),
+        ),
+      ).toEqual([]);
+    });
+
+    it("returns an empty array when there are no events within the interval", () => {
+      const events = [
+        { experiencedAt: "2020-10-01T00:00:00.000Z" },
+        { experiencedAt: "2020-10-02T00:00:00.000Z" },
+        { experiencedAt: "2020-10-08T00:00:00.000Z" },
+        { experiencedAt: "2020-10-09T00:00:00.000Z" },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([]);
+    });
+
+    it("returns all events when all events are within the interval", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-01T00:00:00.000Z"),
+          new Date("2020-10-31T00:00:00.000Z"),
+        ),
+      ).toEqual(events);
+    });
+
+    it("returns all events when the date range is equal to the event range", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual(events);
+    });
+
+    it("only returns events that are within the interval", () => {
+      const events = [
+        { experiencedAt: "2020-10-01T00:00:00.000Z" },
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+        { experiencedAt: "2020-10-09T00:00:00.000Z" },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-04T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ]);
+    });
+
+    it("handles events with exact boundary dates", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z" },
+        { experiencedAt: "2020-10-04T00:00:01.000Z" },
+        { experiencedAt: "2020-10-05T23:59:59.999Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+        { experiencedAt: "2020-10-07T00:00:00.000Z" },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-04T00:00:01.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        { experiencedAt: "2020-10-04T00:00:01.000Z" },
+        { experiencedAt: "2020-10-05T23:59:59.999Z" },
+        { experiencedAt: "2020-10-06T00:00:00.000Z" },
+      ]);
+    });
+
+    it("works with events that have additional properties", () => {
+      const events = [
+        {
+          experiencedAt: "2020-10-04T00:00:00.000Z",
+          mood: 5,
+          createdAt: "2020-10-04T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-05T00:00:00.000Z",
+          mood: 7,
+          createdAt: "2020-10-05T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-06T00:00:00.000Z",
+          mood: 3,
+          createdAt: "2020-10-06T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-07T00:00:00.000Z",
+          mood: 8,
+          createdAt: "2020-10-07T00:01:00.000Z",
+        },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-05T00:00:00.000Z"),
+          new Date("2020-10-06T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        {
+          experiencedAt: "2020-10-05T00:00:00.000Z",
+          mood: 7,
+          createdAt: "2020-10-05T00:01:00.000Z",
+        },
+        {
+          experiencedAt: "2020-10-06T00:00:00.000Z",
+          mood: 3,
+          createdAt: "2020-10-06T00:01:00.000Z",
+        },
+      ]);
+    });
+
+    it("returns single event when interval contains only one event", () => {
+      const events = [
+        { experiencedAt: "2020-10-01T00:00:00.000Z" },
+        { experiencedAt: "2020-10-05T00:00:00.000Z" },
+        { experiencedAt: "2020-10-09T00:00:00.000Z" },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-05T00:00:00.000Z"),
+          new Date("2020-10-05T00:00:00.000Z"),
+        ),
+      ).toEqual([{ experiencedAt: "2020-10-05T00:00:00.000Z" }]);
+    });
+
+    it("handles duplicate experiencedAt values", () => {
+      const events = [
+        { experiencedAt: "2020-10-04T00:00:00.000Z", id: 1 },
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 2 },
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 3 },
+        { experiencedAt: "2020-10-06T00:00:00.000Z", id: 4 },
+      ];
+      expect(
+        getEventsInInterval(
+          events,
+          new Date("2020-10-05T00:00:00.000Z"),
+          new Date("2020-10-05T00:00:00.000Z"),
+        ),
+      ).toEqual([
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 2 },
+        { experiencedAt: "2020-10-05T00:00:00.000Z", id: 3 },
+      ]);
+    });
+  });
+
   describe("hasIdsInInterval", () => {
     it("throws an error when the dateFrom is after the dateTo", () => {
       expect(() =>
@@ -818,6 +1569,103 @@ describe("utils", () => {
             "2020-09-02T00:00:00.000Z",
             "2020-09-03T00:00:00.000Z",
             "2020-09-03T00:00:01.000Z",
+          ],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
+        ),
+      ).toBe(true);
+    });
+  });
+
+  describe("hasEventsInInterval", () => {
+    it("throws an error when the dateFrom is after the dateTo", () => {
+      expect(() =>
+        hasEventsInInterval(
+          [],
+          new Date("2020-09-01T00:00:00.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
+        ),
+      ).not.toThrow();
+      expect(() =>
+        hasEventsInInterval(
+          [],
+          new Date("2020-09-01T00:00:01.000Z"),
+          new Date("2020-09-01T00:00:00.000Z"),
+        ),
+      ).toThrow(Error("`dateFrom` should not be after `dateTo`"));
+    });
+
+    it("returns false when there are no events provided", () => {
+      expect(
+        hasEventsInInterval(
+          [],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
+        ),
+      ).toBe(false);
+    });
+
+    it("returns false when there are no events within the interval", () => {
+      expect(
+        hasEventsInInterval(
+          [
+            { experiencedAt: "2020-09-01T23:59:59.000Z" },
+            { experiencedAt: "2020-09-03T00:00:01.000Z" },
+          ],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
+        ),
+      ).toBe(false);
+    });
+
+    it("returns true when all events are within the interval", () => {
+      expect(
+        hasEventsInInterval(
+          [
+            { experiencedAt: "2020-09-02T00:00:00.000Z" },
+            { experiencedAt: "2020-09-03T00:00:00.000Z" },
+          ],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
+        ),
+      ).toBe(true);
+    });
+
+    it("returns true when some events are within the interval", () => {
+      expect(
+        hasEventsInInterval(
+          [
+            { experiencedAt: "2020-09-01T23:59:59.000Z" },
+            { experiencedAt: "2020-09-02T00:00:00.000Z" },
+            { experiencedAt: "2020-09-03T00:00:00.000Z" },
+            { experiencedAt: "2020-09-03T00:00:01.000Z" },
+          ],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-03T00:00:00.000Z"),
+        ),
+      ).toBe(true);
+    });
+
+    it("returns true when events are at the exact boundary", () => {
+      expect(
+        hasEventsInInterval(
+          [{ experiencedAt: "2020-09-02T00:00:00.000Z" }],
+          new Date("2020-09-02T00:00:00.000Z"),
+          new Date("2020-09-02T00:00:00.000Z"),
+        ),
+      ).toBe(true);
+    });
+
+    it("handles events with additional properties", () => {
+      expect(
+        hasEventsInInterval(
+          [
+            {
+              experiencedAt: "2020-09-02T12:00:00.000Z",
+              mood: 5,
+              note: "Good day",
+            },
+            { experiencedAt: "2020-09-02T18:00:00.000Z", value: 100 },
           ],
           new Date("2020-09-02T00:00:00.000Z"),
           new Date("2020-09-03T00:00:00.000Z"),

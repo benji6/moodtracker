@@ -95,6 +95,34 @@ export const bisectLeft = (xs: string[], x: string, left = 0) => {
   return left;
 };
 
+export const bisectLeftOnExperiencedAt = <T extends { experiencedAt: string }>(
+  moods: T[],
+  iso: string,
+  left = 0,
+): number => {
+  let right = moods.length;
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    if (moods[mid].experiencedAt < iso) left = mid + 1;
+    else right = mid;
+  }
+  return left;
+};
+
+export const bisectRightOnExperiencedAt = <T extends { experiencedAt: string }>(
+  moods: T[],
+  iso: string,
+  left = 0,
+): number => {
+  let right = moods.length;
+  while (left < right) {
+    const mid = Math.floor((left + right) / 2);
+    if (moods[mid].experiencedAt <= iso) left = mid + 1;
+    else right = mid;
+  }
+  return left;
+};
+
 export const capitalizeFirstLetter = (s: string): string =>
   s && `${s[0].toUpperCase()}${s.toLowerCase().slice(1)}`;
 
@@ -142,12 +170,7 @@ export const computeAverageMoodInInterval = (
 
   let area = 0;
 
-  const [i, j] = getEnvelopingIndices(
-    moods.map((m) => m.experiencedAt),
-    dateFrom,
-    dateTo,
-  );
-  const relevantMoods = moods.slice(i, j);
+  const relevantMoods = getEnvelopingEvents(moods, dateFrom, dateTo);
 
   for (let j = 1; j < relevantMoods.length; j++) {
     const t0 = new Date(relevantMoods[j - 1].experiencedAt).getTime();
@@ -282,8 +305,32 @@ export const getEnvelopingIndices = (
 
   const i = Math.max(bisectLeft(ids, fromIso) - 1, 0);
   const j = bisectLeft(ids, toIso, i);
-  return [i, j + Number(ids[j] <= toIso) + Number(j < ids.length)];
+  return [
+    i,
+    j + Number(j < ids.length && ids[j] <= toIso) + Number(j < ids.length),
+  ];
 };
+export const getEnvelopingEvents = <T extends { experiencedAt: string }>(
+  events: T[],
+  dateFrom: Date,
+  dateTo: Date,
+): T[] => {
+  if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
+
+  const fromIso = dateFrom.toISOString();
+  const toIso = dateTo.toISOString();
+
+  const i = Math.max(bisectLeftOnExperiencedAt(events, fromIso) - 1, 0);
+  const j = bisectRightOnExperiencedAt(events, toIso, i);
+
+  return events.slice(
+    i,
+    j +
+      Number(j < events.length && events[j].experiencedAt <= toIso) +
+      Number(j < events.length),
+  );
+};
+
 // Hard to name, but will return all moods within
 // date range and if they exist will also include
 // first mood before range and first mood after range
@@ -299,7 +346,7 @@ export const getEnvelopingIds = (
 // Will return 2 indices that can be used as arguments for slice:
 // the index of the first element within the range
 // and the index after the index of the last element within the range
-export const getIndicesInInterval = (
+const getIndicesInInterval = (
   ids: NormalizedMoods["allIds"],
   dateFrom: Date,
   dateTo: Date,
@@ -322,6 +369,21 @@ export const getIdsInInterval = (
   const [i, j] = getIndicesInInterval(ids, dateFrom, dateTo);
   return ids.slice(i, j);
 };
+export const getEventsInInterval = <T extends { experiencedAt: string }>(
+  events: T[],
+  dateFrom: Date,
+  dateTo: Date,
+): T[] => {
+  if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
+
+  const fromIso = dateFrom.toISOString();
+  const toIso = dateTo.toISOString();
+
+  const i = bisectLeftOnExperiencedAt(events, fromIso);
+  const j = bisectRightOnExperiencedAt(events, toIso, i);
+
+  return events.slice(i, j);
+};
 
 export const hasIdsInInterval = (
   ids: string[],
@@ -332,7 +394,18 @@ export const hasIdsInInterval = (
   const fromIso = dateFrom.toISOString();
   const toIso = dateTo.toISOString();
   const i = bisectLeft(ids, fromIso);
-  return toIso >= ids[i];
+  return i < ids.length && toIso >= ids[i];
+};
+export const hasEventsInInterval = <T extends { experiencedAt: string }>(
+  events: T[],
+  dateFrom: Date,
+  dateTo: Date,
+): boolean => {
+  if (dateFrom > dateTo) throw Error("`dateFrom` should not be after `dateTo`");
+  const fromIso = dateFrom.toISOString();
+  const toIso = dateTo.toISOString();
+  const i = bisectLeftOnExperiencedAt(events, fromIso);
+  return i < events.length && toIso >= events[i].experiencedAt;
 };
 
 export const getWeatherDisplayData = ({
