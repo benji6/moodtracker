@@ -10,6 +10,8 @@ import { dateTimeFormatter } from "../../formatters/dateTimeFormatters";
 import { formatDistanceToNow } from "date-fns";
 import useKeyboardSave from "../hooks/useKeyboardSave";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import eventsSlice from "../../store/eventsSlice";
 
 interface Props {
   children: ReactNode;
@@ -38,6 +40,14 @@ export default function EditEvent({
     if (onSubmit()) navigate("/");
   };
   useKeyboardSave(handleSubmit);
+  const event = useSelector(
+    eventsSlice.selectors.allNormalizedTrackedCategories,
+  ).byId[id];
+  const dateExperiencedAt = new Date(
+    ("experiencedAt" in event && event.experiencedAt) ||
+      ("dateAwoke" in event && event.dateAwoke) ||
+      id,
+  );
 
   const dateCreated = new Date(id);
   const dateUpdated = updatedAt ? new Date(updatedAt) : undefined;
@@ -103,7 +113,7 @@ export default function EditEvent({
           open={isDialogOpen}
         />
       </Paper>
-      {location && <Location date={dateCreated} {...location} />}
+      {location && <Location date={dateExperiencedAt} {...location} />}
     </Paper.Group>
   );
 }

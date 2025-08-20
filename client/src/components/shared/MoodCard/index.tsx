@@ -18,7 +18,12 @@ export default function MoodCard({ id }: Props) {
   const date = new Date(experiencedAt ?? id);
 
   return (
-    <EventCard color={moodToColor(mood)} eventType="moods" hideDateTime id={id}>
+    <EventCard
+      color={moodToColor(mood)}
+      eventType="moods"
+      hideDateTimeCreated
+      id={id}
+    >
       <div>
         <h3 className="m-mood-card__heading">
           <span data-test-id={TEST_IDS.moodCardMood}>{mood}</span>

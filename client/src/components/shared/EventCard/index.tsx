@@ -14,7 +14,7 @@ interface Props {
   children: ReactNode;
   color?: string;
   eventType: EventTypeCategories;
-  hideDateTime?: boolean;
+  hideDateTimeCreated?: boolean;
   id: string;
 }
 
@@ -22,14 +22,20 @@ export default function EventCard({
   children,
   color,
   eventType,
-  hideDateTime = false,
+  hideDateTimeCreated = false,
   id,
 }: Props) {
   const navigate = useNavigate();
-  const date = new Date(id);
+  const dateCreated = new Date(id);
   const event = useSelector(
     eventsSlice.selectors.allNormalizedTrackedCategories,
   ).byId[id];
+
+  const dateExperiencedAt = new Date(
+    ("experiencedAt" in event && event.experiencedAt) ||
+      ("dateAwoke" in event && event.dateAwoke) ||
+      id,
+  );
 
   return (
     <Card color={color} onClick={() => navigate(`/${eventType}/edit/${id}`)}>
@@ -38,19 +44,19 @@ export default function EventCard({
           <EventIcon eventType={eventType} />
         </div>
         {children}
-        {!hideDateTime && (
+        {!hideDateTimeCreated && (
           <div>
             <small
               data-test-id={TEST_IDS.eventCardDateTime}
-              data-time={Math.round(date.getTime() / 1e3)}
+              data-time={Math.round(dateCreated.getTime() / 1e3)}
             >
-              {dateTimeFormatter.format(date)}
+              {dateTimeFormatter.format(dateCreated)}
             </small>
           </div>
         )}
         {"location" in event && event.location && (
           <EventCardLocationAndWeather
-            date={new Date(id)}
+            date={dateExperiencedAt}
             latitude={event.location.latitude}
             longitude={event.location.longitude}
           />
