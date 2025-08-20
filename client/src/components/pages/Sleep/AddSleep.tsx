@@ -53,6 +53,7 @@ export default function AddSleep() {
         return true;
       }}
       ref={formRef}
+      showLocation={false}
     >
       <IntervalInput>
         <Select {...FIELDS.hoursSlept}>

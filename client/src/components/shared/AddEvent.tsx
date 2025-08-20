@@ -13,6 +13,7 @@ interface Props {
   eventType: EventTypeCategories;
   onSubmit(): boolean; // `true` if successful, otherwise `false`;
   ref: React.ForwardedRef<HTMLFormElement>;
+  showLocation?: boolean;
   subheading?: string;
 }
 
@@ -20,8 +21,9 @@ export default function AddEvent({
   children,
   eventType,
   onSubmit,
-  subheading,
   ref,
+  showLocation = true,
+  subheading,
 }: Props) {
   const navigate = useNavigate();
   const handleSubmit = () => {
@@ -56,7 +58,7 @@ export default function AddEvent({
           </Button.Group>
         </form>
       </Paper>
-      <LiveLocation />
+      {showLocation && <LiveLocation />}
     </Paper.Group>
   );
 }
