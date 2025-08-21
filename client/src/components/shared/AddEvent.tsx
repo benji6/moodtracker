@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 interface Props {
   children: ReactNode;
   eventType: EventTypeCategories;
+  experiencedAt?: Date;
   onSubmit(): boolean; // `true` if successful, otherwise `false`;
   ref: React.ForwardedRef<HTMLFormElement>;
   showLocation?: boolean;
@@ -20,6 +21,7 @@ interface Props {
 export default function AddEvent({
   children,
   eventType,
+  experiencedAt,
   onSubmit,
   ref,
   showLocation = true,
@@ -58,7 +60,7 @@ export default function AddEvent({
           </Button.Group>
         </form>
       </Paper>
-      {showLocation && <LiveLocation />}
+      {showLocation && <LiveLocation date={experiencedAt} />}
     </Paper.Group>
   );
 }

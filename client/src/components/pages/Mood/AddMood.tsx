@@ -17,6 +17,7 @@ export default function AddMood() {
   const [moodError, setMoodError] = useState<string | undefined>();
   const geolocation = useSelector(deviceSlice.selectors.geolocation);
   const formRef = useRef<HTMLFormElement>(null);
+  const [experiencedAt, setExperiencedAt] = useState<Date | undefined>();
 
   const currentHour = new Date().getHours();
   const timeOfDay =
@@ -30,6 +31,7 @@ export default function AddMood() {
 
   return (
     <AddEvent
+      experiencedAt={experiencedAt ? new Date(experiencedAt) : undefined}
       eventType="moods"
       ref={formRef}
       onSubmit={(): boolean => {
@@ -89,6 +91,11 @@ export default function AddMood() {
       <TextField
         {...FIELDS.experiencedAt}
         max={formatIsoDateHourMinuteInLocalTimezone(new Date())}
+        onChange={(e) =>
+          setExperiencedAt(
+            e.currentTarget.value ? new Date(e.currentTarget.value) : undefined,
+          )
+        }
       />
       <TextArea {...FIELDS.exploration} />
     </AddEvent>
