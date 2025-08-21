@@ -16,6 +16,7 @@ import eventsSlice from "../../store/eventsSlice";
 interface Props {
   children: ReactNode;
   eventType: EventTypeCategories;
+  experiencedAt?: Date;
   id: string;
   location: DeviceGeolocation | undefined;
   onSubmit(): boolean; // `true` if successful, otherwise `false`;
@@ -27,6 +28,7 @@ interface Props {
 export default function EditEvent({
   children,
   eventType,
+  experiencedAt,
   id,
   location,
   onSubmit,
@@ -43,11 +45,6 @@ export default function EditEvent({
   const event = useSelector(
     eventsSlice.selectors.allNormalizedTrackedCategories,
   ).byId[id];
-  const dateExperiencedAt = new Date(
-    ("experiencedAt" in event && event.experiencedAt) ||
-      ("dateAwoke" in event && event.dateAwoke) ||
-      id,
-  );
 
   const dateCreated = new Date(id);
   const dateUpdated = updatedAt ? new Date(updatedAt) : undefined;
@@ -113,7 +110,19 @@ export default function EditEvent({
           open={isDialogOpen}
         />
       </Paper>
-      {location && <Location date={dateExperiencedAt} {...location} />}
+      {location && (
+        <Location
+          date={
+            experiencedAt ??
+            new Date(
+              ("experiencedAt" in event && event.experiencedAt) ||
+                ("dateAwoke" in event && event.dateAwoke) ||
+                id,
+            )
+          }
+          {...location}
+        />
+      )}
     </Paper.Group>
   );
 }

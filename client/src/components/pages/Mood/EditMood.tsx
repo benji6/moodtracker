@@ -26,6 +26,7 @@ export default function EditMood() {
     string | undefined
   >();
   const formRef = useRef<HTMLFormElement>(null);
+  const [experiencedAt, setExperiencedAt] = useState<Date | undefined>();
 
   if (!id) return <RedirectHome />;
   const mood = normalizedMoods.byId[id];
@@ -34,6 +35,7 @@ export default function EditMood() {
   return (
     <EditEvent
       eventType="moods"
+      experiencedAt={experiencedAt ? new Date(experiencedAt) : undefined}
       id={id}
       location={mood.location}
       onSubmit={(): boolean => {
@@ -132,7 +134,6 @@ export default function EditMood() {
       </RadioButton.Group>
       <TextField
         {...FIELDS.experiencedAt}
-        max={`${formatIsoDateInLocalTimezone(new Date(id))}T23:59`}
         defaultValue={
           mood.experiencedAt
             ? formatIsoDateHourMinuteInLocalTimezone(
@@ -141,6 +142,12 @@ export default function EditMood() {
             : undefined
         }
         error={experiencedAtError}
+        max={`${formatIsoDateInLocalTimezone(new Date(id))}T23:59`}
+        onChange={(e) =>
+          setExperiencedAt(
+            e.currentTarget.value ? new Date(e.currentTarget.value) : undefined,
+          )
+        }
       />
       {mood.description && (
         <TextField
