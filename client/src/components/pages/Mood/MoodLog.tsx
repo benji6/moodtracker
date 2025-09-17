@@ -7,6 +7,7 @@ import {
   TextField,
   Toggle,
 } from "eri";
+import { parseAsInteger, parseAsIsoDate, useQueryState } from "nuqs";
 import { FIELDS, MOOD_INTEGERS } from "../../../constants";
 import {
   createDateFromLocalDateString,
@@ -14,13 +15,12 @@ import {
   formatIsoDateInLocalTimezone,
   mapRight,
   roundDateDown,
-  roundDateUp,
 } from "../../../utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DateRangeSelector from "../../shared/DateRangeSelector";
 import ExportControls from "../../shared/ExportControls";
 import Fuse from "fuse.js";
-import { Link, useSearchParams } from "react-router";
+import { Link } from "react-router";
 import MoodCard from "../../shared/MoodCard";
 import MoodGradientForPeriod from "../Stats/MoodGradientForPeriod";
 import OptionalMoodCell from "../Home/OptionalMoodCell";
@@ -44,37 +44,32 @@ const groupMoodsByDay = (
 };
 
 export default function MoodLog() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [shouldShowFilter, setShouldShowFilter] = useState(
-    Boolean(searchParams.size),
-  );
   const denormalizedMoodsOrderedByExperiencedAt = useSelector(
     eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
   );
   const moodIdsByDate = useSelector(eventsSlice.selectors.moodIdsByDate);
-  const dateNow = new Date();
-
-  const dateFromParam = searchParams.get("dateFrom");
-  const dateFrom: Date = dateFromParam
-    ? new Date(dateFromParam)
-    : roundDateDown(
+  const [dateFrom, setDateFrom] = useQueryState(
+    "dateFrom",
+    parseAsIsoDate.withDefault(
+      roundDateDown(
         new Date(denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt),
-      );
-  const dateToParam = searchParams.get("dateTo");
-  const dateTo: Date = dateToParam
-    ? new Date(dateToParam)
-    : roundDateUp(dateNow);
+      ),
+    ),
+  );
+  const dateNow = new Date();
+  const [dateTo, setDateTo] = useQueryState(
+    "dateTo",
+    parseAsIsoDate.withDefault(new Date(dateNow)),
+  );
+  const [moodQuery, setMoodQuery] = useQueryState("mood", parseAsInteger);
+  const [searchQuery, setSearchQuery] = useQueryState("q");
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
-  useEffect(() => {
-    if (searchParams.has("dateFrom") && searchParams.has("dateTo")) return;
-    setSearchParams(
-      new URLSearchParams({
-        dateFrom: dateFrom.toISOString(),
-        dateTo: dateTo.toISOString(),
-        ...Object.fromEntries(searchParams),
-      }),
-    );
-  }, []);
+  const [shouldShowFilter, setShouldShowFilter] = useState(
+    Boolean(window.location.search),
+  );
+
+  const dateToPlus1Day = addDays(dateTo, 1);
 
   const filterFeatureAvailable =
     denormalizedMoodsOrderedByExperiencedAt.length >= 5;
@@ -82,13 +77,11 @@ export default function MoodLog() {
   let filteredMoods = denormalizedMoodsOrderedByExperiencedAt;
   if (shouldShowFilter) {
     filteredMoods = denormalizedMoodsOrderedByExperiencedAt.filter((mood) => {
-      const moodQuery = searchParams.get("mood");
-      if (moodQuery && mood.mood !== Number(moodQuery)) return false;
+      if (moodQuery && mood.mood !== moodQuery) return false;
 
       const date = new Date(mood.experiencedAt);
-      return date >= dateFrom && date <= dateTo;
+      return date >= dateFrom && date <= dateToPlus1Day;
     });
-    const searchQuery = searchParams.get("q");
     if (searchQuery) {
       const fuse = new Fuse(filteredMoods, {
         distance: Infinity,
@@ -121,8 +114,7 @@ export default function MoodLog() {
   }
 
   const endIndex =
-    filteredMoodsGroupedByDay.length -
-    Math.max(0, Number(searchParams.get("page")) - 1) * DAYS_PER_PAGE;
+    filteredMoodsGroupedByDay.length - Math.max(0, page - 1) * DAYS_PER_PAGE;
 
   return (
     <Paper.Group>
@@ -165,28 +157,18 @@ export default function MoodLog() {
                     </a>{" "}
                     for details on how to create more advanced searches.
                   </>
-                  onChange={(e) => {
-                    const newSearchParams = new URLSearchParams(searchParams);
-                    if (e.target.value)
-                      newSearchParams.set("q", e.target.value);
-                    else newSearchParams.delete("q");
-                    setSearchParams(newSearchParams);
-                  }}
+                  onChange={(e) => setSearchQuery(e.target.value || null)}
                   required={false}
                   type="search"
-                  value={searchParams.get("q") ?? ""}
+                  value={searchQuery ?? ""}
                 />
                 <Select
                   label={FIELDS.mood.label}
-                  onChange={(e) => {
-                    const newSearchParams = new URLSearchParams(searchParams);
-                    if (e.target.value)
-                      newSearchParams.set("mood", e.target.value);
-                    else newSearchParams.delete("mood");
-                    setSearchParams(newSearchParams);
-                  }}
+                  onChange={(e) =>
+                    setMoodQuery(e.target.value ? Number(e.target.value) : null)
+                  }
                   required={false}
-                  value={searchParams.get("mood") ?? ""}
+                  value={moodQuery ?? ""}
                   supportiveText="Search for a specific mood value"
                 >
                   <option value="">Any mood</option>
@@ -199,18 +181,8 @@ export default function MoodLog() {
                 <DateRangeSelector
                   dateFrom={dateFrom}
                   dateTo={dateTo}
-                  setDateFrom={(date) =>
-                    setSearchParams({
-                      ...Object.fromEntries(searchParams),
-                      dateFrom: date.toISOString(),
-                    })
-                  }
-                  setDateTo={(date) =>
-                    setSearchParams({
-                      ...Object.fromEntries(searchParams),
-                      dateTo: date.toISOString(),
-                    })
-                  }
+                  setDateFrom={setDateFrom}
+                  setDateTo={setDateTo}
                 />
                 <table>
                   <thead>
@@ -272,13 +244,8 @@ export default function MoodLog() {
       {pageCount > 1 && (
         <Paper>
           <Pagination
-            onChange={(page) => {
-              const newSearchParams = new URLSearchParams(searchParams);
-              if (page) newSearchParams.set("page", String(page + 1));
-              else newSearchParams.delete("page");
-              setSearchParams(newSearchParams);
-            }}
-            page={Math.max(0, Number(searchParams.get("page")) - 1)}
+            onChange={(page) => setPage(page ? page + 1 : null)}
+            page={Math.max(0, page - 1)}
             pageCount={pageCount}
           />
         </Paper>

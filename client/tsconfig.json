@@ -8,6 +8,10 @@
     "moduleResolution": "bundler",
     "noUnusedLocals": true,
     "resolveJsonModule": true,
+    // Added due to `error TS1036: Statements are not allowed in ambient contexts.`
+    // from `node_modules/nuqs/dist/adapters/react-router/v7.d.ts`
+    // TODO: remove one day
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "ES2023"

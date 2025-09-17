@@ -1,9 +1,5 @@
 import { addMinutes, subDays } from "date-fns";
-import {
-  formatIsoDateInLocalTimezone,
-  roundDateDown,
-  roundDateUp,
-} from "../../utils";
+import { formatIsoDateInLocalTimezone, roundDateDown } from "../../utils";
 import { DateField } from "eri";
 import eventsSlice from "../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -24,7 +20,7 @@ export default function DateRangeSelector({
   const denormalizedMoodsOrderedByExperiencedAt = useSelector(
     eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
   );
-  const maxDate = roundDateUp(new Date());
+  const maxDate = new Date();
 
   return (
     <>

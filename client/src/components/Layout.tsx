@@ -11,6 +11,7 @@ import { useState } from "react";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import userSlice from "../store/userSlice";
+import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 
 export default function Layout() {
   useShuffleBackgroundMesh();
@@ -35,7 +36,9 @@ export default function Layout() {
       </Header>
       <Nav handleNavClose={() => setIsNavOpen(false)} open={isNavOpen} />
       <main>
-        <Outlet />
+        <NuqsAdapter>
+          <Outlet />
+        </NuqsAdapter>
       </main>
       {userIsSignedIn && (
         <QuickNav>

@@ -26,8 +26,8 @@ export default function MoodCloudForPeriod({ dateFrom, dateTo }: Props) {
         onWordClick={(word) =>
           navigate(
             `/moods/log?${new URLSearchParams({
-              dateFrom: dateFrom.toISOString(),
-              dateTo: dateTo.toISOString(),
+              dateFrom: dateFrom.toISOString().split("T", 1)[0],
+              dateTo: dateTo.toISOString().split("T", 1)[0],
               q: `'${word}`,
             })}`,
           )
