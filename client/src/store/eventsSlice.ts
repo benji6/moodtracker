@@ -809,7 +809,7 @@ export default createSlice({
       (normalizedSleeps) => ({
         ...normalizedSleeps,
         // sorting is stable so 2 events with same dateAwoke will be ordered by event id
-        allIds: [...normalizedSleeps.allIds].sort((a, b) =>
+        allIds: normalizedSleeps.allIds.toSorted((a, b) =>
           compareFunctionForStringSorting(
             normalizedSleeps.byId[a].dateAwoke,
             normalizedSleeps.byId[b].dateAwoke,
