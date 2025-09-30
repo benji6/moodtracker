@@ -1,4 +1,4 @@
-import { Pagination, Paper } from "eri";
+import { Icon, Pagination, Paper } from "eri";
 import {
   createDateFromLocalDateString,
   formatIsoMonthInLocalTimezone,
@@ -15,14 +15,48 @@ import { useState } from "react";
 
 const MAX_MONTHS_PER_PAGE = 12;
 
+type SortColumn = "month" | "mood";
+type SortDirection = "asc" | "desc";
+
 export default function Months() {
   const meanMoodByMonth = useSelector(eventsSlice.selectors.meanMoodsByMonth);
-  const months = Object.keys(meanMoodByMonth);
   const [page, setPage] = useState(0);
+  const [sortColumn, setSortColumn] = useState<SortColumn>("month");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  const handleSort = (column: SortColumn) => {
+    setPage(0);
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      return;
+    }
+    setSortColumn(column);
+    setSortDirection("asc");
+  };
+
+  const months = Object.keys(meanMoodByMonth).sort((a, b) => {
+    let comparison = 0;
+    if (sortColumn === "month") comparison = a.localeCompare(b);
+    else comparison = meanMoodByMonth[a] - meanMoodByMonth[b];
+    return sortDirection === "asc" ? -comparison : comparison;
+  });
 
   const pageCount = Math.ceil(months.length / MAX_MONTHS_PER_PAGE);
   const endIndex = months.length - MAX_MONTHS_PER_PAGE * page;
   const startIndex = Math.max(0, endIndex - MAX_MONTHS_PER_PAGE);
+
+  const getSortIcon = (column: SortColumn) => (
+    <Icon
+      margin="start"
+      name={
+        sortColumn === column
+          ? sortDirection === "asc"
+            ? "up"
+            : "down"
+          : "sortable"
+      }
+    />
+  );
 
   return (
     <Paper>
@@ -30,9 +64,23 @@ export default function Months() {
       <table>
         <thead>
           <tr>
-            <th>Month</th>
+            <th>
+              <button
+                onClick={() => handleSort("month")}
+                style={{ fontWeight: "inherit" }}
+              >
+                Month{getSortIcon("month")}
+              </button>
+            </th>
             <th>Mood gradient</th>
-            <th>Average mood</th>
+            <th>
+              <button
+                onClick={() => handleSort("mood")}
+                style={{ fontWeight: "inherit" }}
+              >
+                Average mood{getSortIcon("mood")}
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>

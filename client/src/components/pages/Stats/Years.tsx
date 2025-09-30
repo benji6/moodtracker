@@ -1,4 +1,4 @@
-import { Pagination, Paper } from "eri";
+import { Icon, Pagination, Paper } from "eri";
 import {
   createDateFromLocalDateString,
   formatIsoYearInLocalTimezone,
@@ -15,14 +15,48 @@ import { yearFormatter } from "../../../formatters/dateTimeFormatters";
 
 const MAX_YEARS_PER_PAGE = 8;
 
+type SortColumn = "year" | "mood";
+type SortDirection = "asc" | "desc";
+
 export default function Years() {
   const meanMoodsByYear = useSelector(eventsSlice.selectors.meanMoodsByYear);
-  const years = Object.keys(meanMoodsByYear);
   const [page, setPage] = useState(0);
+  const [sortColumn, setSortColumn] = useState<SortColumn>("year");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+
+  const handleSort = (column: SortColumn) => {
+    setPage(0);
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+      return;
+    }
+    setSortColumn(column);
+    setSortDirection("asc");
+  };
+
+  const years = Object.keys(meanMoodsByYear).sort((a, b) => {
+    let comparison = 0;
+    if (sortColumn === "year") comparison = a.localeCompare(b);
+    else comparison = meanMoodsByYear[a] - meanMoodsByYear[b];
+    return sortDirection === "asc" ? -comparison : comparison;
+  });
 
   const pageCount = Math.ceil(years.length / MAX_YEARS_PER_PAGE);
   const endIndex = years.length - MAX_YEARS_PER_PAGE * page;
   const startIndex = Math.max(0, endIndex - MAX_YEARS_PER_PAGE);
+
+  const getSortIcon = (column: SortColumn) => (
+    <Icon
+      margin="start"
+      name={
+        sortColumn === column
+          ? sortDirection === "asc"
+            ? "up"
+            : "down"
+          : "sortable"
+      }
+    />
+  );
 
   return (
     <Paper>
@@ -30,9 +64,23 @@ export default function Years() {
       <table>
         <thead>
           <tr>
-            <th>Year</th>
+            <th>
+              <button
+                onClick={() => handleSort("year")}
+                style={{ fontWeight: "inherit" }}
+              >
+                Year{getSortIcon("year")}
+              </button>
+            </th>
             <th>Mood gradient</th>
-            <th>Average mood</th>
+            <th>
+              <button
+                onClick={() => handleSort("mood")}
+                style={{ fontWeight: "inherit" }}
+              >
+                Average mood{getSortIcon("mood")}
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
