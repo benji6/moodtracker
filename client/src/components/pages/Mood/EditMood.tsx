@@ -156,7 +156,11 @@ export default function EditMood() {
           error={descriptionError}
         />
       )}
-      <TextArea {...FIELDS.exploration} defaultValue={mood.exploration} />
+      <TextArea
+        {...FIELDS.exploration}
+        defaultValue={mood.exploration}
+        stretch
+      />
     </EditEvent>
   );
 }

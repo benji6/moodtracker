@@ -97,7 +97,7 @@ export default function AddMood() {
           )
         }
       />
-      <TextArea {...FIELDS.exploration} />
+      <TextArea {...FIELDS.exploration} stretch />
     </AddEvent>
   );
 }
