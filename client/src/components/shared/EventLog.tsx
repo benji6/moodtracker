@@ -8,7 +8,7 @@ import { capitalizeFirstLetter, mapRight } from "../../utils";
 import EVENT_TYPE_TO_LABELS from "../../constants/eventTypeToLabels";
 import ExportControls from "./ExportControls";
 import RedirectHome from "./RedirectHome";
-import { useState } from "react";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 const MAX_ITEMS_PER_PAGE = 10;
 
@@ -23,12 +23,13 @@ export default function EventLog({
   eventType,
   normalizedEvents,
 }: Props) {
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
   const pageCount = Math.ceil(
     normalizedEvents.allIds.length / MAX_ITEMS_PER_PAGE,
   );
-  const endIndex = normalizedEvents.allIds.length - MAX_ITEMS_PER_PAGE * page;
+  const endIndex =
+    normalizedEvents.allIds.length - MAX_ITEMS_PER_PAGE * Math.max(0, page - 1);
   const startIndex = Math.max(0, endIndex - MAX_ITEMS_PER_PAGE);
 
   if (!normalizedEvents.allIds.length) return <RedirectHome />;
@@ -67,7 +68,11 @@ export default function EventLog({
             ),
           )}
         </Card.Group>
-        <Pagination onChange={setPage} page={page} pageCount={pageCount} />
+        <Pagination
+          onChange={(page) => setPage(page ? page + 1 : null)}
+          page={Math.max(0, page - 1)}
+          pageCount={pageCount}
+        />
       </Paper>
     </Paper.Group>
   );

@@ -7,7 +7,7 @@ import { addDays } from "date-fns";
 import { dateWeekdayFormatter } from "../../../formatters/dateTimeFormatters";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 const DAYS_PER_PAGE = 7;
 
@@ -17,11 +17,11 @@ export default function TrackedCategoriesByDay() {
       eventsSlice.selectors.allDenormalizedTrackedCategoriesByLocalDate,
     ),
   );
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
 
   const pageCount = Math.max(Math.ceil(dates.length / DAYS_PER_PAGE), 1);
 
-  const endIndex = dates.length - page * DAYS_PER_PAGE;
+  const endIndex = dates.length - Math.max(0, page - 1) * DAYS_PER_PAGE;
 
   return (
     <>
@@ -57,7 +57,11 @@ export default function TrackedCategoriesByDay() {
       )}
       {pageCount > 1 && (
         <Paper>
-          <Pagination onChange={setPage} page={page} pageCount={pageCount} />
+          <Pagination
+            onChange={(page) => setPage(page ? page + 1 : null)}
+            page={Math.max(0, page - 1)}
+            pageCount={pageCount}
+          />
         </Paper>
       )}
     </>
