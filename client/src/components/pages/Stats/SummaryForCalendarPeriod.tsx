@@ -22,8 +22,8 @@ export default function SummaryForCalendarPeriod({
   meanMoodByDate,
   periodType,
 }: Props) {
-  const denormalizedMoodsOrderedByExperiencedAt = useSelector(
-    eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
+  const firstEventExperiencedAt = useSelector(
+    eventsSlice.selectors.firstEventExperiencedAt,
   );
   const meanSleepInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meanDailySleepDurationInPeriod(state, date1, date2),
@@ -74,9 +74,9 @@ export default function SummaryForCalendarPeriod({
     eventsSlice.selectors.totalSitUpsInPeriod(state, date0, date1),
   );
 
-  const firstMoodDate = new Date(
-    denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt,
-  );
+  if (!firstEventExperiencedAt) return;
+
+  const firstMoodDate = new Date(firstEventExperiencedAt);
   const showPrevious = date1 > firstMoodDate;
 
   const moodValues = useSelector((state: RootState) =>

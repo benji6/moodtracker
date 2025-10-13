@@ -53,18 +53,20 @@ export default function Explore() {
   const [activeView, setActiveView] = useState<ActiveView>("mood");
   const dateNow = new Date();
   const normalizedMoods = useSelector(eventsSlice.selectors.normalizedMoods);
-  const allNormalizedTrackedCategories = useSelector(
-    eventsSlice.selectors.allNormalizedTrackedCategories,
+  const firstEventExperiencedAt = useSelector(
+    eventsSlice.selectors.firstEventExperiencedAt,
   );
-  const firstTrackedCategoryDateRoundedDown = roundDateDown(
-    new Date(allNormalizedTrackedCategories.allIds[0]),
+
+  if (!firstEventExperiencedAt) return;
+  const firstEventExperiencedAtRoundedDown = roundDateDown(
+    new Date(firstEventExperiencedAt),
   );
   const dateToToday = roundDateDown(dateNow);
 
   const calculateDateFrom = (days: number) => {
     const dateFrom = subDays(dateToToday, days - 1);
-    return dateFrom < firstTrackedCategoryDateRoundedDown
-      ? firstTrackedCategoryDateRoundedDown
+    return dateFrom < firstEventExperiencedAtRoundedDown
+      ? firstEventExperiencedAtRoundedDown
       : dateFrom;
   };
 
@@ -94,7 +96,7 @@ export default function Explore() {
             case "All time":
               return {
                 dateRange: action.payload,
-                dateFrom: firstTrackedCategoryDateRoundedDown,
+                dateFrom: firstEventExperiencedAtRoundedDown,
                 displayDateTo: dateToToday,
               };
             case "Custom":

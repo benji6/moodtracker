@@ -615,6 +615,125 @@ describe("eventsSlice", () => {
       };
     });
 
+    describe("firstEventExperiencedAt", () => {
+      test("when there are no events", () => {
+        expect(
+          eventsSlice.selectors.firstEventExperiencedAt(initialState),
+        ).toBeUndefined();
+      });
+
+      test("with a single create event", () => {
+        expect(
+          eventsSlice.selectors.firstEventExperiencedAt({
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-10-10T08:00:00.000Z"],
+              byId: {
+                "2020-10-10T08:00:00.000Z": {
+                  createdAt: "2020-10-10T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 5 },
+                },
+              },
+            },
+          }),
+        ).toBe("2020-10-10T08:00:00.000Z");
+      });
+
+      test("with multiple events", () => {
+        expect(
+          eventsSlice.selectors.firstEventExperiencedAt(
+            stateWithOnlyCreateEvents,
+          ),
+        ).toBe("2020-10-10T08:00:00.000Z");
+      });
+
+      test("with experiencedAt timestamp", () => {
+        expect(
+          eventsSlice.selectors.firstEventExperiencedAt({
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
+              byId: {
+                "2020-10-10T08:00:00.000Z": {
+                  createdAt: "2020-10-10T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: {
+                    mood: 5,
+                    experiencedAt: "2020-10-09T12:00:00.000Z",
+                  },
+                },
+                "2020-10-11T08:00:00.000Z": {
+                  createdAt: "2020-10-11T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 7 },
+                },
+              },
+            },
+          }),
+        ).toBe("2020-10-09T12:00:00.000Z");
+      });
+
+      test("with sleep event using dateAwoke", () => {
+        expect(
+          eventsSlice.selectors.firstEventExperiencedAt({
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: ["2020-10-10T08:00:00.000Z", "2020-10-11T08:00:00.000Z"],
+              byId: {
+                "2020-10-10T08:00:00.000Z": {
+                  createdAt: "2020-10-10T08:00:00.000Z",
+                  type: "v1/sleeps/create",
+                  payload: { dateAwoke: "2020-10-09", minutesSlept: 480 },
+                },
+                "2020-10-11T08:00:00.000Z": {
+                  createdAt: "2020-10-11T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 7 },
+                },
+              },
+            },
+          }),
+        ).toBe("2020-10-09");
+      });
+
+      test("with deleted event", () => {
+        expect(
+          eventsSlice.selectors.firstEventExperiencedAt({
+            ...initialState,
+            events: {
+              ...initialState.events,
+              allIds: [
+                "2020-10-10T08:00:00.000Z",
+                "2020-10-11T08:00:00.000Z",
+                "2020-10-12T08:00:00.000Z",
+              ],
+              byId: {
+                "2020-10-10T08:00:00.000Z": {
+                  createdAt: "2020-10-10T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 5 },
+                },
+                "2020-10-11T08:00:00.000Z": {
+                  createdAt: "2020-10-11T08:00:00.000Z",
+                  type: "v1/moods/delete",
+                  payload: "2020-10-10T08:00:00.000Z",
+                },
+                "2020-10-12T08:00:00.000Z": {
+                  createdAt: "2020-10-12T08:00:00.000Z",
+                  type: "v1/moods/create",
+                  payload: { mood: 7 },
+                },
+              },
+            },
+          }),
+        ).toBe("2020-10-12T08:00:00.000Z");
+      });
+    });
+
     describe("normalizedMeditations", () => {
       test("when there are no events", () => {
         expect(

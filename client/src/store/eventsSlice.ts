@@ -545,6 +545,10 @@ export default createSlice({
   selectors: {
     allIds: allIdsSelector,
     byId: byIdSelector,
+    firstEventExperiencedAt: createSelector(
+      allTrackedCategoryIdsOrderedByExperiencedAtSelector,
+      (ids): string | undefined => ids[0]?.experiencedAt,
+    ),
     hasEventsWithLocationInPeriod: createSelector(
       allIdsWithLocationOrderedByExperiencedAtSelector,
       dateFromSelector,
