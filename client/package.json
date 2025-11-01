@@ -45,7 +45,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.0.4",
-    "react-router": "^7.5.3",
+    "react-router": "^7.9.5",
     "stopword": "^3.1.1",
     "topojson-client": "^3.1.0"
   },
