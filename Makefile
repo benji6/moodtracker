@@ -63,7 +63,7 @@ init: init/ci
 # Install all Node.js dependencies
 init/ci:
 	@echo "⏳ Installing Node.js dependencies... ⏳"
-	@cd client && npm i
+	@cd client && npm ci
 	@echo "🍄 Node.js dependencies successfully installed! 🍄"
 
 # Updates the CloudFormation stack policy
