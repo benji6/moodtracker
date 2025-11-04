@@ -5,6 +5,7 @@ import {
 } from "react-router";
 import About from "../components/pages/About";
 import AddLegRaises from "../components/pages/LegRaises/AddLegRaises";
+import AddMeditation from "../components/pages/Meditation/AddMeditation";
 import AddMood from "../components/pages/Mood/AddMood";
 import AddPushUps from "../components/pages/PushUps/AddPushUps";
 import AddRun from "../components/pages/Run/AddRun";
@@ -102,6 +103,15 @@ function Root() {
                     <Route
                       element={<Page Component={Meditate} title="Meditate" />}
                       path=""
+                    />
+                    <Route
+                      element={
+                        <Page
+                          Component={AddMeditation}
+                          title="Add meditation"
+                        />
+                      }
+                      path="add"
                     />
                     <Route
                       element={

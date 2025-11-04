@@ -7,6 +7,7 @@ import eventsSlice from "../../../store/eventsSlice";
 import { formatSecondsToDurationStringShort } from "../../../formatters/formatDuration";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import { TEST_IDS } from "../../../constants";
 
 interface Props {
   id: string;
@@ -25,7 +26,9 @@ export default function MeditationCard({ id }: Props) {
             <EventIcon eventType="meditations" />
           </div>
           <div>
-            <b>{formatSecondsToDurationStringShort(meditation.seconds)}</b>
+            <b data-test-id={TEST_IDS.meditationCardDuration}>
+              {formatSecondsToDurationStringShort(meditation.seconds)}
+            </b>
           </div>
           <div>
             <small>{dateTimeFormatter.format(new Date(id))}</small>

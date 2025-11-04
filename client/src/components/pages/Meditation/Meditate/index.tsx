@@ -7,7 +7,7 @@ import {
   TIME,
 } from "../../../../constants";
 import EventIcon from "../../../shared/EventIcon";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 
 const MAX_MINUTES = 180;
@@ -111,6 +111,12 @@ export default function Meditate() {
             <Button>Start</Button>
           </Button.Group>
         </form>
+      </Paper>
+      <Paper>
+        <h3>Already meditated?</h3>
+        <p>
+          <Link to="/meditation/add">Log your meditation here</Link>
+        </p>
       </Paper>
     </Paper.Group>
   );

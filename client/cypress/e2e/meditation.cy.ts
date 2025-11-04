@@ -50,4 +50,45 @@ describe("meditation", () => {
       cy.location("search").should("equal", "?t=3600");
     });
   });
+
+  describe("adding", () => {
+    beforeEach(() => {
+      cy.visit("/meditation/add");
+      cy.get(SELECTORS.eventAddPage);
+    });
+
+    it("errors when no time is provided", () => {
+      cy.get(SELECTORS.eventAddSubmitButton).click();
+      cy.contains("Please provide a time");
+      cy.location("pathname").should("equal", "/meditation/add");
+    });
+
+    it("works with only minutes", () => {
+      cy.get('select[name="minutes"]').select("5");
+      cy.get(SELECTORS.eventAddSubmitButton).click();
+      cy.location("pathname").should("equal", "/");
+      cy.get(SELECTORS.meditationCardDuration)
+        .first()
+        .should("have.text", "5 min");
+    });
+
+    it("works with only seconds", () => {
+      cy.get('select[name="seconds"]').select("30");
+      cy.get(SELECTORS.eventAddSubmitButton).click();
+      cy.location("pathname").should("equal", "/");
+      cy.get(SELECTORS.meditationCardDuration)
+        .first()
+        .should("have.text", "30 sec");
+    });
+
+    it("works with both minutes and seconds", () => {
+      cy.get('select[name="minutes"]').select("10");
+      cy.get('select[name="seconds"]').select("45");
+      cy.get(SELECTORS.eventAddSubmitButton).click();
+      cy.location("pathname").should("equal", "/");
+      cy.get(SELECTORS.meditationCardDuration)
+        .first()
+        .should("have.text", "10 min & 45 sec");
+    });
+  });
 });

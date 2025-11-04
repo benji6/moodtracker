@@ -12,6 +12,7 @@ export default (() => {
     "hoursSleptInput",
     "legRaisesValueInput",
     "meditatePage",
+    "meditationCardDuration",
     "meditationCustomTimeInput",
     "meditationPresetTimeButton",
     "meditationTimerPage",
