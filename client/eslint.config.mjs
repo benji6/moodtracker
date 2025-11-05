@@ -7,7 +7,7 @@ import jsxA11y from "eslint-plugin-jsx-a11y";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginCypress from "eslint-plugin-cypress/flat";
 
-export default tseslint.config(
+export default [
   { ignores: ["dist"] },
   js.configs.recommended,
   ...tseslint.configs.strict,
@@ -18,4 +18,5 @@ export default tseslint.config(
   jsxA11y.flatConfigs.recommended,
   eslintConfigPrettier,
   pluginCypress.configs.recommended,
-);
+  { settings: { react: { version: "detect" } } },
+];
