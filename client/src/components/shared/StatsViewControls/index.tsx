@@ -58,6 +58,7 @@ export default function StatsViewControls({
       (!hasSleepsInPeriod && activeView === "sleep") ||
       (!hasWeightsInPeriod && activeView === "weight")
     )
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveView("mood");
   }, [
     activeView,

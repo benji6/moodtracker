@@ -57,25 +57,21 @@ export default function Explore() {
     eventsSlice.selectors.firstEventExperiencedAt,
   );
 
-  if (!firstEventExperiencedAt) return;
-  const firstEventExperiencedAtRoundedDown = roundDateDown(
-    new Date(firstEventExperiencedAt),
-  );
   const dateToToday = roundDateDown(dateNow);
-
   const calculateDateFrom = (days: number) => {
     const dateFrom = subDays(dateToToday, days - 1);
     return dateFrom < firstEventExperiencedAtRoundedDown
       ? firstEventExperiencedAtRoundedDown
       : dateFrom;
   };
-
+  const firstEventExperiencedAtRoundedDown = roundDateDown(
+    new Date(firstEventExperiencedAt ?? dateToToday),
+  );
   const initialState: State = {
     dateRange: `Last ${TIME.daysPerWeek} days`,
     dateFrom: calculateDateFrom(TIME.daysPerWeek),
     displayDateTo: dateToToday,
   };
-
   const [localState, localDispatch] = useReducer(
     (state: State, action: Action): State => {
       switch (action.type) {
@@ -142,10 +138,11 @@ export default function Explore() {
     },
     initialState,
   );
-
   const eventsHasLoadedFromServer = useSelector(
     eventsSlice.selectors.hasLoadedFromServer,
   );
+
+  if (!firstEventExperiencedAt) return;
 
   const dateTo = addDays(localState.displayDateTo, 1);
 

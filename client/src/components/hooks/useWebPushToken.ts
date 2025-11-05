@@ -17,6 +17,7 @@ export default function useWebPushToken(): {
 
   useEffect(() => {
     if (permissionState === "denied")
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       return setError(Error(NOTIFICATIONS_PERMISSION_DENIED_ERROR_MESSAGE));
     if (error?.message === NOTIFICATIONS_PERMISSION_DENIED_ERROR_MESSAGE)
       setError(undefined);

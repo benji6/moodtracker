@@ -25,5 +25,6 @@ export default function useWakeLock(): WakeLock | undefined {
     wakeLockRef.current = { enable, disable };
   }, [enable, disable]);
 
+  // eslint-disable-next-line react-hooks/refs
   return wakeLockRef.current;
 }

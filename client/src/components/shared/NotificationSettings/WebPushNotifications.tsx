@@ -57,6 +57,7 @@ export default function WebPushNotifications() {
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
     putMutation.mutate({ createdAt, token, updatedAt });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShouldPostToken(false);
   }, [putMutation, shouldPostToken, token]);
 

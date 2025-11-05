@@ -73,18 +73,17 @@ export default function SummaryForCalendarPeriod({
   const totalSitUpsInPreviousPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.totalSitUpsInPeriod(state, date0, date1),
   );
-
-  if (!firstEventExperiencedAt) return;
-
-  const firstMoodDate = new Date(firstEventExperiencedAt);
-  const showPrevious = date1 > firstMoodDate;
-
   const moodValues = useSelector((state: RootState) =>
     eventsSlice.selectors.moodsInPeriod(state, date1, date2),
   ).map(({ mood }) => mood);
   const prevMoodValues = useSelector((state: RootState) =>
     eventsSlice.selectors.moodsInPeriod(state, date0, date1),
   ).map(({ mood }) => mood);
+
+  if (!firstEventExperiencedAt) return;
+
+  const firstMoodDate = new Date(firstEventExperiencedAt);
+  const showPrevious = date1 > firstMoodDate;
 
   if (
     !moodValues.length &&
