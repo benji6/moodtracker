@@ -24,7 +24,7 @@ export default function ForgotPassword() {
                 default:
                   setSubmitError(ERRORS.generic);
               }
-              reject(Error(JSON.stringify(e)));
+              reject(Error("Forgot password error", { cause: e }));
             },
           });
         })

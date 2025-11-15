@@ -50,7 +50,7 @@ export default function ChangePassword() {
             default:
               setSubmitError(ERRORS.generic);
           }
-          throw Error(JSON.stringify(e));
+          throw Error("Failed to change password", { cause: e });
         }
       }}
     />
