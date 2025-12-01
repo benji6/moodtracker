@@ -13,9 +13,8 @@ export default function computeTrendlinePoints(
     moodsOrderedByExperiencedAt[0].experiencedAt,
   ).getTime();
   const latestMoodTime = new Date(
-    moodsOrderedByExperiencedAt[
-      moodsOrderedByExperiencedAt.length - 1
-    ].experiencedAt,
+    moodsOrderedByExperiencedAt[moodsOrderedByExperiencedAt.length - 1]
+      .experiencedAt,
   ).getTime();
 
   const trendlinePoints: [number, number][] = [];
