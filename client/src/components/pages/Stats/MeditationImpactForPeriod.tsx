@@ -28,7 +28,6 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
   const denormalizedMoodsOrderedByExperiencedAt = useSelector(
     eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
   );
-  const [includeExploration, setIncludeExploration] = useState(false);
   const [shouldRemoveSharedWords, setShouldRemoveSharedWords] = useState(true);
   const meditationIdsInPeriod = useSelector((state: RootState) =>
     eventsSlice.selectors.meditationIdsInPeriod(state, dateFrom, dateTo),
@@ -78,13 +77,13 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
       if (moodBefore.description)
         for (const word of getNormalizedWordCloudWords(moodBefore.description))
           wordsBeforeList.push(word);
-      if (includeExploration && moodBefore.exploration)
+      if (moodBefore.exploration)
         for (const word of getNormalizedWordCloudWords(moodBefore.exploration))
           wordsBeforeList.push(word);
       if (moodAfter.description)
         for (const word of getNormalizedWordCloudWords(moodAfter.description))
           wordsAfterList.push(word);
-      if (includeExploration && moodAfter.exploration)
+      if (moodAfter.exploration)
         for (const word of getNormalizedWordCloudWords(moodAfter.exploration))
           wordsAfterList.push(word);
       break;
@@ -168,11 +167,6 @@ export default function MeditationImpactForPeriod({ dateFrom, dateTo }: Props) {
         Object.keys(filteredWordsBefore).length >= MINIMUM_WORD_CLOUD_WORDS && (
           <>
             <h4>Mood clouds</h4>
-            <Toggle
-              checked={includeExploration}
-              label="Include mood journal words (by default only mood tags are included)"
-              onChange={() => setIncludeExploration(!includeExploration)}
-            />
             <Toggle
               checked={shouldRemoveSharedWords}
               label="Filter out moods that are shared between both clouds"
