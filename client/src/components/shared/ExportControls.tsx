@@ -47,6 +47,10 @@ const downloadCsv = (
 
     const weather = weatherData[datum.createdAt]?.data?.[0];
     if (weather) {
+      flattenedDatum["weather:Name"] = weather.weather[0].main;
+      columns.add("weather:Name");
+      flattenedDatum["weather:Description"] = weather.weather[0].description;
+      columns.add("weather:Description");
       for (const { name, displayValue } of getDataForRenderingWeather(
         weather,
       )) {
