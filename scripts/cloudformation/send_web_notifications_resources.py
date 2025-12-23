@@ -21,6 +21,7 @@ def send_web_notifications_resources(template):
     template.add_resource(
         awslambda.Function(
             "LambdaWebNotificationsSend",
+            Architectures=["arm64"],
             Code=awslambda.Code(
                 S3Bucket=CLOUDFORMATION_BUCKET_NAME,
                 S3Key="lambdas/notifications_send.zip",

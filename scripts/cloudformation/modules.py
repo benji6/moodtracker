@@ -22,6 +22,7 @@ def lambda_function(template, name, code_filename, **kwargs):
     template.add_resource(
         awslambda.Function(
             name,
+            Architectures=["arm64"],
             Code=awslambda.Code(ZipFile=lambda_code),
             Handler="index.handler",
             Runtime="python3.13",
