@@ -1,5 +1,4 @@
-from troposphere import GetAtt, location, Ref, s3, ses, sns, Sub
-from modules import awslambda, lambda_function, lambda_role, lambda_permission
+from troposphere import location, Ref, s3, ses, sns
 from constants import CLOUDFORMATION_BUCKET_NAME
 
 
