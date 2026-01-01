@@ -40,7 +40,7 @@
     "i18n-iso-countries": "^7.13.0",
     "idb-keyval": "^6.2.0",
     "marked": "^16.0.0",
-    "nuqs": "^2.7.0",
+    "nuqs": "^2.8.6",
     "papaparse": "^5.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
