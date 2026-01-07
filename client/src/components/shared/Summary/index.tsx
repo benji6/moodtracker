@@ -67,7 +67,7 @@ export default function Summary({
         currentValue={currentPeriod.worst}
         displayTrendSentiment
         eventType="moods"
-        heading="Worst mood"
+        heading="Lowest mood"
         periodType={periodType}
         previousValue={previousPeriod?.worst}
       />
