@@ -68,9 +68,7 @@ export default function SummaryItem({
               <span className={displayTrendSentiment ? "positive" : ""}>
                 <Icon draw margin="end" name="up" />
               </span>
-            ) : (
-              <Icon draw margin="end" name="minus" />
-            )}
+            ) : undefined}
             {difference
               ? `${format(Math.abs(difference))}
                 ${difference < 0 ? "less" : "more"} than `
