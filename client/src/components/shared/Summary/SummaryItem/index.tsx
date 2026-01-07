@@ -75,7 +75,7 @@ export default function SummaryItem({
               ? `${format(Math.abs(difference))}
                 ${difference < 0 ? "less" : "more"} than `
               : "The same as "}
-            last {` ${periodType}`}
+            {periodType === "day" ? "yesterday" : `last ${periodType}`}
           </div>
         )}
       </div>
