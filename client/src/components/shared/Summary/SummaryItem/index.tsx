@@ -12,6 +12,11 @@ interface Props {
   eventType: EventTypeCategories;
   format?(n: number): string;
   heading: string;
+  periodsSinceLastHighOrLow?: {
+    count: number;
+    isAllTime: boolean;
+    isBest: boolean;
+  };
   periodType?: "day" | "month" | "week" | "year";
   previousValue?: number;
 }
@@ -22,6 +27,7 @@ export default function SummaryItem({
   eventType,
   format = integerFormatter.format,
   heading,
+  periodsSinceLastHighOrLow,
   periodType,
   previousValue,
 }: Props) {
@@ -74,6 +80,18 @@ export default function SummaryItem({
                 ${difference < 0 ? "less" : "more"} than `
               : "The same as "}
             {periodType === "day" ? "yesterday" : `last ${periodType}`}
+            {periodsSinceLastHighOrLow && eventType === "moods" && (
+              <>
+                <br />
+                {periodsSinceLastHighOrLow.isAllTime
+                  ? periodsSinceLastHighOrLow.isBest
+                    ? `Best ${periodType} ever`
+                    : `Lowest ${periodType} ever`
+                  : periodsSinceLastHighOrLow.isBest
+                    ? `Best in ${periodsSinceLastHighOrLow.count} ${periodType}s`
+                    : `Lowest in ${periodsSinceLastHighOrLow.count} ${periodType}s`}
+              </>
+            )}
           </div>
         )}
       </div>

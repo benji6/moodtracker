@@ -21,8 +21,8 @@
 
 .m-summary-item__trend {
   align-self: end;
+  color: var(--color-figure-less);
   font-size: var(--font-size-0);
-  font-style: italic;
   line-height: 1;
 }
 

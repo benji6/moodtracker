@@ -3,11 +3,83 @@ import {
   formatIsoDateInLocalTimezone,
 } from "../../../utils";
 import { Paper } from "eri";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { RootState } from "../../../store";
 import Summary from "../../shared/Summary";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
+import { subDays, subWeeks, subMonths, subYears } from "date-fns";
+
+const periodSubtractors = {
+  day: subDays,
+  week: subWeeks,
+  month: subMonths,
+  year: subYears,
+} as const;
+
+const computePeriodsSinceLastHighOrLow = (
+  meanMoodByDate: Record<string, number | undefined>,
+  currentDate: Date,
+  periodType: "day" | "week" | "month" | "year",
+): { isBest: boolean; count: number; isAllTime: boolean } | undefined => {
+  const subtract = periodSubtractors[periodType];
+  const currentDateKey = formatIsoDateInLocalTimezone(currentDate);
+  const currentMood = meanMoodByDate[currentDateKey];
+  if (currentMood === undefined) return undefined;
+
+  const previousDateKey = formatIsoDateInLocalTimezone(
+    subtract(currentDate, 1),
+  );
+  const previousMood = meanMoodByDate[previousDateKey];
+  if (previousMood === undefined) return undefined;
+
+  const isBest = currentMood > previousMood;
+
+  let count = 1;
+  let checkDate = subtract(currentDate, 1);
+  let isAllTime = true;
+
+  while (true) {
+    const checkDateKey = formatIsoDateInLocalTimezone(checkDate);
+    const checkMood = meanMoodByDate[checkDateKey];
+    if (checkMood === undefined) break;
+
+    if (isBest) {
+      if (checkMood > currentMood) {
+        isAllTime = false;
+        break;
+      }
+    } else {
+      if (checkMood < currentMood) {
+        isAllTime = false;
+        break;
+      }
+    }
+
+    count++;
+    checkDate = subtract(checkDate, 1);
+  }
+
+  if (isAllTime) {
+    for (const [key, val] of Object.entries(meanMoodByDate)) {
+      if (key === currentDateKey) continue;
+      if (val === undefined) continue;
+      if (isBest) {
+        if (val > currentMood) {
+          isAllTime = false;
+          break;
+        }
+      } else {
+        if (val < currentMood) {
+          isAllTime = false;
+          break;
+        }
+      }
+    }
+  }
+
+  return { isBest, count, isAllTime };
+};
 
 interface Props {
   dates: [Date, Date, Date];
@@ -80,6 +152,11 @@ export default function SummaryForCalendarPeriod({
     eventsSlice.selectors.moodsInPeriod(state, date0, date1),
   ).map(({ mood }) => mood);
 
+  const periodsSinceLastHighOrLow = useMemo(
+    () => computePeriodsSinceLastHighOrLow(meanMoodByDate, date1, periodType),
+    [meanMoodByDate, date1, periodType],
+  );
+
   if (!firstEventExperiencedAt) return;
 
   const firstMoodDate = new Date(firstEventExperiencedAt);
@@ -117,6 +194,7 @@ export default function SummaryForCalendarPeriod({
           worst: moodValues.length ? Math.min(...moodValues) : undefined,
         }}
         periodType={periodType}
+        periodsSinceLastHighOrLow={periodsSinceLastHighOrLow}
         previousPeriod={
           showPrevious
             ? {

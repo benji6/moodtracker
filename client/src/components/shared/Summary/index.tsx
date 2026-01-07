@@ -29,6 +29,11 @@ interface PeriodData {
 
 interface Props {
   currentPeriod: PeriodData;
+  periodsSinceLastHighOrLow?: {
+    count: number;
+    isAllTime: boolean;
+    isBest: boolean;
+  };
   periodType?: "day" | "month" | "week" | "year";
   previousPeriod?: PeriodData;
   showMeditationStatsOverride?: boolean;
@@ -36,6 +41,7 @@ interface Props {
 
 export default function Summary({
   currentPeriod,
+  periodsSinceLastHighOrLow,
   periodType,
   previousPeriod,
   showMeditationStatsOverride = false,
@@ -48,10 +54,11 @@ export default function Summary({
     <div className="m-summary">
       <SummaryItem
         currentValue={currentPeriod.mean}
+        displayTrendSentiment
         eventType="moods"
         format={oneDecimalPlaceFormatter.format}
-        displayTrendSentiment
         heading="Average mood"
+        periodsSinceLastHighOrLow={periodsSinceLastHighOrLow}
         periodType={periodType}
         previousValue={previousPeriod?.mean}
       />
