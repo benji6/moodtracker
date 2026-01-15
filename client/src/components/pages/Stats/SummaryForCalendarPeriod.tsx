@@ -1,4 +1,5 @@
 import {
+  computeCompletePopulationMssd,
   computeCompletePopulationStandardDeviation,
   formatIsoDateInLocalTimezone,
 } from "../../../utils";
@@ -188,6 +189,7 @@ export default function SummaryForCalendarPeriod({
           secondsMeditated: secondsMeditatedInCurrentPeriod,
           standardDeviation:
             computeCompletePopulationStandardDeviation(moodValues),
+          mssd: computeCompletePopulationMssd(moodValues),
           totalLegRaises: totalLegRaisesInCurrentPeriod,
           totalPushUps: totalPushUpsInCurrentPeriod,
           totalSitUps: totalSitUpsInCurrentPeriod,
@@ -209,6 +211,7 @@ export default function SummaryForCalendarPeriod({
                 secondsMeditated: secondsMeditatedInPreviousPeriod,
                 standardDeviation:
                   computeCompletePopulationStandardDeviation(prevMoodValues),
+                mssd: computeCompletePopulationMssd(prevMoodValues),
                 totalLegRaises: totalLegRaisesInPreviousPeriod,
                 totalPushUps: totalPushUpsInPreviousPeriod,
                 totalSitUps: totalSitUpsInPreviousPeriod,

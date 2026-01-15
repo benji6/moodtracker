@@ -19,6 +19,7 @@ interface Props {
   };
   periodType?: "day" | "month" | "week" | "year";
   previousValue?: number;
+  showMoodUi?: boolean;
 }
 
 export default function SummaryItem({
@@ -30,6 +31,7 @@ export default function SummaryItem({
   periodsSinceLastHighOrLow,
   periodType,
   previousValue,
+  showMoodUi = false,
 }: Props) {
   if (currentValue === undefined) return;
   const round = (n: number): number =>
@@ -43,7 +45,7 @@ export default function SummaryItem({
       : round(roundedCurrentValue - roundedPreviousValue);
 
   let color = "var(--color-balance)";
-  if (eventType === "moods") color = moodToColor(currentValue);
+  if (showMoodUi) color = moodToColor(currentValue);
   else if (displayTrendSentiment && difference) {
     if (difference > 0) color = "var(--color-positive)";
     else color = "var(--color-negative)";
@@ -59,7 +61,7 @@ export default function SummaryItem({
           {heading}
         </div>
         <div className="m-summary-item__value">{format(currentValue)}</div>
-        {eventType === "moods" && (
+        {showMoodUi && (
           <div className="m-summary-item__mood-bar">
             <MoodBar mood={currentValue} />
           </div>
@@ -80,7 +82,7 @@ export default function SummaryItem({
                 ${difference < 0 ? "less" : "more"} than `
               : "The same as "}
             {periodType === "day" ? "yesterday" : `last ${periodType}`}
-            {periodsSinceLastHighOrLow && eventType === "moods" && (
+            {periodsSinceLastHighOrLow && showMoodUi && (
               <>
                 <br />
                 {periodsSinceLastHighOrLow.isAllTime

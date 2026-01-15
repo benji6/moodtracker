@@ -238,6 +238,16 @@ export const computeCompletePopulationStandardDeviation = (
   return Math.sqrt(sumOfSquaredDifferences / xs.length);
 };
 
+export const computeCompletePopulationMssd = (
+  xs: number[],
+): number | undefined => {
+  if (xs.length < 2) return;
+  let sumOfSquaredDifferences = 0;
+  for (let i = 1; i < xs.length; i++)
+    sumOfSquaredDifferences += (xs[i] - xs[i - 1]) ** 2;
+  return sumOfSquaredDifferences / xs.length;
+};
+
 export const convertKelvinToCelcius = (kelvin: number): number =>
   kelvin - 273.15;
 

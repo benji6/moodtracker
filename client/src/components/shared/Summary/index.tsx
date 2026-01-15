@@ -17,6 +17,7 @@ interface PeriodData {
   mean?: number;
   meanSleep?: number;
   meanWeight?: number;
+  mssd?: number;
   runMeters: number;
   runSeconds: number;
   secondsMeditated?: number;
@@ -61,6 +62,7 @@ export default function Summary({
         periodsSinceLastHighOrLow={periodsSinceLastHighOrLow}
         periodType={periodType}
         previousValue={previousPeriod?.mean}
+        showMoodUi
       />
       <SummaryItem
         currentValue={currentPeriod.best}
@@ -69,6 +71,7 @@ export default function Summary({
         heading="Best mood"
         periodType={periodType}
         previousValue={previousPeriod?.best}
+        showMoodUi
       />
       <SummaryItem
         currentValue={currentPeriod.worst}
@@ -77,6 +80,7 @@ export default function Summary({
         heading="Lowest mood"
         periodType={periodType}
         previousValue={previousPeriod?.worst}
+        showMoodUi
       />
       {Boolean(currentPeriod.standardDeviation) && (
         <SummaryItem
@@ -86,6 +90,16 @@ export default function Summary({
           heading="Mood standard deviation"
           periodType={periodType}
           previousValue={previousPeriod?.standardDeviation}
+        />
+      )}
+      {Boolean(currentPeriod.mssd) && (
+        <SummaryItem
+          currentValue={currentPeriod.mssd}
+          eventType="moods"
+          format={oneDecimalPlaceFormatter.format}
+          heading="Mood instability (MSSD)"
+          periodType={periodType}
+          previousValue={previousPeriod?.mssd}
         />
       )}
       <SummaryItem

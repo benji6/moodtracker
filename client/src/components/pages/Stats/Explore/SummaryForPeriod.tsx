@@ -1,4 +1,5 @@
 import {
+  computeCompletePopulationMssd,
   computeCompletePopulationStandardDeviation,
   computeMeanSafe,
 } from "../../../../utils";
@@ -63,6 +64,7 @@ export default function SummaryForPeriod({ dateFrom, dateTo }: Props) {
           mean: computeMeanSafe(moodValues),
           meanWeight,
           meanSleep,
+          mssd: computeCompletePopulationMssd(moodValues),
           runMeters,
           runSeconds,
           secondsMeditated,

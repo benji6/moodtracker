@@ -6,6 +6,7 @@ import {
   capitalizeFirstLetter,
   compareFunctionForStringSorting,
   computeAverageMoodInInterval,
+  computeCompletePopulationMssd,
   computeCompletePopulationStandardDeviation,
   computeMean,
   computeMeanSafe,
@@ -819,6 +820,32 @@ describe("utils", () => {
           727.7, 1086.5, 1091, 1361.3, 1490.5, 1956.1,
         ]),
       ).toBeCloseTo(384.28);
+    });
+  });
+
+  describe("computeCompletePopulationMssd", () => {
+    it("returns undefined when the array is empty", () => {
+      expect(computeCompletePopulationMssd([])).toBeUndefined();
+    });
+
+    it("returns undefined when the array contains a single item", () => {
+      expect(computeCompletePopulationMssd([5])).toBeUndefined();
+    });
+
+    it("returns 0 when all items in the array are the same", () => {
+      expect(computeCompletePopulationMssd([5, 5, 5, 5, 5])).toBe(0);
+    });
+
+    it("returns the correct mssd for two elements", () => {
+      expect(computeCompletePopulationMssd([1, 3])).toBe(2);
+    });
+
+    it("returns the correct mssd for multiple elements with constant differences", () => {
+      expect(computeCompletePopulationMssd([1, 2, 3, 4])).toBe(0.75);
+    });
+
+    it("returns the correct mssd for multiple elements with varying differences", () => {
+      expect(computeCompletePopulationMssd([1, 2, 4, 7])).toBe(3.5);
     });
   });
 
