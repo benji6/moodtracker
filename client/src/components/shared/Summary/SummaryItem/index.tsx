@@ -66,36 +66,38 @@ export default function SummaryItem({
             <MoodBar mood={currentValue} />
           </div>
         )}
-        {difference !== undefined && (
-          <div className="m-summary-item__trend">
-            {difference < 0 ? (
-              <span className={displayTrendSentiment ? "negative" : ""}>
-                <Icon draw margin="end" name="down" />
-              </span>
-            ) : difference > 0 ? (
-              <span className={displayTrendSentiment ? "positive" : ""}>
-                <Icon draw margin="end" name="up" />
-              </span>
-            ) : undefined}
-            {difference
-              ? `${format(Math.abs(difference))}
+        <div className="m-summary-item__trend">
+          {difference !== undefined && (
+            <>
+              {difference < 0 ? (
+                <span className={displayTrendSentiment ? "negative" : ""}>
+                  <Icon draw margin="end" name="down" />
+                </span>
+              ) : difference > 0 ? (
+                <span className={displayTrendSentiment ? "positive" : ""}>
+                  <Icon draw margin="end" name="up" />
+                </span>
+              ) : undefined}
+              {difference
+                ? `${format(Math.abs(difference))}
                 ${difference < 0 ? "less" : "more"} than `
-              : "The same as "}
-            {periodType === "day" ? "yesterday" : `last ${periodType}`}
-            {periodsSinceLastHighOrLow && showMoodUi && (
-              <>
-                <br />
-                {periodsSinceLastHighOrLow.isAllTime
-                  ? periodsSinceLastHighOrLow.isBest
-                    ? `Best ${periodType} ever`
-                    : `Lowest ${periodType} ever`
-                  : periodsSinceLastHighOrLow.isBest
-                    ? `Best in ${periodsSinceLastHighOrLow.count} ${periodType}s`
-                    : `Lowest in ${periodsSinceLastHighOrLow.count} ${periodType}s`}
-              </>
-            )}
-          </div>
-        )}
+                : "The same as "}
+              {periodType === "day" ? "yesterday" : `last ${periodType}`}
+              {periodsSinceLastHighOrLow && showMoodUi && (
+                <>
+                  <br />
+                  {periodsSinceLastHighOrLow.isAllTime
+                    ? periodsSinceLastHighOrLow.isBest
+                      ? `Best ${periodType} ever`
+                      : `Lowest ${periodType} ever`
+                    : periodsSinceLastHighOrLow.isBest
+                      ? `Best in ${periodsSinceLastHighOrLow.count} ${periodType}s`
+                      : `Lowest in ${periodsSinceLastHighOrLow.count} ${periodType}s`}
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </Card>
   );
