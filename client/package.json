@@ -21,8 +21,8 @@
     "packageExports": true
   },
   "dependencies": {
-    "@aws-sdk/client-location": "^3.588.0",
-    "@aws-sdk/credential-providers": "^3.682.0",
+    "@aws-sdk/client-location": "^3.984.0",
+    "@aws-sdk/credential-providers": "^3.984.0",
     "@reduxjs/toolkit": "^2.11.0",
     "@sentry/react": "^10.5.0",
     "@tanstack/query-async-storage-persister": "^5.90.13",
