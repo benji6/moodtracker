@@ -2703,14 +2703,14 @@ telegram = ["requests"]
 
 [[package]]
 name = "troposphere"
-version = "4.9.6"
+version = "4.10.1"
 description = "AWS CloudFormation creation library"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "troposphere-4.9.6-py3-none-any.whl", hash = "sha256:8e878ba79dc2e95e3f9e9b8dcb21d1c43f2c2bdcc93d0b1c3d14dbedfc78d09d"},
-    {file = "troposphere-4.9.6.tar.gz", hash = "sha256:0a1184f981d94eab96dd9831cd752d489e6f37b4fd24636fca0f397e9696b1bf"},
+    {file = "troposphere-4.10.1-py3-none-any.whl", hash = "sha256:45a08c039baf0107ec4e6ab33a82db89b22f9c611944f5d11c13e14e0c770c0c"},
+    {file = "troposphere-4.10.1.tar.gz", hash = "sha256:7ba56e3677f910ce11f1a6788db0d76b14689726b153a9678b49bdaa5f764c13"},
 ]
 
 [package.dependencies]
@@ -2946,4 +2946,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.8"
-content-hash = "a41851f75a882aaa3daade914d2624fa324049e867cf71acd4fdc5a0a2149f6b"
+content-hash = "96ced0da843e54abbc8d8d5083fc1d9f8eb2f32ed7fa4c91678303c68de1f76c"
