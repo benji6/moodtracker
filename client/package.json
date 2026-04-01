@@ -21,7 +21,7 @@
     "packageExports": true
   },
   "dependencies": {
-    "@aws-sdk/client-location": "^3.1000.0",
+    "@aws-sdk/client-location": "^3.1021.0",
     "@aws-sdk/credential-providers": "^3.682.0",
     "@reduxjs/toolkit": "^2.11.0",
     "@sentry/react": "^10.5.0",
