@@ -17,7 +17,7 @@ The MoodTracker UI was built using a component library I made called [Eri](https
 
 - [Node.js](https://nodejs.org) (version specified in [.nvmrc](/client/.nvmrc))
 - [Python](https://www.python.org) (latest version 3.x)
-- [Poetry](https://python-poetry.org/docs/) (latest version 1.x)
+- [uv](https://docs.astral.sh/uv/)
 
 ### Install project dependencies
 

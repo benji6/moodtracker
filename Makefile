@@ -1,10 +1,10 @@
 # Compiles some basic usage analytics
 analytics:
-	@cd scripts && poetry run python3 ./analytics.py
+	@cd scripts && uv run python3 ./analytics.py
 
 # Deletes users that were created a long time ago and never logged any data
 cleanup_zombie_users:
-	@cd scripts && poetry run python3 ./cleanup_zombie_users.py
+	@cd scripts && uv run python3 ./cleanup_zombie_users.py
 
 # Makes notifications_send.zip
 scripts/cloudformation/lambdas/notifications_send.zip: scripts/cloudformation/lambdas/notifications_send/*
@@ -21,12 +21,12 @@ scripts/cloudformation/lambdas/notifications_send.zip: scripts/cloudformation/la
 
 # Generates the CloudFormation file
 infra/cloudformation.yml: scripts/cloudformation/*.py scripts/cloudformation/**/*.py
-	@cd scripts && poetry run python3 cloudformation/main.py
+	@cd scripts && uv run python3 cloudformation/main.py
 	@echo "🍄 CloudFormation template built successfully! 🍄"
 
 # Builds and validates the CloudFormation template
 cloudformation/test: infra/cloudformation.yml
-	@cd scripts && poetry run cfn-lint ../infra/cloudformation.yml
+	@cd scripts && uv run cfn-lint ../infra/cloudformation.yml
 	@echo "🍄 CloudFormation template linted successfully! 🍄"
 	@aws s3 cp --quiet infra/cloudformation.yml s3://moodtracker-cloudformation
 	@echo "🍄 CloudFormation template uploaded to S3 successfully! 🍄"
@@ -57,7 +57,7 @@ help:
 # Install all dependencies
 init: init/ci
 	@echo "⏳ Installing Python dependencies... ⏳"
-	@cd scripts && poetry install
+	@cd scripts && uv sync
 	@echo "🍄 Python dependencies successfully installed! 🍄"
 
 # Install all Node.js dependencies
