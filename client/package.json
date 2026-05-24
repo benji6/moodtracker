@@ -33,7 +33,7 @@
     "d3-interpolate": "^3.0.1",
     "d3-scale": "^4.0.2",
     "date-fns": "^4.1.0",
-    "eri": "^46.0.0",
+    "eri": "^47.0.0",
     "file-saver": "^2.0.5",
     "firebase": "^12.5.0",
     "fuse.js": "^7.0.0",
@@ -91,6 +91,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.59.1",
     "url": "^0.11.4",
+    "util": "^0.12.5",
     "vm-browserify": "^1.1.2"
   }
 }

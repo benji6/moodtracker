@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import useHasBeenActive from "../../../../hooks/useHasBeenActive";
 
 const meditationBellUri = String(
@@ -49,5 +49,15 @@ export default function useBell(): Bell | undefined {
     };
   }, [hasBeenActive]);
 
-  return bellRef.current;
+  const start = useCallback(() => {
+    bellRef.current?.start();
+  }, []);
+  const stop = useCallback(() => {
+    bellRef.current?.stop();
+  }, []);
+
+  return useMemo(
+    () => (hasBeenActive ? { start, stop } : undefined),
+    [hasBeenActive, start, stop],
+  );
 }

@@ -1,5 +1,5 @@
 import "./sentry";
-import "eri/dist/index.css";
+import "eri/style.css";
 import "./firebase";
 import * as ReactDOM from "react-dom/client";
 import {

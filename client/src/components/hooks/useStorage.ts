@@ -29,12 +29,13 @@ export default function useStorage() {
   const lastUserId = useRef<string>(undefined);
 
   // handle user sign out
-  if (lastUserId.current && !userId) {
-    storage.deleteEvents(lastUserId.current);
-    navigate("/");
-  }
-
-  lastUserId.current = userId;
+  useEffect(() => {
+    if (lastUserId.current && !userId) {
+      storage.deleteEvents(lastUserId.current);
+      navigate("/");
+    }
+    lastUserId.current = userId;
+  }, [navigate, userId]);
 
   // save/clear user
   useEffect(() => {
