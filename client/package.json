@@ -41,7 +41,7 @@
     "idb-keyval": "^6.2.0",
     "marked": "^17.0.1",
     "nuqs": "^2.8.9",
-    "papaparse": "^5.3.1",
+    "papaparse": "^5.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.0.4",
