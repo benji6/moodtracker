@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-location": "^3.1021.0",
-    "@aws-sdk/credential-providers": "^3.1057.0",
+    "@aws-sdk/credential-providers": "^3.1097.0",
     "@reduxjs/toolkit": "^2.11.0",
     "@sentry/react": "^10.51.0",
     "@tanstack/query-async-storage-persister": "^5.90.13",
