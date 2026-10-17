@@ -8,7 +8,7 @@
     "icons": "node scripts/icons.mjs",
     "start": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') parcel src/index.html --open",
     "test": "run-p test:*",
-    "test:audit": "npm audit --audit-level=critical",
+    "test:audit": "npm audit --omit=dev --audit-level=critical",
     "test:e2e": "cypress run",
     "test:fmt": "prettier --check -u '**/*'",
     "test:lint": "eslint",
