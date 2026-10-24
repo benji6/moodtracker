@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import computeTrendlinePoints from "./computeTrendlinePoints";
 
 describe("MoodChartForPeriod", () => {

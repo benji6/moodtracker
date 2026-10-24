@@ -37,8 +37,8 @@ resources are managed outside this repository.
   - `npm run test:types`
   - `npm run test:lint`
   - `npm run test:fmt`
-- Unit tests use Jest's native ESM support for React Router 8; keep the
-  `--experimental-vm-modules` Node flag in the unit-test command.
+- Unit tests use Vitest with explicit imports from `vitest`. The unit-test
+  command runs once in UTC with `BUILD_TIME` set; pass `--watch` for watch mode.
 - Run end-to-end tests with `npm run test:e2e` only while the local application
   is running and test-user credentials are configured.
 - Regenerate and validate infrastructure with `make cloudformation/test`. This

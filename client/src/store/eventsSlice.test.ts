@@ -1,3 +1,4 @@
+import { beforeAll, beforeEach, describe, expect, it, test } from "vitest";
 import store, { RootState } from ".";
 import eventsSlice, { trackedCategoriesSelector } from "./eventsSlice";
 

@@ -1,3 +1,0 @@
-/* global module */
-
-module.exports = {};

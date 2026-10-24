@@ -1,3 +1,4 @@
+import { describe, expect, it, test } from "vitest";
 import { MOOD_EXTENT, MOOD_RANGE } from "./constants";
 import {
   bisectLeft,
@@ -1708,7 +1709,7 @@ describe("utils", () => {
     ].flatMap((weatherId) =>
       [true, false].map((isDaytime) => ({ isDaytime, weatherId })),
     ),
-  )("getWeatherDisplayData(%p)", (x) => {
+  )("getWeatherDisplayData($weatherId, $isDaytime)", (x) => {
     expect(getWeatherDisplayData(x)).toMatchSnapshot();
   });
 

@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { State, initialState, reducer } from "./reducer";
 
 const createState = (props?: Partial<State>): State => ({
