@@ -41,6 +41,8 @@ resources are managed outside this repository.
   command runs once in UTC with `BUILD_TIME` set; pass `--watch` for watch mode.
 - Run end-to-end tests with `npm run test:e2e` only while the local application
   is running and test-user credentials are configured.
+- Read Cypress credentials with `cy.env()` and suppress logging when using
+  them; `Cypress.env()` is disabled by `allowCypressEnv: false`.
 - Regenerate and validate infrastructure with `make cloudformation/test`. This
   uses AWS credentials and uploads the template, so do not run it merely for
   local source-only changes. To regenerate the checked-in template without

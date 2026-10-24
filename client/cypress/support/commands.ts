@@ -15,10 +15,17 @@ Cypress.Commands.add("login", () => {
     () => {
       cy.visit("/");
       cy.get(SELECTORS.signInLink).click();
-      cy.get('[type="email"]').type(Cypress.env("MOODTRACKER_TEST_USER_EMAIL"));
-      cy.get('[type="password"]').type(
-        Cypress.env("MOODTRACKER_TEST_USER_PASSWORD"),
-        { log: false },
+      cy.env([
+        "MOODTRACKER_TEST_USER_EMAIL",
+        "MOODTRACKER_TEST_USER_PASSWORD",
+      ]).then(
+        ({
+          MOODTRACKER_TEST_USER_EMAIL: email,
+          MOODTRACKER_TEST_USER_PASSWORD: password,
+        }) => {
+          cy.get('[type="email"]').type(email, { log: false });
+          cy.get('[type="password"]').type(password, { log: false });
+        },
       );
       cy.get('form button[type="submit"]').click();
       cy.get(`${SELECTORS.deviceSetupDialog} .close-button`).click();
