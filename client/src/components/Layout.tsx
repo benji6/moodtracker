@@ -11,7 +11,7 @@ import { useState } from "react";
 import useStorage from "./hooks/useStorage";
 import useUser from "./hooks/useUser";
 import userSlice from "../store/userSlice";
-import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
+import { NuqsAdapter } from "nuqs/adapters/react-router/v8";
 
 export default function Layout() {
   useShuffleBackgroundMesh();
