@@ -35,6 +35,7 @@ import {
   computeAverageMoodInInterval,
   computeMean,
   computeMeanSafe,
+  createDateFromLocalDateString,
   defaultDict,
   formatIsoDateHourInLocalTimezone,
   formatIsoDateInLocalTimezone,
@@ -233,6 +234,20 @@ const allIdsWithLocationOrderedByExperiencedAtSelector = createSelector(
         typeof payload !== "string" && "location" in payload && payload.location
       );
     }),
+);
+
+const allTrackedEventsOrderedByDateSelector = createSelector(
+  allTrackedCategoryIdsOrderedByExperiencedAtSelector,
+  (events) =>
+    events
+      .map(({ experiencedAt, ...event }) => ({
+        ...event,
+        date:
+          event.type === "sleeps"
+            ? createDateFromLocalDateString(experiencedAt)
+            : new Date(experiencedAt),
+      }))
+      .sort((a, b) => a.date.getTime() - b.date.getTime()),
 );
 
 const normalizedLegRaisesSelector = createSelector(
@@ -572,6 +587,18 @@ export default createSlice({
     syncFromServerError: (state: EventsState) => state.syncFromServerError,
     syncToServerError: (state: EventsState) => state.syncToServerError,
     allNormalizedTrackedCategories: allNormalizedTrackedCategoriesSelector,
+    allTrackedEventsOrderedByDate: allTrackedEventsOrderedByDateSelector,
+    trackedEventsInPeriod: createSelector(
+      allTrackedEventsOrderedByDateSelector,
+      (_state: EventsState, dateFrom?: Date) => dateFrom,
+      (_state: EventsState, _dateFrom?: Date, dateTo?: Date) => dateTo,
+      (events, dateFrom, dateTo) => {
+        const end = dateTo ? addDays(dateTo, 1) : undefined;
+        return events.filter(
+          ({ date }) => (!dateFrom || date >= dateFrom) && (!end || date < end),
+        );
+      },
+    ),
     allDenormalizedTrackedCategoriesByLocalDate: createSelector(
       allTrackedCategoryIdsOrderedByExperiencedAtSelector,
       (

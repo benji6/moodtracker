@@ -29,6 +29,7 @@ import WeatherForPeriod from "../WeatherForPeriod";
 import WeightChartForPeriod from "../WeightChartForPeriod";
 import withStatsPage from "../../../hocs/withStatsPage";
 import ExerciseForPeriod from "../ExerciseForPeriod";
+import ViewEventsLink from "../../../shared/ViewEventsLink";
 
 interface Props {
   date: Date;
@@ -118,6 +119,7 @@ function Week({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             </Link>
           </SubHeading>
         </h2>
+        <ViewEventsLink dateFrom={date} dateTo={nextDate} />
         <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (

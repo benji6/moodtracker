@@ -24,6 +24,7 @@ import { formatIsoYearInLocalTimezone } from "../../../../utils";
 import withStatsPage from "../../../hocs/withStatsPage";
 import PushUpsByMonthForPeriod from "./PushUpsByMonthForPeriod";
 import RunDistanceByMonthForPeriod from "./RunDistanceByMonthForPeriod";
+import ViewEventsLink from "../../../shared/ViewEventsLink";
 
 interface Props {
   date: Date;
@@ -103,6 +104,7 @@ function Year({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
     <Paper.Group>
       <Paper>
         <h2>{yearFormatter.format(date)}</h2>
+        <ViewEventsLink dateFrom={date} dateTo={nextDate} />
         <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (

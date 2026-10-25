@@ -1,5 +1,8 @@
-import { addMinutes, subDays } from "date-fns";
-import { formatIsoDateInLocalTimezone, roundDateDown } from "../../utils";
+import {
+  createDateFromLocalDateString,
+  formatIsoDateInLocalTimezone,
+  roundDateDown,
+} from "../../utils";
 import { DateField } from "eri";
 import eventsSlice from "../../store/eventsSlice";
 import { useSelector } from "react-redux";
@@ -9,6 +12,8 @@ interface Props {
   dateTo: Date;
   setDateFrom(date: Date): void;
   setDateTo(date: Date): void;
+  minDate?: Date | null;
+  maxDate?: Date | null;
 }
 
 export default function DateRangeSelector({
@@ -16,33 +21,36 @@ export default function DateRangeSelector({
   dateTo,
   setDateFrom,
   setDateTo,
+  minDate,
+  maxDate = new Date(),
 }: Props) {
   const denormalizedMoodsOrderedByExperiencedAt = useSelector(
     eventsSlice.selectors.denormalizedMoodsOrderedByExperiencedAt,
   );
-  const maxDate = new Date();
+  const firstMood = denormalizedMoodsOrderedByExperiencedAt[0];
+  const minimum =
+    minDate === undefined
+      ? firstMood && roundDateDown(new Date(firstMood.experiencedAt))
+      : minDate;
+
+  const readDate = (value: string) =>
+    value ? createDateFromLocalDateString(value) : undefined;
 
   return (
     <>
       <DateField
         label="From"
-        max={formatIsoDateInLocalTimezone(subDays(dateTo, 1))}
-        min={formatIsoDateInLocalTimezone(
-          new Date(denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt),
+        max={formatIsoDateInLocalTimezone(
+          maxDate && maxDate < dateTo ? maxDate : dateTo,
         )}
+        min={minimum ? formatIsoDateInLocalTimezone(minimum) : undefined}
         onChange={(e) => {
-          let { valueAsDate: date } = e.target;
+          const date = readDate(e.target.value);
           if (!date) return;
-          const timezoneOffset = date.getTimezoneOffset();
-          if (timezoneOffset) date = addMinutes(date, date.getTimezoneOffset());
           if (
-            date < roundDateDown(dateTo) &&
-            date >=
-              roundDateDown(
-                new Date(
-                  denormalizedMoodsOrderedByExperiencedAt[0].experiencedAt,
-                ),
-              )
+            date <= roundDateDown(dateTo) &&
+            (!minimum || date >= minimum) &&
+            (!maxDate || date <= maxDate)
           )
             setDateFrom(date);
         }}
@@ -50,14 +58,17 @@ export default function DateRangeSelector({
       />
       <DateField
         label="To"
-        max={formatIsoDateInLocalTimezone(maxDate)}
+        max={maxDate ? formatIsoDateInLocalTimezone(maxDate) : undefined}
         min={formatIsoDateInLocalTimezone(dateFrom)}
         onChange={(e) => {
-          let { valueAsDate: date } = e.target;
+          const date = readDate(e.target.value);
           if (!date) return;
-          const timezoneOffset = date.getTimezoneOffset();
-          if (timezoneOffset) date = addMinutes(date, date.getTimezoneOffset());
-          if (date >= dateFrom && date <= maxDate) setDateTo(date);
+          if (
+            date >= roundDateDown(dateFrom) &&
+            (!maxDate || date <= maxDate) &&
+            (!minimum || date >= minimum)
+          )
+            setDateTo(date);
         }}
         value={formatIsoDateInLocalTimezone(dateTo)}
       />

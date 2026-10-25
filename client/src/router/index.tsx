@@ -25,6 +25,7 @@ import EditSleep from "../components/pages/Sleep/EditSleep";
 import EditWeight from "../components/pages/Weight/EditWeight";
 import { ErrorBoundary } from "@sentry/react";
 import EventSettings from "../components/pages/Settings/EventSettings";
+import Events from "../components/pages/Events";
 import Explore from "../components/pages/Stats/Explore";
 import ForgotPassword from "../components/pages/ForgotPassword";
 import Home from "../components/pages/Home";
@@ -99,6 +100,10 @@ function Root() {
               />
               {userIsSignedIn ? (
                 <>
+                  <Route
+                    element={<Page Component={Events} title="Event log" />}
+                    path="/events"
+                  />
                   <Route path="/meditation">
                     <Route
                       element={<Page Component={Meditate} title="Meditate" />}

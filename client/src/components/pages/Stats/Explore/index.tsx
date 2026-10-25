@@ -25,6 +25,7 @@ import { roundDateDown } from "../../../../utils";
 import { scaleTime } from "d3-scale";
 import { useSelector } from "react-redux";
 import ExerciseForPeriod from "../ExerciseForPeriod";
+import ViewEventsLink from "../../../shared/ViewEventsLink";
 
 const DATE_RANGE_OPTIONS = [
   "Today",
@@ -263,6 +264,7 @@ export default function Explore() {
             localDispatch({ payload, type: "displayDateTo/set" })
           }
         />
+        <ViewEventsLink dateFrom={localState.dateFrom} dateTo={dateTo} />
       </Paper>
       <StatsViewControls
         dateFrom={localState.dateFrom}

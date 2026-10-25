@@ -198,6 +198,10 @@ export default function Nav({ handleNavClose, open }: Props) {
                   Explore
                 </EriNav.Link>
               </EriNav.SubList>
+              <EriNav.Link onClick={handleNavClose} to="/events">
+                <Icon margin="end" name="book" />
+                Event log
+              </EriNav.Link>
               <EriNav.SubList
                 heading={
                   <span>

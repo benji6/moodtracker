@@ -26,6 +26,7 @@ import WeightChartForPeriod from "./WeightChartForPeriod";
 import eventsSlice from "../../../store/eventsSlice";
 import { useSelector } from "react-redux";
 import withStatsPage from "../../hocs/withStatsPage";
+import ViewEventsLink from "../../shared/ViewEventsLink";
 
 const X_LABELS_COUNT = 7;
 
@@ -84,6 +85,7 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
             </Link>
           </SubHeading>
         </h2>
+        <ViewEventsLink dateFrom={date} dateTo={nextDate} />
         <MoodGradientForPeriod dateFrom={date} dateTo={nextDate} />
         <PrevNextControls>
           {showPrevious ? (
