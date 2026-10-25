@@ -42,7 +42,7 @@ resources are managed outside this repository.
 - Run end-to-end tests with `npm run test:e2e` only while the local application
   is running and test-user credentials are configured.
 - Read Cypress credentials with `cy.env()` and suppress logging when using
-  them; `Cypress.env()` is disabled by `allowCypressEnv: false`.
+  them; `Cypress.env()` was removed in Cypress 16.
 - Regenerate and validate infrastructure with `make cloudformation/test`. This
   uses AWS credentials and uploads the template, so do not run it merely for
   local source-only changes. To regenerate the checked-in template without
