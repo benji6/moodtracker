@@ -16,7 +16,7 @@
     "test:unit": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') TZ=UTC vitest run",
     "test-ci": "run-p test:audit test:fmt test:lint test:types test:unit"
   },
-  "browserslist": "defaults and since 2023",
+  "browserslist": "baseline 2023",
   "@parcel/resolver-default": {
     "packageExports": true
   },
