@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheLists.mjs",
+    "build": "rm -rf dist && mkdir dist && run-p build:* && node scripts/injectCacheLists.mjs && node scripts/generateHeaders.mjs",
     "build:parcel": "BUILD_TIME=$(node -e 'console.log((new Date).toISOString())') CACHE_FIRST_CACHE=CACHE_FIRST_CACHE NETWORK_FIRST_CACHE=NETWORK_FIRST_CACHE parcel build src/index.html",
     "build:robots": "echo 'User-agent: GPTBot\nDisallow: /\n\nUser-agent: ChatGPT-User\nDisallow: /\n\nUser-agent: anthropic-ai\nDisallow: /\n\nUser-agent: Claude-Web\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /' > dist/robots.txt",
     "fmt": "npm run test:lint -- --fix && prettier -u --write '**/*'",

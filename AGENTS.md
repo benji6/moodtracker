@@ -23,6 +23,9 @@ resources are managed outside this repository.
   - `cloudformation/main.py`: generates `infra/cloudformation.yml`.
 - `infra/cloudformation.yml`: generated CloudFormation template. Do not edit it
   directly; modify `scripts/cloudformation/` and regenerate it.
+- `client/dist/_headers`: generated Netlify CSP headers, including hashes for
+  Parcel's inline scripts. Modify `client/scripts/generateHeaders.mjs`, not the
+  generated file; keep CSP out of `client/netlify.toml` to avoid duplicate policies.
 - `bin/`: deployment and CloudFormation test scripts.
 
 ## Setup and commands
