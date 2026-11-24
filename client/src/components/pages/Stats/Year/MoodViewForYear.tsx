@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { Paper, SubHeading } from "eri";
+import EmotionCircumplexForPeriod from "../EmotionCircumplexForPeriod";
 import {
   formatIsoDateInLocalTimezone,
   formatIsoMonthInLocalTimezone,
@@ -98,6 +99,11 @@ export default function MoodViewForYear({
           <MoodCloud
             currentPeriod={{ dateFrom: date, dateTo: nextDate }}
             previousPeriod={{ dateFrom: prevDate, dateTo: date }}
+          />
+          <EmotionCircumplexForPeriod
+            dateFrom={date}
+            dateTo={nextDate}
+            previousDateFrom={prevDate}
           />
           <MoodFrequencyForPeriod dateFrom={date} dateTo={nextDate} />
         </>

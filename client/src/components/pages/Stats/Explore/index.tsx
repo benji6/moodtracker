@@ -5,6 +5,7 @@ import StatsViewControls, {
 } from "../../../shared/StatsViewControls";
 import { addDays, subDays } from "date-fns";
 import DateRangeSelector from "../../../shared/DateRangeSelector";
+import EmotionCircumplexForPeriod from "../EmotionCircumplexForPeriod";
 import { FluxStandardAction } from "../../../../typeUtilities";
 import GetStartedCta from "../../../shared/GetStartedCta";
 import LocationForPeriod from "../LocationForPeriod";
@@ -200,6 +201,10 @@ export default function Explore() {
           />
           <MoodByHourForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
           <MoodCloudForPeriod dateFrom={localState.dateFrom} dateTo={dateTo} />
+          <EmotionCircumplexForPeriod
+            dateFrom={localState.dateFrom}
+            dateTo={dateTo}
+          />
           <MoodFrequencyForPeriod
             dateFrom={localState.dateFrom}
             dateTo={dateTo}

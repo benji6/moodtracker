@@ -14,6 +14,7 @@ import {
   formatIsoYearInLocalTimezone,
 } from "../../../utils";
 import { Link } from "react-router";
+import EmotionCircumplexForPeriod from "./EmotionCircumplexForPeriod";
 import LocationForPeriod from "./LocationForPeriod";
 import MoodChartForPeriod from "./MoodChartForPeriod";
 import MoodGradientForPeriod from "./MoodGradientForPeriod";
@@ -108,12 +109,19 @@ function Day({ date, nextDate, prevDate, showNext, showPrevious }: Props) {
         <>
           <SummaryForDay dates={[prevDate, date, nextDate]} />
           {hasMoodIds && (
-            <MoodChartForPeriod
-              dateFrom={date}
-              dateTo={nextDate}
-              xAxisTitle="Time"
-              xLabels={xLabels}
-            />
+            <>
+              <MoodChartForPeriod
+                dateFrom={date}
+                dateTo={nextDate}
+                xAxisTitle="Time"
+                xLabels={xLabels}
+              />
+              <EmotionCircumplexForPeriod
+                dateFrom={date}
+                dateTo={nextDate}
+                previousDateFrom={prevDate}
+              />
+            </>
           )}
           <WeightChartForPeriod
             dateFrom={date}

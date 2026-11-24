@@ -1,0 +1,47 @@
+.m-emotion-circumplex {
+  margin: 0;
+}
+
+.m-emotion-circumplex__plot {
+  display: block;
+  width: 100%;
+  margin-block: var(--space-3);
+  color: var(--color-figure);
+}
+
+.m-emotion-circumplex__guides {
+  fill: none;
+  stroke: var(--color-figure-less);
+  stroke-width: 1;
+}
+
+.m-emotion-circumplex__quadrant {
+  fill: var(--color-theme);
+}
+
+.m-emotion-circumplex__quadrant-share {
+  fill: currentColor;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.m-emotion-circumplex__labels {
+  fill: currentColor;
+  font-size: 16px;
+}
+
+.m-emotion-circumplex__valence-label {
+  font-size: 14px;
+}
+
+.m-emotion-circumplex__point {
+  fill: var(--color-theme);
+  fill-opacity: 0.25;
+  stroke: var(--color-figure);
+  stroke-width: 1.5;
+}
+
+.m-emotion-circumplex__emotion-label {
+  fill: currentColor;
+  font-size: 8px;
+}
